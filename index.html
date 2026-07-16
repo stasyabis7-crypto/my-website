@@ -12,39 +12,53 @@
 <link rel="stylesheet" href="components/bottom-nav/bottom-nav.css" />
 <style>
   * { box-sizing: border-box; }
+  html, body {
+    min-height: 100%;
+  }
   body {
     margin: 0;
-    min-height: 100vh;
+    min-height: 100svh;
     background: var(--color-bg-gradient);
     display: flex;
     flex-direction: column;
     font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+  .page-shell {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100svh;
+    padding: var(--space-8) var(--space-8) var(--space-5);
+    background: var(--color-bg-gradient);
   }
   .page-header {
-    padding: var(--space-8) var(--space-8) 0;
+    padding: 0;
   }
   .demo-note {
     color: rgba(255,255,255,0.9);
     text-align: center;
     padding: var(--space-5);
     font-size: 0.875rem; /* 14px при 390px, дальше растёт вместе с интерфейсом */
-    margin-block: auto;
+    margin: auto 0;
   }
   .page-bottom {
-    padding: var(--space-5);
-    padding-bottom: var(--space-8);
+    padding: 0;
+    padding-top: var(--space-5);
   }
 </style>
 </head>
 <body>
-  <div class="page-header">
-    <div id="header-root"></div>
-  </div>
+  <div class="page-shell">
+    <div class="page-header">
+      <div id="header-root"></div>
+    </div>
 
-  <p class="demo-note">Демо-страница для изолированной проверки BottomNav<br/>на фирменном градиенте — так виден стеклянный эффект</p>
+    <p class="demo-note">Демо-страница для изолированной проверки BottomNav<br/>на фирменном градиенте — так виден стеклянный эффект</p>
 
-  <div class="page-bottom">
-    <div id="bottom-nav-root"></div>
+    <div class="page-bottom">
+      <div id="bottom-nav-root"></div>
+    </div>
   </div>
 
   <script type="module">

@@ -26,10 +26,13 @@
   padding: var(--space-3) var(--space-2);
   border: none;
   border-radius: var(--radius-pill);
-  background: transparent;
+  background-color: transparent;
   color: var(--color-white);
   cursor: pointer;
-  transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transition: background-color 160ms ease, color 160ms ease, transform 120ms ease;
+  will-change: background-color, color, transform;
 }
 
 .bottom-nav__item svg {
@@ -62,13 +65,13 @@
    .bottom-nav__item к .bottom-nav__label, отдельно на лейбле не задаём. */
 
 .bottom-nav__item[data-state="default"] {
-  background: transparent;
+  background-color: transparent;
   color: var(--color-white-40); /* ПРОВЕРИТЬ точное значение прозрачности в макете */
   font-weight: var(--font-weight-semibold);
 }
 
 .bottom-nav__item[data-state="active"] {
-  background: var(--color-white);
+  background-color: var(--color-white);
   color: var(--color-black);
   font-weight: var(--font-weight-bold);
 }
