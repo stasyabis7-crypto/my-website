@@ -97,7 +97,8 @@
 }
 
 .bottom-nav__item:active {
-  transform: scale(0.94);
+  /* Press scale disabled to avoid flicker on touch devices. */
+  transform: none;
 }
 
 .bottom-nav__item:focus-visible {
