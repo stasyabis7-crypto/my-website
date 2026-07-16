@@ -1,7 +1,8 @@
 /*
   Логика ProjectSlider: строит слайды из projectCards, центрирует активную
-  карточку через translateX на треке, автоплей с паузой при наведении/
-  перетаскивании, точки-пагинация, свайп/drag мышью и тачем, стрелки клавиатуры.
+  карточку через translateX на треке, точки-пагинация с заполняющейся
+  полоской (автоплей: как заполнится — переключение на следующий слайд),
+  пауза при наведении/перетаскивании, свайп/drag мышью и тачем, стрелки клавиатуры.
 */
 
 import { projectCards, createProjectCard } from "../project-card/project-card.js";
@@ -17,6 +18,8 @@ export function initProjectSlider(root = document) {
   const slider = root.querySelector(".project-slider");
   if (!slider || initializedSliders.has(slider)) return;
   initializedSliders.add(slider);
+
+  slider.style.setProperty("--slider-autoplay-duration", `${AUTOPLAY_INTERVAL}ms`);
 
   const viewport = slider.querySelector(".project-slider__viewport");
   const track = slider.querySelector(".project-slider__track");
@@ -36,13 +39,20 @@ export function initProjectSlider(root = document) {
     dot.className = "project-slider__dot";
     dot.setAttribute("role", "tab");
     dot.setAttribute("aria-label", `Слайд ${index + 1} из ${projectCards.length}`);
-    dot.addEventListener("click", () => goTo(index, { userInitiated: true }));
+
+    const fill = document.createElement("span");
+    fill.className = "project-slider__dot-fill";
+    fill.addEventListener("animationend", () => {
+      if (index === activeIndex) next();
+    });
+    dot.appendChild(fill);
+
+    dot.addEventListener("click", () => goTo(index));
     dotsWrap.appendChild(dot);
-    return dot;
+    return { dot, fill };
   });
 
   let activeIndex = 0;
-  let autoplayTimer = null;
   let isDragging = false;
   let dragMoved = false;
   let dragStartX = 0;
@@ -73,37 +83,33 @@ export function initProjectSlider(root = document) {
       slide.classList.toggle("is-left", index === activeIndex - 1);
       slide.classList.toggle("is-right", index === activeIndex + 1);
     });
-    dots.forEach((dot, index) => {
+    dots.forEach(({ dot }, index) => {
       const isActive = index === activeIndex;
       dot.dataset.state = isActive ? "active" : "default";
       dot.setAttribute("aria-selected", String(isActive));
     });
   }
 
-  function goTo(index, { userInitiated = false } = {}) {
+  function playActiveDotFill() {
+    dots.forEach(({ fill }, index) => {
+      fill.classList.remove("is-playing");
+      if (index === activeIndex && !prefersReducedMotion) {
+        // reflow между remove/add, иначе анимация не перезапустится с нуля
+        void fill.offsetWidth;
+        fill.classList.add("is-playing");
+      }
+    });
+  }
+
+  function goTo(index) {
     activeIndex = (index + slides.length) % slides.length;
     applyTransform(translateForIndex(activeIndex));
     updateStates();
-    if (userInitiated) restartAutoplay();
+    playActiveDotFill();
   }
 
   function next() {
     goTo(activeIndex + 1);
-  }
-
-  function startAutoplay() {
-    stopAutoplay();
-    if (prefersReducedMotion) return;
-    autoplayTimer = window.setInterval(next, AUTOPLAY_INTERVAL);
-  }
-
-  function stopAutoplay() {
-    if (autoplayTimer) window.clearInterval(autoplayTimer);
-    autoplayTimer = null;
-  }
-
-  function restartAutoplay() {
-    startAutoplay();
   }
 
   // --- Drag / свайп ---
@@ -114,7 +120,7 @@ export function initProjectSlider(root = document) {
     dragStartX = event.clientX;
     dragStartTranslate = translateForIndex(activeIndex);
     track.setPointerCapture(event.pointerId);
-    stopAutoplay();
+    slider.classList.add("is-paused");
   }
 
   function onPointerMove(event) {
@@ -127,13 +133,13 @@ export function initProjectSlider(root = document) {
   function onPointerUp(event) {
     if (!isDragging) return;
     isDragging = false;
+    slider.classList.remove("is-paused");
     const delta = event.clientX - dragStartX;
     if (Math.abs(delta) > DRAG_THRESHOLD) {
       goTo(activeIndex - Math.sign(delta));
     } else {
       goTo(activeIndex);
     }
-    restartAutoplay();
   }
 
   track.addEventListener("pointerdown", onPointerDown);
@@ -154,18 +160,18 @@ export function initProjectSlider(root = document) {
     { capture: true }
   );
 
-  slider.addEventListener("pointerenter", stopAutoplay);
+  slider.addEventListener("pointerenter", () => slider.classList.add("is-paused"));
   slider.addEventListener("pointerleave", () => {
-    if (!isDragging) startAutoplay();
+    if (!isDragging) slider.classList.remove("is-paused");
   });
 
   slider.addEventListener("keydown", (event) => {
     if (event.key === "ArrowRight") {
       event.preventDefault();
-      goTo(activeIndex + 1, { userInitiated: true });
+      goTo(activeIndex + 1);
     } else if (event.key === "ArrowLeft") {
       event.preventDefault();
-      goTo(activeIndex - 1, { userInitiated: true });
+      goTo(activeIndex - 1);
     }
   });
 
@@ -174,5 +180,5 @@ export function initProjectSlider(root = document) {
 
   updateStates();
   applyTransform(translateForIndex(activeIndex), false);
-  startAutoplay();
+  playActiveDotFill();
 }

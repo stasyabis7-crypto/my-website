@@ -22,7 +22,7 @@
 .project-slider__track {
   display: flex;
   align-items: flex-end;
-  gap: var(--space-7); /* 32px */
+  gap: var(--space-3); /* 8px — соседние карточки стоят близко к центральной */
   margin: 0;
   padding: var(--space-4) 0;
   list-style: none;
@@ -48,17 +48,20 @@
 
 .project-slide.is-center {
   transform: translateY(0) rotate(0deg);
-  z-index: 3;
+  z-index: 2;
 }
 
+/* Соседние карточки чуть ниже центральной и подтянуты к ней, чтобы
+   заходить друг на друга краешком: правая ложится НА центральную
+   (z-index выше), левая — ПОД неё (z-index ниже). */
 .project-slide.is-left {
-  transform: translateY(0.6rem) rotate(-15deg);
+  transform: translate(1.75rem, 0.5rem) rotate(-15deg);
   z-index: 1;
 }
 
 .project-slide.is-right {
-  transform: translateY(-0.6rem) rotate(15deg);
-  z-index: 2;
+  transform: translate(-1.75rem, 0.5rem) rotate(15deg);
+  z-index: 3;
 }
 
 .project-slider__dots {
@@ -70,6 +73,8 @@
 }
 
 .project-slider__dot {
+  position: relative;
+  overflow: hidden;
   width: 0.5rem;
   height: 0.5rem;
   padding: 0;
@@ -77,12 +82,38 @@
   border-radius: var(--radius-pill);
   background: rgba(255, 255, 255, 0.4);
   cursor: pointer;
-  transition: width 320ms cubic-bezier(0.22, 0.9, 0.26, 1), background-color 320ms ease;
+  transition: width 320ms cubic-bezier(0.22, 0.9, 0.26, 1);
 }
 
 .project-slider__dot[data-state="active"] {
   width: 1.5rem;
+}
+
+/* Заполнение активной точки — прогресс до автопереключения на следующий слайд */
+.project-slider__dot-fill {
+  position: absolute;
+  inset: 0;
   background: var(--color-white);
+  border-radius: inherit;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.project-slider__dot-fill.is-playing {
+  animation: project-slider-dot-fill var(--slider-autoplay-duration, 4200ms) linear forwards;
+}
+
+.project-slider.is-paused .project-slider__dot-fill.is-playing {
+  animation-play-state: paused;
+}
+
+@keyframes project-slider-dot-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -90,5 +121,9 @@
   .project-slide,
   .project-slider__dot {
     transition-duration: 0.01ms;
+  }
+
+  .project-slider__dot-fill.is-playing {
+    animation: none;
   }
 }

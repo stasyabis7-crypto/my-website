@@ -31,8 +31,8 @@
 
 .project-card__action {
   position: absolute;
-  top: var(--space-5); /* 16px */
-  right: var(--space-5);
+  top: var(--space-2); /* 6px */
+  right: var(--space-2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -81,4 +81,5 @@
   font-size: var(--font-size-sm); /* 16px */
   line-height: var(--line-height-default);
   color: var(--color-black);
+  text-align: center;
 }
