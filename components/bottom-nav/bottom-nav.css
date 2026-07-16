@@ -27,7 +27,7 @@
   left: var(--indicator-left, var(--space-2));
   width: var(--indicator-width, calc((100% - var(--space-2) - var(--space-2) - var(--space-2) - var(--space-2) - var(--space-2)) / 4));
   border-radius: var(--radius-pill);
-  background: var(--color-white);
+  background: var(--color-black);
   transition:
     left 420ms cubic-bezier(0.22, 1, 0.36, 1),
     width 420ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -47,7 +47,7 @@
   border: none;
   border-radius: var(--radius-pill);
   background: transparent;
-  color: var(--color-white);
+  color: var(--color-black);
   cursor: pointer;
   transform: translateZ(0);
   backface-visibility: hidden;
@@ -86,14 +86,13 @@
 
 .bottom-nav__item[data-state="default"] {
   background: transparent;
-  color: var(--color-white-40); /* ПРОВЕРИТЬ точное значение прозрачности в макете */
+  color: var(--color-black);
   font-weight: var(--font-weight-semibold);
 }
 
 .bottom-nav__item[data-state="active"] {
   background: transparent;
-  /* The moving ::before indicator provides the visual active background; keep icon/text dark */
-  color: var(--color-black);
+  color: var(--color-white);
   font-weight: var(--font-weight-bold);
 }
 
