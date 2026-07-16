@@ -38,20 +38,35 @@ export function initProjectSlider(root = document) {
     return li;
   }
 
-  // По клону последней/первой карточки на каждый край трека: тогда даже на
-  // границе (первый/последний слайд) слева и справа всегда есть чем
-  // "подсветить" is-left/is-right, и слайдер выглядит бесконечным.
-  const leadingClone = buildSlideLi(projectCards[projectCards.length - 1], { isClone: true });
-  track.appendChild(leadingClone);
+  // По два клона на каждый край трека (from ≥1101px нужен ещё и is-left2/
+  // is-right2 — второе кольцо веера): тогда даже на границе (первый/
+  // последний слайд) слева и справа всегда есть чем "подсветить" все 5
+  // ролей, и слайдер выглядит бесконечным на любой ширине экрана.
+  // Каждому физическому элементу трека присваиваем "логический индекс" —
+  // каким бы он был в бесконечной ленте; роль (is-left2..is-right2)
+  // считается как logicalIndex - activeIndex, без ручных вырожденных
+  // случаев на границах.
+  const allSlides = [];
+  const n = projectCards.length;
 
-  const slides = projectCards.map((card) => {
+  [n - 2, n - 1].forEach((cardIndex, i) => {
+    const li = buildSlideLi(projectCards[cardIndex], { isClone: true });
+    track.appendChild(li);
+    allSlides.push({ el: li, logicalIndex: -2 + i });
+  });
+
+  const slides = projectCards.map((card, index) => {
     const li = buildSlideLi(card);
     track.appendChild(li);
+    allSlides.push({ el: li, logicalIndex: index });
     return li;
   });
 
-  const trailingClone = buildSlideLi(projectCards[0], { isClone: true });
-  track.appendChild(trailingClone);
+  [0, 1].forEach((cardIndex, i) => {
+    const li = buildSlideLi(projectCards[cardIndex], { isClone: true });
+    track.appendChild(li);
+    allSlides.push({ el: li, logicalIndex: n + i });
+  });
 
   const dots = projectCards.map((_, index) => {
     const dot = document.createElement("button");
@@ -89,8 +104,8 @@ export function initProjectSlider(root = document) {
 
   function translateForIndex(index) {
     const { slideWidth, step } = measure();
-    // +1 — перед реальными слайдами в треке стоит клон последней карточки
-    return viewport.clientWidth / 2 - slideWidth / 2 - (index + 1) * step;
+    // +2 — перед реальными слайдами в треке стоят два клона (см. allSlides)
+    return viewport.clientWidth / 2 - slideWidth / 2 - (index + 2) * step;
   }
 
   function applyTransform(x, withTransition = true) {
@@ -99,15 +114,13 @@ export function initProjectSlider(root = document) {
   }
 
   function updateStates() {
-    slides.forEach((slide, index) => {
-      slide.classList.toggle("is-center", index === activeIndex);
-      slide.classList.toggle("is-left", index === activeIndex - 1);
-      slide.classList.toggle("is-right", index === activeIndex + 1);
+    allSlides.forEach(({ el, logicalIndex }) => {
+      el.classList.toggle("is-center", logicalIndex === activeIndex);
+      el.classList.toggle("is-left", logicalIndex === activeIndex - 1);
+      el.classList.toggle("is-left2", logicalIndex === activeIndex - 2);
+      el.classList.toggle("is-right", logicalIndex === activeIndex + 1);
+      el.classList.toggle("is-right2", logicalIndex === activeIndex + 2);
     });
-    // На границах реального is-left/is-right соседа нет — его роль на себя
-    // берёт клон на соответствующем краю трека.
-    leadingClone.classList.toggle("is-left", activeIndex === 0);
-    trailingClone.classList.toggle("is-right", activeIndex === slides.length - 1);
     dots.forEach(({ dot }, index) => {
       const isActive = index === activeIndex;
       dot.dataset.state = isActive ? "active" : "default";

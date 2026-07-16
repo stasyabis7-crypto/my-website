@@ -67,6 +67,62 @@
   z-index: 3;
 }
 
+/* Второе кольцо веера (is-left2/is-right2) — только для планшета/десктопа,
+   см. брейкпоинты ниже. На мобильном скрыты полностью. */
+.project-slide.is-left2,
+.project-slide.is-right2 {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* --- Планшет/десктоп (800+): карточки крупнее, поэтому подтяжка к центру
+   задаётся в % от собственной ширины/высоты слайда, а не в фиксированных
+   rem — иначе на карточке 491px тот же сдвиг в 28px выглядел бы никак. --- */
+@media (min-width: 800px) {
+  .project-slide.is-left {
+    transform: translate(34%, 8%) rotate(-15deg);
+  }
+
+  .project-slide.is-right {
+    transform: translate(-34%, 8%) rotate(15deg);
+  }
+}
+
+@media (min-width: 1101px) {
+  /* На десктопе карточки уже достаточно просторные относительно вьюпорта —
+     подтяжка внутреннего кольца (is-left/is-right) нужна мягче, чем на
+     планшете, чтобы под ним осталось место для второго кольца. */
+  .project-slide.is-left {
+    transform: translate(16%, 6%) rotate(-15deg);
+  }
+
+  .project-slide.is-right {
+    transform: translate(-16%, 6%) rotate(15deg);
+  }
+
+  .project-slide.is-left2,
+  .project-slide.is-right2 {
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .project-slide.is-left2 {
+    transform: translate(58%, 16%) rotate(-30deg);
+    z-index: 0;
+  }
+
+  .project-slide.is-right2 {
+    transform: translate(-58%, 16%) rotate(30deg);
+    z-index: 4;
+  }
+
+  .project-slider__track {
+    /* Карточки крупнее (до 491×669) и is-left2/is-right2 повёрнуты на 30° —
+       без увеличенного запаса снизу overflow:hidden на viewport обрежет их. */
+    padding-bottom: 220px;
+  }
+}
+
 .project-slider__dots {
   display: flex;
   align-items: center;
