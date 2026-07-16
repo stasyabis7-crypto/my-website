@@ -25,13 +25,33 @@ export function initProjectSlider(root = document) {
   const track = slider.querySelector(".project-slider__track");
   const dotsWrap = slider.querySelector(".project-slider__dots");
 
-  const slides = projectCards.map((card) => {
+  function buildSlideLi(card, { isClone = false } = {}) {
     const li = document.createElement("li");
     li.className = "project-slide";
     li.appendChild(createProjectCard(card));
+    if (isClone) {
+      // клон нужен только чтобы на первом/последнем слайде всегда было что
+      // "выглядывать" по краям — из навигации и для скринридеров он исключён
+      li.setAttribute("aria-hidden", "true");
+      li.querySelectorAll("a, button").forEach((el) => el.setAttribute("tabindex", "-1"));
+    }
+    return li;
+  }
+
+  // По клону последней/первой карточки на каждый край трека: тогда даже на
+  // границе (первый/последний слайд) слева и справа всегда есть чем
+  // "подсветить" is-left/is-right, и слайдер выглядит бесконечным.
+  const leadingClone = buildSlideLi(projectCards[projectCards.length - 1], { isClone: true });
+  track.appendChild(leadingClone);
+
+  const slides = projectCards.map((card) => {
+    const li = buildSlideLi(card);
     track.appendChild(li);
     return li;
   });
+
+  const trailingClone = buildSlideLi(projectCards[0], { isClone: true });
+  track.appendChild(trailingClone);
 
   const dots = projectCards.map((_, index) => {
     const dot = document.createElement("button");
@@ -69,7 +89,8 @@ export function initProjectSlider(root = document) {
 
   function translateForIndex(index) {
     const { slideWidth, step } = measure();
-    return viewport.clientWidth / 2 - slideWidth / 2 - index * step;
+    // +1 — перед реальными слайдами в треке стоит клон последней карточки
+    return viewport.clientWidth / 2 - slideWidth / 2 - (index + 1) * step;
   }
 
   function applyTransform(x, withTransition = true) {
@@ -83,6 +104,10 @@ export function initProjectSlider(root = document) {
       slide.classList.toggle("is-left", index === activeIndex - 1);
       slide.classList.toggle("is-right", index === activeIndex + 1);
     });
+    // На границах реального is-left/is-right соседа нет — его роль на себя
+    // берёт клон на соответствующем краю трека.
+    leadingClone.classList.toggle("is-left", activeIndex === 0);
+    trailingClone.classList.toggle("is-right", activeIndex === slides.length - 1);
     dots.forEach(({ dot }, index) => {
       const isActive = index === activeIndex;
       dot.dataset.state = isActive ? "active" : "default";

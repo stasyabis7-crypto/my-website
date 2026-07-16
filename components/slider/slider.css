@@ -55,12 +55,12 @@
    заходить друг на друга краешком: правая ложится НА центральную
    (z-index выше), левая — ПОД неё (z-index ниже). */
 .project-slide.is-left {
-  transform: translate(1.75rem, 0.5rem) rotate(-15deg);
+  transform: translate(1.75rem, 1.75rem) rotate(-15deg);
   z-index: 1;
 }
 
 .project-slide.is-right {
-  transform: translate(-1.75rem, 0.5rem) rotate(15deg);
+  transform: translate(-1.75rem, 1.75rem) rotate(15deg);
   z-index: 3;
 }
 
