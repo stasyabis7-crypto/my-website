@@ -19,20 +19,13 @@
 */
 
 :root {
-  --scale-min-vw: 390;
   --scale-max-vw: 950;
-  --scale-min-root: 16;
   --scale-max-root: calc(16 * 950 / 390); /* ≈ 38.974 */
 }
 
 html {
-  font-size: clamp(
-    16px,
-    calc(
-      16px +
-        (100vw - 390px) *
-        ((16 * 950 / 390 - 16) / (950 - 390))
-    ),
+  font-size: min(
+    calc(16px * 100vw / 390),
     calc(16px * 950 / 390)
   );
 }
