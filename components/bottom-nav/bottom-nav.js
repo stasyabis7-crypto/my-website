@@ -14,9 +14,22 @@ export function initBottomNav(root = document) {
 
   const items = Array.from(nav.querySelectorAll(".bottom-nav__item"));
 
+  // create indicator element if missing
+  let indicator = nav.querySelector('.bottom-nav__indicator');
+  if (!indicator) {
+    indicator = document.createElement('span');
+    indicator.className = 'bottom-nav__indicator';
+    nav.insertBefore(indicator, nav.firstChild);
+  }
+
   const moveIndicator = (item) => {
-    nav.style.setProperty("--indicator-left", `${item.offsetLeft}px`);
-    nav.style.setProperty("--indicator-width", `${item.offsetWidth}px`);
+    // compute position relative to nav
+    const navRect = nav.getBoundingClientRect();
+    const itemRect = item.getBoundingClientRect();
+    const left = Math.round(itemRect.left - navRect.left + nav.scrollLeft);
+    const width = Math.round(itemRect.width);
+    nav.style.setProperty("--indicator-left", `${left}px`);
+    nav.style.setProperty("--indicator-width", `${width}px`);
   };
 
   const activeItem = items.find((item) => item.dataset.state === "active") || items[0];

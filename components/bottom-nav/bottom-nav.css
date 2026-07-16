@@ -24,9 +24,25 @@
   --nav-item-min-height: 3.5rem;
 }
 
-/* Use the nav itself as the blue pill background; active item will be white */
+/* Nav background should be transparent; use an internal indicator for the active pill */
 .bottom-nav {
-  background: rgba(205,234,255,0.95); /* blue pill */
+  background: transparent;
+}
+
+.bottom-nav__indicator {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: var(--space-3);
+  bottom: var(--space-3);
+  left: var(--indicator-left, 0px);
+  width: var(--indicator-width, calc(25% - var(--space-2)));
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.08);
+  transition: left 420ms cubic-bezier(0.22, 1, 0.36, 1), width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: left, width;
+  pointer-events: none;
 }
 
 .bottom-nav::after {
