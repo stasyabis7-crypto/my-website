@@ -1,0 +1,83 @@
+/*
+  BottomNav — нижняя навигация-пилюля с 4 пунктами.
+  Состояния: [data-state="active"] / [data-state="default"].
+  Анимация переключения живёт здесь же (transition на background/color).
+*/
+
+.bottom-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 23.125rem; /* 370px при 390px экране, дальше растёт вместе с rem */
+  margin-inline: auto;
+  padding: var(--space-2);
+  border-radius: var(--radius-pill);
+  list-style: none;
+}
+
+.bottom-nav__item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  flex: 1;
+  padding: var(--space-3) var(--space-2);
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-white);
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease;
+}
+
+.bottom-nav__item svg {
+  width: 1.5rem;  /* 24px при 390px */
+  height: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* Presentation-атрибуты stroke/fill="black" в самих SVG перебиваются здесь,
+   чтобы иконка красилась в цвет текущего состояния, а не была захардкожена */
+.bottom-nav__item svg path,
+.bottom-nav__item svg circle {
+  stroke: currentColor;
+}
+
+.bottom-nav__item svg circle[fill="black"] {
+  fill: currentColor;
+}
+
+.bottom-nav__label {
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs); /* 10px — по фидбэку, не 16px */
+  line-height: var(--line-height-default);
+  white-space: nowrap;
+}
+
+/* --- Состояния ---
+   Разница между табами — не только цвет, но и насыщенность шрифта:
+   активный bold, остальные semibold. font-weight наследуется от
+   .bottom-nav__item к .bottom-nav__label, отдельно на лейбле не задаём. */
+
+.bottom-nav__item[data-state="default"] {
+  background: transparent;
+  color: var(--color-white-40); /* ПРОВЕРИТЬ точное значение прозрачности в макете */
+  font-weight: var(--font-weight-semibold);
+}
+
+.bottom-nav__item[data-state="active"] {
+  background: var(--color-white);
+  color: var(--color-black);
+  font-weight: var(--font-weight-bold);
+}
+
+.bottom-nav__item:active {
+  transform: scale(0.94);
+}
+
+.bottom-nav__item:focus-visible {
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
+}

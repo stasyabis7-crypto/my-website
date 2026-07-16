@@ -1,0 +1,80 @@
+/*
+  Design tokens — единственный источник правды для цветов, отступов,
+  радиусов и типографики. Все компоненты должны брать значения отсюда,
+  а не хардкодить числа/hex в своих файлах.
+
+  Значения сняты с Dev Mode в Figma (макет "сайт как маркетплейс").
+*/
+
+:root {
+  /* --- Цвет --- */
+  --color-bg-gradient: linear-gradient(
+    180deg,
+    #38a0ec 0%,
+    #3ba2ec 29.73%,
+    #c9e7fd 52.95%,
+    #38a0ec 100%
+  );
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-white-50: rgba(255, 255, 255, 0.5);   /* фон стекла (header, nav, card) */
+  --color-white-40: rgba(255, 255, 255, 0.4);    /* неактивный текст/иконки в nav — ПРОВЕРИТЬ по факту в макете */
+
+  /* --- Радиусы ---
+     Все размеры ниже — в rem, а не px. Это ключевое: html-у в scale.css
+     задан "плавающий" font-size, пропорциональный ширине экрана
+     (390–950px), а rem всегда = текущий font-size html. Поэтому любое
+     значение в rem само растягивается вместе с экраном — задавать
+     проценты руками не нужно. 1rem при 390px = 16px = ровно значения
+     из Figma, дальше всё масштабируется само.
+  --- */
+  --radius-pill: 5000px;    /* pill — огромное число, масштаб ему не важен, всегда даёт капсулу */
+  --radius-card: 2.25rem;   /* 36px при 390px */
+  --radius-card-outer: 2.5rem; /* 40px при 390px */
+
+  /* --- Отступы (сведено к шкале, в макете значения гуляли 6/8/9/12/16/22/36/40) --- */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.375rem; /* 6px */
+  --space-3: 0.5rem;   /* 8px */
+  --space-4: 0.75rem;  /* 12px */
+  --space-5: 1rem;     /* 16px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-7: 2rem;     /* 32px */
+  --space-8: 2.5rem;   /* 40px */
+  --space-header-resume-gap: 0.1875rem; /* 3px */
+  --space-header-resume-block: 0.5625rem; /* 9px */
+  --space-header-resume-inline: 1.375rem; /* 22px */
+
+  /* --- Размеры компонентов --- */
+  --size-header-width: 19.375rem; /* 310px при 390px */
+  --size-header-avatar: 3.25rem; /* 52px при 390px */
+  --size-header-logo-width: 7.5rem; /* 120px при 390px */
+  --size-header-logo-height: 2.25rem; /* 36px при 390px */
+  --size-header-resume-width: 5.9375rem; /* 95px при 390px */
+  --size-header-resume-icon: 1.5rem; /* 24px при 390px */
+
+  /* --- Типографика --- */
+  --font-heading: "Valisca", "Arial Black", sans-serif; /* см. fonts.css за @font-face */
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --font-size-xs: 0.625rem; /* 10px — лейблы BottomNav, лейбл "Резюме PDF" */
+  --font-size-sm: 1rem;     /* 16px — подписи карточек, "И вы его нашли" */
+  --font-size-xl: 2.25rem;  /* 36px — заголовок "Вы искали продуктового дизайнера" */
+
+  --line-height-default: 1.3; /* везде в макете line-height: 130% */
+
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700; /* активный таб в BottomNav */
+
+  /* --- Стекло (glass) --- */
+  /* Figma-эффект Glass (Refraction/Depth/Dispersion/Frost/Splay) не имеет
+     прямого аналога в CSS — приближаем через blur + saturate + инсет-хайлайт.
+     См. glass.css. Сам blur тоже в rem, чтобы степень размытия росла
+     вместе с масштабом интерфейса, а не оставалась константой в px. */
+  --glass-fill: var(--color-white-50);
+  --glass-blur: 1rem; /* 16px при 390px */
+  --glass-saturation: 1.4;
+}

@@ -1,0 +1,31 @@
+/*
+  Общий примитив "стекло" — используется в Header, BottomNav и Card.
+  Один класс, один источник правды: если в Figma поменяют параметры
+  эффекта, править нужно только здесь.
+
+  Figma Glass ≠ CSS backdrop-filter один в один. Приближение:
+  - Fill 50% белого     -> полупрозрачный background
+  - Depth               -> backdrop-filter: blur()
+  - Refraction/Dispersion -> saturate() + лёгкий цветной инсет-хайлайт
+  - Frost               -> тонкий верхний inset-highlight (имитация "изморози")
+*/
+
+.glass-surface {
+  position: relative;
+  background: var(--glass-fill);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 0.0625rem solid rgba(255, 255, 255, 0.6); /* 1px при 390px, растёт вместе с масштабом */
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255, 255, 255, 0.8),   /* верхний блик */
+    inset 0 -0.0625rem 0 rgba(255, 255, 255, 0.12); /* нижняя тень для объёма */
+}
+
+/* Модификатор для случаев, когда стекло лежит на карточке с плотной
+   картинкой под ним — можно поднять контраст блика без изменения
+   базового рецепта */
+.glass-surface--dense {
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255, 255, 255, 0.9),
+    inset 0 -0.0625rem 0 rgba(255, 255, 255, 0.2);
+}

@@ -1,0 +1,14 @@
+/*
+  Подключение шрифтов. Valisca — кастомный файл, лежит в assets/fonts.
+  Inter пока не подключён отдельно (используется системный/webfont-CDN
+  на будущее) — если понадобится точное начертание, добавить сюда
+  так же, через @font-face или подключить с Google Fonts.
+*/
+
+@font-face {
+  font-family: "Valisca";
+  src: url("../assets/fonts/Valisca.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
