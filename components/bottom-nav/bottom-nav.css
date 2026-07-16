@@ -24,24 +24,9 @@
   --nav-item-min-height: 3.5rem;
 }
 
-.bottom-nav::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: var(--space-3);
-  bottom: var(--space-3);
-  left: var(--indicator-left, var(--space-2));
-  width: var(--indicator-width, calc((100% - var(--space-2) - var(--space-2) - var(--space-2) - var(--space-2) - var(--space-2)) / 4));
-  border-radius: var(--radius-pill);
-  /* Active pill: solid white to match header; remove border/blur for consistency */
-  background: var(--color-white);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  transition:
-    left 420ms cubic-bezier(0.22, 1, 0.36, 1),
-    width 420ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 220ms ease;
-  will-change: left, width, background-color;
+/* Use the nav itself as the blue pill background; active item will be white */
+.bottom-nav {
+  background: rgba(205,234,255,0.95); /* blue pill */
 }
 
 .bottom-nav::after {
@@ -116,10 +101,11 @@
 }
 
 .bottom-nav__item[data-state="active"] {
-  /* Active item: white pill (provided by ::before), black icon and label */
-  background: transparent;
+  /* Active item: white pill, black icon and label */
+  background: var(--color-white);
   color: var(--color-black);
   font-weight: var(--font-weight-bold);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.08);
 }
 
 .bottom-nav__item:active {
