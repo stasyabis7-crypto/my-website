@@ -18,6 +18,7 @@
   isolation: isolate;
   position: relative;
   /* preserve glass-surface styling (do not remove border/shadow) */
+  box-sizing: border-box;
   /* consistent item sizing */
   --nav-item-min-height: 3.5rem;
 }
@@ -59,9 +60,9 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-1);
-  /* make items exactly equal width */
-  flex: 0 0 25%;
-  max-width: 25%;
+  /* allow items to flex to container width so they never overflow */
+  flex: 1 1 0;
+  min-width: 0; /* allow shrinking */
   box-sizing: border-box;
   padding: var(--space-3) var(--space-2);
   min-height: var(--nav-item-min-height);
@@ -144,8 +145,8 @@
     gap: var(--space-2);
   }
 
+  /* mobile keeps same flexible behavior; no fixed 25% widths */
   .bottom-nav__item {
-    flex: 0 0 25%;
-    max-width: 25%;
+    flex: 1 1 0;
   }
 }
