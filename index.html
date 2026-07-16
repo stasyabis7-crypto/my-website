@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="components/header/header.css" />
 <link rel="stylesheet" href="components/bottom-nav/bottom-nav.css" />
 <link rel="stylesheet" href="components/project-card/project-card.css" />
+<link rel="stylesheet" href="components/slider/slider.css" />
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -30,7 +31,7 @@
     flex-direction: column;
     justify-content: space-between;
     min-height: 100svh;
-    padding: calc(max(var(--space-6), env(safe-area-inset-top)) + 5rem) var(--space-8) var(--space-5);
+    padding: calc(max(var(--space-6), env(safe-area-inset-top)) + 5rem) var(--space-8) calc(max(var(--space-6), env(safe-area-inset-bottom)) + 6.5rem);
     background: var(--color-bg-gradient);
   }
   .page-header {
@@ -52,26 +53,9 @@
     justify-content: center;
   }
 
-  .project-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+  .project-slider-section {
+    margin-top: var(--space-7); /* 32px от подзаголовка */
     margin-bottom: 2rem;
-    justify-items: center;
-  }
-
-  @media (max-width: 960px) {
-    .project-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 640px) {
-    .project-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
   }
 
   .hero-copy h1 {
@@ -160,11 +144,12 @@
     mountComponent("header-root", "components/header/header.html", initHeader);
     mountComponent("bottom-nav-root", "components/bottom-nav/bottom-nav.html", initBottomNav);
 
-    import { initProjectCards } from "./components/project-card/project-card.js";
-    const projectRoot = document.createElement('div');
-    projectRoot.id = 'project-cards-root';
-    document.querySelector('.page-shell').insertBefore(projectRoot, document.querySelector('.page-bottom'));
-    initProjectCards(projectRoot);
+    import { initProjectSlider } from "./components/slider/slider.js";
+    const sliderSection = document.createElement('section');
+    sliderSection.className = 'project-slider-section';
+    sliderSection.id = 'project-slider-root';
+    document.querySelector('.page-shell').insertBefore(sliderSection, document.querySelector('.page-bottom'));
+    mountComponent("project-slider-root", "components/slider/slider.html", initProjectSlider);
   </script>
 </body>
 </html>

@@ -1,0 +1,94 @@
+/*
+  ProjectSlider — горизонтальная карусель карточек проектов.
+  Все карточки одного размера. Активная — по центру без наклона,
+  соседние — того же размера, но повёрнуты на 15°: правая приподнята,
+  левая опущена. Позиционирование — через transform: translateX() на
+  треке (центрирует активный слайд), которым управляет slider.js.
+*/
+
+.project-slider {
+  /* full-bleed: съедаем горизонтальные отступы page-shell, чтобы соседние
+     карточки могли выглядывать по краям экрана, как в макете */
+  width: auto;
+  margin-inline: calc(-1 * var(--space-8));
+  outline: none;
+}
+
+.project-slider__viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.project-slider__track {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-7); /* 32px */
+  margin: 0;
+  padding: var(--space-4) 0;
+  list-style: none;
+  will-change: transform;
+  transition: transform 560ms cubic-bezier(0.22, 0.9, 0.26, 1);
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.project-slider__track:active {
+  cursor: grabbing;
+}
+
+.project-slide {
+  flex: 0 0 auto;
+  transition: transform 560ms cubic-bezier(0.22, 0.9, 0.26, 1);
+}
+
+.project-slide img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.project-slide.is-center {
+  transform: translateY(0) rotate(0deg);
+  z-index: 3;
+}
+
+.project-slide.is-left {
+  transform: translateY(0.6rem) rotate(-15deg);
+  z-index: 1;
+}
+
+.project-slide.is-right {
+  transform: translateY(-0.6rem) rotate(15deg);
+  z-index: 2;
+}
+
+.project-slider__dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.project-slider__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: width 320ms cubic-bezier(0.22, 0.9, 0.26, 1), background-color 320ms ease;
+}
+
+.project-slider__dot[data-state="active"] {
+  width: 1.5rem;
+  background: var(--color-white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-slider__track,
+  .project-slide,
+  .project-slider__dot {
+    transition-duration: 0.01ms;
+  }
+}

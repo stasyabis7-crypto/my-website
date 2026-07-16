@@ -69,6 +69,17 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700; /* активный таб в BottomNav */
 
+  /* --- Тени (elevation), точные имена токенов из Figma Dev Mode ---
+     depth-N ~ N сотых rem (100 = 1px при 390px), color-black-N ~ чёрный
+     с альфой N/1000. Используются в Card (кнопка-стрелка, лого-плашка). */
+  --sds-size-depth-0: 0rem;
+  --sds-size-depth-100: 0.0625rem; /* 1px */
+  --sds-size-depth-400: 0.25rem;   /* 4px */
+  --sds-size-depth-800: 0.5rem;    /* 8px */
+  --sds-size-depth-negative-100: -0.0625rem; /* -1px */
+  --sds-color-black-100: rgba(0, 0, 0, 0.1);
+  --sds-color-black-200: rgba(0, 0, 0, 0.2);
+
   /* --- Стекло (glass) --- */
   /* Figma-эффект Glass (Refraction/Depth/Dispersion/Frost/Splay) не имеет
      прямого аналога в CSS — приближаем через blur + saturate + инсет-хайлайт.
