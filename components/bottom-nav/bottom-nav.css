@@ -17,17 +17,12 @@
   overflow: hidden;
   isolation: isolate;
   position: relative;
-  /* remove outer white border from glass-surface (header has none) */
-  border: none;
-  box-shadow: none;
+  /* preserve glass-surface styling (do not remove border/shadow) */
   /* consistent item sizing */
   --nav-item-min-height: 3.5rem;
 }
 
-/* Nav background should be transparent; use an internal indicator for the active pill */
-.bottom-nav {
-  background: transparent;
-}
+/* Do not override .glass-surface — header and footer share the same glass look */
 
 .bottom-nav__indicator {
   content: "";

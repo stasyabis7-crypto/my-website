@@ -28,8 +28,11 @@ export function initBottomNav(root = document) {
     const itemRect = item.getBoundingClientRect();
     const left = Math.round(itemRect.left - navRect.left + nav.scrollLeft);
     const width = Math.round(itemRect.width);
-    nav.style.setProperty("--indicator-left", `${left}px`);
-    nav.style.setProperty("--indicator-width", `${width}px`);
+    // clamp within nav bounds so indicator never overflows
+    const maxLeft = Math.max(0, nav.clientWidth - width);
+    const clampedLeft = Math.max(0, Math.min(left, maxLeft));
+    nav.style.setProperty("--indicator-left", `${clampedLeft}px`);
+    nav.style.setProperty("--indicator-width", `${Math.min(width, nav.clientWidth)}px`);
   };
 
   const activeItem = items.find((item) => item.dataset.state === "active") || items[0];
