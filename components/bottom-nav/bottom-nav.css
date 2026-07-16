@@ -28,11 +28,10 @@
   left: var(--indicator-left, var(--space-2));
   width: var(--indicator-width, calc((100% - var(--space-2) - var(--space-2) - var(--space-2) - var(--space-2) - var(--space-2)) / 4));
   border-radius: var(--radius-pill);
-  /* glassy active pill: tinted + backdrop blur */
-  background: rgba(205,234,255,0.95); /* #CDEAFF tint */
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  border: 1px solid rgba(255,255,255,0.5);
+  /* Active pill: solid white to match header; remove border for consistency */
+  background: var(--color-white);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   transition:
     left 420ms cubic-bezier(0.22, 1, 0.36, 1),
     width 420ms cubic-bezier(0.22, 1, 0.36, 1),
