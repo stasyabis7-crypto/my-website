@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="styles/glass.css" />
 <link rel="stylesheet" href="components/header/header.css" />
 <link rel="stylesheet" href="components/bottom-nav/bottom-nav.css" />
+<link rel="stylesheet" href="components/project-card/project-card.css" />
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -49,6 +50,28 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    justify-items: center;
+  }
+
+  @media (max-width: 960px) {
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
   }
 
   .hero-copy h1 {
@@ -136,6 +159,12 @@
 
     mountComponent("header-root", "components/header/header.html", initHeader);
     mountComponent("bottom-nav-root", "components/bottom-nav/bottom-nav.html", initBottomNav);
+
+    import { initProjectCards } from "./components/project-card/project-card.js";
+    const projectRoot = document.createElement('div');
+    projectRoot.id = 'project-cards-root';
+    document.querySelector('.page-shell').insertBefore(projectRoot, document.querySelector('.page-bottom'));
+    initProjectCards(projectRoot);
   </script>
 </body>
 </html>
