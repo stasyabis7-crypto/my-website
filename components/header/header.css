@@ -18,8 +18,8 @@
   background: var(--glass-fill);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+  border: 0.0625rem solid rgba(255,255,255,0.12); /* 1px при 390px, растёт вместе с масштабом */
+  box-shadow: 0 0.375rem 1.125rem rgba(2,6,23,0.12); /* 6px 18px при 390px */
 }
 
 .header::before {
