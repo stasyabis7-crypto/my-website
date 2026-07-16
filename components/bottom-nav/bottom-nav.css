@@ -17,6 +17,9 @@
   overflow: hidden;
   isolation: isolate;
   position: relative;
+  /* remove outer white border from glass-surface (header has none) */
+  border: none;
+  box-shadow: none;
   /* consistent item sizing */
   --nav-item-min-height: 3.5rem;
 }
@@ -60,7 +63,10 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-1);
-  flex: 1;
+  /* make items exactly equal width */
+  flex: 0 0 25%;
+  max-width: 25%;
+  box-sizing: border-box;
   padding: var(--space-3) var(--space-2);
   min-height: var(--nav-item-min-height);
   border: none;
@@ -130,5 +136,19 @@
   .bottom-nav::before,
   .bottom-nav__item {
     transition-duration: 0.01ms;
+  }
+}
+
+/* Mobile layout: consider screens up to 800px as mobile */
+@media (max-width: 800px) {
+  .bottom-nav {
+    max-width: 100%;
+    padding: var(--space-2);
+    gap: var(--space-2);
+  }
+
+  .bottom-nav__item {
+    flex: 0 0 25%;
+    max-width: 25%;
   }
 }
