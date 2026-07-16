@@ -36,8 +36,9 @@
   border-radius: var(--radius-pill);
   background: var(--color-white);
   box-shadow: 0 6px 18px rgba(2,6,23,0.08);
-  transition: left 420ms cubic-bezier(0.22, 1, 0.36, 1), width 420ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: left, width;
+  /* smoother, slower movement for a more liquid feel */
+  transition: left 560ms cubic-bezier(0.22, 0.9, 0.26, 1), width 560ms cubic-bezier(0.22, 0.9, 0.26, 1), background-color 360ms ease;
+  will-change: left, width, background-color;
   pointer-events: none;
 }
 
@@ -74,7 +75,7 @@
   cursor: pointer;
   transform: translateZ(0);
   backface-visibility: hidden;
-  transition: background-color 160ms ease, color 160ms ease, transform 120ms ease;
+  transition: background-color 320ms cubic-bezier(0.22, 0.9, 0.26, 1), color 320ms cubic-bezier(0.22, 0.9, 0.26, 1), transform 220ms ease;
   will-change: background-color, color, transform;
 }
 
