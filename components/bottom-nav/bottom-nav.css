@@ -115,11 +115,12 @@
 }
 
 .bottom-nav__item[data-state="active"] {
-  /* Active item: white pill, black icon and label */
-  background: var(--color-white);
+  /* Active appearance is provided by the moving indicator element
+     Keep the item itself transparent so the indicator's rounded corners
+     are the single source of truth and stay identical left/right. */
+  background: transparent;
   color: var(--color-black);
   font-weight: var(--font-weight-bold);
-  box-shadow: 0 6px 18px rgba(2,6,23,0.08);
 }
 
 .bottom-nav__item:active {
