@@ -33,14 +33,19 @@
   z-index: 0;
   top: var(--space-2);
   bottom: var(--space-2);
-  left: var(--indicator-left, 0px);
+  left: 0;
   width: var(--indicator-width, calc(25% - var(--space-2)));
   border-radius: var(--radius-pill);
   background: var(--color-white);
   /* indicator should not add outer shadow — footer's box-shadow provides it */
-  /* smoother, slower movement for a more liquid feel */
-  transition: left 560ms cubic-bezier(0.22, 0.9, 0.26, 1), width 560ms cubic-bezier(0.22, 0.9, 0.26, 1), background-color 360ms ease;
-  will-change: left, width, background-color;
+  /* Двигаем через transform, а не left: left/width лежат в layout-пайплайне
+     и на каждый кадр анимации триггерят reflow + repaint — особенно заметно
+     на .glass-surface, где repaint означает ещё и пересчёт backdrop-filter
+     blur. transform живёт на compositor-потоке и не трогает layout вовсе,
+     поэтому переезд ощущается заметно более плавным. */
+  transform: translateX(var(--indicator-left, 0px));
+  transition: transform 560ms cubic-bezier(0.22, 0.9, 0.26, 1), width 420ms cubic-bezier(0.22, 0.9, 0.26, 1), background-color 360ms ease;
+  will-change: transform, width, background-color;
   pointer-events: none;
 }
 
