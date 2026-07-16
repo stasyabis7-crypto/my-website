@@ -12,6 +12,40 @@
   margin-inline: auto;
   padding: var(--space-2);
   border-radius: var(--radius-pill);
+  position: relative;
+  overflow: hidden;
+  /* Glass base */
+  background: var(--glass-fill);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+}
+
+.header::before {
+  /* Top highlight — soft streak to emulate liquid sheen */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.06) 25%, transparent 40%);
+  mix-blend-mode: overlay;
+  transform: translateY(-6%);
+}
+
+.header::after {
+  /* Subtle inner shadow at bottom for depth */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1.75rem;
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(2,6,23,0.06));
 }
 
 .header__avatar {
