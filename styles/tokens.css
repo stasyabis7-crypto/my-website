@@ -49,9 +49,9 @@
 
   /* --- Размеры компонентов --- */
   --size-header-width: 19.375rem; /* 310px при 390px */
-  --size-header-avatar: 3.25rem; /* 52px при 390px */
-  --size-header-logo-width: 7.5rem; /* 120px при 390px */
-  --size-header-logo-height: 2.25rem; /* 36px при 390px */
+  --size-header-avatar: 3.5rem; /* 56px при 390px — увеличено для визуального равенства с кнопкой */
+  --size-header-logo-width: 7rem; /* немного уменьшен, чтобы вписаться при увеличенном аватаре */
+  --size-header-logo-height: 2rem; /* чуть меньше высота логотипа */
   --size-header-resume-width: 5.9375rem; /* 95px при 390px */
   --size-header-resume-icon: 1.5rem; /* 24px при 390px */
 
