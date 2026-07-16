@@ -1,7 +1,7 @@
 /*
   BottomNav — нижняя навигация-пилюля с 4 пунктами.
   Состояния: [data-state="active"] / [data-state="default"].
-  Анимация переключения живёт здесь же (transition на background/color).
+  Белый индикатор — единая подложка, которая плавно переезжает между пунктами.
 */
 
 .bottom-nav {
@@ -14,9 +14,29 @@
   padding: var(--space-2);
   border-radius: var(--radius-pill);
   list-style: none;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.bottom-nav::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: var(--space-2);
+  bottom: var(--space-2);
+  left: var(--indicator-left, var(--space-2));
+  width: var(--indicator-width, calc((100% - var(--space-2) - var(--space-2) - var(--space-2) - var(--space-2) - var(--space-2)) / 4));
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  transition:
+    left 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: left, width;
 }
 
 .bottom-nav__item {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
@@ -26,7 +46,7 @@
   padding: var(--space-3) var(--space-2);
   border: none;
   border-radius: var(--radius-pill);
-  background-color: transparent;
+  background: transparent;
   color: var(--color-white);
   cursor: pointer;
   transform: translateZ(0);
@@ -65,13 +85,14 @@
    .bottom-nav__item к .bottom-nav__label, отдельно на лейбле не задаём. */
 
 .bottom-nav__item[data-state="default"] {
-  background-color: transparent;
+  background: transparent;
   color: var(--color-white-40); /* ПРОВЕРИТЬ точное значение прозрачности в макете */
   font-weight: var(--font-weight-semibold);
 }
 
 .bottom-nav__item[data-state="active"] {
-  background-color: var(--color-white);
+  background: transparent;
+  /* The moving ::before indicator provides the visual active background; keep icon/text dark */
   color: var(--color-black);
   font-weight: var(--font-weight-bold);
 }
@@ -81,6 +102,13 @@
 }
 
 .bottom-nav__item:focus-visible {
-  outline: 2px solid var(--color-white);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-black);
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav::before,
+  .bottom-nav__item {
+    transition-duration: 0.01ms;
+  }
 }

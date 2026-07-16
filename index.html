@@ -33,7 +33,12 @@
     background: var(--color-bg-gradient);
   }
   .page-header {
-    padding: 0;
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: max(var(--space-8), env(safe-area-inset-top)) var(--space-8) 0;
   }
   .demo-note {
     color: rgba(255,255,255,0.9);
@@ -43,8 +48,13 @@
     margin: auto 0;
   }
   .page-bottom {
-    padding: 0;
-    padding-top: var(--space-5);
+    position: fixed;
+    z-index: 10;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--space-5);
+    padding-bottom: max(var(--space-8), env(safe-area-inset-bottom));
   }
 </style>
 </head>

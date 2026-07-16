@@ -14,6 +14,20 @@ export function initBottomNav(root = document) {
 
   const items = Array.from(nav.querySelectorAll(".bottom-nav__item"));
 
+  const moveIndicator = (item) => {
+    nav.style.setProperty("--indicator-left", `${item.offsetLeft}px`);
+    nav.style.setProperty("--indicator-width", `${item.offsetWidth}px`);
+  };
+
+  const activeItem = items.find((item) => item.dataset.state === "active") || items[0];
+  moveIndicator(activeItem);
+
+  const resizeObserver = new ResizeObserver(() => {
+    const current = items.find((item) => item.dataset.state === "active");
+    if (current) moveIndicator(current);
+  });
+  resizeObserver.observe(nav);
+
   nav.addEventListener("click", (event) => {
     const clicked = event.target.closest(".bottom-nav__item");
     if (!clicked || clicked.dataset.state === "active") return;
@@ -27,6 +41,8 @@ export function initBottomNav(root = document) {
         item.removeAttribute("aria-current");
       }
     });
+
+    moveIndicator(clicked);
 
     nav.dispatchEvent(
       new CustomEvent("navchange", {
