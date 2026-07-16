@@ -16,6 +16,7 @@
   list-style: none;
   overflow: hidden;
   isolation: isolate;
+  position: relative;
 }
 
 .bottom-nav::before {
@@ -27,11 +28,27 @@
   left: var(--indicator-left, var(--space-2));
   width: var(--indicator-width, calc((100% - var(--space-2) - var(--space-2) - var(--space-2) - var(--space-2) - var(--space-2)) / 4));
   border-radius: var(--radius-pill);
-  background: #CDEAFF; /* active pill color requested */
+  /* glassy active pill: tinted + backdrop blur */
+  background: rgba(205,234,255,0.95); /* #CDEAFF tint */
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid rgba(255,255,255,0.5);
   transition:
     left 420ms cubic-bezier(0.22, 1, 0.36, 1),
-    width 420ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: left, width;
+    width 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 220ms ease;
+  will-change: left, width, background-color;
+}
+
+.bottom-nav::after {
+  /* subtle sheen over the whole nav to emulate liquid surface */
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.04) 24%, transparent 40%);
+  mix-blend-mode: overlay;
 }
 
 .bottom-nav__item {
