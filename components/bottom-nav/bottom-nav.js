@@ -33,14 +33,19 @@ export function initBottomNav(root = document) {
     nav.style.setProperty("--indicator-width", `${Math.min(width, nav.clientWidth)}px`);
   };
 
-  const activeItem = items.find((item) => item.dataset.state === "active") || items[0];
-  moveIndicator(activeItem);
-
   const resizeObserver = new ResizeObserver(() => {
     const current = items.find((item) => item.dataset.state === "active");
     if (current) moveIndicator(current);
   });
   resizeObserver.observe(nav);
+  // also observe individual items (their sizes can change as images/fonts load)
+  items.forEach((it) => resizeObserver.observe(it));
+
+  const activeItem = items.find((item) => item.dataset.state === "active") || items[0];
+  // initial placement — defer a couple frames and also on window load to avoid jumps
+  moveIndicator(activeItem);
+  requestAnimationFrame(() => requestAnimationFrame(() => moveIndicator(activeItem)));
+  window.addEventListener('load', () => moveIndicator(items.find((item) => item.dataset.state === "active") || items[0]));
 
   nav.addEventListener("click", (event) => {
     const clicked = event.target.closest(".bottom-nav__item");
