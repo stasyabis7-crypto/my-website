@@ -18,6 +18,8 @@
   isolation: isolate;
   position: relative;
   /* preserve glass-surface styling (do not remove border/shadow) */
+  /* match header outer shadow for identical edge appearance */
+  box-shadow: 0 6px 18px rgba(2,6,23,0.12);
   box-sizing: border-box;
   /* consistent item sizing */
   --nav-item-min-height: 3.5rem;
@@ -35,7 +37,7 @@
   width: var(--indicator-width, calc(25% - var(--space-2)));
   border-radius: var(--radius-pill);
   background: var(--color-white);
-  box-shadow: 0 6px 18px rgba(2,6,23,0.08);
+  /* indicator should not add outer shadow — footer's box-shadow provides it */
   /* smoother, slower movement for a more liquid feel */
   transition: left 560ms cubic-bezier(0.22, 0.9, 0.26, 1), width 560ms cubic-bezier(0.22, 0.9, 0.26, 1), background-color 360ms ease;
   will-change: left, width, background-color;
