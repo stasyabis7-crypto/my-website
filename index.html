@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BottomNav — demo</title>
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/scale.css" />
+<link rel="stylesheet" href="styles/fonts.css" />
+<link rel="stylesheet" href="styles/glass.css" />
+<link rel="stylesheet" href="components/header/header.css" />
+<link rel="stylesheet" href="components/bottom-nav/bottom-nav.css" />
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--color-bg-gradient);
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-body);
+  }
+  .page-header {
+    padding: var(--space-8) var(--space-8) 0;
+  }
+  .demo-note {
+    color: rgba(255,255,255,0.9);
+    text-align: center;
+    padding: var(--space-5);
+    font-size: 0.875rem; /* 14px при 390px, дальше растёт вместе с интерфейсом */
+    margin-block: auto;
+  }
+  .page-bottom {
+    padding: var(--space-5);
+    padding-bottom: var(--space-8);
+  }
+</style>
+</head>
+<body>
+  <div class="page-header">
+    <div id="header-root"></div>
+  </div>
+
+  <p class="demo-note">Демо-страница для изолированной проверки BottomNav<br/>на фирменном градиенте — так виден стеклянный эффект</p>
+
+  <div class="page-bottom">
+    <div id="bottom-nav-root"></div>
+  </div>
+
+  <script type="module">
+    import { initHeader } from "./components/header/header.js";
+    import { initBottomNav } from "./components/bottom-nav/bottom-nav.js";
+
+    async function mountComponent(rootId, fragmentPath, init) {
+      const root = document.getElementById(rootId);
+      if (!root) return;
+
+      const response = await fetch(fragmentPath);
+      if (!response.ok) {
+        throw new Error(`Failed to load ${fragmentPath}`);
+      }
+
+      root.innerHTML = await response.text();
+      init(root);
+    }
+
+    mountComponent("header-root", "components/header/header.html", initHeader);
+    mountComponent("bottom-nav-root", "components/bottom-nav/bottom-nav.html", initBottomNav);
+  </script>
+</body>
+</html>
