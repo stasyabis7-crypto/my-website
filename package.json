@@ -1,0 +1,11 @@
+{
+  "name": "my-website",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "auto-commit": "node scripts/auto-commit.js"
+  },
+  "dependencies": {
+    "chokidar": "^3.5.3"
+  }
+}
