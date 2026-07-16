@@ -23,11 +23,9 @@ export function initBottomNav(root = document) {
   }
 
   const moveIndicator = (item) => {
-    // compute position relative to nav
-    const navRect = nav.getBoundingClientRect();
-    const itemRect = item.getBoundingClientRect();
-    const left = Math.round(itemRect.left - navRect.left + nav.scrollLeft);
-    const width = Math.round(itemRect.width);
+    // use offsetLeft/offsetWidth (measured relative to nav) for robust positioning
+    const left = Math.round(item.offsetLeft);
+    const width = Math.round(item.offsetWidth);
     // clamp within nav bounds so indicator never overflows
     const maxLeft = Math.max(0, nav.clientWidth - width);
     const clampedLeft = Math.max(0, Math.min(left, maxLeft));
