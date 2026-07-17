@@ -90,7 +90,7 @@ export function initProjectSlider(root = document) {
     });
     dot.appendChild(fill);
 
-    dot.addEventListener("click", () => goTo(index));
+    dot.addEventListener("click", () => goToWrapped(index));
     dotsWrap.appendChild(dot);
     return { dot, fill };
   });
@@ -144,6 +144,7 @@ export function initProjectSlider(root = document) {
       const clamped = Math.max(-CLONE_RING_COUNT, Math.min(CLONE_RING_COUNT, offset));
       el.style.setProperty("--arc-offset", String(clamped));
       el.style.setProperty("--arc-offset-abs", String(Math.abs(clamped)));
+      el.style.setProperty("--arc-sign", String(Math.sign(clamped)));
       el.classList.toggle("is-center", offset === 0);
       el.classList.toggle("is-beyond-arc", Math.abs(offset) > CLONE_RING_COUNT);
     });
@@ -210,6 +211,20 @@ export function initProjectSlider(root = document) {
 
   function next() {
     goTo(activeIndex + 1);
+  }
+
+  // Точки передают "обёрнутый" индекс цели (0..n-1) — считаем от текущего
+  // (возможно "сырого") activeIndex кратчайший путь по кругу и едем именно
+  // им. Без этого клик по дальней точке гнал бы трек по прямой через весь
+  // список карточек за одно 560ms-переключение — и если по пути его
+  // прерывал ещё один клик, карточки застревали в перепутанных
+  // промежуточных положениях (это и была "куча").
+  function goToWrapped(targetWrappedIndex) {
+    const n = slides.length;
+    const diff = targetWrappedIndex - wrappedIndex();
+    let shortestDiff = ((diff % n) + n) % n; // приводим к 0..n-1
+    if (shortestDiff > n / 2) shortestDiff -= n; // и берём короткую сторону круга
+    goTo(activeIndex + shortestDiff);
   }
 
   // --- Drag / свайп ---
