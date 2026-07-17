@@ -44,19 +44,23 @@ export function initProjectSlider(root = document) {
     return li;
   }
 
-  // По два клона на каждый край трека (from ≥1101px нужен ещё и is-left2/
-  // is-right2 — второе кольцо веера): тогда даже на границе (первый/
-  // последний слайд) слева и справа всегда есть чем "подсветить" все 5
-  // ролей. Те же клоны используются и для бесшовной бесконечной прокрутки
-  // (см. scheduleLoopReset ниже) — каждому физическому элементу трека
-  // присваиваем "логический индекс", каким бы он был в бесконечной ленте.
+  // Карточки разложены по дуге на основе дистанции до активной (см.
+  // slider.css — вся геометрия веера выводится из --arc-offset), так что
+  // на широких экранах может быть видно больше 2 колец с каждой стороны.
+  // CLONE_RING_COUNT клонов на каждый край трека держат иллюзию бесконечной
+  // ленты на всех этих кольцах разом: даже на границе (первый/последний
+  // слайд) с обеих сторон всегда есть чем закрыть дугу. Те же клоны нужны
+  // и для бесшовной бесконечной прокрутки (см. scheduleLoopReset ниже) —
+  // каждому физическому элементу трека присваиваем "логический индекс",
+  // каким бы он был в бесконечной ленте.
+  const CLONE_RING_COUNT = 4;
   const allSlides = [];
   const n = projectCards.length;
 
-  [n - 2, n - 1].forEach((cardIndex, i) => {
+  Array.from({ length: CLONE_RING_COUNT }, (_, i) => n - CLONE_RING_COUNT + i).forEach((cardIndex, i) => {
     const li = buildSlideLi(projectCards[cardIndex], { isClone: true });
     track.appendChild(li);
-    allSlides.push({ el: li, logicalIndex: -2 + i });
+    allSlides.push({ el: li, logicalIndex: -CLONE_RING_COUNT + i });
   });
 
   const slides = projectCards.map((card, index) => {
@@ -66,7 +70,7 @@ export function initProjectSlider(root = document) {
     return li;
   });
 
-  [0, 1].forEach((cardIndex, i) => {
+  Array.from({ length: CLONE_RING_COUNT }, (_, i) => i).forEach((cardIndex, i) => {
     const li = buildSlideLi(projectCards[cardIndex], { isClone: true });
     track.appendChild(li);
     allSlides.push({ el: li, logicalIndex: n + i });
@@ -119,10 +123,10 @@ export function initProjectSlider(root = document) {
 
   function translateForIndex(index) {
     const { slideWidth, step } = measure();
-    // +2 — перед реальными слайдами в треке стоят два клона (см. allSlides).
-    // index может быть "сырым" (например n или -1) — ровно на это и
-    // рассчитаны клоны по краям трека.
-    return viewport.clientWidth / 2 - slideWidth / 2 - (index + 2) * step;
+    // +CLONE_RING_COUNT — перед реальными слайдами в треке стоит столько же
+    // клонов (см. allSlides). index может быть "сырым" (например n или -1) —
+    // ровно на это и рассчитаны клоны по краям трека.
+    return viewport.clientWidth / 2 - slideWidth / 2 - (index + CLONE_RING_COUNT) * step;
   }
 
   function applyTransform(x, withTransition = true) {
@@ -132,11 +136,16 @@ export function initProjectSlider(root = document) {
 
   function updateStates() {
     allSlides.forEach(({ el, logicalIndex }) => {
-      el.classList.toggle("is-center", logicalIndex === activeIndex);
-      el.classList.toggle("is-left", logicalIndex === activeIndex - 1);
-      el.classList.toggle("is-left2", logicalIndex === activeIndex - 2);
-      el.classList.toggle("is-right", logicalIndex === activeIndex + 1);
-      el.classList.toggle("is-right2", logicalIndex === activeIndex + 2);
+      const offset = logicalIndex - activeIndex;
+      // За пределами CLONE_RING_COUNT колец дуга не продолжает расти (иначе
+      // на длинном списке карточки на другом конце трека уходили бы за 90°
+      // и рисовались вверх ногами) — такие слайды просто прячем, они и так
+      // никогда не должны быть в кадре.
+      const clamped = Math.max(-CLONE_RING_COUNT, Math.min(CLONE_RING_COUNT, offset));
+      el.style.setProperty("--arc-offset", String(clamped));
+      el.style.setProperty("--arc-offset-abs", String(Math.abs(clamped)));
+      el.classList.toggle("is-center", offset === 0);
+      el.classList.toggle("is-beyond-arc", Math.abs(offset) > CLONE_RING_COUNT);
     });
     const active = wrappedIndex();
     dots.forEach(({ dot }, index) => {

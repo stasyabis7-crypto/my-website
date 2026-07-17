@@ -13,6 +13,7 @@ export function initBottomNav(root = document) {
   initializedNavs.add(nav);
 
   const items = Array.from(nav.querySelectorAll(".bottom-nav__item"));
+  const labels = items.map((item) => item.querySelector(".bottom-nav__label"));
 
   // create indicator element if missing
   let indicator = nav.querySelector('.bottom-nav__indicator');
@@ -21,6 +22,16 @@ export function initBottomNav(root = document) {
     indicator.className = 'bottom-nav__indicator';
     nav.insertBefore(indicator, nav.firstChild);
   }
+
+  // Все пункты — одинаковой ширины: по самому длинному лейблу + 6px
+  // с каждой стороны (см. bottom-nav.css, --nav-item-content-width).
+  // На ≥800px CSS сам переключает пункты на ширину кнопки в хедере —
+  // это значение здесь просто перестаёт использоваться.
+  const equalizeItemWidths = () => {
+    const maxLabelWidth = Math.max(...labels.map((label) => label.getBoundingClientRect().width));
+    const pad = parseFloat(getComputedStyle(document.documentElement).fontSize) * 0.375; // 6px при 390px
+    nav.style.setProperty("--nav-item-content-width", `${Math.ceil(maxLabelWidth + pad * 2)}px`);
+  };
 
   const moveIndicator = (item) => {
     // use offsetLeft/offsetWidth (measured relative to nav) for robust positioning
@@ -34,6 +45,7 @@ export function initBottomNav(root = document) {
   };
 
   const resizeObserver = new ResizeObserver(() => {
+    equalizeItemWidths();
     const current = items.find((item) => item.dataset.state === "active");
     if (current) moveIndicator(current);
   });
@@ -43,9 +55,13 @@ export function initBottomNav(root = document) {
 
   const activeItem = items.find((item) => item.dataset.state === "active") || items[0];
   // initial placement — defer a couple frames and also on window load to avoid jumps
+  equalizeItemWidths();
   moveIndicator(activeItem);
   requestAnimationFrame(() => requestAnimationFrame(() => moveIndicator(activeItem)));
-  window.addEventListener('load', () => moveIndicator(items.find((item) => item.dataset.state === "active") || items[0]));
+  window.addEventListener('load', () => {
+    equalizeItemWidths();
+    moveIndicator(items.find((item) => item.dataset.state === "active") || items[0]);
+  });
 
   nav.addEventListener("click", (event) => {
     const clicked = event.target.closest(".bottom-nav__item");

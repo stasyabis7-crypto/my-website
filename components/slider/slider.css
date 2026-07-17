@@ -1,9 +1,16 @@
 /*
-  ProjectSlider — горизонтальная карусель карточек проектов.
-  Все карточки одного размера. Активная — по центру без наклона,
-  соседние — того же размера, но повёрнуты на 15°: правая приподнята,
-  левая опущена. Позиционирование — через transform: translateX() на
-  треке (центрирует активный слайд), которым управляет slider.js.
+  ProjectSlider — горизонтальная карусель карточек проектов, разложенных
+  по дуге ("веером"). Позиция каждой карточки — чистая функция её
+  расстояния от активной (--arc-offset, целое число со знаком, ставится
+  в slider.js): поворот, смещение вниз и подтяжка к центру растут с этим
+  расстоянием по одной и той же формуле для ЛЮБОГО количества видимых
+  карточек — на любой ширине экрана просто видно больше или меньше колец
+  дуги, отдельно калибровать под брейкпоинты не нужно. Карточки сами
+  ресайзятся по брейкпоинтам (см. project-card.css) — дуга масштабируется
+  вместе с ними автоматически, т.к. подтяжка задана в % от размера слайда.
+
+  translateX() на треке (в slider.js) отдельно центрирует активный слайд
+  во вьюпорте.
 */
 
 .project-slider {
@@ -34,10 +41,11 @@
   align-items: flex-end;
   gap: var(--space-3); /* 8px — соседние карточки стоят близко к центральной */
   margin: 0;
-  /* Боковые слайды повёрнуты на 15° и сдвинуты вниз transform'ом — сам
+  /* Дальние кольца дуги повёрнуты и сдвинуты вниз transform'ом — сам
      transform не увеличивает layout-высоту трека, поэтому без запаса снизу
-     overflow:hidden на viewport обрезал бы их нижний край. */
-  padding: var(--space-4) 0 3.5rem;
+     overflow:hidden на viewport обрезал бы их нижний край. Запас с большим
+     резервом (веер теперь неограничен по числу колец на широких экранах). */
+  padding: var(--space-4) 0 220px;
   list-style: none;
   will-change: transform;
   transition: transform 560ms cubic-bezier(0.22, 0.9, 0.26, 1);
@@ -50,8 +58,26 @@
 }
 
 .project-slide {
+  /* Дистанция от активной карточки (целое число со знаком) — единственный
+     вход формулы дуги, всё остальное ниже из него выводится. Ставится
+     в slider.js на каждый слайд при любом обновлении активного индекса. */
+  --arc-offset: 0;
+  --arc-offset-abs: 0;
   flex: 0 0 auto;
   transition: transform 560ms cubic-bezier(0.22, 0.9, 0.26, 1);
+  /* Поворот — 15° на каждое кольцо дуги, линейно от дистанции (знак
+     дистанции сразу даёт нужное направление наклона).
+     Сдвиг вниз — 20px (при 390px, дальше растёт вместе с масштабом) на
+     каждое кольцо, тоже линейно, но всегда вниз — отсюда abs.
+     Подтяжка к центру — нелинейная (offset²), чтобы дальние кольца заходили
+     друг на друга заметнее, а не просто стояли рядом с шагом побольше. */
+  transform:
+    translateX(calc(var(--arc-offset) * -1 * min(85%, 10% * var(--arc-offset-abs) * var(--arc-offset-abs))))
+    translateY(calc(var(--arc-offset-abs) * 1.25rem))
+    rotate(calc(var(--arc-offset) * 15deg));
+  /* Правое кольцо ложится поверх более центральных карточек, левое — под
+     них: z-index растёт вместе со знаком смещения. */
+  z-index: calc(4 + var(--arc-offset));
 }
 
 .project-slide img {
@@ -59,77 +85,12 @@
   user-select: none;
 }
 
-.project-slide.is-center {
-  transform: translateY(0) rotate(0deg);
-  z-index: 2;
-}
-
-/* Соседние карточки чуть ниже центральной и подтянуты к ней, чтобы
-   заходить друг на друга краешком: правая ложится НА центральную
-   (z-index выше), левая — ПОД неё (z-index ниже). */
-.project-slide.is-left {
-  transform: translate(1.75rem, 1.75rem) rotate(-15deg);
-  z-index: 1;
-}
-
-.project-slide.is-right {
-  transform: translate(-1.75rem, 1.75rem) rotate(15deg);
-  z-index: 3;
-}
-
-/* Второе кольцо веера (is-left2/is-right2) — только для планшета/десктопа,
-   см. брейкпоинты ниже. На мобильном скрыты полностью. */
-.project-slide.is-left2,
-.project-slide.is-right2 {
+/* Дальше предельного кольца дуги (см. CLONE_RING_COUNT в slider.js) карточки
+   не должны попадать в кадр вообще — на очень широких экранах прячем их,
+   вместо того чтобы продолжать поворот и увести за 90° "вверх ногами". */
+.project-slide.is-beyond-arc {
   visibility: hidden;
   pointer-events: none;
-}
-
-/* --- Планшет/десктоп (800+): карточки крупнее, поэтому подтяжка к центру
-   задаётся в % от собственной ширины/высоты слайда, а не в фиксированных
-   rem. Сами карточки на этих брейкпоинтах умеренного размера (260–310px,
-   см. project-card.css) — вплотную соседей тянуть уже не нужно, хватает
-   лёгкой подтяжки для аккуратного веера. --- */
-@media (min-width: 800px) {
-  .project-slide.is-left {
-    transform: translate(10%, 6%) rotate(-15deg);
-  }
-
-  .project-slide.is-right {
-    transform: translate(-10%, 6%) rotate(15deg);
-  }
-}
-
-@media (min-width: 1101px) {
-  .project-slide.is-left {
-    transform: translate(8%, 5%) rotate(-15deg);
-  }
-
-  .project-slide.is-right {
-    transform: translate(-8%, 5%) rotate(15deg);
-  }
-
-  .project-slide.is-left2,
-  .project-slide.is-right2 {
-    visibility: visible;
-    pointer-events: auto;
-  }
-
-  .project-slide.is-left2 {
-    transform: translate(40%, 12%) rotate(-30deg);
-    z-index: 0;
-  }
-
-  .project-slide.is-right2 {
-    transform: translate(-40%, 12%) rotate(30deg);
-    z-index: 4;
-  }
-
-  .project-slider__track {
-    /* is-left2/is-right2 повёрнуты на 30° — небольшой запас снизу, чтобы
-       overflow:hidden на viewport их не обрезал. */
-    padding-bottom: 130px;
-  }
 }
 
 .project-slider__dots {

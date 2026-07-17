@@ -69,9 +69,13 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-1);
-  /* allow items to flex to container width so they never overflow */
-  flex: 1 1 0;
-  min-width: 0; /* allow shrinking */
+  /* Все пункты — одинаковой ширины, по самому длинному лейблу + паддинг
+     (--nav-item-content-width считает bottom-nav.js). Раньше было flex:1 1 0
+     (растяжка на равные доли контейнера) — из-за этого короткие лейблы
+     вроде "Разное" получали кучу лишнего воздуха, а длинные вроде
+     "Все работы" стояли впритык к краю. */
+  flex: 0 0 var(--nav-item-content-width, auto);
+  width: var(--nav-item-content-width, auto);
   box-sizing: border-box;
   padding: var(--space-3) var(--space-2);
   min-height: var(--nav-item-min-height);
@@ -147,16 +151,19 @@
   }
 }
 
-/* Mobile layout: consider screens up to 800px as mobile */
-@media (max-width: 800px) {
+/* С планшета и шире пункты меню — той же ширины, что кнопка "Резюме PDF"
+   в хедере (это ей визуально и уравнивает футер с хедером). Контейнер
+   больше не тянется на всю ширину экрана — сам ужимается по контенту,
+   иначе при фиксированной ширине пунктов вместо max-width:23.125rem
+   образовывался бы пустой хвост в капсуле. */
+@media (min-width: 800px) {
   .bottom-nav {
-    max-width: 100%;
-    padding: var(--space-2);
-    gap: var(--space-2);
+    width: auto;
+    max-width: none;
   }
 
-  /* mobile keeps same flexible behavior; no fixed 25% widths */
   .bottom-nav__item {
-    flex: 1 1 0;
+    flex: 0 0 var(--size-header-resume-width);
+    width: var(--size-header-resume-width);
   }
 }
