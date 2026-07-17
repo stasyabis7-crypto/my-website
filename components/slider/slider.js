@@ -2,14 +2,19 @@
   Логика ProjectSlider: строит слайды из projectCards, центрирует активную
   карточку через translateX на треке, точки-пагинация с заполняющейся
   полоской (автоплей: как заполнится — переключение на следующий слайд),
-  пауза при наведении/перетаскивании, свайп/drag мышью и тачем, стрелки клавиатуры.
+  пауза при наведении/перетаскивании, свайп/drag мышью и тачем (только по
+  горизонтали — вертикальный свайп отдаётся нативному скроллу страницы),
+  стрелки клавиатуры, бесшовная бесконечная лента (без перемотки в начало
+  на границе) и лёгкое "сжатие" карточек при переключении.
 */
 
 import { projectCards, createProjectCard } from "../project-card/project-card.js";
 
 const AUTOPLAY_INTERVAL = 4200;
-const DRAG_THRESHOLD = 40; // px — минимальный свайп, чтобы переключить слайд
+const DRAG_THRESHOLD = 40; // px — минимальный горизонтальный свайп, чтобы переключить слайд
 const CLICK_SUPPRESS_THRESHOLD = 6; // px — после этого сдвига клик по карточке считается драгом
+const DIRECTION_THRESHOLD = 8; // px — сколько нужно сдвинуться, чтобы понять горизонтальный жест или вертикальный
+const SQUEEZE_DURATION = 240; // ms — длительность "сжатия" карточек при переключении
 
 const initializedSliders = new WeakSet();
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -20,6 +25,7 @@ export function initProjectSlider(root = document) {
   initializedSliders.add(slider);
 
   slider.style.setProperty("--slider-autoplay-duration", `${AUTOPLAY_INTERVAL}ms`);
+  slider.style.setProperty("--slider-squeeze-duration", `${SQUEEZE_DURATION}ms`);
 
   const viewport = slider.querySelector(".project-slider__viewport");
   const track = slider.querySelector(".project-slider__track");
@@ -41,11 +47,9 @@ export function initProjectSlider(root = document) {
   // По два клона на каждый край трека (from ≥1101px нужен ещё и is-left2/
   // is-right2 — второе кольцо веера): тогда даже на границе (первый/
   // последний слайд) слева и справа всегда есть чем "подсветить" все 5
-  // ролей, и слайдер выглядит бесконечным на любой ширине экрана.
-  // Каждому физическому элементу трека присваиваем "логический индекс" —
-  // каким бы он был в бесконечной ленте; роль (is-left2..is-right2)
-  // считается как logicalIndex - activeIndex, без ручных вырожденных
-  // случаев на границах.
+  // ролей. Те же клоны используются и для бесшовной бесконечной прокрутки
+  // (см. scheduleLoopReset ниже) — каждому физическому элементу трека
+  // присваиваем "логический индекс", каким бы он был в бесконечной ленте.
   const allSlides = [];
   const n = projectCards.length;
 
@@ -78,7 +82,7 @@ export function initProjectSlider(root = document) {
     const fill = document.createElement("span");
     fill.className = "project-slider__dot-fill";
     fill.addEventListener("animationend", () => {
-      if (index === activeIndex) next();
+      if (index === wrappedIndex()) next();
     });
     dot.appendChild(fill);
 
@@ -87,11 +91,22 @@ export function initProjectSlider(root = document) {
     return { dot, fill };
   });
 
+  // activeIndex — "сырой", не обёрнутый по модулю индекс: может на один шаг
+  // выйти за 0..n-1 (используя крайний клон), после чего scheduleLoopReset
+  // бесшовно возвращает его в диапазон без анимации. wrappedIndex() — то же
+  // самое, но приведённое к 0..n-1, для точек/автоплея/aria.
   let activeIndex = 0;
   let isDragging = false;
   let dragMoved = false;
+  let dragDirection = null; // null | "horizontal" | "vertical"
   let dragStartX = 0;
+  let dragStartY = 0;
+  let dragPointerId = null;
   let dragStartTranslate = 0;
+
+  function wrappedIndex() {
+    return ((activeIndex % slides.length) + slides.length) % slides.length;
+  }
 
   function measure() {
     // offsetWidth — это layout-размер до применения transform (rotate/translate
@@ -104,7 +119,9 @@ export function initProjectSlider(root = document) {
 
   function translateForIndex(index) {
     const { slideWidth, step } = measure();
-    // +2 — перед реальными слайдами в треке стоят два клона (см. allSlides)
+    // +2 — перед реальными слайдами в треке стоят два клона (см. allSlides).
+    // index может быть "сырым" (например n или -1) — ровно на это и
+    // рассчитаны клоны по краям трека.
     return viewport.clientWidth / 2 - slideWidth / 2 - (index + 2) * step;
   }
 
@@ -121,17 +138,19 @@ export function initProjectSlider(root = document) {
       el.classList.toggle("is-right", logicalIndex === activeIndex + 1);
       el.classList.toggle("is-right2", logicalIndex === activeIndex + 2);
     });
+    const active = wrappedIndex();
     dots.forEach(({ dot }, index) => {
-      const isActive = index === activeIndex;
+      const isActive = index === active;
       dot.dataset.state = isActive ? "active" : "default";
       dot.setAttribute("aria-selected", String(isActive));
     });
   }
 
   function playActiveDotFill() {
+    const active = wrappedIndex();
     dots.forEach(({ fill }, index) => {
       fill.classList.remove("is-playing");
-      if (index === activeIndex && !prefersReducedMotion) {
+      if (index === active && !prefersReducedMotion) {
         // reflow между remove/add, иначе анимация не перезапустится с нуля
         void fill.offsetWidth;
         fill.classList.add("is-playing");
@@ -139,11 +158,45 @@ export function initProjectSlider(root = document) {
     });
   }
 
+  function playSqueeze() {
+    if (prefersReducedMotion) return;
+    slider.classList.remove("is-squeezing");
+    void slider.offsetWidth; // reflow, чтобы анимация могла перезапуститься
+    slider.classList.add("is-squeezing");
+    window.setTimeout(() => slider.classList.remove("is-squeezing"), SQUEEZE_DURATION);
+  }
+
+  // Бесшовная бесконечная лента: клоны по краям трека позволяют довести
+  // анимацию ровно на один шаг за реальную границу (используя клон —
+  // визуально это та же самая карточка). Как только translateX-переход
+  // заканчивается, если activeIndex вышел за 0..n-1 — мгновенно (без
+  // transition) возвращаем его в этот диапазон. Клон и настоящая карточка
+  // на этой позиции показывают идентичный контент, поэтому скачок
+  // координаты происходит, а видимой "перемотки" нет.
+  function scheduleLoopReset() {
+    if (activeIndex >= 0 && activeIndex < slides.length) return;
+    const wrapped = wrappedIndex();
+    const onEnd = () => {
+      track.removeEventListener("transitionend", onEnd);
+      activeIndex = wrapped;
+      applyTransform(translateForIndex(activeIndex), false);
+      updateStates();
+    };
+    if (prefersReducedMotion) {
+      onEnd();
+    } else {
+      track.addEventListener("transitionend", onEnd, { once: true });
+    }
+  }
+
   function goTo(index) {
-    activeIndex = (index + slides.length) % slides.length;
+    if (index === activeIndex) return;
+    activeIndex = index;
     applyTransform(translateForIndex(activeIndex));
     updateStates();
     playActiveDotFill();
+    playSqueeze();
+    scheduleLoopReset();
   }
 
   function next() {
@@ -151,33 +204,57 @@ export function initProjectSlider(root = document) {
   }
 
   // --- Drag / свайп ---
+  // Направление жеста определяем только после DIRECTION_THRESHOLD px
+  // движения: если вертикаль больше горизонтали — это скролл страницы,
+  // отдаём его нативному touch-action:pan-y и не трогаем трек вообще.
   function onPointerDown(event) {
     if (event.pointerType === "mouse" && event.button !== 0) return;
     isDragging = true;
     dragMoved = false;
+    dragDirection = null;
     dragStartX = event.clientX;
+    dragStartY = event.clientY;
+    dragPointerId = event.pointerId;
     dragStartTranslate = translateForIndex(activeIndex);
-    track.setPointerCapture(event.pointerId);
-    slider.classList.add("is-paused");
   }
 
   function onPointerMove(event) {
     if (!isDragging) return;
-    const delta = event.clientX - dragStartX;
-    if (Math.abs(delta) > CLICK_SUPPRESS_THRESHOLD) dragMoved = true;
-    applyTransform(dragStartTranslate + delta, false);
+    const deltaX = event.clientX - dragStartX;
+    const deltaY = event.clientY - dragStartY;
+
+    if (dragDirection === null) {
+      if (Math.abs(deltaX) < DIRECTION_THRESHOLD && Math.abs(deltaY) < DIRECTION_THRESHOLD) return;
+      if (Math.abs(deltaY) > Math.abs(deltaX)) {
+        // вертикальный жест — отдаём странице, к треку больше не возвращаемся
+        dragDirection = "vertical";
+        isDragging = false;
+        return;
+      }
+      dragDirection = "horizontal";
+      track.setPointerCapture(dragPointerId);
+      slider.classList.add("is-paused");
+    }
+
+    if (Math.abs(deltaX) > CLICK_SUPPRESS_THRESHOLD) dragMoved = true;
+    applyTransform(dragStartTranslate + deltaX, false);
   }
 
   function onPointerUp(event) {
-    if (!isDragging) return;
+    if (!isDragging || dragDirection !== "horizontal") {
+      isDragging = false;
+      dragDirection = null;
+      return;
+    }
     isDragging = false;
     slider.classList.remove("is-paused");
     const delta = event.clientX - dragStartX;
     if (Math.abs(delta) > DRAG_THRESHOLD) {
       goTo(activeIndex - Math.sign(delta));
     } else {
-      goTo(activeIndex);
+      applyTransform(translateForIndex(activeIndex));
     }
+    dragDirection = null;
   }
 
   track.addEventListener("pointerdown", onPointerDown);

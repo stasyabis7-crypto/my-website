@@ -17,6 +17,16 @@
 .project-slider__viewport {
   width: 100%;
   overflow: hidden;
+  transform: scale(1);
+  transition: transform var(--slider-squeeze-duration, 240ms) ease;
+}
+
+/* Лёгкое "сжатие" всех видимых карточек при переключении слайда — как
+   будто их перекладывают. Класс вешается на короткое время (см. slider.js)
+   и снимается ещё до конца переезда трека, так что карточки успевают
+   "осесть" обратно в полный размер, пока трек продолжает скользить. */
+.project-slider.is-squeezing .project-slider__viewport {
+  transform: scale(0.96);
 }
 
 .project-slider__track {
@@ -177,7 +187,8 @@
 @media (prefers-reduced-motion: reduce) {
   .project-slider__track,
   .project-slide,
-  .project-slider__dot {
+  .project-slider__dot,
+  .project-slider__viewport {
     transition-duration: 0.01ms;
   }
 
