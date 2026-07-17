@@ -25,6 +25,7 @@ const RING_DROP_REM = 1.25; // на сколько rem каждое кольцо
 // в сторону от центра); extraDropRem — на сколько rem ниже базового
 // расчёта опустить кольцо.
 const RING_OVERRIDES = {
+  1: { extraDropRem: 1.5 },
   2: { pullPercent: 22, extraDropRem: 2.5 },
   3: { pullPercent: 45, extraDropRem: 7 },
   4: { pullPercent: 62, extraDropRem: 10 },
@@ -177,13 +178,24 @@ export function initProjectSlider(root = document) {
 
   function updateTrackClearance() {
     // Запас снизу трека должен вмещать самую нижнюю точку самой опущенной
-    // и повёрнутой карточки — считаем это по факту (а не держим захардкоженное
-    // число), чтобы при любой донастройке RING_OVERRIDES карточки не
-    // обрезались снизу overflow:hidden на viewport.
+    // и повёрнутой карточки — считаем по факту, а не держим захардкоженное
+    // число, чтобы при любой донастройке RING_OVERRIDES карточки не
+    // обрезались снизу overflow:hidden на viewport. Но учитываем только те
+    // кольца, что реально попадают во вьюпорт по горизонтали на текущей
+    // ширине экрана — иначе на мобильном, где дальние кольца всё равно
+    // обрезаны сбоку и не видны, резервировался бы огромный пустой отступ
+    // под их (невидимую) высоту, и точки-пагинация улетали бы вниз.
     const cardWidth = slides[0].offsetWidth;
     const cardHeight = slides[0].offsetHeight;
-    let maxBottomReach = 0;
-    for (let ring = 0; ring <= CLONE_RING_COUNT; ring++) {
+    const viewportRect = viewport.getBoundingClientRect();
+    let maxBottomReach = cardHeight / 2; // центр всегда виден целиком, это минимум
+
+    for (let ring = 1; ring <= CLONE_RING_COUNT; ring++) {
+      const representative = allSlides.find(({ el }) => Number(el.style.getPropertyValue("--arc-offset")) === ring);
+      if (!representative) continue;
+      const rect = representative.el.getBoundingClientRect();
+      const visibleHorizontally = rect.right > viewportRect.left && rect.left < viewportRect.right;
+      if (!visibleHorizontally) continue;
       const angleRad = (ring * RING_ROTATE_DEG * Math.PI) / 180;
       // насколько нижний край повёрнутой карточки выступает за её центр
       const rotatedBottomReach = (cardHeight / 2) * Math.cos(angleRad) + (cardWidth / 2) * Math.sin(angleRad);
