@@ -15,6 +15,8 @@ const DRAG_THRESHOLD = 40; // px — минимальный горизонтал
 const CLICK_SUPPRESS_THRESHOLD = 6; // px — после этого сдвига клик по карточке считается драгом
 const DIRECTION_THRESHOLD = 8; // px — сколько нужно сдвинуться, чтобы понять горизонтальный жест или вертикальный
 const SQUEEZE_DURATION = 240; // ms — длительность "сжатия" карточек при переключении
+const RING_ROTATE_DEG = 15; // на сколько градусов поворачивается каждое следующее кольцо дуги (совпадает с slider.css)
+const RING_DROP_REM = 1.25; // на сколько rem каждое кольцо ниже предыдущего (20px при 390px)
 
 const initializedSliders = new WeakSet();
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -134,6 +136,23 @@ export function initProjectSlider(root = document) {
     track.style.transform = `translateX(${x}px)`;
   }
 
+  function arcTranslateY(offsetAbs) {
+    if (offsetAbs === 0) return 0;
+    // Поворот задирает верхний угол карточки вверх заметно сильнее, чем её
+    // центр опускается translateY — без компенсации дальние кольца дуги
+    // визуально "всплывают" вверх вместо того, чтобы уходить ниже. Считаем,
+    // насколько повёрнутый угол поднимается над центром, и добавляем это к
+    // сдвигу вниз, чтобы видимый верх карточки реально опускался с каждым
+    // кольцом (а не просто её геометрический центр).
+    const cardWidth = slides[0].offsetWidth;
+    const cardHeight = slides[0].offsetHeight;
+    const remPx = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const ringDropPx = remPx * RING_DROP_REM;
+    const angleRad = (offsetAbs * RING_ROTATE_DEG * Math.PI) / 180;
+    const rotationLift = (cardHeight / 2) * Math.cos(angleRad) + (cardWidth / 2) * Math.sin(angleRad) - cardHeight / 2;
+    return offsetAbs * ringDropPx + rotationLift;
+  }
+
   function updateStates() {
     allSlides.forEach(({ el, logicalIndex }) => {
       const offset = logicalIndex - activeIndex;
@@ -145,6 +164,7 @@ export function initProjectSlider(root = document) {
       el.style.setProperty("--arc-offset", String(clamped));
       el.style.setProperty("--arc-offset-abs", String(Math.abs(clamped)));
       el.style.setProperty("--arc-sign", String(Math.sign(clamped)));
+      el.style.setProperty("--arc-translate-y", `${arcTranslateY(Math.abs(clamped))}px`);
       el.classList.toggle("is-center", offset === 0);
       el.classList.toggle("is-beyond-arc", Math.abs(offset) > CLONE_RING_COUNT);
     });
@@ -314,7 +334,12 @@ export function initProjectSlider(root = document) {
     }
   });
 
-  const resizeObserver = new ResizeObserver(() => applyTransform(translateForIndex(activeIndex), false));
+  const resizeObserver = new ResizeObserver(() => {
+    // Карточки меняют размер по брейкпоинтам — компенсация поворота в дуге
+    // (arcTranslateY) от него зависит, пересчитываем вместе с позицией трека.
+    updateStates();
+    applyTransform(translateForIndex(activeIndex), false);
+  });
   resizeObserver.observe(viewport);
 
   updateStates();
