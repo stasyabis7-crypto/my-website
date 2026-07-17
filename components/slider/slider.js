@@ -303,9 +303,19 @@ export function initProjectSlider(root = document) {
     const wrapped = wrappedIndex();
     const onEnd = () => {
       track.removeEventListener("transitionend", onEnd);
+      // --arc-offset у каждой карточки сейчас пересчитается заново (activeIndex
+      // "перепрыгивает" на другой конец колоды) — без отключения перехода у
+      // самих карточек это read бы как отдельная, ничем не обусловленная
+      // анимация ровно на границе списка (см. .is-resetting в slider.css).
+      // Снимаем класс на следующем кадре: одного forced reflow достаточно,
+      // чтобы браузер закоммитил "мгновенное" состояние до того, как
+      // transition снова включится для обычной навигации.
+      track.classList.add("is-resetting");
       activeIndex = wrapped;
       applyTransform(translateForIndex(activeIndex), false);
       updateStates();
+      void track.offsetWidth;
+      requestAnimationFrame(() => track.classList.remove("is-resetting"));
     };
     if (prefersReducedMotion) {
       onEnd();
