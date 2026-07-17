@@ -21,6 +21,10 @@
   width: auto;
   margin-inline: calc(-1 * var(--space-8));
   outline: none;
+  /* контекст позиционирования для .project-slider__dots — точки привязаны
+     к нижнему краю центральной карточки, а не к концу трека (у трека внизу
+     большой запас под опущенные боковые кольца, см. updateTrackClearance) */
+  position: relative;
 }
 
 .project-slider__viewport {
@@ -98,11 +102,21 @@
 }
 
 .project-slider__dots {
+  /* Абсолютно, а не в обычном потоке: иначе точки шли бы сразу после
+     трека, а у трека внизу большой запас под опущенные боковые карточки
+     (см. updateTrackClearance в slider.js) — точки уезжали бы вместе с
+     этим запасом. top считает slider.js — 20px (при 390px) под нижним
+     краем именно центральной карточки, независимо от того, насколько
+     далеко опущены боковые кольца. z-index выше карточек — дальние кольца
+     могут визуально простираться ниже точек. */
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-3);
-  margin-top: var(--space-5);
 }
 
 .project-slider__dot {
