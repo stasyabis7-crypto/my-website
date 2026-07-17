@@ -25,9 +25,8 @@ const RING_DROP_REM = 1.25; // на сколько rem каждое кольцо
 // в сторону от центра); extraDropRem — на сколько rem ниже базового
 // расчёта опустить кольцо.
 const RING_OVERRIDES = {
-  1: { extraDropRem: 1.5 },
   2: { pullPercent: 22, extraDropRem: 2.5 },
-  3: { pullPercent: 45, extraDropRem: 7 },
+  3: { pullPercent: 45, extraDropRem: 9.5 },
   4: { pullPercent: 62, extraDropRem: 10 },
 };
 
