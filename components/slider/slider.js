@@ -18,6 +18,16 @@ const SQUEEZE_DURATION = 240; // ms — длительность "сжатия" 
 const RING_ROTATE_DEG = 15; // на сколько градусов поворачивается каждое следующее кольцо дуги (совпадает с slider.css)
 const RING_DROP_REM = 1.25; // на сколько rem каждое кольцо ниже предыдущего (20px при 390px)
 
+// Ручная донастройка отдельных колец дуги — фиксируем поэтапно, кольцо за
+// кольцом, вместе с пользователем. У кольца без записи здесь — гладкая
+// формула по умолчанию (см. arcPullPercent/arcTranslateY). pullPercent —
+// на сколько % от своей ширины кольцо подтянуто к центру (меньше = дальше
+// в сторону от центра); extraDropRem — на сколько rem ниже базового
+// расчёта опустить кольцо.
+const RING_OVERRIDES = {
+  2: { pullPercent: 22, extraDropRem: 1.25 },
+};
+
 const initializedSliders = new WeakSet();
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -136,6 +146,14 @@ export function initProjectSlider(root = document) {
     track.style.transform = `translateX(${x}px)`;
   }
 
+  function arcPullPercent(offsetAbs) {
+    const override = RING_OVERRIDES[offsetAbs];
+    if (override && override.pullPercent != null) return override.pullPercent;
+    // Нелинейно (offset²), чтобы дальние кольца заходили друг на друга
+    // заметнее, а не просто стояли рядом с шагом побольше.
+    return Math.min(85, 10 * offsetAbs * offsetAbs);
+  }
+
   function arcTranslateY(offsetAbs) {
     if (offsetAbs === 0) return 0;
     // Поворот задирает верхний угол карточки вверх заметно сильнее, чем её
@@ -150,7 +168,9 @@ export function initProjectSlider(root = document) {
     const ringDropPx = remPx * RING_DROP_REM;
     const angleRad = (offsetAbs * RING_ROTATE_DEG * Math.PI) / 180;
     const rotationLift = (cardHeight / 2) * Math.cos(angleRad) + (cardWidth / 2) * Math.sin(angleRad) - cardHeight / 2;
-    return offsetAbs * ringDropPx + rotationLift;
+    const override = RING_OVERRIDES[offsetAbs];
+    const extraDropPx = override && override.extraDropRem ? override.extraDropRem * remPx : 0;
+    return offsetAbs * ringDropPx + rotationLift + extraDropPx;
   }
 
   function updateStates() {
@@ -161,10 +181,11 @@ export function initProjectSlider(root = document) {
       // и рисовались вверх ногами) — такие слайды просто прячем, они и так
       // никогда не должны быть в кадре.
       const clamped = Math.max(-CLONE_RING_COUNT, Math.min(CLONE_RING_COUNT, offset));
+      const offsetAbs = Math.abs(clamped);
+      const pullPercent = Math.sign(clamped) * -1 * arcPullPercent(offsetAbs);
       el.style.setProperty("--arc-offset", String(clamped));
-      el.style.setProperty("--arc-offset-abs", String(Math.abs(clamped)));
-      el.style.setProperty("--arc-sign", String(Math.sign(clamped)));
-      el.style.setProperty("--arc-translate-y", `${arcTranslateY(Math.abs(clamped))}px`);
+      el.style.setProperty("--arc-translate-x", `${pullPercent}%`);
+      el.style.setProperty("--arc-translate-y", `${arcTranslateY(offsetAbs)}px`);
       el.classList.toggle("is-center", offset === 0);
       el.classList.toggle("is-beyond-arc", Math.abs(offset) > CLONE_RING_COUNT);
     });
