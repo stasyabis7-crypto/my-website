@@ -26,6 +26,7 @@ const RING_DROP_REM = 1.25; // на сколько rem каждое кольцо
 // расчёта опустить кольцо.
 const RING_OVERRIDES = {
   2: { pullPercent: 22, extraDropRem: 2.5 },
+  3: { pullPercent: 45, extraDropRem: 4 },
 };
 
 const initializedSliders = new WeakSet();
