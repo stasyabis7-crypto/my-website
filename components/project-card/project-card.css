@@ -36,8 +36,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3.75rem; /* 60px */
-  height: 3.75rem;
+  /* Смягчённый скейл (--icon-rem-px, см. scale.css) — кнопка растёт вместе
+     с экраном заметно слабее, чем остальной интерфейс, иначе на широких
+     мобильных ширинах она становится непропорционально крупной. */
+  width: calc(var(--icon-rem-px) * 3.75); /* 60px при 390px */
+  height: calc(var(--icon-rem-px) * 3.75);
   border-radius: var(--radius-pill);
   text-decoration: none;
   background: var(--color-white);
@@ -48,8 +51,8 @@
 }
 
 .project-card__action-icon {
-  width: 1.5rem; /* 24px */
-  height: 1.5rem;
+  width: calc(var(--icon-rem-px) * 1.5); /* 24px при 390px */
+  height: calc(var(--icon-rem-px) * 1.5);
 }
 
 .project-card__logo-pill {
@@ -69,8 +72,16 @@
 
 .project-card__logo {
   display: block;
-  height: 2.125rem; /* 34px */
-  max-width: 100%;
+  /* Смягчённый скейл, как у кнопки-стрелки (--icon-rem-px, см. scale.css) —
+     лого растёт вместе с экраном заметно слабее, чем остальной интерфейс. */
+  height: calc(var(--icon-rem-px) * 2.125); /* 34px при 390px */
+  width: auto;
+  /* У лого разное соотношение сторон (напр. вордмарк Ozon заметно шире
+     иконки Avito/swtec) — если давать всем одинаковую высоту без предела
+     по ширине, широкие лого растягиваются в длинную плашку сильнее прочих.
+     Ограничиваем ширину отдельно: у широких лого высота сама уменьшится
+     (object-fit: contain), а не будет расти вбок без остановки. */
+  max-width: min(100%, calc(var(--icon-rem-px) * 4.75)); /* 76px при 390px */
   object-fit: contain;
 }
 
