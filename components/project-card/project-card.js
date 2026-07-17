@@ -8,6 +8,12 @@
 const projectPhoto = (n) => encodeURI(`assets/project photos/project photo ${n}.png`);
 const companyLogo = (n) => encodeURI(`assets/company logos/logo ${n}.png`);
 
+// Ширина/высота, при которой лого ещё выводится на полную базовую высоту
+// (см. --logo-height-scale в project-card.css) — у всего, что шире,
+// высоту уменьшаем, чтобы ширина плашки не убегала заметно дальше
+// компактных лого-иконок (Avito, swtec).
+const MAX_LOGO_ASPECT = 4.75 / 2.125;
+
 export const projectCards = [
   { id: 1, title: "Seller CRM", image: projectPhoto(1), logo: companyLogo(1), logoAlt: "Ozon", href: "#" },
   { id: 2, title: "О компании", image: projectPhoto(2), logo: companyLogo(2), logoAlt: "Avito", href: "#" },
@@ -83,6 +89,23 @@ export function createProjectCard(card) {
       "error",
       () => {
         logo.closest(".project-card__logo-pill")?.remove();
+      },
+      { once: true }
+    );
+    logo.addEventListener(
+      "load",
+      () => {
+        // Лого-вордмарки (напр. Ozon) заметно шире иконок-значков (Avito,
+        // swtec) — при равной высоте они растягивают плашку в длину сильнее
+        // остальных. MAX_LOGO_ASPECT — соотношение сторон, до которого лого
+        // ещё показывается на полную базовую высоту; у всего, что шире,
+        // высоту уменьшаем ровно настолько, чтобы ширина не превышала ту же
+        // границу, что и у компактных лого — плашки остаются сопоставимого
+        // размера.
+        const aspect = logo.naturalWidth / logo.naturalHeight;
+        if (aspect > MAX_LOGO_ASPECT) {
+          logo.style.setProperty("--logo-height-scale", String(MAX_LOGO_ASPECT / aspect));
+        }
       },
       { once: true }
     );
