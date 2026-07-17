@@ -63,20 +63,27 @@ export function initProjectSlider(root = document) {
   // Карточки разложены по дуге на основе дистанции до активной (см.
   // slider.css — вся геометрия веера выводится из --arc-offset), так что
   // на широких экранах может быть видно больше 2 колец с каждой стороны.
-  // CLONE_RING_COUNT клонов на каждый край трека держат иллюзию бесконечной
-  // ленты на всех этих кольцах разом: даже на границе (первый/последний
-  // слайд) с обеих сторон всегда есть чем закрыть дугу. Те же клоны нужны
-  // и для бесшовной бесконечной прокрутки (см. scheduleLoopReset ниже) —
-  // каждому физическому элементу трека присваиваем "логический индекс",
-  // каким бы он был в бесконечной ленте.
+  // CLONE_RING_COUNT — визуальный предел дуги (сколько колец вообще может
+  // быть видно, см. clamp в updateStates). Физических клонов на каждый край
+  // трека на 1 больше (CLONE_BUFFER): пока activeIndex на один шаг вышел за
+  // 0..n-1 (идёт переход на границе, до мгновенного бесшовного сброска в
+  // scheduleLoopReset ниже), самому дальнему кольцу нужен запас в
+  // CLONE_RING_COUNT слайдов уже В ЭТОТ переходный момент, а не только в
+  // устоявшемся состоянии — без лишнего клона крайнее кольцо с дальней
+  // стороны на секунду остаётся вообще без карточки (её там просто нет), и
+  // как только сброс подставляет туда настоящую, она заметно проступает
+  // через свой fade-in — воспринимается как отдельная "анимация появления"
+  // именно на границе списка, хотя карусель должна идти по кругу без каких-
+  // либо особых случаев на краях.
   const CLONE_RING_COUNT = 4;
+  const CLONE_BUFFER = CLONE_RING_COUNT + 1;
   const allSlides = [];
   const n = projectCards.length;
 
-  Array.from({ length: CLONE_RING_COUNT }, (_, i) => n - CLONE_RING_COUNT + i).forEach((cardIndex, i) => {
+  Array.from({ length: CLONE_BUFFER }, (_, i) => n - CLONE_BUFFER + i).forEach((cardIndex, i) => {
     const li = buildSlideLi(projectCards[cardIndex], { isClone: true });
     track.appendChild(li);
-    allSlides.push({ el: li, logicalIndex: -CLONE_RING_COUNT + i });
+    allSlides.push({ el: li, logicalIndex: -CLONE_BUFFER + i });
   });
 
   const slides = projectCards.map((card, index) => {
@@ -86,7 +93,7 @@ export function initProjectSlider(root = document) {
     return li;
   });
 
-  Array.from({ length: CLONE_RING_COUNT }, (_, i) => i).forEach((cardIndex, i) => {
+  Array.from({ length: CLONE_BUFFER }, (_, i) => i).forEach((cardIndex, i) => {
     const li = buildSlideLi(projectCards[cardIndex], { isClone: true });
     track.appendChild(li);
     allSlides.push({ el: li, logicalIndex: n + i });
@@ -139,10 +146,10 @@ export function initProjectSlider(root = document) {
 
   function translateForIndex(index) {
     const { slideWidth, step } = measure();
-    // +CLONE_RING_COUNT — перед реальными слайдами в треке стоит столько же
+    // +CLONE_BUFFER — перед реальными слайдами в треке стоит столько же
     // клонов (см. allSlides). index может быть "сырым" (например n или -1) —
     // ровно на это и рассчитаны клоны по краям трека.
-    return viewport.clientWidth / 2 - slideWidth / 2 - (index + CLONE_RING_COUNT) * step;
+    return viewport.clientWidth / 2 - slideWidth / 2 - (index + CLONE_BUFFER) * step;
   }
 
   function applyTransform(x, withTransition = true) {
