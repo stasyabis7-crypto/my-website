@@ -25,8 +25,8 @@ const RING_DROP_REM = 1.25; // на сколько rem каждое кольцо
 // в сторону от центра); extraDropRem — на сколько rem ниже базового
 // расчёта опустить кольцо.
 const RING_OVERRIDES = {
-  2: { pullPercent: 22, extraDropRem: 2.5 },
-  3: { pullPercent: 45, extraDropRem: 4 },
+  2: { pullPercent: 22, extraDropRem: 4.5 },
+  3: { pullPercent: 45, extraDropRem: 7 },
 };
 
 const initializedSliders = new WeakSet();
@@ -174,6 +174,24 @@ export function initProjectSlider(root = document) {
     return offsetAbs * ringDropPx + rotationLift + extraDropPx;
   }
 
+  function updateTrackClearance() {
+    // Запас снизу трека должен вмещать самую нижнюю точку самой опущенной
+    // и повёрнутой карточки — считаем это по факту (а не держим захардкоженное
+    // число), чтобы при любой донастройке RING_OVERRIDES карточки не
+    // обрезались снизу overflow:hidden на viewport.
+    const cardWidth = slides[0].offsetWidth;
+    const cardHeight = slides[0].offsetHeight;
+    let maxBottomReach = 0;
+    for (let ring = 0; ring <= CLONE_RING_COUNT; ring++) {
+      const angleRad = (ring * RING_ROTATE_DEG * Math.PI) / 180;
+      // насколько нижний край повёрнутой карточки выступает за её центр
+      const rotatedBottomReach = (cardHeight / 2) * Math.cos(angleRad) + (cardWidth / 2) * Math.sin(angleRad);
+      const bottomReach = arcTranslateY(ring) + rotatedBottomReach;
+      if (bottomReach > maxBottomReach) maxBottomReach = bottomReach;
+    }
+    track.style.paddingBottom = `${Math.ceil(maxBottomReach) + 24}px`;
+  }
+
   function updateStates() {
     allSlides.forEach(({ el, logicalIndex }) => {
       const offset = logicalIndex - activeIndex;
@@ -196,6 +214,7 @@ export function initProjectSlider(root = document) {
       dot.dataset.state = isActive ? "active" : "default";
       dot.setAttribute("aria-selected", String(isActive));
     });
+    updateTrackClearance();
   }
 
   function playActiveDotFill() {

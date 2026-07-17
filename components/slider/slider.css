@@ -45,8 +45,10 @@
   margin: 0;
   /* Дальние кольца дуги повёрнуты и сдвинуты вниз transform'ом — сам
      transform не увеличивает layout-высоту трека, поэтому без запаса снизу
-     overflow:hidden на viewport обрезал бы их нижний край. Запас с большим
-     резервом (веер теперь неограничен по числу колец на широких экранах). */
+     overflow:hidden на viewport обрезал бы их нижний край. Точный запас
+     считает slider.js (updateTrackClearance) по факту текущих значений
+     дуги и переопределяет padding-bottom — 220px здесь только запасной
+     вариант на первый кадр, до того как отработает JS. */
   padding: var(--space-4) 0 220px;
   list-style: none;
   will-change: transform;
