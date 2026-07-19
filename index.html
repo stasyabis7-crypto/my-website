@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="components/bottom-nav/bottom-nav.css" />
 <link rel="stylesheet" href="components/project-card/project-card.css" />
 <link rel="stylesheet" href="components/slider/slider.css" />
+<link rel="stylesheet" href="components/about/about.css" />
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -217,6 +218,12 @@
     sliderSection.id = 'project-slider-root';
     document.querySelector('.page-shell').insertBefore(sliderSection, document.querySelector('.page-bottom'));
     mountComponent("project-slider-root", "components/slider/slider.html", initProjectSlider);
+
+    import { initAbout } from "./components/about/about.js";
+    const aboutRoot = document.createElement('div');
+    aboutRoot.id = 'about-root';
+    document.querySelector('.page-shell').insertBefore(aboutRoot, document.querySelector('.page-bottom'));
+    mountComponent("about-root", "components/about/about.html", initAbout);
   </script>
 </body>
 </html>
