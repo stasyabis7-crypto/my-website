@@ -16,13 +16,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* full-bleed, как у .about-block__photo-wrap: без этого фон блока
+     оставался бы в пределах паддингов .page-shell (та же ширина, что у
+     заголовка), а по бокам и сверху просвечивал градиент предыдущего
+     блока. Растягиваем фон на всю ширину экрана, паддинг возвращаем
+     обратно, чтобы содержимое (заголовок) осталось на прежнем месте. */
+  margin-inline: calc(-1 * var(--space-8));
+  padding-inline: var(--space-8);
   /* Не наследуем градиент .page-shell — у этого блока свой плоский фон,
      градиент предыдущего блока (слайдера) остаётся только там. */
   background: var(--color-blue);
   color: var(--color-white);
-  /* Запас снизу, чтобы плоский фон блока полностью перекрывал вылет
-     чат-блока за нижний край фото (см. .about-block__chat: bottom: -1.5rem) */
-  padding-bottom: 2rem;
+  padding-bottom: 2.5rem;
 }
 
 .about-block__heading {
@@ -48,7 +53,8 @@
   position: relative;
   z-index: 0;
   width: auto;
-  /* full-bleed: съедаем горизонтальные отступы page-shell, как у слайдера */
+  /* full-bleed: съедаем padding-inline родителя (.about-block), который
+     сам компенсирует такой же margin наружу до края экрана — см. выше */
   margin-inline: calc(-1 * var(--space-8));
   /* фото залезает на половину последней строки заголовка */
   margin-top: calc(var(--font-size-xl) * var(--line-height-default) / -2);
@@ -127,14 +133,12 @@
 }
 
 .about-block__chat {
-  /* Лежит поверх нижней части фото — картинка служит основным фоном
-     блока; свисает немного (24px) за нижний край фото в плоский фон
-     секции, поэтому большая часть блока всё же читается на фото. */
+  /* Лежит поверх нижней части фото — картинка служит основным фоном блока. */
   position: absolute;
   z-index: 2;
   left: var(--space-8);
   right: var(--space-8);
-  bottom: -1.5rem; /* -24px при 390px */
+  bottom: 3.5rem; /* 56px при 390px — поднято повыше над нижним краем фото */
   max-width: 19.5rem; /* 312px при 390px */
   margin-inline: auto;
   display: flex;
@@ -148,15 +152,15 @@
     var(--sds-size-depth-0) var(--sds-size-depth-100) var(--sds-size-depth-100) var(--sds-size-depth-negative-100) var(--sds-color-black-100);
   opacity: 0;
   transform: scale(0.6);
-  transform-origin: top right;
+  transform-origin: top left;
 }
 
-/* Хвостик "сообщения" — острый, без скругления, смещён правее. */
+/* Хвостик "сообщения" — острый, без скругления, левее, 20px от края блока. */
 .about-block__chat::before {
   content: "";
   position: absolute;
   top: -0.6875rem;
-  right: 3.5rem;
+  left: 1.25rem; /* 20px при 390px */
   width: 0;
   height: 0;
   border-left: 0.75rem solid transparent;
