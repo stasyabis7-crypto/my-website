@@ -204,11 +204,14 @@
   width: calc(var(--icon-rem-px) * 3.75);
   height: calc(var(--icon-rem-px) * 3.75);
   padding: 0;
-  border: none;
   border-radius: var(--radius-pill);
   color: var(--color-black);
   cursor: pointer;
-  box-shadow: 0 0.375rem 1.125rem rgba(2,6,23,0.12); /* как у .bottom-nav/.header */
+  /* Стекло — как у .about-block__link: border/box-shadow не переопределяем
+     здесь, оставляем ровно то, что даёт .glass-surface (см. glass.css).
+     Раньше здесь были свои border:none и "плоская" внешняя тень — они
+     перебивали инсет-блик стекла, из-за чего кнопка выглядела иначе, чем
+     соцкнопки в блоке "Обо мне". */
   transform: translateZ(0);
   backface-visibility: hidden;
   transition: transform 120ms ease;
