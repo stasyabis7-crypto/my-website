@@ -70,12 +70,13 @@
   justify-content: center;
   gap: var(--space-1);
   /* Все пункты — одинаковой ширины, по самому длинному лейблу + паддинг
-     (--nav-item-content-width считает bottom-nav.js). Раньше было flex:1 1 0
-     (растяжка на равные доли контейнера) — из-за этого короткие лейблы
-     вроде "Разное" получали кучу лишнего воздуха, а длинные вроде
-     "Все работы" стояли впритык к краю. */
-  flex: 0 0 var(--nav-item-content-width, auto);
-  width: var(--nav-item-content-width, auto);
+     (--nav-item-content-width считает bottom-nav.js) — это базовая,
+     минимальная ширина. flex-grow:1 у всех пунктов поровну донатягивает их
+     до полной ширины футера (иначе при узком контенте и width:100% на
+     .bottom-nav пункты жались к левому краю, оставляя пустое место справа
+     внутри пилюли). Раньше было flex:0 0 (без растяжки, вообще без роста)
+     — сейчас растут поровну, оставаясь при этом одинакового размера. */
+  flex: 1 1 var(--nav-item-content-width, auto);
   box-sizing: border-box;
   padding: var(--space-3) var(--space-2);
   min-height: var(--nav-item-min-height);
