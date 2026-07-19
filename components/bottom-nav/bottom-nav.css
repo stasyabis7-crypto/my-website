@@ -23,9 +23,14 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  /* На мобилке — во всю ширину экрана (минус 6px паддинги .page-bottom по
+     бокам, см. index.html); на планшете (см. @media min-width:800px ниже)
+     не растягивается — ужимается по контенту пунктов. */
   width: 100%;
-  max-width: 23.125rem; /* 370px при 390px экране, дальше растёт вместе с rem */
-  margin-inline: auto;
+  /* Центрирование/прижатие влево теперь задаёт align-items на родителе
+     (.bottom-nav-wrap) — auto-маргины здесь его бы перебивали (auto margin
+     у флекс-айтема всегда съедает всё свободное место, вне зависимости от
+     align-items родителя). */
   padding: var(--space-2);
   border-radius: var(--radius-pill);
   list-style: none;
@@ -38,6 +43,14 @@
   box-sizing: border-box;
   /* consistent item sizing */
   --nav-item-min-height: 3rem;
+  /* Fade вместо резкого display:none↔flex при схлопывании на моб./планшете
+     (см. медиа-запрос ниже) — opacity/transform 1:1 совпадают с "видимым"
+     состоянием, поэтому на десктопе, где панель никогда не прячется, это
+     ни на что не влияет. allow-discrete здесь нужен, чтобы display
+     переключался только ПОСЛЕ того, как доиграет fade, а не мгновенно. */
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 220ms ease, transform 220ms ease, display 220ms allow-discrete;
 }
 
 /* Do not override .glass-surface — header and footer share the same glass look */
@@ -168,9 +181,17 @@
      ни на что не влияет вообще (правила ниже туда не доходят). */
   display: none;
   align-items: center;
+  /* justify-content:space-between + width:100% (без max-width) — кнопки
+     всегда стоят у самых краёв экрана (6px внутри паддинга .page-bottom),
+     и на мобилке, и на планшете — в отличие от .bottom-nav, здесь ширина
+     никогда не ужимается по контенту. */
   justify-content: space-between;
   width: 100%;
-  max-width: 23.125rem; /* тот же максимум, что у полной панели */
+  /* Тот же fade, что у .bottom-nav — resting-состояние здесь "скрыто", в
+     отличие от неё (см. комментарий там). */
+  opacity: 0;
+  transform: translateY(0.375rem) scale(0.96);
+  transition: opacity 220ms ease, transform 220ms ease, display 220ms allow-discrete;
 }
 
 .bottom-nav-collapsed__btn {
@@ -226,7 +247,9 @@
 @media (prefers-reduced-motion: reduce) {
   .bottom-nav::before,
   .bottom-nav__item,
-  .bottom-nav-collapsed__btn {
+  .bottom-nav-collapsed__btn,
+  .bottom-nav,
+  .bottom-nav-collapsed {
     transition-duration: 0.01ms;
   }
 }
@@ -235,13 +258,44 @@
    см. ниже) этих правил нет вообще, поэтому data-nav-state там ни на что
    не влияет и футер всегда выглядит как полная панель, как раньше. */
 @media (max-width: 1100px) {
+  /* @starting-style — "точка старта" fade-анимации при появлении элемента
+     из display:none (без неё браузеру неоткуда взять исходные
+     opacity/transform, и первый кадр после display:flex отрисовался бы
+     уже полностью непрозрачным, без анимации). Нужен на "видимом" правиле
+     — здесь это базовое .bottom-nav (см. выше), т.к. "expanded"/
+     "collapsed-open" не переопределяют его, только "collapsed" прячет. */
+  .bottom-nav {
+    @starting-style {
+      opacity: 0;
+      transform: translateY(0.375rem);
+    }
+  }
+
   .bottom-nav-wrap[data-nav-state="collapsed"] > .bottom-nav {
     display: none;
+    opacity: 0;
+    transform: translateY(0.375rem);
   }
 
   .bottom-nav-wrap[data-nav-state="collapsed"] .bottom-nav-collapsed,
   .bottom-nav-wrap[data-nav-state="collapsed-open"] .bottom-nav-collapsed {
     display: flex;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+
+    @starting-style {
+      opacity: 0;
+      transform: translateY(0.375rem) scale(0.96);
+    }
+  }
+
+  /* При открытом меню панель "прибита" к левой кнопке меню, а не
+     центрирована. На мобилке эффекта не видно (панель и так на всю
+     ширину, см. .bottom-nav выше), а на планшете, где она уже не
+     растягивается (@media min-width:800px ниже), она встаёт вплотную к
+     левому краю — там, где и кнопка меню. */
+  .bottom-nav-wrap[data-nav-state="collapsed-open"] {
+    align-items: flex-start;
   }
 }
 

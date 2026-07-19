@@ -110,9 +110,11 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: var(--space-5);
-    /* slightly lowered: reduce bottom inset so footer sits closer to the bottom edge */
-    padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
+    /* 16px снизу, 6px по бокам — и полная панель, и схлопнутые кнопки
+       (.bottom-nav-collapsed) сидят внутри этого паддинга, так что обе
+       требуемые дистанции соблюдаются сами собой. */
+    padding: 0 var(--space-2) var(--space-5);
+    padding-bottom: max(var(--space-5), env(safe-area-inset-bottom));
   }
 
   /*
