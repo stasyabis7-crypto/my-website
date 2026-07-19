@@ -19,9 +19,10 @@ const MOBILE_TABLET_QUERY = "(max-width: 1100px)";
 function initCollapse(wrap) {
   if (!wrap) return;
 
+  const nav = wrap.querySelector(".bottom-nav");
   const menuBtn = wrap.querySelector('[data-nav-action="menu"]');
   const topBtn = wrap.querySelector('[data-nav-action="top"]');
-  if (!menuBtn || !topBtn) return;
+  if (!nav || !menuBtn || !topBtn) return;
 
   const mql = window.matchMedia(MOBILE_TABLET_QUERY);
 
@@ -33,7 +34,22 @@ function initCollapse(wrap) {
     // оно не переключает рендер так же надёжно, как у HTML-элементов
     // (см. .bottom-nav-collapsed__btn.is-open в bottom-nav.css).
     menuBtn.classList.toggle("is-open", isOpen);
+
+    // На планшете открытая панель "прибита" к левому краю (см.
+    // .bottom-nav.is-pinned-left в bottom-nav.css). При открытии — сразу;
+    // при закрытии крестиком снятие класса откладываем до конца fade-out
+    // (см. слушатель transitionend ниже) — иначе align-items родителя
+    // мгновенно вернулся бы в center ДО того, как панель успеет погаснуть,
+    // и она бы видимо прыгала влево-в-центр посреди анимации.
+    if (isOpen) nav.classList.add("is-pinned-left");
   };
+
+  nav.addEventListener("transitionend", (event) => {
+    if (event.target !== nav || event.propertyName !== "opacity") return;
+    if (wrap.dataset.navState !== "collapsed-open") {
+      nav.classList.remove("is-pinned-left");
+    }
+  });
 
   const syncWithScroll = () => {
     if (!mql.matches) return;
