@@ -2,15 +2,83 @@
   Логика BottomNav: клик переключает data-state на кнопках
   и уведомляет остальную страницу через CustomEvent "navchange",
   чтобы позже можно было повесить реальный роутинг/скролл к секции.
+
+  На мобилке/планшете сюда же добавляется схлопывание панели при скролле
+  (см. initCollapse) — на десктопе оно ничего не делает визуально, т.к.
+  CSS-правила для .bottom-nav-collapsed заведены только под max-width:1100px.
 */
 
 const initializedNavs = new WeakSet();
+
+// Сколько нужно проскроллить от самого верха, прежде чем панель схлопнётся
+// в кнопки — небольшой запас, чтобы не дёргалось от resize/bounce-скролла у
+// самого верха страницы.
+const COLLAPSE_SCROLL_THRESHOLD = 24;
+const MOBILE_TABLET_QUERY = "(max-width: 1100px)";
+
+function initCollapse(wrap) {
+  if (!wrap) return;
+
+  const menuBtn = wrap.querySelector('[data-nav-action="menu"]');
+  const topBtn = wrap.querySelector('[data-nav-action="top"]');
+  if (!menuBtn || !topBtn) return;
+
+  const mql = window.matchMedia(MOBILE_TABLET_QUERY);
+
+  const setState = (state) => {
+    wrap.dataset.navState = state;
+    const isOpen = state === "collapsed-open";
+    menuBtn.setAttribute("aria-expanded", String(isOpen));
+    // Класс, а не hidden-атрибут/свойство на самих <svg> — у SVGElement
+    // оно не переключает рендер так же надёжно, как у HTML-элементов
+    // (см. .bottom-nav-collapsed__btn.is-open в bottom-nav.css).
+    menuBtn.classList.toggle("is-open", isOpen);
+  };
+
+  const syncWithScroll = () => {
+    if (!mql.matches) return;
+    if (window.scrollY <= COLLAPSE_SCROLL_THRESHOLD) {
+      // У самого верха страницы — всегда полная панель, даже если перед
+      // этим меню было открыто вручную.
+      setState("expanded");
+      return;
+    }
+    // Пока меню открыто вручную (collapsed-open), дальнейший скролл его не
+    // закрывает сам по себе — только явный клик по крестику или возврат к
+    // самому верху страницы (см. выше).
+    if (wrap.dataset.navState !== "collapsed-open") {
+      setState("collapsed");
+    }
+  };
+
+  menuBtn.addEventListener("click", () => {
+    setState(wrap.dataset.navState === "collapsed-open" ? "collapsed" : "collapsed-open");
+  });
+
+  topBtn.addEventListener("click", () => {
+    setState("expanded");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  window.addEventListener("scroll", syncWithScroll, { passive: true });
+
+  // Переключение между моб./планшетом и десктопом (например, поворот
+  // экрана или ресайз окна) — на десктопе панель всегда полная.
+  mql.addEventListener("change", () => {
+    syncWithScroll();
+    if (!mql.matches) setState("expanded");
+  });
+
+  setState(mql.matches && window.scrollY > COLLAPSE_SCROLL_THRESHOLD ? "collapsed" : "expanded");
+}
 
 export function initBottomNav(root = document) {
   const nav = root.querySelector(".bottom-nav");
   if (!nav || initializedNavs.has(nav)) return;
 
   initializedNavs.add(nav);
+
+  initCollapse(root.querySelector(".bottom-nav-wrap"));
 
   const items = Array.from(nav.querySelectorAll(".bottom-nav__item"));
   const labels = items.map((item) => item.querySelector(".bottom-nav__label"));

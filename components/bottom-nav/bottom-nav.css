@@ -2,7 +2,22 @@
   BottomNav — нижняя навигация-пилюля с 4 пунктами.
   Состояния: [data-state="active"] / [data-state="default"].
   Белый индикатор — единая подложка, которая плавно переезжает между пунктами.
+
+  На мобилке/планшете (см. медиа-запрос в конце файла и bottom-nav.js) при
+  скролле вся панель схлопывается в две круглые стеклянные кнопки
+  (.bottom-nav-collapsed) — состояние живёт в data-nav-state на
+  .bottom-nav-wrap: expanded | collapsed | collapsed-open. На десктопе
+  (≥1101px) состояние ни на что не влияет — там всегда полная панель, как
+  раньше.
 */
+
+.bottom-nav-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem; /* 4px — зазор между открытой панелью и кнопкой меню */
+  width: 100%;
+}
 
 .bottom-nav {
   display: flex;
@@ -145,10 +160,88 @@
   outline-offset: -0.125rem;
 }
 
+/* --- Схлопнутое состояние: две круглые стеклянные кнопки --- */
+
+.bottom-nav-collapsed {
+  /* Показывается только на моб./планшете (см. медиа-запрос ниже) —
+     по умолчанию всегда скрыто, в т.ч. на десктопе, там где data-nav-state
+     ни на что не влияет вообще (правила ниже туда не доходят). */
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 23.125rem; /* тот же максимум, что у полной панели */
+}
+
+.bottom-nav-collapsed__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Стартовый размер 60×60 при 390px — тот же смягчённый скейл
+     (--icon-rem-px, см. scale.css), что у плавающих кнопок блока "Обо мне"
+     и кнопки-стрелки карточки проекта. */
+  width: calc(var(--icon-rem-px) * 3.75);
+  height: calc(var(--icon-rem-px) * 3.75);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  color: var(--color-black);
+  cursor: pointer;
+  box-shadow: 0 0.375rem 1.125rem rgba(2,6,23,0.12); /* как у .bottom-nav/.header */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transition: transform 120ms ease;
+}
+
+.bottom-nav-collapsed__btn:active {
+  transform: scale(0.94);
+}
+
+/* Переключение иконок меню/крестик — через класс, не через атрибут/свойство
+   hidden: у SVGElement оно не отражает состояние в DOM-атрибуте так же
+   надёжно, как у обычных HTML-элементов, и правило [hidden] от него не
+   срабатывает. */
+.bottom-nav-collapsed__btn [data-icon="close"] {
+  display: none;
+}
+
+.bottom-nav-collapsed__btn.is-open [data-icon="menu"] {
+  display: none;
+}
+
+.bottom-nav-collapsed__btn.is-open [data-icon="close"] {
+  display: block;
+}
+
+.bottom-nav-collapsed__btn:focus-visible {
+  outline: 0.125rem solid var(--color-black);
+  outline-offset: 0.125rem;
+}
+
+.bottom-nav-collapsed__icon {
+  width: calc(var(--icon-rem-px) * 1.5); /* 24px при 390px */
+  height: calc(var(--icon-rem-px) * 1.5);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bottom-nav::before,
-  .bottom-nav__item {
+  .bottom-nav__item,
+  .bottom-nav-collapsed__btn {
     transition-duration: 0.01ms;
+  }
+}
+
+/* Само схлопывание — только на мобилке/планшете. На десктопе (≥1101px,
+   см. ниже) этих правил нет вообще, поэтому data-nav-state там ни на что
+   не влияет и футер всегда выглядит как полная панель, как раньше. */
+@media (max-width: 1100px) {
+  .bottom-nav-wrap[data-nav-state="collapsed"] > .bottom-nav {
+    display: none;
+  }
+
+  .bottom-nav-wrap[data-nav-state="collapsed"] .bottom-nav-collapsed,
+  .bottom-nav-wrap[data-nav-state="collapsed-open"] .bottom-nav-collapsed {
+    display: flex;
   }
 }
 
