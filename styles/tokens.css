@@ -12,8 +12,8 @@
   --color-bg-gradient: linear-gradient(
     180deg,
     var(--color-blue) 0%,
-    #3ba2ec 32%,
-    #c9e7fd 62%,
+    #3ba2ec 24%,
+    #c9e7fd 45%, /* светлая полоса — на уровне карточек слайдера (см. .hero-block), стабильно 41–49% на всех ширинах 390–950px */
     var(--color-blue) 100%
   );
 
