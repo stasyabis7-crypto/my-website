@@ -33,6 +33,17 @@
     justify-content: space-between;
     min-height: 100svh;
     padding: calc(max(var(--space-6), env(safe-area-inset-top)) + 5rem) var(--space-8) calc(max(var(--space-6), env(safe-area-inset-bottom)) + 6.5rem);
+    /* Плоский базовый цвет на весь сайт — градиент теперь только у
+       .hero-block (см. ниже), а не растянут на всю (очень длинную из-за
+       блока "Обо мне") страницу. */
+    background: var(--color-blue);
+  }
+  .hero-block {
+    /* full-bleed: градиент первого блока — только до низа карточек
+       слайдера, во всю ширину экрана (та же техника margin/padding, что
+       у .about-block и .about-block__photo-wrap). */
+    margin-inline: calc(-1 * var(--space-8));
+    padding-inline: var(--space-8);
     background: var(--color-bg-gradient);
   }
   .page-header {
@@ -178,14 +189,16 @@
       <div id="header-root"></div>
     </div>
 
-    <section class="hero-copy">
-      <h1>
-        <span class="hero-line">Вы искали</span>
-        <span class="hero-line">продуктового</span>
-        <span class="hero-line">дизайнера</span>
-      </h1>
-      <p class="hero-lead">И вы его нашли</p>
-    </section>
+    <div class="hero-block">
+      <section class="hero-copy">
+        <h1>
+          <span class="hero-line">Вы искали</span>
+          <span class="hero-line">продуктового</span>
+          <span class="hero-line">дизайнера</span>
+        </h1>
+        <p class="hero-lead">И вы его нашли</p>
+      </section>
+    </div>
 
     <div class="page-bottom">
       <div id="bottom-nav-root"></div>
@@ -216,7 +229,9 @@
     const sliderSection = document.createElement('section');
     sliderSection.className = 'project-slider-section';
     sliderSection.id = 'project-slider-root';
-    document.querySelector('.page-shell').insertBefore(sliderSection, document.querySelector('.page-bottom'));
+    // Кладём карточки внутрь .hero-block — так градиент первого блока
+    // тянется ровно до низа карточек, а не на весь (очень длинный) сайт.
+    document.querySelector('.hero-block').appendChild(sliderSection);
     mountComponent("project-slider-root", "components/slider/slider.html", initProjectSlider);
 
     import { initAbout } from "./components/about/about.js";
