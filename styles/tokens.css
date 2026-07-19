@@ -8,12 +8,13 @@
 
 :root {
   /* --- Цвет --- */
+  --color-blue: #38a0ec; /* базовый синий сайта — фон блока "Обо мне" и края градиента */
   --color-bg-gradient: linear-gradient(
     180deg,
-    #38a0ec 0%,
+    var(--color-blue) 0%,
     #3ba2ec 32%,
     #c9e7fd 62%,
-    #38a0ec 100%
+    var(--color-blue) 100%
   );
 
   --color-white: #ffffff;

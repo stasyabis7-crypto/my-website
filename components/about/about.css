@@ -16,7 +16,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* Не наследуем градиент .page-shell — у этого блока свой плоский фон,
+     градиент предыдущего блока (слайдера) остаётся только там. */
+  background: var(--color-blue);
   color: var(--color-white);
+  /* Запас снизу, чтобы плоский фон блока полностью перекрывал вылет
+     чат-блока за нижний край фото (см. .about-block__chat: bottom: -1.5rem) */
+  padding-bottom: 2rem;
 }
 
 .about-block__heading {
@@ -82,7 +88,9 @@
 }
 
 /* Приблизительное расположение поверх верхней половины фото — по ТЗ
-   "примерно где-то сверху", ссылки пока без href (см. about.js). */
+   "примерно где-то сверху", ссылки пока без href (см. about.js). Нижняя
+   пара поднята заметно выше середины фото, чтобы не пересекаться с
+   чат-блоком, который лежит поверх нижней части фото. */
 .about-block__link[data-social="telegram"] {
   top: 12%;
   left: 18%;
@@ -98,16 +106,14 @@
 }
 
 .about-block__link[data-social="dribbble"] {
-  /* Нижняя пара кнопок — от их нижнего края до чат-блока ровно 130px
-     (98px здесь + 32px верхнего отступа чат-блока, см. .about-block__chat). */
-  bottom: 6.125rem;
+  top: 36%;
   left: 9%;
   animation-duration: 6.5s;
   animation-delay: -4s;
 }
 
 .about-block__link[data-social="mail"] {
-  bottom: 6.125rem;
+  top: 34%;
   right: 10%;
   animation-duration: 5.5s;
   animation-delay: -1.2s;
@@ -121,38 +127,41 @@
 }
 
 .about-block__chat {
-  position: relative;
-  z-index: 1;
+  /* Лежит поверх нижней части фото — картинка служит основным фоном
+     блока; свисает немного (24px) за нижний край фото в плоский фон
+     секции, поэтому большая часть блока всё же читается на фото. */
+  position: absolute;
+  z-index: 2;
+  left: var(--space-8);
+  right: var(--space-8);
+  bottom: -1.5rem; /* -24px при 390px */
+  max-width: 19.5rem; /* 312px при 390px */
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   gap: var(--space-5); /* 16px между текстом и кнопкой */
-  width: 100%;
-  max-width: 19.5rem; /* 312px при 390px */
-  margin-top: var(--space-7); /* 32px — видимый зазор от фото до чат-блока */
   padding: var(--space-6) var(--space-2) var(--space-2); /* 24px сверху, 6px по бокам/снизу */
-  border-radius: var(--radius-card);
+  border-radius: 2.125rem; /* 34px при 390px */
   background: var(--color-white);
   box-shadow:
     var(--sds-size-depth-0) var(--sds-size-depth-400) var(--sds-size-depth-800) var(--sds-size-depth-negative-100) var(--sds-color-black-200),
     var(--sds-size-depth-0) var(--sds-size-depth-100) var(--sds-size-depth-100) var(--sds-size-depth-negative-100) var(--sds-color-black-100);
   opacity: 0;
   transform: scale(0.6);
-  transform-origin: top left;
+  transform-origin: top right;
 }
 
-/* Хвостик "сообщения", уходит вверх к фото */
+/* Хвостик "сообщения" — острый, без скругления, смещён правее. */
 .about-block__chat::before {
   content: "";
   position: absolute;
-  top: -0.75rem;
-  left: 1.75rem;
-  width: 1.25rem;
-  height: 1.25rem;
-  background: var(--color-white);
-  border-radius: 0.375rem 0.375rem 0.375rem 0;
-  transform: rotate(45deg);
-  transform-origin: center;
-  z-index: -1;
+  top: -0.6875rem;
+  right: 3.5rem;
+  width: 0;
+  height: 0;
+  border-left: 0.75rem solid transparent;
+  border-right: 0.75rem solid transparent;
+  border-bottom: 0.75rem solid var(--color-white);
 }
 
 .about-block__chat.is-visible {
@@ -181,11 +190,14 @@
 }
 
 .about-block__chat-cta {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  height: 3.75rem; /* 60px при 390px */
   box-sizing: border-box;
-  padding: var(--space-4) var(--space-5); /* 12px 16px */
-  border-radius: var(--radius-pill);
+  padding: 0 var(--space-5); /* 16px по бокам */
+  border-radius: var(--radius-pill); /* максимальное скругление */
   background: var(--color-accent-pink);
   color: var(--color-white);
   font-family: var(--font-body);
