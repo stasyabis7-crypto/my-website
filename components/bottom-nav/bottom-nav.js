@@ -36,12 +36,24 @@ function initCollapse(wrap) {
     menuBtn.classList.toggle("is-open", isOpen);
 
     // На планшете открытая панель "прибита" к левому краю (см.
-    // .bottom-nav.is-pinned-left в bottom-nav.css). При открытии — сразу;
-    // при закрытии крестиком снятие класса откладываем до конца fade-out
-    // (см. слушатель transitionend ниже) — иначе align-items родителя
-    // мгновенно вернулся бы в center ДО того, как панель успеет погаснуть,
-    // и она бы видимо прыгала влево-в-центр посреди анимации.
-    if (isOpen) nav.classList.add("is-pinned-left");
+    // .bottom-nav.is-pinned-left в bottom-nav.css). При открытии — сразу.
+    if (isOpen) {
+      nav.classList.add("is-pinned-left");
+    } else if (state === "expanded") {
+      // collapsed-open -> expanded (например, доскроллили до верха, не
+      // закрывая меню) — сама панель при этом НЕ гаснет (opacity у неё не
+      // меняется ни в "collapsed-open", ни в "expanded", прячутся только
+      // кнопки), поэтому transitionend по opacity ниже здесь не сработает
+      // вообще — без этой ветки класс завис бы навсегда, и панель осталась
+      // бы прижатой влево. Снимаем сразу же: margin-bottom сама плавно
+      // доедет до 0 через обычный CSS-transition, панель не дёргается.
+      nav.classList.remove("is-pinned-left");
+    }
+    // state === "collapsed": ничего не делаем — если класс был выставлен
+    // (закрытие крестиком из collapsed-open), его снятие отложено до конца
+    // fade-out самой панели (см. transitionend ниже) — иначе align-self
+    // родителя мгновенно вернулся бы в center ДО того, как панель успеет
+    // погаснуть, и она бы видимо прыгала влево-в-центр посреди анимации.
   };
 
   nav.addEventListener("transitionend", (event) => {
