@@ -233,15 +233,21 @@
   index.html (типографика продолжает жить на своём rem-скейле).
 */
 @media (min-width: 800px) {
+  .about-block {
+    /* диаметр фото/сообщения — плавно растёт вместе с вьюпортом внутри
+       зоны планшета (800→1100), как и карточки проектов (project-card.css) */
+    --about-photo-d: clamp(740px, calc(740px + 80 * ((100vw - 800px) / 300)), 820px);
+  }
+
   .about-block__photo-wrap {
-    width: 370px;
-    height: 370px;
+    width: var(--about-photo-d);
+    height: var(--about-photo-d);
     margin-inline: 0;
   }
 
   .about-block__photo {
-    width: 370px;
-    height: 370px;
+    width: var(--about-photo-d);
+    height: var(--about-photo-d);
     aspect-ratio: 1 / 1;
     border-radius: 50%;
   }
@@ -251,11 +257,40 @@
     z-index: 3;
   }
 
-  .about-block__chat {
-    left: -90px;
+  /*
+    Кнопки посажены прямо на границу круга (10/2/8/4 часов на циферблате) —
+    считаем от центра круга радиусом, а не произвольным %, иначе на круглом
+    фото (в отличие от прямоугольного на мобильном) кнопки съезжают с края.
+    Нижняя пара (dribbble/mail) ниже верхней и обе пары раздвинуты к бокам.
+  */
+  .about-block__link[data-social="telegram"] {
+    top: calc(0.25 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
+    left: calc(0.067 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
     right: auto;
-    bottom: -56px;
-    width: 370px;
+  }
+
+  .about-block__link[data-social="behance"] {
+    top: calc(0.25 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
+    left: calc(0.933 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
+    right: auto;
+  }
+
+  .about-block__link[data-social="dribbble"] {
+    top: calc(0.75 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
+    left: calc(0.067 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
+  }
+
+  .about-block__link[data-social="mail"] {
+    top: calc(0.75 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
+    left: calc(0.933 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
+    right: auto;
+  }
+
+  .about-block__chat {
+    left: calc(var(--about-photo-d) * -0.24);
+    right: auto;
+    bottom: calc(var(--about-photo-d) * -0.2);
+    width: var(--about-photo-d);
     max-width: none;
   }
 }
