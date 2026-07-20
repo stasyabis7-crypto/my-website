@@ -287,10 +287,14 @@
   }
 
   .about-block__chat {
-    left: calc(var(--about-photo-d) * -0.24);
-    right: auto;
-    bottom: calc(var(--about-photo-d) * -0.2);
-    width: var(--about-photo-d);
+    /* без растяжки — прежний фиксированный размер, но центрируем по
+       экрану (а не по фото) и кладём чуть ниже середины круга */
+    left: 0;
+    right: 0;
+    top: 56%;
+    bottom: auto;
+    margin-inline: auto;
+    width: 370px;
     max-width: none;
   }
 }
