@@ -224,6 +224,42 @@
   outline-offset: 0.125rem;
 }
 
+/*
+  Планшет (800–1100, см. index.html): фото становится круглым (370×370,
+  уже готовый круглый PNG, а не full-bleed прямоугольник), заголовок
+  всё так же заходит на фото последней строкой (общее правило выше не
+  трогаем), блок-сообщение и соцкнопки лежат поверх круга. Значения —
+  плоские px для этой зоны, как и остальные брейкпоинты зоны 1 в
+  index.html (типографика продолжает жить на своём rem-скейле).
+*/
+@media (min-width: 800px) {
+  .about-block__photo-wrap {
+    width: 370px;
+    height: 370px;
+    margin-inline: 0;
+  }
+
+  .about-block__photo {
+    width: 370px;
+    height: 370px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+  }
+
+  .about-block__links {
+    /* соцкнопки лежат поверх сообщения там, где перекрываются */
+    z-index: 3;
+  }
+
+  .about-block__chat {
+    left: -90px;
+    right: auto;
+    bottom: -56px;
+    width: 370px;
+    max-width: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .about-block__link {
     animation: none;
