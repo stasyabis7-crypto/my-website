@@ -291,7 +291,7 @@
        экрану (а не по фото) и кладём чуть ниже середины круга */
     left: 0;
     right: 0;
-    top: calc(56% + 80px);
+    top: calc(56% + 160px);
     bottom: auto;
     margin-inline: auto;
     width: 370px;
