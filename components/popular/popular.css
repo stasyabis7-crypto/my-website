@@ -17,9 +17,9 @@
 .popular-block {
   /* full-bleed: съедаем горизонтальный паддинг .page-shell */
   margin-inline: calc(-1 * var(--space-8));
-  /* лёгкий нахлёст фона на фото блока "Обо мне" — только на мобильном/
-     планшете, см. переопределение ниже на 1101px+ */
-  margin-top: -1.25rem; /* 20px */
+  /* нахлёст фона на фото блока "Обо мне" — только на мобильном/планшете,
+     см. переопределение ниже на 1101px+ */
+  margin-top: -5rem; /* 80px */
   border-radius: var(--radius-card-outer); /* 40px */
   background: var(--color-accent-pink);
   padding: 3.75rem 0 0.625rem; /* 60px сверху, 10px снизу (до кнопки её собственный margin-top) */
@@ -27,6 +27,7 @@
 
 .popular-block__header {
   padding-inline: var(--space-8); /* 40px — как у заголовков остальных блоков */
+  text-align: center;
 }
 
 .popular-block__heading {

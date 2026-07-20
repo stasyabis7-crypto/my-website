@@ -45,19 +45,17 @@ export const popularCards = [
   },
 ];
 
-// Автоплей мини-слайдера включается/выключается по факту видимости карточки
-// на экране (см. IntersectionObserver ниже), а не сразу при загрузке —
-// та же идея, что у "Обо мне" (about.js), только вместо разового появления
-// тут повторяющийся цикл, который можно поставить на паузу.
-const MINI_AUTOPLAY_INTERVAL = 3200; // ms
+// Без автоплея: на мобильном фото листаются свайпом пальца, на десктопе —
+// наведением мыши (позиция курсора по горизонтали внутри фото напрямую
+// маппится на индекс кадра — "скраб"). pointerType различает эти два
+// сценария на одних и тех же обработчиках.
+const DRAG_THRESHOLD = 32; // px — свайп меньше этого возвращает текущий кадр на место
+const DIRECTION_THRESHOLD = 8; // px — до этого не решаем, горизонтальный жест или вертикальный скролл
 
 function initPopularCardSlider(article, count) {
   const wrap = article.querySelector(".popular-card__photo-wrap");
   const track = article.querySelector(".popular-card__photo-track");
   const dotsWrap = article.querySelector(".popular-card__dots");
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  wrap.style.setProperty("--popular-autoplay-duration", `${MINI_AUTOPLAY_INTERVAL}ms`);
 
   let activeIndex = 0;
 
@@ -67,54 +65,93 @@ function initPopularCardSlider(article, count) {
     dot.className = "popular-card__dot";
     dot.setAttribute("role", "tab");
     dot.setAttribute("aria-label", `Фото ${index + 1} из ${count}`);
-
-    const fill = document.createElement("span");
-    fill.className = "popular-card__dot-fill";
-    fill.addEventListener("animationend", () => {
-      if (index === activeIndex) goTo((activeIndex + 1) % count);
-    });
-    dot.appendChild(fill);
-
     dot.addEventListener("click", () => goTo(index));
     dotsWrap.appendChild(dot);
-    return { dot, fill };
+    return dot;
   });
 
-  function goTo(index) {
-    activeIndex = index;
-    track.style.transform = `translateX(${activeIndex * -100}%)`;
-    dots.forEach(({ dot }, i) => {
+  function updateDots() {
+    dots.forEach((dot, i) => {
       dot.dataset.state = i === activeIndex ? "active" : "default";
       dot.setAttribute("aria-selected", String(i === activeIndex));
     });
-    dots.forEach(({ fill }, i) => {
-      fill.classList.remove("is-playing");
-      if (i === activeIndex && !prefersReducedMotion) {
-        void fill.offsetWidth; // reflow — иначе анимация не перезапустится с нуля
-        fill.classList.add("is-playing");
-      }
-    });
   }
 
-  dots[0].dot.dataset.state = "active";
-  dots[0].dot.setAttribute("aria-selected", "true");
+  function goTo(index, withTransition = true) {
+    activeIndex = Math.max(0, Math.min(count - 1, index));
+    track.style.transition = withTransition ? "" : "none";
+    track.style.transform = `translateX(${activeIndex * -100}%)`;
+    updateDots();
+  }
 
-  if (!("IntersectionObserver" in window) || prefersReducedMotion) return;
+  updateDots();
 
-  let started = false;
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        wrap.classList.toggle("is-paused", !entry.isIntersecting);
-        if (entry.isIntersecting && !started) {
-          started = true;
-          goTo(0);
-        }
-      });
-    },
-    { threshold: 0.4 }
-  );
-  observer.observe(wrap);
+  // --- Десктоп: наведение мышью скрабит фото по горизонтали ---
+  wrap.addEventListener("pointermove", (event) => {
+    if (event.pointerType !== "mouse" || isDragging) return;
+    const rect = wrap.getBoundingClientRect();
+    const ratio = (event.clientX - rect.left) / rect.width;
+    const index = Math.min(count - 1, Math.max(0, Math.floor(ratio * count)));
+    if (index !== activeIndex) goTo(index, false);
+  });
+
+  // --- Мобильный: свайп пальцем (вертикальный скролл страницы не трогаем,
+  // как и в большом слайдере — см. слайдер.js) ---
+  let isDragging = false;
+  let dragDirection = null; // null | "horizontal" | "vertical"
+  let dragPointerId = null;
+  let dragStartX = 0;
+  let dragStartY = 0;
+
+  wrap.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse") return;
+    isDragging = true;
+    dragDirection = null;
+    dragPointerId = event.pointerId;
+    dragStartX = event.clientX;
+    dragStartY = event.clientY;
+  });
+
+  wrap.addEventListener("pointermove", (event) => {
+    if (!isDragging || event.pointerId !== dragPointerId) return;
+    const deltaX = event.clientX - dragStartX;
+    const deltaY = event.clientY - dragStartY;
+
+    if (dragDirection === null) {
+      if (Math.abs(deltaX) < DIRECTION_THRESHOLD && Math.abs(deltaY) < DIRECTION_THRESHOLD) return;
+      if (Math.abs(deltaY) > Math.abs(deltaX)) {
+        dragDirection = "vertical";
+        isDragging = false;
+        return;
+      }
+      dragDirection = "horizontal";
+      wrap.setPointerCapture(dragPointerId);
+    }
+
+    track.style.transition = "none";
+    track.style.transform = `translateX(calc(${activeIndex * -100}% + ${deltaX}px))`;
+  });
+
+  function endDrag(event) {
+    if (!isDragging || event.pointerId !== dragPointerId || dragDirection !== "horizontal") {
+      isDragging = false;
+      dragDirection = null;
+      return;
+    }
+    isDragging = false;
+    dragDirection = null;
+    const deltaX = event.clientX - dragStartX;
+    if (Math.abs(deltaX) > DRAG_THRESHOLD) {
+      goTo(activeIndex - Math.sign(deltaX));
+    } else {
+      goTo(activeIndex);
+    }
+  }
+
+  wrap.addEventListener("pointerup", endDrag);
+  wrap.addEventListener("pointercancel", endDrag);
+
+  goTo(0, false);
 }
 
 export function createPopularCard(card) {

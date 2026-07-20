@@ -1,11 +1,13 @@
 /*
   PopularCard — карточка блока "Популярное". Фото всегда квадратное
   (aspect-ratio 1/1, ширина = ширина колонки грида — см. popular.css) и
-  может состоять из нескольких кадров: тогда это мини-версия ProjectSlider
-  (components/slider) — точки с заполняющейся полоской на плашке-пилюле,
-  автоплей плавно листает кадры, пока карточка видна на экране (см.
-  IntersectionObserver в popular-card.js). Кнопка-стрелка — тот же паттерн,
-  что у ProjectCard (components/project-card): показывается, только если у
+  может состоять из нескольких кадров: тогда это мини-слайдер без автоплея —
+  на мобильном фото листается свайпом, на десктопе наведением мыши (см.
+  popular-card.js). Точки — той же плашкой-пилюлей (opacity 000000 56%),
+  но размер самих точек/полоски специально совпадает с ProjectSlider
+  (components/slider/slider.css: 0.5rem/1.5rem) — по фидбэку миниатюрная
+  версия была слишком мелкой. Кнопка-стрелка — тот же паттерн, что у
+  ProjectCard (components/project-card): показывается, только если у
   проекта есть href. Скругление фото — тот же токен --radius-card, что и
   там же, специально не хардкодим числа, чтобы оба места менялись вместе.
 */
@@ -22,6 +24,9 @@
   border-radius: var(--radius-card); /* 36px — как у фото ProjectCard */
   overflow: hidden;
   background: var(--color-white-40);
+  /* горизонтальный свайп разбирает JS (popular-card.js), вертикальный
+     скролл страницы отдаём браузеру нативно — как и у большого слайдера */
+  touch-action: pan-y;
 }
 
 .popular-card__photo-track {
@@ -65,22 +70,20 @@
 
 .popular-card__dots {
   position: absolute;
-  left: var(--space-3); /* 8px */
-  bottom: var(--space-3);
+  left: var(--space-6); /* 24px */
+  bottom: var(--space-6);
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: var(--space-1); /* 4px */
-  padding: var(--space-1) var(--space-2); /* 4px 6px */
+  gap: var(--space-3); /* 8px — как у ProjectSlider */
+  padding: var(--space-2) var(--space-3); /* 6px 8px */
   border-radius: var(--radius-pill); /* максимальное скругление плашки */
   background: rgba(0, 0, 0, 0.56);
 }
 
 .popular-card__dot {
-  position: relative;
-  overflow: hidden;
-  width: 0.25rem; /* 4px — миниатюрная версия точки ProjectSlider (8px) */
-  height: 0.25rem;
+  width: 0.5rem; /* 8px — как у точки ProjectSlider */
+  height: 0.5rem;
   padding: 0;
   border: none;
   border-radius: var(--radius-pill);
@@ -90,60 +93,37 @@
 }
 
 .popular-card__dot[data-state="active"] {
-  width: 0.75rem; /* 12px */
-}
-
-.popular-card__dot-fill {
-  position: absolute;
-  inset: 0;
+  width: 1.5rem; /* 24px — как у активной точки ProjectSlider */
   background: var(--color-white);
-  border-radius: inherit;
-  transform: scaleX(0);
-  transform-origin: left center;
-}
-
-.popular-card__dot-fill.is-playing {
-  animation: popular-card-dot-fill var(--popular-autoplay-duration, 3200ms) linear forwards;
-}
-
-.popular-card__photo-wrap.is-paused .popular-card__dot-fill.is-playing {
-  animation-play-state: paused;
-}
-
-@keyframes popular-card-dot-fill {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
 }
 
 .popular-card__title {
   max-width: 25rem; /* 400px — чтобы текст не разъезжался на широкой колонке */
-  margin: var(--space-5) 0 0; /* 16px от фото до заголовка */
+  margin: var(--space-5) auto 0; /* 16px от фото до заголовка, центрируем блок текста */
   padding: 0 var(--space-5); /* 16px по бокам текста */
   font-family: var(--font-heading);
   font-weight: 400;
   font-size: var(--font-size-lg); /* 24px */
   line-height: var(--line-height-default); /* 130% */
   color: var(--color-white);
+  text-align: center;
 }
 
 .popular-card__subtitle {
   max-width: 25rem; /* 400px */
-  margin: var(--space-3) 0 0; /* 8px от заголовка */
+  margin: var(--space-3) auto 0; /* 8px от заголовка, центрируем блок текста */
   padding: 0 var(--space-5); /* 16px по бокам текста */
   font-family: var(--font-body);
   font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   line-height: var(--line-height-default);
   color: var(--color-white);
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .popular-card__photo-track,
   .popular-card__dot {
     transition-duration: 0.01ms;
-  }
-
-  .popular-card__dot-fill.is-playing {
-    animation: none;
   }
 }
