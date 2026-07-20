@@ -14,18 +14,21 @@ const companyLogo = (n) => encodeURI(`assets/company logos/logo ${n}.png`);
 // компактных лого-иконок (Avito, swtec).
 const MAX_LOGO_ASPECT = 4.75 / 2.125;
 
+// href: null — у карточки нет перехода, стрелка не показывается
+// (см. createProjectCard). Как только для проекта появится реальная
+// ссылка, достаточно проставить её сюда — стрелка отрисуется сама.
 export const projectCards = [
-  { id: 1, title: "Seller CRM", image: projectPhoto(1), logo: companyLogo(1), logoAlt: "Ozon", href: "#" },
-  { id: 2, title: "О компании", image: projectPhoto(2), logo: companyLogo(2), logoAlt: "Avito", href: "#" },
-  { id: 3, title: "Карта переработки", image: projectPhoto(3), logo: companyLogo(2), logoAlt: "Avito", href: "#" },
-  { id: 4, title: "Seller Prices", image: projectPhoto(4), logo: companyLogo(1), logoAlt: "Ozon", href: "#" },
-  { id: 5, title: "ПМЭФ 2025", image: projectPhoto(5), logo: companyLogo(2), logoAlt: "Avito", href: "#" },
-  { id: 6, title: "Геймификация", image: projectPhoto(6), logo: companyLogo(2), logoAlt: "Avito", href: "#" },
-  { id: 7, title: "Поиск животных", image: projectPhoto(7), logo: companyLogo(2), logoAlt: "Avito", href: "#" },
-  { id: 8, title: "HR платформа", image: projectPhoto(8), logo: companyLogo(3), logoAlt: "swtec", href: "#" },
-  { id: 9, title: "Здоровье", image: projectPhoto(9), logo: companyLogo(3), logoAlt: "swtec", href: "#" },
-  { id: 10, title: "Time Warp", image: projectPhoto(10), logo: null, logoAlt: "", href: "#" },
-  { id: 11, title: "Dashboard", image: projectPhoto(11), logo: companyLogo(3), logoAlt: "swtec", href: "#" },
+  { id: 1, title: "Seller CRM", image: projectPhoto(1), logo: companyLogo(1), logoAlt: "Ozon", href: null },
+  { id: 2, title: "О компании", image: projectPhoto(2), logo: companyLogo(2), logoAlt: "Avito", href: null },
+  { id: 3, title: "Карта переработки", image: projectPhoto(3), logo: companyLogo(2), logoAlt: "Avito", href: null },
+  { id: 4, title: "Seller Prices", image: projectPhoto(4), logo: companyLogo(1), logoAlt: "Ozon", href: null },
+  { id: 5, title: "ПМЭФ 2025", image: projectPhoto(5), logo: companyLogo(2), logoAlt: "Avito", href: null },
+  { id: 6, title: "Геймификация", image: projectPhoto(6), logo: companyLogo(2), logoAlt: "Avito", href: null },
+  { id: 7, title: "Поиск животных", image: projectPhoto(7), logo: companyLogo(2), logoAlt: "Avito", href: null },
+  { id: 8, title: "HR платформа", image: projectPhoto(8), logo: companyLogo(3), logoAlt: "swtec", href: null },
+  { id: 9, title: "Здоровье", image: projectPhoto(9), logo: companyLogo(3), logoAlt: "swtec", href: null },
+  { id: 10, title: "Time Warp", image: projectPhoto(10), logo: null, logoAlt: "", href: null },
+  { id: 11, title: "Dashboard", image: projectPhoto(11), logo: companyLogo(3), logoAlt: "swtec", href: null },
 ];
 
 // Нейтральный плейсхолдер (градиент + иконка изображения) на случай,
