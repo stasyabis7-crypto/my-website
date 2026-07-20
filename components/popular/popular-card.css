@@ -3,10 +3,8 @@
   (aspect-ratio 1/1, ширина = ширина колонки грида — см. popular.css) и
   может состоять из нескольких кадров: тогда это мини-слайдер без автоплея —
   на мобильном фото листается свайпом, на десктопе наведением мыши (см.
-  popular-card.js). Точки — той же плашкой-пилюлей (opacity 000000 56%),
-  но размер самих точек/полоски специально совпадает с ProjectSlider
-  (components/slider/slider.css: 0.5rem/1.5rem) — по фидбэку миниатюрная
-  версия была слишком мелкой. Кнопка-стрелка — тот же паттерн, что у
+  popular-card.js). Вместо точек — текстовый счётчик "N из M" на затемнённой
+  плашке (opacity 000000 56%). Кнопка-стрелка — тот же паттерн, что у
   ProjectCard (components/project-card): показывается, только если у
   проекта есть href. Скругление фото — тот же токен --radius-card, что и
   там же, специально не хардкодим числа, чтобы оба места менялись вместе.
@@ -68,62 +66,49 @@
   height: calc(var(--icon-rem-px) * 1.5);
 }
 
-.popular-card__dots {
+.popular-card__photo-counter {
   position: absolute;
   left: var(--space-6); /* 24px */
   bottom: var(--space-6);
   z-index: 1;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-3); /* 8px — как у ProjectSlider */
-  padding: var(--space-2) var(--space-3); /* 6px 8px */
+  padding: var(--space-4) var(--space-5); /* 12px 16px — плашка повыше, чем была у точек */
   border-radius: var(--radius-pill); /* максимальное скругление плашки */
   background: rgba(0, 0, 0, 0.56);
-}
-
-.popular-card__dot {
-  width: 0.5rem; /* 8px — как у точки ProjectSlider */
-  height: 0.5rem;
-  padding: 0;
-  border: none;
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  transition: width 320ms cubic-bezier(0.22, 0.9, 0.26, 1);
-}
-
-.popular-card__dot[data-state="active"] {
-  width: 1.5rem; /* 24px — как у активной точки ProjectSlider */
-  background: var(--color-white);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--color-white);
 }
 
 .popular-card__title {
   max-width: 25rem; /* 400px — чтобы текст не разъезжался на широкой колонке */
-  margin: var(--space-5) auto 0; /* 16px от фото до заголовка, центрируем блок текста */
+  margin: var(--space-5) 0 0; /* 16px от фото до заголовка */
   padding: 0 var(--space-5); /* 16px по бокам текста */
   font-family: var(--font-heading);
   font-weight: 400;
   font-size: var(--font-size-lg); /* 24px */
   line-height: var(--line-height-default); /* 130% */
   color: var(--color-white);
-  text-align: center;
+  text-align: left;
 }
 
 .popular-card__subtitle {
   max-width: 25rem; /* 400px */
-  margin: var(--space-3) auto 0; /* 8px от заголовка, центрируем блок текста */
+  margin: var(--space-3) 0 0; /* 8px от заголовка */
   padding: 0 var(--space-5); /* 16px по бокам текста */
   font-family: var(--font-body);
   font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   line-height: var(--line-height-default);
   color: var(--color-white);
-  text-align: center;
+  text-align: left;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .popular-card__photo-track,
-  .popular-card__dot {
+  .popular-card__photo-track {
     transition-duration: 0.01ms;
   }
 }

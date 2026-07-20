@@ -55,36 +55,22 @@ const DIRECTION_THRESHOLD = 8; // px — до этого не решаем, го
 function initPopularCardSlider(article, count) {
   const wrap = article.querySelector(".popular-card__photo-wrap");
   const track = article.querySelector(".popular-card__photo-track");
-  const dotsWrap = article.querySelector(".popular-card__dots");
+  const counter = article.querySelector(".popular-card__photo-counter");
 
   let activeIndex = 0;
 
-  const dots = Array.from({ length: count }, (_, index) => {
-    const dot = document.createElement("button");
-    dot.type = "button";
-    dot.className = "popular-card__dot";
-    dot.setAttribute("role", "tab");
-    dot.setAttribute("aria-label", `Фото ${index + 1} из ${count}`);
-    dot.addEventListener("click", () => goTo(index));
-    dotsWrap.appendChild(dot);
-    return dot;
-  });
-
-  function updateDots() {
-    dots.forEach((dot, i) => {
-      dot.dataset.state = i === activeIndex ? "active" : "default";
-      dot.setAttribute("aria-selected", String(i === activeIndex));
-    });
+  function updateCounter() {
+    counter.textContent = `${activeIndex + 1} из ${count}`;
   }
 
   function goTo(index, withTransition = true) {
     activeIndex = Math.max(0, Math.min(count - 1, index));
     track.style.transition = withTransition ? "" : "none";
     track.style.transform = `translateX(${activeIndex * -100}%)`;
-    updateDots();
+    updateCounter();
   }
 
-  updateDots();
+  updateCounter();
 
   // --- Десктоп: наведение мышью скрабит фото по горизонтали ---
   wrap.addEventListener("pointermove", (event) => {
@@ -183,7 +169,7 @@ export function createPopularCard(card) {
       </a>`
           : ""
       }
-      ${hasMultiplePhotos ? `<div class="popular-card__dots" role="tablist" aria-label="Фото проекта"></div>` : ""}
+      ${hasMultiplePhotos ? `<div class="popular-card__photo-counter"></div>` : ""}
     </div>
     <h2 class="popular-card__title">${card.title}</h2>
     <p class="popular-card__subtitle">${card.subtitle}</p>

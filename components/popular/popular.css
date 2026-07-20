@@ -30,7 +30,7 @@
   margin-top: -5rem; /* 80px */
   border-radius: var(--radius-card-outer); /* 40px */
   background: var(--color-accent-pink);
-  padding: 3.75rem 0 0.625rem; /* 60px сверху, 10px снизу (до кнопки её собственный margin-top) */
+  padding: var(--space-8) 0 0.625rem; /* 40px сверху везде, 10px снизу (до кнопки её собственный margin-top) */
 }
 
 .popular-block__header {
@@ -93,17 +93,15 @@
 }
 
 @media (min-width: 800px) {
+  .popular-block {
+    /* от 800px (планшет) нахлёста на предыдущий блок больше нет — обычный
+       промежуток между блоками, как и везде на странице (нахлёст только
+       на мобильном) */
+    margin-top: 0;
+  }
+
   .popular-grid {
     grid-template-columns: 1fr 1fr;
     column-gap: var(--space-5); /* 16px между карточками в ряду */
-  }
-}
-
-@media (min-width: 1101px) {
-  .popular-block {
-    /* от 1101px нахлёста на предыдущий блок больше нет — обычный
-       промежуток между блоками, как и везде на странице */
-    margin-top: 0;
-    padding-top: 6.25rem; /* 100px на десктопе */
   }
 }
