@@ -138,7 +138,7 @@
   z-index: 2;
   left: var(--space-8);
   right: var(--space-8);
-  bottom: 6rem; /* 96px при 390px — поднято ещё выше над нижним краем фото */
+  bottom: 7rem; /* 112px при 390px — поднято ещё чуть выше над нижним краем фото */
   max-width: 19.5rem; /* 312px при 390px */
   margin-inline: auto;
   display: flex;
@@ -155,18 +155,16 @@
   transform-origin: top left;
 }
 
-/* Хвостик "сообщения" — острый, без скругления, 35px от края блока (было
-   20px, сдвинут ещё на 15px вправо), в 2 раза крупнее прежнего. */
+/* Хвостик "сообщения" — неровный разносторонний треугольник (SVG),
+   крупнее прежнего CSS-хвостика на равных бордерах. */
 .about-block__chat::before {
   content: "";
   position: absolute;
-  top: -1.375rem;
-  left: 2.1875rem; /* 35px при 390px */
-  width: 0;
-  height: 0;
-  border-left: 1.5rem solid transparent;
-  border-right: 1.5rem solid transparent;
-  border-bottom: 1.5rem solid var(--color-white);
+  top: -1.75rem;
+  left: 1.75rem; /* 28px при 390px */
+  width: 3.75rem; /* 60px при 390px */
+  height: 3.0625rem; /* 49px при 390px, пропорция SVG 64:52 */
+  background: url("../../assets/about me/rectangle.svg") no-repeat center / contain;
 }
 
 .about-block__chat.is-visible {
