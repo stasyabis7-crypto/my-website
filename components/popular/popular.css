@@ -1,0 +1,100 @@
+/*
+  Popular — блок "Популярное". Full-bleed фон (та же техника отрицательного
+  margin, что у .about-block/.hero-block в index.html) с видимым скруглением
+  сверху/снизу (--radius-card-outer, тот же токен, что у внешней рамки
+  ProjectCard). Раскладка сразу на всех разрешениях: мобильный — карточки
+  в столбик, планшет/десктоп (800px+) — сетка 2×2. Карточки (см.
+  popular-card.css) сами по себе фиксированного размера не имеют — просто
+  тянутся по ширине колонки, фото внутри держит квадратные пропорции.
+
+  Отступ карточек/кнопки от боков экрана (10px) — свой для этого блока,
+  заметно теснее обычных отступов сайта (--space-8, 40px), поэтому задан
+  напрямую в rem, а не через токен из общей шкалы. Заголовок/подзаголовок
+  блока используют обычный отступ (--space-8), как и остальные заголовки
+  на странице.
+*/
+
+.popular-block {
+  /* full-bleed: съедаем горизонтальный паддинг .page-shell */
+  margin-inline: calc(-1 * var(--space-8));
+  /* лёгкий нахлёст фона на фото блока "Обо мне" — только на мобильном/
+     планшете, см. переопределение ниже на 1101px+ */
+  margin-top: -1.25rem; /* 20px */
+  border-radius: var(--radius-card-outer); /* 40px */
+  background: var(--color-accent-pink);
+  padding: 3.75rem 0 0.625rem; /* 60px сверху, 10px снизу (до кнопки её собственный margin-top) */
+}
+
+.popular-block__header {
+  padding-inline: var(--space-8); /* 40px — как у заголовков остальных блоков */
+}
+
+.popular-block__heading {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--font-size-xl); /* 36px */
+  line-height: var(--line-height-default);
+  color: var(--color-white);
+}
+
+.popular-block__subtitle {
+  margin: var(--space-2) 0 0; /* 6px — как у остальных подзаголовков на странице */
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-semibold);
+  font-size: 1rem;
+  line-height: var(--line-height-default);
+  color: var(--color-white);
+}
+
+.popular-grid {
+  margin-top: var(--space-7); /* 32px от подзаголовка до карточек */
+  padding-inline: 0.625rem; /* 10px до боков экрана */
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem; /* 40px между карточками на мобильном */
+}
+
+.popular-block__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2.5rem 0.625rem 0; /* 40px от карточек, 10px до боков экрана */
+  height: 3.75rem; /* 60px */
+  border-radius: var(--radius-pill); /* максимальное скругление */
+  background: var(--color-white);
+  color: var(--color-black);
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-semibold);
+  font-size: 1rem;
+  line-height: var(--line-height-default);
+  text-decoration: none;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transition: transform 120ms ease;
+}
+
+.popular-block__cta:active {
+  transform: scale(0.97);
+}
+
+.popular-block__cta:focus-visible {
+  outline: 0.125rem solid var(--color-white);
+  outline-offset: 0.125rem;
+}
+
+@media (min-width: 800px) {
+  .popular-grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--space-5); /* 16px между карточками в ряду */
+  }
+}
+
+@media (min-width: 1101px) {
+  .popular-block {
+    /* от 1101px нахлёста на предыдущий блок больше нет — обычный
+       промежуток между блоками, как и везде на странице */
+    margin-top: 0;
+    padding-top: 6.25rem; /* 100px на десктопе */
+  }
+}

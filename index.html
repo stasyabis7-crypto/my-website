@@ -13,6 +13,8 @@
 <link rel="stylesheet" href="components/project-card/project-card.css" />
 <link rel="stylesheet" href="components/slider/slider.css" />
 <link rel="stylesheet" href="components/about/about.css" />
+<link rel="stylesheet" href="components/popular/popular-card.css" />
+<link rel="stylesheet" href="components/popular/popular.css" />
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -247,6 +249,12 @@
     aboutRoot.id = 'about-root';
     document.querySelector('.page-shell').insertBefore(aboutRoot, document.querySelector('.page-bottom'));
     mountComponent("about-root", "components/about/about.html", initAbout);
+
+    import { initPopular } from "./components/popular/popular.js";
+    const popularRoot = document.createElement('div');
+    popularRoot.id = 'popular-root';
+    document.querySelector('.page-shell').insertBefore(popularRoot, document.querySelector('.page-bottom'));
+    mountComponent("popular-root", "components/popular/popular.html", initPopular);
   </script>
 </body>
 </html>
