@@ -63,6 +63,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity 160ms ease; /* короткий кроссфейд при смене кадра, см. beautiful.js */
+}
+
+.beautiful-block__photo.is-switching {
+  opacity: 0;
 }
 
 .beautiful-block__counter {
@@ -85,6 +90,9 @@
 }
 
 .beautiful-block__thumbs {
+  /* relative — чтобы offsetTop/offsetLeft миниатюр в beautiful.js считались
+     от самой ленты, а не от случайного дальнего позиционированного предка */
+  position: relative;
   display: flex;
   flex-direction: row;
   gap: 10px; /* между миниатюрами на мобильном/планшете */
@@ -161,8 +169,10 @@
   уезжает вправо, миниатюры вторые — остаются слева). Высота колонки
   миниатюр = высоте фото — задаётся через --beautiful-photo-height
   (ResizeObserver в beautiful.js), сама колонка скроллится по вертикали.
-  Фото без max-width — растягивается вместе с миниатюрами (тоже крупнее
-  здесь, чем на мобильном) на всю ширину экрана, а не только на половину.
+
+  Миниатюры крупнее, чем на мобильном, а фото — заметно уже, чем занятая
+  им ширина целиком (max-width ниже): вместе это оставляет в столбике
+  видимыми сразу ~5–6 миниатюр вместо мелкой ленты на пол-экрана.
 */
 @media (min-width: 1101px) {
   .beautiful-block__layout {
@@ -173,6 +183,7 @@
   .beautiful-block__photo-wrap {
     flex: 1 1 auto;
     min-width: 0;
+    max-width: clamp(620px, 61vw, 900px);
   }
 
   .beautiful-block__thumbs {
@@ -186,7 +197,7 @@
   }
 
   .beautiful-block__thumb {
-    width: clamp(96px, 8vw, 160px);
+    width: clamp(130px, 10.5vw, 210px);
   }
 
   /* Стрелки поверх фото — та же кнопка (размер/стекло/иконка), что у
