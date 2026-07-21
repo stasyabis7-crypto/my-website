@@ -67,6 +67,11 @@
   border-radius: var(--radius-card); /* тот же радиус, что у карточек выше */
   overflow: hidden;
   background: var(--color-white-40); /* видно, пока фото не загрузилось */
+  /* На мобильном это единственное "активное" фото — тень только у него,
+     та же тень (токены), что у кнопки-стрелки/лого-плашки карточек. */
+  box-shadow:
+    var(--sds-size-depth-0) var(--sds-size-depth-400) var(--sds-size-depth-800) var(--sds-size-depth-negative-100) var(--sds-color-black-200),
+    var(--sds-size-depth-0) var(--sds-size-depth-100) var(--sds-size-depth-100) var(--sds-size-depth-negative-100) var(--sds-color-black-100);
 }
 
 .beautiful-block__photo {
@@ -163,6 +168,11 @@
   border-radius: var(--radius-card);
   overflow: hidden;
   background: var(--color-white-40);
+  /* На планшете/десктопе тень у всех карточек слайдера, не только у одной
+     активной — та же тень, что у .beautiful-block__photo-wrap на моб. */
+  box-shadow:
+    var(--sds-size-depth-0) var(--sds-size-depth-400) var(--sds-size-depth-800) var(--sds-size-depth-negative-100) var(--sds-color-black-200),
+    var(--sds-size-depth-0) var(--sds-size-depth-100) var(--sds-size-depth-100) var(--sds-size-depth-negative-100) var(--sds-color-black-100);
 }
 
 .beautiful-block__slider-image {
