@@ -1,17 +1,29 @@
-<!-- Компонент Beautiful — блок "Красивое". Фрагмент, вставляется в страницу как есть. -->
+<!-- Компонент Beautiful — блок "Красивое". Фрагмент, вставляется в страницу как есть.
+     Два независимых варианта разметки, переключаются по ширине (см. beautiful.css):
+     .beautiful-block__solo — мобильный (<800px, дизайн без изменений, см. историю
+     блока), .beautiful-block__slider — планшет/десктоп (800px+, новый слайдер на
+     N фото в ряд). Оба всегда в DOM, видимость переключает только CSS. -->
 <section class="beautiful-block" aria-label="Красивое">
   <div class="beautiful-block__header">
     <h2 class="beautiful-block__heading">Красивое</h2>
     <p class="beautiful-block__subtitle">И невыпущенное</p>
   </div>
 
-  <div class="beautiful-block__layout">
+  <div class="beautiful-block__solo">
     <div class="beautiful-block__photo-wrap">
       <img class="beautiful-block__photo" alt="Красивое, но невыпущенное" />
       <div class="beautiful-block__counter"></div>
+    </div>
 
-      <!-- Только десктоп (см. beautiful.css) — та же иконка/стиль кнопки,
-           что у "наверх" в схлопнутом BottomNav, просто повёрнутая. -->
+    <div class="beautiful-block__thumbs" aria-label="Выбор фото"></div>
+  </div>
+
+  <div class="beautiful-block__slider">
+    <div class="beautiful-block__slider-viewport">
+      <div class="beautiful-block__slider-track"></div>
+
+      <!-- Стрелки показаны постоянно (не по ховеру) — та же иконка/стиль
+           кнопки, что у "наверх" в схлопнутом BottomNav, просто повёрнутая. -->
       <button type="button" class="beautiful-block__nav beautiful-block__nav--prev glass-surface" aria-label="Предыдущее фото">
         <svg class="beautiful-block__nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M17 14L12 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -26,7 +38,7 @@
       </button>
     </div>
 
-    <div class="beautiful-block__thumbs" aria-label="Выбор фото"></div>
+    <div class="beautiful-block__dots" aria-label="Страницы"></div>
   </div>
 
   <a class="beautiful-block__cta" href="#">Посмотреть всё</a>

@@ -1,15 +1,23 @@
 /*
   Beautiful — блок "Красивое". Full-bleed фон (та же техника отрицательного
   margin, что у .about-block/.popular-block), градиент сверху вниз от
-  синего к белому. Внутри — большое фото (реальный размер исходников
-  2002×2552, портретный прямоугольник) и лента миниатюр того же фото-сета:
-  строкой под фото на мобильном/планшете, столбиком слева от фото на
-  десктопе (см. initBeautiful в beautiful.js — переключение, автоплей и
-  синхронизация высоты колонки миниатюр с фото).
+  синего к белому. Фото — реальный размер исходников 2002×2552, портретный
+  прямоугольник, везде используется этот же аспект.
 
-  Отступы внутри блока (10/16/24/40px) заданы в спецификации фиксированными
-  пикселями, а не через rem-токены шкалы — в отличие от остального сайта,
-  здесь это осознанно точные значения, не растущие вместе с экраном.
+  Два независимых варианта разметки под разные разрешения (мобильный дизайн
+  принципиально другой, а не просто урезанный десктопный — см. HTML):
+  - .beautiful-block__solo (<800px) — одно большое фото + лента миниатюр
+    под ним, миниатюра выбирается кликом/свайпом, см. initBeautiful в
+    beautiful.js.
+  - .beautiful-block__slider (800px+) — слайдер на N фото в ряд (2 на
+    планшете, 3 на десктопе), стрелки постоянно поверх крайних фото,
+    точки-пагинация группами по N, см. initBeautifulSlider в beautiful.js.
+  Оба всегда в DOM (проще синхронизировать, чем пересобирать по resize),
+  видимость переключает только CSS.
+
+  Отступы внутри блока (10/16/24/40px) заданы фиксированными пикселями, а
+  не через rem-токены шкалы — в отличие от остального сайта, здесь это
+  осознанно точные значения, не растущие вместе с экраном.
 */
 
 .beautiful-block {
@@ -42,12 +50,14 @@
   color: var(--color-white);
 }
 
-.beautiful-block__layout {
+/* --- Мобильный вариант (<800px) — фото + лента миниатюр --- */
+
+.beautiful-block__solo {
   margin-top: var(--space-7); /* 32px от подзаголовка, как у Popular */
   padding-inline: 10px;
   display: flex;
   flex-direction: column;
-  gap: 16px; /* между фото и лентой миниатюр — одинаково везде */
+  gap: 16px; /* между фото и лентой миниатюр */
 }
 
 .beautiful-block__photo-wrap {
@@ -90,12 +100,10 @@
 }
 
 .beautiful-block__thumbs {
-  /* relative — чтобы offsetTop/offsetLeft миниатюр в beautiful.js считались
-     от самой ленты, а не от случайного дальнего позиционированного предка */
   position: relative;
   display: flex;
   flex-direction: row;
-  gap: 10px; /* между миниатюрами на мобильном/планшете */
+  gap: 10px;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x proximity;
@@ -131,8 +139,116 @@
   object-fit: cover;
 }
 
+/* --- Планшет/десктоп (800px+) — слайдер на N фото в ряд --- */
+
+.beautiful-block__slider {
+  display: none; /* включается в медиа-запросе ниже */
+}
+
+.beautiful-block__slider-viewport {
+  position: relative;
+  overflow: hidden;
+}
+
+.beautiful-block__slider-track {
+  display: flex;
+  gap: 16px;
+  transition: transform 320ms ease;
+}
+
+.beautiful-block__slider-item {
+  flex: 0 0 calc((100% - (var(--beautiful-slider-count, 2) - 1) * 16px) / var(--beautiful-slider-count, 2));
+  aspect-ratio: 2002 / 2552;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-white-40);
+}
+
+.beautiful-block__slider-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.beautiful-block__dots {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.beautiful-block__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: width 240ms ease, background 240ms ease;
+}
+
+.beautiful-block__dot.is-active {
+  width: 1.5rem;
+  background: var(--color-accent-pink);
+}
+
+/* Стрелки — постоянно видны (не по ховеру), лежат поверх крайних фото:
+   левая — в левой части первого видимого фото, правая — в правой части
+   последнего. Та же кнопка (размер/стекло/иконка), что у "наверх" в
+   схлопнутом BottomNav (bottom-nav.css), просто повёрнутая на 90°. */
 .beautiful-block__nav {
-  display: none; /* только десктоп — включается в медиа-запросе ниже */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: calc(var(--icon-rem-px) * 3.75);
+  height: calc(var(--icon-rem-px) * 3.75);
+  padding: 0;
+  border-radius: var(--radius-pill);
+  color: var(--color-black);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.beautiful-block__nav--prev {
+  left: var(--space-5);
+}
+
+.beautiful-block__nav--next {
+  right: var(--space-5);
+}
+
+.beautiful-block__nav:active {
+  transform: translateY(-50%) scale(0.94);
+}
+
+.beautiful-block__nav:disabled {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
+.beautiful-block__nav:focus-visible {
+  outline: 0.125rem solid var(--color-black);
+  outline-offset: 0.125rem;
+}
+
+.beautiful-block__nav-icon {
+  width: calc(var(--icon-rem-px) * 1.5);
+  height: calc(var(--icon-rem-px) * 1.5);
+}
+
+.beautiful-block__nav--next .beautiful-block__nav-icon {
+  transform: rotate(90deg);
+}
+
+.beautiful-block__nav--prev .beautiful-block__nav-icon {
+  transform: rotate(-90deg);
 }
 
 .beautiful-block__cta {
@@ -163,106 +279,33 @@
   outline-offset: 0.125rem;
 }
 
-/*
-  Десктоп (1101+, см. index.html) — миниатюры уходят в столбик слева от
-  фото (flex-direction: row-reverse: фото первое в разметке, поэтому
-  уезжает вправо, миниатюры вторые — остаются слева). Высота колонки
-  миниатюр = высоте фото — задаётся через --beautiful-photo-height
-  (ResizeObserver в beautiful.js), сама колонка скроллится по вертикали.
+/* Планшет (800–1100) — слайдер по 2 фото в ряд, соло-вариант скрыт. */
+@media (min-width: 800px) {
+  .beautiful-block__solo {
+    display: none;
+  }
 
-  Миниатюры крупнее, чем на мобильном, а фото — заметно уже, чем занятая
-  им ширина целиком (max-width ниже): вместе это оставляет в столбике
-  видимыми сразу ~5–6 миниатюр вместо мелкой ленты на пол-экрана.
-*/
+  .beautiful-block__slider {
+    display: block;
+    margin-top: var(--space-7);
+    padding-inline: 10px;
+    --beautiful-slider-count: 2;
+  }
+}
+
+/* Десктоп (1101+, см. index.html) — тот же слайдер, только по 3 фото в ряд. */
 @media (min-width: 1101px) {
-  .beautiful-block__layout {
-    flex-direction: row-reverse;
-    align-items: flex-start;
-  }
-
-  .beautiful-block__photo-wrap {
-    flex: 1 1 auto;
-    min-width: 0;
-    max-width: clamp(620px, 61vw, 900px);
-  }
-
-  .beautiful-block__thumbs {
-    flex: 0 0 auto;
-    flex-direction: column;
-    gap: 16px; /* между миниатюрами на десктопе — больше, чем на мобильном */
-    overflow-x: hidden;
-    overflow-y: auto;
-    scroll-snap-type: y proximity;
-    height: var(--beautiful-photo-height, auto);
-  }
-
-  .beautiful-block__thumb {
-    width: clamp(130px, 10.5vw, 210px);
-  }
-
-  /* Стрелки поверх фото — та же кнопка (размер/стекло/иконка), что у
-     "наверх" в схлопнутом BottomNav (bottom-nav.css), просто повёрнутая
-     на 90°, а не отдельно нарисованная. Показываются только по наведению
-     на фото; листать можно и кликом рядом с ними — см. beautiful.js. */
-  .beautiful-block__nav {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    z-index: 2;
-    width: calc(var(--icon-rem-px) * 3.75);
-    height: calc(var(--icon-rem-px) * 3.75);
-    padding: 0;
-    border-radius: var(--radius-pill);
-    color: var(--color-black);
-    cursor: pointer;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 160ms ease;
-  }
-
-  .beautiful-block__nav--prev {
-    left: var(--space-5);
-    transform: translateY(-50%);
-  }
-
-  .beautiful-block__nav--next {
-    right: var(--space-5);
-    transform: translateY(-50%);
-  }
-
-  .beautiful-block__nav:active {
-    transform: translateY(-50%) scale(0.94);
-  }
-
-  .beautiful-block__photo-wrap:hover .beautiful-block__nav,
-  .beautiful-block__nav:focus-visible {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .beautiful-block__nav:focus-visible {
-    outline: 0.125rem solid var(--color-black);
-    outline-offset: 0.125rem;
-  }
-
-  .beautiful-block__nav-icon {
-    width: calc(var(--icon-rem-px) * 1.5);
-    height: calc(var(--icon-rem-px) * 1.5);
-  }
-
-  .beautiful-block__nav--next .beautiful-block__nav-icon {
-    transform: rotate(90deg);
-  }
-
-  .beautiful-block__nav--prev .beautiful-block__nav-icon {
-    transform: rotate(-90deg);
+  .beautiful-block__slider {
+    --beautiful-slider-count: 3;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .beautiful-block__thumbs {
     scroll-behavior: auto;
+  }
+
+  .beautiful-block__slider-track {
+    transition: none;
   }
 }
