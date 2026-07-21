@@ -14,6 +14,9 @@ const AUTOPLAY_INTERVAL = 4200;
 
 const initializedBlocks = new WeakSet();
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+// Стрелки по бокам фото — только десктоп (см. beautiful.css), клик рядом с
+// ними по левой/правой половине фото должен листать точно так же.
+const desktopQuery = window.matchMedia("(min-width: 1101px)");
 
 export function initBeautiful(root = document) {
   const block = root.querySelector(".beautiful-block");
@@ -25,6 +28,8 @@ export function initBeautiful(root = document) {
   const photo = block.querySelector(".beautiful-block__photo");
   const counter = block.querySelector(".beautiful-block__counter");
   const thumbsWrap = block.querySelector(".beautiful-block__thumbs");
+  const prevButton = block.querySelector(".beautiful-block__nav--prev");
+  const nextButton = block.querySelector(".beautiful-block__nav--next");
 
   const thumbs = beautifulPhotos.map((src, index) => {
     const button = document.createElement("button");
@@ -83,6 +88,19 @@ export function initBeautiful(root = document) {
 
   layout.addEventListener("pointerenter", stopAutoplay);
   layout.addEventListener("pointerleave", startAutoplay);
+
+  prevButton.addEventListener("click", () => goTo(activeIndex - 1, { userInitiated: true }));
+  nextButton.addEventListener("click", () => goTo(activeIndex + 1, { userInitiated: true }));
+
+  // Клик рядом со стрелками — по всей левой/правой половине фото, не
+  // только по самой кнопке (кнопки же обрабатываются отдельно выше —
+  // closest() пропускает клики, которые до них дошли по всплытию).
+  photoWrap.addEventListener("click", (event) => {
+    if (!desktopQuery.matches || event.target.closest(".beautiful-block__nav")) return;
+    const rect = photoWrap.getBoundingClientRect();
+    const isLeftHalf = event.clientX - rect.left < rect.width / 2;
+    goTo(activeIndex + (isLeftHalf ? -1 : 1), { userInitiated: true });
+  });
 
   // На десктопе высота колонки миниатюр = высоте фото (миниатюр много,
   // внутри своя вертикальная прокрутка) — в CSS такое без circular

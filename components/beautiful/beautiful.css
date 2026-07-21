@@ -123,6 +123,10 @@
   object-fit: cover;
 }
 
+.beautiful-block__nav {
+  display: none; /* только десктоп — включается в медиа-запросе ниже */
+}
+
 .beautiful-block__cta {
   display: flex;
   align-items: center;
@@ -183,6 +187,66 @@
 
   .beautiful-block__thumb {
     width: clamp(96px, 8vw, 160px);
+  }
+
+  /* Стрелки поверх фото — та же кнопка (размер/стекло/иконка), что у
+     "наверх" в схлопнутом BottomNav (bottom-nav.css), просто повёрнутая
+     на 90°, а не отдельно нарисованная. Показываются только по наведению
+     на фото; листать можно и кликом рядом с ними — см. beautiful.js. */
+  .beautiful-block__nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    width: calc(var(--icon-rem-px) * 3.75);
+    height: calc(var(--icon-rem-px) * 3.75);
+    padding: 0;
+    border-radius: var(--radius-pill);
+    color: var(--color-black);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 160ms ease;
+  }
+
+  .beautiful-block__nav--prev {
+    left: var(--space-5);
+    transform: translateY(-50%);
+  }
+
+  .beautiful-block__nav--next {
+    right: var(--space-5);
+    transform: translateY(-50%);
+  }
+
+  .beautiful-block__nav:active {
+    transform: translateY(-50%) scale(0.94);
+  }
+
+  .beautiful-block__photo-wrap:hover .beautiful-block__nav,
+  .beautiful-block__nav:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .beautiful-block__nav:focus-visible {
+    outline: 0.125rem solid var(--color-black);
+    outline-offset: 0.125rem;
+  }
+
+  .beautiful-block__nav-icon {
+    width: calc(var(--icon-rem-px) * 1.5);
+    height: calc(var(--icon-rem-px) * 1.5);
+  }
+
+  .beautiful-block__nav--next .beautiful-block__nav-icon {
+    transform: rotate(90deg);
+  }
+
+  .beautiful-block__nav--prev .beautiful-block__nav-icon {
+    transform: rotate(-90deg);
   }
 }
 

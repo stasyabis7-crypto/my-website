@@ -9,6 +9,21 @@
     <div class="beautiful-block__photo-wrap">
       <img class="beautiful-block__photo" alt="Красивое, но невыпущенное" />
       <div class="beautiful-block__counter"></div>
+
+      <!-- Только десктоп (см. beautiful.css) — та же иконка/стиль кнопки,
+           что у "наверх" в схлопнутом BottomNav, просто повёрнутая. -->
+      <button type="button" class="beautiful-block__nav beautiful-block__nav--prev glass-surface" aria-label="Предыдущее фото">
+        <svg class="beautiful-block__nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M17 14L12 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 9L7 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button type="button" class="beautiful-block__nav beautiful-block__nav--next glass-surface" aria-label="Следующее фото">
+        <svg class="beautiful-block__nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M17 14L12 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 9L7 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
 
     <div class="beautiful-block__thumbs" aria-label="Выбор фото"></div>
