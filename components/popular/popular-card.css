@@ -68,8 +68,8 @@
 
 .popular-card__photo-counter {
   position: absolute;
-  left: var(--space-6); /* 24px */
-  bottom: var(--space-6);
+  left: var(--space-4); /* 12px */
+  bottom: var(--space-4);
   z-index: 1;
   display: inline-flex;
   align-items: center;
