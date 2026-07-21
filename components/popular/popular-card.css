@@ -107,6 +107,14 @@
   text-align: left;
 }
 
+@media (min-width: 1101px) {
+  .popular-card__title,
+  .popular-card__subtitle {
+    /* на десктопе текстовый блок карточки шире: не 400px, а 800px */
+    max-width: 800px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .popular-card__photo-track {
     transition-duration: 0.01ms;

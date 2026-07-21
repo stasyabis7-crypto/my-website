@@ -221,6 +221,11 @@
   <script type="module">
     import { initHeader } from "./components/header/header.js";
     import { initBottomNav } from "./components/bottom-nav/bottom-nav.js";
+    import { initTypography } from "./components/typography/typography.js";
+
+    // Следит за всем деревом страницы, включая контент, который компоненты
+    // ниже подгружают асинхронно — запускаем один раз, до монтирования.
+    initTypography(document.body);
 
     async function mountComponent(rootId, fragmentPath, init) {
       const root = document.getElementById(rootId);

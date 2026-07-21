@@ -6,6 +6,11 @@
 */
 
 .project-card {
+  /* Своё начертание заголовка — Semibold, не связано с общим токеном
+     --font-weight-semibold (тот означает кликабельные элементы, а
+     заголовок карточки ссылкой не является), поэтому задано отдельной
+     локальной переменной только для карточек этого блока. */
+  --project-card-title-weight: 600;
   display: flex;
   flex-direction: column;
   width: 13.75rem; /* 220px при 390px = 208px фото + 6+6px отступов */
@@ -100,7 +105,7 @@
 .project-card__title {
   margin: var(--space-4) 0 0; /* 12px сверху, снизу — паддинг карточки */
   font-family: var(--font-body);
-  font-weight: var(--font-weight-regular);
+  font-weight: var(--project-card-title-weight);
   font-size: var(--font-size-sm); /* 16px */
   line-height: var(--line-height-default);
   color: var(--color-black);
