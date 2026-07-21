@@ -14,6 +14,7 @@
 
 .beautiful-block {
   margin-inline: calc(-1 * var(--space-8));
+  margin-top: 40px; /* блок целиком опущен ниже предыдущего */
   padding: var(--space-8) 0; /* 40px сверху/снизу, инлайн-паддинг — у детей */
   background: linear-gradient(180deg, var(--color-blue) 0%, #ffffff 100%);
 }
@@ -103,7 +104,7 @@
   aspect-ratio: 2002 / 2552;
   box-sizing: border-box;
   padding: 0;
-  border: 0.125rem solid transparent; /* 2px — активная подсвечивается ниже */
+  border: 2px solid transparent; /* активная подсвечивается ниже */
   border-radius: calc(var(--radius-card) / 2); /* вдвое меньше, чем у большого фото */
   overflow: hidden;
   background: var(--color-white-40);
@@ -156,6 +157,8 @@
   уезжает вправо, миниатюры вторые — остаются слева). Высота колонки
   миниатюр = высоте фото — задаётся через --beautiful-photo-height
   (ResizeObserver в beautiful.js), сама колонка скроллится по вертикали.
+  Фото без max-width — растягивается вместе с миниатюрами (тоже крупнее
+  здесь, чем на мобильном) на всю ширину экрана, а не только на половину.
 */
 @media (min-width: 1101px) {
   .beautiful-block__layout {
@@ -166,8 +169,6 @@
   .beautiful-block__photo-wrap {
     flex: 1 1 auto;
     min-width: 0;
-    /* не даём фото раздуваться бесконечно на очень широких экранах */
-    max-width: clamp(480px, calc(480px + 160 * ((100vw - 1101px) / 339)), 640px);
   }
 
   .beautiful-block__thumbs {
@@ -179,11 +180,9 @@
     scroll-snap-type: y proximity;
     height: var(--beautiful-photo-height, auto);
   }
-}
 
-@media (min-width: 1441px) {
-  .beautiful-block__photo-wrap {
-    max-width: 640px;
+  .beautiful-block__thumb {
+    width: clamp(96px, 8vw, 160px);
   }
 }
 
