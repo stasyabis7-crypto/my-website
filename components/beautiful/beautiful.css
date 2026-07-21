@@ -1,0 +1,194 @@
+/*
+  Beautiful — блок "Красивое". Full-bleed фон (та же техника отрицательного
+  margin, что у .about-block/.popular-block), градиент сверху вниз от
+  синего к белому. Внутри — большое фото (реальный размер исходников
+  2002×2552, портретный прямоугольник) и лента миниатюр того же фото-сета:
+  строкой под фото на мобильном/планшете, столбиком слева от фото на
+  десктопе (см. initBeautiful в beautiful.js — переключение, автоплей и
+  синхронизация высоты колонки миниатюр с фото).
+
+  Отступы внутри блока (10/16/24/40px) заданы в спецификации фиксированными
+  пикселями, а не через rem-токены шкалы — в отличие от остального сайта,
+  здесь это осознанно точные значения, не растущие вместе с экраном.
+*/
+
+.beautiful-block {
+  margin-inline: calc(-1 * var(--space-8));
+  padding: var(--space-8) 0; /* 40px сверху/снизу, инлайн-паддинг — у детей */
+  background: linear-gradient(180deg, var(--color-blue) 0%, #ffffff 100%);
+}
+
+.beautiful-block__header {
+  padding-inline: var(--space-8);
+  text-align: center;
+}
+
+.beautiful-block__heading {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-default);
+  color: var(--color-white);
+}
+
+.beautiful-block__subtitle {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-regular);
+  font-size: 1rem;
+  line-height: var(--line-height-default);
+  color: var(--color-white);
+}
+
+.beautiful-block__layout {
+  margin-top: var(--space-7); /* 32px от подзаголовка, как у Popular */
+  padding-inline: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* между фото и лентой миниатюр — одинаково везде */
+}
+
+.beautiful-block__photo-wrap {
+  position: relative;
+  aspect-ratio: 2002 / 2552;
+  border-radius: var(--radius-card); /* тот же радиус, что у карточек выше */
+  overflow: hidden;
+  background: var(--color-white-40); /* видно, пока фото не загрузилось */
+}
+
+.beautiful-block__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.beautiful-block__counter {
+  /* Тот же стиль и позиция, что у .popular-card__photo-counter — общий
+     паттерн бейджа "N из M" для всех фото-слайдеров сайта. */
+  position: absolute;
+  left: var(--space-4); /* 12px */
+  bottom: var(--space-4);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-pill);
+  background: rgba(0, 0, 0, 0.56);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--color-white);
+}
+
+.beautiful-block__thumbs {
+  display: flex;
+  flex-direction: row;
+  gap: 10px; /* между миниатюрами на мобильном/планшете */
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none; /* Firefox */
+}
+
+.beautiful-block__thumbs::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.beautiful-block__thumb {
+  flex: 0 0 auto;
+  width: 4.5rem; /* 72px при 390px, дальше растёт вместе с интерфейсом */
+  aspect-ratio: 2002 / 2552;
+  box-sizing: border-box;
+  padding: 0;
+  border: 0.125rem solid transparent; /* 2px — активная подсвечивается ниже */
+  border-radius: calc(var(--radius-card) / 2); /* вдвое меньше, чем у большого фото */
+  overflow: hidden;
+  background: var(--color-white-40);
+  scroll-snap-align: center;
+  cursor: pointer;
+}
+
+.beautiful-block__thumb.is-active {
+  border-color: var(--color-accent-pink);
+}
+
+.beautiful-block__thumb-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.beautiful-block__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 24px 10px 0;
+  height: 3.75rem; /* 60px — как у остальных CTA-пилюль сайта */
+  border-radius: var(--radius-pill);
+  background: var(--color-blue);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-semibold); /* кликабельная кнопка */
+  font-size: 1rem;
+  line-height: var(--line-height-default);
+  text-decoration: none;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transition: transform 120ms ease;
+}
+
+.beautiful-block__cta:active {
+  transform: scale(0.97);
+}
+
+.beautiful-block__cta:focus-visible {
+  outline: 0.125rem solid var(--color-white);
+  outline-offset: 0.125rem;
+}
+
+/*
+  Десктоп (1101+, см. index.html) — миниатюры уходят в столбик слева от
+  фото (flex-direction: row-reverse: фото первое в разметке, поэтому
+  уезжает вправо, миниатюры вторые — остаются слева). Высота колонки
+  миниатюр = высоте фото — задаётся через --beautiful-photo-height
+  (ResizeObserver в beautiful.js), сама колонка скроллится по вертикали.
+*/
+@media (min-width: 1101px) {
+  .beautiful-block__layout {
+    flex-direction: row-reverse;
+    align-items: flex-start;
+  }
+
+  .beautiful-block__photo-wrap {
+    flex: 1 1 auto;
+    min-width: 0;
+    /* не даём фото раздуваться бесконечно на очень широких экранах */
+    max-width: clamp(480px, calc(480px + 160 * ((100vw - 1101px) / 339)), 640px);
+  }
+
+  .beautiful-block__thumbs {
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 16px; /* между миниатюрами на десктопе — больше, чем на мобильном */
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-snap-type: y proximity;
+    height: var(--beautiful-photo-height, auto);
+  }
+}
+
+@media (min-width: 1441px) {
+  .beautiful-block__photo-wrap {
+    max-width: 640px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beautiful-block__thumbs {
+    scroll-behavior: auto;
+  }
+}
