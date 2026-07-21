@@ -6,9 +6,10 @@
     ним, миниатюра выбирается кликом/свайпом. Без автоплея — только по
     действию пользователя.
   - Планшет/десктоп (800px+, initSlider): слайдер на N фото в ряд (2 на
-    планшете, 3 на десктопе), листает по одному фото за раз, стрелки
-    постоянно лежат поверх крайних видимых фото, точки-пагинация
-    сгруппированы по N (точка = "страница" из N карточек).
+    планшете, 3 на десктопе), стрелки всегда активны и листают сразу на N
+    карточек (целая "страница" за клик), бесшовно закольцован в обе
+    стороны — см. клоны в initSlider. Точки-пагинация сгруппированы по N
+    (точка = "страница" из N карточек).
 
   Исходники тяжёлые (до ~2 МБ штука) — все фото предзагружаются в фоне
   сразу при инициализации (preload ниже), чтобы переключение в мобильном
@@ -140,42 +141,55 @@ function initSlider(block) {
   const prevButton = block.querySelector(".beautiful-block__nav--prev");
   const nextButton = block.querySelector(".beautiful-block__nav--next");
 
-  beautifulPhotos.forEach((src, index) => {
+  const n = beautifulPhotos.length;
+
+  function buildItem(index, isClone) {
     const item = document.createElement("div");
     item.className = "beautiful-block__slider-item";
 
     const img = document.createElement("img");
     img.className = "beautiful-block__slider-image";
-    img.src = src;
-    img.alt = index === 0 ? "Красивое, но невыпущенное" : "";
-    if (index > 2) img.loading = "lazy"; // первые несколько — сразу видны, дальше подгружает браузер
+    img.src = beautifulPhotos[index];
+    img.alt = !isClone && index === 0 ? "Красивое, но невыпущенное" : "";
+    if (isClone || index > 2) img.loading = "lazy"; // видимые с самого начала — сразу, остальное подгружает браузер
 
     item.appendChild(img);
-    track.appendChild(item);
-  });
+    return item;
+  }
 
-  const items = Array.from(track.children);
+  // Бесшовный бесконечный трек: по полной копии фото-набора с каждой
+  // стороны от настоящих карточек (тот же приём, что у ProjectSlider, см.
+  // components/slider/slider.js) — уйдя за реальную границу, трек мгновенно
+  // (без transition) прыгает обратно в исходный диапазон на клон, который
+  // выглядит как настоящая карточка, поэтому скачок не заметен.
+  for (let i = 0; i < n; i++) track.appendChild(buildItem(i, true));
+  for (let i = 0; i < n; i++) track.appendChild(buildItem(i, false));
+  for (let i = 0; i < n; i++) track.appendChild(buildItem(i, true));
+
+  const allItems = Array.from(track.children);
   let visibleCount = getVisibleCount();
-  let startIndex = 0;
+  // rawStart — индекс первой видимой карточки, может временно выходить за
+  // 0..n-1 (использует клоны по краям), см. scheduleLoopReset.
+  let rawStart = 0;
   let dots = [];
 
   function getVisibleCount() {
     return sliderDesktopQuery.matches ? 3 : 2;
   }
 
-  function maxStart() {
-    return Math.max(0, beautifulPhotos.length - visibleCount);
+  function wrappedStart() {
+    return ((rawStart % n) + n) % n;
   }
 
   function buildDots() {
     dotsWrap.innerHTML = "";
-    const dotCount = Math.ceil(beautifulPhotos.length / visibleCount);
+    const dotCount = Math.ceil(n / visibleCount);
     dots = Array.from({ length: dotCount }, (_, i) => {
       const dot = document.createElement("button");
       dot.type = "button";
       dot.className = "beautiful-block__dot";
       dot.setAttribute("aria-label", `Страница ${i + 1} из ${dotCount}`);
-      dot.addEventListener("click", () => goTo(i * visibleCount));
+      dot.addEventListener("click", () => goTo(Math.min(i * visibleCount, Math.max(0, n - visibleCount))));
       dotsWrap.appendChild(dot);
       return dot;
     });
@@ -183,48 +197,61 @@ function initSlider(block) {
 
   function measureStep() {
     const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 0;
-    return items[0].offsetWidth + gap;
+    return allItems[0].offsetWidth + gap;
   }
 
   function applyTransform(withTransition = true) {
     track.style.transition = withTransition && !prefersReducedMotion ? "" : "none";
-    track.style.transform = `translateX(${-startIndex * measureStep()}px)`;
-  }
-
-  function updateNav() {
-    prevButton.disabled = startIndex <= 0;
-    nextButton.disabled = startIndex >= maxStart();
+    track.style.transform = `translateX(${-(n + rawStart) * measureStep()}px)`;
   }
 
   function updateDots() {
     const dotCount = dots.length;
-    const active = Math.min(dotCount - 1, Math.round(startIndex / visibleCount));
+    const active = Math.min(dotCount - 1, Math.round(wrappedStart() / visibleCount));
     dots.forEach((dot, i) => dot.classList.toggle("is-active", i === active));
   }
 
-  function goTo(index, withTransition = true) {
-    startIndex = Math.max(0, Math.min(maxStart(), index));
-    applyTransform(withTransition);
-    updateNav();
-    updateDots();
+  // Как только уехали за пределы настоящего диапазона (используя клоны по
+  // краю) — по завершении анимации мгновенно переносим rawStart в
+  // эквивалентную позицию внутри 0..n-1. Визуально ничего не дёргается:
+  // клон и настоящая карточка на этом месте показывают один и тот же кадр.
+  function scheduleLoopReset() {
+    if (rawStart >= 0 && rawStart < n) return;
+    const onEnd = () => {
+      track.removeEventListener("transitionend", onEnd);
+      rawStart = wrappedStart();
+      applyTransform(false);
+    };
+    if (prefersReducedMotion) onEnd();
+    else track.addEventListener("transitionend", onEnd, { once: true });
   }
 
-  prevButton.addEventListener("click", () => goTo(startIndex - 1));
-  nextButton.addEventListener("click", () => goTo(startIndex + 1));
+  function goTo(index, withTransition = true) {
+    rawStart = index;
+    applyTransform(withTransition);
+    updateDots();
+    scheduleLoopReset();
+  }
+
+  // Стрелки всегда активны и листают сразу целую "страницу" (N карточек) —
+  // благодаря бесшовному циклу идти можно в любую сторону без ограничений.
+  prevButton.addEventListener("click", () => goTo(rawStart - visibleCount));
+  nextButton.addEventListener("click", () => goTo(rawStart + visibleCount));
 
   buildDots();
   goTo(0, false);
 
   // Смена брейкпоинта (2 ↔ 3 в ряд) и просто resize внутри одной зоны —
   // в обоих случаях step (ширина карточки) меняется, а при смене N ещё и
-  // maxStart/точки надо пересобрать.
+  // точки надо пересобрать.
   const resizeObserver = new ResizeObserver(() => {
     const nextVisibleCount = getVisibleCount();
     if (nextVisibleCount !== visibleCount) {
       visibleCount = nextVisibleCount;
       buildDots();
     }
-    goTo(startIndex, false);
+    applyTransform(false);
+    updateDots();
   });
   resizeObserver.observe(viewport);
 }

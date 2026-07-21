@@ -9,9 +9,10 @@
   - .beautiful-block__solo (<800px) — одно большое фото + лента миниатюр
     под ним, миниатюра выбирается кликом/свайпом, см. initBeautiful в
     beautiful.js.
-  - .beautiful-block__slider (800px+) — слайдер на N фото в ряд (2 на
-    планшете, 3 на десктопе), стрелки постоянно поверх крайних фото,
-    точки-пагинация группами по N, см. initBeautifulSlider в beautiful.js.
+  - .beautiful-block__slider (800px+) — бесконечный слайдер на N фото в
+    ряд (2 на планшете, 3 на десктопе), стрелки всегда активны и листают
+    сразу на N карточек, бесшовно закольцован в обе стороны, точки-
+    пагинация группами по N, см. initSlider в beautiful.js.
   Оба всегда в DOM (проще синхронизировать, чем пересобирать по resize),
   видимость переключает только CSS.
 
@@ -185,14 +186,14 @@
   padding: 0;
   border: none;
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   cursor: pointer;
   transition: width 240ms ease, background 240ms ease;
 }
 
 .beautiful-block__dot.is-active {
   width: 1.5rem;
-  background: var(--color-accent-pink);
+  background: var(--color-black);
 }
 
 /* Стрелки — постоянно видны (не по ховеру), лежат поверх крайних фото:
@@ -225,12 +226,6 @@
 
 .beautiful-block__nav:active {
   transform: translateY(-50%) scale(0.94);
-}
-
-.beautiful-block__nav:disabled {
-  opacity: 0.4;
-  cursor: default;
-  pointer-events: none;
 }
 
 .beautiful-block__nav:focus-visible {
@@ -290,6 +285,11 @@
     margin-top: var(--space-7);
     padding-inline: 10px;
     --beautiful-slider-count: 2;
+  }
+
+  .beautiful-block__cta {
+    /* от точек-пагинации слайдера до кнопки — больше, чем на мобильном */
+    margin-top: 40px;
   }
 }
 
