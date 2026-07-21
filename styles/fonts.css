@@ -1,8 +1,9 @@
 /*
   Подключение шрифтов. Valisca — кастомный файл, лежит в assets/fonts.
-  Inter пока не подключён отдельно (используется системный/webfont-CDN
-  на будущее) — если понадобится точное начертание, добавить сюда
-  так же, через @font-face или подключить с Google Fonts.
+  Inter подключается через Google Fonts (см. <head> в index.html), веса
+  400 и 600: Regular — обычный текст, Semibold — текст кликабельных
+  элементов (кнопки, пункты меню), см. --font-weight-regular/-semibold
+  в tokens.css.
 */
 
 @font-face {

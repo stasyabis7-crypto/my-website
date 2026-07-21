@@ -100,7 +100,7 @@
 .project-card__title {
   margin: var(--space-4) 0 0; /* 12px сверху, снизу — паддинг карточки */
   font-family: var(--font-body);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-regular);
   font-size: var(--font-size-sm); /* 16px */
   line-height: var(--line-height-default);
   color: var(--color-black);

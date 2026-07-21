@@ -100,7 +100,7 @@
   margin: var(--space-3) 0 0; /* 8px от заголовка */
   padding: 0 var(--space-5); /* 16px по бокам текста */
   font-family: var(--font-body);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-regular);
   font-size: 1rem;
   line-height: var(--line-height-default);
   color: var(--color-white);

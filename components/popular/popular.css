@@ -50,7 +50,7 @@
 .popular-block__subtitle {
   margin: var(--space-2) 0 0; /* 6px — как у остальных подзаголовков на странице */
   font-family: var(--font-body);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-regular);
   font-size: 1rem;
   line-height: var(--line-height-default);
   color: var(--color-white);
@@ -74,7 +74,7 @@
   background: var(--color-white);
   color: var(--color-black);
   font-family: var(--font-body);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semibold); /* кликабельная кнопка */
   font-size: 1rem;
   line-height: var(--line-height-default);
   text-decoration: none;
@@ -103,5 +103,12 @@
   .popular-grid {
     grid-template-columns: 1fr 1fr;
     column-gap: var(--space-5); /* 16px между карточками в ряду */
+  }
+}
+
+@media (min-width: 1101px) {
+  .popular-grid {
+    /* на десктопе опущено ещё на 40px ниже, чем на планшете */
+    margin-top: calc(var(--space-7) + 40px);
   }
 }

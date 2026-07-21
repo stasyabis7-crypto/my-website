@@ -157,8 +157,8 @@
 }
 
 /* --- Состояния ---
-   Разница между табами — не только цвет, но и насыщенность шрифта:
-   активный bold, остальные semibold. font-weight наследуется от
+   Разница между табами — только цвет, шрифт везде Inter Semibold (600) —
+   это кликабельные пункты меню. font-weight наследуется от
    .bottom-nav__item к .bottom-nav__label, отдельно на лейбле не задаём. */
 
 .bottom-nav__item[data-state="default"] {
@@ -173,7 +173,7 @@
      are the single source of truth and stay identical left/right. */
   background: transparent;
   color: var(--color-black);
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-semibold);
 }
 
 .bottom-nav__item:active {

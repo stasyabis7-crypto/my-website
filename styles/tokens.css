@@ -68,9 +68,8 @@
 
   --line-height-default: 1.3; /* везде в макете line-height: 130% */
 
-  --font-weight-regular: 400;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700; /* активный таб в BottomNav */
+  --font-weight-regular: 400;  /* обычный текст */
+  --font-weight-semibold: 600; /* текст кнопок и пунктов меню (кликабельные элементы) */
 
   /* --- Тени (elevation), точные имена токенов из Figma Dev Mode ---
      depth-N ~ N сотых rem (100 = 1px при 390px), color-black-N ~ чёрный

@@ -7,7 +7,7 @@
 
   Типографика заголовка и обычного текста намеренно продублирована с теми
   же токенами (--font-heading/--font-size-xl/--line-height-default и
-  --font-body/--font-weight-semibold), что заданы для .hero-copy в
+  --font-body/--font-weight-regular), что заданы для .hero-copy в
   index.html — значения берутся из общих tokens.css, поэтому стиль
   гарантированно совпадает из блока в блок.
 */
@@ -183,7 +183,7 @@
   padding: 0 var(--space-2); /* 6px по краям текста */
   font-family: var(--font-body);
   font-size: 1rem;
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-regular);
   line-height: var(--line-height-default);
   color: var(--color-black);
   text-align: center;
@@ -206,7 +206,7 @@
   color: var(--color-white);
   font-family: var(--font-body);
   font-size: 1rem;
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semibold); /* кликабельная кнопка */
   line-height: var(--line-height-default);
   text-align: center;
   text-decoration: none;
@@ -312,6 +312,11 @@
 @media (min-width: 1101px) {
   .about-block {
     --about-photo-d: clamp(820px, calc(820px + 80 * ((100vw - 1101px) / 339)), 900px);
+  }
+
+  .about-block__chat {
+    /* на десктопе (в отличие от планшета) опущено ещё на 20px ниже */
+    top: calc(56% + 180px);
   }
 }
 
