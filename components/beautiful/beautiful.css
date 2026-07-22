@@ -116,16 +116,22 @@
 
 .beautiful-block__slider {
   display: none; /* включается в медиа-запросе ниже */
+  /* Горизонтальный клип клонов трека (нужен для бесшовной прокрутки) —
+     здесь, а не на .beautiful-block__slider-viewport, специально: свой
+     padding-inline (16px) остаётся ВНУТРИ clip-границы (overflow обрезает
+     по padding-box, не по границе контента), поэтому у тени карточек
+     появляется 16px запаса на бёрст — раньше клип стоял прямо на
+     .beautiful-block__slider-viewport без единого пикселя запаса, и тень
+     крайних карточек обрезалась резко, вплотную к их же краю.
+     overflow-y здесь обязательно явно visible — если задать только
+     overflow-x, браузер по спеке молча посчитает overflow-y как auto
+     (а не visible), и тень снова обрежется, но уже сверху/снизу. */
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .beautiful-block__slider-viewport {
   position: relative;
-  /* overflow-x скрывает клоны трека за краями (нужно для бесшовной
-     прокрутки), overflow-y оставляем visible — иначе тень карточек
-     (.beautiful-block__slider-item) обрезалась бы сверху/снизу, ведь
-     высота viewport точно равна высоте карточек, без запаса под тень. */
-  overflow-x: hidden;
-  overflow-y: visible;
 }
 
 .beautiful-block__slider-track {
