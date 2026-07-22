@@ -9,10 +9,12 @@
   - .beautiful-block__solo (<800px) — одно большое фото на весь блок,
     листается свайпом в сторону, счётчик "N из M" в углу поверх фото, см.
     initSolo в beautiful.js.
-  - .beautiful-block__slider (800px+) — бесконечный слайдер на N фото в
-    ряд (2 на планшете, 3 на десктопе), стрелки всегда активны и листают
-    сразу на N карточек, бесшовно закольцован в обе стороны, точки-
-    пагинация группами по N, см. initSlider в beautiful.js.
+  - .beautiful-block__slider (800px+) — бесконечный слайдер на 3 фото в
+    ряд (одно и то же число на планшете и десктопе), стрелки всегда
+    активны и листают по одной карточке за клик, бесшовно закольцован в
+    обе стороны. Вместо точек — счётчик "N из M" на центральной из 3
+    видимых карточек (тот же бейдж, что у .beautiful-block__counter/
+    .popular-card__photo-counter), см. initSlider в beautiful.js.
   Оба всегда в DOM (проще синхронизировать, чем пересобирать по resize),
   видимость переключает только CSS.
 
@@ -88,9 +90,14 @@
   opacity: 0;
 }
 
-.beautiful-block__counter {
+.beautiful-block__counter,
+.beautiful-block__slider-counter {
   /* Тот же стиль и позиция, что у .popular-card__photo-counter — общий
-     паттерн бейджа "N из M" для всех фото-слайдеров сайта. */
+     паттерн бейджа "N из M" для всех фото-слайдеров сайта.
+     .beautiful-block__slider-counter — тот же бейдж, но для планшет/
+     десктоп-слайдера: JS (initSlider) перевешивает этот же DOM-узел
+     (appendChild) в текущую центральную из 3 видимых карточек, а не
+     держит отдельную копию на каждой. */
   position: absolute;
   left: var(--space-4); /* 12px */
   bottom: var(--space-4);
@@ -107,7 +114,7 @@
   color: var(--color-white);
 }
 
-/* --- Планшет/десктоп (800px+) — слайдер на N фото в ряд --- */
+/* --- Планшет/десктоп (800px+) — слайдер на 3 фото в ряд --- */
 
 .beautiful-block__slider {
   display: none; /* включается в медиа-запросе ниже */
@@ -148,7 +155,8 @@
 }
 
 .beautiful-block__slider-item {
-  flex: 0 0 calc((100% - (var(--beautiful-slider-count, 2) - 1) * 16px) / var(--beautiful-slider-count, 2));
+  position: relative; /* якорь для .beautiful-block__slider-counter, см. выше */
+  flex: 0 0 calc((100% - (var(--beautiful-slider-count, 3) - 1) * 16px) / var(--beautiful-slider-count, 3));
   aspect-ratio: 2002 / 2552;
   border-radius: var(--radius-card);
   overflow: hidden;
@@ -160,30 +168,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.beautiful-block__dots {
-  margin-top: 24px; /* больше воздуха от карточек, чем было (16px слипались) */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
-}
-
-.beautiful-block__dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  padding: 0;
-  border: none;
-  border-radius: var(--radius-pill);
-  background: rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  transition: width 240ms ease, background 240ms ease;
-}
-
-.beautiful-block__dot.is-active {
-  width: 1.5rem;
-  background: var(--color-black);
 }
 
 /* Стрелки — постоянно видны (не по ховеру), лежат поверх крайних фото:
@@ -264,7 +248,8 @@
   outline-offset: 0.125rem;
 }
 
-/* Планшет (800–1100) — слайдер по 2 фото в ряд, соло-вариант скрыт. */
+/* Планшет/десктоп (800px+) — слайдер по 3 фото в ряд (одно число на оба
+   брейкпоинта), соло-вариант скрыт. */
 @media (min-width: 800px) {
   .beautiful-block__solo {
     display: none;
@@ -274,20 +259,13 @@
     display: block;
     margin-top: var(--space-7);
     padding-inline: 16px;
-    --beautiful-slider-count: 2;
+    --beautiful-slider-count: 3;
   }
 
   .beautiful-block__cta {
-    /* от точек-пагинации слайдера до кнопки — больше, чем на мобильном */
+    /* от слайдера до кнопки — больше, чем на мобильном */
     margin-top: 40px;
     margin-inline: 16px;
-  }
-}
-
-/* Десктоп (1101+, см. index.html) — тот же слайдер, только по 3 фото в ряд. */
-@media (min-width: 1101px) {
-  .beautiful-block__slider {
-    --beautiful-slider-count: 3;
   }
 }
 

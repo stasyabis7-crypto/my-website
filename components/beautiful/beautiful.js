@@ -5,11 +5,12 @@
   - Мобильный (<800px, initSolo): одно большое фото на весь блок, листается
     свайпом пальца в сторону (счётчик "N из M" — в углу поверх фото). Без
     автоплея — только по действию пользователя.
-  - Планшет/десктоп (800px+, initSlider): слайдер на N фото в ряд (2 на
-    планшете, 3 на десктопе), стрелки всегда активны и листают сразу на N
-    карточек (целая "страница" за клик), бесшовно закольцован в обе
-    стороны — см. клоны в initSlider. Точки-пагинация сгруппированы по N
-    (точка = "страница" из N карточек).
+  - Планшет/десктоп (800px+, initSlider): слайдер на 3 фото в ряд (одно и
+    то же число и на планшете, и на десктопе), стрелки всегда активны и
+    листают по одной карточке за клик, бесшовно закольцован в обе стороны
+    — см. клоны в initSlider. Вместо точек — счётчик "N из M" (тот же
+    паттерн бейджа, что у .popular-card__photo-counter), который JS
+    перевешивает на центральную из 3 видимых карточек.
 
   Исходники тяжёлые (до ~2 МБ штука) — все фото предзагружаются в фоне
   сразу при инициализации (preload ниже), чтобы переключение в мобильном
@@ -150,11 +151,16 @@ function initSolo(block) {
   goTo(0);
 }
 
-/* --- Планшет/десктоп: слайдер на N фото в ряд --- */
+/* --- Планшет/десктоп: слайдер на 3 фото в ряд --- */
 
-// Те же брейкпоинты, что и в beautiful.css (--beautiful-slider-count):
-// 800–1100 = 2 фото в ряд, 1101+ = 3.
-const sliderDesktopQuery = window.matchMedia("(min-width: 1101px)");
+// Видимых карточек всегда 3 — и на планшете, и на десктопе (см.
+// --beautiful-slider-count в beautiful.css, там же одно значение на оба
+// брейкпоинта). В отличие от прежней постраничной версии, здесь это просто
+// сколько кадров помещается в ряд, а не шаг навигации — стрелки всегда
+// листают по одной карточке (VISIBLE_COUNT ниже нужен только для того,
+// чтобы вычислить, какая из 3 видимых карточек — центральная, см.
+// updateCounter).
+const VISIBLE_COUNT = 3;
 
 // Длительность "сжатия" карточек при перелистывании — то же ощущение и то
 // же число, что у squeeze в большом слайдере (SQUEEZE_DURATION в slider.js).
@@ -164,11 +170,19 @@ function initSlider(block) {
   const sliderEl = block.querySelector(".beautiful-block__slider");
   const viewport = block.querySelector(".beautiful-block__slider-viewport");
   const track = block.querySelector(".beautiful-block__slider-track");
-  const dotsWrap = block.querySelector(".beautiful-block__dots");
   const prevButton = block.querySelector(".beautiful-block__nav--prev");
   const nextButton = block.querySelector(".beautiful-block__nav--next");
 
   const n = beautifulPhotos.length;
+
+  // Бейдж-счётчик "N из M" — тот же паттерн, что у .popular-card__photo-
+  // counter (плашка на затемнённой подложке в углу фото). В отличие от
+  // мобильного .beautiful-block__counter (фиксирован в одном месте, под
+  // одним фото), здесь карточек одновременно видно 3 — JS перевешивает один
+  // и тот же элемент (appendChild) в ту, что сейчас в центре, при каждом
+  // обновлении, вместо трёх отдельных копий на всех карточках сразу.
+  const counter = document.createElement("div");
+  counter.className = "beautiful-block__slider-counter";
 
   function buildItem(index, isClone) {
     const item = document.createElement("div");
@@ -194,32 +208,12 @@ function initSlider(block) {
   for (let i = 0; i < n; i++) track.appendChild(buildItem(i, true));
 
   const allItems = Array.from(track.children);
-  let visibleCount = getVisibleCount();
-  // rawStart — индекс первой видимой карточки, может временно выходить за
-  // 0..n-1 (использует клоны по краям), см. scheduleLoopReset.
+  // rawStart — индекс первой (левой) из 3 видимых карточек, может временно
+  // выходить за 0..n-1 (использует клоны по краям), см. scheduleLoopReset.
   let rawStart = 0;
-  let dots = [];
-
-  function getVisibleCount() {
-    return sliderDesktopQuery.matches ? 3 : 2;
-  }
 
   function wrappedStart() {
     return ((rawStart % n) + n) % n;
-  }
-
-  function buildDots() {
-    dotsWrap.innerHTML = "";
-    const dotCount = Math.ceil(n / visibleCount);
-    dots = Array.from({ length: dotCount }, (_, i) => {
-      const dot = document.createElement("button");
-      dot.type = "button";
-      dot.className = "beautiful-block__dot";
-      dot.setAttribute("aria-label", `Страница ${i + 1} из ${dotCount}`);
-      dot.addEventListener("click", () => goTo(Math.min(i * visibleCount, Math.max(0, n - visibleCount))));
-      dotsWrap.appendChild(dot);
-      return dot;
-    });
   }
 
   function measureStep() {
@@ -232,10 +226,17 @@ function initSlider(block) {
     track.style.transform = `translateX(${-(n + rawStart) * measureStep()}px)`;
   }
 
-  function updateDots() {
-    const dotCount = dots.length;
-    const active = Math.min(dotCount - 1, Math.round(wrappedStart() / visibleCount));
-    dots.forEach((dot, i) => dot.classList.toggle("is-active", i === active));
+  // Центральная из VISIBLE_COUNT видимых карточек (левая/средняя/правая при
+  // VISIBLE_COUNT=3) — так же переносим счётчик в соответствующий DOM-узел
+  // (n + centerOffset: n клонов слева от настоящего диапазона, см.
+  // построение трека выше).
+  const CENTER_OFFSET = Math.floor(VISIBLE_COUNT / 2);
+
+  function updateCounter() {
+    const centerLogical = (((rawStart + CENTER_OFFSET) % n) + n) % n;
+    const centerEl = allItems[n + rawStart + CENTER_OFFSET];
+    if (centerEl) centerEl.appendChild(counter);
+    counter.textContent = `${centerLogical + 1} из ${n}`;
   }
 
   // Как только уехали за пределы настоящего диапазона (используя клоны по
@@ -267,30 +268,23 @@ function initSlider(block) {
   function goTo(index, withTransition = true) {
     rawStart = index;
     applyTransform(withTransition);
-    updateDots();
+    updateCounter();
     if (withTransition) playSqueeze();
     scheduleLoopReset();
   }
 
-  // Стрелки всегда активны и листают сразу целую "страницу" (N карточек) —
-  // благодаря бесшовному циклу идти можно в любую сторону без ограничений.
-  prevButton.addEventListener("click", () => goTo(rawStart - visibleCount));
-  nextButton.addEventListener("click", () => goTo(rawStart + visibleCount));
+  // Стрелки всегда активны и листают по одной карточке — благодаря
+  // бесшовному циклу идти можно в любую сторону без ограничений.
+  prevButton.addEventListener("click", () => goTo(rawStart - 1));
+  nextButton.addEventListener("click", () => goTo(rawStart + 1));
 
-  buildDots();
   goTo(0, false);
 
-  // Смена брейкпоинта (2 ↔ 3 в ряд) и просто resize внутри одной зоны —
-  // в обоих случаях step (ширина карточки) меняется, а при смене N ещё и
-  // точки надо пересобрать.
+  // Card width считается в px (measureStep) — при любом resize её нужно
+  // пересчитать, VISIBLE_COUNT (сколько карточек в ряду) при этом не
+  // меняется ни на одном брейкпоинте, в отличие от прежней версии.
   const resizeObserver = new ResizeObserver(() => {
-    const nextVisibleCount = getVisibleCount();
-    if (nextVisibleCount !== visibleCount) {
-      visibleCount = nextVisibleCount;
-      buildDots();
-    }
     applyTransform(false);
-    updateDots();
   });
   resizeObserver.observe(viewport);
 }
