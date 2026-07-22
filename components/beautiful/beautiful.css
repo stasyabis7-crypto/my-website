@@ -115,15 +115,28 @@
 
 .beautiful-block__slider-viewport {
   position: relative;
-  overflow: hidden; /* клип клонов трека за краями — нужен для бесшовной прокрутки, см. initSlider в beautiful.js */
   /* Лёгкое "сжатие" при перелистывании — .is-squeezing вешает/снимает
      playSqueeze в beautiful.js, тот же приём (и то же число), что у
-     .project-slider__viewport в slider.css. */
+     .project-slider__viewport в slider.css. Клип трека — на дочернем
+     .beautiful-block__slider-clip, а не здесь, чтобы стрелки-навигация
+     (тоже внутри viewport) не попадали под маску истаивания края (см. её
+     комментарий) — они должны оставаться полностью непрозрачными всегда. */
   transition: transform 240ms ease;
 }
 
 .beautiful-block__slider.is-squeezing .beautiful-block__slider-viewport {
   transform: scale(0.96);
+}
+
+.beautiful-block__slider-clip {
+  overflow: hidden; /* клип клонов трека за краями — нужен для бесшовной прокрутки, см. initSlider в beautiful.js */
+  /* По фидбэку — карточки у боковых краёв резко обрезались этим overflow
+     в середине translateX-переезда. Мягкая маска истаивает их в фон, а не
+     режет ровной линией — сама обрезка (overflow:hidden) остаётся, меняется
+     только то, как она выглядит на глаз (тот же приём, что у
+     .project-slider__viewport в slider.css). */
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
 }
 
 .beautiful-block__slider-track {

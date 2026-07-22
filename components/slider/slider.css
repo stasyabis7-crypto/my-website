@@ -32,6 +32,14 @@
   overflow: hidden;
   transform: scale(1);
   transition: transform var(--slider-squeeze-duration, 240ms) ease;
+  /* По фидбэку — карточки у боковых краёв резко обрезались overflow:hidden
+     виджета в середине translateX-переезда (особенно заметно на 560ms
+     переходе). Мягкая маска по краям вместо этого истаивает их в фон, а не
+     режет ровной вертикальной линией — сама обрезка (overflow:hidden) при
+     этом остаётся, она нужна для бесшовной ленты клонов, меняется только
+     то, как она выглядит на глаз. */
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
 }
 
 /* Лёгкое "сжатие" всех видимых карточек при переключении слайда — как
