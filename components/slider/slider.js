@@ -260,6 +260,10 @@ export function initProjectSlider(root = document) {
       el.style.setProperty("--arc-translate-y", `${arcTranslateY(offsetAbs)}px`);
       el.classList.toggle("is-center", offset === 0);
       el.classList.toggle("is-beyond-arc", Math.abs(offset) > CLONE_RING_COUNT);
+      // Крайнее (5-е) кольцо дуги — по фидбэку, скрываем совсем (opacity:0,
+      // см. .project-slide.is-outer-ring в slider.css), а не просто оставляем
+      // видимым краем экрана.
+      el.classList.toggle("is-outer-ring", offsetAbs === CLONE_RING_COUNT);
     });
     const active = wrappedIndex();
     dots.forEach(({ dot }, index) => {
