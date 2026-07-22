@@ -30,8 +30,12 @@
 .beautiful-block {
   margin-inline: calc(-1 * var(--space-8));
   margin-top: 40px; /* блок целиком опущен ниже предыдущего */
-  padding: var(--space-8) 0; /* 40px сверху/снизу, инлайн-паддинг — у детей */
-  background: linear-gradient(180deg, var(--color-blue) 0%, #ffffff 100%);
+  padding: var(--space-8) 0 10px; /* 40px сверху, 10px снизу (после кнопки) */
+  background: var(--color-white);
+  /* Нижние углы скруглены тем же токеном, что и у .popular-block — верхние
+     не трогаем, блок не нахлёстывается на предыдущий (в отличие от Popular),
+     поэтому там скругление не нужно. */
+  border-radius: 0 0 var(--radius-card-outer) var(--radius-card-outer);
 }
 
 .beautiful-block__header {
@@ -45,7 +49,7 @@
   font-weight: 400;
   font-size: var(--font-size-xl);
   line-height: var(--line-height-default);
-  color: var(--color-white);
+  color: var(--color-black);
 }
 
 .beautiful-block__subtitle {
@@ -54,7 +58,7 @@
   font-weight: var(--font-weight-regular);
   font-size: 1rem;
   line-height: var(--line-height-default);
-  color: var(--color-white);
+  color: var(--color-black);
 }
 
 /* --- Мобильный вариант (<800px) — фото + лента миниатюр --- */
@@ -122,17 +126,12 @@
 
 .beautiful-block__slider-viewport {
   position: relative;
-  /* Лёгкое "сжатие" при перелистывании — .is-squeezing вешает/снимает
-     playSqueeze в beautiful.js, тот же приём (и то же число), что у
-     .project-slider__viewport в slider.css. Клип трека — на дочернем
-     .beautiful-block__slider-clip, а не здесь, чтобы стрелки-навигация
-     (тоже внутри viewport) не попадали под маску истаивания края (см. её
-     комментарий) — они должны оставаться полностью непрозрачными всегда. */
-  transition: transform 240ms ease;
-}
-
-.beautiful-block__slider.is-squeezing .beautiful-block__slider-viewport {
-  transform: scale(0.96);
+  /* Клип трека — на дочернем .beautiful-block__slider-clip, а не здесь,
+     чтобы стрелки-навигация (тоже внутри viewport) не попадали ни под
+     маску истаивания края (см. комментарий у .beautiful-block__slider-
+     clip), ни под "сжатие" при перелистывании (см. ниже) — они должны
+     оставаться полностью непрозрачными и неизменного размера всегда,
+     реагируя только на собственный :active (см. .beautiful-block__nav). */
 }
 
 .beautiful-block__slider-clip {
@@ -144,6 +143,17 @@
      .project-slider__viewport в slider.css). */
   -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
   mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  /* Лёгкое "сжатие" при перелистывании — .is-squeezing вешает/снимает
+     playSqueeze в beautiful.js, тот же приём (и то же число), что у
+     .project-slider__viewport в slider.css. Только карточки (эта обёртка
+     оборачивает один трек, не стрелки) — по фидбэку, раньше сжимался весь
+     viewport целиком, вместе со стрелками, которые должны были оставаться
+     нетронутыми. */
+  transition: transform 240ms ease;
+}
+
+.beautiful-block__slider.is-squeezing .beautiful-block__slider-clip {
+  transform: scale(0.96);
 }
 
 .beautiful-block__slider-track {
@@ -188,6 +198,11 @@
   color: var(--color-black);
   cursor: pointer;
   transform: translateY(-50%);
+  /* Только реакция на нажатие (см. :active ниже) — тот же приём/тайминг,
+     что у .header__resume (header.css): плавно чуть уменьшается по клику,
+     и ничего больше её не масштабирует (см. .beautiful-block__slider-clip
+     выше — "сжатие" при перелистывании специально её не затрагивает). */
+  transition: transform 120ms ease;
 }
 
 .beautiful-block__nav--prev {
@@ -271,7 +286,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .beautiful-block__slider-track,
-  .beautiful-block__slider-viewport {
+  .beautiful-block__slider-clip {
     transition: none;
   }
 }
