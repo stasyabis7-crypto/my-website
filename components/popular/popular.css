@@ -73,7 +73,7 @@
   height: 3.75rem; /* 60px */
   border-radius: var(--radius-pill); /* максимальное скругление */
   background: var(--color-accent-pink);
-  color: var(--color-black);
+  color: var(--color-white);
   font-family: var(--font-body);
   font-weight: var(--font-weight-semibold); /* кликабельная кнопка */
   font-size: 1rem;

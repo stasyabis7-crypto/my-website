@@ -74,11 +74,6 @@
      свайп по фото обрабатывает beautiful.js (тот же приём, что у слайдера,
      см. slider.css/popular-card.css). */
   touch-action: pan-y;
-  /* На мобильном это единственное "активное" фото — тень только у него,
-     та же тень (токены), что у кнопки-стрелки/лого-плашки карточек. */
-  box-shadow:
-    var(--sds-size-depth-0) var(--sds-size-depth-400) var(--sds-size-depth-800) var(--sds-size-depth-negative-100) var(--sds-color-black-200),
-    var(--sds-size-depth-0) var(--sds-size-depth-100) var(--sds-size-depth-100) var(--sds-size-depth-negative-100) var(--sds-color-black-100);
 }
 
 .beautiful-block__photo {
@@ -120,40 +115,23 @@
 
 .beautiful-block__slider-viewport {
   position: relative;
-  /* Клип клонов трека за краями — нужен для бесшовной прокрутки (см.
-     initSlider в beautiful.js). Один shorthand overflow (а не раздельные
-     overflow-x/overflow-y) — иначе браузер по спеке молча превращает
-     "visible" в "auto" на той оси, что осталась бы видимой (см. комментарий
-     у .beautiful-block__slider-clip): auto всё равно обрезает контент,
-     просто без скроллбара, так что раздельные значения здесь не спасают. */
-  overflow: hidden;
+  overflow: hidden; /* клип клонов трека за краями — нужен для бесшовной прокрутки, см. initSlider в beautiful.js */
+  /* Лёгкое "сжатие" при перелистывании — .is-squeezing вешает/снимает
+     playSqueeze в beautiful.js, тот же приём (и то же число), что у
+     .project-slider__viewport в slider.css. */
+  transition: transform 240ms ease;
 }
 
-.beautiful-block__slider-clip {
-  /* Буфер для тени карточек: margin -16px раздвигает эту обёртку на 16px
-     за пределы её обычного места, padding 16px тут же задвигает трек
-     обратно — итоговая позиция трека не меняется ни на пиксель, но у
-     overflow:hidden родителя (.beautiful-block__slider-viewport) теперь
-     есть 16px запаса со всех сторон, прежде чем он реально начнёт что-то
-     обрезать. Без этой обёртки трек лежал прямо на границе clip-области,
-     и тень карточек (box-shadow с блюром ~8px) обрезалась резко вплотную
-     к их же краю, а не мягко истаивала. Margin — не margin-inline и не
-     margin-block, а именно margin (все 4 стороны): родитель обрезает и по
-     X (клоны трека), и по Y (иначе просто сверху/снизу без буфера), так
-     что тени нужен запас на всех четырёх сторонах.
-     Родитель (.beautiful-block__slider-viewport) уже clip-контейнер
-     (overflow:hidden) — по правилам схлопывания маргинов это ЖЕ не даёт
-     отрицательному margin здесь просочиться наружу и сдвинуть точки-
-     пагинацию/футер слайдера, поэтому margin-inline на .beautiful-
-     block__slider (обычный видимый отступ блока) этим не задевается. */
-  margin: -16px;
-  padding: 16px;
+.beautiful-block__slider.is-squeezing .beautiful-block__slider-viewport {
+  transform: scale(0.96);
 }
 
 .beautiful-block__slider-track {
   display: flex;
   gap: 16px;
-  transition: transform 320ms ease;
+  /* Тот же тайминг/кривая, что у .project-slider__track (slider.css) — по
+     фидбэку, тут тоже должно быть медленнее и плавнее, чем было (320ms ease). */
+  transition: transform 560ms cubic-bezier(0.22, 0.9, 0.26, 1);
 }
 
 .beautiful-block__slider-item {
@@ -162,11 +140,6 @@
   border-radius: var(--radius-card);
   overflow: hidden;
   background: var(--color-white-40);
-  /* На планшете/десктопе тень у всех карточек слайдера, не только у одной
-     активной — та же тень, что у .beautiful-block__photo-wrap на моб. */
-  box-shadow:
-    var(--sds-size-depth-0) var(--sds-size-depth-400) var(--sds-size-depth-800) var(--sds-size-depth-negative-100) var(--sds-color-black-200),
-    var(--sds-size-depth-0) var(--sds-size-depth-100) var(--sds-size-depth-100) var(--sds-size-depth-negative-100) var(--sds-color-black-100);
 }
 
 .beautiful-block__slider-image {
@@ -306,7 +279,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .beautiful-block__slider-track {
+  .beautiful-block__slider-track,
+  .beautiful-block__slider-viewport {
     transition: none;
   }
 }

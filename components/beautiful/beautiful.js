@@ -156,7 +156,12 @@ function initSolo(block) {
 // 800–1100 = 2 фото в ряд, 1101+ = 3.
 const sliderDesktopQuery = window.matchMedia("(min-width: 1101px)");
 
+// Длительность "сжатия" карточек при перелистывании — то же ощущение и то
+// же число, что у squeeze в большом слайдере (SQUEEZE_DURATION в slider.js).
+const SLIDER_SQUEEZE_DURATION = 240;
+
 function initSlider(block) {
+  const sliderEl = block.querySelector(".beautiful-block__slider");
   const viewport = block.querySelector(".beautiful-block__slider-viewport");
   const track = block.querySelector(".beautiful-block__slider-track");
   const dotsWrap = block.querySelector(".beautiful-block__dots");
@@ -248,10 +253,22 @@ function initSlider(block) {
     else track.addEventListener("transitionend", onEnd, { once: true });
   }
 
+  // Лёгкое "сжатие" карточек при перелистывании — как в большом слайдере
+  // (playSqueeze/.is-squeezing в slider.js/slider.css): едва заметный
+  // scale-даун и обратно, будто карточки и правда переложили.
+  function playSqueeze() {
+    if (prefersReducedMotion) return;
+    sliderEl.classList.remove("is-squeezing");
+    void sliderEl.offsetWidth; // reflow, чтобы анимация перезапускалась с нуля
+    sliderEl.classList.add("is-squeezing");
+    window.setTimeout(() => sliderEl.classList.remove("is-squeezing"), SLIDER_SQUEEZE_DURATION);
+  }
+
   function goTo(index, withTransition = true) {
     rawStart = index;
     applyTransform(withTransition);
     updateDots();
+    if (withTransition) playSqueeze();
     scheduleLoopReset();
   }
 
