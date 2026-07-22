@@ -58,6 +58,7 @@ export function createProjectCard(card) {
   article.dataset.projectId = String(card.id);
 
   article.innerHTML = `
+    <img class="project-card__blur-bg" alt="" aria-hidden="true" />
     <div class="project-card__image-wrap">
       <img class="project-card__image" alt="${card.title}" />
       ${
@@ -85,6 +86,22 @@ export function createProjectCard(card) {
     { once: true }
   );
   image.src = card.image;
+
+  // backdrop-filter на .project-card (глазс поверх "фона") на практике не
+  // видит НИЧЕГО у себя за спиной: карточка лежит внутри .project-slide, а
+  // у того есть свой transform (поворот дуги, см. slider.css/slider.js) —
+  // transform на предке создаёт новый stacking context ("backdrop root"),
+  // и backdrop-filter физически не может заглянуть дальше него наружу, к
+  // соседним карточкам или фону страницы. Внутри же .project-slide, кроме
+  // самой карточки, ничего нет — блюрить там нечего, поэтому матовость
+  // визуально пропадала (blur был активен, но сэмплил пустоту). Чиним не
+  // трогая поворот (он и должен создавать этот contex — часть дизайна
+  // дуги), а имитируем: тот же снимок фото проекта, размытый и слегка
+  // увеличенный, лежит ПОД остальным содержимым карточки — тень
+  // растянутого фото фото просвечивает в паддинге/под заголовком точно
+  // так же, как задумывался живой backdrop-filter.
+  const blurBg = article.querySelector(".project-card__blur-bg");
+  blurBg.src = card.image;
 
   const logo = article.querySelector(".project-card__logo");
   if (logo) {

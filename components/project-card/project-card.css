@@ -3,6 +3,20 @@
   и BottomNav). Внутри: фото с 6px отступом сверху/по бокам, под фото —
   заголовок Semibold 16 с отступом 12px, снизу карточки паддинг 16px.
   Кнопка-стрелка и лого-плашка лежат поверх фото.
+
+  .project-card__blur-bg — то же фото проекта, размытое и увеличенное,
+  лежит первым (позади всего) внутри карточки. Это НЕ декоративный дубль —
+  он заменяет собой backdrop-filter, который здесь физически ничего не
+  видит: .project-slide (родитель карточки) повёрнут transform'ом ради
+  дуги (см. slider.css/slider.js), а transform на предке создаёт свой
+  stacking context — backdrop-filter карточки не может заглянуть дальше
+  него наружу, к соседним карточкам/фону страницы, а внутри .project-slide
+  кроме самой карточки ничего нет. Отсюда и матовость в паддинге/под
+  заголовком раньше не была видна — blur был активен, но сэмплил пустоту.
+  Тонировка (50% белого, тот же --glass-fill, что у .glass-surface) — inset
+  box-shadow ПРЯМО НА этой картинке, а не фон родителя: собственный фон
+  .project-card (из .glass-surface) рисуется ДО любых детей и оказался бы
+  под этой же картинкой, то есть скрыт ею. См. project-card.js — там же src.
 */
 
 .project-card {
@@ -11,12 +25,38 @@
      заголовок карточки ссылкой не является), поэтому задано отдельной
      локальной переменной только для карточек этого блока. */
   --project-card-title-weight: 600;
+  position: relative;
+  overflow: hidden; /* обрезает увеличенный .project-card__blur-bg по скруглению карточки */
   display: flex;
   flex-direction: column;
   width: 13.75rem; /* 220px при 390px = 208px фото + 6+6px отступов */
   padding: var(--space-2) var(--space-2) var(--space-5); /* 6px 6px .. 16px */
   border-radius: var(--radius-card-outer); /* 40px */
   box-sizing: border-box;
+}
+
+.project-card__blur-bg {
+  position: absolute;
+  inset: 0;
+  /* Отрицательный z-index — не 0: обычные (не спозиционированные) дети
+     .project-card (.project-card__image-wrap, .project-card__title)
+     красятся раньше, чем позиционированные потомки с z-index:0/auto, так
+     что z-index:0 здесь оказался бы ПОВЕРХ фото и заголовка. -1 остаётся
+     ровно под ними, но уже над собственным (скрытым) фоном .project-card. */
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* scale скрывает светлую кайму по краю размытия за пределами видимой
+     (уже обрезанной overflow:hidden выше) области карточки. */
+  transform: scale(1.3);
+  filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  /* Тонировка поверх размытого фото — inset-тень на всю площадь картинки
+     (тот же приём, что "залить цветом поверх img" без доп. слоя). Родной
+     background у .project-card (из .glass-surface) сюда не годится: фон
+     элемента красится ДО его детей, эта картинка была бы поверх него и
+     полностью его перекрыла бы. */
+  box-shadow: inset 0 0 0 62.5rem var(--glass-fill);
 }
 
 .project-card__image-wrap {
