@@ -6,9 +6,9 @@
 
   Два независимых варианта разметки под разные разрешения (мобильный дизайн
   принципиально другой, а не просто урезанный десктопный — см. HTML):
-  - .beautiful-block__solo (<800px) — одно большое фото + лента миниатюр
-    под ним, миниатюра выбирается кликом/свайпом, см. initBeautiful в
-    beautiful.js.
+  - .beautiful-block__solo (<800px) — одно большое фото на весь блок,
+    листается свайпом в сторону, счётчик "N из M" в углу поверх фото, см.
+    initSolo в beautiful.js.
   - .beautiful-block__slider (800px+) — бесконечный слайдер на N фото в
     ряд (2 на планшете, 3 на десктопе), стрелки всегда активны и листают
     сразу на N карточек, бесшовно закольцован в обе стороны, точки-
@@ -58,7 +58,6 @@
   padding-inline: 10px;
   display: flex;
   flex-direction: column;
-  gap: 16px; /* между фото и лентой миниатюр */
 }
 
 .beautiful-block__photo-wrap {
@@ -67,6 +66,10 @@
   border-radius: var(--radius-card); /* тот же радиус, что у карточек выше */
   overflow: hidden;
   background: var(--color-white-40); /* видно, пока фото не загрузилось */
+  /* pan-y — вертикальный скролл страницы остаётся нативным, горизонтальный
+     свайп по фото обрабатывает beautiful.js (тот же приём, что у слайдера,
+     см. slider.css/popular-card.css). */
+  touch-action: pan-y;
   /* На мобильном это единственное "активное" фото — тень только у него,
      та же тень (токены), что у кнопки-стрелки/лого-плашки карточек. */
   box-shadow:
@@ -105,46 +108,6 @@
   color: var(--color-white);
 }
 
-.beautiful-block__thumbs {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x proximity;
-  scrollbar-width: none; /* Firefox */
-}
-
-.beautiful-block__thumbs::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
-}
-
-.beautiful-block__thumb {
-  flex: 0 0 auto;
-  width: 4.5rem; /* 72px при 390px, дальше растёт вместе с интерфейсом */
-  aspect-ratio: 2002 / 2552;
-  box-sizing: border-box;
-  padding: 0;
-  border: 2px solid transparent; /* активная подсвечивается ниже */
-  border-radius: calc(var(--radius-card) / 2); /* вдвое меньше, чем у большого фото */
-  overflow: hidden;
-  background: var(--color-white-40);
-  scroll-snap-align: center;
-  cursor: pointer;
-}
-
-.beautiful-block__thumb.is-active {
-  border-color: var(--color-accent-pink);
-}
-
-.beautiful-block__thumb-image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 /* --- Планшет/десктоп (800px+) — слайдер на N фото в ряд --- */
 
 .beautiful-block__slider {
@@ -153,7 +116,12 @@
 
 .beautiful-block__slider-viewport {
   position: relative;
-  overflow: hidden;
+  /* overflow-x скрывает клоны трека за краями (нужно для бесшовной
+     прокрутки), overflow-y оставляем visible — иначе тень карточек
+     (.beautiful-block__slider-item) обрезалась бы сверху/снизу, ведь
+     высота viewport точно равна высоте карточек, без запаса под тень. */
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .beautiful-block__slider-track {
@@ -183,7 +151,7 @@
 }
 
 .beautiful-block__dots {
-  margin-top: 16px;
+  margin-top: 24px; /* больше воздуха от карточек, чем было (16px слипались) */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -311,10 +279,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .beautiful-block__thumbs {
-    scroll-behavior: auto;
-  }
-
   .beautiful-block__slider-track {
     transition: none;
   }

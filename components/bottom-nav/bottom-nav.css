@@ -45,9 +45,6 @@
   overflow: hidden;
   isolation: isolate;
   position: relative;
-  /* preserve glass-surface styling (do not remove border/shadow) */
-  /* match header outer shadow for identical edge appearance */
-  box-shadow: 0 0.375rem 1.125rem rgba(2,6,23,0.12); /* 6px 18px при 390px */
   box-sizing: border-box;
   /* consistent item sizing */
   --nav-item-min-height: 3rem;
@@ -78,7 +75,6 @@
   width: var(--indicator-width, calc(25% - var(--space-2)));
   border-radius: var(--radius-pill);
   background: var(--color-white);
-  /* indicator should not add outer shadow — footer's box-shadow provides it */
   /* Двигаем через transform, а не left: left/width лежат в layout-пайплайне
      и на каждый кадр анимации триггерят reflow + repaint — особенно заметно
      на .glass-surface, где repaint означает ещё и пересчёт backdrop-filter

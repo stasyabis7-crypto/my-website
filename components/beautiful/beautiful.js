@@ -2,9 +2,9 @@
   Beautiful — блок "Красивое". Два независимых UI под разные разрешения
   (см. beautiful.css за переключение видимости по media query):
 
-  - Мобильный (<800px, initSolo): одно большое фото + лента миниатюр под
-    ним, миниатюра выбирается кликом/свайпом. Без автоплея — только по
-    действию пользователя.
+  - Мобильный (<800px, initSolo): одно большое фото на весь блок, листается
+    свайпом пальца в сторону (счётчик "N из M" — в углу поверх фото). Без
+    автоплея — только по действию пользователя.
   - Планшет/десктоп (800px+, initSlider): слайдер на N фото в ряд (2 на
     планшете, 3 на десктопе), стрелки всегда активны и листают сразу на N
     карточек (целая "страница" за клик), бесшовно закольцован в обе
@@ -59,29 +59,16 @@ export function initBeautiful(root = document) {
 
 /* --- Мобильный: фото + лента миниатюр --- */
 
+// Те же пороги свайпа, что у большого слайдера (slider.js) и мини-слайдера
+// карточек "Популярного" (popular-card.js) — держим одинаковое ощущение
+// жеста по всему сайту.
+const SOLO_DRAG_THRESHOLD = 32; // px — свайп меньше этого возвращает то же фото
+const SOLO_DIRECTION_THRESHOLD = 8; // px — до этого не решаем, горизонтальный жест или вертикальный скролл
+
 function initSolo(block) {
   const photoWrap = block.querySelector(".beautiful-block__photo-wrap");
   const photo = block.querySelector(".beautiful-block__photo");
   const counter = block.querySelector(".beautiful-block__counter");
-  const thumbsWrap = block.querySelector(".beautiful-block__thumbs");
-
-  const thumbs = beautifulPhotos.map((src, index) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "beautiful-block__thumb";
-    button.setAttribute("aria-label", `Фото ${index + 1} из ${beautifulPhotos.length}`);
-
-    const img = document.createElement("img");
-    img.className = "beautiful-block__thumb-image";
-    img.src = src;
-    img.alt = "";
-    img.loading = "lazy";
-
-    button.appendChild(img);
-    button.addEventListener("click", () => goTo(index));
-    thumbsWrap.appendChild(button);
-    return button;
-  });
 
   let activeIndex = 0;
   let switchToken = 0;
@@ -90,27 +77,12 @@ function initSolo(block) {
     counter.textContent = `${activeIndex + 1} из ${beautifulPhotos.length}`;
   }
 
-  // Скроллим только саму ленту миниатюр (её scrollLeft), а не через
-  // scrollIntoView — тот умеет утащить за собой и скролл страницы, если
-  // блок целиком не виден.
-  function scrollThumbIntoView(thumb) {
-    const behavior = prefersReducedMotion ? "auto" : "smooth";
-    const left = thumb.offsetLeft;
-    const right = left + thumb.offsetWidth;
-    const viewLeft = thumbsWrap.scrollLeft;
-    const viewRight = viewLeft + thumbsWrap.clientWidth;
-    if (left < viewLeft) thumbsWrap.scrollTo({ left, behavior });
-    else if (right > viewRight) thumbsWrap.scrollTo({ left: right - thumbsWrap.clientWidth, behavior });
-  }
-
   async function goTo(index) {
     activeIndex = ((index % beautifulPhotos.length) + beautifulPhotos.length) % beautifulPhotos.length;
-    // Счётчик/подсветка миниатюры переключаются сразу, не дожидаясь фото —
-    // само фото подхватывает как только готово (обычно мгновенно, см. верх
-    // файла), но реакция на клик не должна ничего ждать.
+    // Счётчик переключается сразу, не дожидаясь фото — само фото подхватывает
+    // как только готово (обычно мгновенно, см. верх файла), но реакция на
+    // свайп не должна ничего ждать.
     updateCounter();
-    thumbs.forEach((thumb, i) => thumb.classList.toggle("is-active", i === activeIndex));
-    scrollThumbIntoView(thumbs[activeIndex]);
 
     const src = beautifulPhotos[activeIndex];
     const token = ++switchToken;
@@ -124,6 +96,56 @@ function initSolo(block) {
     if (token !== switchToken) return;
     photo.classList.remove("is-switching");
   }
+
+  // --- Свайп пальцем листает фото в сторону. Направление жеста решаем
+  // только после SOLO_DIRECTION_THRESHOLD px — если вертикаль больше
+  // горизонтали, это скролл страницы, и трогать фото не нужно (тот же
+  // приём, что в slider.js/popular-card.js). Само фото не тащится за
+  // пальцем (в отличие от тех слайдеров) — оно свапается кроссфейдом в
+  // goTo(), поэтому здесь только детект направления/порога.
+  let isDragging = false;
+  let dragDirection = null;
+  let dragPointerId = null;
+  let dragStartX = 0;
+  let dragStartY = 0;
+
+  photoWrap.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    isDragging = true;
+    dragDirection = null;
+    dragPointerId = event.pointerId;
+    dragStartX = event.clientX;
+    dragStartY = event.clientY;
+  });
+
+  photoWrap.addEventListener("pointermove", (event) => {
+    if (!isDragging || event.pointerId !== dragPointerId || dragDirection !== null) return;
+    const deltaX = event.clientX - dragStartX;
+    const deltaY = event.clientY - dragStartY;
+    if (Math.abs(deltaX) < SOLO_DIRECTION_THRESHOLD && Math.abs(deltaY) < SOLO_DIRECTION_THRESHOLD) return;
+    if (Math.abs(deltaY) > Math.abs(deltaX)) {
+      dragDirection = "vertical";
+      isDragging = false;
+      return;
+    }
+    dragDirection = "horizontal";
+    photoWrap.setPointerCapture(dragPointerId);
+  });
+
+  function endDrag(event) {
+    if (!isDragging || event.pointerId !== dragPointerId || dragDirection !== "horizontal") {
+      isDragging = false;
+      dragDirection = null;
+      return;
+    }
+    isDragging = false;
+    dragDirection = null;
+    const deltaX = event.clientX - dragStartX;
+    if (Math.abs(deltaX) > SOLO_DRAG_THRESHOLD) goTo(activeIndex - Math.sign(deltaX));
+  }
+
+  photoWrap.addEventListener("pointerup", endDrag);
+  photoWrap.addEventListener("pointercancel", endDrag);
 
   goTo(0);
 }
