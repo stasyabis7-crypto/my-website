@@ -29,7 +29,7 @@ const RING_OVERRIDES = {
   1: { extraDropRem: -1 },
   2: { pullPercent: 22, extraDropRem: 2.5 },
   3: { pullPercent: 45, extraDropRem: 9.5 },
-  4: { pullPercent: 62, extraDropRem: 15.5 },
+  4: { pullPercent: 62, extraDropRem: 21.5 },
 };
 
 const initializedSliders = new WeakSet();

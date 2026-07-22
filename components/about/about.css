@@ -80,17 +80,23 @@
   align-items: center;
   justify-content: center;
   /* Смягчённый скейл (--icon-rem-px, см. scale.css) — те же 60px
-     стартового размера, что у кнопки-стрелки карточки проекта. */
-  width: calc(var(--icon-rem-px) * 3.75); /* 60px при 390px */
-  height: calc(var(--icon-rem-px) * 3.75);
+     стартового размера, что у кнопки-стрелки карточки проекта.
+     --about-link-size переопределяется на десктопе (1101px+ ниже) —
+     через переменную, а не напрямую в width/height, чтобы формулы
+     позиционирования (top/left ниже) центрировались по актуальному
+     размеру кнопки, а не по устаревшему. */
+  --about-link-size: calc(var(--icon-rem-px) * 3.75); /* 60px при 390px */
+  width: var(--about-link-size);
+  height: var(--about-link-size);
   border-radius: var(--radius-pill);
   animation: about-float 6s ease-in-out infinite;
 }
 
 .about-block__link-icon {
   display: block;
-  width: calc(var(--icon-rem-px) * 1.625); /* 26px при 390px */
-  height: calc(var(--icon-rem-px) * 1.625);
+  --about-link-icon-size: calc(var(--icon-rem-px) * 1.625); /* 26px при 390px */
+  width: var(--about-link-icon-size);
+  height: var(--about-link-icon-size);
 }
 
 /* Приблизительное расположение поверх верхней половины фото — по ТЗ
@@ -264,25 +270,25 @@
     Нижняя пара (dribbble/mail) ниже верхней и обе пары раздвинуты к бокам.
   */
   .about-block__link[data-social="telegram"] {
-    top: calc(0.25 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
-    left: calc(0.067 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
+    top: calc(0.25 * var(--about-photo-d) - var(--about-link-size) / 2);
+    left: calc(0.067 * var(--about-photo-d) - var(--about-link-size) / 2);
     right: auto;
   }
 
   .about-block__link[data-social="behance"] {
-    top: calc(0.25 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
-    left: calc(0.933 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
+    top: calc(0.25 * var(--about-photo-d) - var(--about-link-size) / 2);
+    left: calc(0.933 * var(--about-photo-d) - var(--about-link-size) / 2);
     right: auto;
   }
 
   .about-block__link[data-social="dribbble"] {
-    top: calc(0.75 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
-    left: calc(0.067 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
+    top: calc(0.75 * var(--about-photo-d) - var(--about-link-size) / 2);
+    left: calc(0.067 * var(--about-photo-d) - var(--about-link-size) / 2);
   }
 
   .about-block__link[data-social="mail"] {
-    top: calc(0.75 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
-    left: calc(0.933 * var(--about-photo-d) - (var(--icon-rem-px) * 3.75) / 2);
+    top: calc(0.75 * var(--about-photo-d) - var(--about-link-size) / 2);
+    left: calc(0.933 * var(--about-photo-d) - var(--about-link-size) / 2);
     right: auto;
   }
 
@@ -307,13 +313,26 @@
   блока, — плавно растёт в зоне 2 и замирает в зоне 3, как у карточек
   проектов (project-card.css). Рост в этой зоне вдвое слабее, чем в зоне
   планшета (+40 вместо +80) — на десктопе фото не должно раздуваться так
-  же сильно. Шрифт/кнопки/текст сами уже не растут после 950px (см.
-  scale.css) — они одинаковые во всех зонах отсюда и дальше, здесь их
-  отдельно не трогаем.
+  же сильно. Шрифт/текст сами уже не растут после 950px (см. scale.css) —
+  здесь их отдельно не трогаем. Соцкнопки — исключение: увеличены отдельно
+  под этот брейкпоинт (по фидбэку — на десктопе выглядели мелковато рядом
+  с выросшим фото), через --about-link-size/--about-link-icon-size, а не
+  --icon-rem-px напрямую, чтобы не раздувать остальные элементы, которые
+  используют тот же токен (кнопка-стрелка карточки проекта и т.д.).
 */
 @media (min-width: 1101px) {
   .about-block {
     --about-photo-d: clamp(820px, calc(820px + 40 * ((100vw - 1101px) / 339)), 860px);
+  }
+
+  .about-block__link {
+    /* px, а не rem — на этом брейкпоинте 1rem уже не 16px, а ~21.5px
+       (см. scale.css), rem здесь дал бы не 88px, а ~118px */
+    --about-link-size: 88px; /* было ~70px */
+  }
+
+  .about-block__link-icon {
+    --about-link-icon-size: 38px; /* было ~30px */
   }
 
   .about-block__chat {

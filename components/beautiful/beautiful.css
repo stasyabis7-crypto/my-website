@@ -19,6 +19,10 @@
   Отступы внутри блока (10/16/24/40px) заданы фиксированными пикселями, а
   не через rem-токены шкалы — в отличие от остального сайта, здесь это
   осознанно точные значения, не растущие вместе с экраном.
+
+  Боковой отступ от краёв экрана — 10px на мобильном, 16px на планшете и
+  десктопе (800px+, см. переопределения в медиа-запросах ниже) — те же два
+  значения, что и у .popular-grid/.popular-block__cta (popular.css).
 */
 
 .beautiful-block {
@@ -261,13 +265,14 @@
   .beautiful-block__slider {
     display: block;
     margin-top: var(--space-7);
-    padding-inline: 10px;
+    padding-inline: 16px;
     --beautiful-slider-count: 2;
   }
 
   .beautiful-block__cta {
     /* от точек-пагинации слайдера до кнопки — больше, чем на мобильном */
     margin-top: 40px;
+    margin-inline: 16px;
   }
 }
 
