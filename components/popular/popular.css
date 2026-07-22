@@ -30,7 +30,7 @@
      см. переопределение ниже на 1101px+ */
   margin-top: -5rem; /* 80px */
   border-radius: var(--radius-card-outer); /* 40px */
-  background: var(--color-accent-pink);
+  background: var(--color-white);
   padding: var(--space-8) 0 0.625rem; /* 40px сверху везде, 10px снизу (до кнопки её собственный margin-top) */
 }
 
@@ -45,7 +45,7 @@
   font-weight: 400;
   font-size: var(--font-size-xl); /* 36px */
   line-height: var(--line-height-default);
-  color: var(--color-white);
+  color: var(--color-black);
 }
 
 .popular-block__subtitle {
@@ -54,7 +54,7 @@
   font-weight: var(--font-weight-regular);
   font-size: 1rem;
   line-height: var(--line-height-default);
-  color: var(--color-white);
+  color: var(--color-black);
 }
 
 .popular-grid {
@@ -72,7 +72,7 @@
   margin: 2.5rem 0.625rem 0; /* 40px от карточек, 10px до боков экрана */
   height: 3.75rem; /* 60px */
   border-radius: var(--radius-pill); /* максимальное скругление */
-  background: var(--color-white);
+  background: var(--color-accent-pink);
   color: var(--color-black);
   font-family: var(--font-body);
   font-weight: var(--font-weight-semibold); /* кликабельная кнопка */
@@ -89,7 +89,10 @@
 }
 
 .popular-block__cta:focus-visible {
-  outline: 0.125rem solid var(--color-white);
+  /* Было white — с белым фоном блока (см. .popular-block выше) белый outline
+     на белом фоне был бы не виден; чёрный виден и на розовой кнопке, и на
+     белом фоне вокруг неё (outline-offset выводит кольцо за её пределы). */
+  outline: 0.125rem solid var(--color-black);
   outline-offset: 0.125rem;
 }
 
@@ -97,8 +100,11 @@
   .popular-block {
     /* от 800px (планшет) нахлёста на предыдущий блок больше нет — обычный
        промежуток между блоками, как и везде на странице (нахлёст только
-       на мобильном), плюс блок целиком опущен на 40px (планшет и десктоп) */
-    margin-top: 40px;
+       на мобильном), плюс блок целиком опущен на 100px (было 40px — по
+       фидбэку, ещё +60px на планшете/десктопе/большом десктопе — это
+       единственный брейкпоинт, где задан margin-top, так что он общий
+       для всех трёх) */
+    margin-top: 100px;
   }
 
   .popular-grid {

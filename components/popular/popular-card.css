@@ -91,7 +91,7 @@
   font-weight: 400;
   font-size: var(--font-size-lg); /* 24px */
   line-height: var(--line-height-default); /* 130% */
-  color: var(--color-white);
+  color: var(--color-black);
   text-align: left;
 }
 
@@ -103,7 +103,7 @@
   font-weight: var(--font-weight-regular);
   font-size: 1rem;
   line-height: var(--line-height-default);
-  color: var(--color-white);
+  color: var(--color-black);
   text-align: left;
 }
 
