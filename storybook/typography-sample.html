@@ -115,6 +115,14 @@
     padding: 1.25rem 1.5rem;
     background: #fafbfc;
   }
+  .nbsp-mark {
+    background: #fff1b8;
+    color: inherit;
+    border-radius: 0.25em;
+    padding: 0 0.05em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
 </style>
 </head>
 <body>
@@ -274,15 +282,25 @@
 
   <section class="sample-group">
     <h2 class="sample-group__title">Висячие предлоги и союзы</h2>
-    <p class="stack-demo__label" style="margin-bottom:1rem;">Один и тот же текст в узкой колонке — слева необработанный (<code>data-no-typography</code>), справа прогнан через <code>initTypography()</code>. Короткие предлоги/союзы (и, к, с, о, в…) в правой колонке не остаются одни в конце строки — после них неразрывный пробел.</p>
-    <div style="display:flex;gap:1.25rem;flex-wrap:wrap;">
-      <div>
-        <p class="stack-demo__label"><b>Без обработки</b></p>
-        <div class="text-body-sm stack-demo__box" data-no-typography style="width:220px;">Мы работаем и с большими командами, и с маленькими стартапами по всему миру.</div>
+
+    <div class="stack-demo">
+      <p class="stack-demo__label">Где именно вставлен неразрывный пробел — не зависит от ширины колонки, поэтому надёжнее смотреть на подсветку, а не ловить момент переноса. Короткие слова, идущие подряд («и с»), склеиваются не только друг с другом, но и со следующим обычным словом — иначе повиснуть могла бы уже пара целиком:</p>
+      <div class="stack-demo__box">
+        <div class="text-body">Мы работаем <mark class="nbsp-mark">и с большими</mark> командами, <mark class="nbsp-mark">и с маленькими</mark> стартапами <mark class="nbsp-mark">по всему</mark> миру.</div>
       </div>
-      <div>
-        <p class="stack-demo__label"><b>initTypography()</b></p>
-        <div class="text-body-sm stack-demo__box" id="typo-demo" style="width:220px;">Мы работаем и с большими командами, и с маленькими стартапами по всему миру.</div>
+    </div>
+
+    <div class="stack-demo">
+      <p class="stack-demo__label" style="margin-bottom:1rem;">А вот тот же текст в узкой колонке — эффект виден, только если перенос и так случился бы ровно на склеенном месте. Слева необработанный (<code>data-no-typography</code>), справа <code>initTypography()</code>: сравните 2–3 строку — «и с» больше не остаются вдвоём в конце строки, а уезжают вместе со следующим словом («большими») на новую строку.</p>
+      <div style="display:flex;gap:1.25rem;flex-wrap:wrap;">
+        <div>
+          <p class="stack-demo__label"><b>Без обработки</b></p>
+          <div class="text-body-sm stack-demo__box" data-no-typography style="width:220px;">Мы работаем и с большими командами, и с маленькими стартапами по всему миру.</div>
+        </div>
+        <div>
+          <p class="stack-demo__label"><b>initTypography()</b></p>
+          <div class="text-body-sm stack-demo__box" id="typo-demo" style="width:220px;">Мы работаем и с большими командами, и с маленькими стартапами по всему миру.</div>
+        </div>
       </div>
     </div>
   </section>

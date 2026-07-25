@@ -6,6 +6,14 @@
   текстовых узлах DOM. Браузер после этого физически не может перенести
   строку между предлогом и следующим словом.
 
+  Короткие слова часто идут подряд ("и с большими"). Если склеивать их по
+  одному ("и"+"с" отдельно от "с"+"большими"), пара "и с" всё равно может
+  целиком повиснуть в конце строки — сама она уже не одно слово, но смысл
+  правила тот же. Поэтому ищем весь подряд идущий набор коротких слов
+  разом (см. HANGING_PATTERN) и склеиваем неразрывными пробелами и между
+  ними, и до следующего обычного слова — вся цепочка переносится только
+  целиком.
+
   hangPrepositions(root) — разовый проход по поддереву. initTypography(root)
   — то же самое плюс MutationObserver: подхватывает текст, который
   появляется позже (компоненты, подгружающие фрагменты через fetch, как в
@@ -21,10 +29,15 @@ const HANGING_WORDS = [
   "ко", "обо", "изо", "ото", "под", "над", "для", "при", "это",
 ];
 
+// Группа 2 — цепочка из одного или нескольких коротких слов подряд
+// ("и ", "и с ", "и с о "...), захватывается целиком одним матчем, а не
+// по одному слову — иначе "с" в "и с большими" не получит свой nbsp.
 const HANGING_PATTERN = new RegExp(
-  "(^|[\\s ])(" + HANGING_WORDS.join("|") + ")[ \\t]+(?=\\S)",
+  "(^|[\\s ])((?:(?:" + HANGING_WORDS.join("|") + ")[ \\t]+)+)(?=\\S)",
   "gi"
 );
+
+const INNER_SPACE = /[ \t]+/g;
 
 const SKIP_TAGS = new Set([
   "SCRIPT", "STYLE", "TEXTAREA", "CODE", "PRE", "NOSCRIPT",
@@ -36,7 +49,9 @@ function replaceInTextNode(node) {
   HANGING_PATTERN.lastIndex = 0;
   if (!HANGING_PATTERN.test(value)) return;
   HANGING_PATTERN.lastIndex = 0;
-  node.nodeValue = value.replace(HANGING_PATTERN, "$1$2 ");
+  node.nodeValue = value.replace(HANGING_PATTERN, function (match, boundary, chain) {
+    return boundary + chain.replace(INNER_SPACE, " ");
+  });
 }
 
 function acceptNode(node) {
