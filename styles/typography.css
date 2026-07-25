@@ -1,14 +1,23 @@
 /*
   Типографика — шкала ролей текста (Display/H1–H4/Body/Caption/Label/…)
-  поверх fluid-скейлинга из scale.css. Все размеры — в rem, поэтому
-  каждая роль автоматически растёт вместе с html font-size на 390–950px
-  и остаётся неизменной дальше (см. комментарий в scale.css) — отдельных
-  переопределений под брейкпоинты 800/1101/1441 не нужно, если только
-  роль явно не должна отличаться зоной (см. --font-size-display).
+  поверх fluid-скейлинга из scale.css.
 
-  Шрифты пока стандартные (системный стек) — заменить на кастомные
-  можно, просто переопределив --font-family-heading/--font-family-body,
-  вся остальная система на это не завязана.
+  Два независимых механизма роста, каждый работает в своей зоне:
+
+  1) 390–950px — все размеры в rem, поэтому каждая роль растёт вместе с
+     html font-size автоматически (см. scale.css), без единой лишней
+     строчки CSS. К 950px root уже вырос ×1.342 от базы — то есть каждая
+     роль тоже в 1.342 раза крупнее мобильного значения ниже.
+
+  2) 950px+ — root заморожен (осознанно, чтобы обычный текст не раздувался
+     на десктопе, см. комментарий в scale.css), а вместе с ним замерли бы
+     и все rem-размеры. Заголовочные роли (H2–H4, Display) на 1101/1441
+     ниже получают явные шаги в px — на широких экранах у них достаточно
+     воздуха, чтобы иерархия продолжала расти, а тело текста (body/
+     caption/label/button) сознательно оставлено на замороженном размере:
+     длинный текст не должен становиться крупнее с одной лишь шириной
+     экрана. Шаги рассчитаны так, чтобы на стыке зон не было скачка —
+     каждый следующий чуть крупнее предыдущего, без разрывов.
 */
 
 :root {
@@ -17,19 +26,20 @@
   --font-family-body: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 
-  /* --- Шкала размеров (модульная, база 390px = 16px root) ---
-     Значения в rem: 1rem = текущий font-size html (см. scale.css). */
+  /* --- Шкала размеров (база 390px = 16px root) ---
+     Значения в rem: 1rem = текущий font-size html (см. scale.css). Шаг
+     между соседними ролями нигде не уже ~12% — иначе на глаз размеры
+     сливаются и иерархия перестаёт читаться. */
   --font-size-3xs: 0.625rem;  /* 10px — самые мелкие лейблы/индексы */
-  --font-size-2xs: 0.75rem;   /* 12px — caption */
-  --font-size-xs: 0.8125rem;  /* 13px — мелкий вспомогательный текст */
-  --font-size-sm: 0.875rem;   /* 14px — body small */
-  --font-size-base: 1rem;     /* 16px — body */
-  --font-size-md: 1.125rem;   /* 18px — body large / H4 */
-  --font-size-lg: 1.375rem;   /* 22px — H3 */
-  --font-size-xl: 1.75rem;    /* 28px — H2 */
-  --font-size-2xl: 2.25rem;   /* 36px — H1 */
-  --font-size-3xl: 3rem;      /* 48px — Display */
-  --font-size-4xl: 3.75rem;   /* 60px — Display large (десктопные хиро-заголовки) */
+  --font-size-2xs: 0.75rem;   /* 12px — caption, ×1.20 к 3xs */
+  --font-size-sm: 0.875rem;   /* 14px — body small/label/button, ×1.17 */
+  --font-size-base: 1rem;     /* 16px — body, ×1.14 */
+  --font-size-md: 1.125rem;   /* 18px — body large / H4, ×1.13 */
+  --font-size-lg: 1.375rem;   /* 22px — H3, ×1.22 */
+  --font-size-xl: 1.75rem;    /* 28px — H2, ×1.27 */
+  --font-size-2xl: 2.25rem;   /* 36px — H1, ×1.29 */
+  --font-size-3xl: 3rem;      /* 48px — Display, ×1.33 */
+  --font-size-4xl: 3.75rem;   /* 60px — Display large, ×1.25 */
 
   /* --- Начертания --- */
   --font-weight-regular: 400;
@@ -37,29 +47,52 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* --- Межстрочные интервалы --- */
-  --line-height-tight: 1.1;   /* крупные display/H1 */
+  /* --- Межстрочные интервалы (unitless-множители — сами масштабируются
+     вместе с font-size, отдельно на брейкпоинты подстраивать не нужно) --- */
+  --line-height-tight: 1.1;    /* крупные display/H1 */
   --line-height-heading: 1.25; /* H2–H4 */
   --line-height-default: 1.3;  /* короткие UI-строки (кнопки, лейблы) */
   --line-height-body: 1.5;     /* длинный текст-абзац */
 
   /* --- Трекинг --- */
   --letter-spacing-tight: -0.01em;   /* крупные заголовки */
+  --letter-spacing-tighter: -0.02em; /* display на очень крупных размерах (1101+) */
   --letter-spacing-normal: 0;
   --letter-spacing-wide: 0.04em;     /* overline/лейблы КАПСОМ */
+
+  /* --- Оптимальная длина строки для длинного текста, в ch (устойчива
+     к масштабу — считается от размера самого элемента, а не root) --- */
+  --measure-body: 66ch;
+  --measure-body-lg: 58ch;
+  --measure-body-sm: 72ch;
 }
 
 /*
-  Зона "десктоп XL" (1441+) — единственная роль, которой сознательно
-  задан отдельный, более крупный шаг: hero/display-заголовки на очень
-  широких экранах выигрывают от дополнительного роста, который fluid-
-  скейлинг (замороженный после 950px) сам по себе уже не даёт. Обычный
-  текстовый контент (body/caption/…) от ширины экрана больше не зависит.
+  Зона "десктоп" (1101+, root уже заморожен на 950px) — первый явный шаг
+  роста для заголовков и display, продолжающий иерархию, которую дальше
+  сам по себе fluid-скейлинг уже не тянет.
 */
+@media (min-width: 1101px) {
+  :root {
+    --font-size-lg: 2rem;      /* 32px — H3 */
+    --font-size-xl: 2.5rem;    /* 40px — H2 */
+    --font-size-2xl: 3.25rem;  /* 52px — H1 */
+    --font-size-3xl: 4.25rem;  /* 68px — Display */
+    --font-size-4xl: 5.25rem;  /* 84px — Display large */
+  }
+}
+
+/* Зона "десктоп XL" (1441+) — второй, чуть более крупный шаг той же
+   лестницы: hero/display-заголовки на очень широких экранах выигрывают
+   от продолжения роста. Тело текста (body/caption/…) от ширины экрана
+   по-прежнему не зависит нигде. */
 @media (min-width: 1441px) {
   :root {
-    --font-size-3xl: 3.5rem;  /* 56px */
-    --font-size-4xl: 4.5rem;  /* 72px */
+    --font-size-lg: 2.125rem;  /* 34px — H3 */
+    --font-size-xl: 2.75rem;   /* 44px — H2 */
+    --font-size-2xl: 3.625rem; /* 58px — H1 */
+    --font-size-3xl: 4.75rem;  /* 76px — Display */
+    --font-size-4xl: 6rem;     /* 96px — Display large */
   }
 }
 
@@ -126,6 +159,7 @@ body {
   font-size: var(--font-size-md);
   line-height: var(--line-height-body);
   font-weight: var(--font-weight-regular);
+  max-width: var(--measure-body-lg);
 }
 
 .text-body {
@@ -133,6 +167,7 @@ body {
   font-size: var(--font-size-base);
   line-height: var(--line-height-body);
   font-weight: var(--font-weight-regular);
+  max-width: var(--measure-body);
 }
 
 .text-body-sm {
@@ -140,6 +175,7 @@ body {
   font-size: var(--font-size-sm);
   line-height: var(--line-height-body);
   font-weight: var(--font-weight-regular);
+  max-width: var(--measure-body-sm);
 }
 
 .text-caption {
@@ -193,4 +229,14 @@ body {
   font-size: var(--font-size-sm);
   line-height: var(--line-height-body);
   font-weight: var(--font-weight-regular);
+}
+
+/* На крупных display-размерах (1101+, см. шаги выше) трекинг слегка
+   поджимается дополнительно — оптически крупные буквы кажутся более
+   разреженными, чем тот же -0.01em на мобильном размере. */
+@media (min-width: 1101px) {
+  .text-display-lg,
+  .text-display {
+    letter-spacing: var(--letter-spacing-tighter);
+  }
 }

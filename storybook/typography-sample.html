@@ -46,6 +46,20 @@
     color: #8a93a3;
     white-space: normal;
   }
+  /* На узких экранах фиксированная колонка метаданных сжимает текстовый
+     пример — переключаем строку на вертикальную укладку. */
+  @media (max-width: 539px) {
+    .sample-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.35rem;
+    }
+    .sample-row__meta {
+      width: auto;
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
   .sample-row__meta b {
     display: block;
     color: #4b5666;
@@ -87,7 +101,7 @@
   <div class="live-root-size" id="root-size">html font-size: —</div>
 
   <p class="page-heading">Типографика — библиотека ролей</p>
-  <p class="page-sub">Стандартный системный шрифт, размеры в rem — растут вместе с шириной вьюпорта (390–950px), дальше зафиксированы (см. scale.css).</p>
+  <p class="page-sub">Стандартный системный шрифт. Body/caption/label растут вместе с шириной вьюпорта (390–950px) и дальше зафиксированы — не раздуваются на десктопе. Заголовки и Display продолжают расти явными шагами на 1101px и 1441px.</p>
 
   <section class="sample-group">
     <h2 class="sample-group__title">Заголовки</h2>
