@@ -333,3 +333,39 @@ body {
 ):first-child {
   margin-top: 0;
 }
+
+/* --- Выравнивание ---
+   Отдельные utility-классы, независимые от роли — вешаются вторым
+   классом на тот же элемент (напр. class="text-h1 text-align-center"). */
+.text-align-left {
+  text-align: left;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+/* --- Висячие предлоги и союзы ---
+   Чистым CSS нельзя запретить одиночному предлогу/союзу остаться в конце
+   строки — для этого нужно заменить пробел после него на неразрывный
+   (U+00A0) прямо в тексте, см. typography.js (hangPrepositions/
+   initTypography). Здесь только браузерная подстраховка для остального
+   переноса строк — там, где .js по каким-то причинам не подключён,
+   text-wrap: pretty снижает число некрасивых висячих слов и переносов
+   вообще (поддержка Chrome/Edge 117+, в остальных браузерах просто
+   игнорируется как невалидное значение). */
+.text-display-lg,
+.text-display,
+.text-h1,
+.text-h2,
+.text-h3,
+.text-h4,
+.text-body-lg,
+.text-body,
+.text-body-sm {
+  text-wrap: pretty;
+}

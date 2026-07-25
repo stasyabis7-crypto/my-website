@@ -247,6 +247,46 @@
     </div>
   </section>
 
+  <section class="sample-group">
+    <h2 class="sample-group__title">Выравнивание</h2>
+
+    <div class="stack-demo">
+      <p class="stack-demo__label"><b>.text-align-left</b> — по левому краю (по умолчанию)</p>
+      <div class="stack-demo__box">
+        <div class="text-body text-align-left" style="max-width:none;">Заголовок и текст выравниваются по левому краю — обычное чтение слева направо.</div>
+      </div>
+    </div>
+
+    <div class="stack-demo">
+      <p class="stack-demo__label"><b>.text-align-center</b> — по центру</p>
+      <div class="stack-demo__box">
+        <div class="text-h3 text-align-center">Вы искали продуктового дизайнера</div>
+      </div>
+    </div>
+
+    <div class="stack-demo">
+      <p class="stack-demo__label"><b>.text-align-right</b> — по правому краю</p>
+      <div class="stack-demo__box">
+        <div class="text-body text-align-right" style="max-width:none;">Например, для цифр в карточке или подписи справа от элемента.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sample-group">
+    <h2 class="sample-group__title">Висячие предлоги и союзы</h2>
+    <p class="stack-demo__label" style="margin-bottom:1rem;">Один и тот же текст в узкой колонке — слева необработанный (<code>data-no-typography</code>), справа прогнан через <code>initTypography()</code>. Короткие предлоги/союзы (и, к, с, о, в…) в правой колонке не остаются одни в конце строки — после них неразрывный пробел.</p>
+    <div style="display:flex;gap:1.25rem;flex-wrap:wrap;">
+      <div>
+        <p class="stack-demo__label"><b>Без обработки</b></p>
+        <div class="text-body-sm stack-demo__box" data-no-typography style="width:220px;">Мы работаем и с большими командами, и с маленькими стартапами по всему миру.</div>
+      </div>
+      <div>
+        <p class="stack-demo__label"><b>initTypography()</b></p>
+        <div class="text-body-sm stack-demo__box" id="typo-demo" style="width:220px;">Мы работаем и с большими командами, и с маленькими стартапами по всему миру.</div>
+      </div>
+    </div>
+  </section>
+
   <script>
     function updateRootSize() {
       var px = getComputedStyle(document.documentElement).fontSize;
@@ -254,6 +294,10 @@
     }
     updateRootSize();
     window.addEventListener('resize', updateRootSize);
+  </script>
+  <script type="module">
+    import { initTypography } from '../styles/typography.js';
+    initTypography(document.body);
   </script>
 </body>
 </html>
