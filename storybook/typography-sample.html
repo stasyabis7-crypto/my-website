@@ -95,6 +95,26 @@
     opacity: 0.85;
     z-index: 5;
   }
+
+  .stack-demo {
+    margin-bottom: 1.75rem;
+  }
+  .stack-demo__label {
+    margin: 0 0 0.5rem;
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 0.6875rem;
+    color: #8a93a3;
+  }
+  .stack-demo__label b {
+    color: #4b5666;
+    font-weight: 600;
+  }
+  .stack-demo__box {
+    border: 1px solid #e6e9ee;
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    background: #fafbfc;
+  }
 </style>
 </head>
 <body>
@@ -179,6 +199,51 @@
     <div class="sample-row">
       <div class="sample-row__meta"><b>.text-code</b>--font-size-sm · mono</div>
       <div class="sample-row__text text-code">--font-size-base: 1rem;</div>
+    </div>
+  </section>
+
+  <section class="sample-group">
+    <h2 class="sample-group__title">Вертикальный ритм — заголовок и подзаголовок</h2>
+
+    <div class="stack-demo">
+      <p class="stack-demo__label"><b>Display → H1</b> — заголовок → заголовок, --space-stack-heading-heading</p>
+      <div class="stack-demo__box">
+        <div class="text-display">Продуктовый дизайн</div>
+        <div class="text-h1">для быстрых команд</div>
+      </div>
+    </div>
+
+    <div class="stack-demo">
+      <p class="stack-demo__label"><b>H1 → Body-lg</b> — заголовок → лид, --space-stack-heading-lead (как в хиро сайта)</p>
+      <div class="stack-demo__box">
+        <div class="text-h1">Вы искали продуктового дизайнера</div>
+        <div class="text-body-lg">И вы его нашли</div>
+      </div>
+    </div>
+
+    <div class="stack-demo">
+      <p class="stack-demo__label"><b>H2 → H3</b> — заголовок → заголовок, --space-stack-heading-heading</p>
+      <div class="stack-demo__box">
+        <div class="text-h2">Проекты</div>
+        <div class="text-h3">Избранное за 2026</div>
+      </div>
+    </div>
+
+    <div class="stack-demo">
+      <p class="stack-demo__label"><b>Body → Body</b> — обычный ритм абзацев, --space-stack-paragraph</p>
+      <div class="stack-demo__box">
+        <div class="text-body">Первый абзац — вводит тему и задаёт контекст для всего, что будет дальше в блоке.</div>
+        <div class="text-body">Второй абзац — продолжает мысль на том же уровне, без отдельного заголовка над ним.</div>
+      </div>
+    </div>
+
+    <div class="stack-demo">
+      <p class="stack-demo__label"><b>Body → H2</b> — текст → новый заголовок, --space-stack-section (начало секции)</p>
+      <div class="stack-demo__box">
+        <div class="text-body">Здесь заканчивается предыдущий раздел — обычный абзац текста.</div>
+        <div class="text-h2">Новый раздел</div>
+        <div class="text-body-sm">А сразу под заголовком снова тесно — сработал --space-stack-heading-lead.</div>
+      </div>
     </div>
   </section>
 

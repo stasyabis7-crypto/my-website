@@ -65,6 +65,17 @@
   --measure-body: 66ch;
   --measure-body-lg: 58ch;
   --measure-body-sm: 72ch;
+
+  /* --- Вертикальный ритм (отступы между ролями) ---
+     Всё в em — то есть каждое значение считается от font-size ТОГО
+     элемента, на который падает отступ (margin-top второго элемента в
+     паре). Заголовки на 1101/1441 становятся крупнее (см. шаги выше) —
+     их отступы в em вырастают вместе с ними автоматически, без отдельных
+     переопределений под брейкпоинты. */
+  --space-stack-heading-heading: 0.4em;  /* заголовок → подзаголовок-заголовок сразу под ним (Display→H1, H1→H2, …) — тесная группировка */
+  --space-stack-heading-lead: 0.55em;    /* заголовок → лид/текст сразу под ним (H1→Body-lg, как "Вы искали…" → "И вы его нашли") */
+  --space-stack-paragraph: 1em;          /* текст → текст — обычный ритм абзацев */
+  --space-stack-section: 2em;            /* текст → новый заголовок — начало новой секции, отступ крупнее, чем внутри группы */
 }
 
 /*
@@ -115,6 +126,7 @@ body {
   line-height: var(--line-height-tight);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-tight);
+  margin: 0;
 }
 
 .text-display {
@@ -123,6 +135,7 @@ body {
   line-height: var(--line-height-tight);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-tight);
+  margin: 0;
 }
 
 .text-h1 {
@@ -131,6 +144,7 @@ body {
   line-height: var(--line-height-tight);
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--letter-spacing-tight);
+  margin: 0;
 }
 
 .text-h2 {
@@ -138,6 +152,7 @@ body {
   font-size: var(--font-size-xl);
   line-height: var(--line-height-heading);
   font-weight: var(--font-weight-semibold);
+  margin: 0;
 }
 
 .text-h3 {
@@ -145,6 +160,7 @@ body {
   font-size: var(--font-size-lg);
   line-height: var(--line-height-heading);
   font-weight: var(--font-weight-semibold);
+  margin: 0;
 }
 
 .text-h4 {
@@ -152,6 +168,7 @@ body {
   font-size: var(--font-size-md);
   line-height: var(--line-height-heading);
   font-weight: var(--font-weight-semibold);
+  margin: 0;
 }
 
 .text-body-lg {
@@ -160,6 +177,7 @@ body {
   line-height: var(--line-height-body);
   font-weight: var(--font-weight-regular);
   max-width: var(--measure-body-lg);
+  margin: 0;
 }
 
 .text-body {
@@ -168,6 +186,7 @@ body {
   line-height: var(--line-height-body);
   font-weight: var(--font-weight-regular);
   max-width: var(--measure-body);
+  margin: 0;
 }
 
 .text-body-sm {
@@ -176,6 +195,7 @@ body {
   line-height: var(--line-height-body);
   font-weight: var(--font-weight-regular);
   max-width: var(--measure-body-sm);
+  margin: 0;
 }
 
 .text-caption {
@@ -183,6 +203,7 @@ body {
   font-size: var(--font-size-2xs);
   line-height: var(--line-height-default);
   font-weight: var(--font-weight-regular);
+  margin: 0;
 }
 
 .text-micro {
@@ -190,6 +211,7 @@ body {
   font-size: var(--font-size-3xs);
   line-height: var(--line-height-default);
   font-weight: var(--font-weight-regular);
+  margin: 0;
 }
 
 .text-label {
@@ -239,4 +261,75 @@ body {
   .text-display {
     letter-spacing: var(--letter-spacing-tighter);
   }
+}
+
+/*
+  Вертикальный ритм — отступ между соседними ролями зависит от того, ЧТО
+  за чем идёт (margin-top на втором элементе пары; см. --space-stack-*
+  выше). Три смысловых случая, все сочетания ролей внутри каждого:
+
+  1) Заголовок → более мелкий заголовок сразу под ним ("подзаголовок",
+     напр. Display → H1, H1 → H2, H2 → H3, H3 → H4, включая пропуск
+     уровня вроде H1 → H3) — самая тесная группировка, читаются как пара.
+  2) Заголовок → лид/текст сразу под ним (напр. H1 → Body-lg, как
+     "Вы искали продуктового дизайнера" → "И вы его нашли") — чуть
+     свободнее, но всё ещё явно "принадлежит" заголовку сверху.
+  3) Текст → текст (Body/Body-lg/Body-sm вперемешку) — обычный ритм
+     абзацев.
+  4) Текст (или caption/micro) → новый заголовок — начало новой секции,
+     самый большой отступ: заголовок явно отделяется от предыдущего блока
+     и группируется с тем, что идёт ПОСЛЕ него (см. случаи 1–2 выше).
+
+  Первый элемент в контейнере — без отступа сверху (см. :first-child в
+  конце), чтобы не было лишнего воздуха у самого начала блока.
+*/
+
+.text-display-lg + .text-display,
+.text-display-lg + .text-h1,
+.text-display + .text-h1,
+.text-display + .text-h2,
+.text-h1 + .text-h2,
+.text-h1 + .text-h3,
+.text-h2 + .text-h3,
+.text-h2 + .text-h4,
+.text-h3 + .text-h4 {
+  margin-top: var(--space-stack-heading-heading);
+}
+
+.text-display-lg + .text-body-lg,
+.text-display-lg + .text-body,
+.text-display + .text-body-lg,
+.text-display + .text-body,
+.text-h1 + .text-body-lg,
+.text-h1 + .text-body,
+.text-h2 + .text-body-lg,
+.text-h2 + .text-body,
+.text-h3 + .text-body-lg,
+.text-h3 + .text-body,
+.text-h4 + .text-body-lg,
+.text-h4 + .text-body {
+  margin-top: var(--space-stack-heading-lead);
+}
+
+.text-body-lg + .text-body-lg,
+.text-body-lg + .text-body,
+.text-body-lg + .text-body-sm,
+.text-body + .text-body-lg,
+.text-body + .text-body,
+.text-body + .text-body-sm,
+.text-body-sm + .text-body-sm,
+.text-body-sm + .text-body {
+  margin-top: var(--space-stack-paragraph);
+}
+
+:is(.text-body-lg, .text-body, .text-body-sm, .text-caption, .text-micro)
+  + :is(.text-display-lg, .text-display, .text-h1, .text-h2, .text-h3, .text-h4) {
+  margin-top: var(--space-stack-section);
+}
+
+:is(
+  .text-display-lg, .text-display, .text-h1, .text-h2, .text-h3, .text-h4,
+  .text-body-lg, .text-body, .text-body-sm, .text-caption, .text-micro
+):first-child {
+  margin-top: 0;
 }
