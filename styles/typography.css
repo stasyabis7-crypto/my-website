@@ -1,0 +1,196 @@
+/*
+  Типографика — шкала ролей текста (Display/H1–H4/Body/Caption/Label/…)
+  поверх fluid-скейлинга из scale.css. Все размеры — в rem, поэтому
+  каждая роль автоматически растёт вместе с html font-size на 390–950px
+  и остаётся неизменной дальше (см. комментарий в scale.css) — отдельных
+  переопределений под брейкпоинты 800/1101/1441 не нужно, если только
+  роль явно не должна отличаться зоной (см. --font-size-display).
+
+  Шрифты пока стандартные (системный стек) — заменить на кастомные
+  можно, просто переопределив --font-family-heading/--font-family-body,
+  вся остальная система на это не завязана.
+*/
+
+:root {
+  /* --- Семейства шрифтов --- */
+  --font-family-heading: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-body: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  /* --- Шкала размеров (модульная, база 390px = 16px root) ---
+     Значения в rem: 1rem = текущий font-size html (см. scale.css). */
+  --font-size-3xs: 0.625rem;  /* 10px — самые мелкие лейблы/индексы */
+  --font-size-2xs: 0.75rem;   /* 12px — caption */
+  --font-size-xs: 0.8125rem;  /* 13px — мелкий вспомогательный текст */
+  --font-size-sm: 0.875rem;   /* 14px — body small */
+  --font-size-base: 1rem;     /* 16px — body */
+  --font-size-md: 1.125rem;   /* 18px — body large / H4 */
+  --font-size-lg: 1.375rem;   /* 22px — H3 */
+  --font-size-xl: 1.75rem;    /* 28px — H2 */
+  --font-size-2xl: 2.25rem;   /* 36px — H1 */
+  --font-size-3xl: 3rem;      /* 48px — Display */
+  --font-size-4xl: 3.75rem;   /* 60px — Display large (десктопные хиро-заголовки) */
+
+  /* --- Начертания --- */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* --- Межстрочные интервалы --- */
+  --line-height-tight: 1.1;   /* крупные display/H1 */
+  --line-height-heading: 1.25; /* H2–H4 */
+  --line-height-default: 1.3;  /* короткие UI-строки (кнопки, лейблы) */
+  --line-height-body: 1.5;     /* длинный текст-абзац */
+
+  /* --- Трекинг --- */
+  --letter-spacing-tight: -0.01em;   /* крупные заголовки */
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.04em;     /* overline/лейблы КАПСОМ */
+}
+
+/*
+  Зона "десктоп XL" (1441+) — единственная роль, которой сознательно
+  задан отдельный, более крупный шаг: hero/display-заголовки на очень
+  широких экранах выигрывают от дополнительного роста, который fluid-
+  скейлинг (замороженный после 950px) сам по себе уже не даёт. Обычный
+  текстовый контент (body/caption/…) от ширины экрана больше не зависит.
+*/
+@media (min-width: 1441px) {
+  :root {
+    --font-size-3xl: 3.5rem;  /* 56px */
+    --font-size-4xl: 4.5rem;  /* 72px */
+  }
+}
+
+/* --- Базовый сброс для примеров/страниц, использующих эту шкалу --- */
+body {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-regular);
+}
+
+/* --- Роли (utility-классы) ---
+   Называем по смыслу роли, а не по тегу — один и тот же класс можно
+   вешать на любой элемент (div/span/h1/p), верстая по BEM-компонентам,
+   как в остальном проекте. */
+
+.text-display-lg {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-4xl);
+  line-height: var(--line-height-tight);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.text-display {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-tight);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.text-h1 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-tight);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.text-h2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-heading);
+  font-weight: var(--font-weight-semibold);
+}
+
+.text-h3 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-heading);
+  font-weight: var(--font-weight-semibold);
+}
+
+.text-h4 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-heading);
+  font-weight: var(--font-weight-semibold);
+}
+
+.text-body-lg {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-regular);
+}
+
+.text-body {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-regular);
+}
+
+.text-body-sm {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-regular);
+}
+
+.text-caption {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-2xs);
+  line-height: var(--line-height-default);
+  font-weight: var(--font-weight-regular);
+}
+
+.text-micro {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-3xs);
+  line-height: var(--line-height-default);
+  font-weight: var(--font-weight-regular);
+}
+
+.text-label {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-default);
+  font-weight: var(--font-weight-semibold);
+}
+
+.text-overline {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-2xs);
+  line-height: var(--line-height-default);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.text-button {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-default);
+  font-weight: var(--font-weight-semibold);
+}
+
+.text-link {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-medium);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.text-code {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-regular);
+}

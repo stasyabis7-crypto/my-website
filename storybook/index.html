@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Storybook — Typography</title>
+<style>
+  :root {
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    height: 100%;
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f3f4f7;
+    color: #14161a;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .toolbar {
+    flex: 0 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.25rem;
+    background: #fff;
+    border-bottom: 1px solid #e2e5eb;
+  }
+
+  .toolbar__title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    margin-right: 0.5rem;
+    white-space: nowrap;
+  }
+
+  .presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  .preset-btn {
+    border: 1px solid #d8dce3;
+    background: #fff;
+    color: #40485a;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.4rem 0.7rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .preset-btn:hover {
+    border-color: #b7bdc9;
+  }
+  .preset-btn.is-active {
+    background: #14161a;
+    border-color: #14161a;
+    color: #fff;
+  }
+
+  .slider-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+  .slider-wrap input[type="range"] {
+    width: 12rem;
+  }
+  .slider-wrap label {
+    font-size: 0.8125rem;
+    color: #6b7280;
+  }
+
+  .width-readout {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 0.8125rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: 0.5rem;
+    background: #f0f1f4;
+  }
+  .width-readout .zone {
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: #dbe8ff;
+    color: #1f4fb0;
+  }
+  .width-readout .zone[data-zone="tablet"] { background: #ffe8c2; color: #93590a; }
+  .width-readout .zone[data-zone="desktop"] { background: #d9f4de; color: #1c7a34; }
+  .width-readout .zone[data-zone="desktop-xl"] { background: #f3d9f9; color: #8a1fa0; }
+
+  .stage {
+    flex: 1 1 auto;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem 3rem;
+  }
+
+  .frame-shell {
+    flex: 0 0 auto;
+    background: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px rgba(20,22,26,0.06), 0 12px 32px rgba(20,22,26,0.12);
+    overflow: hidden;
+    height: fit-content;
+    transition: width 160ms ease;
+  }
+
+  iframe {
+    display: block;
+    width: 100%;
+    height: 82vh;
+    border: 0;
+  }
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <span class="toolbar__title">Storybook · Typography</span>
+
+    <div class="presets" id="presets">
+      <button class="preset-btn" data-width="390">390 · mobile min</button>
+      <button class="preset-btn" data-width="800">800 · tablet</button>
+      <button class="preset-btn" data-width="950">950 · scale freeze</button>
+      <button class="preset-btn" data-width="1101">1101 · desktop</button>
+      <button class="preset-btn" data-width="1441">1441 · desktop xl</button>
+      <button class="preset-btn" data-width="1728">1728 · wide</button>
+    </div>
+
+    <div class="slider-wrap">
+      <label for="width-slider">произвольно</label>
+      <input type="range" id="width-slider" min="320" max="1920" step="1" value="390" />
+    </div>
+
+    <div class="width-readout">
+      <span id="width-value">390px</span>
+      <span class="zone" id="zone-value" data-zone="mobile">mobile</span>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="frame-shell" id="frame-shell" style="width: 390px;">
+      <iframe id="preview-frame" src="typography-sample.html" title="Typography preview"></iframe>
+    </div>
+  </div>
+
+  <script>
+    var frameShell = document.getElementById('frame-shell');
+    var slider = document.getElementById('width-slider');
+    var widthValue = document.getElementById('width-value');
+    var zoneValue = document.getElementById('zone-value');
+    var presetButtons = document.querySelectorAll('.preset-btn');
+
+    function zoneFor(width) {
+      if (width < 800) return ['mobile', 'mobile'];
+      if (width < 1101) return ['tablet', 'tablet'];
+      if (width < 1441) return ['desktop', 'desktop'];
+      return ['desktop-xl', 'desktop xl'];
+    }
+
+    function setWidth(width) {
+      width = Math.max(320, Math.min(1920, width));
+      frameShell.style.width = width + 'px';
+      slider.value = width;
+      widthValue.textContent = width + 'px';
+
+      var zone = zoneFor(width);
+      zoneValue.textContent = zone[1];
+      zoneValue.setAttribute('data-zone', zone[0]);
+
+      presetButtons.forEach(function (btn) {
+        btn.classList.toggle('is-active', Number(btn.dataset.width) === width);
+      });
+    }
+
+    presetButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        setWidth(Number(btn.dataset.width));
+      });
+    });
+
+    slider.addEventListener('input', function () {
+      setWidth(Number(slider.value));
+    });
+
+    setWidth(390);
+  </script>
+</body>
+</html>
