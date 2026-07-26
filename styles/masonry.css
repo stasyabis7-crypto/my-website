@@ -37,14 +37,12 @@
   оставался читаемым) — единственное место, где оно живёт, здесь же,
   в CSS.
 
-  Отступ между плашками (--masonry-gap) сознательно равен --page-px
-  (см. index.html) — тот же горизонтальный отступ, что и по бокам
-  контента, чтобы сетка выглядела как единая система отступов, а не
-  два разных значения.
+  Отступ между плашками — фиксированные 10px везде (не завязан на
+  --page-px и не резинится по брейкпоинтам).
 */
 
 :root {
-  --masonry-gap: var(--page-px, 1.5rem);
+  --masonry-gap: 10px;
 }
 
 .masonry {
@@ -69,7 +67,7 @@
      наверху файла про aspect-ratio + normal → start. */
   align-self: stretch;
   box-sizing: border-box;
-  border-radius: 0.5rem;
+  border-radius: 0.875rem;
   overflow: hidden;
   background: var(--color-surface-alt, #eceff3);
   text-decoration: none;
