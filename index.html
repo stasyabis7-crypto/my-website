@@ -195,7 +195,9 @@
   </main>
 
   <footer class="site-footer">
-    <!-- Десктоп: список ссылок виден целиком. -->
+    <!-- Список ссылок — виден всегда, пока страница не проскроллена
+         (и всегда на десктопе). При скролле моб/планшет прячет его и
+         показывает вместо него "Меню" + стрелку вверх (см. footer.css). -->
     <nav class="site-footer__nav-wrap">
       <ul class="site-footer__nav">
         <li><a href="#" class="site-footer__link text-label is-current">Работы</a></li>
@@ -204,7 +206,9 @@
         <li><a href="#" class="site-footer__link text-label">Контакты</a></li>
       </ul>
     </nav>
-    <!-- Моб/планшет: вместо списка — одна кнопка, открывает панель ниже. -->
+    <!-- Свёрнутое (при скролле) состояние моб/планшета: кнопка "Меню"
+         слева открывает панель ниже, кнопка со стрелкой вверх справа
+         скроллит страницу наверх. -->
     <button
       type="button"
       class="site-footer__menu-btn text-button"
@@ -213,21 +217,28 @@
       aria-expanded="false"
       aria-controls="footer-menu-panel"
     >Меню</button>
+    <button type="button" class="site-footer__top-btn" id="footer-top-btn" aria-label="Наверх">
+      <span aria-hidden="true">↑</span>
+    </button>
   </footer>
 
   <!--
     Плашка-меню (моб/планшет) — намеренно вне <footer>, чтобы висеть
-    отдельно над кнопкой. Кнопка "закрыть" — отдельная плашка-кружок,
-    как .theme-toggle (см. footer.css).
+    отдельно над кнопкой "Меню". Выглядит так же, как футер —
+    горизонтальный бар со списком ссылок (.footer-menu-panel__bar);
+    кнопка "закрыть" — отдельная плашка-кружок РЯДОМ с баром (тот же
+    стиль, что у .theme-toggle), не наложением на его угол.
   -->
   <div class="footer-menu-panel" id="footer-menu-panel" hidden>
+    <nav class="footer-menu-panel__bar">
+      <ul class="footer-menu-panel__nav">
+        <li><a href="#" class="footer-menu-panel__link text-label is-current">Работы</a></li>
+        <li><a href="#" class="footer-menu-panel__link text-label">Обо мне</a></li>
+        <li><a href="#" class="footer-menu-panel__link text-label">Активности</a></li>
+        <li><a href="#" class="footer-menu-panel__link text-label">Контакты</a></li>
+      </ul>
+    </nav>
     <button type="button" class="footer-menu-panel__close" id="footer-menu-close" aria-label="Закрыть меню">✕</button>
-    <ul class="footer-menu-panel__nav">
-      <li><a href="#" class="footer-menu-panel__link text-label is-current">Работы</a></li>
-      <li><a href="#" class="footer-menu-panel__link text-label">Обо мне</a></li>
-      <li><a href="#" class="footer-menu-panel__link text-label">Активности</a></li>
-      <li><a href="#" class="footer-menu-panel__link text-label">Контакты</a></li>
-    </ul>
   </div>
 
   <script src="styles/masonry.js"></script>

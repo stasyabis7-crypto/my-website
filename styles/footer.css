@@ -19,7 +19,7 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   height: var(--chrome-h);
   padding-block: var(--chrome-pad-block);
   padding-inline: var(--page-px, 1.5rem);
@@ -31,18 +31,21 @@
 /*
   Футер — ВСЕГДА плавающая плашка, как и хедер (см. header.css).
 
-  Моб/планшет (<1101) — плашка почти во всю ширину снизу, но внутри
-  неё не список ссылок, а одна компактная кнопка "Меню" (см.
-  .site-footer__menu-btn): полный список не влезает без наезда на
-  хедер/переключатель темы, поэтому по клику он выезжает отдельной
-  плашкой над футером — см. #footer-menu-panel ниже.
+  Моб/планшет (<1101, либо шире при chrome--compact) — плашка почти во
+  всю ширину снизу. По умолчанию (страница не проскроллена) внутри неё
+  виден тот же список ссылок, что и на десктопе (см.
+  .site-footer__nav-wrap) — сворачивать нечего, пока пользователь не
+  начал скроллить.
 
-  Десктоп (1101+, см. медиа-запрос) — плашка сжимается до ширины
-  контента, в правом верхнем углу, показывает список ссылок целиком
-  (места достаточно, сворачивать некуда).
+  При скролле (см. .is-collapsed, ставит layout-chrome.js по
+  window.scrollY) список ссылок прячется, а вместо него в той же
+  плашке остаются два маленьких контрола: кнопка "Меню" слева (по
+  клику открывает #footer-menu-panel) и кружок со стрелкой вверх
+  справа (скроллит страницу наверх).
 
-  html.chrome--compact — тот же принудительный откат на моб-вёрстку,
-  что и в header.css.
+  Десктоп (1101+, не compact) — плашка сжимается до ширины контента,
+  список ссылок виден всегда целиком независимо от скролла (см.
+  переопределение ниже) — сворачивать незачем, места достаточно.
 */
 .site-footer {
   position: fixed;
@@ -50,6 +53,13 @@
   left: var(--page-px, 1.5rem);
   right: var(--page-px, 1.5rem);
   z-index: 50;
+}
+
+.site-footer__nav-wrap {
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
 }
 
 .site-footer__nav {
@@ -75,7 +85,8 @@
   font-weight: var(--font-weight-semibold);
 }
 
-/* Моб/планшет — вместо списка ссылок одна кнопка "Меню". */
+/* Кнопка "Меню" — видна только когда футер свёрнут при скролле
+   (.is-collapsed), см. правило ниже. */
 .site-footer__menu-btn {
   box-sizing: border-box;
   display: none;
@@ -91,18 +102,42 @@
   line-height: 1;
 }
 
-@media (max-width: 1100.98px) {
-  .site-footer__nav-wrap {
-    display: none;
-  }
-
-  .site-footer__menu-btn {
-    display: inline-flex;
-  }
+/* Кнопка "наверх" (стрелка вверх) — тоже видна только при
+   .is-collapsed, справа в той же плашке футера. */
+.site-footer__top-btn {
+  box-sizing: border-box;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--chrome-control-size);
+  height: var(--chrome-control-size);
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: 1px solid var(--color-ink);
+  border-radius: 50%;
+  background: var(--color-surface-alt);
+  color: var(--color-ink);
+  cursor: pointer;
+  line-height: 1;
+  font-size: 1rem;
 }
 
-/* Десктоп — плашка top-right, список ссылок виден целиком, кнопка
-   "Меню" не нужна. html:not(.chrome--compact) — см. header.css. */
+/* Свёрнутое состояние (проскроллили) — список ссылок прячем, вместо
+   него показываем "Меню" + стрелку вверх. Класс ставит
+   layout-chrome.js по window.scrollY. */
+.site-footer.is-collapsed .site-footer__nav-wrap {
+  display: none;
+}
+
+.site-footer.is-collapsed .site-footer__menu-btn,
+.site-footer.is-collapsed .site-footer__top-btn {
+  display: inline-flex;
+}
+
+/* Десктоп — плашка top-right, список ссылок виден целиком ВСЕГДА,
+   .is-collapsed на десктопе не действует (места достаточно, сворачивать
+   незачем). html:not(.chrome--compact) — см. header.css. */
 @media (min-width: 1101px) {
   html:not(.chrome--compact) .site-footer {
     top: 1.5rem;
@@ -111,28 +146,56 @@
     right: var(--page-px, 3rem);
     padding-inline: 1.25rem;
   }
+
+  html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__nav-wrap {
+    display: flex;
+  }
+
+  html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__menu-btn,
+  html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__top-btn {
+    display: none;
+  }
 }
 
 /*
-  Плашка-меню (моб/планшет) — выезжает при клике на "Меню" (см.
-  layout-chrome.js), отдельным элементом над кнопкой, а не внутри
-  .site-footer, чтобы позиционироваться независимо от неё.
+  Плашка-меню (моб/планшет) — выезжает при клике на "Меню", когда
+  футер свёрнут. Намеренно вне <footer>, чтобы висеть отдельно над
+  ним. Выглядит ТАК ЖЕ, как футер — горизонтальный список ссылок в
+  плашке-баре той же высоты (--chrome-h), а не вертикальный список.
+
+  Кнопка "закрыть" — отдельная плашка-кружок РЯДОМ с этим баром (flex
+  gap), а не поверх его угла: .footer-menu-panel — это просто
+  flex-обёртка для позиционирования (без своего фона/тени), бар и
+  кружок — два самостоятельных visual-элемента внутри неё.
 */
 .footer-menu-panel {
   position: fixed;
   z-index: 55;
   bottom: calc(var(--page-px, 1.5rem) + var(--chrome-h, 3.5rem) + 0.75rem);
+  left: var(--page-px, 1.5rem);
   right: var(--page-px, 1.5rem);
-  min-width: 12rem;
-  padding: 0.75rem;
-  border-radius: 1.25rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-panel);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
 }
 
 .footer-menu-panel[hidden] {
   display: none;
+}
+
+.footer-menu-panel__bar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-height: var(--chrome-h, 3.5rem);
+  min-width: 0;
+  padding-inline: 1.25rem;
+  padding-block: 0.5rem;
+  border-radius: 999px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-panel);
 }
 
 .footer-menu-panel__nav {
@@ -140,8 +203,8 @@
   margin: 0;
   padding: 0;
   display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
 }
 
 .footer-menu-panel__link {
@@ -158,16 +221,13 @@
   font-weight: var(--font-weight-semibold);
 }
 
-/* Кнопка "закрыть" — ОТДЕЛЬНАЯ плашка (кружок), как .theme-toggle,
-   а не рядовая кнопка внутри панели: чуть выступает за верхний
-   правый угол панели, чтобы читаться как самостоятельный контрол. */
+/* Кнопка "закрыть" — тот же круглый стиль, что у .theme-toggle, но
+   стоит РЯДОМ с баром (flex-элемент обёртки), не наложением. */
 .footer-menu-panel__close {
   box-sizing: border-box;
-  position: absolute;
-  top: -0.625rem;
-  right: -0.625rem;
-  width: var(--chrome-control-size, 2.5rem);
-  height: var(--chrome-control-size, 2.5rem);
+  flex: 0 0 auto;
+  width: var(--chrome-h, 3.5rem);
+  height: var(--chrome-h, 3.5rem);
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;

@@ -3,10 +3,15 @@
   footer.css/theme-toggle.css) — все три всегда плавающие плашки.
 
   - Моб/планшет (<1101, либо шире — см. html.chrome--compact ниже):
-    хедер — широкая плашка сверху, футер — широкая плашка снизу с
-    одной кнопкой "Меню" вместо списка ссылок. Клик по "Меню" открывает
-    #footer-menu-panel — отдельную плашку над футером со списком
-    ссылок и кнопкой-кружком "закрыть" (как .theme-toggle).
+    хедер — широкая плашка сверху, футер — широкая плашка снизу.
+    Футер по умолчанию (страница не проскроллена) показывает список
+    ссылок целиком, как на десктопе. При скролле (см.
+    updateFooterCollapse, .is-collapsed) список прячется, вместо него
+    остаются кнопка "Меню" слева и кнопка со стрелкой вверх справа
+    (скроллит наверх). Клик по "Меню" открывает #footer-menu-panel —
+    плашку над футером в виде такого же горизонтального бара со
+    списком ссылок, с отдельной кнопкой-кружком "закрыть" РЯДОМ с ним
+    (как .theme-toggle, но не наложением).
   - Десктоп (1101+): хедер/футер сжимаются до плашек по контенту в
     верхних углах (чистый CSS), футер показывает список ссылок целиком.
     Горизонтальный отступ переключателя темы (сразу после плашки
@@ -24,6 +29,7 @@
   var DESKTOP_MIN = 1101;
   var TOGGLE_GAP = 12; // px, зазор между плашкой хедера и кнопкой темы
   var COLLISION_GAP = 16; // px, минимальный зазор между переключателем темы и футером
+  var FOOTER_COLLAPSE_AT = 24; // px, после какого scrollY футер сворачивается в "Меню" + стрелку вверх
 
   var header = document.querySelector('.site-header');
   var footer = document.querySelector('.site-footer');
@@ -31,6 +37,7 @@
   var menuBtn = document.getElementById('footer-menu-btn');
   var menuPanel = document.getElementById('footer-menu-panel');
   var menuClose = document.getElementById('footer-menu-close');
+  var topBtn = document.getElementById('footer-top-btn');
   var root = document.documentElement;
   if (!header || !footer) return;
 
@@ -75,10 +82,20 @@
     themeToggle.style.left = Math.round(rect.right + TOGGLE_GAP) + 'px';
   }
 
+  function updateFooterCollapse() {
+    var collapsed = window.scrollY > FOOTER_COLLAPSE_AT;
+    var wasCollapsed = footer.classList.contains('is-collapsed');
+    footer.classList.toggle('is-collapsed', collapsed);
+    // Список ссылок вернулся — открытая панель "Меню" больше не имеет
+    // смысла (кнопка, которая её открыла, тоже пропала).
+    if (wasCollapsed && !collapsed) closeMenu();
+  }
+
   function syncAll() {
     updateCompactOverride();
     syncChromeHeights();
     syncThemeTogglePosition();
+    updateFooterCollapse();
   }
 
   function openMenu() {
@@ -104,6 +121,12 @@
     menuClose.addEventListener('click', closeMenu);
   }
 
+  if (topBtn) {
+    topBtn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
   document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') closeMenu();
   });
@@ -118,6 +141,18 @@
     syncAll();
     closeMenu();
   });
+
+  // rAF-throttle: updateFooterCollapse читает window.scrollY на каждый
+  // тик скролла, не нужно гонять это чаще одного раза за кадр.
+  var scrollTicking = false;
+  window.addEventListener('scroll', function () {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(function () {
+      updateFooterCollapse();
+      scrollTicking = false;
+    });
+  }, { passive: true });
 
   if (typeof ResizeObserver !== 'undefined') {
     new ResizeObserver(syncAll).observe(header);
