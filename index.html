@@ -8,14 +8,14 @@
      кто уже переключался на светлую тему, при заходе мелькнёт тёмная
      (дефолтная) перед переключением на сохранённую светлую. -->
 
-<script src="styles/theme.js?v=3"></script>
-<link rel="stylesheet" href="styles/scale.css?v=3" />
-<link rel="stylesheet" href="styles/typography.css?v=3" />
-<link rel="stylesheet" href="styles/theme.css?v=3" />
-<link rel="stylesheet" href="styles/header.css?v=3" />
-<link rel="stylesheet" href="styles/footer.css?v=3" />
-<link rel="stylesheet" href="styles/theme-toggle.css?v=3" />
-<link rel="stylesheet" href="styles/masonry.css?v=3" />
+<script src="styles/theme.js?v=4"></script>
+<link rel="stylesheet" href="styles/scale.css?v=4" />
+<link rel="stylesheet" href="styles/typography.css?v=4" />
+<link rel="stylesheet" href="styles/theme.css?v=4" />
+<link rel="stylesheet" href="styles/header.css?v=4" />
+<link rel="stylesheet" href="styles/footer.css?v=4" />
+<link rel="stylesheet" href="styles/theme-toggle.css?v=4" />
+<link rel="stylesheet" href="styles/masonry.css?v=4" />
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -108,28 +108,26 @@
   <main class="container page-works">
     <!--
       50 плашек-слотов под будущие проекты. Каждая — data-slot (номер,
-      см. список у ассистента), data-ratio (пропорция, необязательно
-      строго соблюдать при подготовке реального визуала — это просто
-      стартовая высота, картинка всё равно кадрируется object-fit:cover)
-      и data-cols (ширина в колонках — 2 у "витринных" плашек, чтобы
-      выделяться в ленте). Раскладка — обычный CSS Grid с
-      grid-auto-flow: dense (см. masonry.css); все плашки одной "высоты
-      строки", поэтому дыр не бывает в принципе, а нижний край ровный.
-      masonry.js только проставляет aspect-ratio/grid-column из этих
-      data-атрибутов.
+      см. список у ассистента) и data-ratio (пропорция карточки —
+      настоящая, каждая карточка сохраняет свою высоту, никто никого
+      не тянет/не кадрирует под чужую строку). Все плашки — ОДНОЙ
+      ширины (1 колонка), разной высоты — классическая Pinterest-
+      masonry "в самую короткую колонку" (см. masonry.js), без
+      витринных широких карточек: раньше пробовали совмещать разную
+      высоту с карточками на 2 колонки — это стабильно давало дыры,
+      отказались.
 
       Когда добавляете проект в слот: замените .masonry__item на <a
       href="..."> (см. слот 1 — уже готовый пример), внутрь положите
       либо <img src="..." alt="...">, либо .masonry__embed+iframe
-      (как в слоте 1) — data-ratio/data-cols на самом элементе не
-      трогайте, они и так уже под слот подобраны.
+      (как в слоте 1) — data-ratio на самом элементе не трогайте, она
+      и так уже под слот подобрана.
     -->
     <div class="masonry" id="works-gallery">
       <a
         class="masonry__item"
         data-slot="1"
         data-ratio="1/1"
-        data-cols="1"
         data-title="Виджет CRM на Главную"
         href="works/crm-widget.html"
         aria-label="Виджет CRM на Главную"
@@ -146,55 +144,55 @@
           ></iframe>
         </span>
       </a>
-      <div class="masonry__item" data-slot="2" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>2</b><span>4/3 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="3" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>3</b><span>1/1 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="4" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>4</b><span>3/2 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="5" data-ratio="16/9" data-cols="2"><div class="masonry__ph"><b>5</b><span>16/9 · ×2</span></div></div>
-      <div class="masonry__item" data-slot="6" data-ratio="5/4" data-cols="1"><div class="masonry__ph"><b>6</b><span>5/4 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="7" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>7</b><span>4/3 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="8" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>8</b><span>1/1 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="9" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>9</b><span>3/2 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="10" data-ratio="3/2" data-cols="2"><div class="masonry__ph"><b>10</b><span>3/2 · ×2</span></div></div>
-      <div class="masonry__item" data-slot="11" data-ratio="5/4" data-cols="1"><div class="masonry__ph"><b>11</b><span>5/4 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="12" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>12</b><span>4/3 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="13" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>13</b><span>1/1 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="14" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>14</b><span>3/2 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="15" data-ratio="2/1" data-cols="2"><div class="masonry__ph"><b>15</b><span>2/1 · ×2</span></div></div>
-      <div class="masonry__item" data-slot="16" data-ratio="5/4" data-cols="1"><div class="masonry__ph"><b>16</b><span>5/4 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="17" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>17</b><span>4/3 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="18" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>18</b><span>1/1 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="19" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>19</b><span>3/2 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="20" data-ratio="16/9" data-cols="2"><div class="masonry__ph"><b>20</b><span>16/9 · ×2</span></div></div>
-      <div class="masonry__item" data-slot="21" data-ratio="5/4" data-cols="1"><div class="masonry__ph"><b>21</b><span>5/4 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="22" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>22</b><span>4/3 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="23" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>23</b><span>1/1 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="24" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>24</b><span>3/2 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="25" data-ratio="3/2" data-cols="2"><div class="masonry__ph"><b>25</b><span>3/2 · ×2</span></div></div>
-      <div class="masonry__item" data-slot="26" data-ratio="5/4" data-cols="1"><div class="masonry__ph"><b>26</b><span>5/4 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="27" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>27</b><span>4/3 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="28" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>28</b><span>1/1 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="29" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>29</b><span>3/2 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="30" data-ratio="2/1" data-cols="2"><div class="masonry__ph"><b>30</b><span>2/1 · ×2</span></div></div>
-      <div class="masonry__item" data-slot="31" data-ratio="5/4" data-cols="1"><div class="masonry__ph"><b>31</b><span>5/4 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="32" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>32</b><span>4/3 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="33" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>33</b><span>1/1 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="34" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>34</b><span>3/2 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="35" data-ratio="16/9" data-cols="2"><div class="masonry__ph"><b>35</b><span>16/9 · ×2</span></div></div>
-      <div class="masonry__item" data-slot="36" data-ratio="5/4" data-cols="1"><div class="masonry__ph"><b>36</b><span>5/4 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="37" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>37</b><span>4/3 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="38" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>38</b><span>1/1 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="39" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>39</b><span>3/2 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="40" data-ratio="3/2" data-cols="2"><div class="masonry__ph"><b>40</b><span>3/2 · ×2</span></div></div>
-      <div class="masonry__item" data-slot="41" data-ratio="5/4" data-cols="1"><div class="masonry__ph"><b>41</b><span>5/4 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="42" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>42</b><span>4/3 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="43" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>43</b><span>1/1 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="44" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>44</b><span>3/2 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="45" data-ratio="2/1" data-cols="2"><div class="masonry__ph"><b>45</b><span>2/1 · ×2</span></div></div>
-      <div class="masonry__item" data-slot="46" data-ratio="5/4" data-cols="1"><div class="masonry__ph"><b>46</b><span>5/4 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="47" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>47</b><span>4/3 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="48" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>48</b><span>1/1 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="49" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>49</b><span>3/2 · ×1</span></div></div>
-      <div class="masonry__item" data-slot="50" data-ratio="16/9" data-cols="2"><div class="masonry__ph"><b>50</b><span>16/9 · ×2</span></div></div>
+      <div class="masonry__item" data-slot="2" data-ratio="4/3"><div class="masonry__ph"><b>2</b><span>4/3</span></div></div>
+      <div class="masonry__item" data-slot="3" data-ratio="1/1"><div class="masonry__ph"><b>3</b><span>1/1</span></div></div>
+      <div class="masonry__item" data-slot="4" data-ratio="3/2"><div class="masonry__ph"><b>4</b><span>3/2</span></div></div>
+      <div class="masonry__item" data-slot="5" data-ratio="5/4"><div class="masonry__ph"><b>5</b><span>5/4</span></div></div>
+      <div class="masonry__item" data-slot="6" data-ratio="16/9"><div class="masonry__ph"><b>6</b><span>16/9</span></div></div>
+      <div class="masonry__item" data-slot="7" data-ratio="2/1"><div class="masonry__ph"><b>7</b><span>2/1</span></div></div>
+      <div class="masonry__item" data-slot="8" data-ratio="4/3"><div class="masonry__ph"><b>8</b><span>4/3</span></div></div>
+      <div class="masonry__item" data-slot="9" data-ratio="1/1"><div class="masonry__ph"><b>9</b><span>1/1</span></div></div>
+      <div class="masonry__item" data-slot="10" data-ratio="3/2"><div class="masonry__ph"><b>10</b><span>3/2</span></div></div>
+      <div class="masonry__item" data-slot="11" data-ratio="5/4"><div class="masonry__ph"><b>11</b><span>5/4</span></div></div>
+      <div class="masonry__item" data-slot="12" data-ratio="16/9"><div class="masonry__ph"><b>12</b><span>16/9</span></div></div>
+      <div class="masonry__item" data-slot="13" data-ratio="2/1"><div class="masonry__ph"><b>13</b><span>2/1</span></div></div>
+      <div class="masonry__item" data-slot="14" data-ratio="4/3"><div class="masonry__ph"><b>14</b><span>4/3</span></div></div>
+      <div class="masonry__item" data-slot="15" data-ratio="1/1"><div class="masonry__ph"><b>15</b><span>1/1</span></div></div>
+      <div class="masonry__item" data-slot="16" data-ratio="3/2"><div class="masonry__ph"><b>16</b><span>3/2</span></div></div>
+      <div class="masonry__item" data-slot="17" data-ratio="5/4"><div class="masonry__ph"><b>17</b><span>5/4</span></div></div>
+      <div class="masonry__item" data-slot="18" data-ratio="16/9"><div class="masonry__ph"><b>18</b><span>16/9</span></div></div>
+      <div class="masonry__item" data-slot="19" data-ratio="2/1"><div class="masonry__ph"><b>19</b><span>2/1</span></div></div>
+      <div class="masonry__item" data-slot="20" data-ratio="4/3"><div class="masonry__ph"><b>20</b><span>4/3</span></div></div>
+      <div class="masonry__item" data-slot="21" data-ratio="1/1"><div class="masonry__ph"><b>21</b><span>1/1</span></div></div>
+      <div class="masonry__item" data-slot="22" data-ratio="3/2"><div class="masonry__ph"><b>22</b><span>3/2</span></div></div>
+      <div class="masonry__item" data-slot="23" data-ratio="5/4"><div class="masonry__ph"><b>23</b><span>5/4</span></div></div>
+      <div class="masonry__item" data-slot="24" data-ratio="16/9"><div class="masonry__ph"><b>24</b><span>16/9</span></div></div>
+      <div class="masonry__item" data-slot="25" data-ratio="2/1"><div class="masonry__ph"><b>25</b><span>2/1</span></div></div>
+      <div class="masonry__item" data-slot="26" data-ratio="4/3"><div class="masonry__ph"><b>26</b><span>4/3</span></div></div>
+      <div class="masonry__item" data-slot="27" data-ratio="1/1"><div class="masonry__ph"><b>27</b><span>1/1</span></div></div>
+      <div class="masonry__item" data-slot="28" data-ratio="3/2"><div class="masonry__ph"><b>28</b><span>3/2</span></div></div>
+      <div class="masonry__item" data-slot="29" data-ratio="5/4"><div class="masonry__ph"><b>29</b><span>5/4</span></div></div>
+      <div class="masonry__item" data-slot="30" data-ratio="16/9"><div class="masonry__ph"><b>30</b><span>16/9</span></div></div>
+      <div class="masonry__item" data-slot="31" data-ratio="2/1"><div class="masonry__ph"><b>31</b><span>2/1</span></div></div>
+      <div class="masonry__item" data-slot="32" data-ratio="4/3"><div class="masonry__ph"><b>32</b><span>4/3</span></div></div>
+      <div class="masonry__item" data-slot="33" data-ratio="1/1"><div class="masonry__ph"><b>33</b><span>1/1</span></div></div>
+      <div class="masonry__item" data-slot="34" data-ratio="3/2"><div class="masonry__ph"><b>34</b><span>3/2</span></div></div>
+      <div class="masonry__item" data-slot="35" data-ratio="5/4"><div class="masonry__ph"><b>35</b><span>5/4</span></div></div>
+      <div class="masonry__item" data-slot="36" data-ratio="16/9"><div class="masonry__ph"><b>36</b><span>16/9</span></div></div>
+      <div class="masonry__item" data-slot="37" data-ratio="2/1"><div class="masonry__ph"><b>37</b><span>2/1</span></div></div>
+      <div class="masonry__item" data-slot="38" data-ratio="4/3"><div class="masonry__ph"><b>38</b><span>4/3</span></div></div>
+      <div class="masonry__item" data-slot="39" data-ratio="1/1"><div class="masonry__ph"><b>39</b><span>1/1</span></div></div>
+      <div class="masonry__item" data-slot="40" data-ratio="3/2"><div class="masonry__ph"><b>40</b><span>3/2</span></div></div>
+      <div class="masonry__item" data-slot="41" data-ratio="5/4"><div class="masonry__ph"><b>41</b><span>5/4</span></div></div>
+      <div class="masonry__item" data-slot="42" data-ratio="16/9"><div class="masonry__ph"><b>42</b><span>16/9</span></div></div>
+      <div class="masonry__item" data-slot="43" data-ratio="2/1"><div class="masonry__ph"><b>43</b><span>2/1</span></div></div>
+      <div class="masonry__item" data-slot="44" data-ratio="4/3"><div class="masonry__ph"><b>44</b><span>4/3</span></div></div>
+      <div class="masonry__item" data-slot="45" data-ratio="1/1"><div class="masonry__ph"><b>45</b><span>1/1</span></div></div>
+      <div class="masonry__item" data-slot="46" data-ratio="3/2"><div class="masonry__ph"><b>46</b><span>3/2</span></div></div>
+      <div class="masonry__item" data-slot="47" data-ratio="5/4"><div class="masonry__ph"><b>47</b><span>5/4</span></div></div>
+      <div class="masonry__item" data-slot="48" data-ratio="16/9"><div class="masonry__ph"><b>48</b><span>16/9</span></div></div>
+      <div class="masonry__item" data-slot="49" data-ratio="2/1"><div class="masonry__ph"><b>49</b><span>2/1</span></div></div>
+      <div class="masonry__item" data-slot="50" data-ratio="4/3"><div class="masonry__ph"><b>50</b><span>4/3</span></div></div>
     </div>
   </main>
 
@@ -248,8 +246,8 @@
     <button type="button" class="footer-menu-panel__close" id="footer-menu-close" aria-label="Закрыть меню">✕</button>
   </div>
 
-  <script src="styles/masonry.js?v=3"></script>
-  <script src="styles/layout-chrome.js?v=3"></script>
-  <script src="styles/embed-scale.js?v=3"></script>
+  <script src="styles/masonry.js?v=4"></script>
+  <script src="styles/layout-chrome.js?v=4"></script>
+  <script src="styles/embed-scale.js?v=4"></script>
 </body>
 </html>
