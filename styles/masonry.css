@@ -22,34 +22,53 @@
   строгого соответствия data-ratio точной высоте карточки убирает всю
   эту проблему целиком.
 
+  ВАЖНО (реальная причина дыр, всплывшая уже на этой версии):
+  элемент с заданным aspect-ratio по умолчанию align-self: normal, а
+  normal у элемента с aspect-ratio браузер трактует НЕ как stretch, а
+  как start (специально, чтобы не растягивать и не нарушать его
+  пропорцию) — см. CSS Box Alignment spec. Из-за этого более короткие
+  карточки в одной строке НЕ дотягивались до высоты самой высокой
+  соседки, оставляя дыру под собой, хотя формально были "в той же
+  строке" сетки. Явный align-items: stretch ниже это переопределяет —
+  explicit stretch побеждает aspect-ratio (в отличие от normal).
+
   Число колонок по брейкпоинтам (2/3/4/5 на 0/800/1101/1441) —
   единственное место, где оно живёт, здесь же, в CSS.
+
+  Отступ между плашками (--masonry-gap) сознательно равен --page-px
+  (см. index.html) — тот же горизонтальный отступ, что и по бокам
+  контента, чтобы сетка выглядела как единая система отступов, а не
+  два разных значения.
 */
 
 :root {
-  --masonry-gap: 1rem;
+  --masonry-gap: var(--page-px, 1.5rem);
 }
 
 .masonry {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-auto-flow: dense;
+  align-items: stretch;
   gap: var(--masonry-gap);
 }
 
 @media (min-width: 800px) {
-  .masonry { grid-template-columns: repeat(3, 1fr); }
+  .masonry { grid-template-columns: repeat(2, 1fr); }
 }
 @media (min-width: 1101px) {
-  .masonry { grid-template-columns: repeat(4, 1fr); }
+  .masonry { grid-template-columns: repeat(3, 1fr); }
 }
 @media (min-width: 1441px) {
-  .masonry { grid-template-columns: repeat(5, 1fr); }
+  .masonry { grid-template-columns: repeat(4, 1fr); }
 }
 
 .masonry__item {
   display: block;
   grid-column: span 1;
+  /* explicit stretch, а не унаследованный normal — см. комментарий
+     наверху файла про aspect-ratio + normal → start. */
+  align-self: stretch;
   box-sizing: border-box;
   border-radius: 0.5rem;
   overflow: hidden;
