@@ -1,0 +1,49 @@
+/*
+  Переключатель темы — отдельная плавающая плашка, специально не
+  часть .site-header (см. header.css), чтобы визуально читаться как
+  самостоятельный элемент управления.
+
+  Моб/планшет — кружок справа от бара хедера, в специально
+  зарезервированном для него отступе (см. .site-header { right: ... }
+  в header.css).
+  Десктоп — тот же кружок, пристыкован сразу справа от плавающей
+  плашки хедера; точный left-отступ (ширина хедера плавающая, зависит
+  от контента) считает layout-chrome.js.
+
+  Размер (var(--chrome-control-size)) и цвета (var(--color-*)) —
+  общие токены из header.css/footer.css и theme.css, отдельных
+  значений здесь не заводим.
+*/
+
+.theme-toggle {
+  box-sizing: border-box;
+  position: fixed;
+  top: var(--chrome-pad-block, 0.5rem);
+  right: var(--page-px, 1.5rem);
+  width: var(--chrome-control-size, 2.5rem);
+  height: var(--chrome-control-size, 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-panel);
+  cursor: pointer;
+  z-index: 51;
+}
+
+.theme-toggle__icon {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+@media (min-width: 1101px) {
+  .theme-toggle {
+    top: 1.5rem;
+    right: auto;
+    /* left выставляет layout-chrome.js по факту правого края хедера */
+  }
+}

@@ -1,0 +1,118 @@
+/*
+  Хедер сайта — дефолтный skeleton-компонент (аватар + лого + кнопка
+  "Резюме PDF"), визуальный стиль ещё не финальный, стилизуем позже.
+
+  Горизонтальный отступ берётся из --page-px (см. index.html), чтобы
+  хедер, контент и футер были выровнены по одной вертикали на любой
+  ширине.
+*/
+
+:root {
+  /* Единый размер контролов (авы/кнопок) и высоты самой плашки —
+     хедер и футер всегда одной высоты, потому что оба считают её по
+     этой же формуле. ВАЖНО: значения продублированы в footer.css —
+     при изменении правьте оба файла синхронно. */
+  --chrome-control-size: 2.5rem;
+  --chrome-pad-block: 0.5rem;
+  --chrome-h: calc(var(--chrome-control-size) + var(--chrome-pad-block) * 2);
+}
+
+.site-header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--chrome-h);
+  padding-block: var(--chrome-pad-block);
+  padding-inline: var(--page-px, 1.5rem);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+/*
+  Моб/планшет (<1101) — полноширинный бар, зафиксирован сверху.
+  Справа отступ не до самого края: там сидит отдельная плашка
+  переключателя темы (.theme-toggle, см. theme-toggle.css) — место
+  под неё зарезервировано здесь, а не наложением поверх хедера.
+
+  Десктоп (1101+, см. медиа-запрос ниже) — превращается в компактную
+  плавающую плашку в левом верхнем углу.
+*/
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: calc(var(--page-px, 1.5rem) + var(--chrome-control-size) + 0.75rem);
+  z-index: 50;
+}
+
+.site-header__identity {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.site-header__avatar {
+  flex: 0 0 auto;
+  width: var(--chrome-control-size);
+  height: var(--chrome-control-size);
+  border-radius: 50%;
+  background: var(--color-surface-alt);
+  overflow: hidden;
+}
+
+.site-header__avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.site-header__logo {
+  color: var(--color-text);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.site-header__cta {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  height: var(--chrome-control-size);
+  padding-inline: 0.875rem;
+  border: 1px solid var(--color-ink);
+  border-radius: 999px;
+  color: var(--color-ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-header__cta:hover {
+  background: var(--color-ink);
+  color: var(--color-ink-contrast);
+}
+
+/*
+  Высота хедера везде — var(--chrome-h), намеренно не трогаем её по
+  брейкпоинтам (иначе разъедется с высотой футера). Меняется только
+  горизонтальный отступ/позиционирование.
+*/
+@media (min-width: 1101px) {
+  /* Десктоп — плавающая плашка top-left вместо полноширинного бара. */
+  .site-header {
+    top: 1.5rem;
+    left: var(--page-px, 3rem);
+    right: auto;
+    padding-inline: 0.75rem 1.25rem;
+    border-bottom: none;
+    border-radius: 999px;
+    box-shadow: var(--shadow-panel);
+  }
+}

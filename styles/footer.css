@@ -1,0 +1,130 @@
+/*
+  Футер сайта — дефолтный skeleton-компонент (меню Работы / Обо мне /
+  Активности / Контакты), визуальный стиль ещё не финальный, стилизуем
+  позже.
+
+  Горизонтальный отступ берётся из --page-px (см. index.html) — те же
+  правила выравнивания, что и у .site-header.
+*/
+
+:root {
+  /* Дублирует токены из header.css — держите оба файла в синхроне,
+     иначе плашка футера разойдётся по высоте с плашкой хедера. */
+  --chrome-control-size: 2.5rem;
+  --chrome-pad-block: 0.5rem;
+  --chrome-h: calc(var(--chrome-control-size) + var(--chrome-pad-block) * 2);
+}
+
+.site-footer {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: var(--chrome-h);
+  padding-block: var(--chrome-pad-block);
+  padding-inline: var(--page-px, 1.5rem);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+/*
+  Моб/планшет (<1101) — полноширинный бар, зафиксирован снизу.
+  Десктоп (1101+, см. медиа-запрос ниже) — превращается в компактную
+  плавающую плашку в правом верхнем углу, рядом с хедером. Высота
+  везде — var(--chrome-h), по брейкпоинтам не меняется (см. header.css).
+*/
+.site-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+}
+
+.site-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-footer__link {
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.site-footer__link:hover {
+  color: var(--color-text);
+}
+
+.site-footer__link.is-current {
+  color: var(--color-text);
+  font-weight: var(--font-weight-semibold);
+}
+
+/*
+  Свёрнутое состояние (моб/планшет, при скролле — переключает
+  layout-chrome.js): меню прячется, вместо него слева кнопка "Меню",
+  справа — кнопка "наверх". На десктопе игнорируется, см. ниже.
+*/
+.site-footer__menu-btn,
+.site-footer__top-btn {
+  box-sizing: border-box;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  height: var(--chrome-control-size);
+  border: 1px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-surface-alt);
+  color: var(--color-ink);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.site-footer__menu-btn {
+  padding-inline: 0.875rem;
+}
+
+.site-footer__top-btn {
+  width: var(--chrome-control-size);
+  padding: 0;
+}
+
+.site-footer.is-collapsed {
+  justify-content: space-between;
+}
+
+.site-footer.is-collapsed .site-footer__nav-wrap {
+  display: none;
+}
+
+.site-footer.is-collapsed .site-footer__menu-btn,
+.site-footer.is-collapsed .site-footer__top-btn {
+  display: inline-flex;
+}
+
+/* Десктоп — плавающая плашка top-right, всегда развёрнута (без
+   сворачивания в кнопки — это поведение только для моб/планшета). */
+@media (min-width: 1101px) {
+  .site-footer {
+    top: 1.5rem;
+    bottom: auto;
+    left: auto;
+    right: var(--page-px, 3rem);
+    padding-inline: 1.25rem;
+    border-top: none;
+    border-radius: 999px;
+    box-shadow: var(--shadow-panel);
+  }
+
+  .site-footer.is-collapsed .site-footer__nav-wrap {
+    display: block;
+  }
+
+  .site-footer.is-collapsed .site-footer__menu-btn,
+  .site-footer.is-collapsed .site-footer__top-btn {
+    display: none;
+  }
+}

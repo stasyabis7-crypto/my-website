@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Masonry sample</title>
+<link rel="stylesheet" href="../styles/scale.css" />
+<link rel="stylesheet" href="../styles/typography.css" />
+<link rel="stylesheet" href="../styles/masonry.css" />
+<style>
+  body {
+    margin: 0;
+    padding: 2rem 1.5rem 4rem;
+    background: #fff;
+    color: #14161a;
+  }
+  .page-heading {
+    font-family: var(--font-family-heading);
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+  }
+  .page-sub {
+    font-family: var(--font-family-body);
+    font-size: 0.8125rem;
+    color: #6b7280;
+    margin: 0 0 2rem;
+  }
+
+  /*
+    Плейсхолдеры вместо реальных фото — по одному цвету на ratio-бакет,
+    чтобы на глаз было видно, как ведёт себя сетка с разными пропорциями.
+    В реальной карточке .masonry__item вместо .ph лежит просто <img>.
+  */
+  .ph {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    padding: 0.5rem 0.625rem;
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 0.6875rem;
+    color: rgba(255,255,255,0.92);
+    background: linear-gradient(160deg, var(--c1), var(--c2));
+  }
+</style>
+</head>
+<body>
+  <h1 class="page-heading">Masonry — образец сетки</h1>
+  <p class="page-sub">
+    Ресайзите окно браузера: колонки переключаются на 800 / 1101 / 1441px,
+    как и остальные брейкпоинты сайта. Каждый блок — свой ratio-бакет
+    (подписан внизу карточки).
+  </p>
+
+  <div class="masonry" id="gallery"></div>
+
+  <script>
+    // Куратор задаёт только порядок и ratio — реальный <img> заменит .ph.
+    var RATIOS = [
+      '1/1', '4/5', '3/4', '2/3', '3/2', '4/3', '16/9', '5/4',
+      '4/5', '1/1', '2/3', '3/2', '4/5', '1/1', '4/3', '3/4',
+      '16/9', '2/3', '1/1', '4/5', '3/2', '5/4'
+    ];
+    var HUES = [210, 260, 330, 20, 160, 45, 190, 300];
+
+    var gallery = document.getElementById('gallery');
+    RATIOS.forEach(function (ratio, i) {
+      var hue = HUES[i % HUES.length];
+      var item = document.createElement('div');
+      item.className = 'masonry__item';
+      item.setAttribute('data-ratio', ratio);
+
+      var ph = document.createElement('div');
+      ph.className = 'ph';
+      ph.style.setProperty('--c1', 'hsl(' + hue + ' 70% 60%)');
+      ph.style.setProperty('--c2', 'hsl(' + (hue + 40) + ' 70% 40%)');
+      ph.textContent = '#' + (i + 1) + ' · ' + ratio;
+
+      item.appendChild(ph);
+      gallery.appendChild(item);
+    });
+  </script>
+  <script src="../styles/masonry.js"></script>
+</body>
+</html>
