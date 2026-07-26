@@ -8,14 +8,14 @@
      кто уже переключался на светлую тему, при заходе мелькнёт тёмная
      (дефолтная) перед переключением на сохранённую светлую. -->
 
-<script src="styles/theme.js?v=2"></script>
-<link rel="stylesheet" href="styles/scale.css?v=2" />
-<link rel="stylesheet" href="styles/typography.css?v=2" />
-<link rel="stylesheet" href="styles/theme.css?v=2" />
-<link rel="stylesheet" href="styles/header.css?v=2" />
-<link rel="stylesheet" href="styles/footer.css?v=2" />
-<link rel="stylesheet" href="styles/theme-toggle.css?v=2" />
-<link rel="stylesheet" href="styles/masonry.css?v=2" />
+<script src="styles/theme.js?v=3"></script>
+<link rel="stylesheet" href="styles/scale.css?v=3" />
+<link rel="stylesheet" href="styles/typography.css?v=3" />
+<link rel="stylesheet" href="styles/theme.css?v=3" />
+<link rel="stylesheet" href="styles/header.css?v=3" />
+<link rel="stylesheet" href="styles/footer.css?v=3" />
+<link rel="stylesheet" href="styles/theme-toggle.css?v=3" />
+<link rel="stylesheet" href="styles/masonry.css?v=3" />
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -215,12 +215,15 @@
          скроллит страницу наверх. -->
     <button
       type="button"
-      class="site-footer__menu-btn text-button"
+      class="site-footer__menu-btn"
       id="footer-menu-btn"
       aria-haspopup="true"
       aria-expanded="false"
       aria-controls="footer-menu-panel"
-    >Меню</button>
+      aria-label="Меню"
+    >
+      <span aria-hidden="true">☰</span>
+    </button>
     <button type="button" class="site-footer__top-btn" id="footer-top-btn" aria-label="Наверх">
       <span aria-hidden="true">↑</span>
     </button>
@@ -245,8 +248,8 @@
     <button type="button" class="footer-menu-panel__close" id="footer-menu-close" aria-label="Закрыть меню">✕</button>
   </div>
 
-  <script src="styles/masonry.js?v=2"></script>
-  <script src="styles/layout-chrome.js?v=2"></script>
-  <script src="styles/embed-scale.js?v=2"></script>
+  <script src="styles/masonry.js?v=3"></script>
+  <script src="styles/layout-chrome.js?v=3"></script>
+  <script src="styles/embed-scale.js?v=3"></script>
 </body>
 </html>
