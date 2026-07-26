@@ -121,7 +121,7 @@
 */
 @media (min-width: 1101px) {
   html:not(.chrome--compact) .site-header {
-    top: 1.5rem;
+    top: var(--page-px, 10px);
     left: var(--page-px, 10px);
     right: auto;
     padding-inline: 0.75rem 1.25rem;

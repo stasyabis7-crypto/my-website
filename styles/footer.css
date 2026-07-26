@@ -142,7 +142,7 @@
    незачем). html:not(.chrome--compact) — см. header.css. */
 @media (min-width: 1101px) {
   html:not(.chrome--compact) .site-footer {
-    top: 1.5rem;
+    top: var(--page-px, 10px);
     bottom: auto;
     left: auto;
     right: var(--page-px, 10px);
