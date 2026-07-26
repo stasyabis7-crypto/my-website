@@ -22,7 +22,7 @@
   justify-content: space-between;
   height: var(--chrome-h);
   padding-block: var(--chrome-pad-block);
-  padding-inline: var(--page-px, 1.5rem);
+  padding-inline: var(--page-px, 10px);
   background: var(--color-surface);
   border-radius: 999px;
   box-shadow: var(--shadow-panel);
@@ -49,9 +49,9 @@
 */
 .site-footer {
   position: fixed;
-  bottom: var(--page-px, 1.5rem);
-  left: var(--page-px, 1.5rem);
-  right: var(--page-px, 1.5rem);
+  bottom: var(--page-px, 10px);
+  left: var(--page-px, 10px);
+  right: var(--page-px, 10px);
   z-index: 50;
 }
 
@@ -145,7 +145,7 @@
     top: 1.5rem;
     bottom: auto;
     left: auto;
-    right: var(--page-px, 3rem);
+    right: var(--page-px, 10px);
     padding-inline: 1.25rem;
   }
 
@@ -183,13 +183,13 @@
 .footer-menu-panel {
   position: fixed;
   z-index: 55;
-  bottom: calc(var(--page-px, 1.5rem) + var(--chrome-h, 3.5rem) + 0.75rem);
-  left: var(--page-px, 1.5rem);
-  right: var(--page-px, 1.5rem);
+  bottom: calc(var(--page-px, 10px) + var(--chrome-h, 3.5rem) + 10px);
+  left: var(--page-px, 10px);
+  right: var(--page-px, 10px);
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.75rem;
+  gap: 10px;
 }
 
 .footer-menu-panel[hidden] {

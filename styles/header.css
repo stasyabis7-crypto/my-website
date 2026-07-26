@@ -22,10 +22,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 10px;
   height: var(--chrome-h);
   padding-block: var(--chrome-pad-block);
-  padding-inline: var(--page-px, 1.5rem);
+  padding-inline: var(--page-px, 10px);
   background: var(--color-surface);
   border-radius: 999px;
   box-shadow: var(--shadow-panel);
@@ -52,9 +52,9 @@
 */
 .site-header {
   position: fixed;
-  top: var(--page-px, 1.5rem);
-  left: var(--page-px, 1.5rem);
-  right: calc(var(--page-px, 1.5rem) + var(--chrome-h) + 0.75rem);
+  top: var(--page-px, 10px);
+  left: var(--page-px, 10px);
+  right: calc(var(--page-px, 10px) + var(--chrome-h) + 10px);
   z-index: 50;
 }
 
@@ -122,7 +122,7 @@
 @media (min-width: 1101px) {
   html:not(.chrome--compact) .site-header {
     top: 1.5rem;
-    left: var(--page-px, 3rem);
+    left: var(--page-px, 10px);
     right: auto;
     padding-inline: 0.75rem 1.25rem;
   }

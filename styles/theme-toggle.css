@@ -21,8 +21,8 @@
 .theme-toggle {
   box-sizing: border-box;
   position: fixed;
-  top: var(--page-px, 1.5rem);
-  right: var(--page-px, 1.5rem);
+  top: var(--page-px, 10px);
+  right: var(--page-px, 10px);
   width: var(--chrome-h, 3.5rem);
   height: var(--chrome-h, 3.5rem);
   aspect-ratio: 1 / 1;
