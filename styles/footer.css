@@ -115,7 +115,13 @@
 
 /* Свёрнутое состояние (проскроллили) — список ссылок прячем, вместо
    него показываем "Меню" + стрелку вверх. Класс ставит
-   layout-chrome.js по window.scrollY. */
+   layout-chrome.js по window.scrollY.
+
+   ВАЖНО: сам .site-footer в этом состоянии перестаёт быть видимой
+   плашкой (никакого фона/тени/скругления) — это только позиционирующая
+   обёртка на всю ширину. Кнопки — два самостоятельных кружка по её
+   краям (у каждого свой фон/бордер/тень), а не два контрола внутри
+   одной общей плашки-бара. */
 .site-footer.is-collapsed .site-footer__nav-wrap {
   display: none;
 }
@@ -123,6 +129,12 @@
 .site-footer.is-collapsed .site-footer__menu-btn,
 .site-footer.is-collapsed .site-footer__top-btn {
   display: inline-flex;
+}
+
+.site-footer.is-collapsed {
+  background: transparent;
+  box-shadow: none;
+  padding-inline: 0;
 }
 
 /* Десктоп — плашка top-right, список ссылок виден целиком ВСЕГДА,
@@ -134,6 +146,16 @@
     bottom: auto;
     left: auto;
     right: var(--page-px, 3rem);
+    padding-inline: 1.25rem;
+  }
+
+  /* .is-collapsed ставится по скроллу независимо от ширины экрана —
+     на десктопе это должно быть НЕ заметно: плашка остаётся обычной
+     заполненной пилюлей со списком ссылок, а не прозрачной обёрткой
+     под кружки (тех тут не видно, см. правило чуть ниже). */
+  html:not(.chrome--compact) .site-footer.is-collapsed {
+    background: var(--color-surface);
+    box-shadow: var(--shadow-panel);
     padding-inline: 1.25rem;
   }
 
