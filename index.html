@@ -8,14 +8,14 @@
      кто уже переключался на светлую тему, при заходе мелькнёт тёмная
      (дефолтная) перед переключением на сохранённую светлую. -->
 
-<script src="styles/theme.js?v=8"></script>
-<link rel="stylesheet" href="styles/scale.css?v=8" />
-<link rel="stylesheet" href="styles/typography.css?v=8" />
-<link rel="stylesheet" href="styles/theme.css?v=8" />
-<link rel="stylesheet" href="styles/header.css?v=8" />
-<link rel="stylesheet" href="styles/footer.css?v=8" />
-<link rel="stylesheet" href="styles/theme-toggle.css?v=8" />
-<link rel="stylesheet" href="styles/masonry.css?v=8" />
+<script src="styles/theme.js?v=10"></script>
+<link rel="stylesheet" href="styles/scale.css?v=10" />
+<link rel="stylesheet" href="styles/typography.css?v=10" />
+<link rel="stylesheet" href="styles/theme.css?v=10" />
+<link rel="stylesheet" href="styles/header.css?v=10" />
+<link rel="stylesheet" href="styles/footer.css?v=10" />
+<link rel="stylesheet" href="styles/theme-toggle.css?v=10" />
+<link rel="stylesheet" href="styles/masonry.css?v=10" />
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -39,7 +39,10 @@
   }
 
   .page-works {
-    padding-block: 2rem 4rem;
+    /* Верхний зазор до карточек уже даёт body (page-px + высота
+       хедера + 10px, см. ниже) — здесь лишний padding-top только
+       задваивал бы его. Нижний оставляем как есть. */
+    padding-block: 0 4rem;
   }
 
   /*
@@ -57,7 +60,7 @@
     контенту снизу/сверху почти совсем.
   */
   body {
-    padding-top: calc(var(--page-px) + var(--header-h, 3.5rem));
+    padding-top: calc(var(--page-px) + var(--header-h, 3.5rem) + 10px);
     padding-bottom: calc(var(--page-px) + var(--footer-h, 3.5rem));
   }
 
@@ -65,16 +68,18 @@
     /* Десктоп — хедер/футер сжаты до плашек по контенту в углах,
        полноразмерный отступ тела не нужен, но контенту нужен
        небольшой запас сверху, чтобы плашка хедера не наезжала на
-       первый ряд галереи. html:not(.chrome--compact) — см. header.css:
-       если бы плашки не влезли в ряд, откатываемся на моб-вариант
-       (и тогда правило выше снова в силе). */
+       первый ряд галереи — ровно те же 10px, что и на моб/планшете,
+       по той же формуле (page-px + реальная высота хедера + 10px).
+       html:not(.chrome--compact) — см. header.css: если бы плашки не
+       влезли в ряд, откатываемся на моб-вариант (и тогда правило выше
+       снова в силе). */
     html:not(.chrome--compact) body {
       padding-top: 0;
       padding-bottom: 0;
     }
 
     html:not(.chrome--compact) .page-works {
-      padding-top: 6rem;
+      padding-top: calc(var(--page-px) + var(--header-h, 3.5rem) + 10px);
     }
   }
 
@@ -241,8 +246,8 @@
     <button type="button" class="footer-menu-panel__close" id="footer-menu-close" aria-label="Закрыть меню">✕</button>
   </div>
 
-  <script src="styles/masonry.js?v=8"></script>
-  <script src="styles/layout-chrome.js?v=8"></script>
-  <script src="styles/embed-scale.js?v=8"></script>
+  <script src="styles/masonry.js?v=10"></script>
+  <script src="styles/layout-chrome.js?v=10"></script>
+  <script src="styles/embed-scale.js?v=10"></script>
 </body>
 </html>
