@@ -21,7 +21,7 @@
 .theme-toggle {
   box-sizing: border-box;
   position: fixed;
-  top: 0;
+  top: var(--page-px, 1.5rem);
   right: var(--page-px, 1.5rem);
   width: var(--chrome-h, 3.5rem);
   height: var(--chrome-h, 3.5rem);
@@ -44,8 +44,11 @@
   line-height: 1;
 }
 
+/* html:not(.chrome--compact) — см. header.css: если плашки не влезают
+   в один ряд, layout-chrome.js откатывает на моб-позицию даже на
+   широких экранах. */
 @media (min-width: 1101px) {
-  .theme-toggle {
+  html:not(.chrome--compact) .theme-toggle {
     top: 1.5rem;
     right: auto;
     /* left выставляет layout-chrome.js по факту правого края хедера */

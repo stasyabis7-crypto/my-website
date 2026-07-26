@@ -1,20 +1,26 @@
 /*
-  Masonry-сетка галереи (Pinterest-style).
+  Masonry-сетка галереи (Pinterest-style) с поддержкой разноразмерных
+  карточек — некоторые могут занимать несколько колонок (см. data-cols
+  в HTML), чтобы выделяться в ленте.
 
-  Без JS — CSS multi-column: работает сразу и без единой строчки JS, но
-  заполняет колонки по порядку (столбец за столбцом сверху вниз), а не
-  "в самую короткую" — нижние края колонок не идеально ровные.
+  Технически — JS вручную считает позицию (left/top) и размер
+  (width/height) каждой карточки в px и ставит их абсолютным
+  позиционированием (см. masonry.js) по классическому алгоритму
+  "в колонку с наименьшей текущей высотой" (skyline), обобщённому под
+  карточки шириной в несколько колонок.
 
-  С JS (masonry.js) — контейнер переключается на flex-колонки, карточки
-  раскладываются по алгоритму "в самую короткую колонку": ровные нижние
-  края, как в Pinterest, порядок карточек из HTML сохраняется.
+  Раньше использовался CSS Grid с grid-auto-flow: dense — у него
+  row-track общий на всю ширину строки, поэтому широкая (data-cols>1)
+  карточка не может начаться, пока ОБЕ колонки под ней не дойдут до
+  одного и того же ряда: если одна из колонок в этот момент "выше"
+  другой, под короткой остаётся пустая дыра до выравнивания рядов. Это
+  и вызывало гэпы на скриншотах. Абсолютное позиционирование этого
+  ограничения не имеет — каждая карточка ставится в буквально самое
+  низкое доступное место, дыр не остаётся.
 
-  Число колонок и брейкпоинты синхронизированы с зонами typography.css/
-  scale.css (800 / 1101 / 1441).
-
-  aspect-ratio на .masonry__item резервирует высоту карточки ДО загрузки
-  картинки (по data-ratio, см. гайд по подготовке кадров) — без него
-  контент прыгает при догрузке изображений (CLS).
+  Число колонок по брейкпоинтам (2/3/4/5 на 0/800/1101/1441) теперь
+  живёт только в JS (columnCount в masonry.js) — синхронизировать с
+  CSS не с чем, .masonry больше не описывает колонки в CSS.
 */
 
 :root {
@@ -22,24 +28,15 @@
 }
 
 .masonry {
-  column-count: 2;
-  column-gap: var(--masonry-gap);
-}
-
-@media (min-width: 800px) {
-  .masonry { column-count: 3; }
-}
-@media (min-width: 1101px) {
-  .masonry { column-count: 4; }
-}
-@media (min-width: 1441px) {
-  .masonry { column-count: 5; }
+  position: relative;
 }
 
 .masonry__item {
   display: block;
-  break-inside: avoid;
-  margin-bottom: var(--masonry-gap);
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
   border-radius: 0.5rem;
   overflow: hidden;
   background: var(--color-surface-alt, #eceff3);
@@ -51,6 +48,33 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/*
+  Плейсхолдер-подпись у пустых плашек (см. index.html) — номер слота,
+  пропорция и ширина в колонках, чтобы удобно было готовить визуал под
+  конкретный слот. У карточек с реальным контентом (проектом) этой
+  подписи нет — там её перекрывает сам контент.
+*/
+.masonry__ph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.masonry__ph b {
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  font-weight: 700;
 }
 
 /*
@@ -76,26 +100,4 @@
   border: 0;
   pointer-events: none;
   transform-origin: top left;
-}
-
-/* JS-режим: masonry.js добавляет этот класс и оборачивает карточки в
-   .masonry__col — колоночная раскладка через flex вместо CSS columns. */
-.masonry.masonry--js {
-  column-count: initial;
-  column-gap: initial;
-  display: flex;
-  align-items: flex-start;
-  gap: var(--masonry-gap);
-}
-
-.masonry--js .masonry__col {
-  display: flex;
-  flex-direction: column;
-  gap: var(--masonry-gap);
-  flex: 1 1 0%;
-  min-width: 0;
-}
-
-.masonry--js .masonry__item {
-  margin-bottom: 0;
 }

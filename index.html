@@ -44,17 +44,22 @@
   }
 
   /*
-    Хедер/футер зафиксированы (см. header.css/footer.css) — на моб/
-    планшете это полноширинные бары сверху/снизу, поэтому контенту
-    нужны отступы, чтобы не прятаться под ними. Реальную высоту бара
-    считает layout-chrome.js (--header-h/--footer-h), тут — запасное
-    значение на случай, если JS ещё не отработал.
+    Хедер/футер — всегда плавающие плашки с отступом var(--page-px) от
+    края (см. header.css/footer.css), поэтому контенту нужен запас
+    сверху/снизу, чтобы не прятаться под ними: отступ страницы + сама
+    высота плашки. Реальную высоту плашки считает layout-chrome.js
+    (--header-h/--footer-h), тут — запасное значение на случай, если
+    JS ещё не отработал.
+
+    По умолчанию (моб/планшет, а также html.chrome--compact — откат
+    с десктопа при коллизии плашек, см. layout-chrome.js) — это
+    правило работает всегда. На десктопе (см. медиа-запрос ниже) оно
+    выключается, потому что там плашки сжаты по контенту и не мешают
+    контенту снизу/сверху почти совсем.
   */
-  @media (max-width: 1100.98px) {
-    body {
-      padding-top: var(--header-h, 3.5rem);
-      padding-bottom: var(--footer-h, 3.5rem);
-    }
+  body {
+    padding-top: calc(var(--page-px) + var(--header-h, 3.5rem));
+    padding-bottom: calc(var(--page-px) + var(--footer-h, 3.5rem));
   }
 
   @media (min-width: 800px) {
@@ -64,10 +69,18 @@
   @media (min-width: 1101px) {
     :root { --page-px: 3rem; }
 
-    /* Десктоп — хедер/футер уже не бары, а плавающие плашки в углах,
-       отступ под них не нужен, но контенту нужен небольшой запас
-       сверху, чтобы плашка хедера не наезжала на первый ряд галереи. */
-    .page-works {
+    /* Десктоп — хедер/футер сжаты до плашек по контенту в углах,
+       полноразмерный отступ тела не нужен, но контенту нужен
+       небольшой запас сверху, чтобы плашка хедера не наезжала на
+       первый ряд галереи. html:not(.chrome--compact) — см. header.css:
+       если бы плашки не влезли в ряд, откатываемся на моб-вариант
+       (и тогда правило выше снова в силе). */
+    html:not(.chrome--compact) body {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    html:not(.chrome--compact) .page-works {
       padding-top: 6rem;
     }
   }
@@ -96,15 +109,23 @@
     <h1 class="text-h1">Работы</h1>
 
     <!--
-      Карточки .masonry__item — data-ratio задаёт пропорцию (см. гайд по
-      подготовке кадров). Вместо пустого блока внутри кладите <img
-      src="..." alt="..."> — растянется через object-fit: cover.
+      50 плашек-слотов под будущие проекты. Каждая — data-slot (номер,
+      см. список у ассистента), data-ratio (пропорция) и data-cols
+      (ширина в колонках — 2 у "витринных" плашек, чтобы выделяться в
+      ленте). Позицию и размер каждой плашки (px) считает masonry.js.
+
+      Когда добавляете проект в слот: замените .masonry__item на <a
+      href="..."> (см. слот 1 — уже готовый пример), внутрь положите
+      либо <img src="..." alt="...">, либо .masonry__embed+iframe
+      (как в слоте 1) — data-ratio/data-cols на самом элементе не
+      трогайте, они и так уже под слот подобраны.
     -->
     <div class="masonry" id="works-gallery">
-      <div class="masonry__item" data-ratio="4/5"></div>
       <a
         class="masonry__item"
+        data-slot="1"
         data-ratio="1/1"
+        data-cols="1"
         data-title="Виджет CRM на Главную"
         href="works/crm-widget.html"
         aria-label="Виджет CRM на Главную"
@@ -121,16 +142,60 @@
           ></iframe>
         </span>
       </a>
-      <div class="masonry__item" data-ratio="3/2"></div>
-      <div class="masonry__item" data-ratio="2/3"></div>
-      <div class="masonry__item" data-ratio="4/3"></div>
-      <div class="masonry__item" data-ratio="1/1"></div>
-      <div class="masonry__item" data-ratio="4/5"></div>
-      <div class="masonry__item" data-ratio="16/9"></div>
+      <div class="masonry__item" data-slot="2" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>2</b><span>1/1 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="3" data-ratio="3/4" data-cols="1"><div class="masonry__ph"><b>3</b><span>3/4 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="4" data-ratio="2/3" data-cols="1"><div class="masonry__ph"><b>4</b><span>2/3 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="5" data-ratio="16/9" data-cols="2"><div class="masonry__ph"><b>5</b><span>16/9 · ×2</span></div></div>
+      <div class="masonry__item" data-slot="6" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>6</b><span>3/2 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="7" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>7</b><span>4/3 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="8" data-ratio="4/5" data-cols="1"><div class="masonry__ph"><b>8</b><span>4/5 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="9" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>9</b><span>1/1 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="10" data-ratio="3/2" data-cols="2"><div class="masonry__ph"><b>10</b><span>3/2 · ×2</span></div></div>
+      <div class="masonry__item" data-slot="11" data-ratio="3/4" data-cols="1"><div class="masonry__ph"><b>11</b><span>3/4 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="12" data-ratio="2/3" data-cols="1"><div class="masonry__ph"><b>12</b><span>2/3 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="13" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>13</b><span>3/2 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="14" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>14</b><span>4/3 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="15" data-ratio="2/1" data-cols="2"><div class="masonry__ph"><b>15</b><span>2/1 · ×2</span></div></div>
+      <div class="masonry__item" data-slot="16" data-ratio="4/5" data-cols="1"><div class="masonry__ph"><b>16</b><span>4/5 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="17" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>17</b><span>1/1 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="18" data-ratio="3/4" data-cols="1"><div class="masonry__ph"><b>18</b><span>3/4 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="19" data-ratio="2/3" data-cols="1"><div class="masonry__ph"><b>19</b><span>2/3 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="20" data-ratio="16/9" data-cols="2"><div class="masonry__ph"><b>20</b><span>16/9 · ×2</span></div></div>
+      <div class="masonry__item" data-slot="21" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>21</b><span>3/2 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="22" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>22</b><span>4/3 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="23" data-ratio="4/5" data-cols="1"><div class="masonry__ph"><b>23</b><span>4/5 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="24" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>24</b><span>1/1 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="25" data-ratio="3/2" data-cols="2"><div class="masonry__ph"><b>25</b><span>3/2 · ×2</span></div></div>
+      <div class="masonry__item" data-slot="26" data-ratio="3/4" data-cols="1"><div class="masonry__ph"><b>26</b><span>3/4 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="27" data-ratio="2/3" data-cols="1"><div class="masonry__ph"><b>27</b><span>2/3 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="28" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>28</b><span>3/2 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="29" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>29</b><span>4/3 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="30" data-ratio="2/1" data-cols="2"><div class="masonry__ph"><b>30</b><span>2/1 · ×2</span></div></div>
+      <div class="masonry__item" data-slot="31" data-ratio="4/5" data-cols="1"><div class="masonry__ph"><b>31</b><span>4/5 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="32" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>32</b><span>1/1 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="33" data-ratio="3/4" data-cols="1"><div class="masonry__ph"><b>33</b><span>3/4 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="34" data-ratio="2/3" data-cols="1"><div class="masonry__ph"><b>34</b><span>2/3 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="35" data-ratio="16/9" data-cols="2"><div class="masonry__ph"><b>35</b><span>16/9 · ×2</span></div></div>
+      <div class="masonry__item" data-slot="36" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>36</b><span>3/2 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="37" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>37</b><span>4/3 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="38" data-ratio="4/5" data-cols="1"><div class="masonry__ph"><b>38</b><span>4/5 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="39" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>39</b><span>1/1 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="40" data-ratio="3/2" data-cols="2"><div class="masonry__ph"><b>40</b><span>3/2 · ×2</span></div></div>
+      <div class="masonry__item" data-slot="41" data-ratio="3/4" data-cols="1"><div class="masonry__ph"><b>41</b><span>3/4 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="42" data-ratio="2/3" data-cols="1"><div class="masonry__ph"><b>42</b><span>2/3 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="43" data-ratio="3/2" data-cols="1"><div class="masonry__ph"><b>43</b><span>3/2 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="44" data-ratio="4/3" data-cols="1"><div class="masonry__ph"><b>44</b><span>4/3 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="45" data-ratio="2/1" data-cols="2"><div class="masonry__ph"><b>45</b><span>2/1 · ×2</span></div></div>
+      <div class="masonry__item" data-slot="46" data-ratio="4/5" data-cols="1"><div class="masonry__ph"><b>46</b><span>4/5 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="47" data-ratio="1/1" data-cols="1"><div class="masonry__ph"><b>47</b><span>1/1 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="48" data-ratio="3/4" data-cols="1"><div class="masonry__ph"><b>48</b><span>3/4 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="49" data-ratio="2/3" data-cols="1"><div class="masonry__ph"><b>49</b><span>2/3 · ×1</span></div></div>
+      <div class="masonry__item" data-slot="50" data-ratio="16/9" data-cols="2"><div class="masonry__ph"><b>50</b><span>16/9 · ×2</span></div></div>
     </div>
   </main>
 
   <footer class="site-footer">
+    <!-- Десктоп: список ссылок виден целиком. -->
     <nav class="site-footer__nav-wrap">
       <ul class="site-footer__nav">
         <li><a href="#" class="site-footer__link text-label is-current">Работы</a></li>
@@ -139,10 +204,31 @@
         <li><a href="#" class="site-footer__link text-label">Контакты</a></li>
       </ul>
     </nav>
-    <!-- Моб/планшет: видно только когда футер свёрнут при скролле. -->
-    <button type="button" class="site-footer__menu-btn text-button" aria-label="Меню">Меню</button>
-    <button type="button" class="site-footer__top-btn" aria-label="Наверх">↑</button>
+    <!-- Моб/планшет: вместо списка — одна кнопка, открывает панель ниже. -->
+    <button
+      type="button"
+      class="site-footer__menu-btn text-button"
+      id="footer-menu-btn"
+      aria-haspopup="true"
+      aria-expanded="false"
+      aria-controls="footer-menu-panel"
+    >Меню</button>
   </footer>
+
+  <!--
+    Плашка-меню (моб/планшет) — намеренно вне <footer>, чтобы висеть
+    отдельно над кнопкой. Кнопка "закрыть" — отдельная плашка-кружок,
+    как .theme-toggle (см. footer.css).
+  -->
+  <div class="footer-menu-panel" id="footer-menu-panel" hidden>
+    <button type="button" class="footer-menu-panel__close" id="footer-menu-close" aria-label="Закрыть меню">✕</button>
+    <ul class="footer-menu-panel__nav">
+      <li><a href="#" class="footer-menu-panel__link text-label is-current">Работы</a></li>
+      <li><a href="#" class="footer-menu-panel__link text-label">Обо мне</a></li>
+      <li><a href="#" class="footer-menu-panel__link text-label">Активности</a></li>
+      <li><a href="#" class="footer-menu-panel__link text-label">Контакты</a></li>
+    </ul>
+  </div>
 
   <script src="styles/masonry.js"></script>
   <script src="styles/layout-chrome.js"></script>

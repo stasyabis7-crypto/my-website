@@ -1,30 +1,21 @@
 /*
-  Балансировка masonry-колонок "в самую короткую колонку" (как в
-  Pinterest), поверх разметки/CSS из masonry.css.
+  Masonry-раскладка (см. masonry.css) — абсолютное позиционирование по
+  алгоритму "в колонку с наименьшей текущей высотой" (skyline),
+  обобщённому под карточки шириной в несколько колонок (data-cols).
 
-  Высота каждой карточки предсказывается по data-ratio (не по реальному
-  <img> — его можно ещё не загрузить), поэтому раскладка происходит сразу,
-  без ожидания картинок и без прыжков контента.
+  Раньше раскладка была на CSS Grid + grid-auto-flow: dense, но у неё
+  row-track общий на всю ширину строки: широкая карточка не могла
+  начаться, пока ОБЕ колонки под ней не дойдут до одного и того же
+  ряда, и под короткой колонкой оставалась дыра до выравнивания. Здесь
+  каждая карточка ставится в буквально самое низкое доступное место
+  (перебором всех допустимых стартовых колонок для её ширины) — дыр
+  не остаётся в принципе.
 
-  Порядок карточек в HTML — это порядок кураторства (что за чем идёт).
-  Он сохраняется: карточки просто распределяются по колонкам одна за
-  другой, а не пересортировываются по высоте.
+  Число колонок по брейкпоинтам живёт только здесь (columnCount) —
+  раз .masonry больше не размечает колонки в CSS, синхронизировать
+  не с чем.
 */
 (function () {
-  var BREAKPOINTS = [
-    { minWidth: 1441, columns: 5 },
-    { minWidth: 1101, columns: 4 },
-    { minWidth: 800, columns: 3 },
-    { minWidth: 0, columns: 2 }
-  ];
-
-  function columnsFor(width) {
-    for (var i = 0; i < BREAKPOINTS.length; i++) {
-      if (width >= BREAKPOINTS[i].minWidth) return BREAKPOINTS[i].columns;
-    }
-    return 2;
-  }
-
   function ratioOf(item) {
     var raw = item.getAttribute('data-ratio') || '1/1';
     var parts = raw.split('/');
@@ -33,50 +24,88 @@
     return w > 0 && h > 0 ? w / h : 1;
   }
 
+  function colsOf(item, maxCols) {
+    var raw = parseInt(item.getAttribute('data-cols'), 10);
+    var cols = raw > 0 ? raw : 1;
+    return Math.min(cols, maxCols);
+  }
+
+  function columnCount(width) {
+    if (width >= 1441) return 5;
+    if (width >= 1101) return 4;
+    if (width >= 800) return 3;
+    return 2;
+  }
+
+  // Резолвим --masonry-gap реальным layout-движком браузера (пробный
+  // элемент шириной var(--masonry-gap)), а не parseFloat строки — та же
+  // ловушка с unresolved custom property, что чинили в row-gap раньше,
+  // здесь бы тоже сыграла (rem как строка вместо px).
+  function resolveGapPx(root) {
+    var probe = document.createElement('div');
+    probe.style.position = 'absolute';
+    probe.style.visibility = 'hidden';
+    probe.style.height = '0';
+    probe.style.width = 'var(--masonry-gap)';
+    root.appendChild(probe);
+    var px = probe.getBoundingClientRect().width;
+    root.removeChild(probe);
+    return px || 16;
+  }
+
   function layout(root, items) {
     if (!items.length) return;
 
     var width = root.clientWidth;
-    var count = columnsFor(width);
-
-    // Число колонок не изменилось — внутри брейкпоинта ширина картинок
-    // и так тянется вместе с контейнером через CSS, пересчитывать нечего.
-    if (root.dataset.columns === String(count)) return;
-    root.dataset.columns = String(count);
-
-    var gap = parseFloat(getComputedStyle(root).getPropertyValue('--masonry-gap')) || 16;
+    var count = columnCount(width);
+    var gap = resolveGapPx(root);
     var colWidth = (width - gap * (count - 1)) / count;
-
-    var cols = [];
-    var heights = [];
-    for (var i = 0; i < count; i++) {
-      cols.push(document.createElement('div'));
-      cols[i].className = 'masonry__col';
-      heights.push(0);
-    }
+    var colHeights = new Array(count).fill(0);
 
     items.forEach(function (item) {
-      var shortest = heights.indexOf(Math.min.apply(Math, heights));
-      cols[shortest].appendChild(item);
-      heights[shortest] += colWidth / ratioOf(item) + gap;
-    });
+      var cols = colsOf(item, count);
+      var itemWidth = colWidth * cols + gap * (cols - 1);
+      var itemHeight = itemWidth / ratioOf(item);
 
-    root.classList.add('masonry--js');
-    root.replaceChildren.apply(root, cols);
-  }
+      // Из всех наборов `cols` соседних колонок выбираем тот, где
+      // карточка встанет НИЖЕ всего (минимум максимума высот колонок
+      // внутри набора) — то же самое "самое низкое доступное место",
+      // просто честно посчитанное для произвольной ширины карточки.
+      var bestStart = 0;
+      var bestTop = Infinity;
+      for (var start = 0; start <= count - cols; start++) {
+        var top = 0;
+        for (var c = start; c < start + cols; c++) {
+          if (colHeights[c] > top) top = colHeights[c];
+        }
+        if (top < bestTop) {
+          bestTop = top;
+          bestStart = start;
+        }
+      }
 
-  function init(root) {
-    // Исходный порядок карточек фиксируем один раз: после первой
-    // раскладки они станут потомками .masonry__col на разной глубине,
-    // и повторный querySelectorAll вернул бы уже перемешанный порядок.
-    var items = Array.prototype.slice.call(root.querySelectorAll('.masonry__item'));
+      var x = bestStart * (colWidth + gap);
+      var y = bestTop;
 
-    items.forEach(function (item) {
-      if (!item.style.aspectRatio) {
-        item.style.aspectRatio = item.getAttribute('data-ratio') || '1/1';
+      item.style.left = x + 'px';
+      item.style.top = y + 'px';
+      item.style.width = itemWidth + 'px';
+      item.style.height = itemHeight + 'px';
+
+      for (var c2 = bestStart; c2 < bestStart + cols; c2++) {
+        colHeights[c2] = bestTop + itemHeight + gap;
       }
     });
 
+    var maxHeight = 0;
+    for (var i = 0; i < colHeights.length; i++) {
+      if (colHeights[i] > maxHeight) maxHeight = colHeights[i];
+    }
+    root.style.height = Math.max(0, maxHeight - gap) + 'px';
+  }
+
+  function init(root) {
+    var items = Array.prototype.slice.call(root.querySelectorAll('.masonry__item'));
     var relayout = function () { layout(root, items); };
     relayout();
 
