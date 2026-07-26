@@ -37,11 +37,13 @@
 }
 
 .masonry__item {
+  display: block;
   break-inside: avoid;
   margin-bottom: var(--masonry-gap);
   border-radius: 0.5rem;
   overflow: hidden;
   background: var(--color-surface-alt, #eceff3);
+  text-decoration: none;
 }
 
 .masonry__item img {
@@ -49,6 +51,31 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/*
+  Карточка-проект — вместо картинки внутри крутится готовый
+  самостоятельный HTML (см. works/*.html), встроенный через iframe
+  в его РЕАЛЬНОМ (нативном) размере и сжатый transform: scale() под
+  ширину карточки (см. embed-scale.js). pointer-events: none на
+  iframe — клики проваливаются на .masonry__item-ссылку, ведущую на
+  страницу проекта.
+*/
+.masonry__embed {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.masonry__embed-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+  pointer-events: none;
+  transform-origin: top left;
 }
 
 /* JS-режим: masonry.js добавляет этот класс и оборачивает карточки в

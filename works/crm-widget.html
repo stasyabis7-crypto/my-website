@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Плашки — анимация</title>
+<style>
+  html,body{margin:0;padding:0;background:#0f1115;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,sans-serif;}
+  .scene{
+    position:relative;
+    width:1080px;height:1080px;
+    background:#BEBFC1;
+    overflow:hidden;
+  }
+  .frame{
+    position:absolute;
+    left:50%;top:50%;
+    width:78%;
+    opacity:0;
+    z-index:1;
+    filter:drop-shadow(0 20px 44px rgba(0,0,0,.2));
+    will-change:opacity, transform;
+    pointer-events:none;
+  }
+  .frame img{width:100%;display:block;}
+  .frame.active{opacity:1; z-index:2;}
+</style>
+</head>
+<body>
+<div class="scene" id="scene"></div>
+<script>
+/* картинки лежат рядом с этим файлом: 1.png ... 5.png */
+const FRAMES = ["1.png", "2.png", "3.png", "4.png", "5.png"];
+
+const HOLD = 1200;
+const ENTER_MS = 650;
+const EXIT_MS  = 420;
+
+const EASE_SPRING = 'cubic-bezier(.34, 1.56, .64, 1)';
+const EASE_OUT     = 'cubic-bezier(.4, 0, .2, 1)';
+
+const scene = document.getElementById('scene');
+const els = FRAMES.map((src) => {
+  const wrap = document.createElement('div');
+  wrap.className = 'frame';
+  const img = document.createElement('img');
+  img.src = src;
+  wrap.appendChild(img);
+  scene.appendChild(wrap);
+  return wrap;
+});
+
+function setBase(el, x, scale, opacity) {
+  el.style.transition = 'none';
+  el.style.transform = `translate(-50%,-50%) translateX(${x}px) scale(${scale})`;
+  el.style.opacity = opacity;
+}
+
+setBase(els[0], 0, 1, 1);
+els[0].classList.add('active');
+
+let idx = 0;
+
+function show(next) {
+  const prevIdx = idx;
+  const dir = next % 2 === 0 ? 1 : -1;
+  const prevEl = els[prevIdx];
+  const nextEl = els[next];
+
+  setBase(nextEl, dir * 130, 0.88, 0);
+  nextEl.classList.add('active');
+  void nextEl.offsetWidth;
+
+  nextEl.style.transition = `transform ${ENTER_MS}ms ${EASE_SPRING}, opacity ${ENTER_MS}ms ${EASE_OUT}`;
+  nextEl.style.transform = 'translate(-50%,-50%) translateX(0px) scale(1)';
+  nextEl.style.opacity = 1;
+
+  prevEl.style.transition = `transform ${EXIT_MS}ms ${EASE_OUT}, opacity ${EXIT_MS}ms ${EASE_OUT}`;
+  prevEl.style.transform = `translate(-50%,-50%) translateX(${-dir * 90}px) scale(0.9)`;
+  prevEl.style.opacity = 0;
+
+  setTimeout(() => { prevEl.classList.remove('active'); }, EXIT_MS);
+  idx = next;
+}
+
+function loop() {
+  const next = (idx + 1) % els.length;
+  show(next);
+  setTimeout(loop, HOLD + ENTER_MS);
+}
+
+setTimeout(loop, HOLD + 300);
+</script>
+</body>
+</html>

@@ -10,18 +10,22 @@
   плашки хедера; точный left-отступ (ширина хедера плавающая, зависит
   от контента) считает layout-chrome.js.
 
-  Размер (var(--chrome-control-size)) и цвета (var(--color-*)) —
-  общие токены из header.css/footer.css и theme.css, отдельных
-  значений здесь не заводим.
+  Размер — ОБЯЗАТЕЛЬНО var(--chrome-h): та же высота, что и у плашек
+  хедера/футера (не внутренний control-size, а полная высота бара),
+  ширина = высоте (width: var(--chrome-h) тоже) — кружок остаётся
+  идеально круглым на любом брейкпоинте, никогда не сплющивается.
+  Цвета — общие токены из theme.css, отдельных значений здесь не
+  заводим.
 */
 
 .theme-toggle {
   box-sizing: border-box;
   position: fixed;
-  top: var(--chrome-pad-block, 0.5rem);
+  top: 0;
   right: var(--page-px, 1.5rem);
-  width: var(--chrome-control-size, 2.5rem);
-  height: var(--chrome-control-size, 2.5rem);
+  width: var(--chrome-h, 3.5rem);
+  height: var(--chrome-h, 3.5rem);
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
