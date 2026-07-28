@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Donate flow — анимация</title>
+<style>
+  html,body{margin:0;padding:0;background:#1e1e1e;display:flex;align-items:center;justify-content:center;min-height:100vh;}
+  .stage{
+    position:relative;
+    width:418px;height:849px;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.55);
+  }
+  .screen{
+    position:absolute; inset:0;
+    will-change:transform;
+  }
+  .screen img.shot{
+    position:absolute; inset:0; width:100%; height:100%; display:block; pointer-events:none;
+  }
+  .mask{
+    position:absolute;
+    left:22px; width:375px;
+    background:#ffffff;
+    transform-origin:top center;
+    transform:scaleY(1);
+    opacity:1;
+  }
+  .press{
+    position:absolute;
+    left:32px; top:745px; width:355px; height:52px;
+    border-radius:16px;
+    background:rgba(255,255,255,.28);
+    opacity:0;
+    transform:scale(1);
+    pointer-events:none;
+  }
+  .ripple{
+    position:absolute;
+    width:14px; height:14px; border-radius:50%;
+    background:rgba(255,255,255,.55);
+    transform:translate(-50%,-50%) scale(0);
+    opacity:0;
+    pointer-events:none;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <div class="screen" id="s0" style="transform:translateX(0);"><img class="shot" src="donate-flow-1.png"></div>
+  <div class="screen" id="s1" style="transform:translateX(100%);"><img class="shot" src="donate-flow-2.png"></div>
+  <div class="screen" id="s2" style="transform:translateX(100%);"><img class="shot" src="donate-flow-3.png"></div>
+</div>
+
+<script>
+const BAND_COUNT = 6;
+const CONTENT = { x: 22, y: 19, w: 375, h: 812 };
+const BUTTON  = { x: 32, y: 745, w: 355, h: 52 };
+
+const REVEAL_MS = 420;
+const REVEAL_STAGGER = 70;
+const HOLD_MS = 1000;
+const TAP_MS = 480;
+const SLIDE_MS = 620;
+const FINAL_HOLD_MS = 2000;
+
+const EASE_REVEAL = 'cubic-bezier(.4,0,.2,1)';
+const EASE_SPRING  = 'cubic-bezier(.22,1,.36,1)';
+
+function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+const screens = [0,1,2].map(i => document.getElementById('s'+i));
+
+// build masks + press/ripple overlays for each screen
+function buildOverlays(screenEl){
+  const bandH = CONTENT.h / BAND_COUNT;
+  const masks = [];
+  for(let i=0;i<BAND_COUNT;i++){
+    const m = document.createElement('div');
+    m.className = 'mask';
+    m.style.top = (CONTENT.y + i*bandH) + 'px';
+    m.style.height = (bandH + 1) + 'px';
+    screenEl.appendChild(m);
+    masks.push(m);
+  }
+  const press = document.createElement('div');
+  press.className = 'press';
+  screenEl.appendChild(press);
+  const ripple = document.createElement('div');
+  ripple.className = 'ripple';
+  ripple.style.left = (BUTTON.x + BUTTON.w/2) + 'px';
+  ripple.style.top  = (BUTTON.y + BUTTON.h/2) + 'px';
+  screenEl.appendChild(ripple);
+  return { masks, press, ripple };
+}
+
+const overlays = screens.map(buildOverlays);
+
+function resetMasks(idx){
+  overlays[idx].masks.forEach(m => {
+    m.style.transition = 'none';
+    m.style.transform = 'scaleY(1)';
+    m.style.opacity = '1';
+  });
+}
+
+async function revealBlocks(idx){
+  const masks = overlays[idx].masks;
+  masks.forEach((m, i) => {
+    void m.offsetWidth;
+    m.style.transition = `transform ${REVEAL_MS}ms ${EASE_REVEAL} ${i*REVEAL_STAGGER}ms, opacity ${REVEAL_MS}ms ${EASE_REVEAL} ${i*REVEAL_STAGGER}ms`;
+    m.style.transform = 'scaleY(0)';
+    m.style.opacity = '0';
+  });
+  await sleep((BAND_COUNT-1)*REVEAL_STAGGER + REVEAL_MS + 40);
+}
+
+async function tapButton(idx){
+  const { press, ripple } = overlays[idx];
+  press.style.transition = 'none';
+  press.style.opacity = '0';
+  press.style.transform = 'scale(1)';
+  ripple.style.transition = 'none';
+  ripple.style.transform = 'translate(-50%,-50%) scale(0)';
+  ripple.style.opacity = '0';
+  void press.offsetWidth;
+
+  press.style.transition = `opacity 140ms ease-out, transform 140ms ease-out`;
+  press.style.opacity = '1';
+  press.style.transform = 'scale(0.97)';
+  ripple.style.transition = `transform ${TAP_MS}ms cubic-bezier(.2,.8,.2,1), opacity ${TAP_MS}ms ease-out`;
+  ripple.style.transform = 'translate(-50%,-50%) scale(22)';
+  ripple.style.opacity = '1';
+
+  await sleep(140);
+  press.style.transition = 'opacity 160ms ease-out, transform 160ms ease-out';
+  press.style.opacity = '0';
+  press.style.transform = 'scale(1)';
+
+  await sleep(TAP_MS - 140);
+}
+
+async function slide(fromIdx, toIdx, forward){
+  const fromEl = screens[fromIdx];
+  const toEl = screens[toIdx];
+
+  resetMasks(toIdx);
+
+  toEl.style.transition = 'none';
+  toEl.style.transform = `translateX(${forward ? 100 : -100}%)`;
+  toEl.style.zIndex = 2;
+  fromEl.style.zIndex = 1;
+  void toEl.offsetWidth;
+
+  fromEl.style.transition = `transform ${SLIDE_MS}ms ${EASE_SPRING}`;
+  toEl.style.transition = `transform ${SLIDE_MS}ms ${EASE_SPRING}`;
+  fromEl.style.transform = `translateX(${forward ? -30 : 30}%)`;
+  toEl.style.transform = 'translateX(0)';
+
+  await sleep(SLIDE_MS + 40);
+}
+
+async function run(){
+  // первый показ экрана 1
+  resetMasks(0);
+  await sleep(300);
+  await revealBlocks(0);
+  await sleep(HOLD_MS);
+
+  while(true){
+    await tapButton(0);
+    await slide(0, 1, true);
+    await revealBlocks(1);
+    await sleep(HOLD_MS);
+
+    await tapButton(1);
+    await slide(1, 2, true);
+    await revealBlocks(2);
+    await sleep(FINAL_HOLD_MS);
+
+    await slide(2, 0, false);
+    await revealBlocks(0);
+    await sleep(HOLD_MS);
+  }
+}
+
+run();
+</script>
+</body>
+</html>
