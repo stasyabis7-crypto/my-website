@@ -1,94 +1,268 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>Плашки — анимация</title>
-<style>
-  html,body{margin:0;padding:0;background:#0f1115;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:-apple-system,sans-serif;}
-  .scene{
-    position:relative;
-    width:1080px;height:1080px;
-    background:#BEBFC1;
-    overflow:hidden;
-  }
-  .frame{
-    position:absolute;
-    left:50%;top:50%;
-    width:78%;
-    opacity:0;
-    z-index:1;
-    filter:drop-shadow(0 20px 44px rgba(0,0,0,.2));
-    will-change:opacity, transform;
-    pointer-events:none;
-  }
-  .frame img{width:100%;display:block;}
-  .frame.active{opacity:1; z-index:2;}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Разновидности карточек</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: #bebfc1;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+    }
+    #viewport {
+      position: relative;
+      width: min(100vw, 1080px);
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: #bebfc1;
+    }
+    #scene {
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 1080px;
+      height: 1080px;
+      transform-origin: top left;
+    }
+    .card {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 384px;
+      height: 192px;
+      transform: translate(-50%, -50%) scale(1.65);
+      transform-origin: center;
+      color: rgba(0, 17, 34, .95);
+    }
+    .card-main,
+    .card-action {
+      width: 384px;
+      overflow: hidden;
+      border-radius: 24px;
+      background: #f5f7fa;
+    }
+    .card-main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      height: 148px;
+      padding: 12px 24px 24px;
+    }
+    .heading-viewport {
+      position: relative;
+      width: 336px;
+      height: 44px;
+      overflow: hidden;
+    }
+    .heading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 28px;
+      white-space: nowrap;
+      will-change: transform, opacity, filter;
+    }
+    .body-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      width: 336px;
+      height: 72px;
+    }
+    .body-viewport {
+      position: relative;
+      flex: 1 1 auto;
+      width: 260px;
+      height: 72px;
+      overflow: hidden;
+    }
+    .body-copy {
+      position: absolute;
+      inset: 0;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 24px;
+      will-change: transform, opacity, filter;
+    }
+    .body-copy strong { font-weight: 600; }
+    .story-preview {
+      flex: 0 0 64px;
+      width: 64px;
+      height: 64px;
+      padding: 4px;
+      overflow: hidden;
+      border: 2px solid rgba(149, 166, 182, .18);
+      border-radius: 16px;
+    }
+    .story-preview img {
+      display: block;
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #fff;
+    }
+    .card-action {
+      height: 40px;
+      padding: 8px 24px;
+    }
+    .action-viewport {
+      position: relative;
+      width: 336px;
+      height: 24px;
+      overflow: hidden;
+    }
+    .action-copy {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 24px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      will-change: transform, opacity, filter;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .heading, .body-copy, .action-copy { will-change: auto; }
+    }
+  </style>
 </head>
 <body>
-<div class="scene" id="scene"></div>
-<script>
-/* картинки лежат рядом с этим файлом: 1.png ... 5.png */
-const FRAMES = ["1.png", "2.png", "3.png", "4.png", "5.png"];
+  <main id="viewport" aria-label="Цикл разновидностей карточки">
+    <div id="scene">
+      <article class="card">
+        <section class="card-main">
+          <div class="heading-viewport"><div id="heading" class="heading"></div></div>
+          <div class="body-row">
+            <div class="body-viewport"><div id="bodyCopy" class="body-copy"></div></div>
+            <div class="story-preview" aria-hidden="true">
+              <img src="card-story-icon.png" alt="">
+            </div>
+          </div>
+        </section>
+        <section class="card-action">
+          <div class="action-viewport"><div id="actionCopy" class="action-copy"></div></div>
+        </section>
+      </article>
+    </div>
+  </main>
 
-const HOLD = 1200;
-const ENTER_MS = 650;
-const EXIT_MS  = 420;
+  <script>
+    const variants = [
+      {
+        heading: 'Сохраните постоянных клиентов',
+        body: '<strong>15 000</strong> топ покупателей просматривали ваши товары<br>за&nbsp;7 дней',
+        action: 'Отправить рассылку топ клиентам'
+      },
+      {
+        heading: 'Увеличьте средний чек заказа',
+        body: '<strong>15 000</strong> лояльных покупателей добавили ваши товары в&nbsp;корзину<br>за&nbsp;7 дней',
+        action: 'Отправить лояльным рассылку со скидкой'
+      },
+      {
+        heading: 'Сохраните постоянных клиентов',
+        body: '<strong>15 000</strong> рискованных покупателей добавили ваши товары в&nbsp;корзину<br>за&nbsp;7 дней',
+        action: 'Отправить рассылку о скидке рискованным'
+      },
+      {
+        heading: 'Подтолкните к повторной покупке',
+        body: '<strong>15 000</strong> новых покупателей добавили ваши товары в&nbsp;корзину<br>за&nbsp;7 дней',
+        action: 'Отправить рассылку о скидке новым'
+      },
+      {
+        heading: 'Подтолкните к первой покупке',
+        body: '<strong>15 000</strong> потенциальных покупателей добавили ваши товары в&nbsp;корзину за&nbsp;7 дней',
+        action: 'Разместить баннер для потенциальных'
+      }
+    ];
 
-const EASE_SPRING = 'cubic-bezier(.34, 1.56, .64, 1)';
-const EASE_OUT     = 'cubic-bezier(.4, 0, .2, 1)';
+    const viewport = document.getElementById('viewport');
+    const scene = document.getElementById('scene');
+    const heading = document.getElementById('heading');
+    const bodyCopy = document.getElementById('bodyCopy');
+    const actionCopy = document.getElementById('actionCopy');
+    const animatedNodes = [heading, bodyCopy, actionCopy];
+    const delays = [0, 45, 90];
+    let activeIndex = 0;
+    let timer;
 
-const scene = document.getElementById('scene');
-const els = FRAMES.map((src) => {
-  const wrap = document.createElement('div');
-  wrap.className = 'frame';
-  const img = document.createElement('img');
-  img.src = src;
-  wrap.appendChild(img);
-  scene.appendChild(wrap);
-  return wrap;
-});
+    function resizeScene() {
+      scene.style.transform = 'scale(' + viewport.clientWidth / 1080 + ')';
+    }
 
-function setBase(el, x, scale, opacity) {
-  el.style.transition = 'none';
-  el.style.transform = `translate(-50%,-50%) translateX(${x}px) scale(${scale})`;
-  el.style.opacity = opacity;
-}
+    function setVariant(index) {
+      const variant = variants[index];
+      heading.textContent = variant.heading;
+      bodyCopy.innerHTML = variant.body;
+      actionCopy.textContent = variant.action;
+    }
 
-setBase(els[0], 0, 1, 1);
-els[0].classList.add('active');
+    function animateNode(node, keyframes, options, delay) {
+      return node.animate(keyframes, { ...options, delay }).finished.catch(() => {});
+    }
 
-let idx = 0;
+    async function transitionTo(nextIndex) {
+      const out = animatedNodes.map((node, index) =>
+        animateNode(node, [
+          { opacity: 1, transform: 'translateY(0) scale(1)', filter: 'blur(0)' },
+          { opacity: 0, transform: 'translateY(-18px) scale(.985)', filter: 'blur(2.5px)' }
+        ], { duration: 320, easing: 'cubic-bezier(.55,0,1,.45)', fill: 'forwards' }, delays[index])
+      );
+      await Promise.all(out);
 
-function show(next) {
-  const prevIdx = idx;
-  const dir = next % 2 === 0 ? 1 : -1;
-  const prevEl = els[prevIdx];
-  const nextEl = els[next];
+      activeIndex = nextIndex;
+      setVariant(activeIndex);
 
-  setBase(nextEl, dir * 130, 0.88, 0);
-  nextEl.classList.add('active');
-  void nextEl.offsetWidth;
+      animatedNodes.forEach((node) => {
+        node.style.opacity = '0';
+        node.style.transform = 'translateY(22px) scale(1.015)';
+        node.style.filter = 'blur(3px)';
+      });
 
-  nextEl.style.transition = `transform ${ENTER_MS}ms ${EASE_SPRING}, opacity ${ENTER_MS}ms ${EASE_OUT}`;
-  nextEl.style.transform = 'translate(-50%,-50%) translateX(0px) scale(1)';
-  nextEl.style.opacity = 1;
+      const incoming = animatedNodes.map((node, index) =>
+        animateNode(node, [
+          { opacity: 0, transform: 'translateY(22px) scale(1.015)', filter: 'blur(3px)' },
+          { opacity: 1, transform: 'translateY(0) scale(1)', filter: 'blur(0)' }
+        ], { duration: 460, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' }, delays[index])
+      );
+      await Promise.all(incoming);
+      animatedNodes.forEach((node) => {
+        node.style.opacity = '1';
+        node.style.transform = '';
+        node.style.filter = '';
+      });
+    }
 
-  prevEl.style.transition = `transform ${EXIT_MS}ms ${EASE_OUT}, opacity ${EXIT_MS}ms ${EASE_OUT}`;
-  prevEl.style.transform = `translate(-50%,-50%) translateX(${-dir * 90}px) scale(0.9)`;
-  prevEl.style.opacity = 0;
+    async function advance() {
+      await transitionTo((activeIndex + 1) % variants.length);
+      timer = window.setTimeout(advance, 1750);
+    }
 
-  setTimeout(() => { prevEl.classList.remove('active'); }, EXIT_MS);
-  idx = next;
-}
+    new ResizeObserver(resizeScene).observe(viewport);
+    resizeScene();
+    setVariant(0);
+    timer = window.setTimeout(advance, 1750);
 
-function loop() {
-  const next = (idx + 1) % els.length;
-  show(next);
-  setTimeout(loop, HOLD + ENTER_MS);
-}
-
-setTimeout(loop, HOLD + 300);
-</script>
+    window.cardVariantsAnimation = {
+      variants,
+      show(index) {
+        window.clearTimeout(timer);
+        return transitionTo(((index % variants.length) + variants.length) % variants.length);
+      }
+    };
+  </script>
 </body>
 </html>
