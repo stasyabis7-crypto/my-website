@@ -1,24 +1,427 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>ЯПомогаю — выбор благотворительного раздела</title>
-<style>
-  html,body{margin:0;padding:0;width:1000px;height:750px;overflow:hidden;background:#0994ed;}
-  #anim{width:1000px;height:750px;}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>#ЯПомогаю — HTML-анимация</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: #0aa9ee;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    #viewport {
+      position: relative;
+      width: min(100vw, 1000px);
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: #0aa9ee;
+    }
+    #scene {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1000px;
+      height: 750px;
+      transform-origin: top left;
+    }
+    #composition {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 1000px;
+      height: 750px;
+      transform: translate(-50%, -50%) scale(1.18);
+      transform-origin: center;
+    }
+    .header {
+      position: absolute;
+      left: 50%;
+      top: 331px;
+      width: max-content;
+      height: 88px;
+      padding: 22px 31px;
+      border-radius: 28px;
+      background: #fff;
+      transform: translateX(-50%);
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      width: max-content;
+      height: 44px;
+      gap: 0;
+    }
+    .nav {
+      --nav-font-size: 16px;
+      position: relative;
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 20px;
+      width: max-content;
+      height: 44px;
+      white-space: nowrap;
+      font-size: var(--nav-font-size);
+    }
+    .nav-item {
+      position: relative;
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      height: 38px;
+      color: #090909;
+      line-height: 20px;
+      transition: color 180ms ease;
+    }
+    .nav-item.hovered { color: #757575; }
+    .nav-label { display: block; }
+    .chevron {
+      flex: 0 0 12px;
+      width: 12px;
+      height: 20px;
+      margin-left: 4px;
+      background: currentColor;
+      -webkit-mask: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAxMiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzgwNjhfNTQwMykiPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcDFfODA2OF81NDAzKSI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNi4wMDAxMSAxMy4xNDE1TDEuMDA0NjEgOC42MDAxTC0wLjAwNDM5NDUzIDkuNzEwMDFMNi4wMDAxMSAxNS4xNjg2TDEyLjAwNDYgOS43MTAwMUwxMC45OTU2IDguNjAwMUw2LjAwMDExIDEzLjE0MTVaIiBmaWxsPSJibGFjayIvPgo8L2c+CjwvZz4KPGRlZnM+CjxjbGlwUGF0aCBpZD0iY2xpcDBfODA2OF81NDAzIj4KPHJlY3Qgd2lkdGg9IjEyIiBoZWlnaHQ9IjIwIiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8Y2xpcFBhdGggaWQ9ImNsaXAxXzgwNjhfNTQwMyI+CjxyZWN0IHdpZHRoPSIxMiIgaGVpZ2h0PSIyMCIgZmlsbD0id2hpdGUiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K") center / 12px 20px no-repeat;
+      mask: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAxMiAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzgwNjhfNTQwMykiPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcDFfODA2OF81NDAzKSI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNi4wMDAxMSAxMy4xNDE1TDEuMDA0NjEgOC42MDAxTC0wLjAwNDM5NDUzIDkuNzEwMDFMNi4wMDAxMSAxNS4xNjg2TDEyLjAwNDYgOS43MTAwMUwxMC45OTU2IDguNjAwMUw2LjAwMDExIDEzLjE0MTVaIiBmaWxsPSJibGFjayIvPgo8L2c+CjwvZz4KPGRlZnM+CjxjbGlwUGF0aCBpZD0iY2xpcDBfODA2OF81NDAzIj4KPHJlY3Qgd2lkdGg9IjEyIiBoZWlnaHQ9IjIwIiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8Y2xpcFBhdGggaWQ9ImNsaXAxXzgwNjhfNTQwMyI+CjxyZWN0IHdpZHRoPSIxMiIgaGVpZ2h0PSIyMCIgZmlsbD0id2hpdGUiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K") center / 12px 20px no-repeat;
+      transform: rotate(0deg);
+      transform-origin: center;
+      transition: transform 260ms cubic-bezier(.2,.8,.2,1);
+    }
+    .nav-item.open .chevron { transform: rotate(180deg); }
+    .active-line {
+      position: absolute;
+      bottom: 8px;
+      height: 1.5px;
+      background: #333;
+      transition:
+        left 360ms cubic-bezier(.2,.8,.2,1),
+        width 360ms cubic-bezier(.2,.8,.2,1),
+        opacity 180ms ease;
+    }
+    .dropdown {
+      position: absolute;
+      left: 0;
+      top: 37px;
+      width: 343px;
+      height: 224px;
+      padding-top: 20px;
+      overflow: hidden;
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, .15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition:
+        opacity 220ms ease,
+        transform 280ms cubic-bezier(.2,.8,.2,1),
+        visibility 0s linear 280ms;
+      z-index: 5;
+    }
+    .dropdown.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      transition-delay: 0s;
+    }
+    .menu-row {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      width: 100%;
+      height: 62px;
+      padding: 8px 16px;
+      background: transparent;
+      transition: background 180ms ease;
+    }
+    .menu-row.hovered { background: #f0f0f0; }
+    .menu-copy { min-width: 0; }
+    .menu-title {
+      overflow: hidden;
+      color: #090909;
+      font-size: 16px;
+      line-height: 20px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .menu-subtitle {
+      overflow: hidden;
+      margin-top: 1px;
+      color: #707070;
+      font-size: 13px;
+      line-height: 16px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .check {
+      position: absolute;
+      right: 17px;
+      top: 17px;
+      width: 13px;
+      height: 8px;
+      border-left: 1.8px solid #111;
+      border-bottom: 1.8px solid #111;
+      opacity: 0;
+      transform: rotate(-45deg) scale(.75);
+      transition: opacity 180ms ease, transform 220ms cubic-bezier(.2,.8,.2,1);
+    }
+    .menu-row.selected .check { opacity: 1; transform: rotate(-45deg) scale(1); }
+    .cursor {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 24px;
+      height: 24px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate3d(355px, 463px, 0);
+      transform-origin: 7px 4px;
+      transition: opacity 100ms linear;
+      will-change: transform, opacity;
+      z-index: 10;
+    }
+  </style>
 </head>
 <body>
-<div id="anim"></div>
-<script src="lottie.min.js"></script>
-<script>
-lottie.loadAnimation({
-  container: document.getElementById('anim'),
-  renderer: 'svg',
-  loop: true,
-  autoplay: true,
-  path: 'menu-animation.json'
-});
-</script>
+  <main id="viewport" aria-label="Демонстрация выбора раздела благотворительности">
+    <div id="scene">
+      <div id="composition">
+        <header class="header">
+          <div class="header-content">
+            <nav class="nav" aria-label="Основная навигация">
+            <span class="nav-item" data-nav="help"><span class="nav-label" data-i18n="navHelp"></span></span>
+            <span class="nav-item" data-nav="charity">
+              <span class="nav-label" data-i18n="navCharity"></span><i class="chevron" aria-hidden="true"></i>
+              <section class="dropdown" aria-label="Благотворительность">
+                <div class="menu-row" data-row="0">
+                  <div class="menu-copy">
+                    <div class="menu-title" data-i18n="kindnessTitle"></div>
+                    <div class="menu-subtitle" data-i18n="kindnessSubtitle"></div>
+                  </div>
+                  <i class="check" aria-hidden="true"></i>
+                </div>
+                <div class="menu-row">
+                  <div class="menu-copy">
+                    <div class="menu-title" data-i18n="goodsTitle"></div>
+                    <div class="menu-subtitle" data-i18n="goodsSubtitle"></div>
+                  </div>
+                </div>
+                <div class="menu-row">
+                  <div class="menu-copy">
+                    <div class="menu-title" data-i18n="animalsTitle"></div>
+                    <div class="menu-subtitle" data-i18n="animalsSubtitle"></div>
+                  </div>
+                </div>
+              </section>
+            </span>
+            <span class="nav-item" data-nav="crisis">
+              <span class="nav-label" data-i18n="navCrisis"></span><i class="chevron" aria-hidden="true"></i>
+            </span>
+            <span class="nav-item" data-nav="ecology">
+              <span class="nav-label" data-i18n="navEcology"></span><i class="chevron" aria-hidden="true"></i>
+            </span>
+            <i class="active-line" aria-hidden="true"></i>
+            </nav>
+          </div>
+        </header>
+        <img id="cursorDefault" class="cursor" alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE1LjkyMzEgMTguMDI5NkMxNi4wOTg1IDE4LjQ1MDUgMTUuOTI5OSAyMC4wNDQ3IDE1IDIwLjQxNDJDMTQuMDcwMSAyMC43ODM3IDEyLjg4MiAyMC40MTQyIDEyLjg4MiAyMC40MTQyTDEwLjcyNiAxNi4xMDI0TDcgMTkuODI4NFYzTDE4LjQxNDIgMTQuNDE0MkgxNC4xNjE1QzE0LjM3MDIgMTQuODE0NCAxNS43MDAzIDE3LjQ5NDggMTUuOTIzMSAxOC4wMjk2WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04IDUuNDE0MDZWMTcuNDE0MUwxMSAxNC40MTQxTDEzLjUgMTkuNDE0MUMxMy41IDE5LjQxNDEgMTQuMTc2MyAxOS42Mjk5IDE0LjUgMTkuNDE0MUMxNC44MjM3IDE5LjE5ODMgMTUuMTQ1NyAxOC43NjM2IDE1IDE4LjQxNDFDMTQuMzEyMyAxNi43NjM2IDEyLjUgMTMuNDE0MSAxMi41IDEzLjQxNDFIMTZMOCA1LjQxNDA2WiIgZmlsbD0iYmxhY2siLz4KPC9zdmc+Cg==">
+        <img id="cursorPointer" class="cursor" alt="" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTguMjcwMTIgMTYuMjc5OUM3Ljk5MDEyIDE1LjkxOTkgNy42NDAxMiAxNS4xODk5IDcuMDMwMTIgMTQuMjc5OUM2LjY4MDEyIDEzLjc3OTkgNS44MjAxMiAxMi44Mjk5IDUuNTYwMTIgMTIuMzM5OUM1LjM3MjY5IDEyLjA0MjIgNS4zMTgzIDExLjY3OTYgNS40MTAxMiAxMS4zMzk5QzUuNTY3MDggMTAuNjk0MSA2LjE3OTY4IDEwLjI2NTcgNi44NDAxMiAxMC4zMzk5QzcuMzUwOTIgMTAuNDQyNSA3LjgyMDM0IDEwLjY5MjkgOC4xOTAxMiAxMS4wNTk5QzguNDQ4MyAxMS4zMDMxIDguNjg1NzggMTEuNTY3MyA4LjkwMDEyIDExLjg0OTlDOS4wNjAxMiAxMi4wNDk5IDkuMTAwMTIgMTIuMTI5OSA5LjI4MDEyIDEyLjM1OTlDOS40NjAxMiAxMi41ODk5IDkuNTgwMTIgMTIuODE5OSA5LjQ5MDEyIDEyLjQ3OTlDOS40MjAxMiAxMS45Nzk5IDkuMzAwMTIgMTEuMTM5OSA5LjEzMDEyIDEwLjM4OTlDOS4wMDAxMiA5LjgxOTkzIDguOTcwMTIgOS43Mjk5MyA4Ljg1MDEyIDkuMjk5OTNDOC43MzAxMiA4Ljg2OTkzIDguNjYwMTIgOC41MDk5MyA4LjUzMDEyIDguMDE5OTNDOC40MTEyOCA3LjUzODUgOC4zMTc4MiA3LjA1MTE2IDguMjUwMTIgNi41NTk5M0M4LjEyNDA3IDUuOTMxNjMgOC4yMTU3NyA1LjI3OTE0IDguNTEwMTIgNC43MDk5M0M4Ljg1OTUxIDQuMzgxMyA5LjM3MjA1IDQuMjk0NTYgOS44MTAxMiA0LjQ4OTkzQzEwLjI1MDcgNC44MTUyNiAxMC41NzkyIDUuMjY5NTggMTAuNzUwMSA1Ljc4OTkzQzExLjAxMjIgNi40MzAzMiAxMS4xODcxIDcuMTAyOTkgMTEuMjcwMSA3Ljc4OTkzQzExLjQzMDEgOC43ODk5MyAxMS43NDAxIDEwLjI0OTkgMTEuNzUwMSAxMC41NDk5QzExLjc1MDEgMTAuMTc5OSAxMS42ODAxIDkuMzk5OTMgMTEuNzUwMSA5LjA0OTkzQzExLjgxOTUgOC42ODUwNSAxMi4wNzMxIDguMzgyMjQgMTIuNDIwMSA4LjI0OTkzQzEyLjcxNzkgOC4xNTg1NSAxMy4wMzMgOC4xMzgwMSAxMy4zNDAxIDguMTg5OTNDMTMuNjUwMiA4LjI1NDc0IDEzLjkyNDggOC40MzMwNyAxNC4xMTAxIDguNjg5OTNDMTQuMzQxOCA5LjI3MzMyIDE0LjQ3MDQgOS44OTI1MyAxNC40OTAxIDEwLjUxOTlDMTQuNTE2OSA5Ljk3MDUxIDE0LjYxMDkgOS40MjY0NiAxNC43NzAxIDguODk5OTNDMTQuOTM3MiA4LjY2NDQ4IDE1LjE4MTIgOC40OTQ3MiAxNS40NjAxIDguNDE5OTNDMTUuNzkwNyA4LjM1OTQ4IDE2LjEyOTUgOC4zNTk0OCAxNi40NjAxIDguNDE5OTNDMTYuNzMxMiA4LjUxMDU2IDE2Ljk2ODQgOC42ODE0NCAxNy4xNDAxIDguOTA5OTNDMTcuMzUxOSA5LjQ0MDI3IDE3LjQ4MDEgMTAuMDAwMyAxNy41MjAxIDEwLjU2OTlDMTcuNTIwMSAxMC43MDk5IDE3LjU5MDEgMTAuMTc5OSAxNy44MTAxIDkuODI5OTNDMTcuOTI0NCA5LjQ5MDUzIDE4LjIxMTIgOS4yMzc5IDE4LjU2MjIgOS4xNjcyQzE4LjkxMzMgOS4wOTY1MSAxOS4yNzU1IDkuMjE4NDkgMTkuNTEyMiA5LjQ4NzJDMTkuNzQ5IDkuNzU1OTEgMTkuODI0NCAxMC4xMzA1IDE5LjcxMDEgMTAuNDY5OUMxOS43MTAxIDExLjExOTkgMTkuNzEwMSAxMS4wODk5IDE5LjcxMDEgMTEuNTI5OUMxOS43MTAxIDExLjk2OTkgMTkuNzEwMSAxMi4zNTk5IDE5LjcxMDEgMTIuNzI5OUMxOS42NzM3IDEzLjMxNTEgMTkuNTkzNSAxMy44OTY3IDE5LjQ3MDEgMTQuNDY5OUMxOS4yOTYxIDE0Ljk3NyAxOS4wNTM5IDE1LjQ1ODEgMTguNzUwMSAxNS44OTk5QzE4LjI2NDYgMTYuNDM5OSAxNy44NjM0IDE3LjA1MDEgMTcuNTYwMSAxNy43MDk5QzE3LjQ4NDkgMTguMDM3NyAxNy40NTEzIDE4LjM3MzcgMTcuNDYwMSAxOC43MDk5QzE3LjQ1OTEgMTkuMDIwNiAxNy40OTk1IDE5LjMyOTkgMTcuNTgwMSAxOS42Mjk5QzE3LjE3MTMgMTkuNjczMSAxNi43NTkgMTkuNjczMSAxNi4zNTAxIDE5LjYyOTlDMTUuOTYwMSAxOS41Njk5IDE1LjQ4MDEgMTguNzg5OSAxNS4zNTAxIDE4LjU0OTlDMTUuMjg1OCAxOC40MjExIDE1LjE1NDEgMTguMzM5NiAxNS4wMTAxIDE4LjMzOTZDMTQuODY2MSAxOC4zMzk2IDE0LjczNDQgMTguNDIxMSAxNC42NzAxIDE4LjU0OTlDMTQuNDUwMSAxOC45Mjk5IDEzLjk2MDEgMTkuNjE5OSAxMy42MjAxIDE5LjY1OTlDMTIuOTUwMSAxOS43Mzk5IDExLjU3MDEgMTkuNjU5OSAxMC40ODAxIDE5LjY1OTlDMTAuNDgwMSAxOS42NTk5IDEwLjY2MDEgMTguNjU5OSAxMC4yNTAxIDE4LjI5OTlDOS44NDAxMiAxNy45Mzk5IDkuNDIwMTIgMTcuNTE5OSA5LjExMDEyIDE3LjIzOTlMOC4yNzAxMiAxNi4yNzk5WiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04LjI3MDEyIDE2LjI3OTlDNy45OTAxMiAxNS45MTk5IDcuNjQwMTIgMTUuMTg5OSA3LjAzMDEyIDE0LjI3OTlDNi42ODAxMiAxMy43Nzk5IDUuODIwMTIgMTIuODI5OSA1LjU2MDEyIDEyLjMzOTlDNS4zNzI2OSAxMi4wNDIyIDUuMzE4MyAxMS42Nzk2IDUuNDEwMTIgMTEuMzM5OUM1LjU2NzA4IDEwLjY5NDEgNi4xNzk2OCAxMC4yNjU3IDYuODQwMTIgMTAuMzM5OUM3LjM1MDkyIDEwLjQ0MjUgNy44MjAzNCAxMC42OTI5IDguMTkwMTIgMTEuMDU5OUM4LjQ0ODMgMTEuMzAzMSA4LjY4NTc4IDExLjU2NzMgOC45MDAxMiAxMS44NDk5QzkuMDYwMTIgMTIuMDQ5OSA5LjEwMDEyIDEyLjEyOTkgOS4yODAxMiAxMi4zNTk5QzkuNDYwMTIgMTIuNTg5OSA5LjU4MDEyIDEyLjgxOTkgOS40OTAxMiAxMi40Nzk5QzkuNDIwMTIgMTEuOTc5OSA5LjMwMDEyIDExLjEzOTkgOS4xMzAxMiAxMC4zODk5QzkuMDAwMTIgOS44MTk5MyA4Ljk3MDEyIDkuNzI5OTMgOC44NTAxMiA5LjI5OTkzQzguNzMwMTIgOC44Njk5MyA4LjY2MDEyIDguNTA5OTMgOC41MzAxMiA4LjAxOTkzQzguNDExMjggNy41Mzg1IDguMzE3ODIgNy4wNTExNiA4LjI1MDEyIDYuNTU5OTNDOC4xMjQwNyA1LjkzMTYzIDguMjE1NzcgNS4yNzkxNCA4LjUxMDEyIDQuNzA5OTNDOC44NTk1MSA0LjM4MTMgOS4zNzIwNSA0LjI5NDU2IDkuODEwMTIgNC40ODk5M0MxMC4yNTA3IDQuODE1MjYgMTAuNTc5MiA1LjI2OTU4IDEwLjc1MDEgNS43ODk5M0MxMS4wMTIyIDYuNDMwMzIgMTEuMTg3MSA3LjEwMjk5IDExLjI3MDEgNy43ODk5M0MxMS40MzAxIDguNzg5OTMgMTEuNzQwMSAxMC4yNDk5IDExLjc1MDEgMTAuNTQ5OUMxMS43NTAxIDEwLjE3OTkgMTEuNjgwMSA5LjM5OTkzIDExLjc1MDEgOS4wNDk5M0MxMS44MTk1IDguNjg1MDUgMTIuMDczMSA4LjM4MjI0IDEyLjQyMDEgOC4yNDk5M0MxMi43MTc5IDguMTU4NTUgMTMuMDMzIDguMTM4MDEgMTMuMzQwMSA4LjE4OTkzQzEzLjY1MDIgOC4yNTQ3NCAxMy45MjQ4IDguNDMzMDcgMTQuMTEwMSA4LjY4OTkzQzE0LjM0MTggOS4yNzMzMiAxNC40NzA0IDkuODkyNTMgMTQuNDkwMSAxMC41MTk5QzE0LjUxNjkgOS45NzA1MSAxNC42MTA5IDkuNDI2NDYgMTQuNzcwMSA4Ljg5OTkzQzE0LjkzNzIgOC42NjQ0OCAxNS4xODEyIDguNDk0NzIgMTUuNDYwMSA4LjQxOTkzQzE1Ljc5MDcgOC4zNTk0OCAxNi4xMjk1IDguMzU5NDggMTYuNDYwMSA4LjQxOTkzQzE2LjczMTIgOC41MTA1NiAxNi45Njg0IDguNjgxNDQgMTcuMTQwMSA4LjkwOTkzQzE3LjM1MTkgOS40NDAyNyAxNy40ODAxIDEwLjAwMDMgMTcuNTIwMSAxMC41Njk5QzE3LjUyMDEgMTAuNzA5OSAxNy41OTAxIDEwLjE3OTkgMTcuODEwMSA5LjgyOTkzQzE3LjkyNDQgOS40OTA1MyAxOC4yMTEyIDkuMjM3OSAxOC41NjIyIDkuMTY3MkMxOC45MTMzIDkuMDk2NTEgMTkuMjc1NSA5LjIxODQ5IDE5LjUxMjIgOS40ODcyQzE5Ljc0OSA5Ljc1NTkxIDE5LjgyNDQgMTAuMTMwNSAxOS43MTAxIDEwLjQ2OTlDMTkuNzEwMSAxMS4xMTk5IDE5LjcxMDEgMTEuMDg5OSAxOS43MTAxIDExLjUyOTlDMTkuNzEwMSAxMS45Njk5IDE5LjcxMDEgMTIuMzU5OSAxOS43MTAxIDEyLjcyOTlDMTkuNjczNyAxMy4zMTUxIDE5LjU5MzUgMTMuODk2NyAxOS40NzAxIDE0LjQ2OTlDMTkuMjk2MSAxNC45NzcgMTkuMDUzOSAxNS40NTgxIDE4Ljc1MDEgMTUuODk5OUMxOC4yNjQ2IDE2LjQzOTkgMTcuODYzNCAxNy4wNTAxIDE3LjU2MDEgMTcuNzA5OUMxNy40ODQ5IDE4LjAzNzcgMTcuNDUxMyAxOC4zNzM3IDE3LjQ2MDEgMTguNzA5OUMxNy40NTkxIDE5LjAyMDYgMTcuNDk5NSAxOS4zMjk5IDE3LjU4MDEgMTkuNjI5OUMxNy4xNzEzIDE5LjY3MzEgMTYuNzU5IDE5LjY3MzEgMTYuMzUwMSAxOS42Mjk5QzE1Ljk2MDEgMTkuNTY5OSAxNS40ODAxIDE4Ljc4OTkgMTUuMzUwMSAxOC41NDk5QzE1LjI4NTggMTguNDIxMSAxNS4xNTQxIDE4LjMzOTYgMTUuMDEwMSAxOC4zMzk2QzE0Ljg2NjEgMTguMzM5NiAxNC43MzQ0IDE4LjQyMTEgMTQuNjcwMSAxOC41NDk5QzE0LjQ1MDEgMTguOTI5OSAxMy45NjAxIDE5LjYxOTkgMTMuNjIwMSAxOS42NTk5QzEyLjk1MDEgMTkuNzM5OSAxMS41NzAxIDE5LjY1OTkgMTAuNDgwMSAxOS42NTk5QzEwLjQ4MDEgMTkuNjU5OSAxMC42NjAxIDE4LjY1OTkgMTAuMjUwMSAxOC4yOTk5QzkuODQwMTIgMTcuOTM5OSA5LjQyMDEyIDE3LjUxOTkgOS4xMTAxMiAxNy4yMzk5TDguMjcwMTIgMTYuMjc5OVoiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMC43NSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNi43NSAxNi44MjU5VjEzLjM3NDFDMTYuNzUgMTMuMTY3NSAxNi41ODIxIDEzIDE2LjM3NSAxM0MxNi4xNjc5IDEzIDE2IDEzLjE2NzUgMTYgMTMuMzc0MVYxNi44MjU5QzE2IDE3LjAzMjUgMTYuMTY3OSAxNy4yIDE2LjM3NSAxNy4yQzE2LjU4MjEgMTcuMiAxNi43NSAxNy4wMzI1IDE2Ljc1IDE2LjgyNTlaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNMTQuNzcgMTYuODI0NkwxNC43NSAxMy4zNzExQzE0Ljc0ODggMTMuMTY0OSAxNC41Nzk5IDEyLjk5ODggMTQuMzcyOCAxM0MxNC4xNjU3IDEzLjAwMTIgMTMuOTk4OCAxMy4xNjkzIDE0IDEzLjM3NTRMMTQuMDIgMTYuODI4OUMxNC4wMjEyIDE3LjAzNSAxNC4xOTAxIDE3LjIwMTIgMTQuMzk3MiAxN0MxNC42MDQzIDE3LjE5ODggMTQuNzcxMiAxNy4wMzA3IDE0Ljc3IDE2LjgyNDZaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNMTIgMTMuMzc5TDEyLjAyIDE2LjgyNTRDMTIuMDIxMiAxNy4wMzM1IDEyLjE5MDEgMTcuMjAxMiAxMi4zOTcyIDE3LjJDMTIuNjA0MyAxNy4xOTg4IDEyLjc3MTIgMTcuMDI5MSAxMi43NyAxNi44MjFMMTIuNzUgMTMuMzc0NkMxMi43NDg4IDEzLjE2NjUgMTIuNTc5OSAxMi45OTg4IDEyLjM3MjggMTNDMTIuMTY1NyAxMy4wMDEyIDExLjk5ODggMTMuMTcwOSAxMiAxMy4zNzlaIiBmaWxsPSJibGFjayIvPgo8L3N2Zz4K">
+      </div>
+    </div>
+  </main>
+  <script>
+    const translations = {
+      ru: {
+        navHelp: '#ЯПомогаю',
+        navCharity: 'Благотворительность',
+        navCrisis: 'Кризисная помощь',
+        navEcology: 'Экология',
+        kindnessTitle: 'Знак добра',
+        kindnessSubtitle: 'Как получить и добавить в объявление',
+        goodsTitle: 'Благотворительные товары',
+        goodsSubtitle: 'Как приобрести вещи со смыслом',
+        animalsTitle: 'Животные из приютов',
+        animalsSubtitle: 'Подарите дом питомцу'
+      },
+      en: {
+        navHelp: '#IHelp',
+        navCharity: 'Charity',
+        navCrisis: 'Crisis support',
+        navEcology: 'Environment',
+        kindnessTitle: 'Badge of kindness',
+        kindnessSubtitle: 'How to get it and add it to your listing',
+        goodsTitle: 'Charitable goods',
+        goodsSubtitle: 'How to shop with purpose',
+        animalsTitle: 'Shelter animals',
+        animalsSubtitle: 'Give a pet a home'
+      }
+    };
+
+    const viewport = document.getElementById('viewport');
+    const scene = document.getElementById('scene');
+    const composition = document.getElementById('composition');
+    const nav = document.querySelector('.nav');
+    const help = document.querySelector('[data-nav="help"]');
+    const charity = document.querySelector('[data-nav="charity"]');
+    const dropdown = document.querySelector('.dropdown');
+    const firstRow = document.querySelector('[data-row="0"]');
+    const activeLine = document.querySelector('.active-line');
+    const cursorDefault = document.getElementById('cursorDefault');
+    const cursorPointer = document.getElementById('cursorPointer');
+
+    let language = 'ru';
+    let loopStart = performance.now();
+    let previousPhase = '';
+
+    function resizeScene() {
+      const scale = viewport.clientWidth / 1000;
+      scene.style.transform = 'scale(' + scale + ')';
+    }
+
+    function fitNavigation() {
+      nav.style.setProperty('--nav-font-size', '16px');
+    }
+
+    function setActiveLine(target, immediate = false) {
+      const left = target.offsetLeft;
+      const width = target.querySelector('.nav-label').offsetWidth;
+      if (immediate) activeLine.style.transition = 'none';
+      activeLine.style.left = left + 'px';
+      activeLine.style.width = width + 'px';
+      if (immediate) requestAnimationFrame(() => activeLine.style.transition = '');
+    }
+
+    function setLanguage(nextLanguage) {
+      if (!translations[nextLanguage]) return;
+      language = nextLanguage;
+      document.documentElement.lang = nextLanguage;
+      document.querySelectorAll('[data-i18n]').forEach((node) => {
+        node.textContent = translations[nextLanguage][node.dataset.i18n];
+      });
+      fitNavigation();
+      const activeIsCharity = [
+        'open', 'moveToItem', 'itemHover', 'itemSelected',
+        'moveToHelp', 'helpHover'
+      ].includes(previousPhase);
+      setActiveLine(activeIsCharity ? charity : help, true);
+    }
+    window.setAnimationLanguage = setLanguage;
+    window.animationTranslations = translations;
+
+    function rectCenter(element, xBias = .5, yBias = .5) {
+      const compositionRect = composition.getBoundingClientRect();
+      const rect = element.getBoundingClientRect();
+      const scale = viewport.clientWidth / 1000 * 1.18;
+      return {
+        x: (rect.left - compositionRect.left) / scale + rect.width / scale * xBias,
+        y: (rect.top - compositionRect.top) / scale + rect.height / scale * yBias
+      };
+    }
+
+    function smootherStep(value) {
+      const t = Math.max(0, Math.min(1, value));
+      return t * t * t * (t * (t * 6 - 15) + 10);
+    }
+
+    function mix(a, b, t) { return a + (b - a) * smootherStep(t); }
+
+    function setCursorPosition(cursor, from, to, progress, scale = 1) {
+      const x = mix(from.x, to.x, progress);
+      const y = mix(from.y, to.y, progress);
+      cursor.style.transform =
+        'translate3d(' + x + 'px,' + y + 'px,0) scale(' + scale + ')';
+    }
+
+    function pressScale(elapsed, start, duration = .22) {
+      const progress = Math.max(0, Math.min(1, (elapsed - start) / duration));
+      return 1 - Math.sin(progress * Math.PI) * .14;
+    }
+
+    function applyPhase(phase) {
+      if (phase === previousPhase) return;
+      previousPhase = phase;
+      const menuOpen = [
+        'open', 'moveToItem', 'itemHover', 'itemSelected',
+        'moveToHelp', 'helpHover'
+      ].includes(phase);
+      charity.classList.toggle('open', menuOpen);
+      dropdown.classList.toggle('visible', menuOpen);
+      charity.classList.toggle('hovered', phase === 'charityHover');
+      help.classList.toggle('hovered', phase === 'helpHover');
+      firstRow.classList.toggle('hovered', ['itemHover', 'itemSelected'].includes(phase));
+      firstRow.classList.toggle('selected', [
+        'itemSelected', 'moveToHelp', 'helpHover'
+      ].includes(phase));
+      cursorDefault.style.opacity = [
+        'intro', 'moveToCharity', 'returnToStart', 'reset'
+      ].includes(phase) ? '1' : '0';
+      cursorPointer.style.opacity = [
+        'charityHover', 'open', 'moveToItem', 'itemHover',
+        'itemSelected', 'moveToHelp', 'helpHover', 'closing'
+      ].includes(phase) ? '1' : '0';
+      setActiveLine(menuOpen ? charity : help);
+    }
+
+    function animate(now) {
+      const elapsed = ((now - loopStart) % 6800) / 1000;
+      const start = { x: 355, y: 463 };
+      const navTarget = rectCenter(charity, .55, .55);
+      const rowTarget = rectCenter(firstRow, .78, .55);
+      const helpTarget = rectCenter(help, .55, .55);
+      let phase = 'intro';
+
+      if (elapsed >= .50 && elapsed < 1.30) phase = 'moveToCharity';
+      else if (elapsed >= 1.30 && elapsed < 1.65) phase = 'charityHover';
+      else if (elapsed >= 1.65 && elapsed < 2.00) phase = 'open';
+      else if (elapsed >= 2.00 && elapsed < 2.90) phase = 'moveToItem';
+      else if (elapsed >= 2.90 && elapsed < 3.25) phase = 'itemHover';
+      else if (elapsed >= 3.25 && elapsed < 3.70) phase = 'itemSelected';
+      else if (elapsed >= 3.70 && elapsed < 4.75) phase = 'moveToHelp';
+      else if (elapsed >= 4.75 && elapsed < 5.10) phase = 'helpHover';
+      else if (elapsed >= 5.10 && elapsed < 5.40) phase = 'closing';
+      else if (elapsed >= 5.40 && elapsed < 6.40) phase = 'returnToStart';
+      else if (elapsed >= 6.40) phase = 'reset';
+
+      applyPhase(phase);
+
+      if (phase === 'intro') {
+        setCursorPosition(cursorDefault, start, start, 0);
+        setCursorPosition(cursorPointer, start, start, 0);
+      } else if (phase === 'moveToCharity') {
+        const p = (elapsed - .50) / .80;
+        setCursorPosition(cursorDefault, start, navTarget, p);
+        setCursorPosition(cursorPointer, start, navTarget, p);
+      } else if (['charityHover', 'open'].includes(phase)) {
+        const scale = phase === 'open' ? pressScale(elapsed, 1.65) : 1;
+        setCursorPosition(cursorDefault, navTarget, navTarget, 1);
+        setCursorPosition(cursorPointer, navTarget, navTarget, 1, scale);
+      } else if (['moveToItem', 'itemHover', 'itemSelected'].includes(phase)) {
+        const p = phase === 'moveToItem' ? (elapsed - 2.00) / .90 : 1;
+        const scale = phase === 'itemSelected' ? pressScale(elapsed, 3.25) : 1;
+        setCursorPosition(cursorPointer, navTarget, rowTarget, p, scale);
+      } else if (['moveToHelp', 'helpHover', 'closing'].includes(phase)) {
+        const p = phase === 'moveToHelp' ? (elapsed - 3.70) / 1.05 : 1;
+        const scale = phase === 'closing' ? pressScale(elapsed, 5.10) : 1;
+        setCursorPosition(cursorPointer, rowTarget, helpTarget, p, scale);
+        setCursorPosition(cursorDefault, rowTarget, helpTarget, p);
+      } else if (['returnToStart', 'reset'].includes(phase)) {
+        const p = phase === 'returnToStart' ? (elapsed - 5.40) / 1 : 1;
+        setCursorPosition(cursorDefault, helpTarget, start, p);
+        setCursorPosition(cursorPointer, helpTarget, start, p);
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    new ResizeObserver(resizeScene).observe(viewport);
+    setLanguage(new URLSearchParams(location.search).get('lang') || 'ru');
+    resizeScene();
+    requestAnimationFrame(animate);
+  </script>
 </body>
 </html>
