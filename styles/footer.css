@@ -23,7 +23,10 @@
   height: var(--chrome-h);
   padding-block: var(--chrome-pad-block);
   padding-inline: var(--page-px, 10px);
-  background: var(--color-surface);
+  background: var(--color-glass);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--color-glass-border);
   border-radius: 999px;
   box-shadow: var(--shadow-panel);
 }
@@ -106,7 +109,9 @@
   padding: 0;
   border: 1px solid var(--color-ink);
   border-radius: 50%;
-  background: var(--color-surface-alt);
+  background: var(--color-glass-alt);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   color: var(--color-ink);
   cursor: pointer;
   line-height: 1;
@@ -133,6 +138,9 @@
 
 .site-footer.is-collapsed {
   background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
   box-shadow: none;
   padding-inline: 0;
 }
@@ -154,7 +162,10 @@
      заполненной пилюлей со списком ссылок, а не прозрачной обёрткой
      под кружки (тех тут не видно, см. правило чуть ниже). */
   html:not(.chrome--compact) .site-footer.is-collapsed {
-    background: var(--color-surface);
+    background: var(--color-glass);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    border: 1px solid var(--color-glass-border);
     box-shadow: var(--shadow-panel);
     padding-inline: 1.25rem;
   }
@@ -205,8 +216,10 @@
   padding-inline: 1.25rem;
   padding-block: 0.5rem;
   border-radius: 999px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: var(--color-glass);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--color-glass-border);
   box-shadow: var(--shadow-panel);
 }
 
@@ -245,9 +258,11 @@
   align-items: center;
   justify-content: center;
   padding: 0;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-glass-border);
   border-radius: 50%;
-  background: var(--color-surface);
+  background: var(--color-glass);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   color: var(--color-text);
   box-shadow: var(--shadow-panel);
   cursor: pointer;

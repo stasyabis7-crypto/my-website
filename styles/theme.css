@@ -8,6 +8,15 @@
   читают только var(--color-*)/var(--shadow-panel), без хардкода.
 */
 
+:root {
+  /* Матовое стекло (хедер/футер/кнопки навигации) — одна и та же
+     "рецептура" размытия в обеих темах, меняются только цвета-токены
+     ниже. -webkit- дубль обязателен для Safari/iOS, у него до сих пор
+     нет неprefixed backdrop-filter. */
+  --glass-blur: 20px;
+  --glass-saturate: 180%;
+}
+
 :root,
 [data-theme="dark"] {
   color-scheme: dark;
@@ -27,6 +36,15 @@
   --shadow-panel:
     0 1px 2px rgba(0, 0, 0, 0.4),
     0 8px 24px rgba(0, 0, 0, 0.5);
+
+  /* Полупрозрачные версии surface/surface-alt под backdrop-filter —
+     сама заливка почти не видна без blur, весь эффект стекла даёт
+     именно смазанный фон под ней. Едва заметная светлая обводка
+     (не color-border — он тут слишком тёмный/непрозрачный) — типичный
+     блик стекла по краю панели. */
+  --color-glass: rgba(28, 31, 38, 0.55);
+  --color-glass-alt: rgba(38, 42, 51, 0.55);
+  --color-glass-border: rgba(244, 245, 247, 0.1);
 }
 
 [data-theme="light"] {
@@ -45,6 +63,10 @@
   --shadow-panel:
     0 1px 2px rgba(20, 22, 26, 0.06),
     0 8px 24px rgba(20, 22, 26, 0.1);
+
+  --color-glass: rgba(255, 255, 255, 0.55);
+  --color-glass-alt: rgba(240, 241, 244, 0.55);
+  --color-glass-border: rgba(20, 22, 26, 0.08);
 }
 
 html,
