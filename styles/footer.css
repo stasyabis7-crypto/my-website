@@ -67,6 +67,7 @@
 
 .site-footer__nav {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 1rem 1.5rem;
   list-style: none;
@@ -75,6 +76,8 @@
 }
 
 .site-footer__link {
+  display: inline-flex;
+  align-items: center;
   color: var(--color-text-muted);
   text-decoration: none;
 }
@@ -83,8 +86,15 @@
   color: var(--color-text);
 }
 
+/* Активный пункт — залитая пилюля, тот же приём, что у
+   .site-header__cta (background/color var(--color-ink*)), а не
+   просто более тёмный текст. */
 .site-footer__link.is-current {
-  color: var(--color-text);
+  height: var(--chrome-control-size);
+  padding-inline: 0.875rem;
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: var(--color-ink-contrast);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -229,6 +239,7 @@
   margin: 0;
   padding: 0;
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
@@ -236,6 +247,8 @@
 }
 
 .footer-menu-panel__link {
+  display: inline-flex;
+  align-items: center;
   color: var(--color-text-muted);
   text-decoration: none;
 }
@@ -244,8 +257,15 @@
   color: var(--color-text);
 }
 
+/* Активный пункт — та же залитая пилюля, что и у .site-footer__link
+   (см. выше) и .site-header__cta — единый стиль "активного" контрола
+   по всему сайту. */
 .footer-menu-panel__link.is-current {
-  color: var(--color-text);
+  height: var(--chrome-control-size);
+  padding-inline: 0.875rem;
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: var(--color-ink-contrast);
   font-weight: var(--font-weight-semibold);
 }
 
