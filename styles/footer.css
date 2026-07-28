@@ -61,25 +61,47 @@
 .site-footer__nav-wrap {
   display: flex;
   flex: 1 1 auto;
-  justify-content: center;
   min-width: 0;
 }
 
+/* Моб/планшет — список растянут на всю ширину плашки, пункты делят
+   её поровну (flex: 1 1 0 на li). На десктопе (см. медиа-запрос ниже)
+   список уже не тянется на всю ширину — просто у каждого пункта
+   один и тот же размер, подогнанный под самый длинный ("Активности"),
+   а не под ширину плашки. */
 .site-footer__nav {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem 1.5rem;
+  width: 100%;
+  gap: 0.5rem;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+.site-footer__nav li {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Все пункты — одна и та же заготовка (прозрачная рамка/фон, тот же
+   размер), активный отличается только заливкой (см. .is-current
+   ниже), а не собственной шириной/высотой — поэтому у всех пунктов
+   получается одна и та же длина. */
 .site-footer__link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--chrome-control-size);
+  padding-inline: 0.875rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
   color: var(--color-text-muted);
   text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .site-footer__link:hover {
@@ -90,10 +112,7 @@
    .site-header__cta (background/color var(--color-ink*)), а не
    просто более тёмный текст. */
 .site-footer__link.is-current {
-  height: var(--chrome-control-size);
-  padding-inline: 0.875rem;
-  border: 1px solid var(--color-ink);
-  border-radius: 999px;
+  border-color: var(--color-ink);
   background: var(--color-ink);
   color: var(--color-ink-contrast);
   font-weight: var(--font-weight-semibold);
@@ -222,16 +241,16 @@
   display: none;
 }
 
+/* Бар теперь высотой по контенту (4 пункта друг под другом), а не
+   фиксированной pill-высоты в один ряд, как раньше — см.
+   .footer-menu-panel__nav (flex-direction: column) ниже. */
 .footer-menu-panel__bar {
   box-sizing: border-box;
   display: flex;
-  align-items: center;
   flex: 1 1 auto;
-  min-height: var(--chrome-h, 3.5rem);
   min-width: 0;
-  padding-inline: var(--chrome-pad-block);
-  padding-block: var(--chrome-pad-block);
-  border-radius: 999px;
+  padding: 0.75rem;
+  border-radius: 28px;
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
@@ -239,23 +258,31 @@
   box-shadow: var(--shadow-panel);
 }
 
+/* Пункты друг под другом, все одного размера (см.
+   .footer-menu-panel__link — width: 100% + фиксированная высота),
+   текст в каждом центрирован. */
 .footer-menu-panel__nav {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   width: 100%;
-  gap: 0.75rem 1.25rem;
+  gap: 0.375rem;
 }
 
 .footer-menu-panel__link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--chrome-control-size);
+  padding-inline: 0.875rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
   color: var(--color-text-muted);
   text-decoration: none;
+  text-align: center;
 }
 
 .footer-menu-panel__link:hover {
@@ -266,10 +293,7 @@
    (см. выше) и .site-header__cta — единый стиль "активного" контрола
    по всему сайту. */
 .footer-menu-panel__link.is-current {
-  height: var(--chrome-control-size);
-  padding-inline: 0.875rem;
-  border: 1px solid var(--color-ink);
-  border-radius: 999px;
+  border-color: var(--color-ink);
   background: var(--color-ink);
   color: var(--color-ink-contrast);
   font-weight: var(--font-weight-semibold);
@@ -277,6 +301,52 @@
 
 .footer-menu-panel__link.is-current:hover {
   opacity: 0.85;
+}
+
+/*
+  Подложка при открытом вертикальном меню — блюрит и глушит всё
+  остальное (страницу, хедер, переключатель темы, кнопку "наверх" в
+  футере), пока меню открыто. Кнопка "Меню" и сама плашка
+  меню+кнопка закрыть остаются НАД подложкой и не блюрятся — см.
+  .site-footer.is-menu-open ниже (поднимает футер над подложкой) и
+  прицельный блюр на .site-footer__top-btn (единственный элемент
+  футера, который при этом всё равно должен выглядеть выключенным).
+
+  Клик по подложке закрывает меню — использует тот же
+  document-click-обработчик "клик мимо панели", что и раньше (см.
+  layout-chrome.js), отдельного слушателя не требуется.
+*/
+.footer-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 54;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.footer-menu-backdrop[hidden] {
+  display: none;
+}
+
+/* Пока меню открыто, весь футер поднимается над подложкой (иначе
+   кнопка "Меню" тоже оказалась бы под блюром) — кнопку "наверх"
+   рядом с ней в этом состоянии блюрим и отключаем отдельным
+   правилом ниже, раз она не входит в список исключений. */
+.site-footer.is-menu-open {
+  z-index: 56;
+}
+
+.site-footer.is-menu-open .site-footer__top-btn {
+  filter: blur(4px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Скролл страницы блокируется, пока открыто вертикальное меню —
+   класс ставит layout-chrome.js вместе с open/closeMenu. */
+html.footer-menu-open {
+  overflow: hidden;
 }
 
 /* Кнопка "закрыть" — тот же круглый стиль, что у .theme-toggle, но
@@ -304,5 +374,21 @@
 @media (min-width: 1101px) {
   html:not(.chrome--compact) .footer-menu-panel {
     display: none;
+  }
+
+  html:not(.chrome--compact) .footer-menu-backdrop {
+    display: none;
+  }
+
+  /* Десктоп — список не тянется на всю ширину плашки (та сама сжата
+     по контенту), поэтому здесь фиксируем одинаковую длину пункта
+     под самый длинный ("Активности") явным значением, а не
+     flex-растяжением, как на моб/планшете выше. */
+  html:not(.chrome--compact) .site-footer__nav li {
+    flex: 0 0 auto;
+  }
+
+  html:not(.chrome--compact) .site-footer__link {
+    width: 7.5rem;
   }
 }

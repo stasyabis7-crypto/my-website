@@ -36,6 +36,7 @@
   var themeToggle = document.querySelector('.theme-toggle');
   var menuBtn = document.getElementById('footer-menu-btn');
   var menuPanel = document.getElementById('footer-menu-panel');
+  var menuBackdrop = document.getElementById('footer-menu-backdrop');
   var menuClose = document.getElementById('footer-menu-close');
   var topBtn = document.getElementById('footer-top-btn');
   var root = document.documentElement;
@@ -101,13 +102,19 @@
   function openMenu() {
     if (!menuPanel) return;
     menuPanel.hidden = false;
+    if (menuBackdrop) menuBackdrop.hidden = false;
     if (menuBtn) menuBtn.setAttribute('aria-expanded', 'true');
+    footer.classList.add('is-menu-open');
+    root.classList.add('footer-menu-open');
   }
 
   function closeMenu() {
     if (!menuPanel) return;
     menuPanel.hidden = true;
+    if (menuBackdrop) menuBackdrop.hidden = true;
     if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
+    footer.classList.remove('is-menu-open');
+    root.classList.remove('footer-menu-open');
   }
 
   if (menuBtn) {
