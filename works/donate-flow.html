@@ -4,28 +4,26 @@
 <meta charset="UTF-8">
 <title>Donate flow — анимация</title>
 <style>
-  html,body{margin:0;padding:0;background:#1e1e1e;display:flex;align-items:center;justify-content:center;min-height:100vh;}
+  html,body{margin:0;padding:0;}
+  .canvas{
+    width:1080px;height:1080px;
+    background:#BEBFC1;
+    display:flex;align-items:center;justify-content:center;
+  }
   .stage{
     position:relative;
     width:418px;height:849px;
     border-radius:12px;
     overflow:hidden;
-    box-shadow:0 30px 80px rgba(0,0,0,.55);
+    box-shadow:0 30px 80px rgba(0,0,0,.35);
   }
   .screen{
     position:absolute; inset:0;
-    will-change:transform;
+    will-change:transform, clip-path, opacity;
+    clip-path: inset(0 0 100% 0);
   }
   .screen img.shot{
     position:absolute; inset:0; width:100%; height:100%; display:block; pointer-events:none;
-  }
-  .mask{
-    position:absolute;
-    left:22px; width:375px;
-    background:#ffffff;
-    transform-origin:top center;
-    transform:scaleY(1);
-    opacity:1;
   }
   .press{
     position:absolute;
@@ -48,43 +46,31 @@
 </head>
 <body>
 
-<div class="stage" id="stage">
-  <div class="screen" id="s0" style="transform:translateX(0);"><img class="shot" src="donate-flow-1.png"></div>
-  <div class="screen" id="s1" style="transform:translateX(100%);"><img class="shot" src="donate-flow-2.png"></div>
-  <div class="screen" id="s2" style="transform:translateX(100%);"><img class="shot" src="donate-flow-3.png"></div>
+<div class="canvas">
+  <div class="stage" id="stage">
+    <div class="screen" id="s0" style="transform:translateX(0);"><img class="shot" src="donate-flow-1.png"></div>
+    <div class="screen" id="s1" style="transform:translateX(100%);"><img class="shot" src="donate-flow-2.png"></div>
+    <div class="screen" id="s2" style="transform:translateX(100%);"><img class="shot" src="donate-flow-3.png"></div>
+  </div>
 </div>
 
 <script>
-const BAND_COUNT = 6;
-const CONTENT = { x: 22, y: 19, w: 375, h: 812 };
 const BUTTON  = { x: 32, y: 745, w: 355, h: 52 };
 
-const REVEAL_MS = 420;
-const REVEAL_STAGGER = 70;
+const REVEAL_MS = 620;
 const HOLD_MS = 1000;
 const TAP_MS = 480;
 const SLIDE_MS = 620;
 const FINAL_HOLD_MS = 2000;
 
-const EASE_REVEAL = 'cubic-bezier(.4,0,.2,1)';
+const EASE_REVEAL = 'cubic-bezier(.22,.9,.25,1)';
 const EASE_SPRING  = 'cubic-bezier(.22,1,.36,1)';
 
 function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
 
 const screens = [0,1,2].map(i => document.getElementById('s'+i));
 
-// build masks + press/ripple overlays for each screen
 function buildOverlays(screenEl){
-  const bandH = CONTENT.h / BAND_COUNT;
-  const masks = [];
-  for(let i=0;i<BAND_COUNT;i++){
-    const m = document.createElement('div');
-    m.className = 'mask';
-    m.style.top = (CONTENT.y + i*bandH) + 'px';
-    m.style.height = (bandH + 1) + 'px';
-    screenEl.appendChild(m);
-    masks.push(m);
-  }
   const press = document.createElement('div');
   press.className = 'press';
   screenEl.appendChild(press);
@@ -93,28 +79,25 @@ function buildOverlays(screenEl){
   ripple.style.left = (BUTTON.x + BUTTON.w/2) + 'px';
   ripple.style.top  = (BUTTON.y + BUTTON.h/2) + 'px';
   screenEl.appendChild(ripple);
-  return { masks, press, ripple };
+  return { press, ripple };
 }
 
 const overlays = screens.map(buildOverlays);
 
-function resetMasks(idx){
-  overlays[idx].masks.forEach(m => {
-    m.style.transition = 'none';
-    m.style.transform = 'scaleY(1)';
-    m.style.opacity = '1';
-  });
+function resetReveal(idx){
+  const el = screens[idx];
+  el.style.transition = 'none';
+  el.style.clipPath = 'inset(0 0 100% 0)';
+  el.style.opacity = '0.6';
 }
 
 async function revealBlocks(idx){
-  const masks = overlays[idx].masks;
-  masks.forEach((m, i) => {
-    void m.offsetWidth;
-    m.style.transition = `transform ${REVEAL_MS}ms ${EASE_REVEAL} ${i*REVEAL_STAGGER}ms, opacity ${REVEAL_MS}ms ${EASE_REVEAL} ${i*REVEAL_STAGGER}ms`;
-    m.style.transform = 'scaleY(0)';
-    m.style.opacity = '0';
-  });
-  await sleep((BAND_COUNT-1)*REVEAL_STAGGER + REVEAL_MS + 40);
+  const el = screens[idx];
+  void el.offsetWidth;
+  el.style.transition = `clip-path ${REVEAL_MS}ms ${EASE_REVEAL}, opacity ${REVEAL_MS}ms ${EASE_REVEAL}`;
+  el.style.clipPath = 'inset(0 0 0% 0)';
+  el.style.opacity = '1';
+  await sleep(REVEAL_MS + 40);
 }
 
 async function tapButton(idx){
@@ -146,7 +129,7 @@ async function slide(fromIdx, toIdx, forward){
   const fromEl = screens[fromIdx];
   const toEl = screens[toIdx];
 
-  resetMasks(toIdx);
+  resetReveal(toIdx);
 
   toEl.style.transition = 'none';
   toEl.style.transform = `translateX(${forward ? 100 : -100}%)`;
@@ -163,8 +146,8 @@ async function slide(fromIdx, toIdx, forward){
 }
 
 async function run(){
-  // первый показ экрана 1
-  resetMasks(0);
+  resetReveal(0);
+  screens[0].style.clipPath = 'inset(0 0 100% 0)';
   await sleep(300);
   await revealBlocks(0);
   await sleep(HOLD_MS);
