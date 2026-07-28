@@ -133,7 +133,7 @@
 
   document.addEventListener('click', function (event) {
     if (!menuPanel || menuPanel.hidden) return;
-    if (menuPanel.contains(event.target) || event.target === menuBtn) return;
+    if (menuPanel.contains(event.target) || (menuBtn && menuBtn.contains(event.target))) return;
     closeMenu();
   });
 
