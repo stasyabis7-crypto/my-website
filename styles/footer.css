@@ -22,7 +22,7 @@
   justify-content: space-between;
   height: var(--chrome-h);
   padding-block: var(--chrome-pad-block);
-  padding-inline: var(--page-px, 10px);
+  padding-inline: var(--chrome-pad-block);
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
@@ -92,10 +92,15 @@
 .site-footer__link.is-current {
   height: var(--chrome-control-size);
   padding-inline: 0.875rem;
+  border: 1px solid var(--color-ink);
   border-radius: 999px;
   background: var(--color-ink);
   color: var(--color-ink-contrast);
   font-weight: var(--font-weight-semibold);
+}
+
+.site-footer__link.is-current:hover {
+  opacity: 0.85;
 }
 
 /* Кнопки свёрнутого состояния ("Меню" слева, стрелка вверх справа) —
@@ -164,7 +169,7 @@
     bottom: auto;
     left: auto;
     right: var(--page-px, 10px);
-    padding-inline: 1.25rem;
+    padding-inline: var(--chrome-pad-block);
   }
 
   /* .is-collapsed ставится по скроллу независимо от ширины экрана —
@@ -177,7 +182,7 @@
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
     border: 1px solid var(--color-glass-border);
     box-shadow: var(--shadow-panel);
-    padding-inline: 1.25rem;
+    padding-inline: var(--chrome-pad-block);
   }
 
   html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__nav-wrap {
@@ -224,8 +229,8 @@
   flex: 1 1 auto;
   min-height: var(--chrome-h, 3.5rem);
   min-width: 0;
-  padding-inline: 1.25rem;
-  padding-block: 0.5rem;
+  padding-inline: var(--chrome-pad-block);
+  padding-block: var(--chrome-pad-block);
   border-radius: 999px;
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
@@ -263,10 +268,15 @@
 .footer-menu-panel__link.is-current {
   height: var(--chrome-control-size);
   padding-inline: 0.875rem;
+  border: 1px solid var(--color-ink);
   border-radius: 999px;
   background: var(--color-ink);
   color: var(--color-ink-contrast);
   font-weight: var(--font-weight-semibold);
+}
+
+.footer-menu-panel__link.is-current:hover {
+  opacity: 0.85;
 }
 
 /* Кнопка "закрыть" — тот же круглый стиль, что у .theme-toggle, но
