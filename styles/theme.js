@@ -29,9 +29,9 @@
   function syncToggleButton(theme) {
     var btn = document.getElementById('theme-toggle');
     if (!btn) return;
-    var icon = btn.querySelector('.theme-toggle__icon');
     var next = theme === 'dark' ? 'light' : 'dark';
-    if (icon) icon.textContent = theme === 'dark' ? '☀' : '☾';
+    // Сама иконка (солнце/луна) переключается чистым CSS по
+    // [data-theme] на <html> — см. theme-toggle.css.
     btn.setAttribute(
       'aria-label',
       'Переключить на ' + (next === 'light' ? 'светлую' : 'тёмную') + ' тему'

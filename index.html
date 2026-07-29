@@ -8,14 +8,14 @@
      кто уже переключался на светлую тему, при заходе мелькнёт тёмная
      (дефолтная) перед переключением на сохранённую светлую. -->
 
-<script src="styles/theme.js?v=17"></script>
-<link rel="stylesheet" href="styles/scale.css?v=17" />
-<link rel="stylesheet" href="styles/typography.css?v=17" />
-<link rel="stylesheet" href="styles/theme.css?v=17" />
-<link rel="stylesheet" href="styles/header.css?v=17" />
-<link rel="stylesheet" href="styles/footer.css?v=17" />
-<link rel="stylesheet" href="styles/theme-toggle.css?v=17" />
-<link rel="stylesheet" href="styles/masonry.css?v=17" />
+<script src="styles/theme.js?v=18"></script>
+<link rel="stylesheet" href="styles/scale.css?v=18" />
+<link rel="stylesheet" href="styles/typography.css?v=18" />
+<link rel="stylesheet" href="styles/theme.css?v=18" />
+<link rel="stylesheet" href="styles/header.css?v=18" />
+<link rel="stylesheet" href="styles/footer.css?v=18" />
+<link rel="stylesheet" href="styles/theme-toggle.css?v=18" />
+<link rel="stylesheet" href="styles/masonry.css?v=18" />
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -100,7 +100,23 @@
 
   <!-- Отдельная плашка, специально не внутри .site-header — см. theme-toggle.css. -->
   <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Переключить тему">
-    <span class="theme-toggle__icon" aria-hidden="true">☀</span>
+    <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#theme-toggle-sun-clip)">
+          <path d="M12 1V3M12 21V23M23 12H21M3 12H1M19.7782 4.22183L18.364 5.63604M5.63604 18.364L4.22183 19.7782M19.7782 19.7782L18.364 18.364M5.63604 5.63604L4.22183 4.22183M18 12C18 15.3137 15.3137 18 12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </g>
+        <defs>
+          <clipPath id="theme-toggle-sun-clip">
+            <rect width="24" height="24" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </span>
+    <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12.2696 12.3888C16.2696 19.317 23.7846 17.2877 19.0017 20.0491C14.2187 22.8105 8.10284 21.1718 5.34142 16.3888C2.57999 11.6059 4.21874 5.49 9.00167 2.72858C13.7846 -0.0328438 8.26962 5.46063 12.2696 12.3888Z" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+    </span>
   </button>
 
   <main class="container page-works">
@@ -316,8 +332,8 @@
     </nav>
   </div>
 
-  <script src="styles/masonry.js?v=17"></script>
-  <script src="styles/layout-chrome.js?v=17"></script>
-  <script src="styles/embed-scale.js?v=17"></script>
+  <script src="styles/masonry.js?v=18"></script>
+  <script src="styles/layout-chrome.js?v=18"></script>
+  <script src="styles/embed-scale.js?v=18"></script>
 </body>
 </html>

@@ -41,8 +41,24 @@
 }
 
 .theme-toggle__icon {
-  font-size: 1.125rem;
+  display: none;
+  width: 1.125rem;
+  height: 1.125rem;
   line-height: 1;
+}
+
+.theme-toggle__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Показываем иконку целевой темы (куда переключит клик), не текущей:
+   в тёмной теме — солнце (жмём — станет светло), в светлой — луна. */
+[data-theme="dark"] .theme-toggle__icon--sun,
+[data-theme="light"] .theme-toggle__icon--moon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* html:not(.chrome--compact) — см. header.css: если плашки не влезают
