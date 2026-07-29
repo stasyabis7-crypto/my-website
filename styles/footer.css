@@ -253,6 +253,8 @@
 
 .site-footer.is-collapsed .site-footer__menu-btn,
 .site-footer.is-collapsed .site-footer__top-slot {
+  position: absolute;
+  top: 0;
   max-width: var(--chrome-h, 3.5rem);
   opacity: 1;
   visibility: visible;
@@ -260,6 +262,14 @@
   transition:
     max-width 0.45s var(--footer-ease),
     opacity 0.3s var(--footer-ease);
+}
+
+.site-footer.is-collapsed .site-footer__menu-btn {
+  left: 0;
+}
+
+.site-footer.is-collapsed .site-footer__top-slot {
+  right: 0;
 }
 
 .site-footer.is-collapsed {
