@@ -84,11 +84,20 @@
 }
 
 .site-header__logo {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
   color: var(--color-text);
   text-decoration: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+.site-header__logo-mark {
+  display: block;
+  width: 5rem;
+  aspect-ratio: 1231 / 374;
+  background-color: currentColor;
+  -webkit-mask: url("../assets/logo.svg") center / contain no-repeat;
+  mask: url("../assets/logo.svg") center / contain no-repeat;
 }
 
 .site-header__cta {
