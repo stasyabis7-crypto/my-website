@@ -54,7 +54,6 @@
       width: var(--phone-w);
       height: var(--phone-h);
       transform: translate(-50%, -50%);
-      filter: drop-shadow(0 28px 46px rgba(25, 28, 31, .18));
       isolation: isolate;
     }
 
@@ -213,8 +212,6 @@
     const screens = [...document.querySelectorAll('.screen')];
     const tap = document.querySelector('#tap');
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let runId = 0;
-
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     function fitCanvas() {
@@ -232,7 +229,7 @@
       return element.animate(keyframes, { fill: 'forwards', ...options });
     }
 
-    async function revealScreen(index, token) {
+    async function revealScreen(index) {
       const screen = screens[index];
       screen.classList.add('is-current');
       animate(screen, [
@@ -252,7 +249,6 @@
         });
       });
       await sleep(1200);
-      return token === runId;
     }
 
     async function hideScreen(index) {
@@ -307,25 +303,24 @@
     }
 
     async function playLoop() {
-      const token = ++runId;
-      while (token === runId) {
+      for (;;) {
         clearScreens();
-        await revealScreen(0, token);
+        await revealScreen(0);
         await sleep(1450);
         await pressButton('at-primary');
         await sleep(140);
         await hideScreen(0);
 
-        await revealScreen(1, token);
+        await revealScreen(1);
         await sleep(1450);
         await pressButton('at-payment');
         await sleep(140);
         await hideScreen(1);
 
-        await revealScreen(2, token);
+        await revealScreen(2);
         await sleep(2500);
         await hideScreen(2);
-        await sleep(420);
+        await sleep(260);
       }
     }
 
