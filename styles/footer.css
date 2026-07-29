@@ -122,15 +122,23 @@
   opacity: 0.85;
 }
 
-/* Кнопки свёрнутого состояния ("Меню" слева, стрелка вверх справа) —
-   иконки-кружки РОВНО того же размера, что и .theme-toggle
+/* Кнопки свёрнутого состояния ("Меню" слева, стрелка вверх/закрыть
+   справа) — иконки-кружки РОВНО того же размера, что и .theme-toggle
    (var(--chrome-h) — высота всей плашки, а не внутреннего
    control-size). Раз чтобы влезть на всю высоту плашки футера при
    этом самим футером задан padding-block, компенсируем его
    отрицательным margin-block — кружок садится вплотную к верхнему и
-   нижнему краю плашки, как и отдельно стоящий theme-toggle. */
+   нижнему краю плашки, как и отдельно стоящий theme-toggle.
+
+   Справа это не одна кнопка, а слот (.site-footer__top-slot) с двумя
+   наложенными друг на друга кнопками — "наверх" и "закрыть" (см. ниже
+   .site-footer__top-btn/__close-btn — position:absolute внутри
+   слота). Видна обычно только "наверх"; при открытом меню она
+   блюрится, а "закрыть" встаёт на её место (см. .is-menu-open ниже) —
+   так кнопка закрытия занимает ровно ту же позицию, что и "наверх",
+   а не отдельный кружок рядом с плашкой меню. */
 .site-footer__menu-btn,
-.site-footer__top-btn {
+.site-footer__top-slot {
   box-sizing: border-box;
   display: none;
   align-items: center;
@@ -140,6 +148,19 @@
   height: var(--chrome-h, 3.5rem);
   aspect-ratio: 1 / 1;
   margin-block: calc(var(--chrome-pad-block, 0.5rem) * -1);
+}
+
+.site-footer__top-slot {
+  position: relative;
+}
+
+/* Только визуальный стиль кружка — display у .site-footer__menu-btn
+   уже управляется правилом выше/.is-collapsed, здесь его не трогаем,
+   иначе оно перебило бы display:none по умолчанию. */
+.site-footer__menu-btn,
+.site-footer__top-btn,
+.site-footer__close-btn {
+  box-sizing: border-box;
   padding: 0;
   border: 1px solid var(--color-glass-border);
   border-radius: 50%;
@@ -150,6 +171,24 @@
   cursor: pointer;
   line-height: 1;
   font-size: 1.125rem;
+}
+
+/* "Наверх"/"закрыть" заполняют слот целиком (inset: 0) и не зависят
+   от display слота — тот уже скрывает/показывает их вместе как
+   единое целое (см. .site-footer__top-slot выше). "Наверх" виден по
+   умолчанию внутри видимого слота; "закрыть" по умолчанию скрыт и
+   показывается только при открытом меню (см. .is-menu-open ниже). */
+.site-footer__top-btn,
+.site-footer__close-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.site-footer__close-btn {
+  display: none;
 }
 
 /* Свёрнутое состояние (проскроллили) — список ссылок прячем, вместо
@@ -166,8 +205,8 @@
 }
 
 .site-footer.is-collapsed .site-footer__menu-btn,
-.site-footer.is-collapsed .site-footer__top-btn {
-  display: inline-flex;
+.site-footer.is-collapsed .site-footer__top-slot {
+  display: flex;
 }
 
 .site-footer.is-collapsed {
@@ -209,7 +248,7 @@
   }
 
   html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__menu-btn,
-  html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__top-btn {
+  html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__top-slot {
     display: none;
   }
 }
@@ -217,13 +256,10 @@
 /*
   Плашка-меню (моб/планшет) — выезжает при клике на "Меню", когда
   футер свёрнут. Намеренно вне <footer>, чтобы висеть отдельно над
-  ним. Выглядит ТАК ЖЕ, как футер — горизонтальный список ссылок в
-  плашке-баре той же высоты (--chrome-h), а не вертикальный список.
-
-  Кнопка "закрыть" — отдельная плашка-кружок РЯДОМ с этим баром (flex
-  gap), а не поверх его угла: .footer-menu-panel — это просто
-  flex-обёртка для позиционирования (без своего фона/тени), бар и
-  кружок — два самостоятельных visual-элемента внутри неё.
+  ним. Растянута на всю ширину футера (left/right: page-px, как и у
+  .site-footer) — кнопка "закрыть" больше не занимает место рядом с
+  баром, она теперь в самом футере, в слоте кнопки "наверх" (см.
+  .site-footer__top-slot выше).
 */
 .footer-menu-panel {
   position: fixed;
@@ -231,10 +267,6 @@
   bottom: calc(var(--page-px, 10px) + var(--chrome-h, 3.5rem) + 10px);
   left: var(--page-px, 10px);
   right: var(--page-px, 10px);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
 }
 
 .footer-menu-panel[hidden] {
@@ -246,9 +278,8 @@
    .footer-menu-panel__nav (flex-direction: column) ниже. */
 .footer-menu-panel__bar {
   box-sizing: border-box;
-  display: flex;
-  flex: 1 1 auto;
-  min-width: 0;
+  display: block;
+  width: 100%;
   padding: 0.75rem;
   border-radius: 28px;
   background: var(--color-glass);
@@ -306,8 +337,9 @@
 /*
   Подложка при открытом вертикальном меню — блюрит и глушит всё
   остальное (страницу, хедер, переключатель темы, кнопку "наверх" в
-  футере), пока меню открыто. Кнопка "Меню" и сама плашка
-  меню+кнопка закрыть остаются НАД подложкой и не блюрятся — см.
+  футере), пока меню открыто. Кнопка "Меню", кнопка "закрыть" (см.
+  .site-footer__top-slot выше — встаёт на место "наверх") и сама
+  плашка меню остаются НАД подложкой и не блюрятся — см.
   .site-footer.is-menu-open ниже (поднимает футер над подложкой) и
   прицельный блюр на .site-footer__top-btn (единственный элемент
   футера, который при этом всё равно должен выглядеть выключенным).
@@ -343,32 +375,14 @@
   pointer-events: none;
 }
 
+.site-footer.is-menu-open .site-footer__close-btn {
+  display: flex;
+}
+
 /* Скролл страницы блокируется, пока открыто вертикальное меню —
    класс ставит layout-chrome.js вместе с open/closeMenu. */
 html.footer-menu-open {
   overflow: hidden;
-}
-
-/* Кнопка "закрыть" — тот же круглый стиль, что у .theme-toggle, но
-   стоит РЯДОМ с баром (flex-элемент обёртки), не наложением. */
-.footer-menu-panel__close {
-  box-sizing: border-box;
-  flex: 0 0 auto;
-  width: var(--chrome-h, 3.5rem);
-  height: var(--chrome-h, 3.5rem);
-  aspect-ratio: 1 / 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: 1px solid var(--color-glass-border);
-  border-radius: 50%;
-  background: var(--color-glass);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  color: var(--color-text);
-  box-shadow: var(--shadow-panel);
-  cursor: pointer;
 }
 
 @media (min-width: 1101px) {
