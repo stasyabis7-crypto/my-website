@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>my-website</title>
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png" />
 <!-- Ставит data-theme на <html> до первой отрисовки — без этого у тех,
      кто уже переключался на светлую тему, при заходе мелькнёт тёмная
      (дефолтная) перед переключением на сохранённую светлую. -->
@@ -13,7 +14,7 @@
 <link rel="stylesheet" href="styles/typography.css?v=18" />
 <link rel="stylesheet" href="styles/theme.css?v=18" />
 <link rel="stylesheet" href="styles/header.css?v=19" />
-<link rel="stylesheet" href="styles/footer.css?v=20" />
+<link rel="stylesheet" href="styles/footer.css?v=21" />
 <link rel="stylesheet" href="styles/theme-toggle.css?v=18" />
 <link rel="stylesheet" href="styles/button-hover.css?v=20" />
 <link rel="stylesheet" href="styles/masonry.css?v=18" />
@@ -92,7 +93,7 @@
   <header class="site-header">
     <div class="site-header__identity">
       <div class="site-header__avatar">
-        <!-- <img src="assets/avatar.jpg" alt="Имя Фамилия" /> -->
+        <img src="assets/avatar.png" alt="Портрет автора" />
       </div>
       <a href="#" class="site-header__logo" aria-label="На главную">
         <span class="site-header__logo-mark" aria-hidden="true"></span>
@@ -306,7 +307,10 @@
       aria-controls="footer-menu-panel"
       aria-label="Меню"
     >
-      <span aria-hidden="true">☰</span>
+      <span
+        class="site-footer__control-icon site-footer__control-icon--menu"
+        aria-hidden="true"
+      ></span>
     </button>
     <!-- Слот со стрелкой "наверх" и кнопкой "закрыть" — один и тот же
          кружок-слот, обе кнопки наложены друг на друга (position:
@@ -315,7 +319,10 @@
          "закрыть" встаёт на её место — см. footer.css. -->
     <span class="site-footer__top-slot">
       <button type="button" class="site-footer__top-btn" id="footer-top-btn" aria-label="Наверх">
-        <span aria-hidden="true">↑</span>
+        <span
+          class="site-footer__control-icon site-footer__control-icon--up"
+          aria-hidden="true"
+        ></span>
       </button>
       <button type="button" class="site-footer__close-btn" id="footer-menu-close" aria-label="Закрыть меню">
         <span aria-hidden="true">✕</span>

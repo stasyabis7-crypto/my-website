@@ -217,6 +217,23 @@
     filter 0.3s var(--footer-ease);
 }
 
+.site-footer__control-icon {
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: currentColor;
+}
+
+.site-footer__control-icon--menu {
+  -webkit-mask: url("../assets/icons/menu-hamburger.svg") center / contain no-repeat;
+  mask: url("../assets/icons/menu-hamburger.svg") center / contain no-repeat;
+}
+
+.site-footer__control-icon--up {
+  -webkit-mask: url("../assets/icons/up.svg") center / contain no-repeat;
+  mask: url("../assets/icons/up.svg") center / contain no-repeat;
+}
+
 /* "Наверх"/"закрыть" — оба всегда в DOM и наложены друг на друга
    (см. .site-footer__top-slot), переключение через opacity (а не
    display), чтобы одно плавно проступало вместо другого. */
