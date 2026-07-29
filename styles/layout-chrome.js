@@ -30,6 +30,11 @@
   var TOGGLE_GAP = 10; // px, зазор между плашкой хедера и кнопкой темы
   var COLLISION_GAP = 16; // px, минимальный зазор между переключателем темы и футером
   var FOOTER_COLLAPSE_AT = 24; // px, после какого scrollY футер сворачивается в "Меню" + стрелку вверх
+  // Длительность закрытия панели меню — держите синхронно с transition
+  // у .footer-menu-panel/.footer-menu-backdrop в footer.css: именно
+  // столько ждём после снятия .is-open, прежде чем вернуть [hidden]
+  // (иначе панель пропадёт из раскладки раньше, чем доиграет анимация).
+  var MENU_TRANSITION_MS = 380;
 
   var header = document.querySelector('.site-header');
   var footer = document.querySelector('.site-footer');
@@ -99,28 +104,46 @@
     updateFooterCollapse();
   }
 
+  var menuHideTimer = null;
+
   function openMenu() {
     if (!menuPanel) return;
+    clearTimeout(menuHideTimer);
     menuPanel.hidden = false;
     if (menuBackdrop) menuBackdrop.hidden = false;
+    // Рефлоу между снятием [hidden] и добавлением .is-open — иначе оба
+    // изменения схлопнутся в один кадр, и переход к открытому
+    // состоянию не проиграется (браузер просто не увидит "закрытый"
+    // кадр, с которого нужно анимировать).
+    void menuPanel.offsetWidth;
+    menuPanel.classList.add('is-open');
+    if (menuBackdrop) menuBackdrop.classList.add('is-open');
     if (menuBtn) menuBtn.setAttribute('aria-expanded', 'true');
     footer.classList.add('is-menu-open');
     root.classList.add('footer-menu-open');
   }
 
   function closeMenu() {
-    if (!menuPanel) return;
-    menuPanel.hidden = true;
-    if (menuBackdrop) menuBackdrop.hidden = true;
+    if (!menuPanel || !menuPanel.classList.contains('is-open')) return;
+    menuPanel.classList.remove('is-open');
+    if (menuBackdrop) menuBackdrop.classList.remove('is-open');
     if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
     footer.classList.remove('is-menu-open');
     root.classList.remove('footer-menu-open');
+    // [hidden] возвращаем только после того, как доиграет анимация
+    // закрытия — до этого момента панель должна остаться в раскладке,
+    // иначе opacity/transform-переход из footer.css мгновенно обрежется.
+    clearTimeout(menuHideTimer);
+    menuHideTimer = setTimeout(function () {
+      menuPanel.hidden = true;
+      if (menuBackdrop) menuBackdrop.hidden = true;
+    }, MENU_TRANSITION_MS);
   }
 
   if (menuBtn) {
     menuBtn.addEventListener('click', function () {
-      if (menuPanel && menuPanel.hidden) openMenu();
-      else closeMenu();
+      if (menuPanel && menuPanel.classList.contains('is-open')) closeMenu();
+      else openMenu();
     });
   }
 
@@ -139,7 +162,7 @@
   });
 
   document.addEventListener('click', function (event) {
-    if (!menuPanel || menuPanel.hidden) return;
+    if (!menuPanel || !menuPanel.classList.contains('is-open')) return;
     if (menuPanel.contains(event.target) || (menuBtn && menuBtn.contains(event.target))) return;
     closeMenu();
   });

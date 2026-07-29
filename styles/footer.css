@@ -13,6 +13,11 @@
   --chrome-control-size: 2.5rem;
   --chrome-pad-block: 0.5rem;
   --chrome-h: calc(var(--chrome-control-size) + var(--chrome-pad-block) * 2);
+
+  /* Общий easing для анимаций сворачивания/разворачивания футера
+     (список ссылок ⇄ кнопки, панель меню) — единая "пружинка" на все
+     переходы этого блока. */
+  --footer-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .site-footer {
@@ -57,10 +62,23 @@
   z-index: 50;
 }
 
+/* max-width (не display) — то, что реально анимирует сворачивание в
+   кнопки при скролле (см. .is-collapsed ниже): плашка схлопывается
+   по ширине и растворяется, а не исчезает одним кадром.
+   visibility с задержкой в .is-collapsed (а не здесь) — задержки
+   тут нет специально, чтобы при разворачивании список сразу становился
+   кликабельным/доступным с клавиатуры, не дожидаясь конца анимации. */
 .site-footer__nav-wrap {
   display: flex;
   flex: 1 1 auto;
   min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    max-width 0.45s var(--footer-ease),
+    opacity 0.3s var(--footer-ease);
 }
 
 /* Моб/планшет — список растянут на всю ширину плашки, пункты делят
@@ -139,23 +157,32 @@
 .site-footer__menu-btn,
 .site-footer__top-slot {
   box-sizing: border-box;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
   width: var(--chrome-h, 3.5rem);
+  max-width: 0;
   height: var(--chrome-h, 3.5rem);
   aspect-ratio: 1 / 1;
   margin-block: calc(var(--chrome-pad-block, 0.5rem) * -1);
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    max-width 0.45s var(--footer-ease),
+    opacity 0.3s var(--footer-ease),
+    visibility 0s linear 0.45s;
 }
 
 .site-footer__top-slot {
   position: relative;
 }
 
-/* Только визуальный стиль кружка — display у .site-footer__menu-btn
-   уже управляется правилом выше/.is-collapsed, здесь его не трогаем,
-   иначе оно перебило бы display:none по умолчанию. */
+/* Только визуальный стиль кружка — видимость (max-width/opacity) у
+   .site-footer__menu-btn уже управляется правилом выше/.is-collapsed,
+   здесь её не трогаем. */
 .site-footer__menu-btn,
 .site-footer__top-btn,
 .site-footer__close-btn {
@@ -173,7 +200,7 @@
 }
 
 /* "Наверх"/"закрыть" заполняют слот целиком (inset: 0) и не зависят
-   от display слота — тот уже скрывает/показывает их вместе как
+   от видимости слота — тот уже скрывает/показывает их вместе как
    единое целое (см. .site-footer__top-slot выше). "Наверх" виден по
    умолчанию внутри видимого слота; "закрыть" по умолчанию скрыт и
    показывается только при открытом меню (см. .is-menu-open ниже). */
@@ -184,10 +211,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition:
+    opacity 0.3s var(--footer-ease),
+    filter 0.3s var(--footer-ease);
 }
 
+/* "Наверх"/"закрыть" — оба всегда в DOM и наложены друг на друга
+   (см. .site-footer__top-slot), переключение через opacity (а не
+   display), чтобы одно плавно проступало вместо другого. */
 .site-footer__close-btn {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Свёрнутое состояние (проскроллили) — список ссылок прячем, вместо
@@ -198,14 +232,33 @@
    плашкой (никакого фона/скругления) — это только позиционирующая
    обёртка на всю ширину. Кнопки — два самостоятельных кружка по её
    краям (у каждого свой фон/бордер), а не два контрола внутри одной
-   общей плашки-бара. */
+   общей плашки-бара.
+
+   Задержка на visibility — на схлопывающемся элементе (.nav-wrap), а
+   не на появляющихся кнопках: список остаётся видимым/кликабельным
+   всё время своего схлопывания и выключается только в конце, кнопки
+   же становятся видимыми/кликабельными сразу, как только начинают
+   появляться. */
 .site-footer.is-collapsed .site-footer__nav-wrap {
-  display: none;
+  max-width: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    max-width 0.45s var(--footer-ease),
+    opacity 0.3s var(--footer-ease),
+    visibility 0s linear 0.45s;
 }
 
 .site-footer.is-collapsed .site-footer__menu-btn,
 .site-footer.is-collapsed .site-footer__top-slot {
-  display: flex;
+  max-width: var(--chrome-h, 3.5rem);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    max-width 0.45s var(--footer-ease),
+    opacity 0.3s var(--footer-ease);
 }
 
 .site-footer.is-collapsed {
@@ -242,12 +295,18 @@
   }
 
   html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__nav-wrap {
-    display: flex;
+    max-width: 100%;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__menu-btn,
   html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__top-slot {
-    display: none;
+    max-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 }
 
@@ -265,6 +324,27 @@
   bottom: calc(var(--page-px, 10px) + var(--chrome-h, 3.5rem) + 10px);
   left: var(--page-px, 10px);
   right: var(--page-px, 10px);
+  opacity: 0;
+  transform: translateY(10px) scale(0.96);
+  transform-origin: bottom center;
+  pointer-events: none;
+  transition:
+    opacity 0.28s var(--footer-ease),
+    transform 0.38s var(--footer-ease);
+}
+
+/* .is-open ставит layout-chrome.js сразу после снятия [hidden] (см.
+   openMenu) — рефлоу между ними гарантирует, что браузер успевает
+   отрисовать закрытое состояние (opacity/transform выше) перед
+   стартом перехода к открытому, иначе анимация не проиграется.
+   При закрытии [hidden] возвращается ТОЛЬКО спустя длительность этого
+   перехода (см. MENU_TRANSITION_MS в layout-chrome.js — держите оба
+   значения в синхроне), чтобы панель успела визуально закрыться,
+   прежде чем исчезнуть из DOM-раскладки. */
+.footer-menu-panel.is-open {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
 }
 
 .footer-menu-panel[hidden] {
@@ -352,6 +432,12 @@
   background: rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.3s var(--footer-ease);
+}
+
+.footer-menu-backdrop.is-open {
+  opacity: 1;
 }
 
 .footer-menu-backdrop[hidden] {
@@ -368,12 +454,13 @@
 
 .site-footer.is-menu-open .site-footer__top-btn {
   filter: blur(4px);
-  opacity: 0.5;
+  opacity: 0;
   pointer-events: none;
 }
 
 .site-footer.is-menu-open .site-footer__close-btn {
-  display: flex;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Скролл страницы блокируется, пока открыто вертикальное меню —
