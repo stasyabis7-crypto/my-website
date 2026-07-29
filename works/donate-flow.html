@@ -208,11 +208,16 @@
   </main>
 
   <script>
+  {
     const canvas = document.querySelector('.canvas');
     const screens = [...document.querySelectorAll('.screen')];
     const tap = document.querySelector('#tap');
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const loopId = (window.__paymentFlowLoopId || 0) + 1;
+    window.__paymentFlowLoopId = loopId;
+
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+    const isCurrentLoop = () => window.__paymentFlowLoopId === loopId;
 
     function fitCanvas() {
       const viewport = document.querySelector('.viewport');
@@ -303,23 +308,34 @@
     }
 
     async function playLoop() {
-      for (;;) {
+      while (isCurrentLoop()) {
         clearScreens();
         await revealScreen(0);
+        if (!isCurrentLoop()) return;
         await sleep(1450);
+        if (!isCurrentLoop()) return;
         await pressButton('at-primary');
+        if (!isCurrentLoop()) return;
         await sleep(140);
         await hideScreen(0);
+        if (!isCurrentLoop()) return;
 
         await revealScreen(1);
+        if (!isCurrentLoop()) return;
         await sleep(1450);
+        if (!isCurrentLoop()) return;
         await pressButton('at-payment');
+        if (!isCurrentLoop()) return;
         await sleep(140);
         await hideScreen(1);
+        if (!isCurrentLoop()) return;
 
         await revealScreen(2);
+        if (!isCurrentLoop()) return;
         await sleep(2500);
+        if (!isCurrentLoop()) return;
         await hideScreen(2);
+        if (!isCurrentLoop()) return;
         await sleep(260);
       }
     }
@@ -335,6 +351,7 @@
             img.addEventListener('error', resolve, { once: true });
           }))
     ).then(playLoop);
+  }
   </script>
 </body>
 </html>
