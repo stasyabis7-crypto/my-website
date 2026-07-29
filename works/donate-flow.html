@@ -1,175 +1,371 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>Donate flow — анимация</title>
-<style>
-  html,body{margin:0;padding:0;}
-  .canvas{
-    width:1080px;height:1080px;
-    background:#BEBFC1;
-    display:flex;align-items:center;justify-content:center;
-  }
-  .stage{
-    position:relative;
-    width:418px;height:849px;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 30px 80px rgba(0,0,0,.35);
-  }
-  .screen{
-    position:absolute; inset:0;
-    will-change:transform, clip-path, opacity;
-    clip-path: inset(0 0 100% 0);
-  }
-  .screen img.shot{
-    position:absolute; inset:0; width:100%; height:100%; display:block; pointer-events:none;
-  }
-  .press{
-    position:absolute;
-    left:32px; top:745px; width:355px; height:52px;
-    border-radius:16px;
-    background:rgba(255,255,255,.28);
-    opacity:0;
-    transform:scale(1);
-    pointer-events:none;
-  }
-  .ripple{
-    position:absolute;
-    width:14px; height:14px; border-radius:50%;
-    background:rgba(255,255,255,.55);
-    transform:translate(-50%,-50%) scale(0);
-    opacity:0;
-    pointer-events:none;
-  }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Пожертвование — анимация интерфейса</title>
+  <style>
+    :root {
+      --canvas: #bebfc1;
+      --phone-w: 460px;
+      --phone-h: calc(var(--phone-w) * 849 / 418);
+      --ease-out: cubic-bezier(.16, 1, .3, 1);
+      --ease-in: cubic-bezier(.7, 0, .84, 0);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--canvas);
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .viewport {
+      position: relative;
+      width: min(100vw, 100vh);
+      height: min(100vw, 100vh);
+      overflow: hidden;
+      background: var(--canvas);
+    }
+
+    .canvas {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+      background: var(--canvas);
+      transform-origin: 0 0;
+    }
+
+    .phone {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: var(--phone-w);
+      height: var(--phone-h);
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 28px 46px rgba(25, 28, 31, .18));
+      isolation: isolate;
+    }
+
+    .device-shell {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .screen-blank {
+      position: absolute;
+      z-index: 1;
+      left: 5.263%;
+      top: 2.238%;
+      width: 89.713%;
+      height: 95.642%;
+      border-radius: 53px;
+      background: #fff;
+    }
+
+    .persistent-status {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      clip-path: inset(0 0 92% 0);
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      opacity: 0;
+      will-change: opacity;
+    }
+
+    .screen.is-current { opacity: 1; }
+
+    .slice {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      will-change: opacity;
+    }
+
+    .slice img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .slice:nth-child(1) { clip-path: inset(0 0 82% 0); }
+    .slice:nth-child(2) { clip-path: inset(16% 0 66% 0); }
+    .slice:nth-child(3) { clip-path: inset(32% 0 49% 0); }
+    .slice:nth-child(4) { clip-path: inset(49% 0 31% 0); }
+    .slice:nth-child(5) { clip-path: inset(68% 0 13% 0); }
+    .slice:nth-child(6) { clip-path: inset(85% 0 0 0); }
+
+    .screen[data-screen="2"] .slice:nth-child(1) {
+      clip-path: inset(6.3% 0 79% 0);
+    }
+
+    .screen[data-screen="2"] .slice:nth-child(2) {
+      clip-path: inset(21% 45% 52% 20%);
+      transform-origin: 48% 34%;
+    }
+
+    .screen[data-screen="2"] .slice:nth-child(3) {
+      clip-path: inset(27% 26% 54% 55%);
+      transform-origin: 66% 36%;
+    }
+
+    .screen[data-screen="2"] .slice:nth-child(4) {
+      clip-path: inset(41% 8% 39% 8%);
+    }
+
+    .screen[data-screen="2"] .slice:nth-child(5) {
+      clip-path: inset(63% 6% 14% 6%);
+    }
+
+    .screen[data-screen="2"] .slice:nth-child(6) {
+      clip-path: inset(85% 0 0 0);
+    }
+
+    .tap {
+      position: absolute;
+      z-index: 20;
+      left: 50%;
+      width: 58px;
+      height: 58px;
+      margin: -29px 0 0 -29px;
+      opacity: 0;
+      border: 1px solid rgba(255, 255, 255, .78);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 34% 28%, rgba(255,255,255,.72), rgba(255,255,255,.22) 48%, rgba(255,255,255,.08) 72%),
+        rgba(255,255,255,.16);
+      box-shadow:
+        0 10px 28px rgba(30, 35, 39, .18),
+        inset 0 1px 0 rgba(255,255,255,.75);
+      backdrop-filter: blur(10px) saturate(145%);
+      -webkit-backdrop-filter: blur(10px) saturate(145%);
+      pointer-events: none;
+      will-change: opacity, transform;
+    }
+
+    .tap::after {
+      content: "";
+      position: absolute;
+      inset: 15px;
+      border-radius: inherit;
+      background: rgba(255,255,255,.34);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.5);
+    }
+
+    .tap.at-primary { top: 91.1%; }
+    .tap.at-payment { top: 91.1%; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .screen, .slice, .tap {
+        transition: none !important;
+        animation: none !important;
+        filter: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
+  <main class="viewport" aria-label="Демонстрация процесса пожертвования">
+    <div class="canvas">
+      <div class="phone" id="phone">
+        <img class="device-shell" src="/works/donate-flow-1.png" alt="">
+        <div class="screen-blank" aria-hidden="true"></div>
+        <img class="persistent-status" src="/works/donate-flow-1.png" alt="">
 
-<div class="canvas">
-  <div class="stage" id="stage">
-    <div class="screen" id="s0" style="transform:translateX(0);"><img class="shot" src="donate-flow-1.png"></div>
-    <div class="screen" id="s1" style="transform:translateX(100%);"><img class="shot" src="donate-flow-2.png"></div>
-    <div class="screen" id="s2" style="transform:translateX(100%);"><img class="shot" src="donate-flow-3.png"></div>
-  </div>
-</div>
+        <section class="screen" data-screen="0" aria-label="Выбор фонда и суммы">
+          <div class="slice"><img src="/works/donate-flow-1.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-1.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-1.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-1.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-1.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-1.png" alt=""></div>
+        </section>
 
-<script>
-const BUTTON  = { x: 32, y: 745, w: 355, h: 52 };
+        <section class="screen" data-screen="1" aria-label="Выбор способа оплаты">
+          <div class="slice"><img src="/works/donate-flow-2.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-2.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-2.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-2.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-2.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-2.png" alt=""></div>
+        </section>
 
-const REVEAL_MS = 620;
-const HOLD_MS = 1000;
-const TAP_MS = 480;
-const SLIDE_MS = 620;
-const FINAL_HOLD_MS = 2000;
+        <section class="screen" data-screen="2" aria-label="Пожертвование отправлено">
+          <div class="slice"><img src="/works/donate-flow-3.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-3.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-3.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-3.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-3.png" alt=""></div>
+          <div class="slice"><img src="/works/donate-flow-3.png" alt=""></div>
+        </section>
 
-const EASE_REVEAL = 'cubic-bezier(.22,.9,.25,1)';
-const EASE_SPRING  = 'cubic-bezier(.22,1,.36,1)';
+        <div class="tap" id="tap" aria-hidden="true"></div>
+      </div>
+    </div>
+  </main>
 
-function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+  <script>
+    const canvas = document.querySelector('.canvas');
+    const screens = [...document.querySelectorAll('.screen')];
+    const tap = document.querySelector('#tap');
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let runId = 0;
 
-const screens = [0,1,2].map(i => document.getElementById('s'+i));
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-function buildOverlays(screenEl){
-  const press = document.createElement('div');
-  press.className = 'press';
-  screenEl.appendChild(press);
-  const ripple = document.createElement('div');
-  ripple.className = 'ripple';
-  ripple.style.left = (BUTTON.x + BUTTON.w/2) + 'px';
-  ripple.style.top  = (BUTTON.y + BUTTON.h/2) + 'px';
-  screenEl.appendChild(ripple);
-  return { press, ripple };
-}
+    function fitCanvas() {
+      const viewport = document.querySelector('.viewport');
+      const scale = Math.min(viewport.clientWidth, viewport.clientHeight) / 1080;
+      canvas.style.transform = `scale(${scale})`;
+    }
 
-const overlays = screens.map(buildOverlays);
+    function animate(element, keyframes, options) {
+      if (reduceMotion) {
+        const last = keyframes[keyframes.length - 1];
+        Object.assign(element.style, last);
+        return { finished: Promise.resolve() };
+      }
+      return element.animate(keyframes, { fill: 'forwards', ...options });
+    }
 
-function resetReveal(idx){
-  const el = screens[idx];
-  el.style.transition = 'none';
-  el.style.clipPath = 'inset(0 0 100% 0)';
-  el.style.opacity = '0.6';
-}
+    async function revealScreen(index, token) {
+      const screen = screens[index];
+      screen.classList.add('is-current');
+      animate(screen, [
+        { opacity: 0 },
+        { opacity: 1 }
+      ], { duration: 260, easing: 'linear' });
 
-async function revealBlocks(idx){
-  const el = screens[idx];
-  void el.offsetWidth;
-  el.style.transition = `clip-path ${REVEAL_MS}ms ${EASE_REVEAL}, opacity ${REVEAL_MS}ms ${EASE_REVEAL}`;
-  el.style.clipPath = 'inset(0 0 0% 0)';
-  el.style.opacity = '1';
-  await sleep(REVEAL_MS + 40);
-}
+      const slices = [...screen.querySelectorAll('.slice')];
+      slices.forEach(slice => {
+        animate(slice, [
+          { opacity: 0 },
+          { opacity: 1 }
+        ], {
+          duration: 980,
+          delay: 80,
+          easing: 'cubic-bezier(.22, .61, .36, 1)'
+        });
+      });
+      await sleep(1200);
+      return token === runId;
+    }
 
-async function tapButton(idx){
-  const { press, ripple } = overlays[idx];
-  press.style.transition = 'none';
-  press.style.opacity = '0';
-  press.style.transform = 'scale(1)';
-  ripple.style.transition = 'none';
-  ripple.style.transform = 'translate(-50%,-50%) scale(0)';
-  ripple.style.opacity = '0';
-  void press.offsetWidth;
+    async function hideScreen(index) {
+      const screen = screens[index];
+      const slices = [...screen.querySelectorAll('.slice')];
+      slices.forEach((slice, i) => {
+        animate(slice, [
+          { opacity: 1 },
+          { opacity: 0 }
+        ], {
+          duration: 380,
+          delay: (slices.length - 1 - i) * 24,
+          easing: 'ease-in-out'
+        });
+      });
+      animate(screen, [
+        { opacity: 1 },
+        { opacity: 0 }
+      ], { duration: 520, easing: 'ease-in-out' });
+      await sleep(540);
+      screen.classList.remove('is-current');
+    }
 
-  press.style.transition = `opacity 140ms ease-out, transform 140ms ease-out`;
-  press.style.opacity = '1';
-  press.style.transform = 'scale(0.97)';
-  ripple.style.transition = `transform ${TAP_MS}ms cubic-bezier(.2,.8,.2,1), opacity ${TAP_MS}ms ease-out`;
-  ripple.style.transform = 'translate(-50%,-50%) scale(22)';
-  ripple.style.opacity = '1';
+    async function pressButton(kind) {
+      tap.className = `tap ${kind}`;
+      await animate(tap, [
+        { opacity: 0, transform: 'scale(.55)' },
+        { opacity: 1, transform: 'scale(1.05)', offset: .48 },
+        { opacity: 1, transform: 'scale(1)' }
+      ], { duration: 420, easing: 'cubic-bezier(.16, 1, .3, 1)' }).finished;
 
-  await sleep(140);
-  press.style.transition = 'opacity 160ms ease-out, transform 160ms ease-out';
-  press.style.opacity = '0';
-  press.style.transform = 'scale(1)';
+      await animate(tap, [
+        { opacity: 1, transform: 'scale(1)' },
+        { opacity: .94, transform: 'scale(.78)', offset: .38 },
+        { opacity: .76, transform: 'scale(1.13)', offset: .68 },
+        { opacity: 0, transform: 'scale(1.42)' }
+      ], { duration: 520, easing: 'cubic-bezier(.2, .8, .2, 1)' }).finished;
+    }
 
-  await sleep(TAP_MS - 140);
-}
+    function clearScreens() {
+      screens.forEach(screen => {
+        screen.getAnimations().forEach(animation => animation.cancel());
+        screen.querySelectorAll('.slice').forEach(slice => {
+          slice.getAnimations().forEach(animation => animation.cancel());
+          slice.removeAttribute('style');
+        });
+        screen.classList.remove('is-current');
+        screen.removeAttribute('style');
+      });
+      tap.getAnimations().forEach(animation => animation.cancel());
+      tap.removeAttribute('style');
+    }
 
-async function slide(fromIdx, toIdx, forward){
-  const fromEl = screens[fromIdx];
-  const toEl = screens[toIdx];
+    async function playLoop() {
+      const token = ++runId;
+      while (token === runId) {
+        clearScreens();
+        await revealScreen(0, token);
+        await sleep(1450);
+        await pressButton('at-primary');
+        await sleep(140);
+        await hideScreen(0);
 
-  resetReveal(toIdx);
+        await revealScreen(1, token);
+        await sleep(1450);
+        await pressButton('at-payment');
+        await sleep(140);
+        await hideScreen(1);
 
-  toEl.style.transition = 'none';
-  toEl.style.transform = `translateX(${forward ? 100 : -100}%)`;
-  toEl.style.zIndex = 2;
-  fromEl.style.zIndex = 1;
-  void toEl.offsetWidth;
+        await revealScreen(2, token);
+        await sleep(2500);
+        await hideScreen(2);
+        await sleep(420);
+      }
+    }
 
-  fromEl.style.transition = `transform ${SLIDE_MS}ms ${EASE_SPRING}`;
-  toEl.style.transition = `transform ${SLIDE_MS}ms ${EASE_SPRING}`;
-  fromEl.style.transform = `translateX(${forward ? -30 : 30}%)`;
-  toEl.style.transform = 'translateX(0)';
+    addEventListener('resize', fitCanvas);
+    fitCanvas();
 
-  await sleep(SLIDE_MS + 40);
-}
-
-async function run(){
-  resetReveal(0);
-  screens[0].style.clipPath = 'inset(0 0 100% 0)';
-  await sleep(300);
-  await revealBlocks(0);
-  await sleep(HOLD_MS);
-
-  while(true){
-    await tapButton(0);
-    await slide(0, 1, true);
-    await revealBlocks(1);
-    await sleep(HOLD_MS);
-
-    await tapButton(1);
-    await slide(1, 2, true);
-    await revealBlocks(2);
-    await sleep(FINAL_HOLD_MS);
-
-    await slide(2, 0, false);
-    await revealBlocks(0);
-    await sleep(HOLD_MS);
-  }
-}
-
-run();
-</script>
+    Promise.all(
+      [...document.images].map(img => img.complete
+        ? Promise.resolve()
+        : new Promise(resolve => {
+            img.addEventListener('load', resolve, { once: true });
+            img.addEventListener('error', resolve, { once: true });
+          }))
+    ).then(playLoop);
+  </script>
 </body>
 </html>
