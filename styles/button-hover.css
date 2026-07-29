@@ -7,6 +7,7 @@
   --color-action-hover-text: #ffffff;
   --button-hover-duration: 0.5s;
   --button-hover-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --button-hover-blur: 10px;
 }
 
 :is(
@@ -55,8 +56,16 @@
   aspect-ratio: 1;
   border-radius: 50%;
   background: var(--color-action-hover);
+  box-shadow:
+    0 0 18px rgba(255, 12, 194, 0.72),
+    0 0 36px rgba(255, 12, 194, 0.42);
+  filter: blur(var(--button-hover-blur));
+  opacity: 0.88;
   transform: translate(-50%, -50%) scale(0);
-  transition: transform var(--button-hover-duration) var(--button-hover-ease);
+  transition:
+    transform var(--button-hover-duration) var(--button-hover-ease),
+    filter var(--button-hover-duration) ease,
+    opacity 0.3s ease;
   pointer-events: none;
 }
 
@@ -88,7 +97,9 @@
   .site-footer__close-btn,
   .footer-menu-panel__link
 ):is(:hover, :focus-visible)::before {
-  transform: translate(-50%, -50%) scale(1);
+  filter: blur(0);
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.08);
 }
 
 @media (prefers-reduced-motion: reduce) {
