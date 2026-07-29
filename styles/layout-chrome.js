@@ -189,5 +189,27 @@
     new ResizeObserver(syncChromeHeights).observe(footer);
   }
 
+  /* Точка старта розовой radial-заливки совпадает с местом, где
+     указатель впервые вошёл в кнопку. Для клавиатуры CSS оставляет
+     безопасное значение по умолчанию — центр контрола. */
+  var hoverControls = document.querySelectorAll(
+    '.site-header__cta, .theme-toggle, .site-footer__link, ' +
+    '.site-footer__menu-btn, .site-footer__top-btn, .site-footer__close-btn, ' +
+    '.footer-menu-panel__link'
+  );
+
+  hoverControls.forEach(function (control) {
+    control.addEventListener('pointerenter', function (event) {
+      var rect = control.getBoundingClientRect();
+      control.style.setProperty('--hover-x', event.clientX - rect.left + 'px');
+      control.style.setProperty('--hover-y', event.clientY - rect.top + 'px');
+    });
+
+    control.addEventListener('focus', function () {
+      control.style.setProperty('--hover-x', '50%');
+      control.style.setProperty('--hover-y', '50%');
+    });
+  });
+
   syncAll();
 })();

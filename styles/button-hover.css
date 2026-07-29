@@ -1,0 +1,115 @@
+/*
+  Общая hover-анимация интерактивных контролов. Координаты точки
+  входа курсора записывает layout-chrome.js в --hover-x/--hover-y.
+*/
+:root {
+  --color-action-hover: #ff0cc2;
+  --color-action-hover-text: #ffffff;
+  --button-hover-duration: 0.5s;
+  --button-hover-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+:is(
+  .site-header__cta,
+  .theme-toggle,
+  .site-footer__link,
+  .site-footer__menu-btn,
+  .site-footer__top-btn,
+  .site-footer__close-btn,
+  .footer-menu-panel__link
+) {
+  --hover-x: 50%;
+  --hover-y: 50%;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease,
+    opacity 0.3s ease;
+}
+
+:is(
+  .site-header__cta,
+  .site-footer__link,
+  .site-footer__menu-btn,
+  .footer-menu-panel__link
+) {
+  position: relative;
+}
+
+:is(
+  .site-header__cta,
+  .theme-toggle,
+  .site-footer__link,
+  .site-footer__menu-btn,
+  .site-footer__top-btn,
+  .site-footer__close-btn,
+  .footer-menu-panel__link
+)::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: var(--hover-x);
+  top: var(--hover-y);
+  width: 300%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-action-hover);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform var(--button-hover-duration) var(--button-hover-ease);
+  pointer-events: none;
+}
+
+:is(
+  .site-header__cta,
+  .theme-toggle,
+  .site-footer__link,
+  .site-footer__menu-btn,
+  .site-footer__top-btn,
+  .site-footer__close-btn,
+  .footer-menu-panel__link
+):is(:hover, :focus-visible) {
+  border-color: var(--color-action-hover);
+  color: var(--color-action-hover-text);
+  opacity: 1;
+}
+
+.site-footer__link.is-current:is(:hover, :focus-visible),
+.footer-menu-panel__link.is-current:is(:hover, :focus-visible) {
+  opacity: 1;
+}
+
+:is(
+  .site-header__cta,
+  .theme-toggle,
+  .site-footer__link,
+  .site-footer__menu-btn,
+  .site-footer__top-btn,
+  .site-footer__close-btn,
+  .footer-menu-panel__link
+):is(:hover, :focus-visible)::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(
+    .site-header__cta,
+    .theme-toggle,
+    .site-footer__link,
+    .site-footer__menu-btn,
+    .site-footer__top-btn,
+    .site-footer__close-btn,
+    .footer-menu-panel__link
+  ),
+  :is(
+    .site-header__cta,
+    .theme-toggle,
+    .site-footer__link,
+    .site-footer__menu-btn,
+    .site-footer__top-btn,
+    .site-footer__close-btn,
+    .footer-menu-panel__link
+  )::before {
+    transition-duration: 0.01ms;
+  }
+}
