@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Онбординг — минимальная цена</title>
+<style>
+*{box-sizing:border-box}
+html,body{width:100%;height:100%;margin:0;overflow:hidden}
+body{display:grid;place-items:center;background:#bebfc1;font-family:"Inter",Arial,sans-serif;color:#001122}
+button{font-family:"Inter",Arial,sans-serif}
+.stage{position:relative;width:min(100vw,100vh);aspect-ratio:1;background:#bebfc1;overflow:hidden}
+.device{position:absolute;right:24px;bottom:24px;box-sizing:content-box;width:175%;aspect-ratio:1440/977;overflow:hidden;border:10px solid #1d1d1f;border-radius:26px;background:#fff}
+.canvas{position:absolute;left:0;top:0;width:1440px;height:977px;transform-origin:0 0;overflow:hidden}
+.background{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}
+.veil{position:absolute;inset:0;background:rgba(0,17,34,.34)}
+.card,.dialog{position:absolute;background:#fff;box-shadow:0 16px 24px -2px rgba(0,0,0,.12),0 0 2px rgba(0,0,0,.12)}
+.card{right:24px;bottom:24px;width:368px;border-radius:24px;overflow:hidden;transition:opacity .28s ease,transform .32s cubic-bezier(.2,.8,.2,1)}
+.card.hidden{opacity:0;transform:translateY(8px) scale(.985);pointer-events:none}
+.hero{position:relative;margin:8px 8px 0;height:198px;border-radius:16px;overflow:hidden}
+.hero>img:first-child{width:100%;height:100%;display:block;object-fit:cover}
+.close{position:absolute;right:8px;top:8px;width:24px;height:24px}
+.card-content{padding:26px 24px 24px}
+.card h1{font-size:19px;line-height:24px;letter-spacing:-.3px;margin:0 0 16px;font-weight:600}
+.card p{font-size:15px;line-height:24px;margin:0 0 16px}
+.choices{display:flex;flex-direction:column;gap:4px}
+.choice{height:44px;padding:0 12px;border-radius:8px;background:#f5f7fa;display:flex;align-items:center;justify-content:space-between;font-size:15px;line-height:20px;transition:background .16s,color .16s}
+.choice.hover{background:#e9eef4;color:#3d5266}
+.choice img{width:16px;height:24px;display:block}
+.dialog{right:24px;bottom:24px;width:368px;padding:32px 32px 28px;border-radius:24px;display:flex;flex-direction:column;opacity:0;transform:translateY(10px) scale(.985);pointer-events:none;transition:opacity .28s ease,transform .32s cubic-bezier(.2,.8,.2,1)}
+.dialog.show{opacity:1;transform:none;pointer-events:auto}
+.dialog .close{right:18px;top:18px}
+.dialog h2{max-width:280px;font-size:21px;line-height:26px;letter-spacing:-.3px;margin:0 0 16px;font-weight:600}
+.dialog p{font-size:16px;line-height:24px;margin:0 0 24px}
+.actions{display:flex;gap:16px}
+.back{width:52px;height:52px;border:0;border-radius:10px;background:#f5f7fa;display:grid;place-items:center;transition:background .18s ease}.back.hover{background:#e5ebf1}
+.back:before{content:"";width:24px;height:24px;background:url("./ozon%20min%20price/ic-m-chevron-left.svg") center/24px 24px no-repeat}
+.primary{height:52px;flex:1;border:0;border-radius:10px;background:#f5f7fa;color:#066bff;font:600 16px/20px "Inter",Arial,sans-serif}
+.dialog[data-step="1"] .primary{background:#066bff;color:#fff}
+.cursor{position:absolute;z-index:20;left:0;top:0;width:28px;height:28px;pointer-events:none;transform-origin:5px 4px;will-change:transform,opacity}
+</style>
+</head>
+<body>
+<main class="stage">
+ <div class="device" id="device">
+  <div class="canvas" id="canvas">
+   <img class="background" src="./ozon%20min%20price/background.png" alt="">
+   <div class="veil"></div>
+   <section class="card" id="card">
+    <div class="hero"><img src="./ozon%20min%20price/image-container.png" alt=""><img class="close" src="./ozon%20min%20price/close-button.svg" alt=""></div>
+    <div class="card-content">
+     <h1>Отслеживайте срок действия минимальной цены</h1>
+     <p>Теперь она влияет на автодобавление товара в акции в течение 30 дней. Управляйте настройкой удобным для вас способом</p>
+     <div class="choices">
+      <div class="choice"><span>Через XLSX-шаблон</span><img src="./ozon%20min%20price/after-label.svg" alt=""></div>
+      <div class="choice"><span>Через раздел «Управление ценами»</span><img src="./ozon%20min%20price/after-label.svg" alt=""></div>
+      <div class="choice"><span>Через онлайн-таблицу цен</span><img src="./ozon%20min%20price/after-label.svg" alt=""></div>
+     </div>
+    </div>
+   </section>
+   <section class="dialog" data-step="1">
+    <img class="close" src="./ozon%20min%20price/close-button.svg" alt="">
+    <h2>Обновление минимальной цены через шаблон</h2>
+    <p>В XLSX-шаблоне с ценами укажите «Да» в столбце «Учитывать минимальную цену при автодобавлении в акции или продлить действие настройки»</p>
+    <div class="actions"><button class="back" aria-label="Назад"></button><button class="primary">Перейти в раздел</button></div>
+   </section>
+   <section class="dialog" data-step="2">
+    <img class="close" src="./ozon%20min%20price/close-button.svg" alt="">
+    <h2>Обновление минимальной цены через раздел «Управление ценами»</h2>
+    <p>Перейдите в раздел «Цены и акции» и откройте нужный товар. Управлять настройкой можно на вкладке «Инструменты цен»</p>
+    <div class="actions"><button class="back" aria-label="Назад"></button><button class="primary">Понятно</button></div>
+   </section>
+   <section class="dialog" data-step="3">
+    <img class="close" src="./ozon%20min%20price/close-button.svg" alt="">
+    <h2>Обновление минимальной цены через онлайн-таблицу цен</h2>
+    <p>Начните редактировать цены через онлайн-таблицу. Нажмите «Заполнить всем» и включите настройку «Учитывать при автодобавлении в акции»</p>
+    <div class="actions"><button class="back" aria-label="Назад"></button><button class="primary">Понятно</button></div>
+   </section>
+   <img class="cursor" id="cursorDefault" src="./ozon%20min%20price/cursor-default.svg" alt="">
+   <img class="cursor" id="cursorPointer" src="./ozon%20min%20price/cursor-pointer.svg" alt="">
+  </div>
+ </div>
+</main>
+<script>
+function removeHangingWords(text){
+ return text.replace(/(^|[\s(«])((?:в|во|на|к|ко|с|со|у|о|об|от|до|по|за|из|без|для|при|над|под|про|через|и|а|но|или|же|не))\s+(?=\S)/gi,'$1$2\u00a0')
+}
+document.querySelectorAll('h1,h2,p,.choice span,.primary').forEach(el=>{el.textContent=removeHangingWords(el.textContent)});
+const device=document.getElementById('device'),canvas=document.getElementById('canvas'),card=document.getElementById('card');
+const dialogs=[...document.querySelectorAll('.dialog')],choices=[...document.querySelectorAll('.choice')],backs=[...document.querySelectorAll('.back')];
+const normal=document.getElementById('cursorDefault'),pointer=document.getElementById('cursorPointer');
+const duration=14400;
+const P={start:[900,820],row1:[1358,811],row2:[1358,859],row3:[1358,907],back:[1100,894]};
+const clamp=n=>Math.max(0,Math.min(1,n));
+const ease=n=>n<.5?4*n*n*n:1-Math.pow(-2*n+2,3)/2;
+const mix=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
+const progress=(t,a,b)=>ease(clamp((t-a)/(b-a)));
+const press=(t,a)=>1-.14*Math.sin(clamp((t-a)/260)*Math.PI);
+function place(el,p,s=1){el.style.transform=`translate(${p[0]}px,${p[1]}px) scale(${s})`}
+function resize(){const scale=Math.min(device.clientWidth/1440,device.clientHeight/977);canvas.style.transform=`scale(${scale})`}
+function show(step){card.classList.toggle('hidden',step>0);dialogs.forEach((d,i)=>d.classList.toggle('show',i===step-1))}
+function animate(now){
+ const t=now%duration;let p=P.start,s=1,hand=false,step=0,hover=-1,backHover=false;
+ if(t<900)p=P.start;
+ else if(t<1700)p=mix(P.start,P.row1,progress(t,900,1700));
+ else if(t<2050){p=P.row1;hand=true;hover=0;s=press(t,1740)}
+ else if(t<3450){step=1;p=mix(P.row1,P.back,progress(t,2250,3050));hand=true;backHover=t>=3050}
+ else if(t<3800){step=1;p=P.back;hand=true;backHover=true;s=press(t,3470)}
+ else if(t<4550)p=mix(P.back,P.row2,progress(t,3900,4550));
+ else if(t<4900){p=P.row2;hand=true;hover=1;s=press(t,4580)}
+ else if(t<6350){step=2;p=mix(P.row2,P.back,progress(t,5100,5950));hand=true;backHover=t>=5950}
+ else if(t<6700){step=2;p=P.back;hand=true;backHover=true;s=press(t,6370)}
+ else if(t<7450)p=mix(P.back,P.row3,progress(t,6800,7450));
+ else if(t<7800){p=P.row3;hand=true;hover=2;s=press(t,7480)}
+ else if(t<9250){step=3;p=mix(P.row3,P.back,progress(t,8000,8850));hand=true;backHover=t>=8850}
+ else if(t<9600){step=3;p=P.back;hand=true;backHover=true;s=press(t,9270)}
+ else if(t<10500)p=mix(P.back,P.start,progress(t,9750,10500));
+ else p=P.start;
+ show(step);choices.forEach((c,i)=>c.classList.toggle('hover',i===hover));backs.forEach(b=>b.classList.toggle('hover',backHover));
+ normal.style.opacity=hand?0:1;pointer.style.opacity=hand?1:0;place(normal,p,s);place(pointer,p,s);
+ requestAnimationFrame(animate)
+}
+addEventListener('resize',resize);resize();requestAnimationFrame(animate);
+</script>
+</body>
+</html>
