@@ -28,7 +28,6 @@
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   border: 1px solid var(--color-glass-border);
   border-radius: 999px;
-  box-shadow: var(--shadow-panel);
 }
 
 /*
@@ -196,10 +195,10 @@
    layout-chrome.js по window.scrollY.
 
    ВАЖНО: сам .site-footer в этом состоянии перестаёт быть видимой
-   плашкой (никакого фона/тени/скругления) — это только позиционирующая
+   плашкой (никакого фона/скругления) — это только позиционирующая
    обёртка на всю ширину. Кнопки — два самостоятельных кружка по её
-   краям (у каждого свой фон/бордер/тень), а не два контрола внутри
-   одной общей плашки-бара. */
+   краям (у каждого свой фон/бордер), а не два контрола внутри одной
+   общей плашки-бара. */
 .site-footer.is-collapsed .site-footer__nav-wrap {
   display: none;
 }
@@ -239,7 +238,6 @@
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
     border: 1px solid var(--color-glass-border);
-    box-shadow: var(--shadow-panel);
     padding-inline: var(--chrome-pad-block);
   }
 
@@ -286,7 +284,6 @@
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   border: 1px solid var(--color-glass-border);
-  box-shadow: var(--shadow-panel);
 }
 
 /* Пункты друг под другом, все одного размера (см.

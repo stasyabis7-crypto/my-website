@@ -5,7 +5,7 @@
 
   Единственное место, где заданы конкретные HEX/rgba-значения — все
   компоненты (header.css/footer.css/masonry.css/theme-toggle.css)
-  читают только var(--color-*)/var(--shadow-panel), без хардкода.
+  читают только var(--color-*), без хардкода.
 */
 
 :root {
@@ -33,10 +33,6 @@
   --color-ink: #f4f5f7;
   --color-ink-contrast: #14161a;
 
-  --shadow-panel:
-    0 1px 2px rgba(0, 0, 0, 0.4),
-    0 8px 24px rgba(0, 0, 0, 0.5);
-
   /* Полупрозрачные версии surface/surface-alt под backdrop-filter —
      сама заливка почти не видна без blur, весь эффект стекла даёт
      именно смазанный фон под ней. Едва заметная светлая обводка
@@ -59,10 +55,6 @@
 
   --color-ink: #14161a;
   --color-ink-contrast: #ffffff;
-
-  --shadow-panel:
-    0 1px 2px rgba(20, 22, 26, 0.06),
-    0 8px 24px rgba(20, 22, 26, 0.1);
 
   --color-glass: rgba(255, 255, 255, 0.55);
   --color-glass-alt: rgba(240, 241, 244, 0.55);

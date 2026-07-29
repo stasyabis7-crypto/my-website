@@ -115,20 +115,19 @@
       высоту с карточками на 2 колонки — это стабильно давало дыры,
       отказались.
 
-      Когда добавляете проект в слот: замените .masonry__item на <a
-      href="..."> (см. слот 1 — уже готовый пример), внутрь положите
-      либо <img src="..." alt="...">, либо .masonry__embed+iframe
-      (как в слоте 1) — data-ratio на самом элементе не трогайте, она
-      и так уже под слот подобрана.
+      Когда добавляете проект в слот: положите внутрь .masonry__item
+      либо <img src="..." alt="...">, либо .masonry__embed+iframe (как
+      в слоте 1) — data-ratio на самом элементе не трогайте, она и так
+      уже под слот подобрана. Карточки пока НЕ кликабельны (просто
+      галерея) — страница-описание проекта будет сделана позже по
+      шаблону, тогда .masonry__item сменится на <a href="...">.
     -->
     <div class="masonry" id="works-gallery">
-      <a
+      <div
         class="masonry__item"
         data-slot="1"
         data-ratio="1/1"
         data-title="Виджет CRM на Главную"
-        href="works/crm-widget.html"
-        aria-label="Виджет CRM на Главную"
       >
         <span class="masonry__embed">
           <iframe
@@ -141,14 +140,12 @@
             title="Виджет CRM на Главную"
           ></iframe>
         </span>
-      </a>
-      <a
+      </div>
+      <div
         class="masonry__item"
         data-slot="2"
         data-ratio="4/3"
         data-title="Меню — выбор благотворительного раздела"
-        href="works/menu-animation.html"
-        aria-label="Меню — выбор благотворительного раздела"
       >
         <span class="masonry__embed">
           <iframe
@@ -161,14 +158,12 @@
             title="Меню — выбор благотворительного раздела"
           ></iframe>
         </span>
-      </a>
-      <a
+      </div>
+      <div
         class="masonry__item"
         data-slot="3"
         data-ratio="1/1"
         data-title="Donate flow — анимация"
-        href="works/donate-flow.html"
-        aria-label="Donate flow — анимация"
       >
         <span class="masonry__embed">
           <iframe
@@ -181,8 +176,25 @@
             title="Donate flow — анимация"
           ></iframe>
         </span>
-      </a>
-      <div class="masonry__item" data-slot="4" data-ratio="3/2"><div class="masonry__ph"><b>4</b><span>3/2</span></div></div>
+      </div>
+      <div
+        class="masonry__item"
+        data-slot="4"
+        data-ratio="3/2"
+        data-title="Плашка — светлая и тёмная тема"
+      >
+        <span class="masonry__embed">
+          <iframe
+            class="masonry__embed-frame"
+            src="works/banner-theme.html"
+            data-native-w="1000"
+            data-native-h="667"
+            tabindex="-1"
+            scrolling="no"
+            title="Плашка — светлая и тёмная тема"
+          ></iframe>
+        </span>
+      </div>
       <div class="masonry__item" data-slot="5" data-ratio="5/4"><div class="masonry__ph"><b>5</b><span>5/4</span></div></div>
       <div class="masonry__item" data-slot="6" data-ratio="16/9"><div class="masonry__ph"><b>6</b><span>16/9</span></div></div>
       <div class="masonry__item" data-slot="7" data-ratio="2/1"><div class="masonry__ph"><b>7</b><span>2/1</span></div></div>

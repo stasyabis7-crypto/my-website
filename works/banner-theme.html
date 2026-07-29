@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Плашка — светлая и тёмная тема</title>
+  <style>
+    @font-face{font-family:"CoFo Avito Text";src:url("./fonts/CoFoAvitoText-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+    @font-face{font-family:"CoFo Avito Text";src:url("./fonts/CoFoAvitoText-ExtraBold.woff2") format("woff2");font-weight:800;font-display:swap}
+    :root{--ease:cubic-bezier(.22,.61,.36,1);--light-canvas:#fff;--dark-canvas:#111214}
+    *{box-sizing:border-box}
+    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#fff;font-family:"CoFo Avito Text",Arial,sans-serif}
+    body{display:grid;place-items:center}
+    .viewport{position:relative;width:100vw;height:100vh;overflow:hidden}
+    .canvas{position:absolute;left:50%;top:50%;width:1000px;height:667px;transform-origin:center;background:var(--light-canvas);transition:background-color .72s var(--ease),color .72s var(--ease)}
+    .canvas.dark{background:var(--dark-canvas)}
+    .composition{position:absolute;left:50%;top:50%;width:375px;transform:translate(-50%,-50%)}
+    .theme-caption{position:absolute;left:50%;bottom:calc(100% + 22px);transform:translateX(-50%);height:34px;padding:0 14px;border-radius:20px;display:flex;align-items:center;background:#f2f2f2;color:#111;font-size:14px;font-weight:500;white-space:nowrap;transition:color .55s var(--ease),background-color .55s var(--ease),transform .55s var(--ease),opacity .3s}
+    .dark .theme-caption{background:#292a2e;color:#fff}
+    .banner{position:relative;width:375px;height:170px;border-radius:20px;overflow:hidden;color:#000;background:linear-gradient(90deg,#e3f7ff 10%,#f4eefe 90%);transition:height .82s var(--ease),color .68s var(--ease),background .68s var(--ease),box-shadow .68s var(--ease);will-change:height}
+    .dark .banner{color:#fff;background:linear-gradient(90deg,#00264a 10%,#2b2139 90%);box-shadow:0 24px 64px rgba(0,0,0,.24)}
+    .header{position:relative;height:138px;padding:16px 24px 0;z-index:2}
+    .title-row{display:flex;align-items:center;gap:6px;height:28px}
+    .title{margin:0;font-size:24px;line-height:28px;font-weight:800;white-space:nowrap}
+    .title-arrow{position:relative;width:17px;height:26px;flex:none;transform:rotate(0deg);transform-origin:50% 50%;transition:transform .72s var(--ease)}
+    .title-arrow img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:filter .6s}
+    .dark .title-arrow img{filter:invert(1)}
+    .description{margin:6px 0 0;width:212px;font-size:15px;line-height:22px;font-weight:500}
+    .illustration{position:absolute;z-index:1;right:0;top:0;width:165px;height:145px;overflow:hidden;pointer-events:none}
+    .ill-image{position:absolute;inset:0;width:165px;height:145px;display:block;object-fit:contain;transition:opacity .62s var(--ease),transform .72s var(--ease)}
+    .ill-dark{opacity:0}.dark .ill-light{opacity:0;transform:scale(.96)}.dark .ill-dark{opacity:1}
+    .actions{display:flex;flex-direction:column;gap:8px;width:375px;padding:32px 0;opacity:0;transform:translateY(-12px);pointer-events:none;transition:opacity .36s ease,transform .58s var(--ease)}
+    .action{position:relative;width:342px;min-height:52px;margin:0 auto;padding:12px 94px 20px 16px;border-radius:16px;background:rgba(255,255,255,.7);transition:background-color .65s}
+    .dark .action{background:rgba(255,255,255,.2)}
+    .action.tall{min-height:72px}
+    .action-label{display:block;width:100%;max-width:232px;font-size:15px;line-height:20px;font-weight:500;overflow-wrap:normal;word-break:normal}
+    .reward{position:absolute;right:16px;top:12px;width:70px;height:20px;display:flex;align-items:center;justify-content:flex-end;gap:4px}
+    .reward-pill{height:20px;min-width:50px;padding:1px 3px;border-radius:6px;background:#cfedff;color:#000;display:flex;align-items:center;justify-content:center;gap:1px;font-size:13px;line-height:16px}
+    .reward-pill img{width:12px;height:13px;object-fit:contain}
+    .row-arrow{position:relative;width:20px;height:20px}
+    .row-arrow img{position:absolute;inset:0;width:20px;height:20px;display:block;filter:invert(1);transition:filter .55s}
+    .dark .row-arrow img{filter:none}
+    .banner.open{height:474px}
+    .banner.open .title-arrow{transform:translateY(2px) rotate(180deg)}
+    .banner.open .actions{opacity:1;transform:translateY(0);pointer-events:auto;transition-delay:.2s}
+    .theme-pop .theme-caption{animation:caption-pop .62s var(--ease)}
+    @keyframes caption-pop{0%{opacity:.15;transform:translateX(-50%) scale(.86)}60%{opacity:1;transform:translateX(-50%) scale(1.045)}100%{transform:translateX(-50%) scale(1)}}
+    @media(prefers-reduced-motion:reduce){.canvas,.banner,.title-arrow,.actions,.theme-caption,.ill-theme{transition-duration:.01ms!important}.theme-caption{animation:none!important}}
+  </style>
+</head>
+<body>
+<main class="viewport">
+  <div class="canvas" id="canvas">
+    <div class="composition">
+      <div class="theme-caption"><span id="themeText">Светлая тема</span></div>
+      <article class="banner" id="banner">
+        <div class="illustration" aria-hidden="true">
+          <img class="ill-image ill-light" src="./ill-light.png" alt="">
+          <img class="ill-image ill-dark" src="./ill-dark.png" alt="">
+        </div>
+        <header class="header">
+          <div class="title-row">
+            <h1 class="title">Творим добро</h1>
+            <span class="title-arrow" aria-hidden="true">
+              <img src="./icon-arrow.svg" alt="">
+            </span>
+          </div>
+          <p class="description">Наш общий вклад<br>в&nbsp;большое&nbsp;дело.<br>Участвовать можно<br>до&nbsp;19 октября</p>
+        </header>
+        <div class="actions">
+          <div class="action">
+            <span class="action-label">Пожертвуйте от&nbsp;100 ₽ в&nbsp;фонд</span>
+            <span class="reward"><span class="reward-pill"><img src="./bonus-icon.svg" alt="">+10</span><span class="row-arrow"><img src="./arrow-right.svg" alt=""></span></span>
+          </div>
+          <div class="action">
+            <span class="action-label">Купите добрый мерч</span>
+            <span class="reward"><span class="reward-pill"><img src="./bonus-icon.svg" alt="">+50</span><span class="row-arrow"><img src="./arrow-right.svg" alt=""></span></span>
+          </div>
+          <div class="action tall">
+            <span class="action-label">Поддержите отряд «ЛизаАлерт»</span>
+            <span class="reward"><span class="reward-pill"><img src="./bonus-icon.svg" alt="">+5</span><span class="row-arrow"><img src="./arrow-right.svg" alt=""></span></span>
+          </div>
+          <div class="action tall">
+            <span class="action-label">Проверьте пункт приёма вторсырья</span>
+            <span class="reward"><span class="reward-pill"><img src="./bonus-icon.svg" alt="">+50</span><span class="row-arrow"><img src="./arrow-right.svg" alt=""></span></span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</main>
+<script>
+{
+  const canvas=document.getElementById('canvas');
+  const banner=document.getElementById('banner');
+  const themeText=document.getElementById('themeText');
+  const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+  let generation=0;
+
+  function fit(){
+    const viewport=document.querySelector('.viewport');
+    const scale=Math.min(viewport.clientWidth/1000,viewport.clientHeight/667);
+    canvas.style.transform=`translate(-50%,-50%) scale(${scale})`;
+  }
+  function setTheme(dark){
+    canvas.classList.toggle('dark',dark);
+    canvas.classList.remove('theme-pop');
+    void canvas.offsetWidth;
+    canvas.classList.add('theme-pop');
+    themeText.textContent=dark?'Тёмная тема':'Светлая тема';
+  }
+  function setOpen(open){banner.classList.toggle('open',open)}
+  async function runLoop(){
+    const id=++generation;
+    while(id===generation){
+      setTheme(false);setOpen(false);await wait(1800);
+      setOpen(true);await wait(2800);
+      setOpen(false);await wait(1700);
+      setTheme(true);await wait(1800);
+      setOpen(true);await wait(2800);
+      setOpen(false);await wait(1700);
+    }
+  }
+  addEventListener('resize',fit);
+  fit();
+  runLoop();
+}
+</script>
+</body>
+</html>

@@ -36,7 +36,6 @@
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   color: var(--color-text);
-  box-shadow: var(--shadow-panel);
   cursor: pointer;
   z-index: 51;
 }
