@@ -156,6 +156,46 @@
   height: 1.375rem;
 }
 
+/* До десктопного брейкпоинта хедер использует ту же компактную
+   заготовку, что и навигация футера. Высота --chrome-item-h меряется
+   по этой кнопке, поэтому аватар, логотип и переключатель темы
+   подстраиваются под неё автоматически. */
+@media (max-width: 1100px) {
+  .site-header__cta {
+    gap: 3px;
+    padding-block: 0.375rem;
+    padding-inline: 0.625rem;
+    font-size: clamp(0.625rem, 2.8vw, 0.6875rem);
+  }
+
+  .site-header__cta .icon {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .site-header__identity {
+    gap: 0.5rem;
+  }
+}
+
+/* Тот же компактный размер нужен на широком экране, если скрипт
+   включил мобильную раскладку из-за нехватки места между плашками. */
+html.chrome--compact .site-header__cta {
+  gap: 3px;
+  padding-block: 0.375rem;
+  padding-inline: 0.625rem;
+  font-size: clamp(0.625rem, 2.8vw, 0.6875rem);
+}
+
+html.chrome--compact .site-header__cta .icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+html.chrome--compact .site-header__identity {
+  gap: 0.5rem;
+}
+
 /*
   Десктоп — та же плашка чуть компактнее (меньше внешний паддинг), раз
   места на широком экране хватает и без крупных тач-таргетов.
