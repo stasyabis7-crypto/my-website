@@ -364,16 +364,24 @@ html.chrome--compact .site-footer__link .icon {
     left: auto;
     right: var(--page-px, 10px);
     transform: none;
+    width: max-content;
     max-width: none;
     padding-inline: var(--chrome-pad-block);
   }
 
   html:not(.chrome--compact) .site-footer__nav-wrap {
+    width: max-content;
     max-width: none;
     overflow: visible;
   }
 
+  html:not(.chrome--compact) .site-footer__nav {
+    width: max-content;
+  }
+
   html:not(.chrome--compact) .site-footer__link {
+    width: auto;
+    min-width: 100px;
     gap: 3px;
     padding-block: 6px;
     padding-inline: 10px;
@@ -386,7 +394,7 @@ html.chrome--compact .site-footer__link .icon {
   }
 
   html:not(.chrome--compact) .site-footer__nav li {
-    flex: 0 0 140px;
+    flex: 0 0 auto;
   }
 
   /* .is-collapsed ставится по скроллу независимо от ширины экрана —
