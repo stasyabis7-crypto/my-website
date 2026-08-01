@@ -28,6 +28,7 @@
 (function () {
   var DESKTOP_MIN = 1101;
   var TOGGLE_GAP = 10; // px, зазор между плашкой хедера и кнопкой темы
+  var LOGO_TOGGLE_GAP = 6; // px, мин. зазор хедер/кнопка темы на моб/планшете (см. syncLogoScale)
   var COLLISION_GAP = 16; // px, минимальный зазор между переключателем темы и футером
   var FOOTER_COLLAPSE_AT = 24; // px, после какого scrollY футер сворачивается в "Меню" + стрелку вверх
   // Длительность закрытия панели меню — держите синхронно с transition
@@ -38,6 +39,8 @@
 
   var header = document.querySelector('.site-header');
   var footer = document.querySelector('.site-footer');
+  var headerCta = document.querySelector('.site-header__cta');
+  var logoMark = document.querySelector('.site-header__logo-mark');
   var themeToggle = document.querySelector('.theme-toggle');
   var menuBtn = document.getElementById('footer-menu-btn');
   var menuPanel = document.getElementById('footer-menu-panel');
@@ -74,6 +77,16 @@
   function syncChromeHeights() {
     root.style.setProperty('--header-h', header.offsetHeight + 'px');
     root.style.setProperty('--footer-h', footer.offsetHeight + 'px');
+    // --chrome-item-h — реальная высота кнопки "Резюме PDF" (иконка +
+    // подпись в столбик) — гоняет размер аватара/лого в хедере и
+    // кружков (переключатель темы, кнопки футера в свёрнутом виде),
+    // см. header.css/footer.css/theme-toggle.css. Высоту строкой не
+    // посчитать надёжно (зависит от font-size, тот — от брейкпоинта и
+    // fluid-скейла scale.css), поэтому меряем по факту отрисованной
+    // кнопки, а не считаем формулой.
+    if (headerCta) {
+      root.style.setProperty('--chrome-item-h', headerCta.offsetHeight + 'px');
+    }
   }
 
   function syncThemeTogglePosition() {
@@ -85,6 +98,31 @@
     }
     var rect = header.getBoundingClientRect();
     themeToggle.style.left = Math.round(rect.right + TOGGLE_GAP) + 'px';
+  }
+
+  /* На моб/планшете кнопка темы стоит в своём углу независимо от
+     хедера (см. .theme-toggle { right: page-px } в theme-toggle.css)
+     — если хедер (аватар+имя+кнопка) вырос и полез под неё, схлопывать
+     раскладку в chrome--compact тут незачем (это чисто десктопный
+     механизм, см. updateCompactOverride): вместо этого сжимаем только
+     логотип — просим ужаться ровно настолько, чтобы между хедером и
+     кнопкой остался LOGO_TOGGLE_GAP. На десктопе кнопка сама следует
+     за хедером (см. syncThemeTogglePosition) — коллизии там нет,
+     логотип всегда в своём натуральном размере. */
+  function syncLogoScale() {
+    if (!logoMark || !themeToggle) return;
+    // Сбрасываем принудительную ширину — мерить нужно логотип в его
+    // естественном размере (высота = --chrome-item-h, см. header.css),
+    // а не то, до чего он был сжат в прошлый раз.
+    logoMark.style.width = '';
+    if (!isFixedChrome()) return;
+    var headerRect = header.getBoundingClientRect();
+    var toggleRect = themeToggle.getBoundingClientRect();
+    var overlap = headerRect.right + LOGO_TOGGLE_GAP - toggleRect.left;
+    if (overlap > 0) {
+      var logoRect = logoMark.getBoundingClientRect();
+      logoMark.style.width = Math.max(0, logoRect.width - overlap) + 'px';
+    }
   }
 
   function updateFooterCollapse() {
@@ -100,6 +138,7 @@
     updateCompactOverride();
     syncChromeHeights();
     syncThemeTogglePosition();
+    syncLogoScale();
     updateFooterCollapse();
   }
 

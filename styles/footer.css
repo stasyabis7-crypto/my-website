@@ -188,11 +188,17 @@
 
 /* Кнопки свёрнутого состояния ("Меню" слева, стрелка вверх справа) —
    кружки РОВНО того же размера, что и .theme-toggle (var(--chrome-h)
-   — высота всей плашки, а не внутреннего control-size). Раз чтобы
-   влезть на всю высоту плашки футера при этом самим футером задан
-   padding-block, компенсируем его отрицательным margin-block —
-   кружок садится вплотную к верхнему и нижнему краю плашки, как и
-   отдельно стоящий theme-toggle.
+   — высота всей плашки, а не внутреннего control-size).
+
+   position: absolute ВСЕГДА (не только в .is-collapsed) — иначе даже
+   при max-width:0 их 1px-обводка (border-box не даёт сжаться ниже
+   border*2 = 2px) всё равно чуть-чуть участвует в shrink-to-fit
+   ширине .site-footer как flex-контейнера: раньше это давало ровно
+   4px разницы в ширине плашки между обычным и свёрнутым состоянием
+   на десктопе (плашка на скролле "прыгала" в сторону). Раз кружки
+   всегда вне потока, футеру они ширину не отдают ни в каком
+   состоянии — top/left/right ниже те же, что раньше были только в
+   .is-collapsed, здесь просто не под условием.
 
    Кнопка "Меню" сама превращается в кнопку "закрыть" (крестик), пока
    меню открыто — отдельной кнопки-крестика рядом больше нет (см.
@@ -201,15 +207,15 @@
 .site-footer__menu-btn,
 .site-footer__top-btn {
   box-sizing: border-box;
+  position: absolute;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 auto;
   width: var(--chrome-h, 3.5rem);
   max-width: 0;
   height: var(--chrome-h, 3.5rem);
   aspect-ratio: 1 / 1;
-  margin-block: calc(var(--chrome-pad-block, 0.5rem) * -1);
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
@@ -218,6 +224,14 @@
     max-width 0.45s var(--footer-ease),
     opacity 0.3s var(--footer-ease),
     visibility 0s linear 0.45s;
+}
+
+.site-footer__menu-btn {
+  left: 0;
+}
+
+.site-footer__top-btn {
+  right: 0;
 }
 
 /* Только визуальный стиль кружка — видимость (max-width/opacity) у
@@ -282,20 +296,10 @@
 
 .site-footer.is-collapsed .site-footer__menu-btn,
 .site-footer.is-collapsed .site-footer__top-btn {
-  position: absolute;
-  top: 0;
   max-width: var(--chrome-h, 3.5rem);
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-}
-
-.site-footer.is-collapsed .site-footer__menu-btn {
-  left: 0;
-}
-
-.site-footer.is-collapsed .site-footer__top-btn {
-  right: 0;
 }
 
 .site-footer.is-collapsed {
@@ -312,16 +316,15 @@
    .is-collapsed на десктопе не действует (места достаточно, сворачивать
    незачем). html:not(.chrome--compact) — см. header.css.
 
-   --chrome-control-size/--chrome-pad-block уменьшены здесь же — общий
-   токен с header.css (см. дубль там и комментарий у :root выше). Обе
-   плашки (хедер/футер) остаются одной высоты — она считается от
-   одного и того же содержимого (иконка+подпись в столбик, см.
-   .site-footer__link/.site-header__cta), явно не фиксируем. Текст
-   мельче — тот же приём и в header.css, держите оба значения в
-   синхроне. */
+   --chrome-pad-block уменьшен здесь же — общий токен с header.css (см.
+   дубль там и комментарий у :root выше). Обе плашки (хедер/футер)
+   остаются одной высоты — она считается от одного и того же
+   содержимого (иконка+подпись в столбик, см. .site-footer__link/
+   .site-header__cta, --chrome-item-h меряет layout-chrome.js), явно
+   не фиксируем. Текст мельче — тот же приём и в header.css, держите
+   оба значения в синхроне. */
 @media (min-width: 1101px) {
   html:not(.chrome--compact) {
-    --chrome-control-size: 2rem;
     --chrome-pad-block: 0.375rem;
   }
 
@@ -342,8 +345,13 @@
   /* .is-collapsed ставится по скроллу независимо от ширины экрана —
      на десктопе это должно быть НЕ заметно: плашка остаётся обычной
      заполненной пилюлей со списком ссылок, а не прозрачной обёрткой
-     под кружки (тех тут не видно, см. правило чуть ниже). */
+     под кружки (тех тут не видно, см. правило чуть ниже). height: auto
+     отменяет мобильное правило (.is-collapsed { height: var(--chrome-h) }
+     выше — там это высота ДВУХ КРУЖКОВ, а не двухъярусных пунктов) —
+     без этого при скролле плашка на десктопе резко сжималась в
+     мобильную высоту кружков, обрезая двухъярусные пункты. */
   html:not(.chrome--compact) .site-footer.is-collapsed {
+    height: auto;
     background: var(--color-glass);
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));

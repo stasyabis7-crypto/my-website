@@ -28,10 +28,16 @@
     opacity 0.3s ease;
 }
 
+/* .site-footer__menu-btn/.site-footer__top-btn нет в списке — оба уже
+   position: absolute сами по себе (см. footer.css), этого достаточно,
+   чтобы служить containing block для ::before-заливки ниже; лишний
+   position: relative здесь раньше держал .menu-btn в потоке flex (его
+   1px-обводка на border-box не даёт сжаться до 0 даже при max-width:0
+   — то держало +4px ширины плашки футера в этом состоянии, оттуда и
+   был "прыжок" футера на скролле). */
 :is(
   .site-header__cta,
   .site-footer__link,
-  .site-footer__menu-btn,
   .footer-menu-panel__link
 ) {
   position: relative;

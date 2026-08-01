@@ -1,41 +1,47 @@
 /*
   Переключатель темы — отдельная плавающая плашка, специально не
   часть .site-header (см. header.css), чтобы визуально читаться как
-  самостоятельный элемент управления.
+  самостоятельный элемент управления. Стиль — тот же залитый "ink"
+  кружок, что и кнопка "Резюме PDF" (не стеклянный/прозрачный), без
+  обводки — единый акцентный стиль контролов по всему хедеру.
 
   Моб/планшет — кружок справа от бара хедера, в специально
   зарезервированном для него отступе (см. .site-header { right: ... }
-  в header.css).
+  в header.css). Если хедер (аватар+имя+кнопка) стал шире и полез бы
+  под кружок — logoMark сам сжимается, см. layout-chrome.js
+  (syncLogoScale), кружок сам никуда не двигается.
   Десктоп — тот же кружок, пристыкован сразу справа от плавающей
   плашки хедера; точный left-отступ (ширина хедера плавающая, зависит
   от контента) считает layout-chrome.js.
 
-  Размер — ОБЯЗАТЕЛЬНО var(--chrome-h): та же высота, что и у плашек
-  хедера/футера (не внутренний control-size, а полная высота бара),
-  ширина = высоте (width: var(--chrome-h) тоже) — кружок остаётся
-  идеально круглым на любом брейкпоинте, никогда не сплющивается.
-  Цвета — общие токены из theme.css, отдельных значений здесь не
-  заводим.
+  Размер — var(--chrome-item-h): та же высота, что и у кнопки
+  "Резюме PDF"/пункта футера (не полная высота плашки var(--chrome-h),
+  та включает ещё и внешний паддинг плашки) — кружок ровно той же
+  высоты, что и кнопка рядом, а не выше её. top сдвинут на
+  --chrome-pad-block вниз от --page-px — ровно настолько, на сколько
+  сама кнопка отступает от края плашки хедера её паддингом, поэтому
+  кружок и кнопка оказываются на одной высоте (центрированы
+  относительно хедера), а не кружок торчит выше/ниже. Ширина = высоте
+  (width: var(--chrome-item-h) тоже) — кружок остаётся идеально
+  круглым на любом брейкпоинте, никогда не сплющивается.
 */
 
 .theme-toggle {
   box-sizing: border-box;
   position: fixed;
-  top: var(--page-px, 10px);
+  top: calc(var(--page-px, 10px) + var(--chrome-pad-block, 0.5rem));
   right: var(--page-px, 10px);
-  width: var(--chrome-h, 3.5rem);
-  height: var(--chrome-h, 3.5rem);
+  width: var(--chrome-item-h, 3.5rem);
+  height: var(--chrome-item-h, 3.5rem);
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  border: 1px solid var(--color-glass-border);
+  border: none;
   border-radius: 50%;
-  background: var(--color-glass);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  color: var(--color-text);
+  background: var(--color-ink);
+  color: var(--color-ink-contrast);
   cursor: pointer;
   z-index: 51;
 }
@@ -66,7 +72,7 @@
    широких экранах. */
 @media (min-width: 1101px) {
   html:not(.chrome--compact) .theme-toggle {
-    top: var(--page-px, 10px);
+    top: calc(var(--page-px, 10px) + var(--chrome-pad-block, 0.5rem));
     right: auto;
     /* left выставляет layout-chrome.js по факту правого края хедера */
   }
