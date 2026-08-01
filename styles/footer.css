@@ -131,10 +131,10 @@
    выше — link просто заполняет его на 100%).
 
    Иконка над подписью, гэп 4px — одинаково на всех брейкпоинтах (моб/
-   планшет/десктоп): высота пункта теперь по контенту (height: auto),
-   а не жёстко var(--chrome-control-size), поэтому пилюля футера на
-   десктопе тоже стала выше одной строки — см. .site-footer ниже,
-   там больше нет фиксированной var(--chrome-h).
+   планшет/десктоп) и одинаково с кнопкой "Резюме PDF" в хедере (см.
+   .site-header__cta в header.css — та же заготовка, поэтому плашки
+   хедера и футера одной высоты: обе auto-height, посчитанные от
+   одного и того же содержимого).
 
    Та же заготовка (тот же класс имени нет, но те же значения —
    размер/паддинги/гэп) переиспользуется у пунктов раскрытой панели
@@ -162,8 +162,8 @@
 }
 
 .site-footer__link .icon {
-  width: 1.125rem;
-  height: 1.125rem;
+  width: 1.375rem;
+  height: 1.375rem;
 }
 
 .site-footer__link:hover {
@@ -242,8 +242,8 @@
 
 .site-footer__menu-btn .icon,
 .site-footer__top-btn .icon {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.75rem;
+  height: 1.75rem;
 }
 
 /* Свёрнутое состояние (проскроллили) — список ссылок прячем, вместо
@@ -311,12 +311,12 @@
    незачем). html:not(.chrome--compact) — см. header.css.
 
    --chrome-control-size/--chrome-pad-block уменьшены здесь же — общий
-   токен с header.css (см. дубль там и комментарий у :root выше).
-   Высоту плашки здесь намеренно не фиксируем (var(--chrome-h)) — на
-   десктопе пункты, как и на моб/планшете, теперь в два яруса (иконка
-   над подписью, см. .site-footer__link выше), пилюля выше одной
-   строки и по высоте расходится с хедером (там высота осталась
-   фиксированной var(--chrome-h), т.к. в хедере такого контента нет). */
+   токен с header.css (см. дубль там и комментарий у :root выше). Обе
+   плашки (хедер/футер) остаются одной высоты — она считается от
+   одного и того же содержимого (иконка+подпись в столбик, см.
+   .site-footer__link/.site-header__cta), явно не фиксируем. Текст
+   мельче — тот же приём и в header.css, держите оба значения в
+   синхроне. */
 @media (min-width: 1101px) {
   html:not(.chrome--compact) {
     --chrome-control-size: 2rem;
@@ -333,6 +333,10 @@
     padding-inline: var(--chrome-pad-block);
   }
 
+  html:not(.chrome--compact) .site-footer__link {
+    font-size: 0.75rem;
+  }
+
   /* .is-collapsed ставится по скроллу независимо от ширины экрана —
      на десктопе это должно быть НЕ заметно: плашка остаётся обычной
      заполненной пилюлей со списком ссылок, а не прозрачной обёрткой
@@ -341,7 +345,6 @@
     background: var(--color-glass);
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-    border: 1px solid var(--color-glass-border);
     padding-inline: var(--chrome-pad-block);
   }
 
@@ -453,8 +456,8 @@
 }
 
 .footer-menu-panel__link .icon {
-  width: 1.125rem;
-  height: 1.125rem;
+  width: 1.375rem;
+  height: 1.375rem;
 }
 
 .footer-menu-panel__link:hover {
