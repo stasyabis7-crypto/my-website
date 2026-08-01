@@ -292,6 +292,11 @@ html.chrome--compact .site-footer__link .icon {
   height: 1.75rem;
 }
 
+.site-footer__menu-btn .icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 /* Свёрнутое состояние (проскроллили) — список ссылок прячем, вместо
    него показываем "Меню" + стрелку вверх. Класс ставит
    layout-chrome.js по window.scrollY.
