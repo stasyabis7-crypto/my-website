@@ -92,6 +92,18 @@
   align-items: center;
   color: var(--color-text);
   text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.site-header__logo:focus-visible {
+  color: var(--color-action-hover);
+  outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-header__logo:hover {
+    color: var(--color-action-hover);
+  }
 }
 
 /* Высота = --chrome-item-h (как у аватара) — ширина следует сама через
