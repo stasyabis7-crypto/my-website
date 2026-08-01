@@ -8,13 +8,21 @@
 */
 
 :root {
-  /* Единый размер контролов (авы/кнопок) и высоты самой плашки —
-     хедер и футер всегда одной высоты, потому что оба считают её по
-     этой же формуле. ВАЖНО: значения продублированы в footer.css —
+  /* --chrome-item-h — реальная высота "пункта" (кнопка "Резюме PDF" /
+     .site-footer__link — иконка+подпись в столбик), меряет
+     layout-chrome.js (см. syncChromeHeights) сرендеренной кнопки и
+     подставляет сюда — сама высота зависит от font-size/строки текста
+     (те гоняются по брейкпоинтам и fluid-скейлу scale.css), формулой
+     её не описать надёжно, поэтому меряем по факту. Число ниже —
+     запасное значение на случай, если JS ещё не отработал.
+     --chrome-h (высота ОТДЕЛЬНОЙ круглой плашки — переключатель темы,
+     кнопки футера в свёрнутом виде) — тот же пункт + внешний паддинг
+     плашки, чтобы кружки были той же высоты, что и сама плашка
+     хедера/футера. ВАЖНО: оба токена продублированы в footer.css —
      при изменении правьте оба файла синхронно. */
-  --chrome-control-size: 2.5rem;
+  --chrome-item-h: 3.5rem;
   --chrome-pad-block: 0.5rem;
-  --chrome-h: calc(var(--chrome-control-size) + var(--chrome-pad-block) * 2);
+  --chrome-h: calc(var(--chrome-item-h) + var(--chrome-pad-block) * 2);
 }
 
 .site-header {
@@ -64,8 +72,8 @@
 
 .site-header__avatar {
   flex: 0 0 auto;
-  width: var(--chrome-control-size);
-  height: var(--chrome-control-size);
+  width: var(--chrome-item-h);
+  height: var(--chrome-item-h);
   border-radius: 50%;
   background: var(--color-surface-alt);
   overflow: hidden;
@@ -86,9 +94,13 @@
   text-decoration: none;
 }
 
+/* Высота = --chrome-item-h (как у аватара) — ширина следует сама через
+   aspect-ratio, а не задана числом: раньше была фиксированной (5rem),
+   поэтому не росла вместе с аватаром/кнопкой. */
 .site-header__logo-mark {
   display: block;
-  width: 5rem;
+  width: auto;
+  height: var(--chrome-item-h);
   aspect-ratio: 1231 / 374;
   background-color: currentColor;
   -webkit-mask: url("../assets/logo.svg") center / contain no-repeat;
@@ -133,11 +145,12 @@
 }
 
 /*
-  Десктоп — та же плашка чуть компактнее (меньше высота/паддинги
-  контролов), раз места на широком экране хватает и без крупных
-  тач-таргетов. --chrome-control-size/--chrome-pad-block — общие
-  токены с footer.css (см. дубль там же и комментарий у :root выше),
-  оба меняются синхронно.
+  Десктоп — та же плашка чуть компактнее (меньше внешний паддинг), раз
+  места на широком экране хватает и без крупных тач-таргетов.
+  --chrome-pad-block — общий токен с footer.css (см. дубль там же и
+  комментарий у :root выше), меняется синхронно. --chrome-item-h не
+  трогаем здесь явно — она меряется по факту (см. :root выше), сама
+  подстроится под уменьшенный font-size кнопки ниже.
 
   html:not(.chrome--compact) — см. комментарий у .site-header выше:
   если бы плашки хедера/переключателя/футера не влезли в один ряд,
@@ -145,7 +158,6 @@
 */
 @media (min-width: 1101px) {
   html:not(.chrome--compact) {
-    --chrome-control-size: 2rem;
     --chrome-pad-block: 0.375rem;
   }
 
