@@ -1,0 +1,74 @@
+/*
+  DS-иконки — общий реестр SVG-иконок проекта (assets/icons/Interface,
+  assets/icons/Arrow). Иконка — заливка currentColor, обрезанная по
+  alpha-маске SVG-файла (mask-image), поэтому одна и та же .icon сама
+  подстраивается под цвет текста в любой теме и в любом контроле —
+  размер задаёт только контекст использования (header.css/footer.css/
+  theme-toggle.css), сама .icon его не фиксирует.
+
+  Новый файл в assets/icons/{Interface,Arrow} — новый модификатор
+  здесь, дальше переиспользуем везде через <span class="icon icon--x">,
+  а не копируем разметку SVG по месту использования.
+*/
+
+.icon {
+  display: block;
+  flex: 0 0 auto;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.icon--sun {
+  -webkit-mask-image: url("../assets/icons/Interface/mode-light.svg");
+  mask-image: url("../assets/icons/Interface/mode-light.svg");
+}
+
+.icon--moon {
+  -webkit-mask-image: url("../assets/icons/Interface/mode-dark.svg");
+  mask-image: url("../assets/icons/Interface/mode-dark.svg");
+}
+
+.icon--menu {
+  -webkit-mask-image: url("../assets/icons/Interface/menu.svg");
+  mask-image: url("../assets/icons/Interface/menu.svg");
+}
+
+.icon--close {
+  -webkit-mask-image: url("../assets/icons/Interface/close.svg");
+  mask-image: url("../assets/icons/Interface/close.svg");
+}
+
+.icon--up {
+  -webkit-mask-image: url("../assets/icons/Arrow/arrow-up.svg");
+  mask-image: url("../assets/icons/Arrow/arrow-up.svg");
+}
+
+.icon--works {
+  -webkit-mask-image: url("../assets/icons/Interface/works.svg");
+  mask-image: url("../assets/icons/Interface/works.svg");
+}
+
+.icon--about {
+  -webkit-mask-image: url("../assets/icons/Interface/about-me.svg");
+  mask-image: url("../assets/icons/Interface/about-me.svg");
+}
+
+.icon--activities {
+  -webkit-mask-image: url("../assets/icons/Interface/activities.svg");
+  mask-image: url("../assets/icons/Interface/activities.svg");
+}
+
+.icon--contacts {
+  -webkit-mask-image: url("../assets/icons/Interface/contacts.svg");
+  mask-image: url("../assets/icons/Interface/contacts.svg");
+}
+
+.icon--cv {
+  -webkit-mask-image: url("../assets/icons/Interface/cv.svg");
+  mask-image: url("../assets/icons/Interface/cv.svg");
+}

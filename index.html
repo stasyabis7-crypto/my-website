@@ -13,11 +13,12 @@
 <link rel="stylesheet" href="styles/scale.css?v=18" />
 <link rel="stylesheet" href="styles/typography.css?v=18" />
 <link rel="stylesheet" href="styles/theme.css?v=18" />
-<link rel="stylesheet" href="styles/header.css?v=19" />
-<link rel="stylesheet" href="styles/footer.css?v=21" />
-<link rel="stylesheet" href="styles/theme-toggle.css?v=18" />
+<link rel="stylesheet" href="styles/icons.css?v=1" />
+<link rel="stylesheet" href="styles/header.css?v=20" />
+<link rel="stylesheet" href="styles/footer.css?v=22" />
+<link rel="stylesheet" href="styles/theme-toggle.css?v=19" />
 <link rel="stylesheet" href="styles/button-hover.css?v=20" />
-<link rel="stylesheet" href="styles/masonry.css?v=18" />
+<link rel="stylesheet" href="styles/masonry.css?v=19" />
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -99,27 +100,19 @@
         <span class="site-header__logo-mark" aria-hidden="true"></span>
       </a>
     </div>
-    <a href="assets/resume.pdf" class="site-header__cta text-button" download>Резюме PDF</a>
+    <a href="assets/resume.pdf" class="site-header__cta text-button" download>
+      <span class="icon icon--cv" aria-hidden="true"></span>
+      Резюме PDF
+    </a>
   </header>
 
   <!-- Отдельная плашка, специально не внутри .site-header — см. theme-toggle.css. -->
   <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Переключить тему">
     <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#theme-toggle-sun-clip)">
-          <path d="M12 1V3M12 21V23M23 12H21M3 12H1M19.7782 4.22183L18.364 5.63604M5.63604 18.364L4.22183 19.7782M19.7782 19.7782L18.364 18.364M5.63604 5.63604L4.22183 4.22183M18 12C18 15.3137 15.3137 18 12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </g>
-        <defs>
-          <clipPath id="theme-toggle-sun-clip">
-            <rect width="24" height="24" fill="white"/>
-          </clipPath>
-        </defs>
-      </svg>
+      <span class="icon icon--sun"></span>
     </span>
     <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12.2696 12.3888C16.2696 19.317 23.7846 17.2877 19.0017 20.0491C14.2187 22.8105 8.10284 21.1718 5.34142 16.3888C2.57999 11.6059 4.21874 5.49 9.00167 2.72858C13.7846 -0.0328438 8.26962 5.46063 12.2696 12.3888Z" stroke="currentColor" stroke-width="1.5"/>
-      </svg>
+      <span class="icon icon--moon"></span>
     </span>
   </button>
 
@@ -273,7 +266,14 @@
           ></iframe>
         </span>
       </div>
-      <div class="masonry__item" data-slot="10" data-ratio="3/2"><div class="masonry__ph"><b>10</b><span>3/2</span></div></div>
+      <div
+        class="masonry__item"
+        data-slot="10"
+        data-ratio="3/2"
+        data-title="Offer"
+      >
+        <img src="works/offer.png" alt="Offer" />
+      </div>
       <div class="masonry__item" data-slot="11" data-ratio="5/4"><div class="masonry__ph"><b>11</b><span>5/4</span></div></div>
       <div class="masonry__item" data-slot="12" data-ratio="16/9"><div class="masonry__ph"><b>12</b><span>16/9</span></div></div>
       <div class="masonry__item" data-slot="13" data-ratio="2/1"><div class="masonry__ph"><b>13</b><span>2/1</span></div></div>
@@ -317,16 +317,31 @@
     </div>
   </main>
 
+  <!-- Плавный блюр под футером на моб/планшете, см. footer.css. -->
+  <div class="footer-fade" aria-hidden="true"></div>
+
   <footer class="site-footer">
     <!-- Список ссылок — виден всегда, пока страница не проскроллена
          (и всегда на десктопе). При скролле моб/планшет прячет его и
          показывает вместо него "Меню" + стрелку вверх (см. footer.css). -->
     <nav class="site-footer__nav-wrap">
       <ul class="site-footer__nav">
-        <li><a href="#" class="site-footer__link text-label is-current">Работы</a></li>
-        <li><a href="#" class="site-footer__link text-label">Обо мне</a></li>
-        <li><a href="#" class="site-footer__link text-label">Активности</a></li>
-        <li><a href="#" class="site-footer__link text-label">Контакты</a></li>
+        <li><a href="#" class="site-footer__link text-label is-current">
+          <span class="icon icon--works" aria-hidden="true"></span>
+          Работы
+        </a></li>
+        <li><a href="#" class="site-footer__link text-label">
+          <span class="icon icon--about" aria-hidden="true"></span>
+          Обо мне
+        </a></li>
+        <li><a href="#" class="site-footer__link text-label">
+          <span class="icon icon--activities" aria-hidden="true"></span>
+          Активности
+        </a></li>
+        <li><a href="#" class="site-footer__link text-label">
+          <span class="icon icon--contacts" aria-hidden="true"></span>
+          Контакты
+        </a></li>
       </ul>
     </nav>
     <!-- Свёрнутое (при скролле) состояние моб/планшета: кнопка "Меню"
@@ -341,10 +356,7 @@
       aria-controls="footer-menu-panel"
       aria-label="Меню"
     >
-      <span
-        class="site-footer__control-icon site-footer__control-icon--menu"
-        aria-hidden="true"
-      ></span>
+      <span class="icon icon--menu" aria-hidden="true"></span>
     </button>
     <!-- Слот со стрелкой "наверх" и кнопкой "закрыть" — один и тот же
          кружок-слот, обе кнопки наложены друг на друга (position:
@@ -353,13 +365,10 @@
          "закрыть" встаёт на её место — см. footer.css. -->
     <span class="site-footer__top-slot">
       <button type="button" class="site-footer__top-btn" id="footer-top-btn" aria-label="Наверх">
-        <span
-          class="site-footer__control-icon site-footer__control-icon--up"
-          aria-hidden="true"
-        ></span>
+        <span class="icon icon--up" aria-hidden="true"></span>
       </button>
       <button type="button" class="site-footer__close-btn" id="footer-menu-close" aria-label="Закрыть меню">
-        <span aria-hidden="true">✕</span>
+        <span class="icon icon--close" aria-hidden="true"></span>
       </button>
     </span>
   </footer>
@@ -385,10 +394,22 @@
   <div class="footer-menu-panel" id="footer-menu-panel" hidden>
     <nav class="footer-menu-panel__bar">
       <ul class="footer-menu-panel__nav">
-        <li><a href="#" class="footer-menu-panel__link text-label is-current">Работы</a></li>
-        <li><a href="#" class="footer-menu-panel__link text-label">Обо мне</a></li>
-        <li><a href="#" class="footer-menu-panel__link text-label">Активности</a></li>
-        <li><a href="#" class="footer-menu-panel__link text-label">Контакты</a></li>
+        <li><a href="#" class="footer-menu-panel__link text-label is-current">
+          <span class="icon icon--works" aria-hidden="true"></span>
+          Работы
+        </a></li>
+        <li><a href="#" class="footer-menu-panel__link text-label">
+          <span class="icon icon--about" aria-hidden="true"></span>
+          Обо мне
+        </a></li>
+        <li><a href="#" class="footer-menu-panel__link text-label">
+          <span class="icon icon--activities" aria-hidden="true"></span>
+          Активности
+        </a></li>
+        <li><a href="#" class="footer-menu-panel__link text-label">
+          <span class="icon icon--contacts" aria-hidden="true"></span>
+          Контакты
+        </a></li>
       </ul>
     </nav>
   </div>

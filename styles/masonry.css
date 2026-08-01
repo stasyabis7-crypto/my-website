@@ -41,8 +41,8 @@
   top: 0;
   left: 0;
   box-sizing: border-box;
-  border: 1px solid var(--color-glass-border);
-  border-radius: 0.875rem;
+  /* iOS-скругление — крупнее прежнего, без обводки (не нравилась). */
+  border-radius: 1.5rem;
   overflow: hidden;
   background: var(--color-surface-alt, #eceff3);
   text-decoration: none;

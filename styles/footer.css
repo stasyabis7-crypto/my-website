@@ -24,8 +24,7 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: var(--chrome-h);
+  justify-content: center;
   padding-block: var(--chrome-pad-block);
   padding-inline: var(--chrome-pad-block);
   background: var(--color-glass);
@@ -38,41 +37,60 @@
 /*
   Футер — ВСЕГДА плавающая плашка, как и хедер (см. header.css).
 
-  Моб/планшет (<1101, либо шире при chrome--compact) — плашка почти во
-  всю ширину снизу. По умолчанию (страница не проскроллена) внутри неё
-  виден тот же список ссылок, что и на десктопе (см.
-  .site-footer__nav-wrap) — сворачивать нечего, пока пользователь не
-  начал скроллить.
+  Моб/планшет (<1101, либо шире при chrome--compact) — по умолчанию
+  (страница не проскроллена) плашка обнимает список ссылок по ширине
+  и стоит по центру нижнего края (left: 50% + translateX), а не
+  растягивается от края до края — то же "hug-content", что и у
+  хедера. max-width страхует от переполнения на совсем узких экранах.
 
   При скролле (см. .is-collapsed, ставит layout-chrome.js по
-  window.scrollY) список ссылок прячется, а вместо него в той же
-  плашке остаются два маленьких контрола: кнопка "Меню" слева (по
-  клику открывает #footer-menu-panel) и кружок со стрелкой вверх
-  справа (скроллит страницу наверх).
+  window.scrollY) список ссылок прячется, а плашка возвращается к
+  растянутому от края до края позиционированию — в этом состоянии
+  видимых элементов два самостоятельных кружка по краям (кнопка
+  "Меню" слева, кнопка "наверх" справа), а не одна общая плашка, им
+  нужны реальные left:0/right:0 экрана (см. .is-collapsed ниже).
 
-  Десктоп (1101+, не compact) — плашка сжимается до ширины контента,
+  Десктоп (1101+, не compact) — плашка top-right, сжата по контенту,
   список ссылок виден всегда целиком независимо от скролла (см.
   переопределение ниже) — сворачивать незачем, места достаточно.
 */
 .site-footer {
   position: fixed;
   bottom: var(--page-px, 10px);
-  left: var(--page-px, 10px);
-  right: var(--page-px, 10px);
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  max-width: calc(100% - var(--page-px, 10px) * 2);
   z-index: 50;
 }
 
+/* Свёрнутое состояние (проскроллили) — список ссылок прячем и
+   возвращаем плашку в растянутое от края до края позиционирование
+   (см. комментарий у .site-footer выше): кружки "Меню"/"наверх"
+   садятся на реальные левый/правый края экрана (position: absolute,
+   left: 0 / right: 0 — см. правила в самом низу секции). */
+.site-footer.is-collapsed {
+  left: var(--page-px, 10px);
+  right: var(--page-px, 10px);
+  transform: none;
+  max-width: none;
+}
+
 /* max-width (не display) — то, что реально анимирует сворачивание в
-   кнопки при скролле (см. .is-collapsed ниже): плашка схлопывается
-   по ширине и растворяется, а не исчезает одним кадром.
+   кнопки при скролле (см. .is-collapsed ниже): список схлопывается по
+   ширине и растворяется, а не исчезает одним кадром. Значение открытого
+   состояния — фиксированный rem, с запасом больше реальной ширины 4
+   пунктов (а не 100%): плашка теперь сама сжата по контенту (см. выше),
+   а не растянута на явную ширину, поэтому проценту не от чего было бы
+   отсчитываться во время анимации.
    visibility с задержкой в .is-collapsed (а не здесь) — задержки
    тут нет специально, чтобы при разворачивании список сразу становился
    кликабельным/доступным с клавиатуры, не дожидаясь конца анимации. */
 .site-footer__nav-wrap {
   display: flex;
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-width: 0;
-  max-width: 100%;
+  max-width: 40rem;
   overflow: hidden;
   opacity: 1;
   visibility: visible;
@@ -81,37 +99,52 @@
     opacity 0.3s var(--footer-ease);
 }
 
-/* Моб/планшет — список растянут на всю ширину плашки, пункты делят
-   её поровну (flex: 1 1 0 на li). На десктопе (см. медиа-запрос ниже)
-   список уже не тянется на всю ширину — просто у каждого пункта
-   один и тот же размер, подогнанный под самый длинный ("Активности"),
-   а не под ширину плашки. */
+/* Список больше не растянут на всю ширину плашки — плашка сама сжата
+   по контенту (см. .site-footer выше), поэтому и пункты, и сам список
+   сидят по своей естественной ширине (см. .site-footer__link — теперь
+   фиксированная ширина вместо flex-растяжения на всех брейкпоинтах, а
+   не только на десктопе). */
 .site-footer__nav {
   display: flex;
   align-items: center;
-  width: 100%;
+  min-width: 0;
   gap: 0.5rem;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+/* flex-basis 7.5rem — предпочитаемая (не растянутая) ширина пункта,
+   но с возможностью сжаться (flex-shrink: 1via "0 1"): на очень узких
+   экранах 4 пункта по 7.5rem с гэпами шире доступной ширины плашки
+   (см. max-width на .site-footer) — пункты пропорционально сжимаются
+   вместо того, чтобы обрезаться/вылезать за край, длинные подписи в
+   этом случае усекаются многоточием (см. text-overflow на .link). */
 .site-footer__nav li {
-  flex: 1 1 0;
+  flex: 0 1 7.5rem;
   min-width: 0;
 }
 
 /* Все пункты — одна и та же заготовка (прозрачная рамка/фон, тот же
    размер), активный отличается только заливкой (см. .is-current
    ниже), а не собственной шириной/высотой — поэтому у всех пунктов
-   получается одна и та же длина. */
+   получается одна и та же длина (ширину задаёт li, см. flex-basis
+   выше — link просто заполняет его на 100%).
+
+   Иконка над подписью, гэп 4px — на моб/планшете (по умолчанию). На
+   десктопе (см. медиа-запрос ниже) иконка ложится слева от подписи в
+   строку — там же вся пилюля одной высоты со строкой, как и раньше. */
 .site-footer__link {
+  box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 4px;
   width: 100%;
-  height: var(--chrome-control-size);
-  padding-inline: 0.875rem;
+  height: auto;
+  padding-block: 0.5rem;
+  padding-inline: 0.75rem;
   border: 1px solid transparent;
   border-radius: 999px;
   color: var(--color-text);
@@ -120,6 +153,11 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.site-footer__link .icon {
+  width: 1.125rem;
+  height: 1.125rem;
 }
 
 .site-footer__link:hover {
@@ -200,6 +238,13 @@
   font-size: 1.125rem;
 }
 
+.site-footer__menu-btn .icon,
+.site-footer__top-btn .icon,
+.site-footer__close-btn .icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 /* "Наверх"/"закрыть" заполняют слот целиком (inset: 0) и не зависят
    от видимости слота — тот уже скрывает/показывает их вместе как
    единое целое (см. .site-footer__top-slot выше). "Наверх" виден по
@@ -217,23 +262,6 @@
     filter 0.3s var(--footer-ease);
 }
 
-.site-footer__control-icon {
-  display: block;
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: currentColor;
-}
-
-.site-footer__control-icon--menu {
-  -webkit-mask: url("../assets/icons/menu-hamburger.svg") center / contain no-repeat;
-  mask: url("../assets/icons/menu-hamburger.svg") center / contain no-repeat;
-}
-
-.site-footer__control-icon--up {
-  -webkit-mask: url("../assets/icons/up.svg") center / contain no-repeat;
-  mask: url("../assets/icons/up.svg") center / contain no-repeat;
-}
-
 /* "Наверх"/"закрыть" — оба всегда в DOM и наложены друг на друга
    (см. .site-footer__top-slot), переключение через opacity (а не
    display), чтобы одно плавно проступало вместо другого. */
@@ -248,9 +276,15 @@
 
    ВАЖНО: сам .site-footer в этом состоянии перестаёт быть видимой
    плашкой (никакого фона/скругления) — это только позиционирующая
-   обёртка на всю ширину. Кнопки — два самостоятельных кружка по её
-   краям (у каждого свой фон/бордер), а не два контрола внутри одной
-   общей плашки-бара.
+   обёртка на всю ширину (растянутая от края до края, см.
+   .site-footer.is-collapsed выше). Кнопки — два самостоятельных
+   кружка по её краям (у каждого свой фон/бордер), а не два контрола
+   внутри одной общей плашки-бара. height здесь — то, что раньше
+   держала на всех состояниях база .site-footer: только в свёрнутом
+   виде и на десктопе (см. медиа-запрос ниже) плашка/обёртка имеет
+   фиксированную высоту var(--chrome-h), на моб/планшете в развёрнутом
+   виде высота теперь по контенту (см. .site-footer__link — иконка +
+   подпись в столбик занимают больше места, чем одна строка).
 
    Задержка на visibility — на схлопывающемся элементе (.nav-wrap), а
    не на появляющихся кнопках: список остаётся видимым/кликабельным
@@ -290,6 +324,7 @@
 }
 
 .site-footer.is-collapsed {
+  height: var(--chrome-h);
   background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -300,13 +335,25 @@
 
 /* Десктоп — плашка top-right, список ссылок виден целиком ВСЕГДА,
    .is-collapsed на десктопе не действует (места достаточно, сворачивать
-   незачем). html:not(.chrome--compact) — см. header.css. */
+   незачем). html:not(.chrome--compact) — см. header.css.
+
+   --chrome-control-size/--chrome-pad-block уменьшены здесь же — общий
+   токен с header.css (см. дубль там и комментарий у :root выше),
+   плашки остаются одной высоты на любой ширине. */
 @media (min-width: 1101px) {
+  html:not(.chrome--compact) {
+    --chrome-control-size: 2rem;
+    --chrome-pad-block: 0.375rem;
+  }
+
   html:not(.chrome--compact) .site-footer {
+    height: var(--chrome-h);
     top: var(--page-px, 10px);
     bottom: auto;
     left: auto;
     right: var(--page-px, 10px);
+    transform: none;
+    max-width: none;
     padding-inline: var(--chrome-pad-block);
   }
 
@@ -323,7 +370,7 @@
   }
 
   html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__nav-wrap {
-    max-width: 100%;
+    max-width: 40rem;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -336,15 +383,24 @@
     visibility: hidden;
     pointer-events: none;
   }
+
+  /* Иконка ложится слева от подписи в строку (не в столбик, как на
+     моб/планшете) — пилюля одной высоты со строкой контента. */
+  html:not(.chrome--compact) .site-footer__link {
+    flex-direction: row;
+    gap: 0.375rem;
+    height: var(--chrome-control-size);
+    padding-block: 0;
+  }
 }
 
 /*
   Плашка-меню (моб/планшет) — выезжает при клике на "Меню", когда
   футер свёрнут. Намеренно вне <footer>, чтобы висеть отдельно над
   ним. Растянута на всю ширину футера (left/right: page-px, как и у
-  .site-footer) — кнопка "закрыть" больше не занимает место рядом с
-  баром, она теперь в самом футере, в слоте кнопки "наверх" (см.
-  .site-footer__top-slot выше).
+  .site-footer в свёрнутом состоянии) — кнопка "закрыть" больше не
+  занимает место рядом с баром, она теперь в самом футере, в слоте
+  кнопки "наверх" (см. .site-footer__top-slot выше).
 */
 .footer-menu-panel {
   position: fixed;
@@ -381,7 +437,8 @@
 
 /* Бар теперь высотой по контенту (4 пункта друг под другом), а не
    фиксированной pill-высоты в один ряд, как раньше — см.
-   .footer-menu-panel__nav (flex-direction: column) ниже. */
+   .footer-menu-panel__nav (flex-direction: column) ниже. Без обводки —
+   у панели и так достаточно контраста от блюра/тени фона под ней. */
 .footer-menu-panel__bar {
   box-sizing: border-box;
   display: block;
@@ -391,12 +448,11 @@
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  border: 1px solid var(--color-glass-border);
 }
 
 /* Пункты друг под другом, все одного размера (см.
    .footer-menu-panel__link — width: 100% + фиксированная высота),
-   текст в каждом центрирован. */
+   иконка + подпись центрированы как группа. */
 .footer-menu-panel__nav {
   list-style: none;
   margin: 0;
@@ -407,10 +463,13 @@
   gap: 0.375rem;
 }
 
+/* Иконка слева от подписи, гэп 8px. */
 .footer-menu-panel__link {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   width: 100%;
   height: var(--chrome-control-size);
   padding-inline: 0.875rem;
@@ -420,6 +479,11 @@
   font-weight: var(--font-weight-regular);
   text-decoration: none;
   text-align: center;
+}
+
+.footer-menu-panel__link .icon {
+  width: 1.125rem;
+  height: 1.125rem;
 }
 
 .footer-menu-panel__link:hover {
@@ -498,24 +562,29 @@ html.footer-menu-open {
   overflow: hidden;
 }
 
+/*
+  Плавный блюр-градиент под футером на моб/планшете — контент, что
+  скроллится под плавающей плашкой футера, размывается постепенно (а
+  не обрубается по жёсткой линии), как iOS-панели. Только моб/планшет
+  — на десктопе футер сжат в угол сверху и почти не перекрывает
+  контент снизу, блюр там не нужен (см. медиа-запрос ниже).
+*/
+.footer-fade {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 140px;
+  z-index: 49;
+  pointer-events: none;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 0%, transparent 100%);
+}
+
 @media (min-width: 1101px) {
-  html:not(.chrome--compact) .footer-menu-panel {
+  html:not(.chrome--compact) .footer-fade {
     display: none;
-  }
-
-  html:not(.chrome--compact) .footer-menu-backdrop {
-    display: none;
-  }
-
-  /* Десктоп — список не тянется на всю ширину плашки (та сама сжата
-     по контенту), поэтому здесь фиксируем одинаковую длину пункта
-     под самый длинный ("Активности") явным значением, а не
-     flex-растяжением, как на моб/планшете выше. */
-  html:not(.chrome--compact) .site-footer__nav li {
-    flex: 0 0 auto;
-  }
-
-  html:not(.chrome--compact) .site-footer__link {
-    width: 7.5rem;
   }
 }
