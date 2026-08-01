@@ -42,10 +42,8 @@
     .theme-screen-1{--text:#000;--screen-bg:#fff;background:radial-gradient(circle at -8% 28%,#ffdce0 0,transparent 33%),radial-gradient(circle at 105% 35%,#d9ffd0 0,transparent 36%),radial-gradient(circle at 14% 88%,#beeaff 0,transparent 39%),#fff}
     .theme-screen-2{--text:#000;--screen-bg:#fcece3;background:radial-gradient(circle at 82% 18%,#fff5c9 0,transparent 34%),radial-gradient(circle at 0 100%,#ffe7e8 0,transparent 34%),#fcece3}
     .theme-screen-3{--text:#000;--screen-bg:#eef4ef;background:radial-gradient(circle at 0 20%,#c8ffe2 0,transparent 36%),radial-gradient(circle at 100% 22%,#ffe1df 0,transparent 38%),linear-gradient(120deg,#c5eafa,#f4f0e6)}
-    .brand{position:absolute;top:56px;left:50%;display:flex;align-items:center;gap:4px;transform:translateX(-50%);font-size:26px;font-weight:700;color:var(--text)}
-    .brand-dots{position:relative;width:27px;height:25px;display:inline-block}
-    .brand-dots i{position:absolute;width:11px;height:11px;border-radius:50%}
-    .brand-dots i:nth-child(1){left:0;top:7px;background:#04c454}.brand-dots i:nth-child(2){left:9px;top:0;background:#8c3ffd}.brand-dots i:nth-child(3){left:15px;top:8px;background:#0af}.brand-dots i:nth-child(4){left:9px;top:14px;background:#ff4053}
+    .brand{position:absolute;top:60px;left:50%;width:99px;height:27px;display:block;transform:translateX(-50%)}
+    .brand img{display:block;width:99px;height:27px}
     .close{position:absolute;right:18px;top:59px;width:24px;height:24px;color:var(--text)}
     .close:before,.close:after{content:"";position:absolute;left:11px;top:1px;width:2px;height:22px;background:currentColor;border-radius:2px;transform:rotate(45deg)}
     .close:after{transform:rotate(-45deg)}
@@ -54,12 +52,11 @@
     .description{margin:11px auto 0;max-width:340px;font-size:15px;line-height:1.42;font-weight:400}
     .illustration{position:absolute;left:0;width:375px;height:auto;display:block;object-fit:contain}
     .state-0 .illustration{top:357px}
-    .state-1 .illustration{bottom:105px}
+    .state-1 .illustration{bottom:99px}
     .state-2 .illustration{top:346px}
     .state-3 .illustration{bottom:105px}
-    .state-2 .brand{color:#ff4053}
     .cta{position:absolute;left:10px;right:10px;bottom:43px;height:52px;border:0;border-radius:14px;background:var(--button);color:#fff;font:400 15px/1 "CoFo Avito Text",Arial,sans-serif}
-    .state-0{--button:#04c454}.state-1,.state-2,.state-3{--button:#0af}
+    .state-0{--button:#04c454}.state-1,.state-3{--button:#0af}.state-2{--button:#000}
     .home{position:absolute;z-index:30;bottom:9px;left:50%;width:134px;height:5px;border-radius:4px;background:#000;transform:translateX(-50%);transition:background .8s var(--ease)}
     .home.dark{background:#fff}
     @media(prefers-reduced-motion:reduce){.screen,.viewport,.status,.levels,.home{transition-duration:.01ms!important}}
@@ -79,22 +76,22 @@
           </div>
           <div class="screens">
             <section class="screen active state-0"><div class="screen-inner theme-screen-0">
-              <div class="brand"><span class="brand-dots"><i></i><i></i><i></i><i></i></span><span>Avito</span></div><span class="close"></span>
+              <div class="brand"><img src="assets/logo-dark.svg" alt="Avito"></div><span class="close"></span>
               <div class="content"><h1 data-i18n="title"></h1><p class="description" data-i18n="description"></p></div>
               <img class="illustration" src="assets/theme-1.png" alt=""><button class="cta" data-i18n="cta"></button>
             </div></section>
             <section class="screen state-1"><div class="screen-inner theme-screen-1">
-              <div class="brand"><span class="brand-dots"><i></i><i></i><i></i><i></i></span><span>Avito</span></div><span class="close"></span>
+              <div class="brand"><img src="assets/logo.svg" alt="Avito"></div><span class="close"></span>
               <div class="content"><h1 data-i18n="title"></h1><p class="description" data-i18n="description"></p></div>
               <img class="illustration" src="assets/theme-2.png" alt=""><button class="cta" data-i18n="cta"></button>
             </div></section>
             <section class="screen state-2"><div class="screen-inner theme-screen-2">
-              <div class="brand"><span class="brand-dots"><i></i><i></i><i></i><i></i></span><span>Avito</span></div><span class="close"></span>
+              <div class="brand"><img src="assets/logo-red.svg" alt="Avito"></div><span class="close"></span>
               <div class="content"><h1 data-i18n="title"></h1><p class="description" data-i18n="description"></p></div>
               <img class="illustration" src="assets/theme-3.png" alt=""><button class="cta" data-i18n="cta"></button>
             </div></section>
             <section class="screen state-3"><div class="screen-inner theme-screen-3">
-              <div class="brand"><span class="brand-dots"><i></i><i></i><i></i><i></i></span><span>Avito</span></div><span class="close"></span>
+              <div class="brand"><img src="assets/logo-black.svg" alt="Avito"></div><span class="close"></span>
               <div class="content"><h1 data-i18n="title"></h1><p class="description" data-i18n="description"></p></div>
               <img class="illustration" src="assets/theme-4.png" alt=""><button class="cta" data-i18n="cta"></button>
             </div></section>
