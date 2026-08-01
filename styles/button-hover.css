@@ -16,7 +16,6 @@
   .site-footer__link,
   .site-footer__menu-btn,
   .site-footer__top-btn,
-  .site-footer__close-btn,
   .footer-menu-panel__link
 ) {
   --hover-x: 50%;
@@ -44,7 +43,6 @@
   .site-footer__link,
   .site-footer__menu-btn,
   .site-footer__top-btn,
-  .site-footer__close-btn,
   .footer-menu-panel__link
 )::before {
   content: "";
@@ -75,7 +73,6 @@
   .site-footer__link,
   .site-footer__menu-btn,
   .site-footer__top-btn,
-  .site-footer__close-btn,
   .footer-menu-panel__link
 ):is(:hover, :focus-visible) {
   border-color: var(--color-action-hover);
@@ -94,7 +91,6 @@
   .site-footer__link,
   .site-footer__menu-btn,
   .site-footer__top-btn,
-  .site-footer__close-btn,
   .footer-menu-panel__link
 ):is(:hover, :focus-visible)::before {
   filter: blur(0);
@@ -109,7 +105,6 @@
     .site-footer__link,
     .site-footer__menu-btn,
     .site-footer__top-btn,
-    .site-footer__close-btn,
     .footer-menu-panel__link
   ),
   :is(
@@ -118,7 +113,6 @@
     .site-footer__link,
     .site-footer__menu-btn,
     .site-footer__top-btn,
-    .site-footer__close-btn,
     .footer-menu-panel__link
   )::before {
     transition-duration: 0.01ms;

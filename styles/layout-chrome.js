@@ -42,7 +42,6 @@
   var menuBtn = document.getElementById('footer-menu-btn');
   var menuPanel = document.getElementById('footer-menu-panel');
   var menuBackdrop = document.getElementById('footer-menu-backdrop');
-  var menuClose = document.getElementById('footer-menu-close');
   var topBtn = document.getElementById('footer-top-btn');
   var root = document.documentElement;
   if (!header || !footer) return;
@@ -118,7 +117,13 @@
     void menuPanel.offsetWidth;
     menuPanel.classList.add('is-open');
     if (menuBackdrop) menuBackdrop.classList.add('is-open');
-    if (menuBtn) menuBtn.setAttribute('aria-expanded', 'true');
+    if (menuBtn) {
+      menuBtn.setAttribute('aria-expanded', 'true');
+      // Кнопка "Меню" сама становится кнопкой "закрыть" — крестик
+      // подставляет CSS (см. .is-menu-open .site-footer__menu-btn
+      // .icon в footer.css), тут только текст для скринридеров.
+      menuBtn.setAttribute('aria-label', 'Закрыть меню');
+    }
     footer.classList.add('is-menu-open');
     root.classList.add('footer-menu-open');
   }
@@ -127,7 +132,10 @@
     if (!menuPanel || !menuPanel.classList.contains('is-open')) return;
     menuPanel.classList.remove('is-open');
     if (menuBackdrop) menuBackdrop.classList.remove('is-open');
-    if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
+    if (menuBtn) {
+      menuBtn.setAttribute('aria-expanded', 'false');
+      menuBtn.setAttribute('aria-label', 'Меню');
+    }
     footer.classList.remove('is-menu-open');
     root.classList.remove('footer-menu-open');
     // [hidden] возвращаем только после того, как доиграет анимация
@@ -145,10 +153,6 @@
       if (menuPanel && menuPanel.classList.contains('is-open')) closeMenu();
       else openMenu();
     });
-  }
-
-  if (menuClose) {
-    menuClose.addEventListener('click', closeMenu);
   }
 
   if (topBtn) {
@@ -194,7 +198,7 @@
      безопасное значение по умолчанию — центр контрола. */
   var hoverControls = document.querySelectorAll(
     '.site-header__cta, .theme-toggle, .site-footer__link, ' +
-    '.site-footer__menu-btn, .site-footer__top-btn, .site-footer__close-btn, ' +
+    '.site-footer__menu-btn, .site-footer__top-btn, ' +
     '.footer-menu-panel__link'
   );
 

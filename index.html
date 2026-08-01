@@ -358,38 +358,30 @@
     >
       <span class="icon icon--menu" aria-hidden="true"></span>
     </button>
-    <!-- Слот со стрелкой "наверх" и кнопкой "закрыть" — один и тот же
-         кружок-слот, обе кнопки наложены друг на друга (position:
-         absolute внутри .site-footer__top-slot). Обычно виден "наверх",
-         при открытом меню (.is-menu-open) она блюрится/выключается, а
-         "закрыть" встаёт на её место — см. footer.css. -->
-    <span class="site-footer__top-slot">
-      <button type="button" class="site-footer__top-btn" id="footer-top-btn" aria-label="Наверх">
-        <span class="icon icon--up" aria-hidden="true"></span>
-      </button>
-      <button type="button" class="site-footer__close-btn" id="footer-menu-close" aria-label="Закрыть меню">
-        <span class="icon icon--close" aria-hidden="true"></span>
-      </button>
-    </span>
+    <!-- Кнопка "наверх" — при открытом меню (.is-menu-open) приглушается
+         (см. footer.css), закрывает меню теперь кнопка "Меню" слева —
+         она сама превращается в крестик, см. layout-chrome.js/footer.css. -->
+    <button type="button" class="site-footer__top-btn" id="footer-top-btn" aria-label="Наверх">
+      <span class="icon icon--up" aria-hidden="true"></span>
+    </button>
   </footer>
 
   <!--
     Подложка при открытом моб/планшет-меню — блюрит и блокирует всё,
-    кроме кнопки "Меню", кнопки "закрыть" (см. .site-footer__top-slot
-    выше) и самой плашки меню (см. .footer-menu-backdrop/
-    .site-footer.is-menu-open в footer.css и open/closeMenu в
-    layout-chrome.js — та же логика клика мимо уже закрывает меню при
-    клике по подложке).
+    кроме кнопки "Меню" (она же кнопка "закрыть", пока меню открыто —
+    см. .site-footer__menu-btn выше) и самой плашки меню (см.
+    .footer-menu-backdrop/.site-footer.is-menu-open в footer.css и
+    open/closeMenu в layout-chrome.js — та же логика клика мимо уже
+    закрывает меню при клике по подложке).
   -->
   <div class="footer-menu-backdrop" id="footer-menu-backdrop" hidden></div>
 
   <!--
     Плашка-меню (моб/планшет) — намеренно вне <footer>, чтобы висеть
-    отдельно над кнопкой "Меню". Список ссылок вертикальный (друг под
-    другом), все пункты одного размера, текст центрирован — см.
-    .footer-menu-panel__nav в footer.css. Растянута на всю ширину
-    футера — кнопка "закрыть" больше не занимает место рядом (она
-    теперь в самом футере, см. .site-footer__top-slot выше).
+    отдельно над кнопкой "Меню". Сетка 2×2 (см. .footer-menu-panel__nav
+    в footer.css), пункты того же размера, что и в развёрнутом футере.
+    Сжата по контенту и прибита к левому краю экрана — не растянута
+    на всю ширину футера.
   -->
   <div class="footer-menu-panel" id="footer-menu-panel" hidden>
     <nav class="footer-menu-panel__bar">
