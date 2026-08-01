@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Орбиты добра</title>
+  <style>
+    :root{--canvas-w:1000;--canvas-h:750;--ease:cubic-bezier(.45,.05,.55,.95)}
+    *{box-sizing:border-box}
+    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#fff}
+    body{display:grid;place-items:center}
+    .viewport{position:relative;width:100vw;height:100vh;overflow:hidden;background:#fff}
+    .canvas{position:absolute;left:50%;top:50%;width:1000px;height:750px;transform-origin:center;background:#fff;overflow:hidden}
+    .composition{position:absolute;left:50%;top:50%;width:560px;height:560px;transform:translate(-50%,-50%)}
+    .color-field{position:absolute;inset:-10px;border-radius:50%;filter:blur(42px);opacity:.64;animation:field-drift 26s var(--ease) infinite alternate}
+    .shape-orbit{position:absolute;left:50%;top:50%;width:0;height:0;animation:shape-orbit var(--duration) linear infinite;animation-delay:var(--delay)}
+    .blob{position:absolute;left:var(--radius);top:0;border-radius:48% 52% 58% 42%/55% 42% 58% 45%;mix-blend-mode:multiply;filter:blur(10px);opacity:.72;transform:translate(-50%,-50%)}
+    .shape-a{--radius:112px;--duration:48s;--delay:-6s}.blob-a{width:290px;height:255px;background:linear-gradient(135deg,#a96bff,#7bf0dc)}
+    .shape-b{--radius:132px;--duration:56s;--delay:-25s}.blob-b{width:285px;height:270px;background:linear-gradient(145deg,#37c7ff,#b4f78a)}
+    .shape-c{--radius:118px;--duration:52s;--delay:-38s}.blob-c{width:280px;height:270px;background:linear-gradient(145deg,#ff7d8e,#a777f5)}
+    .shape-d{--radius:142px;--duration:60s;--delay:-49s}.blob-d{width:270px;height:250px;background:linear-gradient(145deg,#8f8cff,#ff918b)}
+    .wash{position:absolute;inset:0;background:rgba(255,255,255,.15);z-index:1}
+    .levels{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+    .level{position:absolute;left:50%;top:50%;display:block;transform:translate(-50%,-50%)}
+    .level-outer{width:297px;height:297px;animation:ring-cw 42s linear infinite}
+    .level-middle{width:198px;height:198px;animation:ring-ccw 34s linear infinite}
+    .level-inner{width:113px;height:113px;animation:ring-cw 27s linear infinite}
+    .center-logo{position:absolute;z-index:8;left:50%;top:50%;width:57px;height:53px;transform:translate(-50%,-50%)}
+    .center-logo img{width:100%;height:100%;display:block}
+    .orbiter{position:absolute;z-index:7;left:50%;top:50%;width:0;height:0;animation:orbit var(--duration) linear infinite;animation-delay:var(--delay)}
+    .orbiter.reverse{animation-name:orbit-reverse}
+    .orbit-item{position:absolute;left:var(--radius);top:0;width:var(--size);height:var(--size);transform:translate(-50%,-50%);animation:counter var(--duration) linear infinite;animation-delay:var(--delay)}
+    .reverse .orbit-item{animation-name:counter-reverse}
+    .orbit-item img{display:block;width:100%;height:100%;object-fit:contain}
+    .icon-1{--radius:99px;--size:46px;--duration:36s;--delay:-4s}
+    .icon-2{--radius:91px;--size:46px;--duration:36s;--delay:-13s}
+    .icon-3{--radius:151px;--size:46px;--duration:36s;--delay:-21s}
+    .icon-4{--radius:151px;--size:46px;--duration:36s;--delay:-30s}
+    .bubble-orbit{z-index:20}
+    .bubble-1{--radius:190px;--size:159px;--duration:52s;--delay:-4s}
+    .bubble-2{--radius:165px;--size:98px;--duration:52s;--delay:-21.333s}
+    .bubble-3{--radius:140px;--size:30px;--duration:52s;--delay:-38.666s}
+    @keyframes orbit{to{transform:rotate(360deg)}}
+    @keyframes orbit-reverse{to{transform:rotate(-360deg)}}
+    @keyframes counter{to{transform:translate(-50%,-50%) rotate(-360deg)}}
+    @keyframes counter-reverse{to{transform:translate(-50%,-50%) rotate(360deg)}}
+    @keyframes ring-cw{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+    @keyframes ring-ccw{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(-360deg)}}
+    @keyframes field-drift{0%{transform:rotate(-7deg) scale(.98)}100%{transform:rotate(9deg) scale(1.05)}}
+    @keyframes shape-orbit{from{transform:rotate(0)}to{transform:rotate(-360deg)}}
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+  </style>
+</head>
+<body>
+<main class="viewport">
+  <div class="canvas">
+    <div class="composition">
+      <div class="color-field" aria-hidden="true">
+        <span class="shape-orbit shape-a"><i class="blob blob-a"></i></span>
+        <span class="shape-orbit shape-b"><i class="blob blob-b"></i></span>
+        <span class="shape-orbit shape-c"><i class="blob blob-c"></i></span>
+        <span class="shape-orbit shape-d"><i class="blob blob-d"></i></span>
+      </div>
+      <div class="wash" aria-hidden="true"></div>
+      <div class="levels" aria-hidden="true">
+        <img class="level level-outer" src="assets/level-5.png" alt="">
+        <img class="level level-middle" src="assets/level-2.png" alt="">
+        <img class="level level-inner" src="assets/level-1.png" alt="">
+      </div>
+      <div class="orbiter icon-1"><span class="orbit-item"><img src="assets/color-bubble-1.svg" alt=""></span></div>
+      <div class="orbiter icon-2"><span class="orbit-item"><img src="assets/color-bubble-2.svg" alt=""></span></div>
+      <div class="orbiter icon-3"><span class="orbit-item"><img src="assets/color-bubble-3.svg" alt=""></span></div>
+      <div class="orbiter icon-4"><span class="orbit-item"><img src="assets/color-bubble-4.svg" alt=""></span></div>
+      <div class="orbiter bubble-orbit bubble-1 reverse"><span class="orbit-item"><img src="assets/bubble-1.png" alt=""></span></div>
+      <div class="orbiter bubble-orbit bubble-2 reverse"><span class="orbit-item"><img src="assets/bubble-2.png" alt=""></span></div>
+      <div class="orbiter bubble-orbit bubble-3 reverse"><span class="orbit-item"><img src="assets/bubble-3.png" alt=""></span></div>
+      <div class="center-logo"><img src="assets/logo.svg" alt="Avito"></div>
+    </div>
+  </div>
+</main>
+<script>
+{
+  const canvas=document.querySelector('.canvas');
+  function fit(){const viewport=document.querySelector('.viewport');const scale=Math.min(viewport.clientWidth/1000,viewport.clientHeight/750);canvas.style.transform=`translate(-50%,-50%) scale(${scale})`;}
+  addEventListener('resize',fit);fit();
+}
+</script>
+</body>
+</html>
