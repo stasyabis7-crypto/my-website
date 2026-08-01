@@ -23,13 +23,12 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  height: var(--chrome-h);
+  height: auto;
   padding-block: var(--chrome-pad-block);
   padding-inline: var(--chrome-pad-block);
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  border: 1px solid var(--color-glass-border);
   border-radius: 999px;
 }
 
@@ -96,15 +95,26 @@
   mask: url("../assets/logo.svg") center / contain no-repeat;
 }
 
+/*
+  Кнопка "Резюме PDF" — автоматически та же заготовка, что и пункт
+  футера (.site-footer__link — иконка сверху, подпись снизу, те же
+  паддинги/гэп/размер иконки), а не своя отдельная раскладка: одно и
+  то же visual "item" переиспользуется в хедере и футере, отсюда же и
+  одинаковая высота плашек хедера/футера (высота обеих теперь считается
+  от одного и того же содержимого, см. .site-footer__link в footer.css).
+  Правило одно на все брейкпоинты — на десктопе меняется только
+  font-size (см. медиа-запрос ниже), не раскладка. */
 .site-header__cta {
   box-sizing: border-box;
   flex: 0 0 auto;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.375rem;
-  height: var(--chrome-control-size);
-  padding-inline: 0.875rem;
+  gap: 4px;
+  height: auto;
+  padding-block: 0.5rem;
+  padding-inline: 0.75rem;
   border: 1px solid var(--color-ink);
   border-radius: 999px;
   background: var(--color-ink);
@@ -118,8 +128,8 @@
 }
 
 .site-header__cta .icon {
-  width: 1rem;
-  height: 1rem;
+  width: 1.375rem;
+  height: 1.375rem;
 }
 
 /*
@@ -137,5 +147,12 @@
   html:not(.chrome--compact) {
     --chrome-control-size: 2rem;
     --chrome-pad-block: 0.375rem;
+  }
+
+  /* Текст мельче на десктопе — тот же приём у .site-footer__link в
+     footer.css, держите оба значения в синхроне (иначе высота плашек
+     разойдётся). */
+  html:not(.chrome--compact) .site-header__cta {
+    font-size: 0.75rem;
   }
 }
