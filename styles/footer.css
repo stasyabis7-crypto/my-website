@@ -20,6 +20,7 @@
      (список ссылок ⇄ кнопки, панель меню) — единая "пружинка" на все
      переходы этого блока. */
   --footer-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --footer-menu-gap: 8px;
 }
 
 .site-footer {
@@ -342,6 +343,10 @@
     font-size: 0.75rem;
   }
 
+  html:not(.chrome--compact) .site-footer__nav li {
+    flex-basis: calc(7.5rem + 10px);
+  }
+
   /* .is-collapsed ставится по скроллу независимо от ширины экрана —
      на десктопе это должно быть НЕ заметно: плашка остаётся обычной
      заполненной пилюлей со списком ссылок, а не прозрачной обёрткой
@@ -386,7 +391,9 @@
 .footer-menu-panel {
   position: fixed;
   z-index: 55;
-  bottom: calc(var(--page-px, 10px) + var(--chrome-h, 3.5rem) + 8px);
+  bottom: calc(
+    var(--page-px, 10px) + var(--chrome-h, 3.5rem) + var(--footer-menu-gap)
+  );
   left: var(--page-px, 10px);
   right: auto;
   opacity: 0;
