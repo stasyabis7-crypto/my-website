@@ -378,7 +378,7 @@
   }
 
   html:not(.chrome--compact) .site-footer__nav li {
-    flex: 0 0 8.75rem;
+    flex: 0 0 140px;
   }
 
   /* .is-collapsed ставится по скроллу независимо от ширины экрана —
