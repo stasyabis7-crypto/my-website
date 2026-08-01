@@ -640,24 +640,26 @@ html.footer-menu-open {
 }
 
 /*
-  Плавный блюр-градиент под футером на моб/планшете — контент, что
-  скроллится под плавающей плашкой футера, размывается постепенно (а
-  не обрубается по жёсткой линии), как iOS-панели. Только моб/планшет
-  — на десктопе футер сжат в угол сверху и почти не перекрывает
-  контент снизу, блюр там не нужен (см. медиа-запрос ниже).
+  Мягкое затемнение под футером на моб/планшете. Вместо размытия
+  контента (которое выглядело как запотевшее стекло) здесь обычный
+  прозрачный градиент в цвет страницы: карточки остаются резкими и
+  спокойно растворяются за плавающей навигацией.
 */
 .footer-fade {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 140px;
+  height: 112px;
   z-index: 49;
   pointer-events: none;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 100%);
-  mask-image: linear-gradient(to top, #000 0%, transparent 100%);
+  background: linear-gradient(
+    to top,
+    var(--color-bg) 0%,
+    color-mix(in srgb, var(--color-bg) 92%, transparent) 28%,
+    color-mix(in srgb, var(--color-bg) 56%, transparent) 62%,
+    transparent 100%
+  );
 }
 
 @media (min-width: 1101px) {
