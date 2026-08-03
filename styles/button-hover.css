@@ -10,6 +10,43 @@
   --button-hover-duration: 0.5s;
   --button-hover-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --button-hover-blur: 10px;
+  --button-press-scale: 0.96;
+  --button-press-duration: 0.12s;
+}
+
+/*
+  Короткий press-feedback для всех нативных интерактивных элементов.
+  Используем отдельное свойство scale, чтобы не перезаписывать transform
+  у плавающих контролов и элементов с собственными анимациями.
+*/
+:where(
+  a[href],
+  button,
+  summary,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  [role="button"],
+  [role="link"]
+) {
+  scale: 1;
+  transition-property: scale;
+  transition-duration: var(--button-press-duration);
+  transition-timing-function: ease-out;
+}
+
+:where(
+  a[href],
+  button,
+  summary,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  [role="button"],
+  [role="link"]
+):active:not(:disabled, [aria-disabled="true"]) {
+  scale: var(--button-press-scale);
+  transition-duration: 0.06s;
 }
 
 :is(
@@ -25,6 +62,7 @@
   isolation: isolate;
   overflow: hidden;
   transition:
+    scale var(--button-press-duration) ease-out,
     color 0.3s ease,
     border-color 0.3s ease,
     opacity 0.3s ease;
@@ -181,6 +219,19 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  :where(
+    a[href],
+    button,
+    summary,
+    input[type="button"],
+    input[type="submit"],
+    input[type="reset"],
+    [role="button"],
+    [role="link"]
+  ) {
+    transition-duration: 0.01ms;
+  }
+
   :is(
     .site-header__cta,
     .theme-toggle,
