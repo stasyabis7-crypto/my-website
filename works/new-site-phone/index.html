@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Лендинг о компании Авито</title>
+<script src="../shared/phone-status-bar.js" defer></script>
 <style>
   @font-face{font-family:"CoFo Avito Text";src:url("assets/CoFoAvitoText-Regular.woff2") format("woff2");font-weight:400}@font-face{font-family:"CoFo Avito Text";src:url("assets/CoFoAvitoText-Medium.woff2") format("woff2");font-weight:500}@font-face{font-family:"CoFo Avito Text";src:url("assets/CoFoAvitoText-ExtraBold.woff2") format("woff2");font-weight:800}
   *{box-sizing:border-box}
@@ -15,13 +16,10 @@
   .phone{position:relative;width:100%;height:100%;padding:7px;border-radius:69px;background:linear-gradient(110deg,#727272 0%,#f8f5eb 17%,#747474 43%,#ece8dc 72%,#707070 100%);box-shadow:0 30px 64px rgba(55,24,83,.28)}
   .bezel{position:relative;width:100%;height:100%;padding:9px;border-radius:63px;background:#090909;overflow:hidden}
   .display{position:relative;width:100%;height:100%;border-radius:54px;background:#fff;overflow:hidden}
-  .status{position:absolute;z-index:20;inset:0 0 auto;height:48px;background:#fff;font:800 15px/1 "CoFo Avito Text",Arial,sans-serif}.time{position:absolute;left:52px;top:20px}.levels{position:absolute;right:0;top:21px;width:124px;height:12px}
   .site-screen{position:absolute;left:0;right:0;top:48px;min-height:957px;background:#fff;color:#000;font-family:"CoFo Avito Text",Arial,sans-serif;font-weight:500}
   .site-header{height:68px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;background:#fff}.site-logo{display:block;width:105px;height:32px}.site-menu{position:relative;width:52px;height:52px}.site-menu:before,.site-menu:after,.site-menu i{content:"";position:absolute;right:16px;height:2px;border-radius:2px;background:#000}.site-menu:before{top:18px;width:18px}.site-menu i{top:24px;width:13px}.site-menu:after{top:30px;width:9px}
   .hero{position:relative;height:625px;border-radius:60px;background:#f7f7f5;overflow:hidden;text-align:center}.hero-copy{position:absolute;z-index:2;left:16px;right:16px;top:48px}.hero h1{margin:0;font-size:26px;line-height:30px;font-weight:800;letter-spacing:-.35px}.hero p{display:flex;align-items:center;justify-content:center;gap:3px;margin:8px 0 0;color:#757575;font-size:15px;line-height:22px}.hero p img{width:16px;height:20px}.company-illustration{position:absolute;left:-10px;top:172px;width:395px;height:auto;display:block}
   .rank{padding-top:54px;text-align:center}.rank-check{display:block;width:58px;height:58px;margin:0 auto 15px}.rank strong{display:block;font-size:26px;line-height:30px;font-weight:800}.rank p{margin:8px 0 0;font-size:15px;line-height:22px;font-weight:500}.rank p span{display:flex;justify-content:center;align-items:center;gap:3px;color:#757575}.rank p img{width:16px;height:20px}
-  .island{position:absolute;z-index:4;left:50%;top:12px;width:116px;height:34px;transform:translateX(-50%);border-radius:22px;background:#050505;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
-  .camera{position:absolute;right:12px;top:11px;width:9px;height:9px;border-radius:50%;background:#111b35;box-shadow:inset 0 0 4px #3357a6}
   .home{position:absolute;z-index:4;left:50%;bottom:9px;width:132px;height:5px;transform:translateX(-50%);border-radius:5px;background:#080808}
   .side{position:absolute;width:4px;border-radius:4px;background:#737373}
   .side--silent{left:-3px;top:126px;height:32px}
@@ -42,7 +40,7 @@
     <div class="phone-wrap">
       <i class="side side--silent"></i><i class="side side--volume"></i><i class="side side--power"></i>
       <div class="phone"><div class="bezel"><div class="display">
-        <div class="status"><span class="time">9:41</span><div class="island"><i class="camera"></i></div><img class="levels" src="assets/levels.svg?v=1" alt=""></div>
+        <phone-status-bar levels-src="assets/levels.svg?v=1"></phone-status-bar>
         <div class="site-screen">
           <header class="site-header"><img class="site-logo" src="assets/avito-logo.svg?v=1" alt="Авито"><span class="site-menu" aria-label="Меню"><i></i></span></header>
           <section class="hero"><div class="hero-copy"><h1>Авито — самая<br>посещаемая платформа<br>объявлений в мире</h1><p>По данным SimilarWeb <img src="assets/info.svg?v=1" alt=""></p></div><img class="company-illustration" src="assets/company-illustration.png?v=1" alt="Офис Авито"></section>
