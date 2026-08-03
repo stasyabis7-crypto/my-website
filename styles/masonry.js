@@ -20,6 +20,26 @@
     return 2;
   }
 
+  function randomIndex(max) {
+    if (max <= 1) return 0;
+    if (window.crypto && window.crypto.getRandomValues) {
+      var value = new Uint32Array(1);
+      window.crypto.getRandomValues(value);
+      return value[0] % max;
+    }
+    return Math.floor(Math.random() * max);
+  }
+
+  function shuffle(items) {
+    for (var i = items.length - 1; i > 0; i--) {
+      var j = randomIndex(i + 1);
+      var current = items[i];
+      items[i] = items[j];
+      items[j] = current;
+    }
+    return items;
+  }
+
   // Резолвим --masonry-gap реальным layout-движком браузера (пробный
   // элемент шириной var(--masonry-gap)), а не parseFloat строки —
   // getPropertyValue на custom property вернул бы значение КАК
@@ -73,7 +93,11 @@
   }
 
   function init(root) {
-    var items = Array.prototype.slice.call(root.querySelectorAll('.masonry__item'));
+    var allItems = Array.prototype.slice.call(root.querySelectorAll('.masonry__item'));
+    var projects = shuffle(allItems.filter(function (item) { return item.hasAttribute('data-title'); }));
+    var emptySlots = allItems.filter(function (item) { return !item.hasAttribute('data-title'); });
+    var items = projects.concat(emptySlots);
+    items.forEach(function (item) { root.appendChild(item); });
     var relayout = function () { layout(root, items); };
     relayout();
 
