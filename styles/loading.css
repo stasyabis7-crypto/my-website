@@ -1,0 +1,74 @@
+:root{
+  --skeleton-base:#2b2f37;
+  --skeleton-shine:#3a3f49;
+}
+[data-theme="light"]{
+  --skeleton-base:#e5e7eb;
+  --skeleton-shine:#f4f5f7;
+}
+@keyframes skeleton-shimmer{
+  from{background-position:200% 0}
+  to{background-position:-200% 0}
+}
+.skeleton-surface,
+.masonry__item:not(.is-media-loaded)::after{
+  background-color:var(--skeleton-base);
+  background-image:linear-gradient(100deg,transparent 30%,var(--skeleton-shine) 50%,transparent 70%);
+  background-size:220% 100%;
+  animation:skeleton-shimmer 1.45s linear infinite;
+}
+
+/* Каждый слот загружается независимо: медленный iframe продолжает
+   показывать скелетон, даже когда остальная страница уже готова. */
+.masonry__item::after{
+  content:"";
+  position:absolute;
+  z-index:10;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .25s ease;
+}
+.masonry__item:not(.is-media-loaded)::after{opacity:1}
+.masonry__item>img,
+.masonry__item>.masonry__embed{
+  opacity:0;
+  transition:opacity .32s ease;
+}
+.masonry__item.is-media-loaded>img,
+.masonry__item.is-media-loaded>.masonry__embed{opacity:1}
+
+/* Скелетоны оболочки видны только на начальной загрузке страницы. */
+.is-page-loading .site-header__avatar img,
+.is-page-loading .site-header__logo-mark,
+.is-page-loading .site-header__cta>* ,
+.is-page-loading .theme-toggle>* ,
+.is-page-loading .site-footer__link>*{opacity:0!important}
+.is-page-loading .site-header__avatar,
+.is-page-loading .site-header__logo,
+.is-page-loading .site-header__cta,
+.is-page-loading .theme-toggle,
+.is-page-loading .site-footer__link{
+  color:transparent!important;
+  border-color:transparent!important;
+  background-color:var(--skeleton-base)!important;
+  background-image:linear-gradient(100deg,transparent 30%,var(--skeleton-shine) 50%,transparent 70%)!important;
+  background-size:220% 100%!important;
+  animation:skeleton-shimmer 1.45s linear infinite!important;
+}
+.site-header__avatar,
+.site-header__logo,
+.site-header__cta,
+.theme-toggle,
+.site-footer__link{transition:background-color .25s ease,color .25s ease,opacity .25s ease}
+
+@media (prefers-reduced-motion:reduce){
+  .skeleton-surface,
+  .masonry__item:not(.is-media-loaded)::after,
+  .is-page-loading .site-header__avatar,
+  .is-page-loading .site-header__logo,
+  .is-page-loading .site-header__cta,
+  .is-page-loading .theme-toggle,
+  .is-page-loading .site-footer__link{animation:none!important}
+}
