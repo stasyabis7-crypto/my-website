@@ -286,6 +286,12 @@ html.chrome--compact .site-footer__link .icon {
     filter 0.3s var(--footer-ease);
 }
 
+/* Приоритет 1: кнопка меню — розовый акцентный контрол. */
+.site-footer__menu-btn {
+  background: var(--color-action-active);
+  color: var(--color-action-active-text);
+}
+
 .site-footer__menu-btn .icon,
 .site-footer__top-btn .icon {
   width: 1.75rem;

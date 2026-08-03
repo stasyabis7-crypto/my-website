@@ -80,7 +80,7 @@
    чёрный в light). */
 :is(
   .site-header__cta,
-  .theme-toggle,
+  .site-footer__menu-btn,
   .site-footer__link.is-current,
   .footer-menu-panel__link.is-current
 )::before {
@@ -140,7 +140,7 @@
 
   :is(
     .site-header__cta,
-    .theme-toggle,
+    .site-footer__menu-btn,
     .site-footer__link.is-current,
     .footer-menu-panel__link.is-current
   ):hover {
@@ -164,7 +164,7 @@
 
 :is(
   .site-header__cta,
-  .theme-toggle,
+  .site-footer__menu-btn,
   .site-footer__link.is-current,
   .footer-menu-panel__link.is-current
 ):focus-visible {
