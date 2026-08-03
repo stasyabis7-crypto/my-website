@@ -16,7 +16,6 @@
   }
 
   function columnCount(width) {
-    if (width >= 1441) return 4;
     if (width >= 1101) return 3;
     return 2;
   }
