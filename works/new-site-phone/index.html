@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Лендинг о компании Авито</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{width:100%;height:100%;margin:0;overflow:hidden}
+  body{display:grid;place-items:center;background:#a870eb}
+  .viewport{position:relative;width:100vw;height:100vh;overflow:hidden}
+  .canvas{position:absolute;left:50%;top:50%;width:1000px;height:563px;overflow:hidden;transform:translate(-50%,-50%);transform-origin:center;background:linear-gradient(135deg,#a870eb 0%,#dba3ec 100%)}
+  .phone-wrap{position:absolute;left:50%;top:470px;width:407px;height:826px;transform:translate(-50%,-50%) scale(1.12);transform-origin:50% 50%;animation:phoneMove 11s cubic-bezier(.22,.61,.36,1) infinite;will-change:top,transform,opacity}
+  .phone{position:relative;width:100%;height:100%;padding:7px;border-radius:69px;background:linear-gradient(110deg,#727272 0%,#f8f5eb 17%,#747474 43%,#ece8dc 72%,#707070 100%);box-shadow:0 30px 64px rgba(55,24,83,.28)}
+  .bezel{position:relative;width:100%;height:100%;padding:9px;border-radius:63px;background:#090909;overflow:hidden}
+  .display{position:relative;width:100%;height:100%;border-radius:54px;background:#fff;overflow:hidden}
+  .status{position:absolute;z-index:5;inset:0 0 auto;height:48px;background:#fff;color:#000;font:700 15px/1 Arial,sans-serif}
+  .time{position:absolute;left:28px;top:18px}.signal{position:absolute;right:26px;top:18px;display:flex;align-items:center;gap:5px}.signal i{display:block;background:#000;border-radius:2px}.signal i:nth-child(1){width:15px;height:9px;clip-path:polygon(0 100%,25% 62%,48% 80%,72% 35%,100% 0,100% 100%)}.signal i:nth-child(2){width:14px;height:9px;border:1.5px solid #000;background:linear-gradient(90deg,#000 75%,transparent 75%)}
+  .site-screen{position:absolute;left:0;right:0;top:48px;min-height:957px;background:#fff;color:#000;font-family:Arial,"Helvetica Neue",sans-serif}
+  .site-header{height:68px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;background:#fff}.site-logo{display:block;width:105px;height:32px}.site-menu{position:relative;width:52px;height:52px}.site-menu:before,.site-menu:after,.site-menu i{content:"";position:absolute;right:16px;height:2px;border-radius:2px;background:#000}.site-menu:before{top:18px;width:18px}.site-menu i{top:24px;width:13px}.site-menu:after{top:30px;width:9px}
+  .hero{position:relative;height:625px;border-radius:60px;background:#f7f7f5;overflow:hidden;text-align:center}.hero-copy{position:absolute;z-index:2;left:16px;right:16px;top:48px}.hero h1{margin:0;font-size:26px;line-height:30px;font-weight:800;letter-spacing:-.35px}.hero p{display:flex;align-items:center;justify-content:center;gap:3px;margin:8px 0 0;color:#757575;font-size:15px;line-height:22px}.hero p img{width:16px;height:20px}.company-illustration{position:absolute;left:10px;top:184px;width:355px;height:auto}
+  .rank{padding-top:54px;text-align:center}.rank-check{display:block;width:58px;height:58px;margin:0 auto 15px}.rank strong{display:block;font-size:26px;line-height:30px}.rank p{margin:8px 0 0;font-size:15px;line-height:22px}.rank p span{display:flex;justify-content:center;align-items:center;gap:3px;color:#757575}.rank p img{width:16px;height:20px}
+  .island{position:absolute;z-index:4;left:50%;top:12px;width:116px;height:34px;transform:translateX(-50%);border-radius:22px;background:#050505;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+  .camera{position:absolute;right:12px;top:11px;width:9px;height:9px;border-radius:50%;background:#111b35;box-shadow:inset 0 0 4px #3357a6}
+  .home{position:absolute;z-index:4;left:50%;bottom:9px;width:132px;height:5px;transform:translateX(-50%);border-radius:5px;background:#080808}
+  .side{position:absolute;width:4px;border-radius:4px;background:#737373}
+  .side--silent{left:-3px;top:126px;height:32px}
+  .side--volume{left:-3px;top:178px;height:76px;box-shadow:0 92px 0 #737373}
+  .side--power{right:-3px;top:196px;height:104px}
+  @keyframes phoneMove{
+    0%{top:470px;transform:translate(-50%,-50%) scale(1.12);opacity:0}
+    5%,20%{top:470px;transform:translate(-50%,-50%) scale(1.12);opacity:1}
+    42%,56%{top:100px;transform:translate(-50%,-50%) scale(1.12);opacity:1}
+    78%,94%{top:281.5px;transform:translate(-50%,-50%) scale(.58);opacity:1}
+    100%{top:281.5px;transform:translate(-50%,-50%) scale(.58);opacity:0}
+  }
+  @media(prefers-reduced-motion:reduce){.phone-wrap{animation:none;top:281.5px;transform:translate(-50%,-50%) scale(.58);opacity:1}}
+</style>
+</head>
+<body>
+<main class="viewport">
+  <div class="canvas" id="canvas">
+    <div class="phone-wrap">
+      <i class="side side--silent"></i><i class="side side--volume"></i><i class="side side--power"></i>
+      <div class="phone"><div class="bezel"><div class="display">
+        <div class="status"><span class="time">9:41</span><span class="signal"><i></i><i></i></span></div>
+        <div class="site-screen">
+          <header class="site-header"><img class="site-logo" src="assets/avito-logo.svg" alt="Авито"><span class="site-menu" aria-label="Меню"><i></i></span></header>
+          <section class="hero"><div class="hero-copy"><h1>Авито — самая<br>посещаемая платформа<br>объявлений в мире</h1><p>По данным SimilarWeb <img src="assets/info.svg" alt=""></p></div><img class="company-illustration" src="assets/company-illustration.png" alt="Офис Авито"></section>
+          <section class="rank"><img class="rank-check" src="assets/rank-check.png" alt=""><strong>№1</strong><p>в мире среди классифайдов<span>По данным SimilarWeb <img src="assets/info.svg" alt=""></span></p></section>
+        </div>
+        <div class="island"><i class="camera"></i></div><i class="home"></i>
+      </div></div></div>
+    </div>
+  </div>
+</main>
+<script>
+  const canvas=document.getElementById('canvas');
+  function fit(){const v=document.querySelector('.viewport');canvas.style.transform=`translate(-50%,-50%) scale(${Math.min(v.clientWidth/1000,v.clientHeight/563)})`}
+  addEventListener('resize',fit);fit();
+</script>
+</body>
+</html>
