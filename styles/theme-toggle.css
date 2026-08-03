@@ -40,8 +40,8 @@
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: var(--color-ink);
-  color: var(--color-ink-contrast);
+  background: var(--color-action-active);
+  color: var(--color-action-active-text);
   cursor: pointer;
   z-index: 51;
 }

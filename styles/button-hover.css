@@ -5,6 +5,8 @@
 :root {
   --color-action-hover: #ff0cc2;
   --color-action-hover-text: #ffffff;
+  --color-action-active: #ff0cc2;
+  --color-action-active-text: #ffffff;
   --button-hover-duration: 0.5s;
   --button-hover-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --button-hover-blur: 10px;
@@ -73,6 +75,19 @@
   pointer-events: none;
 }
 
+/* Активные контролы используют hover-анимацию в обратную сторону:
+   из розового состояния в нейтральный ink темы (белый в dark,
+   чёрный в light). */
+:is(
+  .site-header__cta,
+  .theme-toggle,
+  .site-footer__link.is-current,
+  .footer-menu-panel__link.is-current
+)::before {
+  background: var(--color-ink);
+  box-shadow: none;
+}
+
 :is(
   .site-header__cta,
   .theme-toggle,
@@ -126,6 +141,16 @@
   :is(
     .site-header__cta,
     .theme-toggle,
+    .site-footer__link.is-current,
+    .footer-menu-panel__link.is-current
+  ):hover {
+    border-color: var(--color-ink);
+    color: var(--color-ink-contrast);
+  }
+
+  :is(
+    .site-header__cta,
+    .theme-toggle,
     .site-footer__link,
     .site-footer__menu-btn,
     .site-footer__top-btn,
@@ -135,6 +160,16 @@
     opacity: 1;
     transform: translate(-50%, -50%) scale(1.08);
   }
+}
+
+:is(
+  .site-header__cta,
+  .theme-toggle,
+  .site-footer__link.is-current,
+  .footer-menu-panel__link.is-current
+):focus-visible {
+  border-color: var(--color-ink);
+  color: var(--color-ink-contrast);
 }
 
 @media (hover: none), (pointer: coarse) {

@@ -177,9 +177,9 @@
    .site-header__cta (background/color var(--color-ink*)), а не
    просто более тёмный текст. */
 .site-footer__link.is-current {
-  border-color: var(--color-ink);
-  background: var(--color-ink);
-  color: var(--color-ink-contrast);
+  border-color: var(--color-action-active);
+  background: var(--color-action-active);
+  color: var(--color-action-active-text);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -567,9 +567,9 @@ html.chrome--compact .footer-menu-panel__link .icon {
    (см. выше) и .site-header__cta — единый стиль "активного" контрола
    по всему сайту. */
 .footer-menu-panel__link.is-current {
-  border-color: var(--color-ink);
-  background: var(--color-ink);
-  color: var(--color-ink-contrast);
+  border-color: var(--color-action-active);
+  background: var(--color-action-active);
+  color: var(--color-action-active-text);
   font-weight: var(--font-weight-semibold);
 }
 
