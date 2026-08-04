@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>РФМ для хелпа</title>
+<style>
+  :root{--ink:rgba(0,17,34,.95);--muted:rgba(0,17,34,.56);--secondary:rgba(0,17,34,.66);--line:rgba(97,131,162,.26);--head:#f5f7fa;--top:#34d865;--loyal:#bce7c6;--risk:#ffd62c;--ease:cubic-bezier(.16,1,.3,1)}
+  *{box-sizing:border-box}
+  html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#fff}
+  body{font-family:Inter,Arial,sans-serif;color:var(--ink)}
+  .canvas{position:absolute;left:50%;top:50%;width:1000px;height:800px;transform:translate(-50%,-50%);transform-origin:center;background:#fff;overflow:hidden}
+  .content{padding:34px 40px 40px;opacity:0;transform:translateY(10px);animation:enter .7s var(--ease) .08s forwards}
+  h1,h2,p{margin:0}
+  h1{font-size:24px;line-height:30px;font-weight:600;letter-spacing:-.3px}
+  .intro{margin-top:7px;color:var(--muted);font-size:15px;line-height:24px}
+  .definitions{display:grid;grid-template-columns:317px 286px 317px;margin-top:24px}
+  .definition{min-width:0}
+  .definition__head{height:40px;padding:12px 8px;background:var(--head);border-bottom:1px solid var(--line);color:var(--secondary);font-size:13px;line-height:16px;font-weight:600;white-space:nowrap}
+  .definition__row{display:flex;align-items:center;gap:8px;height:48px;padding:8px;border-bottom:1px solid var(--line);font-size:15px;line-height:20px;white-space:nowrap}
+  .badge{display:grid;place-items:center;width:16px;height:16px;flex:0 0 16px;border-radius:50%;background:rgba(97,131,162,.16);color:var(--secondary);font-size:11px;line-height:12px;font-weight:600}
+  h2{margin-top:35px;font-size:20px;line-height:26px;font-weight:600;letter-spacing:-.2px}
+  .matrix{display:grid;grid-template-columns:repeat(9,1fr);margin-top:18px}
+  .cell{display:grid;place-items:center;height:48px;border-right:1px solid rgba(97,131,162,.22);border-bottom:1px solid rgba(97,131,162,.22);font-size:15px;line-height:20px;font-variant-numeric:tabular-nums}
+  .cell:nth-child(9n){border-right:0}
+  .top{background:var(--top)}.loyal{background:var(--loyal)}.risk{background:var(--risk)}
+  .legend{display:flex;align-items:center;gap:22px;margin-top:20px;padding-left:4px}
+  .legend__item{display:flex;align-items:center;gap:9px;font-size:15px;line-height:24px;white-space:nowrap}
+  .swatch{width:16px;height:16px;border-radius:5px}
+  @keyframes enter{to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.content{animation-duration:.01ms;animation-delay:0s}}
+</style>
+</head>
+<body>
+<main class="canvas" aria-label="Описание RFM-анализа">
+  <div class="content">
+    <h1>Описание RFM-анализа</h1>
+    <p class="intro">RFM-анализ позволяет понять, какая категория клиентов тратит у вас много и регулярно, какая — часто,<br>но понемногу, и кто давно к вам не возвращался</p>
+
+    <section class="definitions" aria-label="Параметры RFM-анализа">
+      <div class="definition">
+        <div class="definition__head">По давности заказа (Recency)</div>
+        <div class="definition__row"><span class="badge">1</span>Недавние клиенты</div>
+        <div class="definition__row"><span class="badge">2</span>Относительно недавние клиенты</div>
+        <div class="definition__row"><span class="badge">3</span>Давние</div>
+      </div>
+      <div class="definition">
+        <div class="definition__head">По частоте покупок (Frequency)</div>
+        <div class="definition__row"><span class="badge">1</span>Покупают часто</div>
+        <div class="definition__row"><span class="badge">2</span>Покупают нечасто</div>
+        <div class="definition__row"><span class="badge">3</span>Единичные покупки</div>
+      </div>
+      <div class="definition">
+        <div class="definition__head">По сумме покупки (Monetary)</div>
+        <div class="definition__row"><span class="badge">1</span>Большая сумма</div>
+        <div class="definition__row"><span class="badge">2</span>Средняя сумма</div>
+        <div class="definition__row"><span class="badge">3</span>Маленькая сумма</div>
+      </div>
+    </section>
+
+    <h2>Распределение по заказам конкретного продавца</h2>
+    <section class="matrix" aria-label="Матрица сегментов покупателей">
+      <div class="cell top">1, 1, 1</div><div class="cell top">1, 2, 1</div><div class="cell loyal">1, 3, 1</div><div class="cell loyal">1, 1, 2</div><div class="cell loyal">1, 2, 2</div><div class="cell loyal">1, 2, 3</div><div class="cell loyal">1, 1, 3</div><div class="cell loyal">1, 2, 3</div><div class="cell loyal">1, 3, 3</div>
+      <div class="cell top">2, 1, 1</div><div class="cell top">2, 2, 1</div><div class="cell risk">2, 3, 1</div><div class="cell loyal">2, 1, 2</div><div class="cell risk">2, 2, 2</div><div class="cell risk">2, 3, 1</div><div class="cell loyal">2, 1, 3</div><div class="cell risk">2, 2, 3</div><div class="cell risk">2, 3, 3</div>
+      <div class="cell top">3, 1, 1</div><div class="cell risk">3, 2, 1</div><div class="cell risk">3, 3, 1</div><div class="cell loyal">3, 1, 2</div><div class="cell risk">3, 2, 2</div><div class="cell risk">3, 3, 2</div><div class="cell loyal">3, 1, 3</div><div class="cell risk">3, 2, 3</div><div class="cell risk">3, 3, 3</div>
+    </section>
+
+    <div class="legend" aria-label="Легенда">
+      <div class="legend__item"><span class="swatch top"></span>Топ покупатели</div>
+      <div class="legend__item"><span class="swatch loyal"></span>Лояльные покупатели</div>
+      <div class="legend__item"><span class="swatch risk"></span>Рискованные покупатели</div>
+    </div>
+  </div>
+</main>
+<script>
+  const canvas=document.querySelector('.canvas');
+  function fit(){canvas.style.transform=`translate(-50%,-50%) scale(${Math.min(innerWidth/1000,innerHeight/800)})`}
+  addEventListener('resize',fit);fit();
+</script>
+</body>
+</html>
