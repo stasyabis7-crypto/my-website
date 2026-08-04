@@ -10,7 +10,7 @@
   html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#fff}
   body{display:grid;place-items:center;font-family:Inter,Arial,sans-serif;color:var(--ink)}
   .canvas{position:absolute;left:50%;top:50%;width:1000px;height:667px;transform:translate(-50%,-50%);transform-origin:center;background:#fff;display:grid;place-items:center}
-  .card{position:relative;width:904px;height:490px;padding:24px;border:1px solid var(--line);border-radius:24px;background:#fff;overflow:hidden;opacity:0;transform:translateY(14px) scale(.985);animation:card-in .75s var(--ease) .08s forwards}
+  .card{position:relative;width:904px;height:490px;padding:24px;border:0;border-radius:24px;background:#fff;overflow:hidden;opacity:0;transform:translateY(14px) scale(1.035);animation:card-in .75s var(--ease) .08s forwards}
   .heading{position:absolute;left:24px;right:24px;top:23px}
   .title-row{display:flex;align-items:flex-start;gap:8px}
   h1{margin:0;font-size:17px;line-height:22px;font-weight:600;letter-spacing:0}
@@ -28,12 +28,12 @@
   .segment{display:block;width:100%;min-width:100%}.segment:first-of-type{border-radius:2px 2px 0 0}
   .stacked .segment:first-of-type{border-radius:0}
   .blue{background:var(--blue)}.pink{background:var(--pink)}
-  .stacked .blue{border-bottom:2px solid #fff}
+  .stacked .blue{border:0}
   .value{position:absolute;left:50%;top:-24px;transform:translate(-50%,8px);color:var(--muted);font-size:15px;line-height:20px;white-space:nowrap;opacity:0;animation:value-in .5s ease-out calc(var(--delay) + .48s) forwards}
   .tick{position:absolute;left:50%;top:295px;width:4px;height:4px;border-left:1px solid var(--line);transform:translateX(-50%);opacity:0;animation:fade-in .25s ease calc(var(--delay) - .06s) forwards}
   .label{position:absolute;left:50%;top:304px;transform:translateX(-50%);color:var(--muted);font-size:13px;line-height:16px;white-space:nowrap;opacity:0;animation:label-in .42s ease-out calc(var(--delay) + .16s) forwards;font-feature-settings:"lnum" 1,"tnum" 1}
   .footnote{position:absolute;left:24px;bottom:23px;margin:0;color:var(--muted);font-size:13px;line-height:20px;opacity:0;transform:translateY(6px);animation:foot-in .5s ease-out 1.45s forwards}
-  @keyframes card-in{to{opacity:1;transform:none}}
+  @keyframes card-in{to{opacity:1;transform:scale(1.05)}}
   @keyframes axis-in{to{transform:scaleX(1)}}
   @keyframes bar-in{0%{transform:scaleY(0)}70%{transform:scaleY(1.035)}100%{transform:scaleY(1)}}
   @keyframes value-in{to{opacity:1;transform:translate(-50%,0)}}
