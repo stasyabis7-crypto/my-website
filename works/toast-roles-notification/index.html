@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Исправление текста на тосте</title>
+<style>
+@font-face{font-family:"Inter";src:url("./fonts/Inter-latin.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Inter";src:url("./fonts/Inter-cyrillic.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Inter";src:url("./fonts/Inter-latin.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"Inter";src:url("./fonts/Inter-cyrillic.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+
+*{box-sizing:border-box}
+html,body{width:100%;height:100%;margin:0;overflow:hidden}
+body{display:grid;place-items:center;background:#bebfc1;font-family:"Inter",Arial,sans-serif}
+
+.stage{position:relative;width:1000px;height:750px;background:#bebfc1;overflow:hidden}
+
+.zoom{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) scale(1.8);
+  transform-origin:center center;
+}
+
+.toast{
+  position:relative;
+  width:460px;
+  padding:14px 28px 14px 24px;
+  border-radius:8px;
+  background:#203148;
+  overflow:hidden;
+  transform-origin:center center;
+  animation:toastLoop 3s cubic-bezier(.16,1,.3,1) infinite;
+}
+
+.toast::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:4px;
+  background:#f7b200;
+}
+
+.toast .label{
+  margin:0;
+  font:400 15px/24px "Inter",Arial,sans-serif;
+  color:rgba(255,255,255,.95);
+}
+
+.toast .action{
+  display:block;
+  width:max-content;
+  margin:0;
+  margin-top:16px;
+  font:600 15px/24px "Inter",Arial,sans-serif;
+  color:#2f9bf9;
+  text-decoration:none;
+}
+
+@keyframes toastLoop{
+  0%{opacity:0;transform:translateY(14px) scale(.94)}
+  14%{opacity:1;transform:translateY(0) scale(1)}
+  72%{opacity:1;transform:translateY(0) scale(1)}
+  90%{opacity:0;transform:translateY(-5px) scale(.97)}
+  100%{opacity:0;transform:translateY(14px) scale(.94)}
+}
+</style>
+</head>
+<body>
+<main class="stage">
+  <div class="zoom">
+    <div class="toast">
+      <p class="label">Для вашей роли открыты не все данные и действия</p>
+      <a class="action" href="#" onclick="return false">Подробнее о ролях</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>
