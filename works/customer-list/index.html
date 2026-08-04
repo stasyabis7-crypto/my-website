@@ -5,7 +5,7 @@
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--blue);font-family:Inter,Arial,sans-serif;color:var(--ink)}
 .stage{position:absolute;left:50%;top:50%;width:1000px;height:563px;transform:translate(-50%,-50%);transform-origin:center;background:var(--blue);overflow:hidden}
 .popup{position:absolute;left:50%;top:50%;width:467px;height:353px;padding:24px 12px 8px;border-radius:8px;background:#fff;box-shadow:0 8px 16px -2px rgba(0,0,0,.12),0 0 2px rgba(0,0,0,.12);transform:translate(-50%,-50%) scale(1.15);transition:transform .42s var(--ease),opacity .3s}
-.stage.calendar-open .popup{transform:translate(calc(-50% - 171px),-50%) scale(1.15)}
+.stage.calendar-open .popup{transform:translate(calc(-50% - 165px),-50%) scale(1.15)}
 h1{margin:0 0 12px;font-size:15px;line-height:20px;font-weight:600}
 .field{height:44px;border-radius:8px;background:var(--field);display:flex;align-items:center;padding:0 10px;color:var(--muted);font-size:15px;line-height:20px;position:relative;transition:background .2s,box-shadow .2s}
 .field strong{color:var(--ink);font-weight:400}
@@ -13,22 +13,18 @@ h1{margin:0 0 12px;font-size:15px;line-height:20px;font-weight:600}
 .field.open .chevron{transform:rotate(180deg)}
 .chevron{display:block;width:24px;height:24px;margin-left:auto;transition:transform .22s var(--ease)}
 .label{margin:20px 2px 4px;color:var(--secondary);font-size:15px;line-height:20px}
-.qty-group,.period-group{display:grid;grid-template-rows:1fr;transition:grid-template-rows .36s var(--ease)}
-.qty-group-inner,.period-group-inner{overflow:hidden;min-height:0;transition:opacity .22s}
-.stage.action-open .qty-group,.stage.action-open .period-group{grid-template-rows:0fr}
-.stage.action-open .qty-group-inner,.stage.action-open .period-group-inner{opacity:0}
 .amount{display:grid;grid-template-columns:64px 1fr;gap:4px}
 .operator{border-radius:8px 0 0 8px}
-.quantity{height:44px;border-radius:0 8px 8px 0;background:var(--field);padding:4px 10px;transition:background .2s}.quantity small{display:block;color:var(--secondary);font-size:13px;line-height:16px}.quantity span{display:block;font-size:15px;line-height:20px}
-.quantity.open{background:#dbe8ff}
+.quantity{height:44px;border-radius:0 8px 8px 0;background:var(--field);padding:4px 10px;transition:box-shadow .2s}.quantity small{display:block;margin:0;color:var(--secondary);font-size:13px;line-height:16px}.quantity span{display:block;margin:0;font-size:15px;line-height:20px}
+.quantity.open{box-shadow:inset 0 0 0 2px var(--focus)}
 .period-label{margin-top:20px}.periods{display:grid;grid-template-columns:40px 40px 40px 40px 1fr;gap:8px}
 .period{height:44px;border-radius:8px;background:var(--field);display:grid;place-items:center;color:var(--secondary);font-size:15px;transition:.24s var(--ease)}
 .period.selected{box-shadow:inset 0 0 0 2px var(--focus)}
-.other{display:flex;align-items:center;padding:0 10px;white-space:nowrap;flex-direction:column;align-items:flex-start;justify-content:center;gap:1px}
-.other .row{display:flex;align-items:center;width:100%}
-.other small{font-size:13px;line-height:16px;color:var(--secondary)}
-.other span{font-size:15px;line-height:20px;color:var(--ink)}
-.calendar-icon{display:block;width:24px;height:24px;margin-left:auto;flex:none}
+.other{display:flex;align-items:center;gap:4px;padding:0 10px;white-space:nowrap}
+.other-text{display:flex;flex-direction:column;min-width:0}
+.other small{display:block;margin:0;font-size:13px;line-height:16px;color:var(--secondary)}
+.other span{display:block;margin:0;font-size:15px;line-height:20px;color:var(--ink)}
+.calendar-icon{display:block;width:24px;height:24px;margin-left:auto;flex:none;align-self:center}
 .divider{height:1px;background:var(--line);margin-top:20px}
 .actions{display:flex;gap:8px;padding-top:12px}
 .button{height:32px;padding:0 14px;border:0;border-radius:6px;font:600 15px Inter,Arial;color:#fff;background:var(--blue);transition:transform .2s var(--ease),filter .2s}
@@ -44,8 +40,8 @@ h1{margin:0 0 12px;font-size:15px;line-height:20px;font-weight:600}
 .op-option{height:32px;padding:0 10px;border-radius:5px;display:flex;align-items:center;justify-content:space-between;font-size:15px}
 .op-option .check{display:block;width:16px;height:16px;opacity:0;transition:opacity .18s}
 .op-option.active .check{opacity:1}
-.calendar-pop{position:absolute;left:50%;top:50%;width:280px;padding:16px;border-radius:8px;background:#fff;box-shadow:0 8px 8px rgba(0,0,0,.12),0 0 1px rgba(0,0,0,.12);opacity:0;pointer-events:none;transform:translate(calc(-50% + 279px),-50%) scale(1.104);transition:.4s var(--ease)}
-.stage.calendar-open .calendar-pop{opacity:1;transform:translate(calc(-50% + 279px),-50%) scale(1.15)}
+.calendar-pop{position:absolute;left:50%;top:50%;width:280px;padding:16px;border-radius:8px;background:#fff;box-shadow:0 8px 8px rgba(0,0,0,.12),0 0 1px rgba(0,0,0,.12);opacity:0;pointer-events:none;transform:translate(calc(-50% + 272.5px),-50%) scale(1.104);transition:.4s var(--ease)}
+.stage.calendar-open .calendar-pop{opacity:1;transform:translate(calc(-50% + 272.5px),-50%) scale(1.15)}
 .cal-head{position:relative;display:flex;align-items:center;justify-content:center;gap:4px;padding-bottom:8px;font-size:15px;line-height:20px;font-weight:600}
 .cal-month{color:var(--ink)}.cal-year{color:var(--muted)}
 .cal-nav{position:absolute;top:-4px;width:24px;height:24px}
@@ -69,7 +65,7 @@ h1{margin:0 0 12px;font-size:15px;line-height:20px;font-weight:600}
 #calEnd1{left:87px;top:116px}
 #calEnd2{left:195px;top:116px}
 .cursor{position:absolute;z-index:20;left:0;top:0;width:24px;height:24px;pointer-events:none;transform-origin:4px 3px;will-change:transform,opacity}
-@media(prefers-reduced-motion:reduce){.cursor{display:none}.popup,.calendar-pop,.menu,.op-menu,.period,.button,.field,.cal-day,.qty-group,.period-group{transition:none}}
+@media(prefers-reduced-motion:reduce){.cursor{display:none}.popup,.calendar-pop,.menu,.op-menu,.period,.button,.field,.cal-day,.quantity{transition:none}}
 </style></head><body><main class="stage" id="stage">
 <section class="popup" id="popup"><h1>Что сделали покупатели с вашими товарами</h1>
 <div class="field" id="actionField"><span id="actionText">Действие покупателя</span><img class="chevron" src="assets/ic_m_chevron_down.svg" alt=""></div>
@@ -79,9 +75,7 @@ h1{margin:0 0 12px;font-size:15px;line-height:20px;font-weight:600}
  <div class="option"><span>Добавили в корзину</span><img class="check" src="assets/ic_m_check.svg" alt=""></div>
  <div class="option"><span>Добавили в избранное</span><img class="check" src="assets/ic_m_check.svg" alt=""></div>
 </div>
-<div class="qty-group"><div class="qty-group-inner">
 <p class="label">Сколько товаров</p><div class="amount"><div class="field operator" id="operatorField"><strong id="operatorText">≥</strong><img class="chevron" src="assets/ic_m_chevron_down.svg" alt=""></div><div class="quantity" id="quantityField"><small>Количество товаров</small><span id="quantityText">1</span></div></div>
-</div></div>
 <div class="op-menu" id="operatorMenu">
  <div class="op-option" id="opGte"><span>≥</span><img class="check" src="assets/ic_m_check.svg" alt=""></div>
  <div class="op-option" id="targetOperator"><span>=</span><img class="check" src="assets/ic_m_check.svg" alt=""></div>
@@ -89,9 +83,7 @@ h1{margin:0 0 12px;font-size:15px;line-height:20px;font-weight:600}
  <div class="op-option"><span>&lt;</span><img class="check" src="assets/ic_m_check.svg" alt=""></div>
  <div class="op-option"><span>≤</span><img class="check" src="assets/ic_m_check.svg" alt=""></div>
 </div>
-<div class="period-group"><div class="period-group-inner">
-<p class="label period-label">За какой период, дней</p><div class="periods"><div class="period" id="periodOne">1</div><div class="period" id="periodTwo">2</div><div class="period" id="periodThree">3</div><div class="period" id="periodFour">4</div><div class="period other" id="periodOther"><div class="row"><small id="otherLabel">Другой период</small></div><div class="row"><span id="otherText">дд.мм.гггг</span><img class="calendar-icon" src="assets/ic_m_calendar_filled.svg" alt=""></div></div></div>
-</div></div>
+<p class="label period-label">За какой период, дней</p><div class="periods"><div class="period" id="periodOne">1</div><div class="period" id="periodTwo">2</div><div class="period" id="periodThree">3</div><div class="period" id="periodFour">4</div><div class="period other" id="periodOther"><div class="other-text"><small id="otherLabel">Другой период</small><span id="otherText">дд.мм.гггг</span></div><img class="calendar-icon" src="assets/ic_m_calendar_filled.svg" alt=""></div></div>
 <div class="divider"></div><div class="actions"><button class="button" id="apply">Применить</button><button class="button secondary" id="clear">Очистить</button></div></section>
 <section class="calendar-pop" id="calendarPop">
  <div class="cal-head"><i class="cal-nav prev"></i><span class="cal-month">Январь</span><span class="cal-year">2023</span><i class="cal-nav next"></i></div>
@@ -141,13 +133,14 @@ const mix=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
 let cycle=-1;
 // Popup/calendar are shown at 1.15x (see .popup/.calendar-pop transforms) so
 // the UI reads clearly at gallery-card size. Every point below is the
-// stage-space position AFTER that zoom (and after the popup's -171px open
-// shift / calendar's +279px offset), pre-computed so the cursor lands
-// exactly on the zoomed targets instead of the pre-zoom layout.
-const points={start:[820,470],action:[730,168.23],actionChoice:[500,225.72],operator:[268.85,269.43],operatorChoice:[268.85,356.82],quantity:[500,269.43],p1:[268.85,370.62],p2:[324.05,370.62],p3:[379.25,370.62],p4:[434.45,370.62],other:[603.5,370.62],otherShift:[629.15,370.62],day4:[737.6,256.2],day7:[861.8,256.2],apply:[304.5,452.27],clear:[403.4,452.27]};
+// stage-space position AFTER that zoom (and after the popup's -165px open
+// shift / calendar's +272.5px offset, chosen so the two sit exactly 8px
+// apart), pre-computed so the cursor lands exactly on the zoomed targets
+// instead of the pre-zoom layout.
+const points={start:[820,470],action:[730,168.23],actionChoice:[500,225.72],operator:[268.85,269.43],operatorChoice:[268.85,356.82],quantity:[500,269.43],p1:[268.85,370.62],p2:[324.05,370.62],p3:[379.25,370.62],p4:[434.45,370.62],other:[603.5,370.62],otherShift:[628.25,370.62],day4:[731.12,256.2],day7:[855.32,256.2],apply:[304.5,452.27],clear:[403.4,452.27]};
 
 function reset(){
- stage.classList.remove('calendar-open','action-open');
+ stage.classList.remove('calendar-open');
  actionMenu.classList.remove('show');operatorMenu.classList.remove('show');
  actionField.classList.remove('open');operatorField.classList.remove('open');quantityField.classList.remove('open');periodOther.classList.remove('open');
  targetAction.classList.remove('hover');targetOperator.classList.remove('hover');opGte.classList.add('active');targetOperator.classList.remove('active');
@@ -172,9 +165,9 @@ function animate(now){
 
  if(t<1100){pos=points.start}
  else if(t<2100){pos=move(t,1100,2100,points.start,points.action);hand=true}
- else if(t<2750){pos=points.action;hand=true;actionField.classList.add('open');if(t>=2350&&t<2610){s=press(t,2400)}if(t>=2400){actionMenu.classList.add('show');stage.classList.add('action-open')}}
+ else if(t<2750){pos=points.action;hand=true;actionField.classList.add('open');if(t>=2350&&t<2610){s=press(t,2400)}if(t>=2400){actionMenu.classList.add('show')}}
  else if(t<3700){pos=move(t,2750,3700,points.action,points.actionChoice);hand=true;actionMenu.classList.add('show');actionField.classList.add('open');targetAction.classList.add('hover')}
- else if(t<4450){pos=points.actionChoice;hand=true;actionMenu.classList.add('show');actionField.classList.add('open');targetAction.classList.add('hover');if(t>=4050&&t<4310){s=press(t,4100)}if(t>=4100){actionText.textContent='Купили';actionText.style.color='var(--ink)';actionMenu.classList.remove('show');actionField.classList.remove('open');targetAction.classList.remove('hover');stage.classList.remove('action-open')}}
+ else if(t<4450){pos=points.actionChoice;hand=true;actionMenu.classList.add('show');actionField.classList.add('open');targetAction.classList.add('hover');if(t>=4050&&t<4310){s=press(t,4100)}if(t>=4100){actionText.textContent='Купили';actionText.style.color='var(--ink)';actionMenu.classList.remove('show');actionField.classList.remove('open');targetAction.classList.remove('hover')}}
  else if(t<5450){pos=move(t,4450,5450,points.actionChoice,points.operator);hand=true}
  else if(t<6100){pos=points.operator;hand=true;operatorField.classList.add('open');if(t>=5750&&t<6010){s=press(t,5800)}if(t>=5800)operatorMenu.classList.add('show')}
  else if(t<7000){pos=move(t,6100,7000,points.operator,points.operatorChoice);hand=true;operatorMenu.classList.add('show');operatorField.classList.add('open');targetOperator.classList.add('hover');opGte.classList.remove('active')}
