@@ -25,7 +25,8 @@
   .column{position:relative;height:296px;display:flex;align-items:flex-end;justify-content:center}
   .gender .column{width:84px}.ages .column{width:94px}
   .stack{position:relative;width:64px;transform:scaleY(0);transform-origin:bottom;animation:bar-in .92s var(--ease) var(--delay) forwards}
-  .segment{display:block;width:64px}.segment:first-of-type{border-radius:2px 2px 0 0}
+  .segment{display:block;width:100%;min-width:100%}.segment:first-of-type{border-radius:2px 2px 0 0}
+  .stacked .segment:first-of-type{border-radius:0}
   .blue{background:var(--blue)}.pink{background:var(--pink)}
   .stacked .blue{border-bottom:2px solid #fff}
   .value{position:absolute;left:50%;top:-24px;transform:translate(-50%,8px);color:var(--muted);font-size:15px;line-height:20px;white-space:nowrap;opacity:0;animation:value-in .5s ease-out calc(var(--delay) + .48s) forwards}
@@ -77,6 +78,15 @@
   const canvas=document.querySelector('.canvas');
   function fit(){canvas.style.transform=`translate(-50%,-50%) scale(${Math.min(innerWidth/1000,innerHeight/667)})`}
   addEventListener('resize',fit);fit();
+
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    let card=document.querySelector('.card');
+    setInterval(()=>{
+      const freshCard=card.cloneNode(true);
+      card.replaceWith(freshCard);
+      card=freshCard;
+    },4000);
+  }
 </script>
 </body>
 </html>
