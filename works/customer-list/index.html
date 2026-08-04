@@ -19,7 +19,7 @@ h1{margin:0 0 12px;font-size:15px;line-height:20px;font-weight:600}
 .quantity.open{box-shadow:inset 0 0 0 2px var(--focus)}
 .period-label{margin-top:20px}.periods{display:grid;grid-template-columns:40px 40px 40px 40px 1fr;gap:8px}
 .period{height:44px;border-radius:8px;background:var(--field);display:grid;place-items:center;color:var(--secondary);font-size:15px;transition:.24s var(--ease)}
-.period.selected{box-shadow:inset 0 0 0 2px var(--focus)}
+.period.selected,.period.other.open{box-shadow:inset 0 0 0 2px var(--focus)}
 .other{display:flex;align-items:center;gap:4px;padding:0 10px;white-space:nowrap}
 .other-text{display:flex;flex-direction:column;min-width:0}
 .other small{display:block;margin:0;font-size:13px;line-height:16px;color:var(--secondary)}
@@ -166,11 +166,11 @@ function animate(now){
  if(t<1100){pos=points.start}
  else if(t<2100){pos=move(t,1100,2100,points.start,points.action);hand=true}
  else if(t<2750){pos=points.action;hand=true;actionField.classList.add('open');if(t>=2350&&t<2610){s=press(t,2400)}if(t>=2400){actionMenu.classList.add('show')}}
- else if(t<3700){pos=move(t,2750,3700,points.action,points.actionChoice);hand=true;actionMenu.classList.add('show');actionField.classList.add('open');targetAction.classList.add('hover')}
+ else if(t<3700){pos=move(t,2750,3700,points.action,points.actionChoice);hand=true;actionMenu.classList.add('show');actionField.classList.add('open')}
  else if(t<4450){pos=points.actionChoice;hand=true;actionMenu.classList.add('show');actionField.classList.add('open');targetAction.classList.add('hover');if(t>=4050&&t<4310){s=press(t,4100)}if(t>=4100){actionText.textContent='Купили';actionText.style.color='var(--ink)';actionMenu.classList.remove('show');actionField.classList.remove('open');targetAction.classList.remove('hover')}}
  else if(t<5450){pos=move(t,4450,5450,points.actionChoice,points.operator);hand=true}
  else if(t<6100){pos=points.operator;hand=true;operatorField.classList.add('open');if(t>=5750&&t<6010){s=press(t,5800)}if(t>=5800)operatorMenu.classList.add('show')}
- else if(t<7000){pos=move(t,6100,7000,points.operator,points.operatorChoice);hand=true;operatorMenu.classList.add('show');operatorField.classList.add('open');targetOperator.classList.add('hover');opGte.classList.remove('active')}
+ else if(t<7000){pos=move(t,6100,7000,points.operator,points.operatorChoice);hand=true;operatorMenu.classList.add('show');operatorField.classList.add('open')}
  else if(t<7700){pos=points.operatorChoice;hand=true;operatorMenu.classList.add('show');operatorField.classList.add('open');targetOperator.classList.add('hover');opGte.classList.remove('active');if(t>=7300&&t<7560){s=press(t,7350)}if(t>=7350){operatorText.textContent='=';operatorMenu.classList.remove('show');operatorField.classList.remove('open');targetOperator.classList.remove('hover');targetOperator.classList.add('active')}}
  else if(t<8600){pos=move(t,7700,8600,points.operatorChoice,points.quantity);hand=true}
  else if(t<9350){pos=points.quantity;hand=true;quantityField.classList.add('open');if(t>=8950&&t<9210){s=press(t,9000)}if(t>=9000)quantityText.textContent='3'}
