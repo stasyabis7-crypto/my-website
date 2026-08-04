@@ -28,6 +28,8 @@
   .segment{display:block;width:100%;min-width:100%}.segment:first-of-type{border-radius:2px 2px 0 0}
   .stacked .segment:first-of-type{border-radius:0}
   .blue{background:var(--blue)}.pink{background:var(--pink)}
+  .stacked{display:flex;flex-direction:column;gap:4px}
+  .stacked .segment{flex-shrink:0}
   .stacked .blue{border:0}
   .value{position:absolute;left:50%;top:-24px;transform:translate(-50%,8px);color:var(--muted);font-size:15px;line-height:20px;white-space:nowrap;opacity:0;animation:value-in .5s ease-out calc(var(--delay) + .48s) forwards}
   .tick{position:absolute;left:50%;top:295px;width:4px;height:4px;border-left:1px solid var(--line);transform:translateX(-50%);opacity:0;animation:fade-in .25s ease calc(var(--delay) - .06s) forwards}
@@ -61,12 +63,12 @@
       </div>
       <div class="chart ages">
         <div class="plot">
-          <div class="column" style="--delay:.96s"><div class="stack stacked" style="height:212px"><span class="value">54,27%</span><span class="segment blue" style="height:106px"></span><span class="segment pink" style="height:106px"></span></div><i class="tick"></i><span class="label">&lt;18</span></div>
-          <div class="column" style="--delay:1.04s"><div class="stack stacked" style="height:81px"><span class="value">0,13%</span><span class="segment blue" style="height:40px"></span><span class="segment pink" style="height:41px"></span></div><i class="tick"></i><span class="label">18 – 24</span></div>
-          <div class="column" style="--delay:1.12s"><div class="stack stacked" style="height:153px"><span class="value">54,27%</span><span class="segment blue" style="height:99px"></span><span class="segment pink" style="height:54px"></span></div><i class="tick"></i><span class="label">25 – 34</span></div>
-          <div class="column" style="--delay:1.20s"><div class="stack stacked" style="height:276px"><span class="value">54,27%</span><span class="segment blue" style="height:138px"></span><span class="segment pink" style="height:138px"></span></div><i class="tick"></i><span class="label">35 – 44</span></div>
-          <div class="column" style="--delay:1.28s"><div class="stack stacked" style="height:101px"><span class="value">54,27%</span><span class="segment blue" style="height:50px"></span><span class="segment pink" style="height:51px"></span></div><i class="tick"></i><span class="label">45 – 54</span></div>
-          <div class="column" style="--delay:1.36s"><div class="stack stacked" style="height:229px"><span class="value">54,27%</span><span class="segment blue" style="height:114px"></span><span class="segment pink" style="height:115px"></span></div><i class="tick"></i><span class="label">&gt;55</span></div>
+          <div class="column" style="--delay:.96s"><div class="stack stacked" style="height:212px"><span class="value">54,27%</span><span class="segment blue" style="height:104px"></span><span class="segment pink" style="height:104px"></span></div><i class="tick"></i><span class="label">&lt;18</span></div>
+          <div class="column" style="--delay:1.04s"><div class="stack stacked" style="height:81px"><span class="value">0,13%</span><span class="segment blue" style="height:38px"></span><span class="segment pink" style="height:39px"></span></div><i class="tick"></i><span class="label">18 – 24</span></div>
+          <div class="column" style="--delay:1.12s"><div class="stack stacked" style="height:153px"><span class="value">54,27%</span><span class="segment blue" style="height:97px"></span><span class="segment pink" style="height:52px"></span></div><i class="tick"></i><span class="label">25 – 34</span></div>
+          <div class="column" style="--delay:1.20s"><div class="stack stacked" style="height:276px"><span class="value">54,27%</span><span class="segment blue" style="height:136px"></span><span class="segment pink" style="height:136px"></span></div><i class="tick"></i><span class="label">35 – 44</span></div>
+          <div class="column" style="--delay:1.28s"><div class="stack stacked" style="height:101px"><span class="value">54,27%</span><span class="segment blue" style="height:48px"></span><span class="segment pink" style="height:49px"></span></div><i class="tick"></i><span class="label">45 – 54</span></div>
+          <div class="column" style="--delay:1.36s"><div class="stack stacked" style="height:229px"><span class="value">54,27%</span><span class="segment blue" style="height:112px"></span><span class="segment pink" style="height:113px"></span></div><i class="tick"></i><span class="label">&gt;55</span></div>
         </div>
         <i class="axis"></i>
       </div>
