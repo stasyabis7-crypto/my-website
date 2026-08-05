@@ -7,15 +7,13 @@
   <style>
     @font-face{font-family:"CoFo Avito Text";src:url("../fonts/CoFoAvitoText-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
     @font-face{font-family:"CoFo Avito Text";src:url("../fonts/CoFoAvitoText-ExtraBold.woff2") format("woff2");font-weight:800;font-display:swap}
-    :root{--ease:cubic-bezier(.22,.61,.36,1);--light-canvas:#fff;--dark-canvas:#111214}
+    :root{--ease:cubic-bezier(.22,.61,.36,1);--stage-bg:#f0f1f4} html[data-embed-theme="dark"]{--stage-bg:#262a33}
     *{box-sizing:border-box}
-    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--light-canvas);font-family:"CoFo Avito Text",Arial,sans-serif;transition:background-color .72s var(--ease)}
-    body.dark{background:var(--dark-canvas)}
+    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--stage-bg);font-family:"CoFo Avito Text",Arial,sans-serif}
     body{display:grid;place-items:center}
     .viewport{position:relative;width:100vw;height:100vh;overflow:hidden}
-    .canvas{position:absolute;left:50%;top:50%;width:1000px;height:667px;transform-origin:center;background:var(--light-canvas);transition:background-color .72s var(--ease),color .72s var(--ease)}
-    .canvas.dark{background:var(--dark-canvas)}
-    .composition{position:absolute;left:50%;top:50%;width:375px;transform:translate(-50%,-50%) scale(1.2);transform-origin:50% 50%}
+    .canvas{position:absolute;left:50%;top:50%;width:750px;height:750px;transform-origin:center;background:var(--stage-bg)}
+    .composition{position:absolute;left:50%;top:50%;width:375px;transform:translate(-50%,-50%) scale(1.35);transform-origin:50% 50%}
     .banner{position:relative;width:375px;height:170px;border-radius:20px;overflow:hidden;color:#000;background:linear-gradient(90deg,#e3f7ff 10%,#f4eefe 90%);transition:height .82s var(--ease),color .68s var(--ease),background .68s var(--ease),box-shadow .68s var(--ease);will-change:height}
     .dark .banner{color:#fff;background:linear-gradient(90deg,#00264a 10%,#2b2139 90%);box-shadow:0 24px 64px rgba(0,0,0,.24)}
     .header{position:relative;height:138px;padding:16px 24px 0;z-index:2}
@@ -44,6 +42,7 @@
     .banner.open .actions{opacity:1;transform:translateY(0);pointer-events:auto;transition-delay:.2s}
     @media(prefers-reduced-motion:reduce){body,.canvas,.banner,.title-arrow,.actions,.ill-image{transition-duration:.01ms!important}}
   </style>
+  <script src="../shared/theme-sync.js" defer></script>
 </head>
 <body>
 <main class="viewport">
@@ -94,7 +93,7 @@
 
   function fit(){
     const viewport=document.querySelector('.viewport');
-    const scale=Math.min(viewport.clientWidth/1000,viewport.clientHeight/667);
+    const scale=Math.min(viewport.clientWidth/750,viewport.clientHeight/750);
     canvas.style.transform=`translate(-50%,-50%) scale(${scale})`;
   }
   function setTheme(dark){
