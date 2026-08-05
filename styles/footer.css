@@ -16,6 +16,11 @@
   --chrome-pad-block: 0.5rem;
   --chrome-h: calc(var(--chrome-item-h) + var(--chrome-pad-block) * 2);
 
+  /* Тоже дублирует header.css (см. комментарий у :root там же) —
+     держите оба файла в синхроне. */
+  --chrome-label-font-size-compact: clamp(10px, 2.8vw, 11px);
+  --chrome-label-font-size-desktop: 11px;
+
   /* Общий easing для анимаций сворачивания/разворачивания футера
      (список ссылок ⇄ кнопки, панель меню) — единая "пружинка" на все
      переходы этого блока. */
@@ -169,10 +174,6 @@
   height: 1.375rem;
 }
 
-.site-footer__link:hover {
-  color: var(--color-text);
-}
-
 /* Активный пункт — залитая пилюля, тот же приём, что у
    .site-header__cta (background/color var(--color-ink*)), а не
    просто более тёмный текст. */
@@ -183,10 +184,6 @@
   font-weight: var(--font-weight-semibold);
 }
 
-.site-footer__link.is-current:hover {
-  opacity: 0.85;
-}
-
 /* Мобильная и планшетная навигация используют единый компактный
    размер. На самых узких экранах подписи могут плавно уменьшиться до
    10px, чтобы все четыре пункта оставались в одной строке. */
@@ -195,7 +192,7 @@
     gap: 3px;
     padding-block: 6px;
     padding-inline: 10px;
-    font-size: clamp(10px, 2.8vw, 11px);
+    font-size: var(--chrome-label-font-size-compact);
   }
 
   .site-footer__link .icon {
@@ -208,7 +205,7 @@ html.chrome--compact .site-footer__link {
   gap: 3px;
   padding-block: 6px;
   padding-inline: 10px;
-  font-size: clamp(10px, 2.8vw, 11px);
+  font-size: var(--chrome-label-font-size-compact);
 }
 
 html.chrome--compact .site-footer__link .icon {
@@ -396,7 +393,7 @@ html.chrome--compact .site-footer__link .icon {
     gap: 3px;
     padding-block: 6px;
     padding-inline: 10px;
-    font-size: 11px;
+    font-size: var(--chrome-label-font-size-desktop);
   }
 
   html:not(.chrome--compact) .site-footer__link .icon {
@@ -544,7 +541,7 @@ html.chrome--compact .site-footer__link .icon {
     gap: 3px;
     padding-block: 6px;
     padding-inline: 10px;
-    font-size: clamp(10px, 2.8vw, 11px);
+    font-size: var(--chrome-label-font-size-compact);
   }
 
   .footer-menu-panel__link .icon {
@@ -557,16 +554,12 @@ html.chrome--compact .footer-menu-panel__link {
   gap: 3px;
   padding-block: 6px;
   padding-inline: 10px;
-  font-size: clamp(10px, 2.8vw, 11px);
+  font-size: var(--chrome-label-font-size-compact);
 }
 
 html.chrome--compact .footer-menu-panel__link .icon {
   width: 18px;
   height: 18px;
-}
-
-.footer-menu-panel__link:hover {
-  color: var(--color-text);
 }
 
 /* Активный пункт — та же залитая пилюля, что и у .site-footer__link
@@ -577,10 +570,6 @@ html.chrome--compact .footer-menu-panel__link .icon {
   background: var(--color-action-active);
   color: var(--color-action-active-text);
   font-weight: var(--font-weight-semibold);
-}
-
-.footer-menu-panel__link.is-current:hover {
-  opacity: 0.85;
 }
 
 /*

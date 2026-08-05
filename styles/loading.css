@@ -1,10 +1,14 @@
 :root{
-  --skeleton-base:#2b2f37;
-  --skeleton-shine:#3a3f49;
+  /* Тон скелетона — не сам --color-surface-alt (на нём его не видно,
+     карточки/плашки уже залиты этим цветом), а чуть светлее/темнее его
+     же, через color-mix — единый источник цвета с остальным сайтом
+     (см. --color-* в theme.css), а не свой параллельный хардкод. */
+  --skeleton-base: color-mix(in srgb, var(--color-surface-alt) 85%, white 15%);
+  --skeleton-shine: color-mix(in srgb, var(--color-surface-alt) 65%, white 35%);
 }
 [data-theme="light"]{
-  --skeleton-base:#e5e7eb;
-  --skeleton-shine:#f4f5f7;
+  --skeleton-base: color-mix(in srgb, var(--color-surface-alt) 90%, black 10%);
+  --skeleton-shine: var(--color-surface-alt);
 }
 @keyframes skeleton-shimmer{
   from{background-position:200% 0}
