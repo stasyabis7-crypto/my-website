@@ -1,6 +1,6 @@
 /*
   Масштабирует встроенные iframe-превью карточек-проектов (см.
-  .masonry__embed в masonry.css) под реальную ширину карточки.
+  .works-grid__embed в works-grid.css) под реальную ширину карточки.
 
   Проектные страницы (works/*.html) — самостоятельные HTML-документы
   с фиксированным нативным размером (data-native-w/h на iframe).
@@ -22,7 +22,7 @@
     frame.style.transform = 'scale(' + scale + ')';
   }
 
-  document.querySelectorAll('.masonry__embed-frame').forEach(function (frame) {
+  document.querySelectorAll('.works-grid__embed-frame').forEach(function (frame) {
     var wrap = frame.parentElement;
     if (!wrap) return;
 

@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="styles/footer.css?v=41" />
 <link rel="stylesheet" href="styles/theme-toggle.css?v=26" />
 <link rel="stylesheet" href="styles/button-hover.css?v=25" />
-<link rel="stylesheet" href="styles/masonry.css?v=19" />
+<link rel="stylesheet" href="styles/works-grid.css?v=1" />
 <link rel="stylesheet" href="styles/loading.css?v=1" />
 <style>
   * { box-sizing: border-box; }
@@ -120,345 +120,137 @@
 
   <main class="container page-works">
     <!--
-      50 плашек-слотов под будущие проекты. Каждая — data-slot (номер,
-      см. список у ассистента) и data-ratio (пропорция карточки —
-      настоящая, каждая карточка сохраняет свою высоту, никто никого
-      не тянет/не кадрирует под чужую строку). Все плашки — ОДНОЙ
-      ширины (1 колонка), разной высоты — классическая Pinterest-
-      masonry "в самую короткую колонку" (см. masonry.js), без
-      витринных широких карточек: раньше пробовали совмещать разную
-      высоту с карточками на 2 колонки — это стабильно давало дыры,
-      отказались.
+      51 плашка-слот под проекты. Каждая — data-slot (номер, см. таблицу
+      проектов) и одна из трёх ЯВНЫХ форм (works-grid__item--square /
+      --wide / --tall, см. works-grid.css) — раскладка чистым CSS Grid,
+      без JS вообще.
 
-      Когда добавляете проект в слот: положите внутрь .masonry__item
-      либо <img src="..." alt="...">, либо .masonry__embed+iframe (как
-      в слоте 1) — data-ratio на самом элементе не трогайте, она и так
-      уже под слот подобрана. Карточки пока НЕ кликабельны (просто
-      галерея) — страница-описание проекта будет сделана позже по
-      шаблону, тогда .masonry__item сменится на <a href="...">.
+      Когда добавляете проект в слот: положите внутрь .works-grid__item
+      либо <img src="..." alt="...">, либо .works-grid__embed+iframe
+      (как в слоте 1) — класс формы (--square/--wide/--tall) на самом
+      элементе не трогайте, она уже под слот подобрана. Карточки пока НЕ
+      кликабельны (просто галерея) — страница-описание проекта будет
+      сделана позже по шаблону, тогда .works-grid__item сменится на
+      <a href="...">.
     -->
-    <div class="masonry" id="works-gallery">
-      <div
-        class="masonry__item"
-        data-slot="1"
-        data-ratio="1/1"
-        data-title="Виджет CRM на Главную"
-      >
-        <span class="masonry__embed">
-          <iframe
-            class="masonry__embed-frame"
-            src="works/crm-widget.html"
-            data-native-w="1080"
-            data-native-h="1080"
-            tabindex="-1"
-            scrolling="no"
-            title="Виджет CRM на Главную"
-          ></iframe>
+    <div class="works-grid" id="works-gallery">
+      <div class="works-grid__item works-grid__item--square" data-slot="1" data-title="CRM Widget on Homepage">
+        <span class="works-grid__embed">
+          <iframe class="works-grid__embed-frame" src="works/crm-widget.html" data-native-w="1080" data-native-h="1080" tabindex="-1" scrolling="no" title="CRM Widget on Homepage"></iframe>
         </span>
       </div>
-      <div
-        class="masonry__item"
-        data-slot="2"
-        data-ratio="4/3"
-        data-title="Меню — выбор благотворительного раздела"
-      >
-        <span class="masonry__embed">
-          <iframe
-            class="masonry__embed-frame"
-            src="works/menu-animation.html"
-            data-native-w="1000"
-            data-native-h="750"
-            tabindex="-1"
-            scrolling="no"
-            title="Меню — выбор благотворительного раздела"
-          ></iframe>
+      <div class="works-grid__item works-grid__item--square" data-slot="2" data-title="Avito Menu Audit">
+        <span class="works-grid__embed">
+          <iframe class="works-grid__embed-frame" src="works/menu-animation.html" data-native-w="1000" data-native-h="750" tabindex="-1" scrolling="no" title="Avito Menu Audit"></iframe>
         </span>
       </div>
-      <div
-        class="masonry__item"
-        data-slot="3"
-        data-ratio="1/1"
-        data-title="Donate flow — анимация"
-      >
-        <span class="masonry__embed">
-          <iframe
-            class="masonry__embed-frame"
-            src="works/donate-flow.html"
-            data-native-w="1080"
-            data-native-h="1080"
-            tabindex="-1"
-            scrolling="no"
-            title="Donate flow — анимация"
-          ></iframe>
+      <div class="works-grid__item works-grid__item--tall" data-slot="3" data-title="Donation Flow">
+        <span class="works-grid__embed">
+          <iframe class="works-grid__embed-frame" src="works/donate-flow.html" data-native-w="1080" data-native-h="1080" tabindex="-1" scrolling="no" title="Donation Flow"></iframe>
         </span>
       </div>
-      <div
-        class="masonry__item"
-        data-slot="4"
-        data-ratio="3/2"
-        data-title="Плашка — светлая и тёмная тема"
-      >
-        <span class="masonry__embed">
-          <iframe
-            class="masonry__embed-frame"
-            src="works/banner-theme.html"
-            data-native-w="1000"
-            data-native-h="667"
-            tabindex="-1"
-            scrolling="no"
-            title="Плашка — светлая и тёмная тема"
-          ></iframe>
+      <div class="works-grid__item works-grid__item--square" data-slot="4" data-title="Light/Dark Theme Banner">
+        <span class="works-grid__embed">
+          <iframe class="works-grid__embed-frame" src="works/banner-theme.html" data-native-w="1000" data-native-h="667" tabindex="-1" scrolling="no" title="Light/Dark Theme Banner"></iframe>
         </span>
       </div>
-      <div
-        class="masonry__item"
-        data-slot="5"
-        data-ratio="5/4"
-        data-title="Карта раздельного сбора"
-      >
-        <span class="masonry__embed">
-          <iframe
-            class="masonry__embed-frame"
-            src="works/recycling-map-animation.html?v=4"
-            data-native-w="1280"
-            data-native-h="1024"
-            tabindex="-1"
-            scrolling="no"
-            title="Карта раздельного сбора"
-          ></iframe>
+      <div class="works-grid__item works-grid__item--wide" data-slot="5" data-title="Recycling Map">
+        <span class="works-grid__embed">
+          <iframe class="works-grid__embed-frame" src="works/recycling-map-animation.html?v=4" data-native-w="1280" data-native-h="1024" tabindex="-1" scrolling="no" title="Recycling Map"></iframe>
         </span>
       </div>
-      <div
-        class="masonry__item"
-        data-slot="6"
-        data-ratio="2/1"
-        data-title="Концепт контроллера музыки"
-      >
-        <img
-          src="works/music-controller-concept.png"
-          alt="Концепт контроллера музыки"
-        />
+      <div class="works-grid__item works-grid__item--wide" data-slot="6" data-title="Music Controller Concept">
+        <img src="works/music-controller-concept.png" alt="Music Controller Concept" />
       </div>
-      <div
-        class="masonry__item"
-        data-slot="7"
-        data-ratio="1000/563"
-        data-title="Концепт Flecto"
-      >
-        <img src="works/flecto-concept.png" alt="Концепт Flecto" />
+      <div class="works-grid__item works-grid__item--square" data-slot="7" data-title="Flecto Concept">
+        <img src="works/flecto-concept.png" alt="Flecto Concept" />
       </div>
-      <div class="masonry__item" data-slot="8" data-ratio="4/3" data-title="Баннер CRM">
-        <img src="works/banner%20crm.png" alt="Баннер CRM" />
+      <div class="works-grid__item works-grid__item--square" data-slot="8" data-title="CRM Banner">
+        <img src="works/banner%20crm.png" alt="CRM Banner" />
       </div>
-      <div
-        class="masonry__item"
-        data-slot="9"
-        data-ratio="1/1"
-        data-title="Временная мин цена Онбординг"
-      >
-        <span class="masonry__embed">
-          <iframe
-            class="masonry__embed-frame"
-            src="works/ozon-onboarding-animation.html?v=3"
-            data-native-w="1000"
-            data-native-h="1000"
-            tabindex="-1"
-            scrolling="no"
-            title="Временная мин цена Онбординг"
-          ></iframe>
+      <div class="works-grid__item works-grid__item--square" data-slot="9" data-title="Temporary Min-Price Onboarding">
+        <span class="works-grid__embed">
+          <iframe class="works-grid__embed-frame" src="works/ozon-onboarding-animation.html?v=3" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" title="Temporary Min-Price Onboarding"></iframe>
         </span>
       </div>
-      <div
-        class="masonry__item"
-        data-slot="10"
-        data-ratio="3/2"
-        data-title="Offer"
-      >
-        <img src="works/offer.png" alt="Offer" />
+      <div class="works-grid__item works-grid__item--wide" data-slot="10" data-title="Offer Story">
+        <img src="works/offer.png" alt="Offer Story" />
       </div>
-      <div
-        class="masonry__item"
-        data-slot="11"
-        data-ratio="5/4"
-        data-title="Шторка в знак добра"
-      >
-        <span class="masonry__embed">
-          <iframe
-            class="masonry__embed-frame"
-            src="works/Шторка в знак добра/index.html?v=2"
-            data-native-w="1000"
-            data-native-h="800"
-            tabindex="-1"
-            scrolling="no"
-            title="Шторка в знак добра"
-          ></iframe>
+      <div class="works-grid__item works-grid__item--square" data-slot="11" data-title="&quot;Znak Dobra&quot; Charity Sheet">
+        <span class="works-grid__embed">
+          <iframe class="works-grid__embed-frame" src="works/Шторка в знак добра/index.html?v=2" data-native-w="1000" data-native-h="800" tabindex="-1" scrolling="no" title="&quot;Znak Dobra&quot; Charity Sheet"></iframe>
         </span>
       </div>
-      <div
-        class="masonry__item"
-        data-slot="12"
-        data-ratio="16/9"
-        data-title="1 рубль"
-      >
-        <img src="works/1-ruble.png" alt="1 рубль" />
+      <div class="works-grid__item works-grid__item--square" data-slot="12" data-title="&quot;1 Ruble&quot; Charity Round-Up">
+        <img src="works/1-ruble.png" alt="&quot;1 Ruble&quot; Charity Round-Up" />
       </div>
-      <div
-        class="masonry__item"
-        data-slot="13"
-        data-ratio="2/1"
-        data-title="Баннеры точки входа А/Б"
-      >
-        <img
-          src="works/entry-point-banners-ab.png"
-          alt="Баннеры точки входа А/Б"
-        />
+      <div class="works-grid__item works-grid__item--square" data-slot="13" data-title="Charity Entry Banners A/B">
+        <img src="works/entry-point-banners-ab.png" alt="Charity Entry Banners A/B" />
       </div>
-      <div
-        class="masonry__item"
-        data-slot="14"
-        data-ratio="4/3"
-        data-title="ESG отчет"
-      >
-        <span class="masonry__embed">
-          <iframe
-            class="masonry__embed-frame"
-            src="works/esg-report/index.html"
-            data-native-w="1000"
-            data-native-h="750"
-            tabindex="-1"
-            scrolling="no"
-            title="ESG отчет"
-          ></iframe>
+      <div class="works-grid__item works-grid__item--square" data-slot="14" data-title="ESG Report">
+        <span class="works-grid__embed">
+          <iframe class="works-grid__embed-frame" src="works/esg-report/index.html" data-native-w="1000" data-native-h="750" tabindex="-1" scrolling="no" title="ESG Report"></iframe>
         </span>
       </div>
-      <div
-        class="masonry__item"
-        data-slot="15"
-        data-ratio="1/1"
-        data-title="PMEF"
-      >
-        <span class="masonry__embed">
-          <iframe
-            class="masonry__embed-frame"
-            src="works/PMEF/index.html?v=3"
-            data-native-w="1080"
-            data-native-h="1080"
-            tabindex="-1"
-            scrolling="no"
-            title="PMEF"
-          ></iframe>
+      <div class="works-grid__item works-grid__item--square" data-slot="15" data-title="SPIEF 2025">
+        <span class="works-grid__embed">
+          <iframe class="works-grid__embed-frame" src="works/PMEF/index.html?v=3" data-native-w="1080" data-native-h="1080" tabindex="-1" scrolling="no" title="SPIEF 2025"></iframe>
         </span>
       </div>
-      <div
-        class="masonry__item"
-        data-slot="16"
-        data-ratio="3/2"
-        data-title="Дашборд"
-      >
-        <img src="works/dashboard.png" alt="Дашборд" />
+      <div class="works-grid__item works-grid__item--wide" data-slot="16" data-title="Dashboard Concept">
+        <img src="works/dashboard.png" alt="Dashboard Concept" />
       </div>
-      <div
-        class="masonry__item"
-        data-slot="17"
-        data-ratio="5/4"
-        data-title="segment-analytics"
-      >
-        <span class="masonry__embed">
-          <iframe
-            class="masonry__embed-frame"
-            src="works/segment-analytics/index.html"
-            data-native-w="1000"
-            data-native-h="800"
-            tabindex="-1"
-            scrolling="no"
-            title="segment-analytics"
-          ></iframe>
+      <div class="works-grid__item works-grid__item--wide" data-slot="17" data-title="CRM Customer Segments">
+        <span class="works-grid__embed">
+          <iframe class="works-grid__embed-frame" src="works/segment-analytics/index.html" data-native-w="1000" data-native-h="800" tabindex="-1" scrolling="no" title="CRM Customer Segments"></iframe>
         </span>
       </div>
-      <div
-        class="masonry__item"
-        data-slot="18"
-        data-ratio="16/9"
-        data-title="Education platform concept"
-      >
-        <img
-          src="works/education-platform-concept.png"
-          alt="Education platform concept"
-        />
+      <div class="works-grid__item works-grid__item--square" data-slot="18" data-title="Education Platform Concept">
+        <img src="works/education-platform-concept.png" alt="Education Platform Concept" />
       </div>
-      <div
-        class="masonry__item"
-        data-slot="19"
-        data-ratio="2/1"
-        data-title="Синий бейдж яПомогаю"
-      >
-        <span class="masonry__embed">
-          <iframe
-            class="masonry__embed-frame"
-            src="works/яПомогаю/index.html?v=6"
-            data-native-w="1000"
-            data-native-h="500"
-            tabindex="-1"
-            scrolling="no"
-            title="Синий бейдж яПомогаю"
-          ></iframe>
+      <div class="works-grid__item works-grid__item--square" data-slot="19" data-title="&quot;yPomogayu&quot; Blue Badge">
+        <span class="works-grid__embed">
+          <iframe class="works-grid__embed-frame" src="works/яПомогаю/index.html?v=6" data-native-w="1000" data-native-h="500" tabindex="-1" scrolling="no" title="&quot;yPomogayu&quot; Blue Badge"></iframe>
         </span>
       </div>
-      <div
-        class="masonry__item"
-        data-slot="20"
-        data-ratio="4/3"
-        data-title="Векторы Концепт"
-      >
-        <img src="works/vectors-concept.png" alt="Векторы Концепт" />
+      <div class="works-grid__item works-grid__item--square" data-slot="20" data-title="3D Vectors Concept">
+        <img src="works/vectors-concept.png" alt="3D Vectors Concept" />
       </div>
-      <div
-        class="masonry__item"
-        data-slot="21"
-        data-ratio="1/1"
-        data-title="Ребрендинг hero баннера на яПомогаю"
-      >
-        <img
-          src="works/yapomogayu-hero-rebranding.png"
-          alt="Ребрендинг hero баннера на яПомогаю"
-        />
+      <div class="works-grid__item works-grid__item--wide" data-slot="21" data-title="Hero Banner Rebrand">
+        <img src="works/yapomogayu-hero-rebranding.png" alt="Hero Banner Rebrand" />
       </div>
-      <div
-        class="masonry__item"
-        data-slot="22"
-        data-ratio="3/2"
-        data-title="TLM Концепт"
-      >
-        <img src="works/tlm-concept.png" alt="TLM Концепт" />
+      <div class="works-grid__item works-grid__item--wide" data-slot="22" data-title="TLM Concept">
+        <img src="works/tlm-concept.png" alt="TLM Concept" />
       </div>
-      <div class="masonry__item" data-slot="23" data-ratio="5/4" data-title="Алертинг в таблице цен"><span class="masonry__embed"><iframe class="masonry__embed-frame" src="works/ozon-prices/index.html?v=16" data-native-w="1000" data-native-h="800" tabindex="-1" scrolling="no" title="Алертинг в таблице цен"></iframe></span></div>
-      <div class="masonry__item" data-slot="24" data-ratio="1000/563" data-title="Лендинг о компании Авито"><span class="masonry__embed"><iframe class="masonry__embed-frame" src="works/new-site-phone/index.html?v=12" data-native-w="1000" data-native-h="563" tabindex="-1" scrolling="no" title="Лендинг о компании Авито"></iframe></span></div>
-      <div class="masonry__item" data-slot="25" data-ratio="2/1" data-title="Внутреннее волонтерство"><span class="masonry__embed"><iframe class="masonry__embed-frame" src="works/internal-volunteering/index.html?v=5" data-native-w="1000" data-native-h="500" tabindex="-1" scrolling="no" title="Внутреннее волонтерство"></iframe></span></div>
-      <div class="masonry__item" data-slot="26" data-ratio="4/3" data-title="Mail App Концепт"><img src="works/mail-app-concept.png" alt="Mail App Концепт" /></div>
-      <div class="masonry__item" data-slot="27" data-ratio="1/1" data-title="НДС Моб"><span class="masonry__embed"><iframe class="masonry__embed-frame" src="works/ozon-vat/index.html?v=14" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" title="НДС Моб"></iframe></span></div>
-      <div class="masonry__item" data-slot="28" data-ratio="1000/667" data-title="Портрет покупателя"><span class="masonry__embed"><iframe class="masonry__embed-frame" src="works/customer-portrait/index.html?v=3" data-native-w="1000" data-native-h="667" tabindex="-1" scrolling="no" title="Портрет покупателя"></iframe></span></div>
-      <div class="masonry__item" data-slot="29" data-ratio="5/4" data-title="РФМ для хелпа"><span class="masonry__embed"><iframe class="masonry__embed-frame" src="works/rfm-help/index.html?v=3" data-native-w="1000" data-native-h="800" tabindex="-1" scrolling="no" title="РФМ для хелпа"></iframe></span></div>
-      <div class="masonry__item" data-slot="30" data-ratio="1000/563" data-title="Список покупателей"><span class="masonry__embed"><iframe class="masonry__embed-frame" src="works/customer-list/index.html?v=7" data-native-w="1000" data-native-h="563" tabindex="-1" scrolling="no" title="Список покупателей"></iframe></span></div>
-      <div class="masonry__item" data-slot="31" data-ratio="2/1" data-title="Страница рассылок"><img src="works/mailing-page.png" alt="Страница рассылок" /></div>
-      <div class="masonry__item" data-slot="32" data-ratio="1000/750" data-title="Исправление текста на тосте"><span class="masonry__embed"><iframe class="masonry__embed-frame" src="works/toast-roles-notification/index.html?v=1" data-native-w="1000" data-native-h="750" tabindex="-1" scrolling="no" title="Исправление текста на тосте"></iframe></span></div>
-      <div class="masonry__item" data-slot="33" data-ratio="1/1"><div class="masonry__ph"><b>33</b><span>1/1</span></div></div>
-      <div class="masonry__item" data-slot="34" data-ratio="3/2"><div class="masonry__ph"><b>34</b><span>3/2</span></div></div>
-      <div class="masonry__item" data-slot="35" data-ratio="5/4"><div class="masonry__ph"><b>35</b><span>5/4</span></div></div>
-      <div class="masonry__item" data-slot="36" data-ratio="16/9"><div class="masonry__ph"><b>36</b><span>16/9</span></div></div>
-      <div class="masonry__item" data-slot="37" data-ratio="2/1"><div class="masonry__ph"><b>37</b><span>2/1</span></div></div>
-      <div class="masonry__item" data-slot="38" data-ratio="4/3"><div class="masonry__ph"><b>38</b><span>4/3</span></div></div>
-      <div class="masonry__item" data-slot="39" data-ratio="1/1"><div class="masonry__ph"><b>39</b><span>1/1</span></div></div>
-      <div class="masonry__item" data-slot="40" data-ratio="3/2"><div class="masonry__ph"><b>40</b><span>3/2</span></div></div>
-      <div class="masonry__item" data-slot="41" data-ratio="5/4" data-title="ТГ канал в озоне"><img src="works/tg-channel-ozon.png" alt="ТГ канал в озоне" /></div>
-      <div class="masonry__item" data-slot="42" data-ratio="16/9" data-title="Чекаут подписка на благотворительность"><img src="works/checkout-charity-subscription.png" alt="Чекаут подписка на благотворительность" /></div>
-      <div class="masonry__item" data-slot="43" data-ratio="2/1"><div class="masonry__ph"><b>43</b><span>2/1</span></div></div>
-      <div class="masonry__item" data-slot="44" data-ratio="4/3"><div class="masonry__ph"><b>44</b><span>4/3</span></div></div>
-      <div class="masonry__item" data-slot="45" data-ratio="1/1"><div class="masonry__ph"><b>45</b><span>1/1</span></div></div>
-      <div class="masonry__item" data-slot="46" data-ratio="3/2"><div class="masonry__ph"><b>46</b><span>3/2</span></div></div>
-      <div class="masonry__item" data-slot="47" data-ratio="5/4"><div class="masonry__ph"><b>47</b><span>5/4</span></div></div>
-      <div class="masonry__item" data-slot="48" data-ratio="16/9"><div class="masonry__ph"><b>48</b><span>16/9</span></div></div>
-      <div class="masonry__item" data-slot="49" data-ratio="2/1"><div class="masonry__ph"><b>49</b><span>2/1</span></div></div>
-      <div class="masonry__item" data-slot="50" data-ratio="4/3"><div class="masonry__ph"><b>50</b><span>4/3</span></div></div>
+      <div class="works-grid__item works-grid__item--wide" data-slot="23" data-title="Price Table Alerting"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/ozon-prices/index.html?v=16" data-native-w="1000" data-native-h="800" tabindex="-1" scrolling="no" title="Price Table Alerting"></iframe></span></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="24" data-title="About Us Landing Page"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/new-site-phone/index.html?v=12" data-native-w="1000" data-native-h="563" tabindex="-1" scrolling="no" title="About Us Landing Page"></iframe></span></div>
+      <div class="works-grid__item works-grid__item--wide" data-slot="25" data-title="Internal Volunteering"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/internal-volunteering/index.html?v=5" data-native-w="1000" data-native-h="500" tabindex="-1" scrolling="no" title="Internal Volunteering"></iframe></span></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="26" data-title="Mail App Concept"><img src="works/mail-app-concept.png" alt="Mail App Concept" /></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="27" data-title="VAT"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/ozon-vat/index.html?v=14" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" title="VAT"></iframe></span></div>
+      <div class="works-grid__item works-grid__item--wide" data-slot="28" data-title="Customer Portrait"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/customer-portrait/index.html?v=3" data-native-w="1000" data-native-h="667" tabindex="-1" scrolling="no" title="Customer Portrait"></iframe></span></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="29" data-title="RFM for Help Center"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/rfm-help/index.html?v=3" data-native-w="1000" data-native-h="800" tabindex="-1" scrolling="no" title="RFM for Help Center"></iframe></span></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="30" data-title="Customer List"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/customer-list/index.html?v=7" data-native-w="1000" data-native-h="563" tabindex="-1" scrolling="no" title="Customer List"></iframe></span></div>
+      <div class="works-grid__item works-grid__item--wide" data-slot="31" data-title="Mailing Page"><img src="works/mailing-page.png" alt="Mailing Page" /></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="32" data-title="Toast Copy Fix"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/toast-roles-notification/index.html?v=1" data-native-w="1000" data-native-h="750" tabindex="-1" scrolling="no" title="Toast Copy Fix"></iframe></span></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="33"><div class="works-grid__ph"><b>33 · square</b><span>Price Analytics Metrics</span></div></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="34"><div class="works-grid__ph"><b>34 · square</b><span>Margin &amp; Cost Price</span></div></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="35"><div class="works-grid__ph"><b>35 · square</b><span>Popover Improvements</span></div></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="36"><div class="works-grid__ph"><b>36 · square</b><span>Price Table Redesign</span></div></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="37"><div class="works-grid__ph"><b>37 · square</b><span>Promotions &amp; Boosting</span></div></div>
+      <div class="works-grid__item works-grid__item--wide" data-slot="38"><div class="works-grid__ph"><b>38 · wide</b><span>Quick Discount Bar</span></div></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="39"><div class="works-grid__ph"><b>39 · square</b><span>Discount Ladder</span></div></div>
+      <div class="works-grid__item works-grid__item--wide" data-slot="40"><div class="works-grid__ph"><b>40 · wide</b><span>Low Turnover</span></div></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="41" data-title="Ozon Telegram Channel"><img src="works/tg-channel-ozon.png" alt="Ozon Telegram Channel" /></div>
+      <div class="works-grid__item works-grid__item--tall" data-slot="42" data-title="Charity Subscription Checkout"><img src="works/checkout-charity-subscription.png" alt="Charity Subscription Checkout" /></div>
+      <div class="works-grid__item works-grid__item--wide" data-slot="43"><div class="works-grid__ph"><b>43 · wide</b><span>HR Web Portal</span></div></div>
+      <div class="works-grid__item works-grid__item--wide" data-slot="44"><div class="works-grid__ph"><b>44 · wide</b><span>Time Warp</span></div></div>
+      <div class="works-grid__item works-grid__item--tall" data-slot="45"><div class="works-grid__ph"><b>45 · tall</b><span>Profile Hub Screen</span></div></div>
+      <div class="works-grid__item works-grid__item--wide" data-slot="46"><div class="works-grid__ph"><b>46 · wide</b><span>SPIEF 2026</span></div></div>
+      <div class="works-grid__item works-grid__item--tall" data-slot="47"><div class="works-grid__ph"><b>47 · tall</b><span>Success Screens Rework</span></div></div>
+      <div class="works-grid__item works-grid__item--wide" data-slot="48"><div class="works-grid__ph"><b>48 · wide</b><span>Category Hero Banners Redesign</span></div></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="49"><div class="works-grid__ph"><b>49 · square</b><span>Prolaio Patient App</span></div></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="50"><div class="works-grid__ph"><b>50 · square</b><span>Prolaio Watch App</span></div></div>
+      <div class="works-grid__item works-grid__item--wide" data-slot="51"><div class="works-grid__ph"><b>51 · wide</b><span>Prolaio Medical Dashboard</span></div></div>
     </div>
   </main>
 
@@ -551,7 +343,6 @@
     </nav>
   </div>
 
-  <script src="styles/masonry.js?v=20"></script>
   <script src="styles/layout-chrome.js?v=21"></script>
   <script src="styles/embed-scale.js?v=18"></script>
   <script src="styles/loading.js?v=1"></script>

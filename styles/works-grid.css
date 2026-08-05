@@ -1,0 +1,134 @@
+/*
+  Галерея работ — 2-колоночная brick-сетка (в отличие от Pinterest-
+  masonry, см. masonry.css/masonry.js): у каждой карточки одна из трёх
+  ЯВНЫХ форм, а не произвольная пропорция реального фото:
+
+    --square — квадрат, 1 колонка
+    --wide   — широкая, 2 колонки (та же высота, что у квадрата)
+    --tall   — высокая, 1 колонка, 2 строки
+
+  Раскладка — чистый CSS Grid, без JS. Высота строки — НЕ auto (от
+  контента), а жёстко посчитана через container query units
+  (grid-auto-rows: cqw) так, чтобы 1 строка == ширине 1 колонки, то
+  есть ряды сами по себе уже квадратные. Это принципиально важно: на
+  первой версии (grid-auto-rows: auto + aspect-ratio на карточках)
+  реально ловили дыры в Chrome — высокая карточка (grid-row: span 2)
+  ничем не обязывает высоту соседних ячеек, если её саму ничего не
+  прижимает по высоте (row auto-sizing по контенту — только у карточек
+  БЕЗ spans, а span-карточки в auto-строке размер не диктуют). Когда
+  же высота строки — константа от ширины контейнера, а не от
+  контента, эта неоднозначность пропадает: у --square/--wide форма
+  всегда получается из самой сетки (colspan × rowspan), без aspect-
+  ratio на карточке вообще.
+
+  На мобильном/планшете (<1101px, тот же порог, что и у хедера/футера)
+  сетка схлопывается в 1 колонку — карточки идут одна за другой, без
+  JS-раскладки и лишних перерасчётов при скролле. Тут высота строки
+  снова auto, поэтому --wide/--tall получают явный aspect-ratio (в
+  1 колонку colspan/rowspan уже ничего не значат).
+*/
+
+:root {
+  --works-grid-gap: 10px;
+}
+
+.works-grid {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-flow: row dense;
+  grid-auto-rows: calc((100cqw - var(--works-grid-gap)) / 2);
+  gap: var(--works-grid-gap);
+}
+
+.works-grid__item {
+  display: block;
+  box-sizing: border-box;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: var(--color-surface-alt, #eceff3);
+  text-decoration: none;
+}
+
+.works-grid__item--wide {
+  grid-column: span 2;
+}
+
+.works-grid__item--tall {
+  grid-row: span 2;
+}
+
+@media (max-width: 1100px) {
+  .works-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+
+  .works-grid__item--square {
+    aspect-ratio: 1 / 1;
+  }
+
+  .works-grid__item--wide {
+    grid-column: span 1;
+    aspect-ratio: 2 / 1;
+  }
+
+  .works-grid__item--tall {
+    grid-row: span 1;
+    aspect-ratio: 1 / 2;
+  }
+}
+
+.works-grid__item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Плейсхолдер-подпись у пустых плашек — номер слота, форма и рабочее
+   название проекта, чтобы удобно было готовить визуал под конкретный
+   слот. У карточек с реальным контентом этой подписи нет. */
+.works-grid__ph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.works-grid__ph b {
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+/* Карточка-проект — вместо картинки внутри крутится готовый
+   самостоятельный HTML (см. works/*.html), встроенный через iframe в
+   его РЕАЛЬНОМ (нативном) размере и сжатый transform: scale() под
+   ширину карточки (см. embed-scale.js). pointer-events: none на
+   iframe — карточки пока не кликабельны (просто галерея). */
+.works-grid__embed {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.works-grid__embed-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+  pointer-events: none;
+  transform-origin: top left;
+}
