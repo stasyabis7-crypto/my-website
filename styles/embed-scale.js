@@ -29,7 +29,18 @@
     var nativeH = parseFloat(frame.getAttribute('data-native-h')) || frame.offsetHeight || 1;
     var wrapW = wrap.clientWidth;
     var wrapH = wrap.clientHeight;
-    var scale = Math.min(wrapW / nativeW, wrapH / nativeH);
+    // cover — для случаев, где нативная пропорция анимации и форма
+    // слота совпадают почти точно (напр. квадрат 1:1 в квадратном
+    // слоте), но не идеально — из-за уже известной неточности сетки
+    // (квадрат в одном ряду с --wide на ~5px не идеально квадратный,
+    // см. works-grid.css). Обычный contain в этом случае оставляет
+    // тонкую щель фона слота с одного края; cover просто чуть-чуть
+    // обрезает край анимации вместо щели — незаметно при таком
+    // маленьком расхождении.
+    var cover = frame.getAttribute('data-fit') === 'cover';
+    var scale = cover
+      ? Math.max(wrapW / nativeW, wrapH / nativeH)
+      : Math.min(wrapW / nativeW, wrapH / nativeH);
 
     frame.style.width = nativeW + 'px';
     frame.style.height = nativeH + 'px';
