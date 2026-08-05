@@ -1,10 +1,13 @@
 /*
-  Галерея работ — 2-колоночная brick-сетка (в отличие от Pinterest-
-  masonry, см. masonry.css/masonry.js): у каждой карточки одна из трёх
-  ЯВНЫХ форм, а не произвольная пропорция реального фото:
+  Галерея работ — 3-колоночная brick-сетка на десктопе (в отличие от
+  Pinterest-masonry, см. masonry.css/masonry.js): у каждой карточки
+  одна из трёх ЯВНЫХ форм, а не произвольная пропорция реального фото:
 
     --square — квадрат, 1 колонка
-    --wide   — широкая, 2 колонки (та же высота, что у квадрата)
+    --wide   — широкая, 2 из 3 колонок (та же высота, что у квадрата) —
+               третья колонка в этом ряду достаётся соседнему квадрату,
+               поэтому widе оказывается то слева, то справа — куда его
+               поставит dense-паковка
     --tall   — высокая, 1 колонка, 2 строки
 
   Раскладка — чистый CSS Grid, без JS. Высота строки — НЕ auto (от
@@ -35,9 +38,9 @@
 .works-grid {
   container-type: inline-size;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-auto-flow: row dense;
-  grid-auto-rows: calc((100cqw - var(--works-grid-gap)) / 2);
+  grid-auto-rows: calc((100cqw - 2 * var(--works-grid-gap)) / 3);
   gap: var(--works-grid-gap);
 }
 
