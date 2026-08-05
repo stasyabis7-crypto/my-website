@@ -36,7 +36,7 @@ button{font-family:"Inter",Arial,sans-serif}
 .dialog p{font-size:16px;line-height:24px;margin:0 0 24px}
 .actions{display:flex;gap:16px}
 .back{width:52px;height:52px;border:0;border-radius:10px;background:#f5f7fa;display:grid;place-items:center;transition:background .18s ease}.back.hover{background:#e5ebf1}
-.back:before{content:"";width:24px;height:24px;background:url("./ozon%20min%20price/ic-m-chevron-left.svg") center/24px 24px no-repeat}
+.back:before{content:"";width:24px;height:24px;background:url("./assets/ic-m-chevron-left.svg") center/24px 24px no-repeat}
 .primary{height:52px;flex:1;border:0;border-radius:10px;background:#f5f7fa;color:#066bff;font:600 16px/20px "Inter",Arial,sans-serif}
 .dialog[data-step="1"] .primary{background:#066bff;color:#fff}
 .cursor{position:absolute;z-index:20;left:0;top:0;width:28px;height:28px;pointer-events:none;transform-origin:5px 4px;will-change:transform,opacity}
@@ -46,40 +46,40 @@ button{font-family:"Inter",Arial,sans-serif}
 <main class="stage">
  <div class="device" id="device">
   <div class="screen" id="screen"><div class="canvas" id="canvas">
-   <img class="background" src="./ozon%20min%20price/background.png" alt="">
+   <img class="background" src="./assets/background.png" alt="">
    <div class="veil"></div>
    <section class="card" id="card">
-    <div class="hero"><img src="./ozon%20min%20price/image-container.png" alt=""><img class="close" src="./ozon%20min%20price/close-button.svg" alt=""></div>
+    <div class="hero"><img src="./assets/image-container.png" alt=""><img class="close" src="./assets/close-button.svg" alt=""></div>
     <div class="card-content">
      <h1>Отслеживайте срок действия минимальной цены</h1>
      <p>Теперь она влияет на автодобавление товара в акции в течение 30 дней. Управляйте настройкой удобным для вас способом</p>
      <div class="choices">
-      <div class="choice"><span>Через XLSX-шаблон</span><img src="./ozon%20min%20price/after-label.svg" alt=""></div>
-      <div class="choice"><span>Через раздел «Управление ценами»</span><img src="./ozon%20min%20price/after-label.svg" alt=""></div>
-      <div class="choice"><span>Через онлайн-таблицу цен</span><img src="./ozon%20min%20price/after-label.svg" alt=""></div>
+      <div class="choice"><span>Через XLSX-шаблон</span><img src="./assets/after-label.svg" alt=""></div>
+      <div class="choice"><span>Через раздел «Управление ценами»</span><img src="./assets/after-label.svg" alt=""></div>
+      <div class="choice"><span>Через онлайн-таблицу цен</span><img src="./assets/after-label.svg" alt=""></div>
      </div>
     </div>
    </section>
    <section class="dialog" data-step="1">
-    <img class="close" src="./ozon%20min%20price/close-button.svg" alt="">
+    <img class="close" src="./assets/close-button.svg" alt="">
     <h2>Обновление минимальной цены через шаблон</h2>
     <p>В XLSX-шаблоне с ценами укажите «Да» в столбце «Учитывать минимальную цену при автодобавлении в акции или продлить действие настройки»</p>
     <div class="actions"><button class="back" aria-label="Назад"></button><button class="primary">Перейти в раздел</button></div>
    </section>
    <section class="dialog" data-step="2">
-    <img class="close" src="./ozon%20min%20price/close-button.svg" alt="">
+    <img class="close" src="./assets/close-button.svg" alt="">
     <h2>Обновление минимальной цены через раздел «Управление ценами»</h2>
     <p>Перейдите в раздел «Цены и акции» и откройте нужный товар. Управлять настройкой можно на вкладке «Инструменты цен»</p>
     <div class="actions"><button class="back" aria-label="Назад"></button><button class="primary">Понятно</button></div>
    </section>
    <section class="dialog" data-step="3">
-    <img class="close" src="./ozon%20min%20price/close-button.svg" alt="">
+    <img class="close" src="./assets/close-button.svg" alt="">
     <h2>Обновление минимальной цены через онлайн-таблицу цен</h2>
     <p>Начните редактировать цены через онлайн-таблицу. Нажмите «Заполнить всем» и включите настройку «Учитывать при автодобавлении в акции»</p>
     <div class="actions"><button class="back" aria-label="Назад"></button><button class="primary">Понятно</button></div>
    </section>
-   <img class="cursor" id="cursorDefault" src="./ozon%20min%20price/cursor-default.svg" alt="">
-   <img class="cursor" id="cursorPointer" src="./ozon%20min%20price/cursor-pointer.svg" alt="">
+   <img class="cursor" id="cursorDefault" src="./assets/cursor-default.svg" alt="">
+   <img class="cursor" id="cursorPointer" src="./assets/cursor-pointer.svg" alt="">
   </div></div>
  </div>
 </main>
