@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Карта раздельного сбора</title>
-<style>
+<style>:root{--stage-bg:#f0f1f4} html[data-embed-theme="dark"]{--stage-bg:#262a33}
 @font-face{font-family:CoFo;src:url("../fonts/CoFoAvitoText-Regular.woff2") format("woff2");font-weight:400}
 @font-face{font-family:CoFo;src:url("../fonts/CoFoAvitoText-Medium.woff2") format("woff2");font-weight:500}
 @font-face{font-family:CoFo;src:url("../fonts/CoFoAvitoText-ExtraBold.woff2") format("woff2");font-weight:800}
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}
-body{display:grid;place-items:center;background:#34c759;font-family:CoFo,Arial,sans-serif}
-.stage{position:relative;width:min(100vw,calc(100vh * 1.25));aspect-ratio:5/4;background:#34c759;overflow:hidden}
+body{display:grid;place-items:center;background:var(--stage-bg);font-family:CoFo,Arial,sans-serif}
+.stage{position:relative;width:min(100vw,calc(100vh * 1.25));aspect-ratio:5/4;background:var(--stage-bg);overflow:hidden}
 .viewport{position:absolute;left:50%;top:50%;width:94%;aspect-ratio:940/598;transform:translate(-50%,-50%);filter:drop-shadow(0 14px 14px rgba(0,0,0,.22))}
 .tablet-frame{position:absolute;inset:0;display:block;width:100%;height:100%;overflow:visible}
 .tablet-screen{position:absolute;left:1.4894%;right:1.4894%;top:2.3411%;bottom:2.3411%;overflow:hidden;border:0;border-radius:2.4123%/3.8596%;background:#fff;box-shadow:none}
@@ -48,6 +48,7 @@ body{display:grid;place-items:center;background:#34c759;font-family:CoFo,Arial,s
 .empty{position:absolute;inset:225px 24px 0;text-align:center;opacity:0;transition:opacity .3s}.empty.show{opacity:1}.empty-art{width:260px;height:260px;margin:-8px auto -47px}.empty-art img{display:block;width:100%;height:100%;object-fit:contain}.empty b{position:relative;z-index:1;display:block;font-size:21px;line-height:26px;font-weight:800;margin-bottom:4px}.empty p{position:relative;z-index:1;font-size:15px;line-height:22px;margin:0}.suggestions.fade{opacity:0}
 .cursor{position:absolute;left:0;top:0;width:24px;height:24px;z-index:20;pointer-events:none;transform-origin:4px 3px;will-change:transform,opacity}
 </style>
+  <script src="../shared/theme-sync.js" defer></script>
 </head>
 <body>
 <main class="stage">
