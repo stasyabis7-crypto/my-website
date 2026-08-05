@@ -1,6 +1,6 @@
 (function () {
   var root = document.documentElement;
-  var items = document.querySelectorAll('.masonry__item');
+  var items = document.querySelectorAll('.works-grid__item');
 
   function reveal(item) {
     if (item) item.classList.add('is-media-loaded');

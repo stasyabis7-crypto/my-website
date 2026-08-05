@@ -11,7 +11,7 @@
   to{background-position:-200% 0}
 }
 .skeleton-surface,
-.masonry__item:not(.is-media-loaded)::after{
+.works-grid__item:not(.is-media-loaded)::after{
   background-color:var(--skeleton-base);
   background-image:linear-gradient(100deg,transparent 30%,var(--skeleton-shine) 50%,transparent 70%);
   background-size:220% 100%;
@@ -20,7 +20,7 @@
 
 /* Каждый слот загружается независимо: медленный iframe продолжает
    показывать скелетон, даже когда остальная страница уже готова. */
-.masonry__item::after{
+.works-grid__item::after{
   content:"";
   position:absolute;
   z-index:10;
@@ -30,14 +30,14 @@
   opacity:0;
   transition:opacity .25s ease;
 }
-.masonry__item:not(.is-media-loaded)::after{opacity:1}
-.masonry__item>img,
-.masonry__item>.masonry__embed{
+.works-grid__item:not(.is-media-loaded)::after{opacity:1}
+.works-grid__item>img,
+.works-grid__item>.works-grid__embed{
   opacity:0;
   transition:opacity .32s ease;
 }
-.masonry__item.is-media-loaded>img,
-.masonry__item.is-media-loaded>.masonry__embed{opacity:1}
+.works-grid__item.is-media-loaded>img,
+.works-grid__item.is-media-loaded>.works-grid__embed{opacity:1}
 
 /* Скелетоны оболочки видны только на начальной загрузке страницы. */
 .is-page-loading .site-header__avatar img,
@@ -65,7 +65,7 @@
 
 @media (prefers-reduced-motion:reduce){
   .skeleton-surface,
-  .masonry__item:not(.is-media-loaded)::after,
+  .works-grid__item:not(.is-media-loaded)::after,
   .is-page-loading .site-header__avatar,
   .is-page-loading .site-header__logo,
   .is-page-loading .site-header__cta,
