@@ -121,14 +121,14 @@
   <main class="container page-works">
     <!--
       51 плашка-слот под проекты. Каждая — data-slot (номер, см. таблицу
-      проектов) и одна из трёх ЯВНЫХ форм (works-grid__item--square /
-      --wide / --tall, см. works-grid.css) — раскладка чистым CSS Grid,
-      без JS вообще.
+      проектов) и одна из четырёх ЯВНЫХ форм (works-grid__item--square /
+      --wide-left / --wide-right / --tall, см. works-grid.css) —
+      раскладка чистым CSS Grid, без JS вообще.
 
       Когда добавляете проект в слот: положите внутрь .works-grid__item
       либо <img src="..." alt="...">, либо .works-grid__embed+iframe
-      (как в слоте 1) — класс формы (--square/--wide/--tall) на самом
-      элементе не трогайте, она уже под слот подобрана. Карточки пока НЕ
+      (как в слоте 1) — класс формы (--square/--wide-left/--wide-right/
+      --tall) на самом элементе не трогайте, она уже под слот подобрана. Карточки пока НЕ
       кликабельны (просто галерея) — страница-описание проекта будет
       сделана позже по шаблону, тогда .works-grid__item сменится на
       <a href="...">.
@@ -154,12 +154,12 @@
           <iframe class="works-grid__embed-frame" src="works/banner-theme.html" data-native-w="1000" data-native-h="667" tabindex="-1" scrolling="no" title="Light/Dark Theme Banner"></iframe>
         </span>
       </div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="5" data-title="Recycling Map">
+      <div class="works-grid__item works-grid__item--wide-left" data-slot="5" data-title="Recycling Map">
         <span class="works-grid__embed">
           <iframe class="works-grid__embed-frame" src="works/recycling-map-animation.html?v=4" data-native-w="1280" data-native-h="1024" tabindex="-1" scrolling="no" title="Recycling Map"></iframe>
         </span>
       </div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="6" data-title="Music Controller Concept">
+      <div class="works-grid__item works-grid__item--wide-right" data-slot="6" data-title="Music Controller Concept">
         <img src="works/music-controller-concept.png" alt="Music Controller Concept" />
       </div>
       <div class="works-grid__item works-grid__item--square" data-slot="7" data-title="Flecto Concept">
@@ -173,7 +173,7 @@
           <iframe class="works-grid__embed-frame" src="works/ozon-onboarding-animation.html?v=3" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" title="Temporary Min-Price Onboarding"></iframe>
         </span>
       </div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="10" data-title="Offer Story">
+      <div class="works-grid__item works-grid__item--wide-left" data-slot="10" data-title="Offer Story">
         <img src="works/offer.png" alt="Offer Story" />
       </div>
       <div class="works-grid__item works-grid__item--square" data-slot="11" data-title="&quot;Znak Dobra&quot; Charity Sheet">
@@ -197,10 +197,10 @@
           <iframe class="works-grid__embed-frame" src="works/PMEF/index.html?v=3" data-native-w="1080" data-native-h="1080" tabindex="-1" scrolling="no" title="SPIEF 2025"></iframe>
         </span>
       </div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="16" data-title="Dashboard Concept">
+      <div class="works-grid__item works-grid__item--wide-right" data-slot="16" data-title="Dashboard Concept">
         <img src="works/dashboard.png" alt="Dashboard Concept" />
       </div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="17" data-title="CRM Customer Segments">
+      <div class="works-grid__item works-grid__item--wide-left" data-slot="17" data-title="CRM Customer Segments">
         <span class="works-grid__embed">
           <iframe class="works-grid__embed-frame" src="works/segment-analytics/index.html" data-native-w="1000" data-native-h="800" tabindex="-1" scrolling="no" title="CRM Customer Segments"></iframe>
         </span>
@@ -216,41 +216,41 @@
       <div class="works-grid__item works-grid__item--square" data-slot="20" data-title="3D Vectors Concept">
         <img src="works/vectors-concept.png" alt="3D Vectors Concept" />
       </div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="21" data-title="Hero Banner Rebrand">
+      <div class="works-grid__item works-grid__item--wide-right" data-slot="21" data-title="Hero Banner Rebrand">
         <img src="works/yapomogayu-hero-rebranding.png" alt="Hero Banner Rebrand" />
       </div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="22" data-title="TLM Concept">
+      <div class="works-grid__item works-grid__item--wide-left" data-slot="22" data-title="TLM Concept">
         <img src="works/tlm-concept.png" alt="TLM Concept" />
       </div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="23" data-title="Price Table Alerting"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/ozon-prices/index.html?v=16" data-native-w="1000" data-native-h="800" tabindex="-1" scrolling="no" title="Price Table Alerting"></iframe></span></div>
+      <div class="works-grid__item works-grid__item--wide-right" data-slot="23" data-title="Price Table Alerting"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/ozon-prices/index.html?v=16" data-native-w="1000" data-native-h="800" tabindex="-1" scrolling="no" title="Price Table Alerting"></iframe></span></div>
       <div class="works-grid__item works-grid__item--square" data-slot="24" data-title="About Us Landing Page"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/new-site-phone/index.html?v=12" data-native-w="1000" data-native-h="563" tabindex="-1" scrolling="no" title="About Us Landing Page"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="25" data-title="Internal Volunteering"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/internal-volunteering/index.html?v=5" data-native-w="1000" data-native-h="500" tabindex="-1" scrolling="no" title="Internal Volunteering"></iframe></span></div>
+      <div class="works-grid__item works-grid__item--wide-left" data-slot="25" data-title="Internal Volunteering"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/internal-volunteering/index.html?v=5" data-native-w="1000" data-native-h="500" tabindex="-1" scrolling="no" title="Internal Volunteering"></iframe></span></div>
       <div class="works-grid__item works-grid__item--square" data-slot="26" data-title="Mail App Concept"><img src="works/mail-app-concept.png" alt="Mail App Concept" /></div>
       <div class="works-grid__item works-grid__item--square" data-slot="27" data-title="VAT"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/ozon-vat/index.html?v=14" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" title="VAT"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="28" data-title="Customer Portrait"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/customer-portrait/index.html?v=3" data-native-w="1000" data-native-h="667" tabindex="-1" scrolling="no" title="Customer Portrait"></iframe></span></div>
+      <div class="works-grid__item works-grid__item--wide-right" data-slot="28" data-title="Customer Portrait"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/customer-portrait/index.html?v=3" data-native-w="1000" data-native-h="667" tabindex="-1" scrolling="no" title="Customer Portrait"></iframe></span></div>
       <div class="works-grid__item works-grid__item--square" data-slot="29" data-title="RFM for Help Center"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/rfm-help/index.html?v=3" data-native-w="1000" data-native-h="800" tabindex="-1" scrolling="no" title="RFM for Help Center"></iframe></span></div>
       <div class="works-grid__item works-grid__item--square" data-slot="30" data-title="Customer List"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/customer-list/index.html?v=7" data-native-w="1000" data-native-h="563" tabindex="-1" scrolling="no" title="Customer List"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="31" data-title="Mailing Page"><img src="works/mailing-page.png" alt="Mailing Page" /></div>
+      <div class="works-grid__item works-grid__item--wide-left" data-slot="31" data-title="Mailing Page"><img src="works/mailing-page.png" alt="Mailing Page" /></div>
       <div class="works-grid__item works-grid__item--square" data-slot="32" data-title="Toast Copy Fix"><span class="works-grid__embed"><iframe class="works-grid__embed-frame" src="works/toast-roles-notification/index.html?v=1" data-native-w="1000" data-native-h="750" tabindex="-1" scrolling="no" title="Toast Copy Fix"></iframe></span></div>
       <div class="works-grid__item works-grid__item--square" data-slot="33"><div class="works-grid__ph"><b>33 · square</b><span>Price Analytics Metrics</span></div></div>
       <div class="works-grid__item works-grid__item--square" data-slot="34"><div class="works-grid__ph"><b>34 · square</b><span>Margin &amp; Cost Price</span></div></div>
       <div class="works-grid__item works-grid__item--square" data-slot="35"><div class="works-grid__ph"><b>35 · square</b><span>Popover Improvements</span></div></div>
       <div class="works-grid__item works-grid__item--square" data-slot="36"><div class="works-grid__ph"><b>36 · square</b><span>Price Table Redesign</span></div></div>
       <div class="works-grid__item works-grid__item--square" data-slot="37"><div class="works-grid__ph"><b>37 · square</b><span>Promotions &amp; Boosting</span></div></div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="38"><div class="works-grid__ph"><b>38 · wide</b><span>Quick Discount Bar</span></div></div>
+      <div class="works-grid__item works-grid__item--wide-right" data-slot="38"><div class="works-grid__ph"><b>38 · wide</b><span>Quick Discount Bar</span></div></div>
       <div class="works-grid__item works-grid__item--square" data-slot="39"><div class="works-grid__ph"><b>39 · square</b><span>Discount Ladder</span></div></div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="40"><div class="works-grid__ph"><b>40 · wide</b><span>Low Turnover</span></div></div>
+      <div class="works-grid__item works-grid__item--wide-left" data-slot="40"><div class="works-grid__ph"><b>40 · wide</b><span>Low Turnover</span></div></div>
       <div class="works-grid__item works-grid__item--square" data-slot="41" data-title="Ozon Telegram Channel"><img src="works/tg-channel-ozon.png" alt="Ozon Telegram Channel" /></div>
       <div class="works-grid__item works-grid__item--tall" data-slot="42" data-title="Charity Subscription Checkout"><img src="works/checkout-charity-subscription.png" alt="Charity Subscription Checkout" /></div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="43"><div class="works-grid__ph"><b>43 · wide</b><span>HR Web Portal</span></div></div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="44"><div class="works-grid__ph"><b>44 · wide</b><span>Time Warp</span></div></div>
+      <div class="works-grid__item works-grid__item--wide-right" data-slot="43"><div class="works-grid__ph"><b>43 · wide</b><span>HR Web Portal</span></div></div>
+      <div class="works-grid__item works-grid__item--wide-left" data-slot="44"><div class="works-grid__ph"><b>44 · wide</b><span>Time Warp</span></div></div>
       <div class="works-grid__item works-grid__item--tall" data-slot="45"><div class="works-grid__ph"><b>45 · tall</b><span>Profile Hub Screen</span></div></div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="46"><div class="works-grid__ph"><b>46 · wide</b><span>SPIEF 2026</span></div></div>
+      <div class="works-grid__item works-grid__item--wide-right" data-slot="46"><div class="works-grid__ph"><b>46 · wide</b><span>SPIEF 2026</span></div></div>
       <div class="works-grid__item works-grid__item--tall" data-slot="47"><div class="works-grid__ph"><b>47 · tall</b><span>Success Screens Rework</span></div></div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="48"><div class="works-grid__ph"><b>48 · wide</b><span>Category Hero Banners Redesign</span></div></div>
+      <div class="works-grid__item works-grid__item--wide-left" data-slot="48"><div class="works-grid__ph"><b>48 · wide</b><span>Category Hero Banners Redesign</span></div></div>
       <div class="works-grid__item works-grid__item--square" data-slot="49"><div class="works-grid__ph"><b>49 · square</b><span>Prolaio Patient App</span></div></div>
       <div class="works-grid__item works-grid__item--square" data-slot="50"><div class="works-grid__ph"><b>50 · square</b><span>Prolaio Watch App</span></div></div>
-      <div class="works-grid__item works-grid__item--wide" data-slot="51"><div class="works-grid__ph"><b>51 · wide</b><span>Prolaio Medical Dashboard</span></div></div>
+      <div class="works-grid__item works-grid__item--wide-right" data-slot="51"><div class="works-grid__ph"><b>51 · wide</b><span>Prolaio Medical Dashboard</span></div></div>
     </div>
   </main>
 
