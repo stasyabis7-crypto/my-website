@@ -38,10 +38,16 @@
 .works-grid__item>img,
 .works-grid__item>.works-grid__embed{
   opacity:0;
-  transition:opacity .32s ease;
+  transform:translateY(10px);
+  transition:opacity .45s ease,transform .45s ease;
 }
 .works-grid__item.is-media-loaded>img,
-.works-grid__item.is-media-loaded>.works-grid__embed{opacity:1}
+.works-grid__item.is-media-loaded>.works-grid__embed{opacity:1;transform:translateY(0)}
+
+@media (prefers-reduced-motion:reduce){
+  .works-grid__item>img,
+  .works-grid__item>.works-grid__embed{transform:none;transition:opacity .32s ease}
+}
 
 /* Скелетоны оболочки видны только на начальной загрузке страницы. */
 .is-page-loading .site-header__avatar img,
