@@ -14,7 +14,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--canva
 body{display:grid;place-items:center}
 .viewport{position:relative;width:100vw;height:100vh;overflow:hidden;background:var(--canvas-bg)}
 .canvas{position:absolute;left:50%;top:50%;width:1400px;height:1400px;transform-origin:center;background:var(--canvas-bg)}
-.phone{position:absolute;left:50%;top:50%;width:354px;height:720px;transform:translate(-50%,-50%) scale(1.42);transform-origin:50% 72%;border-radius:60px;background:linear-gradient(110deg,#777,#f6f4e9 18%,#777 42%,#e8e5d8 72%,#777);padding:6px;box-shadow:0 22px 42px rgba(30,33,36,.18);animation:phoneFocus 9s var(--ease) infinite}
+.phone{position:absolute;left:50%;top:50%;width:354px;height:720px;transform:translate(-50%,-50%) scale(1.7);transform-origin:50% 50%;border-radius:60px;background:linear-gradient(110deg,#777,#f6f4e9 18%,#777 42%,#e8e5d8 72%,#777);padding:6px;box-shadow:0 22px 42px rgba(30,33,36,.18);animation:phoneFocus 9s var(--ease) infinite}
 .bezel{position:relative;width:100%;height:100%;padding:8px;border-radius:55px;background:#090909;overflow:hidden}
 .display{position:relative;width:100%;height:100%;border-radius:47px;background:#fff;overflow:hidden}
 .status{position:absolute;z-index:20;inset:0 0 auto;height:45px;background:#fff;color:#000;font-size:13px;font-weight:700}
@@ -43,7 +43,7 @@ body{display:grid;place-items:center}
 .home{position:absolute;z-index:30;bottom:7px;left:50%;width:104px;height:4px;border-radius:4px;background:#000;transform:translateX(-50%)}
 @keyframes backdrop{0%,8%,91%,100%{opacity:0}20%,82%{opacity:1}}
 @keyframes sheet{0%,8%{transform:translateY(102%);opacity:.98}20%,82%{transform:translateY(0);opacity:1}92%,100%{transform:translateY(102%);opacity:.98}}
-@keyframes phoneFocus{0%,22%{top:50%;transform:translate(-50%,-50%) scale(1.42)}38%,56%{top:calc(50% - 18px);transform:translate(-50%,-50%) scale(1.5)}70%,100%{top:50%;transform:translate(-50%,-50%) scale(1.42)}}
+@keyframes phoneFocus{0%,22%{top:50%;transform:translate(-50%,-50%) scale(1.7)}38%,56%{top:calc(50% - 60px);transform:translate(-50%,-50%) scale(2.3)}70%,100%{top:50%;transform:translate(-50%,-50%) scale(1.7)}}
 @keyframes touchClose{0%,72%{opacity:0;transform:scale(.8)}76%{opacity:1;transform:scale(1)}79%{opacity:1;transform:scale(.72)}82%{opacity:0;transform:scale(1.08)}100%{opacity:0;transform:scale(.8)}}
 @media(prefers-reduced-motion:reduce){.phone{animation:none}.backdrop,.status-backdrop{animation:none;opacity:1}.bottom-sheet{animation:none;transform:none}.touch{animation:none}}
 </style>
