@@ -36,13 +36,17 @@
     планшет  641–1100px — 2 колонки; --wide-left и --wide-right тут —
              уже вся строка целиком, отличать лево/право не от чего
     мобилка  <=640px — 1 колонка, карточки идут одна за другой;
-             --wide-*/--tall получают явный aspect-ratio (в 1 колонку
+             --wide-*, --tall получают явный aspect-ratio (в 1 колонку
              colspan/rowspan уже ничего не значат, а --tall больше не
              может получить высоту от соседа, поэтому она нужна явно)
 */
 
 :root {
+  /* Гэп и скругление карточек — фиксированные на всех брейкпоинтах
+     (не резинятся), поэтому просто константы в :root, а не что-то,
+     что пришлось бы пересчитывать в медиа-запросах. */
   --works-grid-gap: 10px;
+  --works-grid-radius: 1.5rem;
 }
 
 .works-grid {
@@ -56,7 +60,7 @@
   display: block;
   position: relative;
   box-sizing: border-box;
-  border-radius: 1.5rem;
+  border-radius: var(--works-grid-radius);
   overflow: hidden;
   background: var(--color-surface-alt);
   text-decoration: none;
