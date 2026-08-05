@@ -11,7 +11,7 @@
     @font-face{font-family:"CoFo Avito Text";src:url("../fonts/CoFoAvitoText-Bold.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
     @font-face{font-family:"CoFo Avito Text";src:url("../fonts/CoFoAvitoText-ExtraBold.woff2") format("woff2");font-style:normal;font-weight:800;font-display:swap}
     @font-face{font-family:"CoFo Avito Text";src:url("../fonts/CoFoAvitoText-Black.woff2") format("woff2");font-style:normal;font-weight:900;font-display:swap}
-    :root{--bg:#bebfc1;--blue:#00aaff;--soft:#f2f1f0;--muted:#757575;--black:#111;--ease:cubic-bezier(.22,.61,.36,1)}
+    :root{--bg:#bebfc1;} html[data-embed-theme="dark"]{--bg:#262a33;--blue:#00aaff;--soft:#f2f1f0;--muted:#757575;--black:#111;--ease:cubic-bezier(.22,.61,.36,1)}
     *{box-sizing:border-box}
     html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--bg);font-family:"CoFo Avito Text",Arial,sans-serif;color:#000}
     body{display:grid;place-items:center}
@@ -33,6 +33,7 @@
     .tap{position:absolute;z-index:40;left:50%;bottom:58px;width:62px;height:62px;margin-left:-31px;border-radius:50%;opacity:0;border:1px solid rgba(255,255,255,.8);background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.78),rgba(255,255,255,.18) 58%,rgba(255,255,255,.08));box-shadow:0 9px 24px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.8);backdrop-filter:blur(10px);transition:opacity .22s,transform .18s}.tap.show{opacity:1}.tap.press{transform:scale(.76)}
     @media(prefers-reduced-motion:reduce){.screen,.tap{transition-duration:.01ms!important}.success-check,.success-fund-logo{animation:none!important;opacity:1!important;transform:none!important}}
   </style>
+  <script src="../shared/theme-sync.js" defer></script>
 </head>
 <body>
 <main class="viewport"><div class="canvas"><div class="phone"><div class="bezel"><div class="display">

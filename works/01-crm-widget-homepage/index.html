@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Разновидности карточек</title>
-  <style>
+  <style>:root{--stage-bg:#bebfc1} html[data-embed-theme="dark"]{--stage-bg:#262a33} body,main{transition:background-color .3s ease}
     * { box-sizing: border-box; }
     html, body { margin: 0; min-height: 100%; }
     body {
       display: grid;
       place-items: center;
       overflow: hidden;
-      background: #bebfc1;
+      background: var(--stage-bg);
       font-family: Inter, Arial, Helvetica, sans-serif;
     }
     #viewport {
@@ -19,7 +19,7 @@
       width: min(100vw, 1080px);
       aspect-ratio: 1;
       overflow: hidden;
-      background: #bebfc1;
+      background: var(--stage-bg);
     }
     #scene {
       position: absolute;
@@ -139,6 +139,7 @@
       .heading, .body-copy, .action-copy { will-change: auto; }
     }
   </style>
+  <script src="../shared/theme-sync.js" defer></script>
 </head>
 <body>
   <main id="viewport" aria-label="Цикл разновидностей карточки">
