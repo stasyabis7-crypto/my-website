@@ -7,12 +7,12 @@
   <style>
     @font-face{font-family:"CoFo Avito Text";src:url("../fonts/CoFoAvitoText-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
     @font-face{font-family:"CoFo Avito Text";src:url("../fonts/CoFoAvitoText-ExtraBold.woff2") format("woff2");font-weight:800;font-display:swap}
-    :root{--ease:cubic-bezier(.22,.61,.36,1);--stage-bg:#f0f1f4} html[data-embed-theme="dark"]{--stage-bg:#262a33}
+    :root{--ease:cubic-bezier(.22,.61,.36,1);--stage-bg:#262a33} body.dark{--stage-bg:#f0f1f4}
     *{box-sizing:border-box}
-    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--stage-bg);font-family:"CoFo Avito Text",Arial,sans-serif}
+    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--stage-bg);font-family:"CoFo Avito Text",Arial,sans-serif;transition:background-color .68s var(--ease)}
     body{display:grid;place-items:center}
     .viewport{position:relative;width:100vw;height:100vh;overflow:hidden}
-    .canvas{position:absolute;left:50%;top:50%;width:750px;height:750px;transform-origin:center;background:var(--stage-bg)}
+    .canvas{position:absolute;left:50%;top:50%;width:750px;height:750px;transform-origin:center;background:var(--stage-bg);transition:background-color .68s var(--ease)}
     .composition{position:absolute;left:50%;top:50%;width:375px;transform:translate(-50%,-50%) scale(1.35);transform-origin:50% 50%}
     .banner{position:relative;width:375px;height:170px;border-radius:20px;overflow:hidden;color:#000;background:linear-gradient(90deg,#e3f7ff 10%,#f4eefe 90%);transition:height .82s var(--ease),color .68s var(--ease),background .68s var(--ease),box-shadow .68s var(--ease);will-change:height}
     .dark .banner{color:#fff;background:linear-gradient(90deg,#00264a 10%,#2b2139 90%);box-shadow:0 24px 64px rgba(0,0,0,.24)}
