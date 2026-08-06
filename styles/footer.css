@@ -289,15 +289,32 @@ html.chrome--compact .site-footer__link .icon {
   color: var(--color-action-active-text);
 }
 
-.site-footer__menu-btn .icon,
 .site-footer__top-btn .icon {
   width: 1.75rem;
   height: 1.75rem;
 }
 
-.site-footer__menu-btn .icon {
-  width: 1.5rem;
-  height: 1.5rem;
+/* Кнопка "Меню" — три полоски вместо статичной SVG-иконки, сама
+   морфится в крестик, когда открыта панель (см. .is-menu-open ниже),
+   вместо мгновенной подмены mask-image. currentColor берёт тот же
+   цвет, что задан кнопке через .color выше (--color-action-active-text). */
+.site-footer__menu-btn-line {
+  position: absolute;
+  width: 1.25rem;
+  height: 0.125rem;
+  border-radius: 0.125rem;
+  background-color: currentColor;
+  transition:
+    transform 0.35s var(--footer-ease),
+    opacity 0.35s var(--footer-ease);
+}
+
+.site-footer__menu-btn-line--top {
+  transform: translateY(-0.35rem);
+}
+
+.site-footer__menu-btn-line--bottom {
+  transform: translateY(0.35rem);
 }
 
 /* Свёрнутое состояние (проскроллили) — список ссылок прячем, вместо
@@ -620,12 +637,19 @@ html.chrome--compact .footer-menu-panel__link .icon {
   pointer-events: none;
 }
 
-/* Кнопка "Меню" сама становится кнопкой "закрыть" — иконка меняется
-   на крестик (aria-label меняет layout-chrome.js). Никакой отдельной
-   кнопки-крестика рядом больше нет. */
-.site-footer.is-menu-open .site-footer__menu-btn .icon {
-  -webkit-mask-image: url("../assets/icons/Interface/close.svg");
-  mask-image: url("../assets/icons/Interface/close.svg");
+/* Кнопка "Меню" сама становится кнопкой "закрыть" — три полоски
+   морфятся в крестик (aria-label меняет layout-chrome.js). Никакой
+   отдельной кнопки-крестика рядом больше нет. */
+.site-footer.is-menu-open .site-footer__menu-btn-line--center {
+  opacity: 0;
+}
+
+.site-footer.is-menu-open .site-footer__menu-btn-line--top {
+  transform: translateY(0) rotate(45deg);
+}
+
+.site-footer.is-menu-open .site-footer__menu-btn-line--bottom {
+  transform: translateY(0) rotate(-45deg);
 }
 
 /* Скролл страницы блокируется, пока открыто вертикальное меню —
