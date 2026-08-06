@@ -30,7 +30,7 @@
   var TOGGLE_GAP = 10; // px, зазор между плашкой хедера и кнопкой темы
   var LOGO_TOGGLE_GAP = 6; // px, мин. зазор хедер/кнопка темы на моб/планшете (см. syncLogoScale)
   var COLLISION_GAP = 16; // px, минимальный зазор между переключателем темы и футером
-  var FOOTER_COLLAPSE_AT = 24; // px, после какого scrollY футер сворачивается в "Меню" + стрелку вверх
+  var FOOTER_COLLAPSE_SCREENS = 2; // сколько высот экрана нужно проскроллить, прежде чем футер свернётся в "Меню" + стрелку вверх
   // Длительность закрытия панели меню — держите синхронно с transition
   // у .footer-menu-panel/.footer-menu-backdrop в footer.css: именно
   // столько ждём после снятия .is-open, прежде чем вернуть [hidden]
@@ -126,7 +126,7 @@
   }
 
   function updateFooterCollapse() {
-    var collapsed = window.scrollY > FOOTER_COLLAPSE_AT;
+    var collapsed = window.scrollY > window.innerHeight * FOOTER_COLLAPSE_SCREENS;
     var wasCollapsed = footer.classList.contains('is-collapsed');
     footer.classList.toggle('is-collapsed', collapsed);
     // Список ссылок вернулся — открытая панель "Меню" больше не имеет
