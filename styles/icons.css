@@ -48,6 +48,11 @@
   mask-image: url("../assets/icons/Arrow/arrow-up.svg");
 }
 
+.icon--down {
+  -webkit-mask-image: url("../assets/icons/Arrow/arrow-down.svg");
+  mask-image: url("../assets/icons/Arrow/arrow-down.svg");
+}
+
 .icon--works {
   -webkit-mask-image: url("../assets/icons/Interface/works.svg");
   mask-image: url("../assets/icons/Interface/works.svg");

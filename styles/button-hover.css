@@ -51,6 +51,7 @@
 
 :is(
   .site-header__cta,
+  .hero__cta,
   .site-footer__link,
   .site-footer__menu-btn,
   .site-footer__top-btn,
@@ -76,6 +77,7 @@
    был "прыжок" футера на скролле). */
 :is(
   .site-header__cta,
+  .hero__cta,
   .site-footer__link,
   .footer-menu-panel__link
 ) {
@@ -84,6 +86,7 @@
 
 :is(
   .site-header__cta,
+  .hero__cta,
   .site-footer__link,
   .site-footer__menu-btn,
   .site-footer__top-btn,
@@ -126,6 +129,7 @@
 
 :is(
   .site-header__cta,
+  .hero__cta,
   .site-footer__link,
   .site-footer__menu-btn,
   .site-footer__top-btn,
@@ -143,6 +147,7 @@
 
 :is(
   .site-header__cta,
+  .hero__cta,
   .site-footer__link,
   .site-footer__menu-btn,
   .site-footer__top-btn,
@@ -156,6 +161,7 @@
 @media (hover: hover) and (pointer: fine) {
   :is(
     .site-header__cta,
+    .hero__cta,
     .site-footer__link,
     .site-footer__menu-btn,
     .site-footer__top-btn,
@@ -183,6 +189,7 @@
 
   :is(
     .site-header__cta,
+    .hero__cta,
     .site-footer__link,
     .site-footer__menu-btn,
     .site-footer__top-btn,
@@ -228,6 +235,7 @@
 
   :is(
     .site-header__cta,
+    .hero__cta,
     .site-footer__link,
     .site-footer__menu-btn,
     .site-footer__top-btn,
@@ -235,6 +243,7 @@
   ),
   :is(
     .site-header__cta,
+    .hero__cta,
     .site-footer__link,
     .site-footer__menu-btn,
     .site-footer__top-btn,
