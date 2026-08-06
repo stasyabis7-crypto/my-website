@@ -1,6 +1,13 @@
 (function () {
   var root = document.documentElement;
   var items = document.querySelectorAll('.works-grid__item');
+  // Экран загрузки ждёт медиа только первого экрана (без скролла) —
+  // остальные слоты стоят на loading="lazy" и не начнут грузиться, пока
+  // до них не долистают, так что ждать ИХ значило бы держать чашку до
+  // предохранителя на каждой загрузке. Плитки ниже первого экрана как и
+  // раньше открываются сами по себе (см. reveal ниже), просто не гейтят
+  // #loading-screen.
+  var aboveFoldMediaReadyPromises = [];
 
   function reveal(item) {
     if (item) item.classList.add('is-media-loaded');
@@ -25,8 +32,16 @@
       }
     }
 
-    if (ready) reveal(item);
-    else media.addEventListener('load', function () { reveal(item); }, { once: true });
+    var isAboveFold = item.getBoundingClientRect().top < window.innerHeight;
+
+    if (ready) {
+      reveal(item);
+    } else {
+      var mediaReady = new Promise(function (resolve) {
+        media.addEventListener('load', function () { reveal(item); resolve(); }, { once: true });
+      });
+      if (isAboveFold) aboveFoldMediaReadyPromises.push(mediaReady);
+    }
   });
 
   var fontsReady = document.fonts && document.fonts.ready
@@ -36,14 +51,52 @@
   var avatarReady = avatar && avatar.decode
     ? avatar.decode().catch(function () {})
     : Promise.resolve();
-  var safetyTimeout = new Promise(function (resolve) { setTimeout(resolve, 3000); });
+
+  // Скелетоны шелла (хедер/футер) всё равно не видны, пока не спрятан
+  // #loading-screen ниже — короткий 3с предохранитель тут как раньше,
+  // просто чтобы шелл был готов задолго до самой галереи.
+  var shellSafetyTimeout = new Promise(function (resolve) { setTimeout(resolve, 3000); });
 
   Promise.race([
     Promise.all([fontsReady, avatarReady]),
-    safetyTimeout
+    shellSafetyTimeout
   ]).then(function () {
     requestAnimationFrame(function () {
       requestAnimationFrame(function () { root.classList.remove('is-page-loading'); });
     });
   });
+
+  // ------------ Экран загрузки (чашка кофе + фан-факт) ------------
+  // Временные фан-факты — 3 штуки для затравки, реальный текст донесёт
+  // пользователь позже (см. чат). innerHTML безопасен — это статичный
+  // массив из кода, не пользовательский ввод.
+  var LOADING_FACTS = [
+    'Дизайнер в среднем открывает <strong>Figma</strong> чаще, чем <em>холодильник</em> — и не всегда с большим успехом.',
+    'Кнопку можно передвинуть <strong>247 раз</strong> за один день и всё равно услышать: <em>«а верните как было»</em>.',
+    'Слово <em>«ресайзни»</em> дизайнеры слышат чаще, чем <strong>своё имя</strong> — статистика не проверена, но звучит правдиво.'
+  ];
+
+  var loadingScreen = document.getElementById('loading-screen');
+  var loadingFact = document.getElementById('loading-screen-fact');
+  if (loadingFact) {
+    loadingFact.innerHTML = LOADING_FACTS[Math.floor(Math.random() * LOADING_FACTS.length)];
+  }
+
+  if (loadingScreen) {
+    // Экран загрузки ждёт больше, чем шелл — держит чашку, пока не
+    // готовы шрифты, аватар и медиа первого экрана галереи. Предохранитель
+    // тут щедрее (9с): если какое-то вложение зависнет и не отдаст load,
+    // экран всё равно не заблокирует сайт навсегда.
+    var overlaySafetyTimeout = new Promise(function (resolve) { setTimeout(resolve, 9000); });
+
+    Promise.race([
+      Promise.all([fontsReady, avatarReady].concat(aboveFoldMediaReadyPromises)),
+      overlaySafetyTimeout
+    ]).then(function () {
+      loadingScreen.classList.add('is-hidden');
+      // Убираем из раскладки/a11y-дерева только после того, как доиграет
+      // fade (.6s, см. loading-screen.css) — иначе переход обрежется.
+      setTimeout(function () { loadingScreen.hidden = true; }, 650);
+    });
+  }
 })();
