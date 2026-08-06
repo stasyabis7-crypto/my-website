@@ -27,12 +27,15 @@
   }
 
   function syncToggleButton(theme) {
-    var btn = document.getElementById('theme-toggle');
-    if (!btn) return;
+    var input = document.getElementById('theme-toggle');
+    if (!input) return;
     var next = theme === 'dark' ? 'light' : 'dark';
-    // Сама иконка (солнце/луна) переключается чистым CSS по
-    // [data-theme] на <html> — см. theme-toggle.css.
-    btn.setAttribute(
+    // Костяшка тумблера (луна/солнце) едет чистым CSS от :checked — см.
+    // theme-toggle.css, тут только держим сам чекбокс синхронным с
+    // текущей темой (важно при первом заходе со светлой сохранённой
+    // темой — чекбокс по умолчанию unchecked).
+    input.checked = theme === 'light';
+    input.setAttribute(
       'aria-label',
       'Переключить на ' + (next === 'light' ? 'светлую' : 'тёмную') + ' тему'
     );
@@ -71,14 +74,13 @@
   });
 
   document.addEventListener('DOMContentLoaded', function () {
-    var btn = document.getElementById('theme-toggle');
-    if (!btn) return;
+    var input = document.getElementById('theme-toggle');
+    if (!input) return;
 
     syncToggleButton(root.getAttribute('data-theme'));
 
-    btn.addEventListener('click', function () {
-      var current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-      var next = current === 'dark' ? 'light' : 'dark';
+    input.addEventListener('change', function () {
+      var next = input.checked ? 'light' : 'dark';
       apply(next);
       writeSaved(next);
     });

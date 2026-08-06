@@ -15,6 +15,14 @@
      нет неprefixed backdrop-filter. */
   --glass-blur: 20px;
   --glass-saturate: 180%;
+
+  /* Общий тайминг переключения темы — читают html/body ниже и
+     theme-toggle.css (костяшка тумблера), чтобы вся страница
+     переходила между темами в один и тот же плавный такт, а не
+     дёргано (было: html/body вообще без transition, отдельные
+     компоненты — каждый на своей длительности). */
+  --theme-transition-duration: 0.6s;
+  --theme-transition-ease: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 :root,
@@ -65,6 +73,16 @@ html,
 body {
   background: var(--color-bg);
   color: var(--color-text);
+  transition:
+    background-color var(--theme-transition-duration) var(--theme-transition-ease),
+    color var(--theme-transition-duration) var(--theme-transition-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    transition-duration: 0.01ms;
+  }
 }
 
 html {

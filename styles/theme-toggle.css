@@ -1,70 +1,122 @@
 /*
-  Переключатель темы — отдельная плавающая плашка, специально не
-  часть .site-header (см. header.css), чтобы визуально читаться как
-  самостоятельный элемент управления. Стиль — тот же залитый "ink"
-  кружок, что и кнопка "Резюме PDF" (не стеклянный/прозрачный), без
-  обводки — единый акцентный стиль контролов по всему хедеру.
+  Переключатель темы — физический тумблер "луна ⇄ солнце": тёмный трек
+  и кружок-костяшка, которая едет вправо и перекрашивается в жёлтое
+  солнце, когда включена светлая тема (кратеры луны гаснут). Дизайн и
+  анимация — референс пользователя, трек нарочно НЕ читает --color-*
+  (остаётся тёмным в любой теме сайта, как в референсе) — только сама
+  страница вокруг меняет тему через свои токены (см. theme.css).
 
-  Моб/планшет — кружок справа от бара хедера, в специально
-  зарезервированном для него отступе (см. .site-header { right: ... }
-  в header.css). Если хедер (аватар+имя+кнопка) стал шире и полез бы
-  под кружок — logoMark сам сжимается, см. layout-chrome.js
-  (syncLogoScale), кружок сам никуда не двигается.
-  Десктоп — тот же кружок, пристыкован сразу справа от плавающей
-  плашки хедера; точный left-отступ (ширина хедера плавающая, зависит
-  от контента) считает layout-chrome.js.
+  Разметка — input[type=checkbox] + label (не button): нативный чекбокс
+  даёт клавиатуре/скринридеру состояние "включено/выключено" бесплатно,
+  сам чекбокс прозрачный и растянут на всю плашку (ловит клик/фокус),
+  визуальный трек/костяшка — под ним чистым CSS от :checked.
 
-  Размер — var(--chrome-item-h): та же высота, что и у кнопки
-  "Резюме PDF"/пункта футера (не полная высота плашки var(--chrome-h),
-  та включает ещё и внешний паддинг плашки) — кружок ровно той же
-  высоты, что и кнопка рядом, а не выше её. top сдвинут на
-  --chrome-pad-block вниз от --page-px — ровно настолько, на сколько
-  сама кнопка отступает от края плашки хедера её паддингом, поэтому
-  кружок и кнопка оказываются на одной высоте (центрированы
-  относительно хедера), а не кружок торчит выше/ниже. Ширина = высоте
-  (width: var(--chrome-item-h) тоже) — кружок остаётся идеально
-  круглым на любом брейкпоинте, никогда не сплющивается.
+  Позиционирование (fixed/top/right, десктопный left) и брейкпоинт
+  1101px — без изменений от прежней круглой кнопки, см. комментарий
+  ниже и layout-chrome.js (селектор .theme-toggle тот же).
 */
 
 .theme-toggle {
+  --toggle-h: var(--chrome-item-h, 3.5rem);
+  --toggle-pad: calc(var(--toggle-h) * 0.0833);
+  --toggle-knob: calc(var(--toggle-h) - var(--toggle-pad) * 2);
   box-sizing: border-box;
   position: fixed;
   top: calc(var(--page-px, 10px) + var(--chrome-pad-block, 0.5rem));
   right: var(--page-px, 10px);
-  width: var(--chrome-item-h, 3.5rem);
-  height: var(--chrome-item-h, 3.5rem);
-  aspect-ratio: 1 / 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: var(--color-ink);
-  color: var(--color-ink-contrast);
-  cursor: pointer;
+  width: calc(var(--toggle-h) * 2);
+  height: var(--toggle-h);
   z-index: 51;
 }
 
-.theme-toggle__icon {
-  display: none;
-  width: 1.375rem;
-  height: 1.375rem;
-  line-height: 1;
+.theme-toggle__input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  z-index: 1;
+  opacity: 0;
+  cursor: pointer;
 }
 
-.theme-toggle__icon .icon {
+.theme-toggle__track {
+  display: block;
+  position: relative;
   width: 100%;
   height: 100%;
+  border-radius: 999px;
+  /* Фиксированный тёмный трек — намеренно не токен темы, см. шапку
+     файла. overflow не обрезаем — свечение костяшки ниже должно
+     выходить за трек, как в референсе. */
+  background: #0a0d14;
 }
 
-/* Показываем иконку целевой темы (куда переключит клик), не текущей:
-   в тёмной теме — солнце (жмём — станет светло), в светлой — луна. */
-[data-theme="dark"] .theme-toggle__icon--sun,
-[data-theme="light"] .theme-toggle__icon--moon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.theme-toggle__knob {
+  position: absolute;
+  top: var(--toggle-pad);
+  left: var(--toggle-pad);
+  width: var(--toggle-knob);
+  height: var(--toggle-knob);
+  border-radius: 50%;
+  background: #f4f5f7;
+  box-shadow: 0 0 calc(var(--toggle-h) * 1.7) rgba(244, 245, 247, 0.55);
+  transition:
+    transform var(--theme-transition-duration, 0.6s) var(--theme-transition-ease, cubic-bezier(0.65, 0, 0.35, 1)),
+    background-color var(--theme-transition-duration, 0.6s) var(--theme-transition-ease, cubic-bezier(0.65, 0, 0.35, 1)),
+    box-shadow var(--theme-transition-duration, 0.6s) var(--theme-transition-ease, cubic-bezier(0.65, 0, 0.35, 1));
+}
+
+/* Кратеры луны — три размытых кружка на костяшке, гаснут при переходе
+   в солнце (см. :checked ниже). Проценты — от самой костяшки, поэтому
+   не нужно пересчитывать под --chrome-item-h на разных брейкпоинтах. */
+.theme-toggle__crater {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(148, 156, 173, 0.55);
+  transition: opacity var(--theme-transition-duration, 0.6s) var(--theme-transition-ease, cubic-bezier(0.65, 0, 0.35, 1));
+}
+.theme-toggle__crater--a {
+  top: 58%;
+  left: 22%;
+  width: 15%;
+  height: 15%;
+}
+.theme-toggle__crater--b {
+  top: 68%;
+  left: 50%;
+  width: 15%;
+  height: 15%;
+}
+.theme-toggle__crater--c {
+  top: 24%;
+  left: 48%;
+  width: 24%;
+  height: 24%;
+}
+
+/* Едет ровно на одну высоту трека вправо — при padding = 1/12 высоты с
+   каждой стороны это математически точное расстояние до зеркальной
+   позиции у правого края (см. вывод в чате/комментарии реализации). */
+.theme-toggle__input:checked + .theme-toggle__track .theme-toggle__knob {
+  transform: translateX(var(--toggle-h));
+  background: #f4e94e;
+  box-shadow: 0 0 calc(var(--toggle-h) * 1.7) rgba(249, 240, 104, 0.6);
+}
+
+.theme-toggle__input:checked + .theme-toggle__track .theme-toggle__crater {
+  opacity: 0;
+}
+
+/* Фокус с клавиатуры — сам чекбокс прозрачный, кольцо рисуем на
+   видимом треке. */
+.theme-toggle__input:focus-visible + .theme-toggle__track {
+  box-shadow: 0 0 0 2px #0a0d14, 0 0 0 4px var(--color-action-hover, #ff0cc2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle__knob,
+  .theme-toggle__crater {
+    transition-duration: 0.01ms;
+  }
 }
 
 /* html:not(.chrome--compact) — см. header.css: если плашки не влезают
@@ -75,10 +127,5 @@
     top: calc(var(--page-px, 10px) + var(--chrome-pad-block, 0.5rem));
     right: auto;
     /* left выставляет layout-chrome.js по факту правого края хедера */
-  }
-
-  html:not(.chrome--compact) .theme-toggle__icon {
-    width: 18px;
-    height: 18px;
   }
 }

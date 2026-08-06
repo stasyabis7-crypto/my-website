@@ -146,15 +146,21 @@
     </a>
   </header>
 
-  <!-- Отдельная плашка, специально не внутри .site-header — см. theme-toggle.css. -->
-  <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Переключить тему">
-    <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
-      <span class="icon icon--sun"></span>
-    </span>
-    <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">
-      <span class="icon icon--moon"></span>
-    </span>
-  </button>
+  <!-- Отдельная плашка, специально не внутри .site-header — см. theme-toggle.css.
+       Тумблер "луна/солнце" — input[checkbox] даёт нативное состояние
+       вкл/выкл клавиатуре и скринридеру, сам он прозрачный и растянут на
+       всю плашку (ловит клик/фокус), трек+костяшка под ним — чистый CSS
+       от :checked (см. theme-toggle.css), синхронизирует theme.js. -->
+  <div class="theme-toggle">
+    <input type="checkbox" id="theme-toggle" class="theme-toggle__input" aria-label="Переключить тему" />
+    <label for="theme-toggle" class="theme-toggle__track">
+      <span class="theme-toggle__knob">
+        <span class="theme-toggle__crater theme-toggle__crater--a"></span>
+        <span class="theme-toggle__crater theme-toggle__crater--b"></span>
+        <span class="theme-toggle__crater theme-toggle__crater--c"></span>
+      </span>
+    </label>
+  </div>
 
   <main class="container page-works">
     <!--
