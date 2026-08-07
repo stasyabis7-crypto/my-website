@@ -11,6 +11,21 @@
   показывающие статичную цветную сетку вместо пустоты.
 */
 (function () {
+  // Клик по кнопке "Смотреть работы" — обычный smooth-scroll, БЕЗ
+  // прописывания #works-gallery в адресную строку: с хешем в URL
+  // каждая следующая перезагрузка страницы сама прыгала бы сразу к
+  // галерее вместо hero (это и есть "скроллится вниз при загрузке").
+  // Не зависит от GSAP — работает, даже если анимация ниже не стартует.
+  var cta = document.querySelector('.hero__cta');
+  var worksGallery = document.getElementById('works-gallery');
+  if (cta && worksGallery) {
+    var reduceMotionForScroll = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    cta.addEventListener('click', function (e) {
+      e.preventDefault();
+      worksGallery.scrollIntoView({ behavior: reduceMotionForScroll ? 'auto' : 'smooth' });
+    });
+  }
+
   if (typeof gsap === 'undefined') return;
 
   var hero = document.getElementById('hero');

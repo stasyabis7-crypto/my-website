@@ -1,19 +1,21 @@
 /*
-  Hero — первый экран страницы. Отступ сверху под плавающую навигацию
-  НЕ свой — читается автоматически, потому что .hero лежит первым
-  ребёнком внутри .page-works, у которого уже есть padding-top под
-  хедер на всех брейкпоинтах (см. header.css/index.html — та же защита,
-  что и у первого ряда галереи работ).
+  Hero — первый экран страницы, во всю высоту вьюпорта, начинается с
+  самого верха страницы (y=0) — плавающие хедер/футер (оба position:
+  fixed) лежат НАД ним, а не над отступом перед ним. .hero лежит первым
+  ребёнком внутри .page-works, у которой (и у body на моб/планшете)
+  есть свой padding-top под хедер (см. header.css/index.html) — тот же
+  отступ, что резервирует место для первого ряда галереи. Здесь он
+  ровно компенсируется отрицательным margin-top той же формулой, чтобы
+  .hero перекрыл его и стартовал от истинного верха экрана.
 
   Ширина — на весь вьюпорт, а не по .container: классический full-bleed
   трюк 100vw + отрицательный margin, работает независимо от паддингов/
   max-width родителя.
 
-  Сама SVG-анимация (фон) и кнопка/текст поверх неё — самостоятельная
-  цветная композиция с фиксированными (не --color-*) цветами в любой
-  теме сайта, по аналогии с анимациями в карточках галереи works/* —
-  переключение темы её не трогает, чтобы контраст текста и палитра
-  кругов оставались стабильными.
+  Фон — прозрачный, читает --color-bg сайта (меняется вместе с темой);
+  фиксированная (не --color-*) остаётся только сама палитра кругов —
+  как в анимациях карточек галереи works/*, чтобы контраст текста был
+  стабильным на любом из ярких цветов круга.
 */
 
 @font-face {
@@ -30,6 +32,9 @@
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
+  /* Компенсирует padding-top под хедер у body/.page-works (см. шапку
+     файла) — та же формула, что и там, иначе рассинхронизируются. */
+  margin-top: calc(-1 * (var(--page-px, 10px) + var(--header-h, 3.5rem) + 10px));
   margin-bottom: var(--space-stack-section, 2em);
   height: 100svh;
   min-height: 34rem;
@@ -38,7 +43,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff8f0;
+  background: transparent;
 }
 
 .hero__bg {
@@ -56,7 +61,11 @@
 .hero__scrim {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 55% at 50% 50%, rgba(255, 248, 240, 0.55), rgba(255, 248, 240, 0) 70%);
+  background: radial-gradient(
+    ellipse 60% 55% at 50% 50%,
+    color-mix(in srgb, var(--color-bg) 55%, transparent),
+    transparent 70%
+  );
   pointer-events: none;
 }
 
@@ -79,6 +88,9 @@
 .hero__title {
   font-family: "Valisca", var(--font-family-heading);
   text-transform: uppercase;
+  /* .text-h1 даёт --letter-spacing-tight (-0.01em) — в этом шрифте
+     буквы от него слипаются, перебиваем на wide. */
+  letter-spacing: var(--letter-spacing-wide, 0.04em);
   color: #14161a;
   text-shadow:
     0 2px 28px rgba(255, 248, 240, 0.9),
