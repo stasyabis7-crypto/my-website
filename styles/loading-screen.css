@@ -61,6 +61,31 @@
   font-weight: var(--font-weight-medium);
 }
 
+/* Печатная машинка — каждый символ свой <span> (см. loading.js), у
+   каждого своя animation-delay, поэтому текст будто вводится по буквам,
+   не ломая жирный/курсивный текст внутри (обёрнуты только текстовые
+   узлы, теги остаются как есть). */
+.loading-screen__fact-char {
+  opacity: 0;
+  animation: loading-fact-char-in 0.22s ease-out forwards;
+}
+
+@keyframes loading-fact-char-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen__fact-char {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 /* ------------ КОФЕЙНАЯ ЧАШКА ------------
    Адаптация под токены темы сайта: var(--bg)/var(--fg) исходного
    снипета -> var(--coffee-bg)/var(--coffee-fg), без своих :root/*
@@ -164,6 +189,11 @@
   left: 5.925em;
   width: 4.8em;
   height: 3em;
+  /* <svg> по умолчанию overflow:hidden (в отличие от остальных
+     элементов) — ручка ниже анимируется с translate(0,15px) и в части
+     кадров вылезает за viewBox, дефолтный clip обрезал её почти
+     целиком, оставляя только обрубок штриха. */
+  overflow: visible;
 }
 .coffee__cup-handle {
   animation-name: coffee-cup-handle;
