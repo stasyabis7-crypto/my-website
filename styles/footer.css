@@ -469,6 +469,25 @@ html.chrome--compact .site-footer__link .icon {
     visibility: hidden;
     pointer-events: none;
   }
+
+  /* Кнопка "наверх" на десктопе — НЕ кружок в свёрнутой плашке футера
+     (та на десктопе никогда не сворачивается, см. правило выше), а
+     самостоятельная плавающая кнопка в правом нижнем углу экрана,
+     появляется по тому же порогу скролла (см. FOOTER_COLLAPSE_SCREENS
+     в layout-chrome.js — та же .is-collapsed). Клик уже скроллит наверх
+     (тот же #footer-top-btn/JS, что и на моб/планшете). */
+  html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__top-btn {
+    position: fixed;
+    top: auto;
+    left: auto;
+    right: var(--page-px, 10px);
+    bottom: var(--page-px, 10px);
+    z-index: 50;
+    max-width: var(--chrome-item-h, 3.5rem);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
 }
 
 /*

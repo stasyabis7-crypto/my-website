@@ -104,19 +104,47 @@
   inherits: false;
 }
 
+/* inherits:false — иначе --glass-accent, заданный на .site-footer ниже,
+   утекал бы вниз по DOM на .site-footer__top-btn (обычные custom
+   properties наследуются по умолчанию) и красил бы её обводку в
+   розовый, хотя у неё самой никакого розового элемента нет. */
+@property --glass-accent {
+  syntax: "<color>";
+  initial-value: transparent;
+  inherits: false;
+}
+@property --glass-accent-pos {
+  syntax: "*";
+  initial-value: 50% 50%;
+  inherits: false;
+}
+
 .site-header {
   /* Розовая кнопка "Резюме PDF" — крайняя справа (justify-content:
-     space-between в header.css). */
+     space-between в header.css). При наведении сама кнопка становится
+     ink-цвета (см. "активные" контролы в button-hover.css) — блик
+     повторяет это же превращение, а не застревает розовым. */
   --glass-accent: color-mix(in srgb, var(--color-action-active) 70%, transparent);
   --glass-accent-pos: calc(100% - 2.5rem) 50%;
+}
+
+.site-header:has(.site-header__cta:hover) {
+  --glass-accent: color-mix(in srgb, var(--color-ink) 55%, transparent);
 }
 
 .site-footer,
 .footer-menu-panel__bar {
   /* Активный пункт "Работы" — всегда первый/крайний слева в списке
-     (см. .site-footer__nav / .footer-menu-panel__nav). */
+     (см. .site-footer__nav / .footer-menu-panel__nav). Та же логика
+     про hover, что у хедера выше — .is-current тоже красится в ink
+     при наведении. */
   --glass-accent: color-mix(in srgb, var(--color-action-active) 70%, transparent);
   --glass-accent-pos: 2.25rem 50%;
+}
+
+.site-footer:has(.site-footer__link.is-current:hover),
+.footer-menu-panel__bar:has(.footer-menu-panel__link.is-current:hover) {
+  --glass-accent: color-mix(in srgb, var(--color-ink) 55%, transparent);
 }
 
 :is(
@@ -159,6 +187,10 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
+  /* Плавно перекрашивается вместе с реальной кнопкой/пунктом на
+     hover (--button-hover-duration — тот же такт, что и у их
+     собственного цвета в button-hover.css). */
+  transition: --glass-accent var(--button-hover-duration, 0.5s) ease;
 }
 
 html.theme-transitioning :is(
