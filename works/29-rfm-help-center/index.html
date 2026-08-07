@@ -5,7 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>РФМ для хелпа</title>
 <style>  body,.viewport,.canvas{transition:background-color .3s ease}
-  :root{color-scheme:light dark;--ink:rgba(0,17,34,.95);--muted:rgba(0,17,34,.56);--secondary:rgba(0,17,34,.66);--line:rgba(97,131,162,.26);--head:#f5f7fa;--top:#34d865;--loyal:#bce7c6;--risk:#ffd62c;--ease:cubic-bezier(.16,1,.3,1)}
+  body,.definition__head,.badge,.definition__row,.intro{transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+  :root{color-scheme:light dark;--ink:rgba(0,17,34,.95);--muted:rgba(0,17,34,.56);--secondary:rgba(0,17,34,.66);--line:rgba(97,131,162,.26);--head:#f5f7fa;--badge-bg:rgba(97,131,162,.16);--top:#34d865;--loyal:#bce7c6;--risk:#ffd62c;--ease:cubic-bezier(.16,1,.3,1)}
+  /* Текст/шапка таблицы/кружочки-badge подстраиваются под тему сайта
+     (см. ../shared/theme-sync.js — ставит data-embed-theme на <html>
+     этого документа). Цвета ячеек матрицы (--top/--loyal/--risk) не
+     трогаем — это цветовое кодирование данных, не UI-хром, должно
+     остаться тем же в любой теме. Фон уже transparent (см. ниже) —
+     сквозь него и так видна тёмная/светлая плашка карточки родителя. */
+  [data-embed-theme="dark"]{--ink:rgba(244,245,247,.95);--muted:rgba(244,245,247,.56);--secondary:rgba(244,245,247,.7);--line:rgba(154,161,174,.28);--head:#262a33;--badge-bg:rgba(244,245,247,.14)}
   *{box-sizing:border-box}
   html,body{width:100%;height:100%;margin:0;overflow:hidden;background:transparent}
   body{font-family:Inter,Arial,sans-serif;color:var(--ink)}
@@ -18,7 +26,7 @@
   .definition{min-width:0}
   .definition__head{height:46px;padding:14px 8px;background:var(--head);border-bottom:1px solid var(--line);color:var(--secondary);font-size:15px;line-height:18px;font-weight:600;white-space:nowrap}
   .definition__row{display:flex;align-items:center;gap:10px;height:54px;padding:9px 8px;border-bottom:1px solid var(--line);font-size:17px;line-height:22px;white-space:nowrap}
-  .badge{display:grid;place-items:center;width:18px;height:18px;flex:0 0 18px;border-radius:50%;background:rgba(97,131,162,.16);color:var(--secondary);font-size:12px;line-height:14px;font-weight:600}
+  .badge{display:grid;place-items:center;width:18px;height:18px;flex:0 0 18px;border-radius:50%;background:var(--badge-bg);color:var(--secondary);font-size:12px;line-height:14px;font-weight:600}
   h2{margin-top:42px;font-size:23px;line-height:30px;font-weight:600;letter-spacing:-.3px}
   .matrix{display:grid;grid-template-columns:repeat(9,1fr);margin-top:20px}
   .cell{display:grid;place-items:center;height:56px;border-right:1px solid rgba(97,131,162,.22);border-bottom:1px solid rgba(97,131,162,.22);font-size:17px;line-height:22px;font-variant-numeric:tabular-nums}
