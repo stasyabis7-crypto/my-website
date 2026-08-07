@@ -368,6 +368,15 @@ html.chrome--compact .site-footer__link .icon {
   padding-inline: 0;
 }
 
+/* Свёрнутый футер сам стал прозрачным (см. выше) — блик (::before, см.
+   theme.css) на всей плашке в этом состоянии рисовал линию поперёк
+   пустого места между кружками "Меню"/"наверх". Свою обводку теперь
+   даёт кнопка "наверх" (она стеклянная, .site-footer__top-btn в
+   theme.css), у "Меню" (сплошная розовая) её и не было. */
+.site-footer.is-collapsed::after {
+  display: none;
+}
+
 /* Десктоп — плашка top-right, список ссылок виден целиком ВСЕГДА,
    .is-collapsed на десктопе не действует (места достаточно, сворачивать
    незачем). html:not(.chrome--compact) — см. header.css.
@@ -437,6 +446,12 @@ html.chrome--compact .site-footer__link .icon {
     backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
     padding-inline: var(--chrome-pad-block);
+  }
+
+  /* На десктопе плашка снова целиком стеклянная (см. выше) — блик
+     возвращаем (отменяет мобильное display:none). */
+  html:not(.chrome--compact) .site-footer.is-collapsed::after {
+    display: block;
   }
 
   html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__nav-wrap {

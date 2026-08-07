@@ -73,6 +73,21 @@
     }
   });
 
+  // Блик на стеклянных плашках (см. .theme-transitioning в theme.css) —
+  // не крутится сам по себе постоянно, включаем на 1с только в момент
+  // реальной смены темы (когда красятся сами плашки), а не на каждой
+  // загрузке страницы.
+  var shimmerTimer = null;
+  function triggerGlassShimmer() {
+    root.classList.remove('theme-transitioning');
+    void root.offsetWidth; // рефлоу — иначе повторный клик подряд не перезапустит анимацию
+    root.classList.add('theme-transitioning');
+    clearTimeout(shimmerTimer);
+    shimmerTimer = setTimeout(function () {
+      root.classList.remove('theme-transitioning');
+    }, 1000); // держите синхронно с длительностью glass-shimmer-sweep в theme.css
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     var input = document.getElementById('theme-toggle');
     if (!input) return;
@@ -83,6 +98,7 @@
       var next = input.checked ? 'light' : 'dark';
       apply(next);
       writeSaved(next);
+      triggerGlassShimmer();
     });
   });
 })();

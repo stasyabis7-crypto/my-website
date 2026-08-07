@@ -71,13 +71,21 @@
 
 /*
   Переливающаяся обводка стеклянных плашек (хедер/футер/тумблер темы/
-  панель меню, см. селектор ниже) — вращающийся conic-gradient,
-  замаскированный так, что виден только тонкий кольцевой контур, а не
-  вся заливка. Псевдоэлемент, НЕ настоящий border: реальный border
-  (пробовали раньше) на box-sizing:border-box отъедает 1px у padding-
-  box изнутри и сдвигает то, что позиционировано абсолютными px
-  (костяшка тумблера) — у ::before с position:absolute; inset:0 такого
-  побочного эффекта нет, он не участвует в раскладке родителя вообще.
+  панель меню, см. селектор ниже) — conic-gradient, замаскированный так,
+  что виден только тонкий кольцевой контур, а не вся заливка.
+  Псевдоэлемент, НЕ настоящий border: реальный border (пробовали раньше)
+  на box-sizing:border-box отъедает 1px у padding-box изнутри и сдвигает
+  то, что позиционировано абсолютными px (костяшка тумблера) — у
+  ::after с position:absolute; inset:0 такого побочного эффекта нет.
+  Именно ::after, не ::before — у .site-footer__top-btn ::before уже
+  занят розовым hover-пятном из button-hover.css, второй эффект на том
+  же псевдоэлементе конфликтовал бы с ним.
+
+  Не крутится сам по себе постоянно — блик должен "реагировать" на
+  смену цвета внутренних элементов, а не жить своей жизнью. Анимация
+  запускается только на html.theme-transitioning — этот класс на 1с
+  ставит theme.js в момент реальной смены темы (см. triggerGlassShimmer
+  там же), ровно тогда, когда красятся сами плашки/костяшка.
 */
 @property --glass-shimmer-angle {
   syntax: "<angle>";
@@ -94,12 +102,18 @@
   position: relative;
 }
 
+/* .site-footer__top-btn НЕ в списке выше — у неё уже position:absolute
+   в footer.css (нужен для right:0), этого достаточно как containing
+   block для ::after ниже, лишний position:relative тут только рисковал
+   бы конфликтовать по каскаду. */
+
 :is(
   .site-header,
   .site-footer,
+  .site-footer__top-btn,
   .theme-toggle__track,
   .footer-menu-panel__bar
-)::before {
+)::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -117,22 +131,38 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
-  animation: glass-shimmer-rotate 6s linear infinite;
 }
 
-@keyframes glass-shimmer-rotate {
+html.theme-transitioning :is(
+  .site-header,
+  .site-footer,
+  .site-footer__top-btn,
+  .theme-toggle__track,
+  .footer-menu-panel__bar
+)::after {
+  animation: glass-shimmer-sweep 1s ease-out;
+}
+
+@keyframes glass-shimmer-sweep {
+  from {
+    --glass-shimmer-angle: 0deg;
+  }
   to {
+    /* Полный оборот, не половина — 360deg визуально совпадает с 0deg
+       (градиент периодичен), поэтому свип каждый раз стартует с той же
+       точки без видимого скачка между переключениями темы. */
     --glass-shimmer-angle: 360deg;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :is(
+  html.theme-transitioning :is(
     .site-header,
     .site-footer,
+    .site-footer__top-btn,
     .theme-toggle__track,
     .footer-menu-panel__bar
-  )::before {
+  )::after {
     animation: none;
   }
 }
