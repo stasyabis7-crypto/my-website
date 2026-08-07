@@ -67,11 +67,6 @@
   transition: background-color var(--theme-transition-duration, 0.6s) var(--theme-transition-ease, ease);
 }
 
-/* В слоте 33 фон является частью общей страницы и должен быть виден
-   сквозь прозрачный iframe — стандартная surface-подложка здесь лишняя. */
-.works-grid__item--transparent {
-  background: transparent;
-}
 
 .works-grid__item--square {
   aspect-ratio: 1 / 1;
