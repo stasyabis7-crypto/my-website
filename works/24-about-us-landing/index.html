@@ -12,7 +12,7 @@
   body{display:grid;place-items:center;background:transparent;font-family:"CoFo Avito Text",Arial,sans-serif;font-weight:500;color:#000}
   .viewport,.canvas{position:relative;width:100%;height:100%;overflow:hidden}
   .canvas{background:transparent}
-  .phone-wrap{position:absolute;left:50%;top:500px;width:407px;height:826px;transform:translate(-50%,-50%) scale(1.0654);transform-origin:50% 50%;animation:phoneMove 11s cubic-bezier(.22,.61,.36,1) infinite;will-change:top,transform,opacity}
+  .phone-wrap{position:absolute;left:50%;top:500px;width:407px;height:826px;transform:translate(-50%,-50%) scale(1.0654);transform-origin:50% 50%}
   .phone{position:relative;width:100%;height:100%;padding:7px;border-radius:69px;background:linear-gradient(110deg,#727272 0%,#f8f5eb 17%,#747474 43%,#ece8dc 72%,#707070 100%);box-shadow:0 30px 64px rgba(55,24,83,.28)}
   .bezel{position:relative;width:100%;height:100%;padding:9px;border-radius:63px;background:#090909;overflow:hidden}
   .display{position:relative;width:100%;height:100%;border-radius:54px;background:#fff;overflow:hidden}
@@ -25,13 +25,6 @@
   .side--silent{left:-3px;top:126px;height:32px}
   .side--volume{left:-3px;top:178px;height:76px;box-shadow:0 92px 0 #737373}
   .side--power{right:-3px;top:196px;height:104px}
-  @keyframes phoneMove{
-    0%,12%{top:500px;transform:translate(-50%,-50%) scale(1.0654);opacity:1}
-    35%,48%{top:93.14px;transform:translate(-50%,-50%) scale(1.12);opacity:1}
-    70%,82%{top:500px;transform:translate(-50%,-50%) scale(.58);opacity:1}
-    100%{top:500px;transform:translate(-50%,-50%) scale(1.0654);opacity:1}
-  }
-  @media(prefers-reduced-motion:reduce){.phone-wrap{animation:none;top:500px;transform:translate(-50%,-50%) scale(1.0654);opacity:1}}
 </style>
   <script src="../shared/theme-sync.js" defer></script>
 </head>
