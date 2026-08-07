@@ -35,7 +35,7 @@
   /* Компенсирует padding-top под хедер у body/.page-works (см. шапку
      файла) — та же формула, что и там, иначе рассинхронизируются. */
   margin-top: calc(-1 * (var(--page-px, 10px) + var(--header-h, 3.5rem) + 10px));
-  margin-bottom: var(--space-stack-section, 2em);
+  margin-bottom: var(--page-px, 10px);
   height: 100svh;
   min-height: 34rem;
   max-height: 56rem;
@@ -64,6 +64,17 @@
   height: 100%;
   display: block;
   touch-action: none;
+}
+
+/* Мягкий переход в фон страницы снизу — вместо резкого обреза кругов
+   маской. var(--color-bg) — та же цель, что у самого .hero, поэтому
+   переход неотличим на глаз от реального фона в любой теме. */
+.hero__fade {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: clamp(4rem, 12%, 9rem);
+  background: linear-gradient(to bottom, transparent, var(--color-bg));
+  pointer-events: none;
 }
 
 .hero__content {
@@ -110,11 +121,14 @@
 }
 
 /*
-  Кнопка "Смотреть работы" — белая, розовая при наведении. Форма/отступы
+  Кнопка "Смотреть работы" — --color-ink/--color-ink-contrast (белая в
+  тёмной теме, чёрная в светлой — тот же инвертирующийся токен, что и
+  у монохромных иконок/контролов сайта, см. theme.css). Форма/отступы
   свои (кнопка гораздо крупнее компактных плашек хедера/футера), но
   hover/focus/press-фидбек — тот же общий механизм, что у остальных
-  контролов сайта (розовое пятно из точки курсора, см. .hero__cta в
-  общих :is(...)-списках button-hover.css), а не своя копия анимации.
+  контролов сайта (розовое пятно из точки курсора — layout-chrome.js
+  добавляет .hero__cta в тот же список, что и "Резюме PDF", см. общие
+  :is(...)-списки button-hover.css), а не своя копия анимации.
 */
 .hero__cta {
   margin-top: clamp(1.5rem, 4vw, 2.5rem);
@@ -125,8 +139,8 @@
   padding-inline: 1.75rem;
   border: 1px solid transparent;
   border-radius: 999px;
-  background: #fffaf5;
-  color: #14161a;
+  background: var(--color-ink);
+  color: var(--color-ink-contrast);
   text-decoration: none;
   white-space: nowrap;
 }
