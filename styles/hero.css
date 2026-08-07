@@ -43,7 +43,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
+  /* var(--color-bg), а не буквально transparent: та же цветовая цель
+     (совпадает с фоном страницы и меняется с темой), но с реальной
+     заливкой — в просветах между кругами SVG-маска ничего не рисует
+     (там честная прозрачность), и без своей заливки здесь блендить
+     заголовку/подзаголовку было бы не с чем — просто прозрачность,
+     эффект пропадал бы (в светлой теме буквы становились не видны:
+     белый на белом просвете, см. чат). */
+  background: var(--color-bg);
+  /* Заголовок/подзаголовок ниже блендятся (mix-blend-mode) с этим SVG-
+     фоном — isolate держит блендинг внутри .hero, не давая ему утечь
+     на остальную страницу за его пределами. */
+  isolation: isolate;
 }
 
 .hero__bg {
@@ -55,23 +66,11 @@
   touch-action: none;
 }
 
-/* Лёгкая кремовая виньетка по центру — под текстом/кнопкой, поверх
-   кругов, чтобы заголовок оставался читаемым на любом из ярких цветов
-   фона, а не только там, где под ним случайно светлый круг. */
-.hero__scrim {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse 60% 55% at 50% 50%,
-    color-mix(in srgb, var(--color-bg) 55%, transparent),
-    transparent 70%
-  );
-  pointer-events: none;
-}
-
 .hero__content {
-  position: relative;
-  z-index: 1;
+  /* БЕЗ position/z-index: они создали бы свой стек-контекст и обрубили
+     бы mix-blend-mode текста внутри от SVG-фона снаружи (тексту стало
+     бы не с чем блендиться, см. чат) — здесь просто div, наверх кладёт
+     сам DOM-порядок (идёт после .hero__bg). */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -85,24 +84,29 @@
   pointer-events: auto;
 }
 
+/*
+  Текст поверх кругов — вместо подсветки тенью/ореолом (не сочеталось с
+  тёмной темой, см. чат) буквы сами инвертируют то, что под ними:
+  mix-blend-mode: difference с белым текстом даёт разный видимый цвет
+  на каждом круге и на фоне (фон тоже посчитан — тёмный/светлый читает
+  --color-bg, см. .hero) без всякой ручной подгонки под тему.
+*/
+.hero__title,
+.hero__subtitle {
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
 .hero__title {
   font-family: "Valisca", var(--font-family-heading);
   text-transform: uppercase;
   /* .text-h1 даёт --letter-spacing-tight (-0.01em) — в этом шрифте
      буквы от него слипаются, перебиваем на wide. */
   letter-spacing: var(--letter-spacing-wide, 0.04em);
-  color: #14161a;
-  text-shadow:
-    0 2px 28px rgba(255, 248, 240, 0.9),
-    0 1px 3px rgba(255, 248, 240, 0.9);
 }
 
 .hero__subtitle {
   margin-top: var(--space-stack-heading-lead);
-  color: #14161a;
-  text-shadow:
-    0 2px 20px rgba(255, 248, 240, 0.9),
-    0 1px 3px rgba(255, 248, 240, 0.9);
 }
 
 /*
