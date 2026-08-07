@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Аналитика по продажам</title>
+<style>
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:grid;place-items:center;background:transparent;font-family:Inter,Arial,sans-serif;color:#001122}.stage{position:relative;width:1000px;height:1000px;overflow:hidden;background:transparent}.scene{position:absolute;left:50%;top:50%;width:390px;height:424px;transform:translate(-50%,-50%) scale(1.65);transform-origin:center;filter:drop-shadow(0 18px 38px rgba(0,17,34,.14))}.table{position:absolute;inset:0;background:#fff;border-radius:10px;overflow:hidden}.header{height:104px;background:#f5f7fa;color:rgba(0,17,34,.66);font-size:13px}.title{height:48px;padding:0 8px;border-bottom:1px solid rgba(97,131,162,.26);display:flex;align-items:center;font-weight:600}.chevron{display:block;width:16px;height:16px;margin-left:auto}.columns{height:56px;display:grid;grid-template-columns:repeat(3,130px)}.column{padding:12px 8px;display:flex;align-items:flex-start;justify-content:flex-end;gap:4px;font-weight:600;line-height:16px;text-align:right}.column-label{display:block}.sort{display:block;flex:none;width:16px;height:16px}.rows{height:320px}.row{display:grid;grid-template-columns:repeat(3,130px);height:80px;background:#fff;transition:background-color .38s ease}.cell{position:relative;padding:12px 8px;border-bottom:1px solid rgba(97,131,162,.26);text-align:right;transition:background-color .34s ease}.cell:first-child{border-left:1px solid rgba(97,131,162,.26)}.row.hover{background:#f9fafb}.row.hover .cell{background:#f9fafb}.row.hover .cell.active{background:rgba(97,131,162,.10)}.value{min-height:20px;display:flex;align-items:center;justify-content:flex-end;gap:4px;font-size:15px;line-height:20px;font-variant-numeric:tabular-nums}.delta{font-size:13px;line-height:16px;color:rgba(0,17,34,.66);font-variant-numeric:tabular-nums}.delta.up{color:#008028}.delta.down{color:#d3003d}.dot{display:block;flex:none;width:16px;height:16px}.tooltip{position:absolute;z-index:20;left:45px;width:300px;min-height:142px;padding:20px;border-radius:12px;background:#203148;color:rgba(255,255,255,.95);box-shadow:0 0 12px rgba(0,0,0,.12),0 0 1px rgba(0,0,0,.12);font-size:13px;line-height:16px;opacity:0;transform:translateY(7px) scale(.98);transform-origin:50% 0;transition:opacity .3s ease,transform .38s cubic-bezier(.22,.61,.36,1),top .45s cubic-bezier(.22,.61,.36,1)}.tooltip:before{content:"";position:absolute;left:50%;top:-7px;width:15px;height:15px;background:#203148;transform:translateX(-50%) rotate(45deg);border-radius:2px}.tooltip.above{transform:translateY(-7px) scale(.98);transform-origin:50% 100%}.tooltip.above:before{top:auto;bottom:-7px}.tooltip.show{opacity:1;transform:none}.tip-copy{margin-bottom:8px;color:rgba(255,255,255,.65)}.tip-state{height:28px;display:flex;align-items:center}.tip-state.up{color:#1dae40}.tip-state.down{color:#f96186}.tip-state.equal{color:rgba(255,255,255,.65)}.tip-line{height:28px;display:flex;align-items:center;justify-content:space-between}.tip-line b{font-weight:600}.cursor{position:absolute;z-index:40;width:24px;height:24px;left:0;top:0;opacity:0;pointer-events:none;will-change:transform,opacity}.cursor.pointer{opacity:0}@media(prefers-reduced-motion:reduce){.row,.cell,.tooltip{transition:none}}
+</style>
+<script src="../shared/theme-sync.js" defer></script>
+</head>
+<body>
+<main class="stage">
+  <section class="scene" id="scene">
+    <div class="table">
+      <header class="header"><div class="title">Аналитика по продажам за последние 7 дней <img class="chevron" src="assets/ic_s_chevron_down_filled.svg" alt=""></div><div class="columns"><div class="column"><span class="column-label">Просмотры</span><img class="sort" src="assets/ic_s_sort.svg" alt=""></div><div class="column"><span class="column-label">Конверсия<br>в заказ</span><img class="sort" src="assets/ic_s_sort.svg" alt=""></div><div class="column"><span class="column-label">Заказы<br>всего</span><img class="sort" src="assets/ic_s_sort.svg" alt=""></div></div></header>
+      <div class="rows" id="rows"></div>
+    </div>
+    <aside class="tooltip" id="tooltip"><div class="tip-copy">Сравнение в категории Замороженные продукты и полуфабрикаты от 1 000 ₽ до 2 000 ₽</div><div class="tip-state" id="tipState"></div><div class="tip-line"><span>Ближайший конкурент</span><b id="competitor"></b></div><div class="tip-line"><span>Ваш магазин</span><b id="store"></b></div></aside>
+    <img class="cursor" id="cursor" src="assets/cursor-default.svg" alt="">
+    <img class="cursor pointer" id="pointer" src="assets/cursor-pointer.svg" alt="">
+  </section>
+</main>
+<script>
+const data=[
+  [{v:'100 000',d:'−3%',c:'down',dot:true},{v:'15%',d:'0%'},{v:'120',d:'0%'}],
+  [{v:'200 000',d:'0%'},{v:'20%',d:'+3%',c:'up'},{v:'120',d:'0%'}],
+  [{v:'300 000',d:'+3%',c:'up'},{v:'10%',d:'−3%',c:'down',dot:true},{v:'120',d:'−3%',c:'down'}],
+  [{v:'150 000',d:'0%'},{v:'18%',d:'0%'},{v:'120',d:'+3%',c:'up'}]
+];
+rows.innerHTML=data.map((row,r)=>`<div class="row" data-row="${r}">${row.map((cell,c)=>`<div class="cell" data-col="${c}"><div class="value">${cell.v}${cell.dot?'<img class="dot" src="assets/ic_s_radio_dot_filled.svg" alt="">':''}</div><div class="delta ${cell.c||''}">${cell.d}</div></div>`).join('')}</div>`).join('');
+const rowEls=[...document.querySelectorAll('.row')],cellEls=[...document.querySelectorAll('.cell')],tooltip=document.getElementById('tooltip'),tipState=document.getElementById('tipState'),competitor=document.getElementById('competitor'),store=document.getElementById('store'),cursor=document.getElementById('cursor'),pointer=document.getElementById('pointer');
+const tips=[
+  {row:1,col:1,state:'Выше, чем у конкурента',kind:'up',competitor:'10,00%',store:'20,00%'},
+  {row:0,col:1,state:'Также, как у конкурента',kind:'equal',competitor:'15,00%',store:'15,00%'},
+  {row:2,col:1,state:'Ниже, чем у конкурента',kind:'down',competitor:'20,00%',store:'10,00%'}
+];
+const duration=11500,clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>n<.5?4*n*n*n:1-Math.pow(-2*n+2,3)/2,prog=(t,a,b)=>ease(clamp((t-a)/(b-a))),mix=(a,b,t)=>a+(b-a)*t;let cycle=-1;
+function clearHover(){rowEls.forEach(r=>r.classList.remove('hover'));cellEls.forEach(c=>c.classList.remove('active'));tooltip.classList.remove('show')}
+function showTip(index){const tip=tips[index],row=rowEls[tip.row],cell=row.children[tip.col],cellTop=104+tip.row*80,cellBottom=cellTop+80,gap=10;row.classList.add('hover');cell.classList.add('active');tipState.textContent=tip.state;tipState.className=`tip-state ${tip.kind}`;competitor.textContent=tip.competitor;store.textContent=tip.store;tooltip.classList.remove('above');tooltip.style.top=`${cellBottom+gap}px`;if(cellBottom+gap+tooltip.offsetHeight>424){tooltip.classList.add('above');tooltip.style.top=`${cellTop-tooltip.offsetHeight-gap}px`}tooltip.classList.add('show')}
+function reset(){clearHover();cursor.style.opacity=pointer.style.opacity=0}
+function animate(now){const c=Math.floor(now/duration),t=now%duration;if(c!==cycle){cycle=c;reset()}let x=360,y=385,tip=-1,hand=false;if(t<900){x=360;y=385}else if(t<1900){x=mix(360,205,prog(t,900,1900));y=mix(385,224,prog(t,900,1900))}else if(t<4100){x=205;y=224;tip=0;hand=true}else if(t<4750){x=205;y=mix(224,144,prog(t,4100,4750));hand=true}else if(t<6950){x=205;y=144;tip=1;hand=true}else if(t<7600){x=205;y=mix(144,304,prog(t,6950,7600));hand=true}else if(t<9800){x=205;y=304;tip=2;hand=true}else{x=mix(205,360,prog(t,9800,11100));y=mix(304,385,prog(t,9800,11100))}clearHover();if(tip>=0)showTip(tip);cursor.style.opacity=hand?0:1;pointer.style.opacity=hand?1:0;cursor.style.transform=pointer.style.transform=`translate(${x}px,${y}px)`;requestAnimationFrame(animate)}
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>

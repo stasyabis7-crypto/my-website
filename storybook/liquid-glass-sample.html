@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Liquid glass — sample</title>
+
+<script src="../styles/theme.js"></script>
+<link rel="stylesheet" href="../styles/scale.css" />
+<link rel="stylesheet" href="../styles/typography.css" />
+<link rel="stylesheet" href="../styles/theme.css" />
+<link rel="stylesheet" href="../styles/icons.css" />
+<link rel="stylesheet" href="../styles/header.css" />
+<link rel="stylesheet" href="../styles/footer.css" />
+<link rel="stylesheet" href="../styles/theme-toggle.css" />
+<link rel="stylesheet" href="../styles/button-hover.css" />
+
+<style>
+  /*
+    Тестовая песочница: реальные стили хедера/футера/тоггла/кнопки
+    "наверх" подключены как есть (см. head) — правим только здесь,
+    сам сайт (styles/*.css, index.html) не трогаем. Задача — на глаз
+    сравнить нынешний backdrop-filter: blur()+saturate() с вариантом,
+    где к нему добавлен SVG-фильтр (feTurbulence + feDisplacementMap),
+    который "гнёт" картинку под стеклом — тот самый liquid-glass эффект.
+  */
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    overflow-x: hidden;
+  }
+  body {
+    font-family: var(--font-family-body, sans-serif);
+  }
+
+  /* ---------- Фоны для сравнения ("с любым фоном") ---------- */
+
+  .bg-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .bg-layer.is-active { opacity: 1; }
+
+  /* Фон 1 — те же цветные круги, что реально сидят под хедером на
+     проде (см. hero.css/hero.js на главной), тут просто статичный
+     SVG + медленное вращение вместо GSAP. */
+  .bg-circles svg {
+    position: absolute;
+    inset: -10%;
+    width: 120%;
+    height: 120%;
+    animation: bg-circles-spin 40s linear infinite;
+  }
+  @keyframes bg-circles-spin {
+    from { transform: rotate(0deg) scale(1); }
+    to { transform: rotate(360deg) scale(1); }
+  }
+
+  /* Фон 2 — "фото": плотная цветная мешь-градиентная подложка,
+     заведомо более детальная/контрастная, чем круги — на ней
+     искажение liquid-glass виднее всего. */
+  .bg-photo {
+    background:
+      radial-gradient(circle at 15% 20%, #ff0cc2 0%, transparent 35%),
+      radial-gradient(circle at 85% 15%, #f3f301 0%, transparent 40%),
+      radial-gradient(circle at 75% 80%, #012af3 0%, transparent 45%),
+      radial-gradient(circle at 20% 85%, #4af301 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, #fb7806 0%, transparent 55%),
+      linear-gradient(135deg, #1c1f26, #0a0b0d);
+    background-size: 140% 140%;
+    animation: bg-photo-pan 30s ease-in-out infinite alternate;
+  }
+  @keyframes bg-photo-pan {
+    from { background-position: 0% 0%; }
+    to { background-position: 100% 100%; }
+  }
+
+  /* Фон 3 — почти без деталей (цвет страницы) — проверка, что стекло
+     не разваливается на скучном фоне, когда отражать особо нечего. */
+  .bg-flat {
+    background: var(--color-bg);
+  }
+
+  /* ---------- Реальные плашки — просто якорим по месту сайта ---------- */
+  /* header.css/footer.css/theme-toggle.css сами не меняем, только не
+     мешаем их position:fixed — весь чужой контент оставляем пустым. */
+
+  #footer-top-btn-desktop { display: none; }
+  @media (min-width: 1101px) {
+    #footer-top-btn-desktop.is-visible-demo { display: flex; }
+  }
+
+  /* ---------- Liquid glass: подмена backdrop-filter поверх обычного ---------- */
+
+  body.mode-liquid :is(
+    .site-header,
+    .theme-toggle__track,
+    .site-footer,
+    #footer-top-btn-desktop
+  ) {
+    backdrop-filter: blur(var(--lg-blur, 14px)) saturate(var(--lg-saturate, 180%)) url(#liquid-glass-distort);
+    -webkit-backdrop-filter: blur(var(--lg-blur, 14px)) saturate(var(--lg-saturate, 180%)) url(#liquid-glass-distort);
+  }
+
+  /* Блик по кромке — как в референсе (inset box-shadow), поверх
+     собственного ::after сайта (переливающаяся обводка) не мешает:
+     тот использует ::after, этот — ::before, оба свободны у всех
+     четырёх плашек. */
+  body.mode-liquid :is(
+    .site-header,
+    .theme-toggle__track,
+    .site-footer,
+    #footer-top-btn-desktop
+  )::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    box-shadow:
+      inset 1px 1px 0 -1px rgba(255, 255, 255, 0.8),
+      inset 0 0 4px 1px rgba(255, 255, 255, 0.35);
+    pointer-events: none;
+  }
+
+  /* ---------- Панель управления (сама НЕ стеклянная — чтобы не путать со сравниваемым) ---------- */
+
+  .demo-panel {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    z-index: 100;
+    width: 300px;
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
+    background: rgba(10, 11, 13, 0.92);
+    color: #f4f5f7;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 14px 16px 16px;
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .demo-panel h1 {
+    font-family: var(--font-family-heading, sans-serif);
+    font-size: 14px;
+    margin: 0 0 10px;
+  }
+  .demo-panel__group {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .demo-panel__group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .demo-panel__label {
+    display: block;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 10px;
+  }
+  .demo-panel__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .demo-panel__row:last-child { margin-bottom: 0; }
+  .demo-panel__row output {
+    margin-left: auto;
+    color: #ff0cc2;
+    min-width: 2.5em;
+    text-align: right;
+  }
+  .demo-panel input[type="range"] { flex: 1; accent-color: #ff0cc2; }
+  .demo-panel__seg {
+    display: flex;
+    gap: 6px;
+  }
+  .demo-panel__seg button {
+    flex: 1;
+    padding: 6px 4px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+  .demo-panel__seg button.is-active {
+    background: #ff0cc2;
+    border-color: #ff0cc2;
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg-layer bg-circles is-active" id="bg-circles">
+    <svg viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <mask id="hero-mask" fill="#fff">
+        <circle cx="200" cy="200" r="100" /><circle cx="400" cy="200" r="100" /><circle cx="600" cy="200" r="100" />
+        <circle cx="200" cy="400" r="100" /><circle cx="400" cy="400" r="100" /><circle cx="600" cy="400" r="100" />
+        <circle cx="200" cy="600" r="100" /><circle cx="400" cy="600" r="100" /><circle cx="600" cy="600" r="100" />
+      </mask>
+      <g mask="url(#hero-mask)">
+        <circle fill="#FB7806" cx="200" cy="200" r="100"/><circle fill="#FB7806" cx="400" cy="200" r="100"/><circle fill="#012AF3" cx="600" cy="200" r="100"/>
+        <circle fill="#FF0CC2" cx="200" cy="400" r="100"/><circle fill="#F3F301" cx="400" cy="400" r="100"/><circle fill="#4AF301" cx="600" cy="400" r="100"/>
+        <circle fill="#F3F301" cx="200" cy="600" r="100"/><circle fill="#FB7806" cx="400" cy="600" r="100"/><circle fill="#FF0CC2" cx="600" cy="600" r="100"/>
+        <circle fill="#4AF301" cx="300" cy="0" r="100"/><circle fill="#F3F301" cx="500" cy="200" r="100"/><circle fill="#012AF3" cx="300" cy="200" r="100"/>
+        <circle fill="#FB7806" cx="500" cy="400" r="100"/><circle fill="#4AF301" cx="300" cy="400" r="100"/><circle fill="#012AF3" cx="500" cy="600" r="100"/>
+        <circle fill="#FF0CC2" cx="300" cy="600" r="100"/><circle fill="#F3F301" cx="500" cy="800" r="100"/>
+      </g>
+    </svg>
+  </div>
+  <div class="bg-layer bg-photo" id="bg-photo"></div>
+  <div class="bg-layer bg-flat" id="bg-flat"></div>
+
+  <!-- ==== реальная разметка хедера/тоггла/футера, 1:1 с index.html ==== -->
+
+  <header class="site-header">
+    <div class="site-header__identity">
+      <div class="site-header__avatar">
+        <img src="../assets/avatar.png" alt="Портрет автора" />
+      </div>
+      <a href="#" class="site-header__logo" aria-label="На главную — Работы">
+        <span class="site-header__logo-mark" aria-hidden="true"></span>
+      </a>
+    </div>
+    <a href="#" class="site-header__cta text-button">
+      <span class="icon icon--cv" aria-hidden="true"></span>
+      Резюме PDF
+    </a>
+  </header>
+
+  <div class="theme-toggle">
+    <input type="checkbox" id="theme-toggle" class="theme-toggle__input" aria-label="Переключить тему" />
+    <label for="theme-toggle" class="theme-toggle__track">
+      <span class="theme-toggle__knob">
+        <span class="theme-toggle__crater theme-toggle__crater--a"></span>
+        <span class="theme-toggle__crater theme-toggle__crater--b"></span>
+        <span class="theme-toggle__crater theme-toggle__crater--c"></span>
+      </span>
+    </label>
+  </div>
+
+  <footer class="site-footer">
+    <nav class="site-footer__nav-wrap">
+      <ul class="site-footer__nav">
+        <li><a href="#" class="site-footer__link text-label is-current">
+          <span class="icon icon--works" aria-hidden="true"></span>
+          Работы
+        </a></li>
+        <li><a href="#" class="site-footer__link text-label">
+          <span class="icon icon--about" aria-hidden="true"></span>
+          Обо мне
+        </a></li>
+        <li><a href="#" class="site-footer__link text-label">
+          <span class="icon icon--activities" aria-hidden="true"></span>
+          Активности
+        </a></li>
+        <li><a href="#" class="site-footer__link text-label">
+          <span class="icon icon--contacts" aria-hidden="true"></span>
+          Контакты
+        </a></li>
+      </ul>
+    </nav>
+  </footer>
+
+  <button type="button" class="site-footer__top-btn is-visible-demo" id="footer-top-btn-desktop" aria-label="Наверх">
+    <span class="icon icon--up" aria-hidden="true"></span>
+  </button>
+
+  <!-- ==== SVG-фильтр: процедурный, без привязки к форме/размеру плашки ==== -->
+  <svg width="0" height="0" style="position:absolute">
+    <filter id="liquid-glass-distort" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feTurbulence id="lg-turbulence" type="fractalNoise" baseFrequency="0.010 0.010" numOctaves="2" seed="92" result="noise" />
+      <feGaussianBlur id="lg-blur-noise" in="noise" stdDeviation="0.5" result="blurredNoise" />
+      <feDisplacementMap id="lg-displace" in="SourceGraphic" in2="blurredNoise" scale="34" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
+  <!-- ==== панель управления (только для этой тестовой страницы) ==== -->
+  <div class="demo-panel">
+    <h1>Liquid glass — примерка</h1>
+
+    <div class="demo-panel__group">
+      <span class="demo-panel__label">Режим</span>
+      <div class="demo-panel__seg" id="mode-seg">
+        <button type="button" data-mode="normal" class="is-active">Сейчас на сайте</button>
+        <button type="button" data-mode="liquid">Liquid glass</button>
+      </div>
+    </div>
+
+    <div class="demo-panel__group">
+      <span class="demo-panel__label">Фон</span>
+      <div class="demo-panel__seg" id="bg-seg">
+        <button type="button" data-bg="circles" class="is-active">Круги</button>
+        <button type="button" data-bg="photo">Мешь</button>
+        <button type="button" data-bg="flat">Плоский</button>
+      </div>
+    </div>
+
+    <div class="demo-panel__group">
+      <span class="demo-panel__label">Стекло</span>
+      <div class="demo-panel__row">
+        Blur <input type="range" id="ctl-blur" min="0" max="30" step="1" value="14"><output>14px</output>
+      </div>
+      <div class="demo-panel__row">
+        Saturate <input type="range" id="ctl-saturate" min="100" max="260" step="5" value="180"><output>180%</output>
+      </div>
+    </div>
+
+    <div class="demo-panel__group">
+      <span class="demo-panel__label">Искажение (feTurbulence / feDisplacementMap)</span>
+      <div class="demo-panel__row">
+        Частота шума <input type="range" id="ctl-freq" min="2" max="40" step="1" value="10"><output>0.010</output>
+      </div>
+      <div class="demo-panel__row">
+        Октавы <input type="range" id="ctl-octaves" min="1" max="4" step="1" value="2"><output>2</output>
+      </div>
+      <div class="demo-panel__row">
+        Сила смещения <input type="range" id="ctl-scale" min="0" max="100" step="1" value="34"><output>34</output>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var body = document.body;
+      var root = document.documentElement;
+
+      // Режим: обычное стекло сайта ⇄ liquid glass.
+      document.getElementById('mode-seg').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-mode]');
+        if (!btn) return;
+        this.querySelectorAll('button').forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+        body.classList.toggle('mode-liquid', btn.dataset.mode === 'liquid');
+      });
+
+      // Фон.
+      var bgLayers = { circles: 'bg-circles', photo: 'bg-photo', flat: 'bg-flat' };
+      document.getElementById('bg-seg').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-bg]');
+        if (!btn) return;
+        this.querySelectorAll('button').forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+        Object.keys(bgLayers).forEach(function (key) {
+          document.getElementById(bgLayers[key]).classList.toggle('is-active', key === btn.dataset.bg);
+        });
+      });
+
+      // Blur / saturate — читаются самой backdrop-filter декларацией
+      // через var(--lg-blur)/var(--lg-saturate) (см. <style> выше).
+      var blurInput = document.getElementById('ctl-blur');
+      blurInput.addEventListener('input', function () {
+        root.style.setProperty('--lg-blur', blurInput.value + 'px');
+        blurInput.nextElementSibling.textContent = blurInput.value + 'px';
+      });
+      var satInput = document.getElementById('ctl-saturate');
+      satInput.addEventListener('input', function () {
+        root.style.setProperty('--lg-saturate', satInput.value + '%');
+        satInput.nextElementSibling.textContent = satInput.value + '%';
+      });
+
+      // Турбулентность/смещение — правим атрибуты SVG-примитивов напрямую,
+      // один общий фильтр используется всеми четырьмя плашками сразу.
+      var turbulence = document.getElementById('lg-turbulence');
+      var displace = document.getElementById('lg-displace');
+
+      var freqInput = document.getElementById('ctl-freq');
+      freqInput.addEventListener('input', function () {
+        var freq = (freqInput.value / 1000).toFixed(3);
+        turbulence.setAttribute('baseFrequency', freq + ' ' + freq);
+        freqInput.nextElementSibling.textContent = freq;
+      });
+      var octInput = document.getElementById('ctl-octaves');
+      octInput.addEventListener('input', function () {
+        turbulence.setAttribute('numOctaves', octInput.value);
+        octInput.nextElementSibling.textContent = octInput.value;
+      });
+      var scaleInput = document.getElementById('ctl-scale');
+      scaleInput.addEventListener('input', function () {
+        displace.setAttribute('scale', scaleInput.value);
+        scaleInput.nextElementSibling.textContent = scaleInput.value;
+      });
+    })();
+  </script>
+</body>
+</html>

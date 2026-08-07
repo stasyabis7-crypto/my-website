@@ -64,8 +64,9 @@
      overflow не обрезаем — свечение костяшки ниже должно выходить за
      трек. */
   background: var(--color-glass);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: var(--liquid-glass-filter);
+  -webkit-backdrop-filter: var(--liquid-glass-filter);
+  box-shadow: var(--liquid-glass-glow);
   /* Луна: холодный блик слева, там же сидит костяшка (--toggle-pad +
      половина --toggle-knob от левого края трека мат. сходится ровно к
      25% его ширины — трек вдвое шире своей высоты). */

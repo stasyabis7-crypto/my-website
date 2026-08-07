@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Slot 33 — тест анимации</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root { color-scheme: light; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 32px;
+      background: #eef1f5;
+      color: #001122;
+      font: 15px/1.4 Inter, Arial, sans-serif;
+    }
+    body.dark { color-scheme: dark; background: #17191d; color: #f5f7fa; }
+    .toolbar {
+      width: min(100%, 1000px);
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h1 { margin: 0 auto 0 0; font-size: 20px; }
+    button {
+      min-height: 40px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 10px;
+      background: #fff;
+      color: #001122;
+      box-shadow: 0 2px 8px rgba(0,17,34,.1);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 600;
+    }
+    body.dark button { background: #282b31; color: #f5f7fa; }
+    .preview {
+      position: relative;
+      width: min(100%, 1000px);
+      aspect-ratio: 1;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 24px;
+      background: #dcecff;
+      box-shadow: 0 20px 60px rgba(0,17,34,.16);
+      transition: background-color .25s ease;
+    }
+    body.dark .preview { background: #242a34; }
+    iframe {
+      display: block;
+      width: 1000px;
+      height: 1000px;
+      border: 0;
+      transform-origin: 0 0;
+    }
+    @media (max-width: 1064px) {
+      body { padding: 20px; }
+      iframe { transform: scale(calc((100vw - 40px) / 1000)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <h1>Слот 33 · Price Analytics Metrics</h1>
+    <button id="theme" type="button">Тёмный фон</button>
+    <button id="restart" type="button">Перезапустить</button>
+  </div>
+  <div class="preview">
+    <iframe id="animation" src="../works/33-price-analytics-metrics/index.html?v=test" title="Тест анимации слота 33"></iframe>
+  </div>
+  <script>
+    const frame = document.getElementById('animation');
+    const theme = document.getElementById('theme');
+    document.getElementById('restart').addEventListener('click', () => {
+      frame.src = `../works/33-price-analytics-metrics/index.html?v=${Date.now()}`;
+    });
+    theme.addEventListener('click', () => {
+      const dark = document.body.classList.toggle('dark');
+      theme.textContent = dark ? 'Светлый фон' : 'Тёмный фон';
+      frame.contentWindow?.postMessage({ type: 'theme', theme: dark ? 'dark' : 'light' }, '*');
+    });
+  </script>
+</body>
+</html>

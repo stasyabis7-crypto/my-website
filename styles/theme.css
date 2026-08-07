@@ -16,6 +16,27 @@
   --glass-blur: 20px;
   --glass-saturate: 180%;
 
+  /* «Liquid glass» — второй рецепт стекла, используется только у
+     хедера, футера, тумблера темы и кнопки "наверх" (см. header.css/
+     footer.css/theme-toggle.css) — тоньше размытие, выше насыщенность
+     + SVG-фильтр (feTurbulence+feDisplacementMap, см.
+     #liquid-glass-distort в index.html), слегка "гнущий" картинку под
+     стеклом вместо идеально ровного блюра. Цифры подобраны и
+     утверждены на тестовом стенде (storybook/liquid-glass-sample.html)
+     — менять лучше там же, не на глаз в бою. Остальные стеклянные
+     плашки (панель мобильного меню, кнопка "Меню") остаются на
+     рецепте --glass-blur/--glass-saturate выше, здесь не трогаем.
+     --liquid-glass-glow — блик по кромке: обычный box-shadow на самом
+     элементе, не псевдоэлемент — ::before у кнопки "наверх" уже занят
+     hover-пятном (см. button-hover.css), а ::after везде занят
+     переливающейся обводкой (см. ниже). */
+  --liquid-glass-blur: 4px;
+  --liquid-glass-saturate: 210%;
+  --liquid-glass-filter: blur(var(--liquid-glass-blur)) saturate(var(--liquid-glass-saturate)) url(#liquid-glass-distort);
+  --liquid-glass-glow:
+    inset 1px 1px 0 -1px rgba(255, 255, 255, 0.8),
+    inset 0 0 4px 1px rgba(255, 255, 255, 0.35);
+
   /* Общий тайминг переключения темы — читают html/body ниже и
      theme-toggle.css (костяшка тумблера), чтобы вся страница
      переходила между темами в один и тот же плавный такт, а не

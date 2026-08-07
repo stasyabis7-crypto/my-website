@@ -36,8 +36,9 @@
   padding-block: var(--chrome-pad-block);
   padding-inline: var(--chrome-pad-block);
   background: var(--color-glass);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: var(--liquid-glass-filter);
+  -webkit-backdrop-filter: var(--liquid-glass-filter);
+  box-shadow: var(--liquid-glass-glow);
   border-radius: 999px;
   /* Переливающаяся обводка — псевдоэлемент, см. theme.css. */
 }
@@ -290,6 +291,16 @@ html.chrome--compact .site-footer__link .icon {
   color: var(--color-action-active-text);
 }
 
+/* Liquid glass — только у кнопки "наверх" (см. --liquid-glass-* в
+   theme.css), кнопка "Меню" остаётся на обычном рецепте выше: она
+   всё равно сплошная розовая, эффекта стекла на ней не видно, а
+   искажать процедурным шумом нечего. */
+.site-footer__top-btn {
+  backdrop-filter: var(--liquid-glass-filter);
+  -webkit-backdrop-filter: var(--liquid-glass-filter);
+  box-shadow: var(--liquid-glass-glow);
+}
+
 .site-footer__top-btn .icon {
   width: 1.75rem;
   height: 1.75rem;
@@ -443,8 +454,9 @@ html.chrome--compact .site-footer__link .icon {
   html:not(.chrome--compact) .site-footer.is-collapsed {
     height: auto;
     background: var(--color-glass);
-    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: var(--liquid-glass-filter);
+    -webkit-backdrop-filter: var(--liquid-glass-filter);
+    box-shadow: var(--liquid-glass-glow);
     padding-inline: var(--chrome-pad-block);
   }
 

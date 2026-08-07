@@ -13,11 +13,11 @@
 <script>document.documentElement.classList.add('is-page-loading')</script>
 <link rel="stylesheet" href="styles/scale.css?v=18" />
 <link rel="stylesheet" href="styles/typography.css?v=18" />
-<link rel="stylesheet" href="styles/theme.css?v=18" />
+<link rel="stylesheet" href="styles/theme.css?v=19" />
 <link rel="stylesheet" href="styles/icons.css?v=1" />
-<link rel="stylesheet" href="styles/header.css?v=28" />
-<link rel="stylesheet" href="styles/footer.css?v=41" />
-<link rel="stylesheet" href="styles/theme-toggle.css?v=26" />
+<link rel="stylesheet" href="styles/header.css?v=29" />
+<link rel="stylesheet" href="styles/footer.css?v=42" />
+<link rel="stylesheet" href="styles/theme-toggle.css?v=27" />
 <link rel="stylesheet" href="styles/button-hover.css?v=25" />
 <link rel="stylesheet" href="styles/works-grid.css?v=1" />
 <link rel="preload" as="font" type="font/ttf" href="styles/Valisca%204.ttf" crossorigin />
@@ -141,6 +141,20 @@
     <p class="text-body-sm loading-screen__fact" id="loading-screen-fact"></p>
   </div>
   <noscript><style>#loading-screen{display:none}</style></noscript>
+
+  <!-- Liquid glass — SVG-фильтр для хедера/футера/тумблера/кнопки
+       "наверх" (см. --liquid-glass-filter в theme.css). Процедурный
+       шум, не завязан на форму/размер конкретной плашки — один и тот
+       же фильтр переиспользуют все четыре. Цифры подобраны на
+       storybook/liquid-glass-sample.html, менять лучше там же. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="liquid-glass-distort" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.006 0.006" numOctaves="1" seed="92" result="noise" />
+      <feGaussianBlur in="noise" stdDeviation="0.5" result="blurredNoise" />
+      <feDisplacementMap in="SourceGraphic" in2="blurredNoise" scale="78" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
   <header class="site-header">
     <div class="site-header__identity">
       <div class="site-header__avatar">
@@ -352,7 +366,7 @@
       <div class="works-grid__item works-grid__item--square" data-slot="30" data-title="Customer List"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/30-customer-list/index.html?v=11" data-native-w="1000" data-native-h="563" tabindex="-1" scrolling="no" title="Customer List"></iframe></span></div>
       <div class="works-grid__item works-grid__item--wide-left" data-slot="31" data-title="Mailing Page"><img src="works/31-mailing-page/cover-light.png?v=a327f2e1" alt="Mailing Page"  loading="lazy" /></div>
       <div class="works-grid__item works-grid__item--square" data-slot="32" data-title="Toast Copy Fix"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/32-toast-copy-fix/index.html?v=4" data-native-w="1000" data-native-h="750" tabindex="-1" scrolling="no" title="Toast Copy Fix"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="33"><div class="works-grid__ph"><b>33 · square</b><span>Price Analytics Metrics</span></div></div>
+      <div class="works-grid__item works-grid__item--square" data-slot="33" data-title="Price Analytics Metrics"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/33-price-analytics-metrics/index.html?v=2" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" title="Price Analytics Metrics"></iframe></span></div>
       <div class="works-grid__item works-grid__item--square" data-slot="34"><div class="works-grid__ph"><b>34 · square</b><span>Margin &amp; Cost Price</span></div></div>
       <div class="works-grid__item works-grid__item--square" data-slot="35"><div class="works-grid__ph"><b>35 · square</b><span>Popover Improvements</span></div></div>
       <div class="works-grid__item works-grid__item--square" data-slot="36"><div class="works-grid__ph"><b>36 · square</b><span>Price Table Redesign</span></div></div>
