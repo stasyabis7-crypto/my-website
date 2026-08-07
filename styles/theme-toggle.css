@@ -38,6 +38,22 @@
   cursor: pointer;
 }
 
+/* Обводка трека НЕ разделяет общий рецепт с хедером/футером (см.
+   theme.css) — там она нейтрально-белая, потому что на тех плашках нет
+   одного явного цветного элемента. У тумблера он есть — сама костяшка
+   (луна/солнце) — поэтому цвет и положение блика в обводке берутся
+   ИЗ неё: --glow-color/--glow-x меняются вместе с :checked, ниже. */
+@property --glow-color {
+  syntax: "<color>";
+  initial-value: rgba(214, 228, 255, 0.9);
+  inherits: false;
+}
+@property --glow-x {
+  syntax: "<percentage>";
+  initial-value: 25%;
+  inherits: false;
+}
+
 .theme-toggle__track {
   display: block;
   position: relative;
@@ -50,9 +66,40 @@
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  /* Переливающаяся обводка — псевдоэлемент, см. theme.css (важно: НЕ
-     настоящий border — тот съедал 1px у padding-box изнутри и сдвигал
-     костяшку ниже мимо центра, см. чат). */
+  /* Луна: холодный блик слева, там же сидит костяшка (--toggle-pad +
+     половина --toggle-knob от левого края трека мат. сходится ровно к
+     25% его ширины — трек вдвое шире своей высоты). */
+  --glow-color: rgba(214, 228, 255, 0.9);
+  --glow-x: 25%;
+}
+
+.theme-toggle__input:checked + .theme-toggle__track {
+  /* Солнце едет на +100% высоты трека вправо (см. transform на
+     костяшке ниже) — это ровно ещё 50% ширины трека, отсюда 25%+50%. */
+  --glow-color: rgba(255, 210, 90, 0.95);
+  --glow-x: 75%;
+}
+
+/* Переливающаяся обводка трека — псевдоэлемент (см. общий приём и
+   почему не настоящий border в theme.css). Радиальное пятно у позиции
+   костяшки (--glow-x, её же цветом) поверх ровного бледного кольца,
+   чтобы остальная обводка тоже была видна, не только сам блик. */
+.theme-toggle__track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background:
+    radial-gradient(ellipse 45% 140% at var(--glow-x) 50%, var(--glow-color), transparent 70%),
+    linear-gradient(rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.35));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition:
+    --glow-color var(--theme-transition-duration, 0.6s) var(--theme-transition-ease, cubic-bezier(0.65, 0, 0.35, 1)),
+    --glow-x var(--theme-transition-duration, 0.6s) var(--theme-transition-ease, cubic-bezier(0.65, 0, 0.35, 1));
 }
 
 .theme-toggle__knob {
@@ -128,7 +175,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .theme-toggle__knob,
-  .theme-toggle__crater {
+  .theme-toggle__crater,
+  .theme-toggle__track::after {
     transition-duration: 0.01ms;
   }
 }

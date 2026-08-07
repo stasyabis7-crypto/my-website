@@ -70,22 +70,33 @@
 }
 
 /*
-  Переливающаяся обводка стеклянных плашек (хедер/футер/тумблер темы/
-  панель меню, см. селектор ниже) — conic-gradient, замаскированный так,
-  что виден только тонкий кольцевой контур, а не вся заливка.
-  Псевдоэлемент, НЕ настоящий border: реальный border (пробовали раньше)
-  на box-sizing:border-box отъедает 1px у padding-box изнутри и сдвигает
-  то, что позиционировано абсолютными px (костяшка тумблера) — у
-  ::after с position:absolute; inset:0 такого побочного эффекта нет.
-  Именно ::after, не ::before — у .site-footer__top-btn ::before уже
-  занят розовым hover-пятном из button-hover.css, второй эффект на том
-  же псевдоэлементе конфликтовал бы с ним.
+  Переливающаяся обводка стеклянных плашек (хедер/футер/панель меню —
+  тумблер темы теперь отдельно, см. ниже почему) — conic-gradient,
+  замаскированный так, что виден только тонкий кольцевой контур, а не
+  вся заливка. Псевдоэлемент, НЕ настоящий border: реальный border
+  (пробовали раньше) на box-sizing:border-box отъедает 1px у padding-
+  box изнутри и сдвигает то, что позиционировано абсолютными px
+  (костяшка тумблера) — у ::after с position:absolute; inset:0 такого
+  побочного эффекта нет. Именно ::after, не ::before — у
+  .site-footer__top-btn ::before уже занят розовым hover-пятном из
+  button-hover.css, второй эффект на том же псевдоэлементе конфликтовал
+  бы с ним.
 
-  Не крутится сам по себе постоянно — блик должен "реагировать" на
-  смену цвета внутренних элементов, а не жить своей жизнью. Анимация
-  запускается только на html.theme-transitioning — этот класс на 1с
-  ставит theme.js в момент реальной смены темы (см. triggerGlassShimmer
-  там же), ровно тогда, когда красятся сами плашки/костяшка.
+  Цвет — не выдуманный, а взят от реального цветного элемента, который
+  на этой плашке действительно есть, и стоит примерно на его месте
+  (--glass-accent/--glass-accent-pos, заданы у самих плашек ниже):
+  хедер — розовая кнопка "Резюме PDF" (сидит справа), футер и панель
+  меню — активный розовый пункт "Работы" (сидит слева/сверху-слева).
+  У кнопки "наверх" в футере цветного контента нет — акцент остаётся
+  прозрачным, только нейтральный белый слой. Тумблер темы устроен
+  иначе (цвет реально переключается местами) — свой рецепт, см.
+  .theme-toggle__track::after в theme-toggle.css.
+
+  Не крутится сам по себе постоянно — вращение (белый слой) должно
+  "реагировать" на смену цвета внутренних элементов, а не жить своей
+  жизнью. Анимация запускается только на html.theme-transitioning —
+  этот класс на 1с ставит theme.js в момент реальной смены темы (см.
+  triggerGlassShimmer там же), ровно тогда, когда красятся сами плашки.
 */
 @property --glass-shimmer-angle {
   syntax: "<angle>";
@@ -93,10 +104,24 @@
   inherits: false;
 }
 
+.site-header {
+  /* Розовая кнопка "Резюме PDF" — крайняя справа (justify-content:
+     space-between в header.css). */
+  --glass-accent: color-mix(in srgb, var(--color-action-active) 70%, transparent);
+  --glass-accent-pos: calc(100% - 2.5rem) 50%;
+}
+
+.site-footer,
+.footer-menu-panel__bar {
+  /* Активный пункт "Работы" — всегда первый/крайний слева в списке
+     (см. .site-footer__nav / .footer-menu-panel__nav). */
+  --glass-accent: color-mix(in srgb, var(--color-action-active) 70%, transparent);
+  --glass-accent-pos: 2.25rem 50%;
+}
+
 :is(
   .site-header,
   .site-footer,
-  .theme-toggle__track,
   .footer-menu-panel__bar
 ) {
   position: relative;
@@ -105,13 +130,14 @@
 /* .site-footer__top-btn НЕ в списке выше — у неё уже position:absolute
    в footer.css (нужен для right:0), этого достаточно как containing
    block для ::after ниже, лишний position:relative тут только рисковал
-   бы конфликтовать по каскаду. */
+   бы конфликтовать по каскаду. У неё же нет --glass-accent (нечего
+   отражать — просто стрелка, ink-цвет), задел transparent по умолчанию
+   ниже в самом ::after. */
 
 :is(
   .site-header,
   .site-footer,
   .site-footer__top-btn,
-  .theme-toggle__track,
   .footer-menu-panel__bar
 )::after {
   content: "";
@@ -119,14 +145,16 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: conic-gradient(
-    from var(--glass-shimmer-angle),
-    rgba(255, 255, 255, 0.9),
-    rgba(255, 255, 255, 0.05) 25%,
-    rgba(255, 12, 194, 0.55) 50%,
-    rgba(255, 255, 255, 0.05) 75%,
-    rgba(255, 255, 255, 0.9) 100%
-  );
+  background:
+    radial-gradient(ellipse 45% 160% at var(--glass-accent-pos, 50% 50%), var(--glass-accent, transparent), transparent 70%),
+    conic-gradient(
+      from var(--glass-shimmer-angle),
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.05) 25%,
+      rgba(255, 255, 255, 0.75) 50%,
+      rgba(255, 255, 255, 0.05) 75%,
+      rgba(255, 255, 255, 0.9) 100%
+    );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -137,7 +165,6 @@ html.theme-transitioning :is(
   .site-header,
   .site-footer,
   .site-footer__top-btn,
-  .theme-toggle__track,
   .footer-menu-panel__bar
 )::after {
   animation: glass-shimmer-sweep 1s ease-out;
@@ -160,7 +187,6 @@ html.theme-transitioning :is(
     .site-header,
     .site-footer,
     .site-footer__top-btn,
-    .theme-toggle__track,
     .footer-menu-panel__bar
   )::after {
     animation: none;
