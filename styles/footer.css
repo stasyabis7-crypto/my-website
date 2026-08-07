@@ -38,6 +38,7 @@
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--color-glass-border);
   border-radius: 999px;
 }
 
@@ -266,7 +267,7 @@ html.chrome--compact .site-footer__link .icon {
    здесь её не трогаем. */
 .site-footer__menu-btn,
 .site-footer__top-btn {
-  border: none;
+  border: 1px solid var(--color-glass-border);
   border-radius: 50%;
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
@@ -283,8 +284,10 @@ html.chrome--compact .site-footer__link .icon {
     filter 0.3s var(--footer-ease);
 }
 
-/* Приоритет 1: кнопка меню — розовый акцентный контрол. */
+/* Приоритет 1: кнопка меню — розовый акцентный контрол (сплошная
+   заливка, не стекло) — своей обводки не показывает. */
 .site-footer__menu-btn {
+  border-color: transparent;
   background: var(--color-action-active);
   color: var(--color-action-active-text);
 }
@@ -500,8 +503,7 @@ html.chrome--compact .site-footer__link .icon {
 }
 
 /* Бар сжат по контенту сетки 2×2 (см. .footer-menu-panel__nav ниже),
-   а не растянут на всю ширину футера. Без обводки — у панели и так
-   достаточно контраста от блюра/тени фона под ней. */
+   а не растянут на всю ширину футера. */
 .footer-menu-panel__bar {
   box-sizing: border-box;
   display: inline-block;
@@ -510,6 +512,7 @@ html.chrome--compact .site-footer__link .icon {
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--color-glass-border);
 }
 
 /* Сетка 2×2 — те же пункты, что и в развёрнутом футере (см.
