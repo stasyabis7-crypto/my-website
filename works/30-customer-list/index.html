@@ -166,28 +166,28 @@ function animate(now){
 
  if(t<1100){pos=points.start}
  else if(t<2100){pos=move(t,1100,2100,points.start,points.action);hand=true}
- else if(t<2750){pos=points.action;hand=true;actionField.classList.add('open');if(t>=2350&&t<2610){s=press(t,2400)}if(t>=2400){actionMenu.classList.add('show')}}
+ else if(t<2750){pos=points.action;hand=true;actionField.classList.add('open');s=press(t,2270);if(t>=2400){actionMenu.classList.add('show')}}
  else if(t<3700){pos=move(t,2750,3700,points.action,points.actionChoice);hand=true;actionMenu.classList.add('show');actionField.classList.add('open')}
- else if(t<4450){pos=points.actionChoice;hand=true;actionMenu.classList.add('show');actionField.classList.add('open');targetAction.classList.add('hover');if(t>=4050&&t<4310){s=press(t,4100)}if(t>=4100){actionText.textContent='Купили';actionText.style.color='var(--ink)';actionMenu.classList.remove('show');actionField.classList.remove('open');targetAction.classList.remove('hover')}}
+ else if(t<4450){pos=points.actionChoice;hand=true;actionMenu.classList.add('show');actionField.classList.add('open');targetAction.classList.add('hover');s=press(t,3970);if(t>=4100){actionText.textContent='Купили';actionText.style.color='var(--ink)';actionMenu.classList.remove('show');actionField.classList.remove('open');targetAction.classList.remove('hover')}}
  else if(t<5450){pos=move(t,4450,5450,points.actionChoice,points.operator);hand=true}
- else if(t<6100){pos=points.operator;hand=true;operatorField.classList.add('open');if(t>=5750&&t<6010){s=press(t,5800)}if(t>=5800)operatorMenu.classList.add('show')}
+ else if(t<6100){pos=points.operator;hand=true;operatorField.classList.add('open');s=press(t,5670);if(t>=5800)operatorMenu.classList.add('show')}
  else if(t<7000){pos=move(t,6100,7000,points.operator,points.operatorChoice);hand=true;operatorMenu.classList.add('show');operatorField.classList.add('open')}
- else if(t<7700){pos=points.operatorChoice;hand=true;operatorMenu.classList.add('show');operatorField.classList.add('open');targetOperator.classList.add('hover');opGte.classList.remove('active');if(t>=7300&&t<7560){s=press(t,7350)}if(t>=7350){operatorText.textContent='=';operatorMenu.classList.remove('show');operatorField.classList.remove('open');targetOperator.classList.remove('hover');targetOperator.classList.add('active')}}
+ else if(t<7700){pos=points.operatorChoice;hand=true;operatorMenu.classList.add('show');operatorField.classList.add('open');targetOperator.classList.add('hover');opGte.classList.remove('active');s=press(t,7220);if(t>=7350){operatorText.textContent='=';operatorMenu.classList.remove('show');operatorField.classList.remove('open');targetOperator.classList.remove('hover');targetOperator.classList.add('active')}}
  else if(t<8600){pos=move(t,7700,8600,points.operatorChoice,points.quantity);hand=true}
- else if(t<9350){pos=points.quantity;hand=true;quantityField.classList.add('open');if(t>=8950&&t<9210){s=press(t,9000)}if(t>=9000)quantityText.textContent='3'}
+ else if(t<9350){pos=points.quantity;hand=true;quantityField.classList.add('open');s=press(t,8870);if(t>=9000)quantityText.textContent='3'}
  else if(t<10300){pos=move(t,9350,10300,points.quantity,points.p1);hand=true;quantityField.classList.remove('open')}
- else if(t<10950){pos=points.p1;hand=true;if(t>=10550&&t<10810){s=press(t,10600)}if(t>=10600)selectPeriod(periodOne)}
+ else if(t<10950){pos=points.p1;hand=true;s=press(t,10470);if(t>=10600)selectPeriod(periodOne)}
  else if(t<11750){pos=move(t,10950,11750,points.p1,points.other);hand=true;selectPeriod(periodOne)}
- else if(t<12450){pos=points.other;hand=true;selectPeriod(periodOne);if(t>=12000&&t<12260){s=press(t,12050)}if(t>=12050){selectPeriod(null);stage.classList.add('calendar-open');periodOther.classList.add('open')}}
+ else if(t<12450){pos=points.other;hand=true;selectPeriod(periodOne);s=press(t,11920);if(t>=12050){selectPeriod(null);stage.classList.add('calendar-open');periodOther.classList.add('open')}}
  else if(t<12800){pos=points.otherShift;hand=true;periodOther.classList.add('open')}
  else if(t<13700){pos=move(t,12800,13700,points.otherShift,points.day4);hand=true;periodOther.classList.add('open');dayEls[4].classList.add('hover')}
- else if(t<14400){pos=points.day4;hand=true;periodOther.classList.add('open');dayEls[4].classList.add('hover');if(t>=14000&&t<14260){s=press(t,14050)}if(t>=14050){dayEls[4].classList.remove('hover');dayEls[4].classList.add('on-endpoint');calEnd1.classList.add('show')}}
+ else if(t<14400){pos=points.day4;hand=true;periodOther.classList.add('open');dayEls[4].classList.add('hover');s=press(t,13920);if(t>=14050){dayEls[4].classList.remove('hover');dayEls[4].classList.add('on-endpoint');calEnd1.classList.add('show')}}
  else if(t<15100){pos=move(t,14400,15100,points.day4,points.day7);hand=true;periodOther.classList.add('open');dayEls[7].classList.add('hover')}
- else if(t<15800){pos=points.day7;hand=true;periodOther.classList.add('open');dayEls[7].classList.add('hover');if(t>=15400&&t<15660){s=press(t,15450)}if(t>=15450){dayEls[7].classList.remove('hover');dayEls[7].classList.add('on-endpoint');calEnd2.classList.add('show');calFill.classList.add('show');otherLabel.textContent='Другой период';otherText.textContent='04.01.2023 – 07.01.2023';otherText.style.color='var(--ink)'}}
+ else if(t<15800){pos=points.day7;hand=true;periodOther.classList.add('open');dayEls[7].classList.add('hover');s=press(t,15320);if(t>=15450){dayEls[7].classList.remove('hover');dayEls[7].classList.add('on-endpoint');calEnd2.classList.add('show');calFill.classList.add('show');otherLabel.textContent='Другой период';otherText.textContent='04.01.2023 – 07.01.2023';otherText.style.color='var(--ink)'}}
  else if(t<16700){pos=move(t,15800,16700,points.day7,points.other);hand=true;if(t>=15850){stage.classList.remove('calendar-open');periodOther.classList.remove('open')}}
  else if(t<17450){pos=points.other;hand=true}
  else if(t<18350){pos=move(t,17450,18350,points.other,points.clear);hand=true}
- else if(t<19050){pos=points.clear;hand=true;if(t>=18650&&t<18910){s=press(t,18700);clear.classList.add('pressed')}if(t>=18700){clear.classList.remove('pressed');reset()}}
+ else if(t<19050){pos=points.clear;hand=true;s=press(t,18570);if(t>=18570)clear.classList.add('pressed');if(t>=18700){clear.classList.remove('pressed');reset()}}
  else if(t<20250){pos=points.clear}
  else{pos=move(t,20250,21350,points.clear,points.start);hand=false}
 
