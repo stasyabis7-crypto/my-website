@@ -44,8 +44,8 @@
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  border: 1px solid var(--color-glass-border);
   border-radius: 999px;
+  /* Переливающаяся обводка — псевдоэлемент, см. theme.css. */
 }
 
 /*

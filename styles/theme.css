@@ -69,6 +69,74 @@
   --color-glass-border: rgba(20, 22, 26, 0.08);
 }
 
+/*
+  Переливающаяся обводка стеклянных плашек (хедер/футер/тумблер темы/
+  панель меню, см. селектор ниже) — вращающийся conic-gradient,
+  замаскированный так, что виден только тонкий кольцевой контур, а не
+  вся заливка. Псевдоэлемент, НЕ настоящий border: реальный border
+  (пробовали раньше) на box-sizing:border-box отъедает 1px у padding-
+  box изнутри и сдвигает то, что позиционировано абсолютными px
+  (костяшка тумблера) — у ::before с position:absolute; inset:0 такого
+  побочного эффекта нет, он не участвует в раскладке родителя вообще.
+*/
+@property --glass-shimmer-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+:is(
+  .site-header,
+  .site-footer,
+  .theme-toggle__track,
+  .footer-menu-panel__bar
+) {
+  position: relative;
+}
+
+:is(
+  .site-header,
+  .site-footer,
+  .theme-toggle__track,
+  .footer-menu-panel__bar
+)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--glass-shimmer-angle),
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 12, 194, 0.55) 50%,
+    rgba(255, 255, 255, 0.05) 75%,
+    rgba(255, 255, 255, 0.9) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: glass-shimmer-rotate 6s linear infinite;
+}
+
+@keyframes glass-shimmer-rotate {
+  to {
+    --glass-shimmer-angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(
+    .site-header,
+    .site-footer,
+    .theme-toggle__track,
+    .footer-menu-panel__bar
+  )::before {
+    animation: none;
+  }
+}
+
 html,
 body {
   background: var(--color-bg);

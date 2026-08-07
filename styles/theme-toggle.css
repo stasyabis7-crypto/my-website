@@ -50,7 +50,9 @@
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  border: 1px solid var(--color-glass-border);
+  /* Переливающаяся обводка — псевдоэлемент, см. theme.css (важно: НЕ
+     настоящий border — тот съедал 1px у padding-box изнутри и сдвигал
+     костяшку ниже мимо центра, см. чат). */
 }
 
 .theme-toggle__knob {

@@ -38,8 +38,8 @@
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  border: 1px solid var(--color-glass-border);
   border-radius: 999px;
+  /* Переливающаяся обводка — псевдоэлемент, см. theme.css. */
 }
 
 /*
@@ -267,7 +267,7 @@ html.chrome--compact .site-footer__link .icon {
    здесь её не трогаем. */
 .site-footer__menu-btn,
 .site-footer__top-btn {
-  border: 1px solid var(--color-glass-border);
+  border: none;
   border-radius: 50%;
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
@@ -284,10 +284,8 @@ html.chrome--compact .site-footer__link .icon {
     filter 0.3s var(--footer-ease);
 }
 
-/* Приоритет 1: кнопка меню — розовый акцентный контрол (сплошная
-   заливка, не стекло) — своей обводки не показывает. */
+/* Приоритет 1: кнопка меню — розовый акцентный контрол. */
 .site-footer__menu-btn {
-  border-color: transparent;
   background: var(--color-action-active);
   color: var(--color-action-active-text);
 }
@@ -512,7 +510,7 @@ html.chrome--compact .site-footer__link .icon {
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  border: 1px solid var(--color-glass-border);
+  /* Переливающаяся обводка — псевдоэлемент, см. theme.css. */
 }
 
 /* Сетка 2×2 — те же пункты, что и в развёрнутом футере (см.

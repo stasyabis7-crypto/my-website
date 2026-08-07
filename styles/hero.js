@@ -92,8 +92,44 @@
     yoyo: true,
   });
 
-  // Параллакс кругов за курсором (pointermove/pointerleave) временно
-  // убран — ломал прорисовку при скролле (см. чат), вернёмся к нему
-  // отдельно. Сборка в сетку + шум тени + покачивание переднего плана
-  // выше остаются как есть.
+  function offsetFor(rel, i, isRow) {
+    var n = gsap.utils.wrapYoyo(0, 0.5, rel);
+    var base = isRow
+      ? (function () {
+          var row = 0;
+          if (i > 2) row = 1;
+          if (i > 5) row = 2;
+          return 400 - row * 400;
+        })()
+      : 400 - (i % 3) * 400;
+    return gsap.utils.interpolate(0, base, n);
+  }
+
+  hero.addEventListener('pointermove', function (e) {
+    var rect = stage.getBoundingClientRect();
+    var relX = (e.clientX - rect.left) / rect.width;
+    var relY = (e.clientY - rect.top) / rect.height;
+
+    gsap.to(maskCircles, {
+      duration: 0.2,
+      overwrite: 'auto',
+      x: function (i) { return offsetFor(relX, i, false); },
+      y: function (i) { return offsetFor(relY, i, true); },
+    });
+
+    gsap.to(bgCircles, {
+      overwrite: 'auto',
+      x: function (i) { return offsetFor(relX, i, false); },
+      y: function (i) { return offsetFor(relY, i, true); },
+    });
+  });
+
+  hero.addEventListener('pointerleave', function () {
+    gsap.to(stage.querySelectorAll('#hero-mask circle, #hero-bg circle'), {
+      duration: 1,
+      x: 0,
+      y: 0,
+      overwrite: 'auto',
+    });
+  });
 })();
