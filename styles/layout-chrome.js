@@ -46,6 +46,7 @@
   var menuPanel = document.getElementById('footer-menu-panel');
   var menuBackdrop = document.getElementById('footer-menu-backdrop');
   var topBtn = document.getElementById('footer-top-btn');
+  var topBtnDesktop = document.getElementById('footer-top-btn-desktop');
   var root = document.documentElement;
   if (!header || !footer) return;
 
@@ -132,6 +133,9 @@
     // Список ссылок вернулся — открытая панель "Меню" больше не имеет
     // смысла (кнопка, которая её открыла, тоже пропала).
     if (wasCollapsed && !collapsed) closeMenu();
+    // Кнопка "наверх" на десктопе — тот же порог, см. её отдельные
+    // CSS-правила в footer.css (#footer-top-btn-desktop).
+    if (topBtnDesktop) topBtnDesktop.classList.toggle('is-visible', collapsed);
   }
 
   function syncAll() {
@@ -196,6 +200,12 @@
 
   if (topBtn) {
     topBtn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  if (topBtnDesktop) {
+    topBtnDesktop.addEventListener('click', function () {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }

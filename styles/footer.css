@@ -470,23 +470,63 @@ html.chrome--compact .site-footer__link .icon {
     pointer-events: none;
   }
 
-  /* Кнопка "наверх" на десктопе — НЕ кружок в свёрнутой плашке футера
-     (та на десктопе никогда не сворачивается, см. правило выше), а
-     самостоятельная плавающая кнопка в правом нижнем углу экрана,
-     появляется по тому же порогу скролла (см. FOOTER_COLLAPSE_SCREENS
-     в layout-chrome.js — та же .is-collapsed). Клик уже скроллит наверх
-     (тот же #footer-top-btn/JS, что и на моб/планшете). */
-  html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__top-btn {
+}
+
+/*
+  Кнопка "наверх" на десктопе — САМОСТОЯТЕЛЬНАЯ кнопка вне <footer>
+  (см. index.html, #footer-top-btn-desktop сразу после </footer>), НЕ
+  повторно используем .site-footer__top-btn внутри плашки: та кнопка —
+  потомок .site-footer, а у него backdrop-filter (см. правило футера
+  выше), который создаёт свой containing block для position:fixed
+  потомков — "fixed" кнопка внутри такой плашки позиционируется
+  относительно САМОЙ ПЛАШКИ (та на десктопе сидит top-right), а не
+  вьюпорта, поэтому и уезжала наверх вместо низа экрана (см. чат). Вне
+  футера этой ловушки нет.
+
+  Появляется по тому же порогу скролла, что и .is-collapsed (см.
+  FOOTER_COLLAPSE_SCREENS в layout-chrome.js) — но видимость переключает
+  JS явным классом .is-visible (updateFooterCollapse), не CSS-селектор
+  по состоянию футера: кнопка не потомок и не гарантированный сосед
+  футера в разметке. Клик — тот же обработчик #footer-top-btn (см.
+  layout-chrome.js).
+*/
+#footer-top-btn-desktop {
+  display: none;
+}
+
+@media (min-width: 1101px) {
+  /* Полный набор top/left/right/bottom/max-width — .site-footer__top-btn
+     (общий класс для вида: стекло/блюр/иконка/блик) сама задаёт
+     top:0/right:0/max-width:0 под свою обычную позицию внутри плашки
+     футера — тут явно перебиваем КАЖДОЕ из них, иначе часть осталась
+     бы от него (top:0 в частности, из-за чего кнопка и уезжала наверх
+     первый раз, см. чат) — каскад берёт top/max-width у класса, если
+     это ID-правило их не задаёт, даже при более высокой специфичности
+     ID в целом. */
+  html:not(.chrome--compact) #footer-top-btn-desktop {
+    display: flex;
     position: fixed;
     top: auto;
     left: auto;
     right: var(--page-px, 10px);
     bottom: var(--page-px, 10px);
     z-index: 50;
-    max-width: var(--chrome-item-h, 3.5rem);
+    width: var(--chrome-item-h, 3.5rem);
+    max-width: none;
+    height: var(--chrome-item-h, 3.5rem);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.3s var(--footer-ease),
+      visibility 0s linear 0.3s;
+  }
+
+  html:not(.chrome--compact) #footer-top-btn-desktop.is-visible {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
+    transition: opacity 0.3s var(--footer-ease);
   }
 }
 

@@ -422,6 +422,16 @@
     </button>
   </footer>
 
+  <!-- Кнопка "наверх" на десктопе — вне <footer> нарочно, см.
+       #footer-top-btn-desktop в footer.css (position:fixed внутри
+       футера считался бы от самой плашки, не от вьюпорта, из-за её
+       backdrop-filter). Скрыта на моб/планшете (там свою роль играет
+       кнопка внутри футера выше), появляется/обработчик клика — см.
+       layout-chrome.js. -->
+  <button type="button" class="site-footer__top-btn" id="footer-top-btn-desktop" aria-label="Наверх">
+    <span class="icon icon--up" aria-hidden="true"></span>
+  </button>
+
   <!--
     Подложка при открытом моб/планшет-меню — блюрит и блокирует всё,
     кроме кнопки "Меню" (она же кнопка "закрыть", пока меню открыто —
