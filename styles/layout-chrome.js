@@ -31,8 +31,6 @@
   var LOGO_TOGGLE_GAP = 6; // px, мин. зазор хедер/кнопка темы на моб/планшете (см. syncLogoScale)
   var COLLISION_GAP = 16; // px, минимальный зазор между переключателем темы и футером
   var FOOTER_COLLAPSE_SCREENS = 2; // сколько высот экрана нужно проскроллить, прежде чем футер свернётся в "Меню" + стрелку вверх
-  var HEADER_PARALLAX_FACTOR = 0.3; // хедер едет медленнее скролла (доля от scrollY)
-  var HEADER_PARALLAX_MAX = 28; // px, потолок сдвига — не должен уезжать далеко/пропадать за краем
   // Длительность закрытия панели меню — держите синхронно с transition
   // у .footer-menu-panel/.footer-menu-backdrop в footer.css: именно
   // столько ждём после снятия .is-open, прежде чем вернуть [hidden]
@@ -50,8 +48,6 @@
   var topBtn = document.getElementById('footer-top-btn');
   var root = document.documentElement;
   if (!header || !footer) return;
-
-  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function isFixedChrome() {
     return window.innerWidth < DESKTOP_MIN || root.classList.contains('chrome--compact');
@@ -138,23 +134,12 @@
     if (wasCollapsed && !collapsed) closeMenu();
   }
 
-  // Хедер плавающий (position: fixed) и сам по себе со скроллом никуда
-  // не едет — эффект параллакса имитируем сдвигом вверх на ДОЛЮ от
-  // scrollY (медленнее самой страницы), с потолком, чтобы плашка не
-  // уезжала далеко/за край на длинной странице.
-  function updateHeaderParallax() {
-    if (prefersReducedMotion) return;
-    var offset = Math.min(window.scrollY * HEADER_PARALLAX_FACTOR, HEADER_PARALLAX_MAX);
-    header.style.transform = offset ? 'translateY(-' + offset + 'px)' : '';
-  }
-
   function syncAll() {
     updateCompactOverride();
     syncChromeHeights();
     syncThemeTogglePosition();
     syncLogoScale();
     updateFooterCollapse();
-    updateHeaderParallax();
   }
 
   var menuHideTimer = null;
@@ -238,7 +223,6 @@
     scrollTicking = true;
     requestAnimationFrame(function () {
       updateFooterCollapse();
-      updateHeaderParallax();
       scrollTicking = false;
     });
   }, { passive: true });
