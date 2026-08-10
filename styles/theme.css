@@ -36,7 +36,56 @@
   --liquid-glass-glow:
     inset 1px 1px 0 -1px rgba(255, 255, 255, 0.8),
     inset 0 0 4px 1px rgba(255, 255, 255, 0.35);
+}
 
+/* WebKit (весь мобильный браузер на iOS, а не только сама Safari) не
+   умеет url()-ссылку на SVG-фильтр внутри backdrop-filter — вместо
+   игнора непонятной части он бракует ВСЁ значение целиком и откатывает
+   на none, стекло у хедера/футера/тумблера/кнопки "наверх" пропадает
+   полностью, а не просто теряет рябь. Пробник в index.html определяет
+   это на реальном рендере (надёжнее @supports — тот в WebKit считает
+   синтаксис валидным) и ставит класс сюда.
+
+   Эта переменная — на будущее/другие движки: где-нибудь backdrop-filter
+   мог бы не понимать именно url(), но нормально резолвить var() —
+   тогда достаточно было бы просто убрать url()-часть. РЕАЛЬНЫЙ фикс
+   для сегодняшнего WebKit — ниже, отдельным блоком: та же проверка
+   показала, что этот движок не резолвит var() внутри backdrop-filter
+   ВООБЩЕ (даже голое число внутри blur(var(--x)) — уже none), так что
+   для него годится только буквальное значение без единой переменной. */
+html.no-liquid-glass-distort {
+  --liquid-glass-filter: blur(var(--liquid-glass-blur)) saturate(var(--liquid-glass-saturate));
+}
+
+/* Настоящий фикс для WebKit — см. комментарий выше: var() внутри
+   backdrop-filter там не резолвится вообще, поэтому хедеру/футеру/
+   кнопке "наверх"/тумблеру нужно буквальное значение без переменных.
+   Числа продублированы из --liquid-glass-blur/--liquid-glass-saturate
+   вручную — иначе никак, но если поменяете рецепт там, поменяйте и
+   здесь. Селекторы перечислены явно (а не через .site-header и т.д.
+   в своих файлах) — так весь WebKit-костыль лежит в одном месте, а не
+   размазан по header.css/footer.css/theme-toggle.css. */
+html.no-liquid-glass-distort .site-header,
+html.no-liquid-glass-distort .site-footer,
+html.no-liquid-glass-distort .site-footer__top-btn,
+html.no-liquid-glass-distort .theme-toggle__track,
+html.no-liquid-glass-distort:not(.chrome--compact) .site-footer.is-collapsed {
+  backdrop-filter: blur(4px) saturate(210%);
+  -webkit-backdrop-filter: blur(4px) saturate(210%);
+}
+
+/* Тот же баг WebKit (var() внутри backdrop-filter не резолвится) бьёт
+   и по обычному стеклу (--glass-blur/--glass-saturate, без SVG-ряби и
+   url() — так что дело определённо не в url(), а в var() как таковом)
+   — панель мобильного меню (.footer-menu-panel__bar, см. footer.css)
+   на WebKit тоже была без блюра. Кнопку "Меню" (.site-footer__menu-btn)
+   не трогаем — она сплошная розовая, стекла на ней и не видно. */
+html.no-liquid-glass-distort .footer-menu-panel__bar {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+:root {
   /* Общий тайминг переключения темы — читают html/body ниже и
      theme-toggle.css (костяшка тумблера), чтобы вся страница
      переходила между темами в один и тот же плавный такт, а не

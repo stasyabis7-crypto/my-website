@@ -13,7 +13,7 @@
 <script>document.documentElement.classList.add('is-page-loading')</script>
 <link rel="stylesheet" href="styles/scale.css?v=18" />
 <link rel="stylesheet" href="styles/typography.css?v=18" />
-<link rel="stylesheet" href="styles/theme.css?v=19" />
+<link rel="stylesheet" href="styles/theme.css?v=20" />
 <link rel="stylesheet" href="styles/icons.css?v=1" />
 <link rel="stylesheet" href="styles/header.css?v=29" />
 <link rel="stylesheet" href="styles/footer.css?v=43" />
@@ -154,6 +154,34 @@
       <feDisplacementMap in="SourceGraphic" in2="blurredNoise" scale="78" xChannelSelector="R" yChannelSelector="G" />
     </filter>
   </svg>
+
+  <!-- WebKit (весь мобильный Safari/Chrome/Firefox на iOS — там все
+       браузеры обязаны работать на движке Safari) не умеет ссылаться на
+       SVG-фильтр внутри backdrop-filter: вместо того чтобы пропустить
+       непонятную часть, он бракует ЦЕЛИКОМ всё значение и откатывается
+       на none — стекло пропадает совсем, не только "рябь". Проверяем на
+       реальном пробнике (быстрее и надёжнее @supports — тот в WebKit
+       считает синтаксис валидным, хотя рендерит none) и, если фильтр не
+       применился, переключаем --liquid-glass-filter на упрощённый рецепт
+       без url() — см. .no-liquid-glass-distort в theme.css. Синхронно и
+       сразу после SVG-фильтра выше, чтобы не было вспышки "живого"
+       незастекленного хедера перед переключением. -->
+  <script>
+    (function () {
+      // Через var(), не литералом — прямой литерал WebKit парсит
+      // нормально, ломается именно подстановка url() из custom property
+      // (см. чат), а хедер/футер/тумблер/кнопка читают именно var().
+      var probe = document.createElement('div');
+      probe.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;--p:blur(1px) url(#liquid-glass-distort);backdrop-filter:var(--p);-webkit-backdrop-filter:var(--p)';
+      document.body.appendChild(probe);
+      var cs = getComputedStyle(probe);
+      var applied = cs.backdropFilter || cs.webkitBackdropFilter || '';
+      document.body.removeChild(probe);
+      if (!applied || applied === 'none') {
+        document.documentElement.classList.add('no-liquid-glass-distort');
+      }
+    })();
+  </script>
 
   <header class="site-header">
     <div class="site-header__identity">
