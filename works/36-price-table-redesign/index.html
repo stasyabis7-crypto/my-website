@@ -6,12 +6,14 @@
 <title>Редизайн таблицы цен</title>
 <style>
 *{box-sizing:border-box}:root{--stage-bg:#f0f1f4;--line:rgba(97,131,162,.26);--teal:#06a7bb;--ease:cubic-bezier(.22,.61,.36,1)}[data-embed-theme="dark"]{--stage-bg:#262a33}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--stage-bg)}body{font-family:Inter,Arial,sans-serif;color:rgba(0,17,34,.95)}.stage{position:relative;width:1000px;height:1000px;overflow:hidden;background:var(--stage-bg);transition:background-color .3s ease}.scene{position:absolute;left:50%;top:50%;width:300px;height:440px;transform:translate(-50%,-50%) scale(1.18);transform-origin:center}.cell{position:absolute;left:68px;top:0;width:164px;height:80px;padding:14px 8px;border:1px solid var(--line);border-radius:12px;background:#fff;text-align:right;transition:background-color .34s ease}.cell.hover{background:#f9fafb}.value-row{height:20px;display:flex;align-items:center;justify-content:flex-end;gap:4px;font-size:15px;line-height:20px}.cell-icons{height:20px;display:flex;align-items:center;gap:4px}.icon{display:block;width:16px;height:16px}.caption{color:rgba(0,17,34,.66);font-size:13px;line-height:16px;text-decoration:line-through}.tooltip{position:absolute;z-index:10;left:0;top:90px;width:300px;padding:24px 20px 20px;border-radius:12px;background:#203148;color:rgba(255,255,255,.95);box-shadow:0 0 24px rgba(0,0,0,.12),0 0 2px rgba(0,0,0,.12);opacity:0;transform:translateY(7px) scale(.98);transform-origin:50% 0;transition:opacity .3s ease,transform .38s var(--ease)}.tooltip:before{content:"";position:absolute;left:50%;top:-7px;width:15px;height:15px;border-radius:2px;background:#203148;transform:translateX(-50%) rotate(45deg)}.tooltip.show{opacity:1;transform:none}.tooltip h1{margin:0 0 12px;font-size:17px;line-height:22px;font-weight:600}.item{display:flex;align-items:flex-start;gap:4px;margin-top:16px;font-size:15px;line-height:24px}.item:first-of-type{margin-top:0}.item .icon{margin-top:4px;flex:none}.item-copy{flex:1}.more{display:block;margin-top:4px;color:#2f9bf9;font-weight:600}.cursor{position:absolute;z-index:20;left:0;top:0;width:24px;height:24px;opacity:0;pointer-events:none;will-change:transform,opacity}@media(prefers-reduced-motion:reduce){.cell,.tooltip{transition:none}}
+.scene{top:950px;transform:translate(-50%,-50%) scale(2.5);transition:top .72s var(--ease),transform .72s var(--ease)}
+.scene.pulled-back{top:50%;transform:translate(-50%,-50%) scale(1.55)}
 </style>
 <script src="../shared/theme-sync.js" defer></script>
 </head>
 <body>
 <main class="stage">
-  <section class="scene">
+  <section class="scene" id="scene">
     <div class="cell" id="cell">
       <div class="value-row"><span class="cell-icons"><img class="icon" src="assets/purchase-depth.svg" alt=""><img class="icon" src="assets/discount.svg" alt=""></span><span>10 000 ₽</span></div>
       <div class="caption">15 000 ₽</div>
@@ -27,10 +29,11 @@
   </section>
 </main>
 <script>
-const cell=document.getElementById('cell'),tooltip=document.getElementById('tooltip'),cursor=document.getElementById('cursor');
-const duration=7600,clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>1-Math.pow(1-n,3),prog=(t,a,b)=>ease(clamp((t-a)/(b-a))),mix=(a,b,t)=>a+(b-a)*t;let cycle=-1,startTime=null,shown=false;
+const scene=document.getElementById('scene'),cell=document.getElementById('cell'),tooltip=document.getElementById('tooltip'),cursor=document.getElementById('cursor');
+const duration=8200,clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>1-Math.pow(1-n,3),prog=(t,a,b)=>ease(clamp((t-a)/(b-a))),mix=(a,b,t)=>a+(b-a)*t;let cycle=-1,startTime=null,shown=false,pulledBack=false;
 function setHover(show){if(show===shown)return;shown=show;cell.classList.toggle('hover',show);tooltip.classList.toggle('show',show)}
-function animate(now){if(startTime===null)startTime=now;const elapsed=now-startTime,c=Math.floor(elapsed/duration),t=elapsed%duration;if(c!==cycle){cycle=c;shown=true;setHover(false)}let x=286,y=420,show=false,showCursor=false;if(t<1500){}else if(t<2400){x=mix(286,96,prog(t,1500,2400));y=mix(420,30,prog(t,1500,2400));showCursor=true}else if(t<5200){x=96;y=30;show=true;showCursor=true}else if(t<6100){x=mix(96,286,prog(t,5200,6100));y=mix(30,420,prog(t,5200,6100));showCursor=true}setHover(show);cursor.style.opacity=showCursor?1:0;cursor.style.transform=`translate(${x}px,${y}px)`;requestAnimationFrame(animate)}
+function setPulledBack(show){if(show===pulledBack)return;pulledBack=show;scene.classList.toggle('pulled-back',show)}
+function animate(now){if(startTime===null)startTime=now;const elapsed=now-startTime,c=Math.floor(elapsed/duration),t=elapsed%duration;if(c!==cycle){cycle=c;shown=true;pulledBack=true;setHover(false);setPulledBack(false)}let x=286,y=420,show=false,showCursor=false,pull=t>=1800&&t<6200;if(t<2500){}else if(t<3400){x=mix(286,96,prog(t,2500,3400));y=mix(420,30,prog(t,2500,3400));showCursor=true}else if(t<5200){x=96;y=30;show=true;showCursor=true}else if(t<6000){x=mix(96,286,prog(t,5200,6000));y=mix(30,420,prog(t,5200,6000));showCursor=true}setPulledBack(pull);setHover(show);cursor.style.opacity=showCursor?1:0;cursor.style.transform=`translate(${x}px,${y}px)`;requestAnimationFrame(animate)}
 requestAnimationFrame(animate);
 </script>
 </body>
