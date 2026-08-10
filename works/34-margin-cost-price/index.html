@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Маржинальность и себестоимость</title>
+<style>
+*{box-sizing:border-box}:root{--stage-bg:#f0f1f4;--line:rgba(97,131,162,.26)}[data-embed-theme="dark"]{--stage-bg:#262a33}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--stage-bg)}body{display:grid;place-items:center;font-family:Inter,Arial,sans-serif;color:rgba(0,17,34,.95)}.stage{position:relative;width:1000px;height:1000px;overflow:hidden;background:var(--stage-bg);transition:background-color .3s ease}.scene{position:absolute;left:108px;top:122px;width:784px;height:442px}.table{position:absolute;z-index:1;inset:0;border-radius:18px;background:#fff;overflow:hidden}.table:after{content:"";position:absolute;z-index:3;inset:0;border:1px solid var(--line);border-radius:inherit;pointer-events:none}.title{height:48px;padding:0 8px;display:flex;align-items:center;border-bottom:1px solid var(--line);background:#f5f7fa;color:rgba(0,17,34,.66);font-size:13px;font-weight:600}.columns,.row{display:grid;grid-template-columns:130px 180px 180px 134px 160px}.columns{height:74px;background:#f5f7fa}.column{padding:12px 8px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;align-items:flex-end;color:rgba(0,17,34,.66);font-size:13px;line-height:16px;text-align:right}.column:first-child{border-left:1px solid var(--line)}.column b{font-weight:600}.column small{color:rgba(0,17,34,.56);font-size:13px}.rows{height:320px}.row{height:80px;background:#fff;transition:background-color .38s ease}.cell{position:relative;padding:14px 8px;border-bottom:1px solid var(--line);text-align:right;transition:background-color .34s ease}.cell:first-child{border-left:1px solid var(--line)}.row.hover,.row.hover .cell{background:#f9fafb}.row.hover .cell.active{background:#eff3f6}.value{font-size:15px;line-height:20px;white-space:nowrap;font-variant-numeric:tabular-nums}.caption{color:rgba(0,17,34,.66);font-size:13px;line-height:16px;white-space:nowrap}.link{color:#005bff}.tooltip{position:absolute;z-index:100;width:300px;min-height:120px;padding:20px;border-radius:12px;background:#203148;color:rgba(255,255,255,.95);box-shadow:0 0 12px rgba(0,0,0,.12),0 0 1px rgba(0,0,0,.12);font-size:13px;line-height:16px;opacity:0;transform:translateY(7px) scale(.98);transform-origin:50% 0;transition:opacity .3s ease,transform .38s cubic-bezier(.22,.61,.36,1),left .42s cubic-bezier(.22,.61,.36,1),top .42s cubic-bezier(.22,.61,.36,1)}.tooltip:before{content:"";position:absolute;left:var(--arrow-x,50%);top:-7px;width:15px;height:15px;border-radius:2px;background:#203148;transform:translateX(-50%) rotate(45deg)}.tooltip.above{transform:translateY(-7px) scale(.98);transform-origin:50% 100%}.tooltip.above:before{top:auto;bottom:-7px}.tooltip.show{opacity:1;transform:none}.tip-title{margin-bottom:8px;color:rgba(255,255,255,.65)}.tip-line{min-height:28px;display:flex;align-items:center;justify-content:space-between;gap:16px}.tip-line b{font-weight:600;white-space:nowrap}.cursor{position:absolute;z-index:110;left:0;top:0;width:24px;height:24px;opacity:0;pointer-events:none;will-change:transform,opacity}.cursor.pointer{opacity:0}@media(prefers-reduced-motion:reduce){.row,.cell,.tooltip{transition:none}}
+</style>
+<script src="../shared/theme-sync.js" defer></script>
+</head>
+<body>
+<main class="stage">
+  <section class="scene">
+    <div class="table">
+      <header><div class="title">Расходы по схемам продаж</div><div class="columns"><div class="column"><b>Себестоимость</b><small>% от вашей цены</small></div><div class="column"><b>На FBO</b><small>% от вашей цены</small></div><div class="column"><b>На FBS</b><small>% от вашей цены</small></div><div class="column"><b>Маржинальность</b><small>FBO | FBS</small></div><div class="column"><b>На realFBS</b></div></div></header>
+      <div class="rows" id="rows"></div>
+    </div>
+    <aside class="tooltip" id="tooltip"><div class="tip-title" id="tipTitle"></div><div class="tip-line"><span id="tipLabel1"></span><b id="tipValue1"></b></div><div class="tip-line"><span id="tipLabel2"></span><b id="tipValue2"></b></div></aside>
+    <img class="cursor" id="cursor" src="../33-price-analytics-metrics/assets/cursor-default.svg" alt="">
+    <img class="cursor pointer" id="pointer" src="../33-price-analytics-metrics/assets/cursor-pointer.svg" alt="">
+  </section>
+</main>
+<script>
+const data=[
+ [{v:'7 463 ₽',c:'70%'},{v:'5 000 – 6 000 ₽',c:'60% – 70%'},{v:'5 000 – 5 005 ₽',c:'60%'},{v:'-100% | 20%'},{v:'1 276 ₽',c:'+ доставка'}],
+ [{v:'80 463 ₽',c:'80%',link:true},{v:'80 463 ₽ – 90 463 ₽',c:'60% – 70%',link:true},{v:'80 463 ₽ – 90 463 ₽',c:'60% – 70%',link:true},{v:'-100% | 20%'},{v:'30 000 ₽',c:'+ доставка',link:true}],
+ [{v:'Не указана'},{v:'80 900 ₽',c:'70%'},{v:'80 463 ₽ – 80 900 ₽',c:'60% – 70%'},{v:'—'},{v:'30 ₽',c:'+ доставка'}],
+ [{v:'Не указана'},{v:'80 463 ₽ – 80 900 ₽',c:'60% – 70%'},{v:'80 463 ₽ – 80 900 ₽',c:'60% – 70%'},{v:'—'},{v:'10 354 ₽',c:'+ доставка'}]
+];
+rows.innerHTML=data.map((row,r)=>`<div class="row" data-row="${r}">${row.map((cell,c)=>`<div class="cell" data-col="${c}"><div class="value ${cell.link?'link':''}">${cell.v}</div>${cell.c?`<div class="caption">${cell.c}</div>`:''}</div>`).join('')}</div>`).join('');
+const widths=[130,180,180,134,160],starts=[0,130,310,490,624],rowEls=[...document.querySelectorAll('.row')],cellEls=[...document.querySelectorAll('.cell')],tooltip=document.getElementById('tooltip'),tipTitle=document.getElementById('tipTitle'),tipLabel1=document.getElementById('tipLabel1'),tipValue1=document.getElementById('tipValue1'),tipLabel2=document.getElementById('tipLabel2'),tipValue2=document.getElementById('tipValue2'),cursor=document.getElementById('cursor'),pointer=document.getElementById('pointer');
+const tips=[
+ {col:0,title:'Себестоимость товара',l1:'В рублях',v1:'80 463 ₽',l2:'От вашей цены',v2:'80%'},
+ {col:1,title:'Расходы на продажу по схеме FBO',l1:'В рублях',v1:'80 463 ₽ – 90 463 ₽',l2:'От вашей цены',v2:'60% – 70%'},
+ {col:2,title:'Расходы на продажу по схеме FBS',l1:'В рублях',v1:'80 463 ₽ – 90 463 ₽',l2:'От вашей цены',v2:'60% – 70%'},
+ {col:3,title:'Маржинальность товара',l1:'По схеме FBO',v1:'−100%',l2:'По схеме FBS',v2:'20%'},
+ {col:4,title:'Расходы на продажу по схеме realFBS',l1:'Расходы',v1:'30 000 ₽',l2:'Дополнительно',v2:'+ доставка'}
+];
+const duration=17400,clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>n<.5?4*n*n*n:1-Math.pow(-2*n+2,3)/2,prog=(t,a,b)=>ease(clamp((t-a)/(b-a))),mix=(a,b,t)=>a+(b-a)*t;let cycle=-1,startTime=null,visibleTip=-2;
+function clearHover(){rowEls.forEach(r=>r.classList.remove('hover'));cellEls.forEach(c=>c.classList.remove('active'));tooltip.classList.remove('show')}
+function showTip(index){const tip=tips[index],row=rowEls[1],cell=row.children[tip.col],cellTop=202,cellBottom=282,gap=10,center=starts[tip.col]+widths[tip.col]/2;row.classList.add('hover');cell.classList.add('active');tipTitle.textContent=tip.title;tipLabel1.textContent=tip.l1;tipValue1.textContent=tip.v1;tipLabel2.textContent=tip.l2;tipValue2.textContent=tip.v2;let left=Math.max(8,Math.min(784-308,center-150));tooltip.style.left=`${left}px`;tooltip.style.setProperty('--arrow-x',`${center-left}px`);tooltip.classList.remove('above');tooltip.style.top=`${cellBottom+gap}px`;if(cellBottom+gap+tooltip.offsetHeight>442){tooltip.classList.add('above');tooltip.style.top=`${cellTop-tooltip.offsetHeight-gap}px`}tooltip.classList.add('show')}
+function setTip(index){if(index===visibleTip)return;clearHover();visibleTip=index;if(index>=0)showTip(index)}
+function reset(){visibleTip=-2;setTip(-1);cursor.style.opacity=pointer.style.opacity=0}
+function animate(now){if(startTime===null)startTime=now;const elapsed=now-startTime,c=Math.floor(elapsed/duration),t=elapsed%duration;if(c!==cycle){cycle=c;reset()}const centers=starts.map((x,i)=>x+widths[i]/2),stops=[centers[0],centers[1],centers[2],centers[3],centers[4]],moveStart=[900,3900,6900,9900,12900],holdStart=[1700,4700,7700,10700,13700],holdEnd=[3500,6500,9500,12500,15500];let x=760,y=410,tip=-1,hand=false;if(t<900){}else{hand=true;let handled=false;for(let i=0;i<5;i++){if(t<holdStart[i]){const from=i===0?760:stops[i-1],fromY=i===0?410:242;x=mix(from,stops[i],prog(t,moveStart[i],holdStart[i]));y=mix(fromY,242,prog(t,moveStart[i],holdStart[i]));handled=true;break}if(t<holdEnd[i]){x=stops[i];y=242;tip=i;handled=true;break}}if(!handled){x=mix(stops[4],760,prog(t,15500,16900));y=mix(242,410,prog(t,15500,16900));hand=t<16900}}setTip(tip);cursor.style.opacity=hand?0:1;pointer.style.opacity=hand?1:0;cursor.style.transform=pointer.style.transform=`translate(${x}px,${y}px)`;requestAnimationFrame(animate)}
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>
