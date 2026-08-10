@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Управление акциями</title>
+<style>
+*{box-sizing:border-box}:root{--stage-bg:#f0f1f4;--ink:rgba(0,17,34,.95);--secondary:rgba(0,17,34,.66);--muted:rgba(0,17,34,.56);--line:rgba(97,131,162,.26);--field:rgba(97,131,162,.1);--blue:#005bff;--focus:#2f9bf9;--green:#008a2e;--green-bg:#e1f7e8;--ease:cubic-bezier(.22,.61,.36,1)}[data-embed-theme="dark"]{--stage-bg:#262a33}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--stage-bg)}body{font-family:Inter,Arial,sans-serif;color:var(--ink)}.stage{position:relative;width:1000px;height:1000px;overflow:hidden;background:var(--stage-bg);transition:background-color .3s ease}.drawer{position:absolute;left:50%;top:50%;width:968px;height:688px;padding:32px;border-radius:24px;background:#fff;box-shadow:0 8px 16px -2px rgba(0,0,0,.12),0 0 2px rgba(0,0,0,.12);transform:translate(-50%,calc(-50% - 1000px));opacity:0;will-change:transform,opacity}.drawer.entered{animation:enter .72s var(--ease) forwards}.close{position:absolute;right:20px;top:20px;width:24px;height:24px}.drawer h1{margin:0;font-size:28px;line-height:36px;font-weight:600;letter-spacing:-.3px}.product{margin-top:8px;font-size:15px;line-height:24px}.article{color:var(--muted)}.boost-card{position:relative;height:232px;margin-top:26px;padding:24px;border:1px solid var(--line);border-radius:16px}.boost-card h2{margin:0;font-size:17px;line-height:22px;font-weight:600}.boost-card .sub{margin-top:2px;color:var(--secondary);font-size:13px;line-height:20px}.search-badge{position:absolute;right:24px;top:20px;height:24px;padding:2px 12px;border-radius:16px;background:#008a2e;color:#fff;font-size:13px;line-height:20px;font-weight:600;opacity:0;transform:scale(.96);transition:opacity .3s ease,transform .35s var(--ease)}.search-badge.show{opacity:1;transform:none}.slider-area{position:absolute;left:24px;right:24px;top:96px;height:76px}.points{position:absolute;left:0;right:0;top:-19px;height:45px}.point{position:absolute;top:0;transform:translateX(-50%);color:var(--secondary);font-size:13px;line-height:20px;text-align:center;white-space:nowrap}.point:after{content:"";display:block;width:2px;height:4px;margin:4px auto 0;border-radius:1px 1px 0 0;background:var(--line)}.point.p1{left:25%}.point.p2{left:50%}.point.p3{left:75%}.track{position:absolute;left:0;right:0;top:28px;height:4px;border-radius:8px;background:var(--line)}.fill{height:100%;width:0;border-radius:8px;background:var(--blue)}.thumb{position:absolute;left:0;top:24px;width:12px;height:12px;border:3px solid #fff;border-radius:50%;background:var(--blue);box-shadow:0 0 0 1px rgba(0,91,255,.18);transform:translateX(-50%)}.scale-price{position:absolute;top:38px;color:var(--secondary);font-size:13px;line-height:20px;transform:translateX(-50%)}.scale-price.s1{left:25%}.scale-price.s2{left:50%}.scale-price.s3{left:75%}.ends{position:absolute;left:0;right:0;top:38px;display:flex;justify-content:space-between;font-size:15px;line-height:24px;font-weight:600}.benefits{position:absolute;left:24px;bottom:24px;display:flex;gap:8px}.benefit{height:24px;padding:2px 12px;border-radius:16px;background:var(--field);color:#546378;font-size:13px;line-height:20px;font-weight:600;transition:background-color .32s ease,color .32s ease}.benefit.active{background:var(--green-bg);color:var(--green)}.fields{display:grid;grid-template-columns:1fr 1fr;gap:24px 16px;margin-top:24px}.input{height:56px;padding:8px 12px;border-radius:10px;background:var(--field);box-shadow:inset 0 0 0 0 var(--focus);transition:background-color .25s ease,box-shadow .25s ease}.input.active{background:#fff;box-shadow:inset 0 0 0 2px var(--focus)}.input small{display:block;color:var(--secondary);font-size:13px;line-height:16px}.input span{display:block;font-size:15px;line-height:20px;font-variant-numeric:tabular-nums}.input.minimum{grid-column:1}.apply{position:absolute;left:32px;bottom:32px;height:56px;padding:0 24px;border:0;border-radius:10px;background:var(--blue);color:#fff;font:600 17px/28px Inter,Arial}.cursor{position:absolute;z-index:20;left:0;top:0;width:24px;height:24px;opacity:0;pointer-events:none;will-change:transform,opacity}@keyframes enter{from{transform:translate(-50%,calc(-50% - 1000px));opacity:0}to{transform:translate(-50%,-50%);opacity:1}}@media(prefers-reduced-motion:reduce){.drawer{transform:translate(-50%,-50%);opacity:1}.drawer.entered{animation:none}.search-badge,.benefit,.input{transition:none}.cursor{display:none}}
+</style>
+<script src="../shared/theme-sync.js" defer></script>
+</head>
+<body>
+<main class="stage">
+  <section class="drawer" id="drawer">
+    <img class="close" src="../35-popover-improvements/assets/ic_m_cross_compact.svg" alt="">
+    <h1>Управление акциями</h1>
+    <div class="product">Рюкзак Xiaomi Mi Classic Business Backpack 2 (Серый) повседневный, полиэстер</div>
+    <div class="product article">Артикул FENT_162818064256734793</div>
+    <section class="boost-card">
+      <h2>Бустинг</h2>
+      <div class="sub">Изменяйте вашу цену, чтобы влиять на бустинг</div>
+      <div class="search-badge" id="searchBadge">на <span id="boostValue">0</span>% поднимем в поиске</div>
+      <div class="slider-area">
+        <div class="points"><div class="point p1">Бустинг 15%</div><div class="point p2">Бустинг 30%</div><div class="point p3">Бустинг 50%</div></div>
+        <div class="track"><div class="fill" id="fill"></div></div><div class="thumb" id="thumb"></div>
+        <span class="scale-price s1">90 ₽</span><span class="scale-price s2">80 ₽</span><span class="scale-price s3">70 ₽</span>
+        <div class="ends"><span>100 ₽</span><span>60 ₽</span></div>
+      </div>
+      <div class="benefits"><span class="benefit" id="benefit1">Бустинг в поиске</span><span class="benefit" id="benefit2">Яркий декор</span><span class="benefit" id="benefit3">Показы на странице акции</span></div>
+    </section>
+    <div class="fields"><div class="input" id="priceInput"><small>Ваша цена, ₽</small><span id="priceValue">100</span></div><div class="input"><small>Цена до скидки, ₽</small><span>200</span></div><div class="input minimum"><small>Минимальная цена, ₽</small><span>68</span></div></div>
+    <button class="apply">Применить</button>
+    <img class="cursor" id="cursor" src="../23-price-table-alerting/assets/cursor-pointer.svg" alt="">
+  </section>
+</main>
+<script>
+const drawer=document.getElementById('drawer'),fill=document.getElementById('fill'),thumb=document.getElementById('thumb'),priceInput=document.getElementById('priceInput'),priceValue=document.getElementById('priceValue'),searchBadge=document.getElementById('searchBadge'),boostValue=document.getElementById('boostValue'),benefits=[document.getElementById('benefit1'),document.getElementById('benefit2'),document.getElementById('benefit3')],cursor=document.getElementById('cursor');
+const duration=12600,clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>n<.5?4*n*n*n:1-Math.pow(-2*n+2,3)/2,prog=(t,a,b)=>ease(clamp((t-a)/(b-a)));let startTime=null,cycle=-1;
+function boostFor(price){if(price>=90)return(100-price)*1.5;if(price>=80)return 15+(90-price)*1.5;if(price>=70)return 30+(80-price)*2;return 50+(70-price)*2}
+function render(p){const price=Math.round(100-40*p),boost=Math.round(boostFor(price));fill.style.width=`${p*100}%`;thumb.style.left=`${p*100}%`;priceValue.textContent=price;boostValue.textContent=boost;const active=p>.001;priceInput.classList.toggle('active',active);searchBadge.classList.toggle('show',active);benefits[0].classList.toggle('active',price<=90);benefits[1].classList.toggle('active',price<=80);benefits[2].classList.toggle('active',price<=70)}
+function animate(now){if(startTime===null)startTime=now;const elapsed=now-startTime,c=Math.floor(elapsed/duration),t=elapsed%duration;if(c!==cycle){cycle=c;drawer.classList.remove('entered');void drawer.offsetWidth;drawer.classList.add('entered')}let p=0,x=72,y=305,showCursor=false;if(t<2200){}else if(t<3100){x=72;y=305;showCursor=true}else if(t<6400){p=.8*prog(t,3100,6400);x=72+824*p;y=305;showCursor=true}else if(t<7600){p=.8;x=72+824*p;y=305;showCursor=true}else if(t<10900){p=.8*(1-prog(t,7600,10900));x=72+824*p;y=305;showCursor=true}else if(t<11700){x=72;y=305;showCursor=true}render(p);cursor.style.opacity=showCursor?1:0;cursor.style.transform=`translate(${x}px,${y}px)`;requestAnimationFrame(animate)}
+render(0);requestAnimationFrame(animate);
+</script>
+</body>
+</html>

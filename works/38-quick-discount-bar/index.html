@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Быстрые показатели цен</title>
+<style>
+*{box-sizing:border-box}:root{--stage-bg:#f0f1f4;--card:#f5f7fa;--ink:rgba(0,17,34,.95);--secondary:rgba(0,17,34,.66);--ease:cubic-bezier(.22,.61,.36,1)}[data-embed-theme="dark"]{--stage-bg:#262a33}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--stage-bg)}body{font-family:Inter,Arial,sans-serif;color:var(--ink)}.stage{position:relative;width:2000px;height:1000px;overflow:hidden;background:var(--stage-bg);transition:background-color .3s ease}.scene{position:absolute;left:50%;top:50%;width:1216px;height:196px;transform:translate(-50%,-50%) scale(1.45);transform-origin:center}.joined{position:absolute;left:0;top:0;width:800px;height:196px;display:flex;gap:4px}.card{position:relative;height:196px;padding:24px;overflow:hidden;background:var(--card)}.card-one{width:398px;border-radius:24px 0 0 24px}.card-two{width:398px;border-radius:0 24px 24px 0}.card-three{position:absolute;left:832px;top:0;width:384px;border-radius:24px}.state{position:absolute;inset:24px;opacity:0;transition:opacity .52s ease}.state.active{opacity:1}.head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.title{font-size:17px;line-height:22px;font-weight:600}.badge{height:24px;padding:2px 12px;border-radius:16px;font-size:13px;line-height:20px;font-weight:600;white-space:nowrap}.badge.warning{background:#ffd62c;color:#794612}.badge.alert{background:#d3003d;color:#fff}.badge.good{background:#1dae40;color:#fff}.metrics{height:52px;margin-top:8px;display:flex;align-items:flex-end;gap:40px}.metric strong{display:block;font-size:17px;line-height:28px;font-weight:600}.metric.primary strong{font-size:24px;line-height:32px}.metric span{display:block;color:var(--secondary);font-size:13px;line-height:20px;white-space:nowrap}.copy{margin-top:8px;color:var(--secondary);font-size:13px;line-height:20px}.card-three .copy{margin-top:10px}.growth{position:absolute;right:16px;bottom:14px;width:140px;height:140px;object-fit:contain}.third-number{margin-top:18px;font-size:24px;line-height:32px;font-weight:600}.tooltip{position:absolute;z-index:10;left:70px;top:-122px;width:300px;padding:20px;border-radius:12px;background:#203148;color:rgba(255,255,255,.95);box-shadow:0 0 24px rgba(0,0,0,.12);font-size:15px;line-height:24px;opacity:0;transform:translateY(7px) scale(.98);transform-origin:50% 100%;transition:opacity .34s ease,transform .4s var(--ease)}.tooltip:after{content:"";position:absolute;left:50%;bottom:-7px;width:15px;height:15px;border-radius:2px;background:#203148;transform:translateX(-50%) rotate(45deg)}.tooltip.show{opacity:1;transform:none}@media(prefers-reduced-motion:reduce){.state,.tooltip{transition:none}}
+</style>
+<script src="../shared/theme-sync.js" defer></script>
+</head>
+<body>
+<main class="stage">
+  <section class="scene">
+    <div class="tooltip" id="tooltip">Индекс показывает, насколько ваша цена выгодна по сравнению с предложениями на других площадках.</div>
+    <div class="joined">
+      <article class="card card-one">
+        <div class="state active" data-card="1" data-state="0"><div class="head"><span class="title">Индекс цен</span><span class="badge warning">Плохие показатели</span></div><div class="metrics"><div class="metric primary"><strong>46%</strong><span>Невыгодный</span></div><div class="metric"><strong>27%</strong><span>Выгодный</span></div><div class="metric"><strong>27%</strong><span>Умеренный</span></div></div><div class="copy">Товары с выгодным индексом поднимаются выше<br>в поиске и получают бейдж «Цена что надо»</div></div>
+        <div class="state" data-card="1" data-state="1"><div class="head"><span class="title">Индекс цен</span><span class="badge good">Хорошие показатели</span></div><div class="metrics"><div class="metric primary"><strong>64%</strong><span>Выгодный</span></div><div class="metric"><strong>21%</strong><span>Умеренный</span></div><div class="metric"><strong>15%</strong><span>Невыгодный</span></div></div><div class="copy">Большинство товаров уже имеют выгодный индекс<br>и получают больше показов в поиске</div></div>
+      </article>
+      <article class="card card-two">
+        <div class="state active" data-card="2" data-state="0"><div class="head"><span class="title">Оборот по акциям</span><span class="badge alert">Добавьте товары</span></div><div class="metrics"><div class="metric primary"><strong>Нет продаж</strong><span>Сегодня</span></div><div class="metric"><strong>55%</strong><span>Цель до конца дня</span></div></div><div class="copy">Удерживайте долю не ниже цели, чтобы завтра<br>получить дополнительное продвижение</div></div>
+        <div class="state" data-card="2" data-state="1"><div class="head"><span class="title">Оборот по акциям</span><span class="badge good">Цель выполнена</span></div><div class="metrics"><div class="metric primary"><strong>61%</strong><span>Сегодня</span></div><div class="metric"><strong>55%</strong><span>Цель до конца дня</span></div></div><div class="copy">Доля оборота выше цели — завтра товары<br>получат дополнительное продвижение</div></div>
+      </article>
+    </div>
+    <article class="card card-three">
+      <div class="state active" data-card="3" data-state="0"><span class="title">Почти выгодный индекс</span><div class="copy">Покажем товары, которым<br>не хватает небольшой<br>скидки</div><img class="growth" src="assets/growth.webp" alt=""></div>
+      <div class="state" data-card="3" data-state="1"><span class="title">Выгодный индекс</span><div class="third-number">128 товаров</div><div class="copy">Поднимаются выше в поиске<br>и получают больше показов</div><img class="growth" src="assets/growth.webp" alt=""></div>
+    </article>
+  </section>
+</main>
+<script>
+const states=[...document.querySelectorAll('.state')],tooltip=document.getElementById('tooltip'),duration=11200;let startTime=null,phase=-1;
+function setCard(card,changed){states.filter(el=>el.dataset.card===String(card)).forEach(el=>el.classList.toggle('active',Number(el.dataset.state)===(changed?1:0)))}
+function update(next){if(next===phase)return;phase=next;setCard(1,next>=1);setCard(2,next>=2);setCard(3,next>=3);tooltip.classList.toggle('show',next===1)}
+function animate(now){if(startTime===null)startTime=now;const t=(now-startTime)%duration;let next=0;if(t>=2200&&t<4700)next=1;else if(t>=4700&&t<7200)next=2;else if(t>=7200&&t<9700)next=3;update(next);requestAnimationFrame(animate)}
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>

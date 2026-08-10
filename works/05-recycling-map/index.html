@@ -21,7 +21,7 @@ body{display:grid;place-items:center;background:transparent;font-family:CoFo,Ari
  radial-gradient(ellipse at 15% 15%,#d8efc9 0 8%,transparent 8.5%),
  radial-gradient(ellipse at 82% 25%,#d8efc9 0 15%,transparent 15.5%),
  radial-gradient(ellipse at 72% 82%,#c9e8f7 0 15%,transparent 15.5%),#fbfaf3}
-.map:after{content:"";position:absolute;inset:0;background-color:#fbfaf3;background-image:url("./assets/map-background.png");background-position:center;background-repeat:no-repeat;background-size:100% 100%;opacity:.88}
+.map:after{content:"";position:absolute;inset:0;background-color:#fbfaf3;background-image:url("./assets/map-background.webp");background-position:center;background-repeat:no-repeat;background-size:100% 100%;opacity:.88}
 .site-nav{position:absolute;z-index:4;right:12px;top:12px;width:max-content;height:auto;padding:16px 24px 20px;background:#fff;border-radius:18px;display:flex;align-items:center;justify-content:center;gap:20px;box-shadow:0 4px 24px #00000014}
 .nav-item{position:relative;height:20px;display:flex;align-items:center;gap:4px;font-size:15px;font-weight:500;white-space:nowrap}.nav-label{position:relative;display:inline-block}.nav-item.active .nav-label:after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1.5px;background:#333}.nav-chevron{width:8px;height:8px;border-right:1.7px solid;border-bottom:1.7px solid;transform:rotate(45deg) translateY(-2px);transform-origin:center}
 .markers{position:absolute;inset:0;z-index:2}.point{position:absolute;width:208px;height:48px;padding:6px 12px 6px 6px;border-radius:14px;background:#fff;box-shadow:0 4px 18px #00000024;display:flex;align-items:center;gap:7px;transition:.38s cubic-bezier(.2,.8,.2,1);transform-origin:50% 125%}
@@ -60,11 +60,11 @@ body{display:grid;place-items:center;background:transparent;font-family:CoFo,Ari
   <div class="tablet-screen" id="tabletScreen"><div class="canvas" id="canvas">
   <div class="map"></div>
   <div class="markers">
-   <div class="point p1" data-kind="clothes"><span class="point-icon"><img src="./assets/pin-clothes.png" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span></div>
-   <div class="point p2" data-kind="caps"><span class="point-icon"><img src="./assets/pin-caps.png" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span></div>
-   <div class="point p3" data-kind="danger"><span class="point-icon"><img src="./assets/pin-plastic.png" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span></div>
-   <div class="point p4" data-kind="danger"><span class="point-icon"><img src="./assets/pin-danger.png" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span></div>
-   <div class="point p5" data-kind="tetrapak"><span class="point-icon"><img src="./assets/pin-tetrapak.png" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span><img class="pin-favorite" src="./assets/pin-favorite.png" alt=""></div>
+   <div class="point p1" data-kind="clothes"><span class="point-icon"><img src="./assets/pin-clothes.webp" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span></div>
+   <div class="point p2" data-kind="caps"><span class="point-icon"><img src="./assets/pin-caps.webp" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span></div>
+   <div class="point p3" data-kind="danger"><span class="point-icon"><img src="./assets/pin-plastic.webp" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span></div>
+   <div class="point p4" data-kind="danger"><span class="point-icon"><img src="./assets/pin-danger.webp" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span></div>
+   <div class="point p5" data-kind="tetrapak"><span class="point-icon"><img src="./assets/pin-tetrapak.webp" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span><img class="pin-favorite" src="./assets/pin-favorite.webp" alt=""></div>
    <div class="cluster c1">4 пункта</div><div class="cluster c2">3 пункта</div>
   </div>
   <nav class="site-nav"><div class="nav-item"><span class="nav-label">#яПомогаю</span></div><div class="nav-item"><span class="nav-label">Благотворительность</span><i class="nav-chevron"></i></div><div class="nav-item"><span class="nav-label">Кризисная помощь</span><i class="nav-chevron"></i></div><div class="nav-item active"><span class="nav-label">Экология</span><i class="nav-chevron"></i></div></nav>
@@ -115,7 +115,7 @@ body{display:grid;place-items:center;background:transparent;font-family:CoFo,Ari
     <div class="search-head"><span class="back"><img src="./assets/left-content.svg" alt="Назад"></span>Поиск</div>
     <div class="searchbox"><img class="search-icon" src="./assets/search.svg" alt=""><span class="query" id="query"></span><span class="caret"></span></div>
     <div class="suggestions" id="suggestions"><b>Уже искали</b><div class="suggestion">улица Скульптора Мухиной, 6<small>Москва</small></div><b>Другие адреса</b><div class="suggestion">улица Скульптора Мухиной, 8<small>Москва</small></div><div class="suggestion">улица Скульптора Мухиной, 10<small>Москва</small></div><div class="suggestion">улица Скульптора Мухиной, 3<small>Москва</small></div><div class="suggestion">улица Скульптора Мухиной, 1<small>Москва</small></div></div>
-    <div class="empty" id="empty"><div class="empty-art"><img src="./assets/empty-cactus.png" alt=""></div><b>Ничего не нашли</b><p>Попробуйте изменить поисковый запрос<br>или вернуться позже</p></div>
+    <div class="empty" id="empty"><div class="empty-art"><img src="./assets/empty-cactus.webp" alt=""></div><b>Ничего не нашли</b><p>Попробуйте изменить поисковый запрос<br>или вернуться позже</p></div>
    </section>
   </aside>
   <div class="map-controls"><img src="./assets/zoom.svg" alt="Масштаб карты"><img src="./assets/location.svg" alt="Мое местоположение"></div>
