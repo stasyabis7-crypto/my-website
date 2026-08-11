@@ -754,7 +754,9 @@ html.footer-menu-open {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: var(--chrome-h, 4.5rem);
+  /* 3.5rem = 56px на базовом мобильном размере: ровно как круглая
+     кнопка «Наверх» и CTA «Смотреть работы» (текст + padding + border). */
+  height: var(--chrome-item-h, 3.5rem);
   padding: 0 1.25rem;
   border: 1px solid var(--color-action-active);
   border-radius: 999px;
