@@ -1,22 +1,40 @@
 /*
-  Ставит анимации встроенных проектов (works-grid__embed-frame) на паузу,
-  пока плитка не видна на экране, и включает обратно, когда она снова
+  Два уровня "гашения" встроенных проектов (works-grid__embed-frame),
+  пока плитка не видна на экране, и восстановления, когда она снова
   попадает в область просмотра.
 
-  Зачем: у части проектов внутри — бесконечный requestAnimationFrame-цикл
-  (см. ../works/shared/raf-gate.js), который без этого крутится вечно, даже
-  когда плитку давно проскроллили мимо. Десятки таких циклов одновременно —
-  ощутимая нагрузка на память/CPU, и именно из-за неё на телефоне браузер
-  иногда сам перезагружает вкладку (выглядит как "сайт сбрасывается").
+  Зачем два уровня: паузы rAF-цикла (см. ../works/shared/raf-gate.js)
+  достаточно, чтобы не жечь CPU впустую, но iframe при этом остаётся
+  полностью загруженным документом (DOM + canvas) навсегда — память под
+  него не освобождается, даже когда плитку давно проскроллили мимо. На
+  странице ~26 таких iframe разом, страница на телефоне высотой в
+  несколько экранов — суммарная память по мере скролла только растёт.
+  Именно накопленная память, а не CPU, чаще всего и есть причина, по
+  которой мобильный браузер сам перезагружает вкладку (выглядит как
+  "сайт сбрасывается") — пауза одна эту причину не убирает.
+
+  Поэтому: ближний уровень (rootMargin PAUSE_MARGIN) паузит/включает
+  rAF, как раньше — для плиток, которые всё ещё близко и могут скоро
+  понадобиться. Дальний уровень (rootMargin UNLOAD_MARGIN, заметно
+  шире) при выходе плитки далеко за экран очищает src iframe
+  (about:blank) — браузер выгружает документ и освобождает память — а
+  при возврате в эту широкую зону восстанавливает src из data-src и
+  анимация стартует заново с нуля (это ожидаемо: плитка была не видна).
+  Небольшая задержка перед выгрузкой (UNLOAD_DELAY) гасит дребезг при
+  быстрой прокрутке туда-обратно у самой границы.
 
   iframe у нас все одного происхождения (относительные пути того же
   сайта), поэтому можно напрямую звать __setAnimPaused у contentWindow —
   без postMessage. Если у конкретной страницы проекта нет raf-gate.js
   (статичная анимация или её вообще нет), вызов просто не находит функцию
-  и ничего не делает — безопасно для всех 55 плиток разом.
+  и ничего не делает — безопасно для всех плиток разом.
 */
 (function () {
   if (typeof IntersectionObserver === 'undefined') return;
+
+  var PAUSE_MARGIN = '200px 0px';
+  var UNLOAD_MARGIN = '1200px 0px';
+  var UNLOAD_DELAY = 1000;
 
   function setPaused(el, paused) {
     try {
@@ -32,18 +50,18 @@
     }
   }
 
-  var observer = new IntersectionObserver(
+  var pauseObserver = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (entry) {
         setPaused(entry.target, !entry.isIntersecting);
       });
     },
-    { rootMargin: '200px 0px' }
+    { rootMargin: PAUSE_MARGIN }
   );
 
   var targets = document.querySelectorAll('.works-grid__embed-frame, .works-grid__video');
   targets.forEach(function (el) {
-    observer.observe(el);
+    pauseObserver.observe(el);
     // На случай, если iframe ещё не отдал contentWindow к моменту первого
     // срабатывания observer — досинкать состояние после загрузки.
     if (el.tagName !== 'VIDEO') {
@@ -53,5 +71,48 @@
         setPaused(el, !inView);
       });
     }
+  });
+
+  // Дальний уровень — только iframe (видео не накапливается так же:
+  // одна плитка на всю страницу, отдельный документ не создаёт).
+  var frames = document.querySelectorAll('.works-grid__embed-frame');
+  var unloadTimers = new WeakMap();
+
+  function unload(frame) {
+    if (frame.getAttribute('src') === 'about:blank') return;
+    frame.src = 'about:blank';
+  }
+
+  function reload(frame) {
+    var original = frame.dataset.src;
+    if (!original || frame.getAttribute('src') === original) return;
+    frame.src = original;
+  }
+
+  var unloadObserver = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        var frame = entry.target;
+        var pending = unloadTimers.get(frame);
+        if (pending) clearTimeout(pending);
+
+        if (entry.isIntersecting) {
+          unloadTimers.delete(frame);
+          reload(frame);
+        } else {
+          var timer = setTimeout(function () {
+            unloadTimers.delete(frame);
+            unload(frame);
+          }, UNLOAD_DELAY);
+          unloadTimers.set(frame, timer);
+        }
+      });
+    },
+    { rootMargin: UNLOAD_MARGIN }
+  );
+
+  frames.forEach(function (frame) {
+    frame.dataset.src = frame.getAttribute('src') || '';
+    unloadObserver.observe(frame);
   });
 })();
