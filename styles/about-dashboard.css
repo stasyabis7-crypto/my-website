@@ -38,6 +38,12 @@
 .profile-dashboard__intro h1 { margin-top: auto; }
 .profile-dashboard__statement{margin-top:.75rem;max-width:26ch;color:var(--color-text);font-size:var(--about-subtitle-size);line-height:var(--about-subtitle-line)}
 .profile-dashboard__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+.profile-dashboard__actions .btn--primary{background:var(--color-action-active);border-color:var(--color-action-active);color:var(--color-action-active-text)}
+.profile-dashboard__actions .btn--outline{background:var(--color-ink);border-color:var(--color-ink);color:var(--color-ink-contrast)}
+.profile-dashboard__actions .btn--outline::before{background:var(--color-action-active);box-shadow:none}
+@media (hover:hover) and (pointer:fine){.profile-dashboard__actions .btn--primary:hover{border-color:var(--color-ink);color:var(--color-ink-contrast)}.profile-dashboard__actions .btn--outline:hover{border-color:var(--color-action-active);color:var(--color-action-active-text)}}
+.profile-dashboard__actions .btn--primary:focus-visible{border-color:var(--color-ink);color:var(--color-ink-contrast)}
+.profile-dashboard__actions .btn--outline:focus-visible{border-color:var(--color-action-active);color:var(--color-action-active-text)}
 
 .profile-dashboard__portrait {
   grid-column: span 5;
