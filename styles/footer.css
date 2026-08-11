@@ -754,8 +754,8 @@ html.footer-menu-open {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: var(--chrome-item-h, 3.5rem);
-  padding: 0.75rem 1.25rem;
+  height: var(--chrome-h, 4.5rem);
+  padding: 0 1.25rem;
   border: 1px solid var(--color-action-active);
   border-radius: 999px;
   background: var(--color-action-active);
@@ -807,7 +807,7 @@ html.footer-menu-open {
   left: var(--page-px, 10px);
   right: var(--page-px, 10px);
   width: auto;
-  height: var(--chrome-item-h, 3.5rem);
+  height: var(--chrome-h, 4.5rem);
   transform: none;
 }
 
