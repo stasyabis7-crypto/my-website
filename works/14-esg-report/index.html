@@ -49,6 +49,7 @@
     @keyframes field-drift{0%{transform:rotate(-7deg) scale(.98)}100%{transform:rotate(9deg) scale(1.05)}}
     @keyframes shape-orbit{from{transform:rotate(0)}to{transform:rotate(-360deg)}}
     @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+    @media(hover:none) and (pointer:coarse){.blob{mix-blend-mode:normal;filter:blur(6px)}.color-field{filter:blur(24px)}}
   </style>
   <script src="../shared/theme-sync.js" defer></script>
 </head>
