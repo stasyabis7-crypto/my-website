@@ -545,9 +545,8 @@ html.chrome--compact .site-footer__link .icon {
 /*
   Плашка-меню (моб/планшет) — выезжает при клике на "Меню", когда
   футер свёрнут. Намеренно вне <footer>, чтобы висеть отдельно над
-  ним. Сжата по контенту и прибита к левому краю (left: page-px, как
-  у кнопки "Меню" в свёрнутом футере — см. .is-collapsed выше, та
-  сидит ровно на том же краю), а не растянута на всю ширину футера.
+  ним. Сжата по контенту и центрирована, а не растянута на всю ширину
+  футера.
   Отступ снизу (см. bottom) — 8px сверх высоты кнопки, это и есть
   зазор между панелью и кнопкой "Меню"/"закрыть" под ней.
 */
@@ -557,11 +556,11 @@ html.chrome--compact .site-footer__link .icon {
   bottom: calc(
     var(--page-px, 10px) + var(--chrome-item-h, 3.5rem) + var(--footer-menu-gap)
   );
-  left: var(--page-px, 10px);
+  left: 50%;
   right: auto;
   opacity: 0;
-  transform: translateY(10px) scale(0.96);
-  transform-origin: bottom left;
+  transform: translate(-50%, 10px) scale(0.96);
+  transform-origin: bottom center;
   pointer-events: none;
   transition:
     opacity 0.28s var(--footer-ease),
@@ -578,7 +577,7 @@ html.chrome--compact .site-footer__link .icon {
    прежде чем исчезнуть из DOM-раскладки. */
 .footer-menu-panel.is-open {
   opacity: 1;
-  transform: none;
+  transform: translateX(-50%);
   pointer-events: auto;
 }
 
@@ -744,4 +743,3 @@ html.chrome--compact .footer-menu-panel__link .icon {
 html.footer-menu-open {
   overflow: hidden;
 }
-

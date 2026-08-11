@@ -53,10 +53,28 @@
     }
   }
 
+  // Некоторые превью галереи — не живой iframe, а заранее записанное
+  // видео (см. index.html, слот 14): фон запечён в кадр, поэтому под
+  // каждую тему свой файл (data-src-dark/data-src-light), и при смене
+  // темы подменяем src, а не красим что-то через CSS.
+  function syncThemedVideos(theme) {
+    var videos = document.querySelectorAll('[data-src-dark][data-src-light]');
+    for (var i = 0; i < videos.length; i++) {
+      var video = videos[i];
+      var next = theme === 'light' ? video.dataset.srcLight : video.dataset.srcDark;
+      if (!next || video.getAttribute('src') === next) continue;
+      var wasPlaying = !video.paused;
+      video.src = next;
+      video.load();
+      if (wasPlaying) video.play().catch(function () {});
+    }
+  }
+
   function apply(theme) {
     root.setAttribute('data-theme', theme);
     syncToggleButton(theme);
     broadcastTheme(theme);
+    syncThemedVideos(theme);
   }
 
   apply(readSaved() === 'light' ? 'light' : 'dark');
@@ -89,6 +107,11 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
+    // Первый вызов apply() наверху файла отработал до того, как этот
+    // <video> вообще появился в DOM (скрипт подключён в <head>) —
+    // досинкаем src теперь, когда галерея уже отрисована.
+    syncThemedVideos(root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+
     var input = document.getElementById('theme-toggle');
     if (!input) return;
 

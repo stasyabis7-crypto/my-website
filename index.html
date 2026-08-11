@@ -9,7 +9,7 @@
      кто уже переключался на светлую тему, при заходе мелькнёт тёмная
      (дефолтная) перед переключением на сохранённую светлую. -->
 
-<script src="styles/theme.js?v=18"></script>
+<script src="styles/theme.js?v=19"></script>
 <script>document.documentElement.classList.add('is-page-loading')</script>
 <link rel="stylesheet" href="styles/scale.css?v=18" />
 <link rel="stylesheet" href="styles/typography.css?v=18" />
@@ -350,7 +350,7 @@
         <img src="works/13-charity-entry-banners-ab/cover.webp?v=16de6a3c" alt="Charity Entry Banners A/B"  loading="lazy" />
       </div>
       <div class="works-grid__item works-grid__item--square" data-slot="14" data-title="ESG Report">
-        <video class="works-grid__video" src="works/14-esg-report/cover.mp4?v=1" autoplay muted loop playsinline preload="metadata" aria-label="ESG Report"></video>
+        <video class="works-grid__video" data-src-dark="works/14-esg-report/cover-dark.mp4?v=1" data-src-light="works/14-esg-report/cover-light.mp4?v=1" autoplay muted loop playsinline preload="metadata" aria-label="ESG Report"></video>
       </div>
       <div class="works-grid__item works-grid__item--square" data-slot="15" data-title="SPIEF 2025">
         <video class="works-grid__video" src="works/15-spief-2025/cover.mp4?v=1" autoplay muted loop playsinline preload="metadata" aria-label="SPIEF 2025"></video>
@@ -431,11 +431,11 @@
           <span class="icon icon--about" aria-hidden="true"></span>
           Обо мне
         </a></li>
-        <li><a href="#" class="site-footer__link text-label">
+        <li hidden><a href="#" class="site-footer__link text-label">
           <span class="icon icon--activities" aria-hidden="true"></span>
           Активности
         </a></li>
-        <li><a href="#" class="site-footer__link text-label">
+        <li hidden><a href="#" class="site-footer__link text-label">
           <span class="icon icon--contacts" aria-hidden="true"></span>
           Контакты
         </a></li>
@@ -487,10 +487,10 @@
 
   <!--
     Плашка-меню (моб/планшет) — намеренно вне <footer>, чтобы висеть
-    отдельно над кнопкой "Меню". Сетка 2×2 (см. .footer-menu-panel__nav
+    отдельно над кнопкой "Меню". Сетка (см. .footer-menu-panel__nav
     в footer.css), пункты того же размера, что и в развёрнутом футере.
-    Сжата по контенту и прибита к левому краю экрана — не растянута
-    на всю ширину футера.
+    Сжата по контенту и центрирована — не растянута на всю ширину
+    футера.
   -->
   <div class="footer-menu-panel" id="footer-menu-panel" hidden>
     <nav class="footer-menu-panel__bar">
@@ -503,11 +503,11 @@
           <span class="icon icon--about" aria-hidden="true"></span>
           Обо мне
         </a></li>
-        <li><a href="#" class="footer-menu-panel__link text-label">
+        <li hidden><a href="#" class="footer-menu-panel__link text-label">
           <span class="icon icon--activities" aria-hidden="true"></span>
           Активности
         </a></li>
-        <li><a href="#" class="footer-menu-panel__link text-label">
+        <li hidden><a href="#" class="footer-menu-panel__link text-label">
           <span class="icon icon--contacts" aria-hidden="true"></span>
           Контакты
         </a></li>
