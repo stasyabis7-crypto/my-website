@@ -33,8 +33,7 @@
 }
 
 .profile-dashboard__intro h1 { margin-top: auto; }
-.profile-dashboard__role { color: var(--color-text-muted); }
-.profile-dashboard__statement { margin-top: 1.5rem; max-width: 18ch; }
+.profile-dashboard__statement{margin-top:.75rem;max-width:26ch;color:var(--color-text);font-size:clamp(1.05rem,1.35vw,1.35rem);line-height:1.3}
 .profile-dashboard__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
 
 .profile-dashboard__portrait {
@@ -47,14 +46,11 @@
     linear-gradient(145deg, #365fff 0%, #8c6bff 46%, #ff0cc2 100%);
 }
 
-.profile-dashboard__portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
-.profile-dashboard__monogram { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.9); }
-.profile-dashboard__status { position: absolute; z-index: 3; left: 1rem; bottom: 1rem; padding: .75rem 1rem; background: rgba(255,255,255,.85); color: #14161a; border-radius: 999px; backdrop-filter: blur(18px); }
-.profile-dashboard__status i { display: inline-block; width: .55rem; height: .55rem; margin-right: .5rem; border-radius: 50%; background: #43c861; box-shadow: 0 0 0 .3rem rgba(67,200,97,.18); }
-.profile-dashboard__orbit { position:absolute;z-index:2;inset:8%;border:1px solid rgba(255,255,255,.55);border-radius:50%;transform:rotate(-18deg);animation:orbit-spin 18s linear infinite;pointer-events:none }
-.profile-dashboard__orbit:before,.profile-dashboard__orbit:after,.profile-dashboard__orbit i{content:"";position:absolute;border-radius:50%;background:#fff}.profile-dashboard__orbit:before{width:1.1rem;height:1.1rem;left:8%;top:16%}.profile-dashboard__orbit:after{width:.65rem;height:.65rem;right:4%;bottom:22%}.profile-dashboard__orbit i:nth-child(1){width:5rem;height:5rem;right:12%;top:9%;background:var(--about-accent-3)}.profile-dashboard__orbit i:nth-child(2){width:2rem;height:2rem;left:5%;bottom:18%;background:var(--about-accent-6)}.profile-dashboard__orbit i:nth-child(3){width:.8rem;height:.8rem;right:18%;bottom:5%}
-.profile-dashboard__sticker{position:absolute;z-index:3;right:1rem;top:1rem;width:6.4rem;aspect-ratio:1;display:grid;place-items:center;text-align:center;border-radius:50%;background:var(--about-accent-3);color:#14161a;transform:rotate(9deg);box-shadow:0 14px 30px -16px rgba(0,0,0,.5)}
-@keyframes orbit-spin{to{transform:rotate(342deg)}}
+.profile-dashboard__portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;z-index:1}
+.profile-dashboard__badges{position:absolute;z-index:2;left:.75rem;right:.75rem;bottom:.75rem;display:flex;flex-wrap:wrap;gap:6px}
+.profile-dashboard__badge{display:inline-flex;align-items:center;min-height:2.1rem;padding:.45rem .7rem;border-radius:999px;background:var(--color-glass);color:var(--color-text);font-size:.72rem;line-height:1;backdrop-filter:var(--liquid-glass-filter);-webkit-backdrop-filter:var(--liquid-glass-filter);box-shadow:var(--liquid-glass-glow)}
+.profile-dashboard__badge i{display:inline-block;width:.42rem;height:.42rem;margin-right:.4rem;border-radius:50%;background:#43c861;box-shadow:0 0 0 .2rem rgba(67,200,97,.18);animation:badge-live 1.8s ease-in-out infinite}
+@keyframes badge-live{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 .18rem rgba(67,200,97,.14)}50%{opacity:.42;transform:scale(.78);box-shadow:0 0 0 .32rem rgba(67,200,97,.28)}}
 
 .profile-metric,
 .profile-dashboard__domains {
@@ -120,9 +116,9 @@
 @media (min-width:1101px){
   .page-about{position:relative;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px;padding:0 var(--page-px) 3rem!important;background:transparent;overflow:visible;margin-top:calc(var(--page-px) + var(--header-h,3.5rem) + 10px)}
   .profile-dashboard,.skills-deck,.career-player,.publications{margin:0}
-  .profile-dashboard{grid-column:1/9;min-height:42rem}
-  .profile-dashboard__intro{grid-column:span 7;padding:clamp(2rem,3.5vw,3.5rem)}
-  .profile-dashboard__portrait{grid-column:span 5;min-height:27rem}
+  .profile-dashboard{grid-column:1/9;min-height:35rem}
+  .profile-dashboard__intro{grid-column:span 7;padding:clamp(1.75rem,2.5vw,2.5rem)}
+  .profile-dashboard__portrait{grid-column:span 5;min-height:22rem}
   .profile-dashboard__intro h1{font-size:clamp(3.5rem,4.8vw,5.5rem);line-height:.9}
   .skills-deck{grid-column:1/9;padding:2rem;border-radius:var(--about-radius-card);background:var(--color-surface)}
   .skills-deck .dashboard-section-head{margin-bottom:1.25rem}
@@ -143,4 +139,5 @@
 @media (max-width:680px){
   .profile-dashboard{display:flex;flex-direction:column}.profile-dashboard__intro{min-height:0;order:1;padding:1.5rem}.profile-dashboard__intro h1{margin-top:2rem;font-size:clamp(2.8rem,12vw,3.6rem);line-height:.92;letter-spacing:-.05em}.profile-dashboard__role{margin-top:.65rem;font-size:1rem;line-height:1.25}.profile-dashboard__statement{display:none}.profile-dashboard__actions{margin-top:1.25rem}.profile-dashboard__actions .btn{padding:.7rem 1rem}.profile-dashboard__portrait{min-height:25rem;order:2}.profile-metric{min-height:10rem;order:3}.profile-dashboard__domains{order:4}.dashboard-section-head{align-items:flex-start;flex-direction:column}.dashboard-section-head h2,.learning-strip h2{font-size:1.75rem}.skill-slide{flex-basis:88vw;min-height:28rem}.skill-slide h3,.publication-category strong{font-size:1.65rem}.community-card h3{font-size:1.4rem}.career-years{display:none}.career-rail{height:auto;margin:1rem 0 0;padding-left:1.75rem;background:none;overflow:visible}.career-rail:before{content:"";position:absolute;left:.43rem;top:1.1rem;bottom:1.1rem;width:2px;background:var(--color-border)}.career-rail button{position:relative;left:auto!important;top:auto!important;width:100%!important;display:flex;align-items:center;justify-content:space-between;height:auto;min-height:4.25rem;margin-bottom:10px;padding:1rem 1.1rem;border:1px solid var(--color-border);border-left:5px solid var(--accent);border-radius:1rem;background:var(--color-surface);color:var(--color-text)}.career-rail button:before{content:"";position:absolute;left:-1.8rem;width:.85rem;height:.85rem;border:3px solid var(--color-bg);border-radius:50%;background:var(--accent)}.career-rail button:after{content:attr(data-period);font-size:.72rem;color:var(--color-text-muted);white-space:nowrap}.career-rail button:hover,.career-rail button[aria-selected="true"]{transform:translateX(4px);border-color:var(--accent);box-shadow:none}.publication-grid,.community-grid{display:grid;grid-template-columns:1fr;overflow:visible}.publication-category,.community-card{min-height:18rem}.publication-category:last-child,.community-card:last-child{grid-column:auto}
 }
-@media (prefers-reduced-motion:reduce){.skill-visual--pulse,.profile-dashboard__orbit{animation:none}.publication-category:before,.publication-category:after,.career-rail button{transition:none}}
+@media (max-width:680px){.profile-dashboard__statement{display:block;font-size:1rem;margin-top:.65rem}.profile-dashboard__portrait{min-height:22rem}}
+@media (prefers-reduced-motion:reduce){.skill-visual--pulse,.profile-dashboard__badge i{animation:none}.publication-category:before,.publication-category:after,.career-rail button{transition:none}}
