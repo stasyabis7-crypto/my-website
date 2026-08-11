@@ -127,7 +127,7 @@
   .skills-deck{grid-column:1/9;padding:2rem;border-radius:var(--about-radius-card);background:var(--color-surface)}
   .skills-deck .dashboard-section-head{margin-bottom:1.25rem}
   .skill-slide{flex-basis:min(62vw,39rem);min-height:25rem}
-  .publications{grid-column:9/-1;grid-row:2/4;padding:2rem;border-radius:var(--about-radius-card);background:var(--color-surface)}
+  .publications{grid-column:9/-1;grid-row:1/3;padding:2rem;border-radius:var(--about-radius-card);background:var(--color-surface)}
   .publications .dashboard-section-head h2{font-size:clamp(1.75rem,2.1vw,2.5rem)}
   .publication-grid,.community-grid{grid-template-columns:1fr}
   .publication-category{min-height:12rem}.publication-category:last-child,.community-card:last-child{grid-column:auto}
