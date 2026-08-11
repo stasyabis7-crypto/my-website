@@ -53,6 +53,16 @@
   mask-image: url("../assets/icons/Arrow/arrow-down.svg");
 }
 
+.icon--arrow-right {
+  -webkit-mask-image: url("../assets/icons/Arrow/arrow-right.svg");
+  mask-image: url("../assets/icons/Arrow/arrow-right.svg");
+}
+
+.icon--arrow-left {
+  -webkit-mask-image: url("../assets/icons/Arrow/arrow-left.svg");
+  mask-image: url("../assets/icons/Arrow/arrow-left.svg");
+}
+
 .icon--works {
   -webkit-mask-image: url("../assets/icons/Interface/works.svg");
   mask-image: url("../assets/icons/Interface/works.svg");

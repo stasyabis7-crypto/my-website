@@ -1,0 +1,364 @@
+/*
+  Профессиональный путь — горизонтальный/вертикальный таймлайн из шести
+  остановок + общая панель с деталями компании. Панель — ОДИН и тот же
+  DOM-узел (#company-panel, см. about.html) на обоих брейкпоинтах: на
+  десктопе (≥1101px, тот же порог, что и у остальной навигации сайта, см.
+  layout-chrome.js) она превращается в боковой drawer, на моб/планшете —
+  в нижний bottom sheet. Открытие/закрытие/фокус-ловушку ведёт about.js,
+  здесь только позиционирование и переход между открытым/закрытым видом.
+*/
+
+.timeline-section {
+  padding-block: var(--about-section-gap);
+}
+
+.timeline-section__head {
+  max-width: 44rem;
+  margin-bottom: 2.5rem;
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  counter-reset: timeline-node;
+}
+
+.timeline__item {
+  --node-accent: var(--about-accent-1);
+  --node-accent-ink: var(--about-accent-1-ink);
+}
+
+.timeline__item:nth-child(1) { --node-accent: var(--about-accent-1); --node-accent-ink: var(--about-accent-1-ink); }
+.timeline__item:nth-child(2) { --node-accent: var(--about-accent-2); --node-accent-ink: var(--about-accent-2-ink); }
+.timeline__item:nth-child(3) { --node-accent: var(--about-accent-3); --node-accent-ink: var(--about-accent-3-ink); }
+.timeline__item:nth-child(4) { --node-accent: var(--about-accent-4); --node-accent-ink: var(--about-accent-4-ink); }
+.timeline__item:nth-child(5) { --node-accent: var(--about-accent-5); --node-accent-ink: var(--about-accent-5-ink); }
+.timeline__item:nth-child(6) { --node-accent: var(--about-accent-6); --node-accent-ink: var(--about-accent-6-ink); }
+
+.timeline__node {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.375rem;
+  text-align: left;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--node-accent);
+  border-radius: var(--about-radius-card);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: transform 0.4s var(--button-hover-ease, ease), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.timeline__period {
+  color: var(--node-accent);
+}
+
+.timeline__role {
+  color: var(--color-text-muted);
+}
+
+.timeline__highlight {
+  color: var(--color-text-muted);
+  max-width: 42ch;
+}
+
+.timeline__node-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+  color: var(--node-accent);
+}
+
+.timeline__node-cta .icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  background-color: var(--node-accent);
+  transition: transform 0.3s var(--button-hover-ease, ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .timeline__node:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.35);
+  }
+
+  .timeline__node:hover .timeline__node-cta .icon {
+    transform: translateX(3px);
+  }
+}
+
+.timeline__node[aria-expanded="true"] {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.35);
+  border-color: var(--node-accent);
+}
+
+@media (min-width: 1101px) {
+  .timeline {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    background: var(--color-border);
+  }
+
+  .timeline__item {
+    flex: 1;
+    padding-top: 1.25rem;
+    position: relative;
+  }
+
+  .timeline__item::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 1.5rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--node-accent);
+  }
+
+  .timeline__item + .timeline__item {
+    margin-left: 0.75rem;
+  }
+
+  .timeline__node {
+    height: 100%;
+    min-height: 15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline__node {
+    transition-duration: 0.01ms;
+  }
+}
+
+/* ================= Панель компании (drawer / bottom sheet) ================= */
+
+.panel-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.panel-backdrop.is-open {
+  opacity: 1;
+}
+
+.panel-backdrop[hidden] {
+  display: none;
+}
+
+.panel {
+  --panel-accent: var(--about-accent-1);
+  --panel-accent-ink: var(--about-accent-1-ink);
+  position: fixed;
+  z-index: 71;
+  background: var(--color-surface);
+  box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.panel__grabber {
+  display: none;
+}
+
+.panel__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  flex: 0 0 auto;
+}
+
+.panel__period {
+  color: var(--panel-accent);
+}
+
+.panel__role {
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+.panel__close {
+  flex: 0 0 auto;
+}
+
+.panel__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 1.5rem;
+  overscroll-behavior: contain;
+}
+
+.panel-content__cover {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--panel-accent), color-mix(in srgb, var(--panel-accent) 55%, var(--color-bg)));
+  margin-bottom: 1.5rem;
+}
+
+.panel-content__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.panel-content__section + .panel-content__section {
+  margin-top: 1.75rem;
+}
+
+.panel-content__section h4 {
+  color: var(--color-text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.panel-content__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.panel-content__list li {
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.panel-content__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--panel-accent);
+}
+
+.panel-content__results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.panel-content__result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.875rem 1rem;
+  border-radius: 16px;
+  background: var(--color-surface-alt);
+}
+
+.panel-content__result span {
+  color: var(--color-text-muted);
+}
+
+.panel-content__tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ---- Моб/планшет — bottom sheet ---- */
+.panel {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: auto;
+  width: auto;
+  max-height: 90vh;
+  border-radius: 28px 28px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.panel.is-open {
+  transform: translateY(0);
+}
+
+.panel.is-dragging {
+  transition: none;
+}
+
+.panel__grabber {
+  display: block;
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--color-border);
+  margin: 0.75rem auto 0;
+}
+
+/* ---- Десктоп — боковой drawer ---- */
+@media (min-width: 1101px) {
+  .panel {
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: clamp(520px, 38vw, 600px);
+    max-height: none;
+    border-radius: 0;
+    transform: translateX(100%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .panel.is-open {
+    transform: translateX(0);
+  }
+
+  .panel__grabber {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .panel-backdrop {
+    transition-duration: 0.01ms;
+  }
+}

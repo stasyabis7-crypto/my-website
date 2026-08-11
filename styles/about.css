@@ -1,0 +1,694 @@
+/*
+  Страница «Обо мне» — общие токены страницы + секции Hero/Цифры/Обо мне/
+  Как я работаю/Образование/Контакты. Таймлайн (панель компании) — см.
+  timeline.css, карточки активностей — about-activities.css. Вся типографика
+  берёт роли из typography.css (.text-*), интерактив — общий рецепт кнопок
+  из button-hover.css (см. расширенные :is()-списки там же), здесь только
+  геометрия/цвет новых компонентов (.btn/.btn-icon/.chip), которых в site-*
+  файлах ещё не было.
+*/
+
+:root {
+  /* Акценты компаний таймлайна и точечные цветные плашки (карточки
+     цифр/тегов) — цикл из 6, перекликается с палитрой hero-кругов на
+     главной (hero.css), чтобы обе страницы читались как один сайт.
+     У каждого акцента своя пара текстового цвета — тёмный/светлый
+     достаточной контрастности НЕ зависит от темы сайта (сама плашка
+     всегда одного и того же яркого цвета в обеих темах). */
+  --about-accent-1: #2f5bff;   /* синий — Авито */
+  --about-accent-1-ink: #ffffff;
+  --about-accent-2: #ff0cc2;   /* розовый — Ozon Tech (= --color-action-active) */
+  --about-accent-2-ink: #ffffff;
+  --about-accent-3: #b8f23c;   /* лайм — Flowwow */
+  --about-accent-3-ink: #14161a;
+  --about-accent-4: #fb7806;   /* оранжевый — SWTecNN */
+  --about-accent-4-ink: #ffffff;
+  --about-accent-5: #8c6bff;   /* сиреневый — Nexign */
+  --about-accent-5-ink: #ffffff;
+  --about-accent-6: #f3d301;   /* жёлтый — НИПТ/FUN&SUN */
+  --about-accent-6-ink: #14161a;
+
+  --about-reveal-distance: 22px;
+  --about-reveal-duration: 0.7s;
+  --about-reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --about-section-gap: clamp(4rem, 10vw, 8rem);
+
+  --about-radius-card: 28px;
+  --about-radius-lg: 36px;
+}
+
+/* ---------- Reveal-on-scroll — общая утилита для всей страницы ----------
+   about.js вешает наблюдатель на все [data-reveal], проставляет --reveal-i
+   (порядковый номер среди соседей той же группы — даёт лёгкий stagger без
+   ручных задержек под каждый компонент) и добавляет .is-revealed при
+   пересечении вьюпорта. По умолчанию элемент чуть смещён и прозрачен. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(var(--about-reveal-distance));
+  transition:
+    opacity var(--about-reveal-duration) var(--about-reveal-ease),
+    transform var(--about-reveal-duration) var(--about-reveal-ease);
+  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+  will-change: opacity, transform;
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition-duration: 0.01ms;
+  }
+}
+
+/* ---------- Общие примитивы: кнопка-пилюля и иконка-кружок ----------
+   Та же анатомия, что у .hero__cta/.site-header__cta (radius:999px, тот же
+   паддинг/gap/inline-flex) — переиспользуем форму и типографику кнопок
+   сайта, а не изобретаем новую. Сам hover/press-блик подключается общим
+   списком в button-hover.css (.btn/.btn-icon добавлены туда же). */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding-block: 0.875rem;
+  padding-inline: 1.5rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  background: none;
+}
+
+.btn .icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.btn--primary {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-ink-contrast);
+}
+
+.btn--accent {
+  border-color: var(--color-action-active);
+  background: var(--color-action-active);
+  color: var(--color-action-active-text);
+}
+
+.btn--outline {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.btn--ghost {
+  border-color: transparent;
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+}
+
+.btn--sm {
+  padding-block: 0.625rem;
+  padding-inline: 1.125rem;
+  gap: 0.5rem;
+}
+
+.btn--sm .icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface-alt);
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.btn-icon .icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+/* Плашка-тег (теги "Обо мне", инструменты в панели, пункты образования). */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding-block: 0.5rem;
+  padding-inline: 0.875rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+/* Фильтр-чипы активностей — интерактивные, активное состояние повторяет
+   ровно ту же заливку, что у .is-current в футере (--color-action-active),
+   единый язык "активного" контрола по всему сайту. */
+.chip--filter {
+  border: 1px solid transparent;
+  background: var(--color-surface-alt);
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.chip--filter[aria-pressed="true"] {
+  border-color: var(--color-action-active);
+  background: var(--color-action-active);
+  color: var(--color-action-active-text);
+  font-weight: var(--font-weight-semibold);
+}
+
+.about-section-lead {
+  max-width: 46ch;
+}
+
+/* ================= 1. HERO ================= */
+.about-hero {
+  padding-block: clamp(2rem, 6vw, 4rem) var(--about-section-gap);
+}
+
+.about-hero__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.about-hero__namewrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.about-hero__role {
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+}
+
+.about-hero__portrait-wrap {
+  position: relative;
+  order: 3;
+  margin-block: 0.5rem 1rem;
+}
+
+.about-hero__portrait {
+  position: relative;
+  width: 100%;
+  max-width: 20rem;
+  aspect-ratio: 4 / 5;
+  margin-inline: auto;
+  border-radius: var(--about-radius-lg);
+  overflow: hidden;
+  background: linear-gradient(155deg, var(--about-accent-1) 0%, var(--about-accent-5) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-hero__portrait img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-hero__portrait-fallback {
+  color: #fff;
+  opacity: 0.9;
+}
+
+/* Плавающие карточки-факты поверх портрета (десктоп/планшет) — двигаются
+   лёгким параллаксом за курсором, см. about.js (data-parallax-group). На
+   мобильном месте нет — портрет мельче, вместо этого горизонтальная
+   лента ниже (см. --strip). */
+.about-hero__facts--float {
+  display: none;
+}
+
+.about-hero__fact-card {
+  display: inline-flex;
+  align-items: center;
+  padding-block: 0.625rem;
+  padding-inline: 1rem;
+  border-radius: 999px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+}
+
+.about-hero__facts--strip {
+  order: 6;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-block: 0.25rem;
+  margin: 0;
+  list-style: none;
+  padding-inline: 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.about-hero__facts--strip::-webkit-scrollbar {
+  display: none;
+}
+
+.about-hero__facts--strip .about-hero__fact-card {
+  flex: 0 0 auto;
+  box-shadow: none;
+}
+
+.about-hero__title {
+  order: 4;
+}
+
+.about-hero__desc {
+  order: 5;
+  color: var(--color-text-muted);
+}
+
+.about-hero__actions {
+  order: 6;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.hero__cta--ghost {
+  background: transparent;
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.about-hero__resume-link {
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 1101px) {
+  .about-hero__inner {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    column-gap: clamp(2rem, 5vw, 4.5rem);
+    row-gap: 0.5rem;
+    grid-template-areas:
+      "status   portrait"
+      "namewrap portrait"
+      "title    portrait"
+      "desc     portrait"
+      "actions  portrait";
+    align-items: start;
+  }
+
+  .about-hero__status { grid-area: status; }
+  .about-hero__namewrap { grid-area: namewrap; }
+  .about-hero__title { grid-area: title; margin-top: 0.75rem; }
+  .about-hero__desc { grid-area: desc; }
+  .about-hero__actions { grid-area: actions; }
+
+  .about-hero__portrait-wrap {
+    grid-area: portrait;
+    grid-row: 1 / -1;
+    margin: 0;
+    align-self: center;
+  }
+
+  .about-hero__portrait {
+    max-width: none;
+  }
+
+  .about-hero__facts--float {
+    display: block;
+  }
+
+  .about-hero__facts--float .about-hero__fact-card {
+    position: absolute;
+  }
+
+  .about-hero__facts--float .about-hero__fact-card:nth-child(1) { top: 6%; left: -12%; }
+  .about-hero__facts--float .about-hero__fact-card:nth-child(2) { top: 22%; right: -14%; }
+  .about-hero__facts--float .about-hero__fact-card:nth-child(3) { bottom: 18%; left: -10%; }
+  .about-hero__facts--float .about-hero__fact-card:nth-child(4) { bottom: 4%; right: -8%; }
+
+  .about-hero__facts--strip {
+    display: none;
+  }
+}
+
+/* ================= 2. КОРОТКО В ЦИФРАХ ================= */
+.about-stats {
+  padding-block: var(--about-section-gap);
+}
+
+.about-stats__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.about-stats__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  border-radius: var(--about-radius-card);
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+}
+
+.about-stats__card--d {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.75rem;
+  background: linear-gradient(120deg, var(--about-accent-1), var(--about-accent-5));
+  border-color: transparent;
+  color: #fff;
+}
+
+.about-stats__card--d .about-stats__label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.about-stats__value {
+  color: var(--color-text);
+}
+
+.about-stats__card--d .about-stats__value {
+  color: #fff;
+}
+
+.about-stats__label {
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 1101px) {
+  .about-stats__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .about-stats__card--d {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ================= 3. ОБО МНЕ ================= */
+.about-intro {
+  padding-block: var(--about-section-gap);
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.about-intro__text {
+  max-width: 46rem;
+}
+
+.about-intro__principles {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.about-intro__principle {
+  padding: 1.75rem;
+  border-radius: var(--about-radius-card);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.about-intro__principle-index {
+  color: var(--color-text-muted);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.about-intro__principle .text-body-sm {
+  color: var(--color-text-muted);
+}
+
+.about-intro__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 1101px) {
+  .about-intro__principles {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ================= 5. КАК Я РАБОТАЮ ================= */
+.approach {
+  padding-block: var(--about-section-gap);
+}
+
+.approach__head {
+  margin-bottom: 2.5rem;
+  max-width: 40rem;
+}
+
+.approach__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.approach__step {
+  position: relative;
+  padding-block: 1.5rem;
+  padding-left: 2.5rem;
+  border-left: 2px solid var(--color-border);
+}
+
+.approach__step::before {
+  content: "";
+  position: absolute;
+  left: -0.4375rem;
+  top: 1.75rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--color-action-active);
+}
+
+.approach__step-index {
+  display: block;
+  color: var(--color-text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.approach__step .text-body-sm {
+  color: var(--color-text-muted);
+  max-width: 34ch;
+}
+
+@media (min-width: 1101px) {
+  .approach__steps {
+    flex-direction: row;
+    gap: 1.5rem;
+  }
+
+  .approach__step {
+    flex: 1;
+    border-left: none;
+    border-top: 2px solid var(--color-border);
+    padding-left: 0;
+    padding-top: 1.75rem;
+  }
+
+  .approach__step::before {
+    left: 0;
+    top: -0.4375rem;
+  }
+}
+
+/* ================= 7. ОБРАЗОВАНИЕ ================= */
+.education {
+  padding-block: var(--about-section-gap);
+}
+
+.education__head {
+  margin-bottom: 2rem;
+  max-width: 44rem;
+}
+
+.education__groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.education__group {
+  border: 1px solid var(--color-border);
+  border-radius: var(--about-radius-card);
+  padding: 1.25rem 1.5rem;
+  background: var(--color-surface);
+}
+
+.education__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.education__summary::-webkit-details-marker {
+  display: none;
+}
+
+.education__chevron {
+  width: 1.125rem;
+  height: 1.125rem;
+  color: var(--color-text-muted);
+  transition: transform 0.35s var(--button-hover-ease, ease);
+  flex: 0 0 auto;
+}
+
+.education__group[open] .education__chevron {
+  transform: rotate(180deg);
+}
+
+.education__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+@media (min-width: 1101px) {
+  .education__groups {
+    flex-direction: row;
+  }
+
+  .education__group {
+    flex: 1;
+  }
+}
+
+/* ================= 8. КОНТАКТЫ ================= */
+.contacts {
+  padding-block: var(--about-section-gap) clamp(3rem, 8vw, 6rem);
+}
+
+.contacts__card {
+  border-radius: var(--about-radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+  padding: clamp(1.75rem, 5vw, 3.5rem);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.contacts__text > * + * {
+  margin-top: 0.75rem;
+}
+
+.contacts__meta {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  color: var(--color-text-muted);
+}
+
+.contacts__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+@media (min-width: 900px) {
+  .contacts__card {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+  }
+
+  .contacts__actions {
+    align-items: stretch;
+  }
+
+  .contacts__actions .btn {
+    justify-content: center;
+  }
+}
+
+/* Sticky CTA "Связаться" — только моб/планшет, появляется после того как
+   Hero прокручен и пока секция контактов ещё не видна (см. about.js). */
+.about-sticky-cta {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--page-px, 10px) + var(--footer-h, 3.5rem) + 12px);
+  transform: translate(-50%, 16px);
+  z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-block: 0.75rem;
+  padding-inline: 1.25rem;
+  border-radius: 999px;
+  background: var(--color-action-active);
+  color: var(--color-action-active-text);
+  text-decoration: none;
+  box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s var(--button-hover-ease, ease), transform 0.35s var(--button-hover-ease, ease);
+}
+
+.about-sticky-cta.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+
+.about-sticky-cta .icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+@media (min-width: 1101px) {
+  .about-sticky-cta {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-sticky-cta {
+    transition-duration: 0.01ms;
+  }
+}
