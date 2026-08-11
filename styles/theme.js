@@ -53,20 +53,26 @@
     }
   }
 
-  // Некоторые превью галереи — не живой iframe, а заранее записанное
-  // видео (см. index.html, слот 14): фон запечён в кадр, поэтому под
-  // каждую тему свой файл (data-src-dark/data-src-light), и при смене
-  // темы подменяем src, а не красим что-то через CSS.
+  // Некоторые превью галереи — не живой iframe, а заранее записанные
+  // видео/картинки (см. index.html, слот 14): фон запечён в кадр,
+  // поэтому под каждую тему свой файл (data-src-dark/data-src-light),
+  // и при смене темы подменяем src, а не красим что-то через CSS.
+  // <video> дополнительно нужно перезапустить (.load()+.play()) —
+  // смена src на <img> достаточно сама по себе.
   function syncThemedVideos(theme) {
-    var videos = document.querySelectorAll('[data-src-dark][data-src-light]');
-    for (var i = 0; i < videos.length; i++) {
-      var video = videos[i];
-      var next = theme === 'light' ? video.dataset.srcLight : video.dataset.srcDark;
-      if (!next || video.getAttribute('src') === next) continue;
-      var wasPlaying = !video.paused;
-      video.src = next;
-      video.load();
-      if (wasPlaying) video.play().catch(function () {});
+    var media = document.querySelectorAll('[data-src-dark][data-src-light]');
+    for (var i = 0; i < media.length; i++) {
+      var el = media[i];
+      var next = theme === 'light' ? el.dataset.srcLight : el.dataset.srcDark;
+      if (!next || el.getAttribute('src') === next) continue;
+      if (el.tagName === 'VIDEO') {
+        var wasPlaying = !el.paused;
+        el.src = next;
+        el.load();
+        if (wasPlaying) el.play().catch(function () {});
+      } else {
+        el.src = next;
+      }
     }
   }
 
