@@ -51,6 +51,7 @@
 
 :is(
   .site-header__cta,
+  .site-footer__telegram,
   .hero__cta,
   .site-footer__link,
   .site-footer__menu-btn,
@@ -77,6 +78,7 @@
    был "прыжок" футера на скролле). */
 :is(
   .site-header__cta,
+  .site-footer__telegram,
   .hero__cta,
   .site-footer__link,
   .footer-menu-panel__link
@@ -86,6 +88,7 @@
 
 :is(
   .site-header__cta,
+  .site-footer__telegram,
   .hero__cta,
   .site-footer__link,
   .site-footer__menu-btn,
@@ -119,6 +122,7 @@
    чёрный в light). */
 :is(
   .site-header__cta,
+  .site-footer__telegram,
   .site-footer__menu-btn,
   .site-footer__link.is-current,
   .footer-menu-panel__link.is-current
@@ -129,6 +133,7 @@
 
 :is(
   .site-header__cta,
+  .site-footer__telegram,
   .hero__cta,
   .site-footer__link,
   .site-footer__menu-btn,
@@ -147,6 +152,7 @@
 
 :is(
   .site-header__cta,
+  .site-footer__telegram,
   .hero__cta,
   .site-footer__link,
   .site-footer__menu-btn,
@@ -161,6 +167,7 @@
 @media (hover: hover) and (pointer: fine) {
   :is(
     .site-header__cta,
+    .site-footer__telegram,
     .hero__cta,
     .site-footer__link,
     .site-footer__menu-btn,
@@ -179,6 +186,7 @@
 
   :is(
     .site-header__cta,
+    .site-footer__telegram,
     .site-footer__menu-btn,
     .site-footer__link.is-current,
     .footer-menu-panel__link.is-current
@@ -189,6 +197,7 @@
 
   :is(
     .site-header__cta,
+    .site-footer__telegram,
     .hero__cta,
     .site-footer__link,
     .site-footer__menu-btn,
@@ -203,6 +212,7 @@
 
 :is(
   .site-header__cta,
+  .site-footer__telegram,
   .site-footer__menu-btn,
   .site-footer__link.is-current,
   .footer-menu-panel__link.is-current
@@ -213,6 +223,7 @@
 
 @media (hover: none), (pointer: coarse) {
   .site-header__cta:hover,
+  .site-footer__telegram:hover,
   .site-footer__link:hover,
   .footer-menu-panel__link:hover {
     opacity: 1;
@@ -235,6 +246,7 @@
 
   :is(
     .site-header__cta,
+    .site-footer__telegram,
     .hero__cta,
     .site-footer__link,
     .site-footer__menu-btn,
@@ -243,6 +255,7 @@
   ),
   :is(
     .site-header__cta,
+    .site-footer__telegram,
     .hero__cta,
     .site-footer__link,
     .site-footer__menu-btn,

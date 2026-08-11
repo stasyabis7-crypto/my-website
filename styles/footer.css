@@ -764,26 +764,6 @@ html.footer-menu-open {
   color: var(--color-action-active-text);
   text-decoration: none;
   white-space: nowrap;
-  transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease,
-    transform var(--button-press-duration, 0.12s) ease-out;
-}
-
-.site-footer__telegram:focus-visible {
-  outline: 2px solid var(--color-text);
-  outline-offset: 3px;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .site-footer__telegram:hover {
-    background: var(--color-action-hover);
-    border-color: var(--color-action-hover);
-  }
-}
-
-.site-footer__telegram:active {
-  transform: scale(0.97);
 }
 
 .site-footer__nav-wrap,
@@ -815,8 +795,9 @@ html.footer-menu-open {
 
 .site-footer.is-collapsed .site-footer__telegram {
   position: absolute;
+  top: 0;
   left: 0;
-  bottom: 0;
+  bottom: auto;
 }
 
 .site-footer::after,
@@ -827,6 +808,10 @@ html.footer-menu-open {
 @media (min-width: 1101px) {
   html:not(.chrome--compact) .site-footer,
   html:not(.chrome--compact) .site-footer.is-collapsed {
+    /* CTA ниже верхней границы на величину внутреннего padding хедера:
+       её центр совпадает с центром всей плашки .site-header. */
+    top: calc(var(--page-px, 10px) + var(--chrome-pad-block));
+    bottom: auto;
     width: auto;
     height: auto;
     padding: 0;

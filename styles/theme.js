@@ -59,6 +59,19 @@
   // и при смене темы подменяем src, а не красим что-то через CSS.
   // <video> дополнительно нужно перезапустить (.load()+.play()) —
   // смена src на <img> достаточно сама по себе.
+  //
+  // Играть после свапа — не "если раньше играло" (el.paused в момент
+  // смены темы врёт: works-anim-gate.js мог поставить на паузу плитку,
+  // которая на самом деле в кадре, — .paused тут не совпадает с
+  // "видна ли плитка сейчас"), а по фактической видимости прямо
+  // сейчас — тот же допуск в 200px, что и у ближнего IntersectionObserver
+  // в works-anim-gate.js, чтобы не разойтись с ним в трактовке "видно".
+  function isNearViewport(el) {
+    var rect = el.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    return rect.bottom > -200 && rect.top < vh + 200;
+  }
+
   function syncThemedVideos(theme) {
     var media = document.querySelectorAll('[data-src-dark][data-src-light]');
     for (var i = 0; i < media.length; i++) {
@@ -66,10 +79,9 @@
       var next = theme === 'light' ? el.dataset.srcLight : el.dataset.srcDark;
       if (!next || el.getAttribute('src') === next) continue;
       if (el.tagName === 'VIDEO') {
-        var wasPlaying = !el.paused;
         el.src = next;
         el.load();
-        if (wasPlaying) el.play().catch(function () {});
+        if (isNearViewport(el)) el.play().catch(function () {});
       } else {
         el.src = next;
       }

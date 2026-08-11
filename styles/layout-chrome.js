@@ -246,7 +246,7 @@
      указатель впервые вошёл в кнопку. Для клавиатуры CSS оставляет
      безопасное значение по умолчанию — центр контрола. */
   var hoverControls = document.querySelectorAll(
-    '.site-header__cta, .theme-toggle, .site-footer__link, ' +
+    '.site-header__cta, .site-footer__telegram, .theme-toggle, .site-footer__link, ' +
     '.site-footer__menu-btn, .site-footer__top-btn, ' +
     '.footer-menu-panel__link, .hero__cta'
   );
