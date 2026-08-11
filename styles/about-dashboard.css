@@ -5,7 +5,7 @@
   margin-bottom: clamp(5rem, 10vw, 9rem);
 }
 
-.page-about{--about-subtitle-size:clamp(1rem,1.35vw,1.35rem);--about-subtitle-line:1.3}
+.page-about{--about-subtitle-size:clamp(1rem,1.35vw,1.35rem);--about-subtitle-line:1.3;--about-control-font-size:clamp(14px,1vw,16px)}
 
 .dashboard-section-head h2{font-size:clamp(1.75rem,2.6vw,3rem);line-height:1.05;letter-spacing:-.035em}
 .skill-slide h3,.publication-category strong{font-size:clamp(1.6rem,2.35vw,2.75rem);line-height:1.08;letter-spacing:-.03em}
@@ -30,6 +30,9 @@
 .profile-dashboard__intro {
   container-type: inline-size;
   grid-column: span 7;
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: 7 / 5;
   padding: var(--profile-edge);
   background: var(--color-surface-alt);
   display: flex;
@@ -37,7 +40,7 @@
   align-items: flex-start;
 }
 
-.profile-dashboard__intro h1{margin-top:0}
+.profile-dashboard__intro h1{margin-top:0;font-size:clamp(2.25rem,9.5cqw,5.5rem);line-height:.88;letter-spacing:-.05em}
 .profile-dashboard__statement{margin-top:.75rem;max-width:26ch;color:var(--color-text);font-size:var(--about-subtitle-size);line-height:var(--about-subtitle-line)}
 .profile-dashboard__actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:auto;padding-top:1.5rem}
 .profile-dashboard__actions .btn--primary{background:var(--color-action-active);border-color:var(--color-action-active);color:var(--color-action-active-text)}
@@ -124,7 +127,7 @@
 .contacts--compact .contacts__card{background:var(--color-ink);color:var(--color-ink-contrast)}.contacts--compact .contacts__text .text-body-sm{color:var(--color-ink-contrast);font-size:var(--about-subtitle-size);line-height:var(--about-subtitle-line)}
 
 @media (max-width:1100px){
-  .profile-dashboard{--profile-edge:clamp(.65rem,1.6vw,1rem);min-height:auto;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto}.profile-dashboard__intro,.profile-dashboard__portrait{grid-column:span 1}.profile-dashboard__intro{min-height:0}.profile-dashboard__intro h1{font-size:clamp(2.25rem,12cqw,4.75rem);line-height:.9;letter-spacing:-.05em}.profile-dashboard__statement{font-size:clamp(.82rem,3.4cqw,1.15rem)}.profile-dashboard__actions{gap:clamp(.35rem,2cqw,.75rem);padding-top:clamp(.75rem,4cqw,1.5rem)}.profile-dashboard__actions .btn{padding:clamp(.5rem,2.4cqw,.8rem) clamp(.68rem,3.6cqw,1.15rem)}.profile-dashboard__actions .text-button{font-size:clamp(.68rem,3cqw,.95rem)}.profile-dashboard__actions .icon{width:clamp(.7rem,3cqw,1rem);height:clamp(.7rem,3cqw,1rem)}.profile-dashboard__badges{gap:clamp(4px,1.4cqw,6px)}.profile-metric{grid-column:span 1;padding:clamp(1rem,4cqw,1.5rem)}.profile-metric strong{font-size:clamp(2.75rem,24cqw,5.5rem)}.profile-dashboard__domains{grid-column:1/-1;padding:clamp(1rem,2vw,1.5rem)}.profile-dashboard__domains > div span{padding:clamp(.45rem,1vw,.65rem) clamp(.7rem,1.5vw,1rem);font-size:clamp(.75rem,1.5vw,1rem)}.deck-controls{display:none}.publication-grid,.community-grid{grid-template-columns:1fr 1fr}.publication-category:last-child,.community-card:last-child{grid-column:1/-1}
+  .profile-dashboard{--profile-edge:clamp(.65rem,1.6vw,1rem);min-height:auto;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto}.profile-dashboard__intro,.profile-dashboard__portrait{grid-column:span 1}.profile-dashboard__intro{min-height:0;aspect-ratio:1/1}.profile-dashboard__intro h1{font-size:clamp(2rem,9.5cqw,4rem);line-height:.88;letter-spacing:-.05em}.profile-dashboard__statement{font-size:clamp(.82rem,3.4cqw,1.15rem)}.profile-dashboard__actions{gap:clamp(.35rem,2cqw,.75rem);padding-top:clamp(.75rem,4cqw,1.5rem)}.profile-dashboard__actions .btn{padding:clamp(.5rem,2.4cqw,.8rem) clamp(.68rem,3.6cqw,1.15rem)}.profile-dashboard__actions .text-button{font-size:clamp(.68rem,3cqw,.95rem)}.profile-dashboard__actions .icon{width:clamp(.7rem,3cqw,1rem);height:clamp(.7rem,3cqw,1rem)}.profile-dashboard__badges{gap:clamp(4px,1.4cqw,6px)}.profile-metric{grid-column:span 1;padding:clamp(1rem,4cqw,1.5rem)}.profile-metric strong{font-size:clamp(2.75rem,24cqw,5.5rem)}.profile-dashboard__domains{grid-column:1/-1;padding:clamp(1rem,2vw,1.5rem)}.profile-dashboard__domains > div span{padding:clamp(.45rem,1vw,.65rem) clamp(.7rem,1.5vw,1rem);font-size:clamp(.75rem,1.5vw,1rem)}.deck-controls{display:none}.publication-grid,.community-grid{grid-template-columns:1fr 1fr}.publication-category:last-child,.community-card:last-child{grid-column:1/-1}
 }
 
 @media (min-width:1101px){
@@ -133,7 +136,7 @@
   .profile-dashboard{grid-column:1/9;min-height:0;height:max-content;align-self:start}
   .profile-dashboard__intro{grid-column:span 7;padding:var(--profile-edge)}
   .profile-dashboard__portrait{grid-column:span 5;min-height:0;aspect-ratio:1/1}
-  .profile-dashboard__intro h1{font-size:clamp(3.5rem,4.8vw,5.5rem);line-height:.9}
+  .profile-dashboard__intro h1{font-size:clamp(2.5rem,9.5cqw,5.5rem);line-height:.88}
   .skills-deck{grid-column:1/9;padding:2rem;border-radius:var(--about-radius-card);background:var(--color-surface)}
   .skills-deck .dashboard-section-head{margin-bottom:1.25rem}
   .skill-slide{flex-basis:min(62vw,39rem);min-height:25rem}
@@ -155,4 +158,6 @@
 }
 @media (max-width:680px){.profile-dashboard__statement{display:block;margin-top:.65rem}.profile-dashboard__portrait{min-height:0;aspect-ratio:1/1}}
 @media (max-width:680px){.page-about .btn{min-height:var(--chrome-item-h,3.5rem);padding:.75rem 1rem}.page-about .btn .text-button{font-size:var(--font-size-sm);line-height:1.15}.page-about .btn .icon{width:18px;min-width:18px;height:18px}.page-about .btn-icon{width:var(--chrome-item-h,3.5rem);height:var(--chrome-item-h,3.5rem);min-width:var(--chrome-item-h,3.5rem);min-height:var(--chrome-item-h,3.5rem)}.page-about .btn-icon .icon{width:18px;height:18px}}
+.page-about :is(.profile-dashboard__badge,.profile-dashboard__actions .text-button,.profile-dashboard__domains > div span,.career-rail button,.publication-category__hint,.community-card .text-link,.contacts--compact .text-button){font-size:var(--about-control-font-size);line-height:1.15}
+@media (max-width:680px){.page-about :is(.profile-dashboard__statement,.profile-metric > span,.community-card p:last-child,.contacts--compact .contacts__text .text-body-sm){font-size:var(--about-control-font-size);line-height:var(--about-subtitle-line)}}
 @media (prefers-reduced-motion:reduce){.skill-visual--pulse,.profile-dashboard__badge i{animation:none}.publication-category:before,.publication-category:after,.career-rail button{transition:none}}
