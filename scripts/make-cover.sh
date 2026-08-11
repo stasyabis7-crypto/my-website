@@ -27,6 +27,6 @@ ffmpeg -y -loglevel error -i "$TMP/remux.webm" -filter_complex "
 [tail][head]xfade=transition=fade:duration=${SEAM}:offset=0[seam];
 [middle][seam]concat=n=2:v=1:a=0[cat];
 [cat]scale=${W}:${H}[out]
-" -map "[out]" -c:v libx264 -pix_fmt yuv420p -crf 23 -preset slow -movflags +faststart -an "$OUT"
+" -map "[out]" -c:v libx264 -pix_fmt yuv420p -crf 16 -preset slow -movflags +faststart -an "$OUT"
 
 echo "Wrote $OUT"

@@ -154,6 +154,44 @@
   object-position: center;
 }
 
+/* Слоты, переведённые с iframe на видео/картинку (см. index.html —
+   раньше это был .works-grid__embed-frame, масштабируемый через
+   embed-scale.js ПО УМОЛЧАНИЮ в режиме contain — вписать целиком, без
+   обрезки, а не cover). Слоты 15/19 — исключение, у них раньше стоял
+   явный data-fit="cover", осознанный выбор автора, — на них эта
+   переопределяющая группа не распространяется, дефолтный cover
+   .works-grid__video/.works-grid__item img так и остаётся.
+   Без этого override контент, чья нативная пропорция не совпадает с
+   формой слота (не квадратные исходники в --square и т.п.), обрезался
+   бы cover — часть текста/интерфейса уезжала за край плитки. */
+.works-grid__item[data-slot="1"] .works-grid__video,
+.works-grid__item[data-slot="2"] .works-grid__video,
+.works-grid__item[data-slot="3"] .works-grid__video,
+.works-grid__item[data-slot="4"] .works-grid__video,
+.works-grid__item[data-slot="5"] .works-grid__video,
+.works-grid__item[data-slot="9"] .works-grid__video,
+.works-grid__item[data-slot="11"] .works-grid__video,
+.works-grid__item[data-slot="14"] .works-grid__video,
+.works-grid__item[data-slot="17"] .works-grid__video,
+.works-grid__item[data-slot="23"] .works-grid__video,
+.works-grid__item[data-slot="25"] .works-grid__video,
+.works-grid__item[data-slot="27"] .works-grid__video,
+.works-grid__item[data-slot="28"] .works-grid__video,
+.works-grid__item[data-slot="30"] .works-grid__video,
+.works-grid__item[data-slot="32"] .works-grid__video,
+.works-grid__item[data-slot="33"] .works-grid__video,
+.works-grid__item[data-slot="34"] .works-grid__video,
+.works-grid__item[data-slot="35"] .works-grid__video,
+.works-grid__item[data-slot="36"] .works-grid__video,
+.works-grid__item[data-slot="37"] .works-grid__video,
+.works-grid__item[data-slot="38"] .works-grid__video,
+.works-grid__item[data-slot="39"] .works-grid__video,
+.works-grid__item[data-slot="47"] .works-grid__video,
+.works-grid__item[data-slot="29"] img {
+  object-fit: contain;
+  object-position: center;
+}
+
 /* Плейсхолдер-подпись у пустых плашек — номер слота, форма и рабочее
    название проекта, чтобы удобно было готовить визуал под конкретный
    слот. У карточек с реальным контентом этой подписи нет. */
