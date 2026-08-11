@@ -248,8 +248,7 @@
   var hoverControls = document.querySelectorAll(
     '.site-header__cta, .theme-toggle, .site-footer__link, ' +
     '.site-footer__menu-btn, .site-footer__top-btn, ' +
-    '.footer-menu-panel__link, .hero__cta, ' +
-    '.btn, .btn-icon, .chip--filter, .timeline__node, .about-sticky-cta'
+    '.footer-menu-panel__link, .hero__cta'
   );
 
   hoverControls.forEach(function (control) {

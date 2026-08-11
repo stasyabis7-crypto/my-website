@@ -68,11 +68,6 @@
   mask-image: url("../assets/icons/Interface/works.svg");
 }
 
-.icon--about {
-  -webkit-mask-image: url("../assets/icons/Interface/about-me.svg");
-  mask-image: url("../assets/icons/Interface/about-me.svg");
-}
-
 .icon--activities {
   -webkit-mask-image: url("../assets/icons/Interface/activities.svg");
   mask-image: url("../assets/icons/Interface/activities.svg");
