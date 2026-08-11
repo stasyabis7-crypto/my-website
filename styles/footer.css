@@ -742,3 +742,104 @@ html.chrome--compact .footer-menu-panel__link .icon {
 html.footer-menu-open {
   overflow: hidden;
 }
+
+/*
+  MVP: навигация временно скрыта, но остаётся в разметке вместе со всей
+  логикой раскрытия — её можно вернуть, удалив только этот блок. Вместо
+  меню показываем прямую CTA в Telegram. На мобильных она постоянно
+  закреплена снизу, в том числе после перехода футера в is-collapsed.
+*/
+.site-footer__telegram {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--chrome-item-h, 3.5rem);
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--color-action-active);
+  border-radius: 999px;
+  background: var(--color-action-active);
+  color: var(--color-action-active-text);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    transform var(--button-press-duration, 0.12s) ease-out;
+}
+
+.site-footer__telegram:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-footer__telegram:hover {
+    background: var(--color-action-hover);
+    border-color: var(--color-action-hover);
+  }
+}
+
+.site-footer__telegram:active {
+  transform: scale(0.97);
+}
+
+.site-footer__nav-wrap,
+.site-footer__menu-btn,
+.footer-menu-panel,
+.footer-menu-backdrop {
+  display: none !important;
+}
+
+.site-footer,
+.site-footer.is-collapsed {
+  width: auto;
+  height: auto;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.site-footer.is-collapsed {
+  left: var(--page-px, 10px);
+  right: var(--page-px, 10px);
+  width: auto;
+  height: var(--chrome-item-h, 3.5rem);
+  transform: none;
+}
+
+.site-footer.is-collapsed .site-footer__telegram {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.site-footer::after,
+.site-footer.is-collapsed::after {
+  display: none;
+}
+
+@media (min-width: 1101px) {
+  html:not(.chrome--compact) .site-footer,
+  html:not(.chrome--compact) .site-footer.is-collapsed {
+    width: auto;
+    height: auto;
+    padding: 0;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 0;
+    box-shadow: none;
+  }
+
+  html:not(.chrome--compact) .site-footer.is-collapsed::after {
+    display: none;
+  }
+
+  html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__telegram {
+    position: static;
+  }
+}
