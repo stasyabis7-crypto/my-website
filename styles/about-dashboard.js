@@ -32,21 +32,15 @@
 
   /* Career player. */
   var careerTabs = Array.prototype.slice.call(document.querySelectorAll('.career-rail [data-company]'));
-  var detailPeriod = document.querySelector('.career-detail__period');
-  var detailCompany = document.querySelector('.career-detail__company');
-  var detailRole = document.querySelector('.career-detail__role');
-  var detailCopy = document.querySelector('.career-detail__copy');
-  var detailMore = document.querySelector('.career-detail__more');
-
   function selectCompany(tab) {
     careerTabs.forEach(function (item) { item.setAttribute('aria-selected', item === tab ? 'true' : 'false'); });
-    if (detailPeriod) detailPeriod.textContent = tab.dataset.period;
-    if (detailCompany) detailCompany.textContent = tab.textContent.trim();
-    if (detailRole) detailRole.textContent = tab.dataset.role;
-    if (detailCopy) detailCopy.textContent = tab.dataset.copy;
-    if (detailMore) detailMore.dataset.openCompany = tab.dataset.company;
   }
-  careerTabs.forEach(function (tab) { tab.addEventListener('click', function () { selectCompany(tab); }); });
+  careerTabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      selectCompany(tab);
+      openCompany(tab.dataset.company);
+    });
+  });
 
   /* Company detail uses the existing accessible drawer markup and content templates. */
   var backdrop = document.getElementById('panel-backdrop');
@@ -56,11 +50,13 @@
   var panelTitle = document.getElementById('panel-title');
   var panelRole = document.getElementById('panel-role');
   var panelClose = document.getElementById('panel-close');
+  var lastCareerTab = null;
 
   function openCompany(company) {
     var tab = document.querySelector('.career-rail [data-company="' + company + '"]');
     var template = document.getElementById('company-tpl-' + company);
     if (!tab || !template || !panel || !backdrop || !panelBody) return;
+    lastCareerTab = tab;
     panelBody.innerHTML = '';
     panelBody.appendChild(template.content.cloneNode(true));
     panelPeriod.textContent = tab.dataset.period;
@@ -80,10 +76,9 @@
     backdrop.classList.remove('is-open');
     document.documentElement.style.overflow = '';
     window.setTimeout(function () { panel.hidden = true; backdrop.hidden = true; }, reduceMotion ? 0 : 450);
-    if (detailMore) detailMore.focus();
+    if (lastCareerTab) lastCareerTab.focus();
   }
 
-  if (detailMore) detailMore.addEventListener('click', function () { openCompany(detailMore.dataset.openCompany); });
   if (panelClose) panelClose.addEventListener('click', closeCompany);
   if (backdrop) backdrop.addEventListener('click', closeCompany);
   document.addEventListener('keydown', function (event) { if (event.key === 'Escape') closeCompany(); });
