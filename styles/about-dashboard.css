@@ -14,8 +14,9 @@
   min-height: min(52rem, calc(100vh - 2rem));
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-template-rows: 1fr auto;
+  grid-template-rows: auto auto;
   gap: 10px;
+  align-self: start;
 }
 
 .profile-dashboard > * {
@@ -111,13 +112,13 @@
 .contacts--compact .contacts__card{background:var(--color-ink);color:var(--color-ink-contrast)}.contacts--compact .contacts__text .text-body-sm{color:color-mix(in srgb,currentColor 68%,transparent)}
 
 @media (max-width:1100px){
-  .profile-dashboard{min-height:auto;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto}.profile-dashboard__intro,.profile-dashboard__portrait{grid-column:span 1}.profile-dashboard__intro{min-height:34rem}.profile-metric{grid-column:span 1}.profile-dashboard__domains{grid-column:1/-1}.deck-controls{display:none}.publication-grid,.community-grid{grid-template-columns:1fr 1fr}.publication-category:last-child,.community-card:last-child{grid-column:1/-1}
+  .profile-dashboard{min-height:auto;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto}.profile-dashboard__intro,.profile-dashboard__portrait{grid-column:span 1}.profile-dashboard__intro{min-height:0}.profile-metric{grid-column:span 1}.profile-dashboard__domains{grid-column:1/-1}.deck-controls{display:none}.publication-grid,.community-grid{grid-template-columns:1fr 1fr}.publication-category:last-child,.community-card:last-child{grid-column:1/-1}
 }
 
 @media (min-width:1101px){
   .page-about{position:relative;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px;padding:0 var(--page-px) 3rem!important;background:transparent;overflow:visible;margin-top:calc(var(--page-px) + var(--header-h,3.5rem) + 10px)}
   .profile-dashboard,.skills-deck,.career-player,.publications{margin:0}
-  .profile-dashboard{grid-column:1/9;min-height:0}
+  .profile-dashboard{grid-column:1/9;min-height:0;height:max-content;align-self:start}
   .profile-dashboard__intro{grid-column:span 7;padding:clamp(1.75rem,2.5vw,2.5rem)}
   .profile-dashboard__portrait{grid-column:span 5;min-height:0;aspect-ratio:1/1}
   .profile-dashboard__intro h1{font-size:clamp(3.5rem,4.8vw,5.5rem);line-height:.9}
