@@ -33,8 +33,13 @@
   if (typeof IntersectionObserver === 'undefined') return;
 
   var PAUSE_MARGIN = '200px 0px';
-  var UNLOAD_MARGIN = '1200px 0px';
-  var UNLOAD_DELAY = 1000;
+  // Была 1200px — на телефоне это всё ещё оставляло одновременно
+  // загруженными больше плиток, чем Safari готов держать в памяти
+  // (по факту ~3-5 "страниц" разом, дальше — сам сбрасывает вкладку).
+  // Уже к 400px гораздо меньше live-iframe одновременно, и меньше
+  // залпового пересоздания плиток при быстрой прокрутке.
+  var UNLOAD_MARGIN = '400px 0px';
+  var UNLOAD_DELAY = 600;
 
   function setPaused(el, paused) {
     try {
