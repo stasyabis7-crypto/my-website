@@ -88,21 +88,4 @@
   if (backdrop) backdrop.addEventListener('click', closeCompany);
   document.addEventListener('keydown', function (event) { if (event.key === 'Escape') closeCompany(); });
 
-  /* Category covers are ready for real article lists. For now they clearly
-     communicate their expandable state without navigating to an empty URL. */
-  document.querySelectorAll('.publication-category').forEach(function (card) {
-    card.addEventListener('click', function () {
-      var expanded = card.getAttribute('aria-expanded') === 'true';
-      document.querySelectorAll('.publication-category').forEach(function (other) {
-        other.setAttribute('aria-expanded', 'false');
-        var otherHint = other.querySelector('.publication-category__hint');
-        if (otherHint) otherHint.textContent = 'Открыть подборку ↗';
-      });
-      if (!expanded) {
-        card.setAttribute('aria-expanded', 'true');
-        var hint = card.querySelector('.publication-category__hint');
-        if (hint) hint.textContent = 'Подборка готовится';
-      }
-    });
-  });
 })();
