@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="styles/about.css?v=1" />
 <link rel="stylesheet" href="styles/timeline.css?v=1" />
 <link rel="stylesheet" href="styles/about-activities.css?v=1" />
+<link rel="stylesheet" href="styles/about-dashboard.css?v=1" />
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -146,8 +147,118 @@
 
   <main class="container page-about">
 
+    <!-- ============ DASHBOARD ============ -->
+    <section class="profile-dashboard" id="about-hero" data-reveal-root>
+      <div class="profile-dashboard__intro" data-reveal>
+        <p class="text-overline">Сейчас в Авито</p>
+        <h1 class="text-display">Анастасия<br />Вихарева</h1>
+        <p class="profile-dashboard__role text-h3">Senior Product Designer</p>
+        <p class="profile-dashboard__statement text-h2">Делаю сложное понятным.</p>
+        <div class="profile-dashboard__actions">
+          <a href="#experience" class="btn btn--primary"><span class="text-button">Опыт</span><span class="icon icon--down" aria-hidden="true"></span></a>
+          <a href="#contacts" class="btn btn--outline"><span class="text-button">Написать</span></a>
+        </div>
+      </div>
+
+      <div class="profile-dashboard__portrait" data-reveal>
+        <img src="about/assets/portrait.webp" alt="Портрет Анастасии Вихаревой" onerror="this.hidden=true" />
+        <span class="profile-dashboard__monogram text-display" aria-hidden="true">АВ</span>
+        <span class="profile-dashboard__status text-label"><i aria-hidden="true"></i> Product Designer · Авито</span>
+      </div>
+
+      <div class="profile-metric profile-metric--experience" data-reveal>
+        <strong class="text-display">5+</strong><span class="text-body-sm">лет в продукте</span>
+        <svg viewBox="0 0 220 56" aria-hidden="true"><path d="M2 48 C28 44 36 38 55 39 S82 17 104 26 S135 8 155 15 S184 3 218 6" /></svg>
+      </div>
+      <div class="profile-metric profile-metric--companies" data-reveal>
+        <strong class="text-display">6</strong><span class="text-body-sm">компаний</span>
+        <div class="profile-metric__dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="profile-dashboard__domains" data-reveal>
+        <span class="text-overline">Фокус</span>
+        <div><span>Complex systems</span><span>E-commerce</span><span>Charity</span><span>Mobile & Web</span></div>
+      </div>
+    </section>
+
+    <!-- ============ КОМПЕТЕНЦИИ ============ -->
+    <section class="skills-deck" id="approach">
+      <div class="dashboard-section-head" data-reveal>
+        <div><p class="text-overline">Как я работаю</p><h2 class="text-h2">От вопроса — к работающей системе</h2></div>
+        <div class="deck-controls" aria-label="Переключить карточку">
+          <button class="btn-icon deck-prev" type="button" aria-label="Предыдущая карточка"><span class="icon icon--arrow-left"></span></button>
+          <span class="deck-counter text-label">01 / 05</span>
+          <button class="btn-icon deck-next" type="button" aria-label="Следующая карточка"><span class="icon icon--arrow-right"></span></button>
+        </div>
+      </div>
+      <div class="skills-deck__track" tabindex="0">
+        <article class="skill-slide skill-slide--blue"><span class="text-overline">01 · Контекст</span><h3 class="text-h2">Нахожу проблему за запросом.</h3><div class="skill-visual skill-visual--nodes" aria-hidden="true"><i></i><i></i><i></i><i></i></div></article>
+        <article class="skill-slide skill-slide--pink"><span class="text-overline">02 · Система</span><h3 class="text-h2">Проектирую не экран, а сценарий.</h3><div class="skill-visual skill-visual--flow" aria-hidden="true"><i></i><i></i><i></i></div></article>
+        <article class="skill-slide skill-slide--lime"><span class="text-overline">03 · Проверка</span><h3 class="text-h2">Проверяю до дорогой разработки.</h3><div class="skill-visual skill-visual--pulse" aria-hidden="true"></div></article>
+        <article class="skill-slide skill-slide--orange"><span class="text-overline">04 · Запуск</span><h3 class="text-h2">Довожу решение до прода.</h3><div class="skill-visual skill-visual--launch" aria-hidden="true">↗</div></article>
+        <article class="skill-slide skill-slide--violet"><span class="text-overline">05 · Рост</span><h3 class="text-h2">Смотрю на данные. Улучшаю дальше.</h3><div class="skill-visual skill-visual--bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div></article>
+      </div>
+    </section>
+
+    <!-- ============ КАРЬЕРНЫЙ ПЛЕЕР ============ -->
+    <section class="career-player" id="experience">
+      <div class="dashboard-section-head" data-reveal>
+        <div><p class="text-overline">Профессиональный путь</p><h2 class="text-h2">Шесть команд. Разные масштабы.</h2></div>
+        <p class="text-body about-section-lead">Выберите компанию на временной шкале.</p>
+      </div>
+      <div class="career-player__stage" data-reveal>
+        <div class="career-years text-caption" aria-hidden="true"><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>2025</span><span>сейчас</span></div>
+        <div class="career-rail" role="tablist" aria-label="Компании">
+          <button type="button" role="tab" data-company="funsun" data-period="2021 — 2022" data-role="UX/UI Designer" data-copy="Убрала препятствия на пути от поиска тура до покупки." style="--start:0;--span:29;--accent:var(--about-accent-6)"><span>FUN&amp;SUN</span></button>
+          <button type="button" role="tab" data-company="nexign" data-period="2022" data-role="Проектировщик интерфейсов" data-copy="Собрала KPI-интерфейс для большой компании за три месяца." style="--start:17;--span:17;--accent:var(--about-accent-5)"><span>Nexign</span></button>
+          <button type="button" role="tab" data-company="swtecnn" data-period="2022 — 2024" data-role="UX/UI Designer" data-copy="Сделала профессиональные системы понятнее врачам и инженерам." style="--start:26;--span:32;--accent:var(--about-accent-4)"><span>SWTecNN</span></button>
+          <button type="button" role="tab" data-company="flowwow" data-period="2024" data-role="Senior Product Designer" data-copy="Усилила доверие в ключевых сценариях покупки." style="--start:55;--span:12;--accent:var(--about-accent-3)"><span>Flowwow</span></button>
+          <button type="button" role="tab" data-company="ozon-tech" data-period="2024 — 2025" data-role="Product Designer" data-copy="Проектировала инструменты, которые помогают продавцам зарабатывать." style="--start:64;--span:17;--accent:var(--about-accent-2)"><span>Ozon Tech</span></button>
+          <button type="button" role="tab" data-company="avito" data-period="2025 — сейчас" data-role="Product Designer" data-copy="Развиваю благотворительность внутри большой экосистемы." style="--start:79;--span:21;--accent:var(--about-accent-1)" aria-selected="true"><span>Авито</span></button>
+        </div>
+        <div class="career-detail" aria-live="polite">
+          <div><span class="career-detail__period text-overline">2025 — сейчас</span><h3 class="career-detail__company text-display">Авито</h3><p class="career-detail__role text-body-sm">Product Designer</p></div>
+          <p class="career-detail__copy text-h3">Развиваю благотворительность внутри большой экосистемы.</p>
+          <button type="button" class="btn btn--outline career-detail__more" data-open-company="avito"><span class="text-button">Подробнее</span><span class="icon icon--arrow-right"></span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ПУБЛИКАЦИИ И СООБЩЕСТВО ============ -->
+    <section class="publications" id="activities">
+      <div class="dashboard-section-head" data-reveal><div><p class="text-overline">Публикации и сообщество</p><h2 class="text-h2">Проектирую. Пишу. Развиваю.</h2></div></div>
+      <div class="publication-grid">
+        <button type="button" class="publication-category publication-category--systems" data-reveal aria-expanded="false"><span class="text-overline">Статьи · Системы</span><strong class="text-h2">Как устроить сложное</strong><span class="publication-category__hint text-label">Открыть подборку ↗</span></button>
+        <button type="button" class="publication-category publication-category--practice" data-reveal aria-expanded="false"><span class="text-overline">Статьи · Практика</span><strong class="text-h2">Как довести до запуска</strong><span class="publication-category__hint text-label">Открыть подборку ↗</span></button>
+        <button type="button" class="publication-category publication-category--growth" data-reveal aria-expanded="false"><span class="text-overline">Статьи · Развитие</span><strong class="text-h2">Как расти в продукте</strong><span class="publication-category__hint text-label">Открыть подборку ↗</span></button>
+      </div>
+      <div class="community-grid">
+        <article class="community-card" data-reveal><span class="community-card__icon" aria-hidden="true">↗</span><p class="text-overline">Telegram</p><h3 class="text-h3">Пишу посты для каналов компаний.</h3><p class="text-body-sm">Делюсь практикой продуктового дизайна с профессиональной аудиторией.</p></article>
+        <article class="community-card community-card--accent" data-reveal><span class="community-card__icon" aria-hidden="true">M</span><p class="text-overline">Medium</p><h3 class="text-h3">Участвую в дизайн-сообществах.</h3><p class="text-body-sm">Как креатор на платформе помогаю развивать тему дизайна и делиться опытом.</p></article>
+        <article class="community-card" data-reveal><span class="community-card__icon" aria-hidden="true">◎</span><p class="text-overline">Менторство</p><h3 class="text-h3">Помогаю дизайнерам расти увереннее.</h3><a href="#contacts" class="text-link">Обсудить встречу</a></article>
+      </div>
+    </section>
+
+    <!-- ============ ОБРАЗОВАНИЕ ============ -->
+    <section class="learning-strip" aria-label="Образование и навыки" data-reveal>
+      <span class="text-overline">Продолжаю учиться</span>
+      <div class="learning-strip__marquee text-h4"><span>НГТУ</span><span>Accessibility</span><span>Service Design</span><span>Mobile</span><span>Typography</span><span>English C1</span></div>
+    </section>
+
+    <!-- ============ КОНТАКТЫ ============ -->
+    <section class="contacts contacts--compact" id="contacts">
+      <div class="contacts__card" data-reveal>
+        <div class="contacts__text"><p class="text-overline">Контакты</p><h2 class="text-display">Есть задача, которую нужно сделать понятнее?</h2><p class="text-body-sm">Нижний Новгород · удалённо</p></div>
+        <div class="contacts__actions">
+          <a href="mailto:stasyabis7@gmail.com" class="btn btn--accent"><span class="text-button">Написать</span></a>
+          <button type="button" class="btn btn--outline" id="copy-email-btn" data-email="stasyabis7@gmail.com"><span class="text-button" id="copy-email-label">Скопировать email</span></button>
+        </div>
+      </div>
+    </section>
+
+    <template id="legacy-about-content">
+    <!-- Previous long-form layout retained temporarily for content reference. -->
     <!-- ============ 1. HERO ============ -->
-    <section class="about-hero" id="about-hero" data-reveal-root>
+    <section class="about-hero" data-legacy-about>
       <div class="about-hero__inner">
         <p class="about-hero__status text-overline" data-reveal>Сейчас — Product Designer в Авито</p>
 
@@ -268,7 +379,7 @@
     </section>
 
     <!-- ============ 4. ПРОФЕССИОНАЛЬНЫЙ ПУТЬ ============ -->
-    <section class="timeline-section" id="experience">
+    <section class="timeline-section" id="legacy-experience">
       <div class="timeline-section__head">
         <p class="text-overline" data-reveal>Профессиональный путь</p>
         <h2 class="text-h2" data-reveal>Шесть компаний, один и тот же вопрос: «а как сделать это понятнее?»</h2>
@@ -334,7 +445,7 @@
     </section>
 
     <!-- ============ 5. КАК Я РАБОТАЮ ============ -->
-    <section class="approach" id="approach">
+    <section class="approach" id="legacy-approach">
       <div class="approach__head">
         <p class="text-overline" data-reveal>Как я работаю</p>
         <h2 class="text-h2" data-reveal>От задачи до работающего продукта</h2>
@@ -364,7 +475,7 @@
     </section>
 
     <!-- ============ 6. ПРОФЕССИОНАЛЬНЫЕ АКТИВНОСТИ ============ -->
-    <section class="activities" id="activities">
+    <section class="activities" id="legacy-activities">
       <div class="activities__head">
         <p class="text-overline" data-reveal>Профессиональные активности</p>
         <h2 class="text-h2" data-reveal>Делюсь опытом и помогаю другим расти</h2>
@@ -525,7 +636,7 @@
     </section>
 
     <!-- ============ 8. КОНТАКТЫ ============ -->
-    <section class="contacts" id="contacts">
+    <section class="contacts">
       <div class="contacts__card" data-reveal>
         <div class="contacts__text">
           <p class="text-overline">Контакты</p>
@@ -543,8 +654,8 @@
             <span class="icon icon--contacts" aria-hidden="true"></span>
             <span class="text-button">stasyabis7@gmail.com</span>
           </a>
-          <button type="button" class="btn btn--outline" id="copy-email-btn" data-email="stasyabis7@gmail.com">
-            <span class="text-button" id="copy-email-label">Скопировать email</span>
+          <button type="button" class="btn btn--outline" data-email="stasyabis7@gmail.com">
+            <span class="text-button">Скопировать email</span>
           </button>
           <a href="#" class="btn btn--outline">
             <span class="text-button">Открыть Telegram</span>
@@ -561,6 +672,7 @@
         </div>
       </div>
     </section>
+    </template>
 
   </main>
 
@@ -888,5 +1000,6 @@
   <script src="styles/typography-rules.js?v=1"></script>
   <script src="styles/haptics.js?v=1"></script>
   <script src="styles/about.js?v=1"></script>
+  <script src="styles/about-dashboard.js?v=1"></script>
 </body>
 </html>

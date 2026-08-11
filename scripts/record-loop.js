@@ -2,7 +2,7 @@
 // used to replace heavy live iframes in the homepage grid with cheap video.
 // Not part of the site runtime — run manually with node, not shipped.
 //
-// Usage: node scripts/record-loop.js <relative-path-to-project> <width> <height> <durationSeconds> <outFile> [bgColor]
+// Usage: node scripts/record-loop.js <relative-path-to-project> <width> <height> <durationSeconds> <outFile> [bgColor] [embedTheme]
 // Example: node scripts/record-loop.js works/15-spief-2025/index.html 1080 1080 11.2 /tmp/slot15.webm
 //
 // bgColor: some projects render on a transparent canvas and rely on the
@@ -10,6 +10,13 @@
 // for their real backdrop. Standalone in a browser tab that card doesn't
 // exist, so pass the same color explicitly or the recording won't match
 // what the live site actually shows.
+//
+// embedTheme: 'dark' | 'light' — projects that already have their own
+// [data-embed-theme] CSS (see works/shared/theme-sync.js) normally get this
+// attribute from a postMessage handshake with the parent page. Standalone,
+// window.parent === window, so the handshake never fires and the attribute
+// is never set. Force it so the recording reflects what the site actually
+// sends for that theme.
 
 const puppeteer = require('puppeteer-core');
 const path = require('path');
@@ -39,16 +46,16 @@ function startServer(root, port) {
 }
 
 async function main() {
-  const [, , projectRelPath, wArg, hArg, durArg, outFile, bgColor] = process.argv;
+  const [, , projectRelPath, wArg, hArg, durArg, outFile, bgColor, embedTheme] = process.argv;
   if (!projectRelPath || !outFile) {
-    console.error('Usage: node record-loop.js <project/index.html> <w> <h> <durationSeconds> <outFile>');
+    console.error('Usage: node record-loop.js <project/index.html> <w> <h> <durationSeconds> <outFile> [bgColor] [embedTheme]');
     process.exit(1);
   }
   const width = parseInt(wArg, 10);
   const height = parseInt(hArg, 10);
   const duration = parseFloat(durArg);
   const root = path.resolve(__dirname, '..');
-  const port = 8934;
+  const port = 8934 + Math.floor(Math.random() * 1000);
 
   const server = await startServer(root, port);
   const browser = await puppeteer.launch({
@@ -72,6 +79,11 @@ async function main() {
         document.documentElement.style.background = color;
         document.body.style.background = color;
       }, bgColor);
+    }
+    if (embedTheme) {
+      await page.evaluate((theme) => {
+        document.documentElement.setAttribute('data-embed-theme', theme);
+      }, embedTheme);
     }
 
     const recorder = await page.screencast({ path: outFile });
