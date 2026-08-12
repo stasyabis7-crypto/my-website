@@ -4,7 +4,7 @@
  */
 window.SITE_ANALYTICS = {
   googleMeasurementId: '', // Example: G-XXXXXXXXXX
-  yandexMetricaId: '',     // Example: 12345678
+  yandexMetricaId: '111528549',
   webvisor: true,
   debug: false
 };
