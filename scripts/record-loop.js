@@ -86,7 +86,12 @@ async function main() {
       }, embedTheme);
     }
 
-    const recorder = await page.screencast({ path: outFile });
+    // page.screencast() defaults to VP9 CRF 30 for the raw capture (see
+    // puppeteer-core ScreenRecorder.js, CRF_VALUE) — that's the actual
+    // quality ceiling for everything downstream: no amount of re-encoding
+    // this capture with a lower CRF later can recover detail already lost
+    // here. Force a much higher-quality capture instead (0-63, lower=better).
+    const recorder = await page.screencast({ path: outFile, quality: 8 });
     await new Promise((r) => setTimeout(r, Math.round(duration * 1000)));
     await recorder.stop();
     console.log('Wrote', outFile);

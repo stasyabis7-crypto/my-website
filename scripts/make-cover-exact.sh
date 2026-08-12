@@ -15,6 +15,6 @@ trap 'rm -rf "$TMP"' EXIT
 
 node scripts/record-loop.js "$PROJECT" "$W" "$H" "$DUR" "$TMP/raw.webm" "$BG" "$EMBED_THEME"
 ffmpeg -y -loglevel error -i "$TMP/raw.webm" -c copy "$TMP/remux.webm"
-ffmpeg -y -loglevel error -i "$TMP/remux.webm" -vf "scale=${W}:${H}" -c:v libx264 -pix_fmt yuv420p -crf 16 -preset slow -movflags +faststart -an "$OUT"
+ffmpeg -y -loglevel error -i "$TMP/remux.webm" -vf "scale=${W}:${H}" -c:v libx264 -pix_fmt yuv420p -crf 20 -preset slow -movflags +faststart -an "$OUT"
 
 echo "Wrote $OUT"
