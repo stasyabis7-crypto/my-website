@@ -82,8 +82,3 @@
   -webkit-mask-image: url("../assets/icons/Interface/cv.svg");
   mask-image: url("../assets/icons/Interface/cv.svg");
 }
-
-.icon--play {
-  -webkit-mask-image: url("../assets/icons/Interface/play.svg");
-  mask-image: url("../assets/icons/Interface/play.svg");
-}

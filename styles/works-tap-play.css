@@ -43,11 +43,15 @@
   object-fit: cover;
 }
 
-/* Стекло — тот же рецепт, что у theme-toggle/header (--color-glass +
-   liquid-glass-filter): кружок должен читаться как часть той же
-   системы контролов, а не отдельная кнопка с нуля. Цвет заливки и
-   иконки — currentColor от var(--color-text), поэтому сами
-   переключаются с темой, отдельных тёмных/светлых SVG не нужно. */
+/* Сознательно НЕ --color-glass/var(--color-text) (тема сайта) — под
+   кнопкой лежит постер конкретной работы, а не фон страницы, и его
+   цвет с темой сайта никак не связан: тёмная тема + светлый постер
+   даёт светлое стекло + светлую иконку поверх светлого же постера,
+   контраста почти нет. Поэтому кружок и иконка — фиксированные,
+   одинаковые в обеих темах: тёмное полупрозрачное стекло + всегда
+   белая иконка, это читается на любом постере. blur — тот же рецепт,
+   что у liquid-glass (--liquid-glass-filter не завязан на тему,
+   только на prefers-reduced-motion). */
 .works-tap-cover__play {
   position: absolute;
   top: 50%;
@@ -59,20 +63,21 @@
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
-  color: var(--color-text);
-  background: var(--color-glass);
+  color: #fff;
+  background: rgba(20, 22, 26, 0.55);
   backdrop-filter: var(--liquid-glass-filter);
   -webkit-backdrop-filter: var(--liquid-glass-filter);
-  box-shadow: var(--liquid-glass-glow);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2), 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
-.works-tap-cover__play .icon {
+.works-tap-cover__play svg {
   width: 1.5rem;
   height: 1.5rem;
   /* Треугольник плей визуально не по центру своего вьюбокса (упор в
      левый край) — небольшой сдвиг вправо компенсирует оптический
      перекос кружка. */
   margin-left: 0.125rem;
+  display: block;
 }
 
 .works-tap-cover.is-hidden {
