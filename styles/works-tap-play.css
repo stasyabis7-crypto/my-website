@@ -1,0 +1,80 @@
+/*
+  Мобилка (<=640px): анимированные плитки (iframe/видео) по умолчанию
+  не крутятся сами — вместо этого стоп-кадр + кнопка "плей", запуск
+  только по тапу (см. works-tap-play.js, память экономит именно то,
+  что iframe вообще не грузится, пока не тапнули — см. комментарий в
+  works-anim-gate.js про то, почему на телефоне сам браузер сбрасывал
+  вкладку).
+
+  На десктопе/планшете works-tap-play.js вообще не выполняется —
+  .works-tap-cover в разметку не попадает, эти правила ни на что не
+  влияют.
+*/
+.works-tap-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* contain по умолчанию — тот же принцип, что у embed-scale.js для
+   живого iframe (min по обеим осям, без обрезки): постер снят в
+   нативном разрешении проекта, а не в пропорциях слота карточки, так
+   что cover обрезал бы его иначе, чем обрежется реальная анимация
+   после тапа — переход постер→iframe дёрнулся бы кадром. cover — только
+   там, где на это явно согласился сам embed-scale (data-fit="cover",
+   см. works-tap-play.js, копирует атрибут с iframe на обложку). */
+.works-tap-cover__poster {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.works-tap-cover[data-fit="cover"] .works-tap-cover__poster {
+  object-fit: cover;
+}
+
+/* Стекло — тот же рецепт, что у theme-toggle/header (--color-glass +
+   liquid-glass-filter): кружок должен читаться как часть той же
+   системы контролов, а не отдельная кнопка с нуля. Цвет заливки и
+   иконки — currentColor от var(--color-text), поэтому сами
+   переключаются с темой, отдельных тёмных/светлых SVG не нужно. */
+.works-tap-cover__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  color: var(--color-text);
+  background: var(--color-glass);
+  backdrop-filter: var(--liquid-glass-filter);
+  -webkit-backdrop-filter: var(--liquid-glass-filter);
+  box-shadow: var(--liquid-glass-glow);
+}
+
+.works-tap-cover__play .icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  /* Треугольник плей визуально не по центру своего вьюбокса (упор в
+     левый край) — небольшой сдвиг вправо компенсирует оптический
+     перекос кружка. */
+  margin-left: 0.125rem;
+}
+
+.works-tap-cover.is-hidden {
+  display: none;
+}

@@ -14,6 +14,15 @@
   }
 
   items.forEach(function (item) {
+    // Плитка на мобилке заперта works-tap-play.js (постер вместо iframe,
+    // запуск по тапу) — src не подставлен, 'load' у iframe никогда не
+    // случится, ждать его тут значило бы держать чашку до предохранителя
+    // на каждой загрузке. Постер сам по себе картинка, не гейтит экран.
+    if (item.classList.contains('is-tap-locked')) {
+      reveal(item);
+      return;
+    }
+
     var media = item.querySelector('iframe, img');
     if (!media) {
       reveal(item);

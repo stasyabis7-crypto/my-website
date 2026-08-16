@@ -41,11 +41,16 @@
   var UNLOAD_MARGIN = '400px 0px';
   var UNLOAD_DELAY = 600;
 
+  function isTapLocked(el) {
+    var item = el.closest('.works-grid__item');
+    return !!(item && item.classList.contains('is-tap-locked'));
+  }
+
   function setPaused(el, paused) {
     try {
       if (el.tagName === 'VIDEO') {
         if (paused) el.pause();
-        else el.play().catch(function () {});
+        else if (!isTapLocked(el)) el.play().catch(function () {});
         return;
       }
       var win = el.contentWindow;
@@ -84,11 +89,13 @@
   var unloadTimers = new WeakMap();
 
   function unload(frame) {
+    if (isTapLocked(frame)) return;
     if (frame.getAttribute('src') === 'about:blank') return;
     frame.src = 'about:blank';
   }
 
   function reload(frame) {
+    if (isTapLocked(frame)) return;
     var original = frame.dataset.src;
     if (!original || frame.getAttribute('src') === original) return;
     frame.src = original;
@@ -117,7 +124,10 @@
   );
 
   frames.forEach(function (frame) {
-    frame.dataset.src = frame.getAttribute('src') || '';
+    // dataset.src может быть уже выставлен works-tap-play.js (мобилка,
+    // src ещё не подставлен в атрибут до тапа) — тогда берём готовое
+    // значение, а не пустую строку из ещё не загруженного src.
+    frame.dataset.src = frame.dataset.src || frame.getAttribute('src') || '';
     unloadObserver.observe(frame);
   });
 })();

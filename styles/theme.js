@@ -76,12 +76,16 @@
     var media = document.querySelectorAll('[data-src-dark][data-src-light]');
     for (var i = 0; i < media.length; i++) {
       var el = media[i];
+      var nextPoster = theme === 'light' ? el.dataset.posterLight : el.dataset.posterDark;
+      if (nextPoster && el.poster !== nextPoster) el.poster = nextPoster;
+
       var next = theme === 'light' ? el.dataset.srcLight : el.dataset.srcDark;
       if (!next || el.getAttribute('src') === next) continue;
       if (el.tagName === 'VIDEO') {
         el.src = next;
         el.load();
-        if (isNearViewport(el)) el.play().catch(function () {});
+        var locked = el.closest('.works-grid__item');
+        if (isNearViewport(el) && !(locked && locked.classList.contains('is-tap-locked'))) el.play().catch(function () {});
       } else {
         el.src = next;
       }
