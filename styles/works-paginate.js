@@ -41,7 +41,15 @@
   function reveal(item) {
     item.classList.remove('is-paginated-hidden');
     var frame = item.querySelector('.works-grid__embed-frame');
-    if (frame && frame.dataset.src && !frame.getAttribute('src')) frame.src = frame.dataset.src;
+    // Пока плитка скрыта (display:none, "не в кадре" для observer'а),
+    // works-anim-gate.js по своему дальнему таймеру уже мог сам
+    // выставить src="about:blank" (тот же наблюдатель следит за ВСЕМИ
+    // frame, не только видимыми) — сравнивать нужно с data-src, а не
+    // просто с "src ещё пустой", иначе плитка так и останется на
+    // about:blank навсегда, даже после открытия кнопкой.
+    if (frame && frame.dataset.src && frame.getAttribute('src') !== frame.dataset.src) {
+      frame.src = frame.dataset.src;
+    }
     var video = item.querySelector('.works-grid__video');
     if (video) video.play().catch(function () {});
   }
