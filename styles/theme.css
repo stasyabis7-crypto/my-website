@@ -69,7 +69,6 @@ html.no-liquid-glass-distort .site-header,
 html.no-liquid-glass-distort .site-footer,
 html.no-liquid-glass-distort .site-footer__top-btn,
 html.no-liquid-glass-distort .theme-toggle__track,
-html.no-liquid-glass-distort .works-tap-cover__play,
 html.no-liquid-glass-distort:not(.chrome--compact) .site-footer.is-collapsed {
   backdrop-filter: blur(4px) saturate(210%);
   -webkit-backdrop-filter: blur(4px) saturate(210%);

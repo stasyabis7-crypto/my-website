@@ -1,0 +1,22 @@
+/*
+  Мобилка (<=640px, см. works-paginate.js) — плитки сверх текущей
+  порции. Десктоп/планшет: скрипт вообще не выполняется, класс в
+  разметку не попадает, это правило ни на что не влияет.
+*/
+.works-grid__item.is-paginated-hidden {
+  display: none;
+}
+
+/* Тот же рецепт, что у .hero__cta (см. hero.css) — сплошная плашка
+   ink/ink-contrast, без стекла: кнопка внизу списка, не поверх фото. */
+.works-grid__load-more {
+  display: block;
+  margin: 1.5rem auto 0;
+  padding-block: 1rem;
+  padding-inline: 1.75rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: var(--color-ink-contrast);
+  cursor: pointer;
+}
