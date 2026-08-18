@@ -4,14 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>#ЯПомогаю — HTML-анимация</title>
-  <style>:root{color-scheme:light dark} 
+  <style>:root{color-scheme:normal;--stage-bg:#f0f1f4}
+    [data-embed-theme="dark"]{--stage-bg:#262a33}
     * { box-sizing: border-box; }
     html, body { margin: 0; min-height: 100%; }
     body {
       display: grid;
       place-items: center;
       overflow: hidden;
-      background:transparent;
+      background:var(--stage-bg);
       font-family: Arial, Helvetica, sans-serif;
     }
     #viewport {
@@ -19,7 +20,7 @@
       width: min(100vw, 1000px);
       aspect-ratio: 4 / 3;
       overflow: hidden;
-      background:transparent;
+      background:var(--stage-bg);
     }
     #scene {
       position: absolute;
