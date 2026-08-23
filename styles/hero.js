@@ -40,66 +40,91 @@
   var isDesktop = window.matchMedia('(min-width: 900px)').matches;
 
   // ---- Влёт при появлении баннера ----------------------------------
-  var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  // Сам #loading-screen (чашка кофе, см. loading.js) держит страницу
+  // прикрытой до 9с на медленной сети/тяжёлой above-fold галерее —
+  // если запустить влёт сразу по загрузке hero.js, он на такой сети
+  // успевает доиграть и осесть В ФОНЕ, под заглушкой, и пользователь
+  // увидит только уже неподвижный финал, а не сам влёт. Поэтому старт
+  // ждёт исчезновения заглушки (или запускается сразу, если её уже нет/
+  // не будет — см. runEntrance ниже).
+  function runEntrance() {
+    var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-  tl.to(figure, { opacity: 1, x: 0, duration: 1.1 }, 0.15)
-    .to(
-      brilliant,
-      { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.8)' },
-      0.75
-    )
-    .to(
-      clouds,
-      {
-        opacity: 1,
-        x: 0,
-        duration: 1.3,
-        ease: 'power2.out',
-        stagger: 0.08,
-      },
-      0.05
-    );
+    tl.to(figure, { opacity: 1, x: 0, rotate: 0, duration: 1.1 }, 0.15)
+      .to(
+        brilliant,
+        { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.8)' },
+        0.75
+      )
+      .fromTo(
+        clouds,
+        { scale: 0.7 },
+        {
+          opacity: 1,
+          x: 0,
+          scale: 1,
+          duration: 1.4,
+          ease: 'back.out(1.15)',
+          // from: 'edges' — крайние по разметке (левые/правые) облака
+          // трогаются первыми и съезжаются к центру, а не просто по
+          // очереди слева направо — читается динамичнее.
+          stagger: { each: 0.12, from: 'edges' },
+        },
+        0
+      );
 
-  // Облака стартуют ещё дальше от финальных позиций, каждое — в свою
-  // сторону (левые — левее, правые — правее), затем съезжаются внутрь.
-  clouds.forEach(function (cloud) {
-    var fromRight = cloud.classList.contains('hero__cloud--2') || cloud.classList.contains('hero__cloud--4');
-    gsap.set(cloud, { x: fromRight ? 120 : -120 });
-  });
+    // x у каждого облака берётся из CSS (transform: translateX(±Nvw) —
+    // своя сторона на каждом брейкпоинте, см. hero.css) — здесь ничего
+    // не переопределяем, иначе на десктопе, где те же классы стоят по
+    // другую сторону, облако выезжало бы не с той стороны экрана.
 
-  // ---- Парение (бесконечный лёгкий дрейф) ---------------------------
-  // delay у каждого тюина подогнан под момент, когда элемент уже виден
-  // (см. тайминги влёта выше) — так первый цикл парения не тратится
-  // впустую, пока фигура/бриллиант ещё в процессе появления.
-  gsap.to(figure, {
-    y: -14,
-    rotate: 1.2,
-    duration: 2.6,
-    ease: 'sine.inOut',
-    repeat: -1,
-    yoyo: true,
-    delay: 1.25,
-  });
-  gsap.to(brilliant, {
-    y: -6,
-    rotate: -6,
-    duration: 2.2,
-    ease: 'sine.inOut',
-    repeat: -1,
-    yoyo: true,
-    delay: 1.35,
-  });
-
-  clouds.forEach(function (cloud, i) {
-    gsap.to(cloud, {
-      y: i % 2 ? -10 : 10,
-      duration: 4 + i * 0.4,
+    // ---- Парение (бесконечный лёгкий дрейф) -------------------------
+    // delay у каждого тюина подогнан под момент, когда элемент уже
+    // виден (см. тайминги влёта выше) — так первый цикл парения не
+    // тратится впустую, пока фигура/бриллиант ещё в процессе появления.
+    gsap.to(figure, {
+      y: -14,
+      rotate: 1.2,
+      duration: 2.6,
       ease: 'sine.inOut',
       repeat: -1,
       yoyo: true,
-      delay: 1.2,
+      delay: 1.25,
     });
-  });
+    gsap.to(brilliant, {
+      y: -6,
+      rotate: -6,
+      duration: 2.2,
+      ease: 'sine.inOut',
+      repeat: -1,
+      yoyo: true,
+      delay: 1.35,
+    });
+
+    clouds.forEach(function (cloud, i) {
+      gsap.to(cloud, {
+        y: i % 2 ? -10 : 10,
+        duration: 4 + i * 0.4,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+        delay: 1.2,
+      });
+    });
+  }
+
+  var loadingScreen = document.getElementById('loading-screen');
+  if (!loadingScreen || loadingScreen.hidden || loadingScreen.classList.contains('is-hidden')) {
+    runEntrance();
+  } else {
+    var loadingObserver = new MutationObserver(function () {
+      if (loadingScreen.hidden || loadingScreen.classList.contains('is-hidden')) {
+        loadingObserver.disconnect();
+        runEntrance();
+      }
+    });
+    loadingObserver.observe(loadingScreen, { attributes: true, attributeFilter: ['class', 'hidden'] });
+  }
 
   // ---- Разлёт при скролле вниз ---------------------------------------
   // Прогресс 0..1 по первым 70% высоты секции: полностью прочитан текст

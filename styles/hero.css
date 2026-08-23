@@ -76,18 +76,26 @@
   will-change: transform, opacity;
 }
 
-/* Мобильный разлёт — компактные позиции вокруг фигуры, поровну по обе
-   стороны (см. описание в чате: "облака с обеих сторон"). */
-.hero__cloud--1 { --cloud-w: clamp(9rem, 44vw, 14rem); top: 6%;  left: -6%; }
-.hero__cloud--2 { --cloud-w: clamp(7rem, 34vw, 11rem); top: 46%; right: -10%; }
-.hero__cloud--3 { --cloud-w: clamp(6rem, 30vw, 10rem); bottom: 14%; left: -8%; }
-.hero__cloud--4 { --cloud-w: clamp(8rem, 38vw, 12rem); bottom: -2%; right: -8%; }
+/*
+  Каждое облако задаёт себе transform: translateX(±Nvw) как "скрытое"
+  стартовое положение — та же схема, что у .hero__figure ниже: JS просто
+  анимирует x к 0 и читает актуальную (per-breakpoint) стартовую матрицу
+  из computed style, а не решает сам, с какой стороны въезжает облако.
+  Раньше это решалось в JS по имени класса (--2/--4 = "справа") — ломалось
+  на десктопе, где те же классы стоят по другую сторону (см. чат).
+  Значения в vw (не % от своей ширины) — гарантируют вылет за реальный
+  край вьюпорта независимо от размера самого облака.
+*/
+.hero__cloud--1 { --cloud-w: clamp(9rem, 44vw, 14rem); top: 3%;  left: -11%; transform: translateX(-55vw); }
+.hero__cloud--2 { --cloud-w: clamp(7rem, 34vw, 11rem); top: 48%; right: -13%; transform: translateX(55vw); }
+.hero__cloud--3 { --cloud-w: clamp(6rem, 30vw, 10rem); bottom: 24%; left: -11%; transform: translateX(-55vw); }
+.hero__cloud--4 { --cloud-w: clamp(8rem, 38vw, 12rem); bottom: 1%; right: -15%; transform: translateX(55vw); }
 
 @media (min-width: 900px) {
-  .hero__cloud--1 { --cloud-w: clamp(14rem, 20vw, 20rem); top: 8%;  left: 2%; }
-  .hero__cloud--2 { --cloud-w: clamp(11rem, 15vw, 16rem); top: 58%; left: -4%; }
-  .hero__cloud--3 { --cloud-w: clamp(10rem, 14vw, 15rem); top: 10%; right: 4%; }
-  .hero__cloud--4 { --cloud-w: clamp(13rem, 18vw, 19rem); bottom: 2%; right: -2%; }
+  .hero__cloud--1 { --cloud-w: clamp(14rem, 20vw, 20rem); top: 4%;  left: 1%;   right: auto;  bottom: auto; transform: translateX(-35vw); }
+  .hero__cloud--2 { --cloud-w: clamp(11rem, 15vw, 16rem); bottom: 6%; left: 4%; right: auto;  top: auto;   transform: translateX(-35vw); }
+  .hero__cloud--3 { --cloud-w: clamp(10rem, 14vw, 15rem); top: 26%; right: 26%; left: auto;   bottom: auto; transform: translateX(35vw); }
+  .hero__cloud--4 { --cloud-w: clamp(13rem, 18vw, 19rem); bottom: -2%; right: -4%; left: auto; top: auto;  transform: translateX(35vw); }
 }
 
 /* ===== Контент: заголовок / фигура / подвал ======================= */
@@ -175,6 +183,19 @@
   margin-top: var(--space-stack-heading-lead);
 }
 
+@media (min-width: 900px) {
+  /* На десктопе заголовок и подзаголовок — в одной текстовой колонке
+     (foot идёт сразу под title, см. grid-template-areas выше), просят
+     фиксированный узкий отступ вместо общего типографского токена.
+     Селектор из двух классов (не просто .hero__subtitle) — иначе
+     проигрывает по специфичности общему сбросу
+     :is(...):first-child{margin-top:0} в typography.css (subtitle тут
+     первый ребёнок .hero__foot, см. чат/index.html). */
+  .hero__subtitle.text-body-lg {
+    margin-top: 8px;
+  }
+}
+
 /* ===== Я + бриллиант ================================================
    Своя область грида — на мобилке зажата между заголовком и подвалом,
    но специально даёт себе отрицательные поля (см. ниже), чтобы фигура
@@ -189,7 +210,10 @@
   margin-block: -1.75rem;
   z-index: 1;
   opacity: 0;
-  transform: translateX(60%);
+  /* vw, не % от своей ширины — гарантирует старт за реальным краем
+     вьюпорта (видно "выезжает справа"), а не просто небольшой сдвиг
+     внутри уже видимой области. */
+  transform: translateX(70vw) rotate(-6deg);
   will-change: transform, opacity;
 }
 
@@ -207,7 +231,7 @@
     width: clamp(15rem, 23vw, 22rem);
     margin-block: 0;
     justify-self: end;
-    transform: translateX(50%);
+    transform: translateX(40vw) rotate(-6deg);
   }
 }
 
@@ -269,6 +293,17 @@
 .hero__cta .icon {
   width: 1.125rem;
   height: 1.125rem;
+}
+
+@media (max-width: 640px) {
+  /* Одинаковой ширины с плавающей кнопкой "Написать в tg" (см.
+     .site-footer__telegram в footer.css — держите оба значения в
+     синхроне) — ширина взята по более длинному тексту (эта кнопка),
+     та просто центрирует свой короче текст внутри той же ширины. */
+  .hero__cta {
+    width: 13.5rem;
+    justify-content: center;
+  }
 }
 
 /* ===== Приведённое состояние (нет JS/GSAP или reduced-motion) ====== */

@@ -766,6 +766,14 @@ html.footer-menu-open {
   white-space: nowrap;
 }
 
+@media (max-width: 640px) {
+  /* Одинаковой ширины с кнопкой "Смотреть работы" в хиро (см.
+     .hero__cta в hero.css — держите оба значения в синхроне). */
+  .site-footer__telegram {
+    width: 13.5rem;
+  }
+}
+
 .site-footer__nav-wrap,
 .site-footer__menu-btn,
 .footer-menu-panel,
