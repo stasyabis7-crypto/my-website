@@ -93,9 +93,12 @@
 
 @media (min-width: 900px) {
   .hero__cloud--1 { --cloud-w: clamp(14rem, 20vw, 20rem); top: 4%;  left: 1%;   right: auto;  bottom: auto; transform: translateX(-35vw); }
-  .hero__cloud--2 { --cloud-w: clamp(11rem, 15vw, 16rem); bottom: 6%; left: 4%; right: auto;  top: auto;   transform: translateX(-35vw); }
+  /* Ближе к центру, не забито в угол под текстом. */
+  .hero__cloud--2 { --cloud-w: clamp(11rem, 15vw, 16rem); bottom: 10%; left: 32%; right: auto; top: auto;   transform: translateX(-35vw); }
   .hero__cloud--3 { --cloud-w: clamp(10rem, 14vw, 15rem); top: 26%; right: 26%; left: auto;   bottom: auto; transform: translateX(35vw); }
-  .hero__cloud--4 { --cloud-w: clamp(13rem, 18vw, 19rem); bottom: -2%; right: -4%; left: auto; top: auto;  transform: translateX(35vw); }
+  /* Поднято и сдвинуто под ноги фигуры (та стоит у правого края, см.
+     .hero__figure ниже), а не в самый угол вьюпорта. */
+  .hero__cloud--4 { --cloud-w: clamp(13rem, 18vw, 19rem); bottom: 12%; right: 12%; left: auto; top: auto;  transform: translateX(35vw); }
 }
 
 /* ===== Контент: заголовок / фигура / подвал ======================= */
@@ -228,7 +231,7 @@
        вниз. align-self: center держит бокс строго по aspect-ratio
        картинки, просто центрируя его в объединённой высоте двух строк. */
     align-self: center;
-    width: clamp(15rem, 23vw, 22rem);
+    width: clamp(19rem, 29vw, 28rem);
     margin-block: 0;
     justify-self: end;
     transform: translateX(40vw) rotate(-6deg);
