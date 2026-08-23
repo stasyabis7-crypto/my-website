@@ -1,135 +1,137 @@
 /*
-  Hero-анимация — адаптация референса пользователя (9 кругов-масок +
-  9 цветных кругов-фона + 8 кругов переднего плана, дублированных в
-  зашумлённую тень) под секцию, а не весь viewport: originally
-  onpointermove/onpointerleave висели на всём window и считали
-  e.x/innerWidth — здесь событие и разметка скоуплены на #hero/.hero__bg,
-  координаты курсора берём относительно rect самой секции.
+  Hero-баннер — градиентный фон (чистый CSS, см. hero.css) + анимация
+  персонажа: влёт с бриллиантом и облаками при появлении баннера,
+  бесконечное лёгкое парение, и разлёт/угасание при скролле вниз.
 
-  Без GSAP (CDN недоступен/заблокирован) скрипт просто не стартует —
-  в разметке (index.html) у кругов уже стоят дефолтные cx/cy/r,
-  показывающие статичную цветную сетку вместо пустоты.
+  Без GSAP (CDN недоступен/заблокирован) или при prefers-reduced-motion —
+  секция получает класс .is-static, который CSS переводит сразу в
+  конечное состояние (см. .hero.is-static в hero.css) — деградирует
+  прилично, ничего не остаётся невидимым/сдвинутым.
 */
 (function () {
   // Клик по кнопке "Смотреть работы" — обычный smooth-scroll, БЕЗ
   // прописывания #works-gallery в адресную строку: с хешем в URL
   // каждая следующая перезагрузка страницы сама прыгала бы сразу к
-  // галерее вместо hero (это и есть "скроллится вниз при загрузке").
-  // Не зависит от GSAP — работает, даже если анимация ниже не стартует.
+  // галерее вместо hero. Не зависит от GSAP.
   var cta = document.querySelector('.hero__cta');
   var worksGallery = document.getElementById('works-gallery');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (cta && worksGallery) {
-    var reduceMotionForScroll = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     cta.addEventListener('click', function (e) {
       e.preventDefault();
-      worksGallery.scrollIntoView({ behavior: reduceMotionForScroll ? 'auto' : 'smooth' });
+      worksGallery.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
     });
   }
-
-  if (typeof gsap === 'undefined') return;
 
   var hero = document.getElementById('hero');
-  var stage = hero && hero.querySelector('.hero__bg');
-  if (!hero || !stage) return;
+  if (!hero) return;
 
-  var masked = stage.querySelector('#hero-masked');
-  var fg = stage.querySelector('#hero-fg');
-  var turbulence = stage.querySelector('feTurbulence');
+  var figure = hero.querySelector('.hero__figure');
+  var brilliant = hero.querySelector('.hero__brilliant');
+  var clouds = hero.querySelectorAll('.hero__cloud');
+  var title = hero.querySelector('.hero__title');
+  var foot = hero.querySelector('.hero__foot');
 
-  var shadow = fg.cloneNode(true);
-  masked.insertBefore(shadow, fg);
-  gsap.set(shadow, { attr: { id: 'hero-shadow', filter: 'url(#hero-noise)' } });
-
-  var allCircles = stage.querySelectorAll('circle');
-  var shadowCircles = stage.querySelectorAll('#hero-shadow circle');
-  var maskCircles = stage.querySelectorAll('#hero-mask circle');
-  var bgCircles = stage.querySelectorAll('#hero-bg circle');
-  var fgAndShadowCircles = stage.querySelectorAll('#hero-fg circle, #hero-shadow circle');
-
-  gsap.set(allCircles, { attr: { r: 100 } });
-  gsap.set(shadowCircles, { attr: { fill: '#000000bb', r: 95 }, x: -5, y: 12 });
-
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // Сборка в сетку 3×3 из центра — при reduced-motion сразу на финальные
-  // позиции, без 3-секундной expo-анимации.
-  [maskCircles, bgCircles].forEach(function (circles) {
-    gsap.fromTo(
-      circles,
-      { attr: { cx: 400, cy: 400 } },
-      {
-        attr: {
-          cx: function (i) { return 200 + (i % 3) * 200; },
-          cy: function (i) {
-            if (i < 3) return 200;
-            if (i < 6) return 400;
-            return 600;
-          },
-        },
-        ease: reduceMotion ? 'none' : 'expo.inOut',
-        duration: reduceMotion ? 0.01 : 3,
-      }
-    );
-  });
-
-  if (reduceMotion) return; // без непрерывных луп/параллакса — только сборка сетки выше
-
-  // Шум в drop shadow — рандомим seed фильтра каждые 0.2с.
-  gsap.to({}, {
-    duration: 0.2,
-    repeat: -1,
-    onRepeat: function () {
-      gsap.set(turbulence, { attr: { seed: Math.ceil(Math.random() * 99) } });
-    },
-  });
-
-  // Лёгкое покачивание переднего плана и его тени вверх/вниз.
-  gsap.from(fgAndShadowCircles, {
-    duration: 2,
-    y: function (i) { return i % 2 ? '-=200' : '+=200'; },
-    ease: 'steps(5)',
-    repeat: -1,
-    yoyo: true,
-  });
-
-  function offsetFor(rel, i, isRow) {
-    var n = gsap.utils.wrapYoyo(0, 0.5, rel);
-    var base = isRow
-      ? (function () {
-          var row = 0;
-          if (i > 2) row = 1;
-          if (i > 5) row = 2;
-          return 400 - row * 400;
-        })()
-      : 400 - (i % 3) * 400;
-    return gsap.utils.interpolate(0, base, n);
+  if (typeof gsap === 'undefined' || reduceMotion || !figure) {
+    hero.classList.add('is-static');
+    return;
   }
 
-  hero.addEventListener('pointermove', function (e) {
-    var rect = stage.getBoundingClientRect();
-    var relX = (e.clientX - rect.left) / rect.width;
-    var relY = (e.clientY - rect.top) / rect.height;
+  var isDesktop = window.matchMedia('(min-width: 900px)').matches;
 
-    gsap.to(maskCircles, {
-      duration: 0.2,
-      overwrite: 'auto',
-      x: function (i) { return offsetFor(relX, i, false); },
-      y: function (i) { return offsetFor(relY, i, true); },
-    });
+  // ---- Влёт при появлении баннера ----------------------------------
+  var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-    gsap.to(bgCircles, {
-      overwrite: 'auto',
-      x: function (i) { return offsetFor(relX, i, false); },
-      y: function (i) { return offsetFor(relY, i, true); },
+  tl.to(figure, { opacity: 1, x: 0, duration: 1.1 }, 0.15)
+    .to(
+      brilliant,
+      { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.8)' },
+      0.75
+    )
+    .to(
+      clouds,
+      {
+        opacity: 1,
+        x: 0,
+        duration: 1.3,
+        ease: 'power2.out',
+        stagger: 0.08,
+      },
+      0.05
+    );
+
+  // Облака стартуют ещё дальше от финальных позиций, каждое — в свою
+  // сторону (левые — левее, правые — правее), затем съезжаются внутрь.
+  clouds.forEach(function (cloud) {
+    var fromRight = cloud.classList.contains('hero__cloud--2') || cloud.classList.contains('hero__cloud--4');
+    gsap.set(cloud, { x: fromRight ? 120 : -120 });
+  });
+
+  // ---- Парение (бесконечный лёгкий дрейф) ---------------------------
+  // delay у каждого тюина подогнан под момент, когда элемент уже виден
+  // (см. тайминги влёта выше) — так первый цикл парения не тратится
+  // впустую, пока фигура/бриллиант ещё в процессе появления.
+  gsap.to(figure, {
+    y: -14,
+    rotate: 1.2,
+    duration: 2.6,
+    ease: 'sine.inOut',
+    repeat: -1,
+    yoyo: true,
+    delay: 1.25,
+  });
+  gsap.to(brilliant, {
+    y: -6,
+    rotate: -6,
+    duration: 2.2,
+    ease: 'sine.inOut',
+    repeat: -1,
+    yoyo: true,
+    delay: 1.35,
+  });
+
+  clouds.forEach(function (cloud, i) {
+    gsap.to(cloud, {
+      y: i % 2 ? -10 : 10,
+      duration: 4 + i * 0.4,
+      ease: 'sine.inOut',
+      repeat: -1,
+      yoyo: true,
+      delay: 1.2,
     });
   });
 
-  hero.addEventListener('pointerleave', function () {
-    gsap.to(stage.querySelectorAll('#hero-mask circle, #hero-bg circle'), {
-      duration: 1,
-      x: 0,
-      y: 0,
-      overwrite: 'auto',
-    });
+  // ---- Разлёт при скролле вниз ---------------------------------------
+  // Прогресс 0..1 по первым 70% высоты секции: полностью прочитан текст
+  // и картинка уже улетели к моменту, когда баннер уходит из вьюпорта.
+  var exitState = { p: 0 };
+  var exitTween = gsap.quickTo(exitState, 'p', { duration: 0.25, ease: 'power1.out' });
+
+  function applyExit(p) {
+    gsap.set(figure, { x: -140 * p, opacity: 1 - p });
+    gsap.set(title, { y: -18 * p, opacity: 1 - p });
+    if (isDesktop) {
+      gsap.set(foot, { opacity: 1 - p });
+    } else {
+      gsap.set(foot, { y: -50 * p, opacity: 1 - p });
+    }
+  }
+
+  function onScroll() {
+    var rect = hero.getBoundingClientRect();
+    var travel = rect.height * 0.7 || 1;
+    var p = Math.min(Math.max(-rect.top / travel, 0), 1);
+    exitTween(p);
+  }
+
+  gsap.ticker.add(function () {
+    applyExit(exitState.p);
   });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function () {
+    isDesktop = window.matchMedia('(min-width: 900px)').matches;
+    onScroll();
+  });
+  onScroll();
 })();
