@@ -3,7 +3,7 @@
   var items = document.querySelectorAll('.works-grid__item');
   // Экран загрузки ждёт медиа только первого экрана (без скролла) —
   // остальные слоты стоят на loading="lazy" и не начнут грузиться, пока
-  // до них не долистают, так что ждать ИХ значило бы держать чашку до
+  // до них не долистают, так что ждать ИХ значило бы держать экран загрузки до
   // предохранителя на каждой загрузке. Плитки ниже первого экрана как и
   // раньше открываются сами по себе (см. reveal ниже), просто не гейтят
   // #loading-screen.
@@ -16,7 +16,7 @@
   items.forEach(function (item) {
     // Плитка на мобилке заперта works-tap-play.js (постер вместо iframe,
     // запуск по тапу) — src не подставлен, 'load' у iframe никогда не
-    // случится, ждать его тут значило бы держать чашку до предохранителя
+    // случится, ждать его тут значило бы держать экран загрузки до предохранителя
     // на каждой загрузке. Постер сам по себе картинка, не гейтит экран.
     if (item.classList.contains('is-tap-locked')) {
       reveal(item);
@@ -75,66 +75,54 @@
     });
   });
 
-  // ------------ Экран загрузки (чашка кофе + фан-факт) ------------
-  // Временные фан-факты — 3 штуки для затравки, реальный текст донесёт
-  // пользователь позже (см. чат). innerHTML безопасен — это статичный
-  // массив из кода, не пользовательский ввод.
-  var LOADING_FACTS = [
-    'Дизайнер в среднем открывает <strong>Figma</strong> чаще, чем <em>холодильник</em> — и не всегда с большим успехом.',
-    'Кнопку можно передвинуть <strong>247 раз</strong> за один день и всё равно услышать: <em>«а верните как было»</em>.',
-    'Слово <em>«ресайзни»</em> дизайнеры слышат чаще, чем <strong>своё имя</strong> — статистика не проверена, но звучит правдиво.'
+  // ------------ Экран загрузки (парящий бриллиант + статус) ------------
+  var LOADING_STATUSES = [
+    'Загружаю…',
+    'Собираю…',
+    'Волшебничаю…',
+    'Колдую…',
+    'Начаровываю…',
+    'Настраиваю пиксели…'
   ];
 
   var loadingScreen = document.getElementById('loading-screen');
-  var loadingFact = document.getElementById('loading-screen-fact');
-  var reduceMotionForFact = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var loadingStatus = document.getElementById('loading-screen-status');
+  var reduceMotionForStatus = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (loadingFact && loadingScreen) {
-    if (reduceMotionForFact) {
-      // Без анимации и без цикла — один факт, сразу целиком, как раньше.
-      loadingFact.innerHTML = LOADING_FACTS[Math.floor(Math.random() * LOADING_FACTS.length)];
+  if (loadingStatus && loadingScreen) {
+    if (reduceMotionForStatus) {
+      // Без анимации и без цикла — один статус, сразу целиком, как раньше.
+      loadingStatus.textContent = LOADING_STATUSES[Math.floor(Math.random() * LOADING_STATUSES.length)];
     } else {
-      startFactTypewriter(loadingScreen, loadingFact, LOADING_FACTS);
+      startStatusTypewriter(loadingScreen, loadingStatus, LOADING_STATUSES);
     }
   }
 
-  // Печатает html посимвольно (каждый символ — свой <span> с задержкой
-  // анимации), сохраняя разметку (<strong>/<em>) — оборачиваем только
-  // ТЕКСТОВЫЕ узлы через TreeWalker, теги не трогаем, поэтому жирный/
-  // курсивный текст остаётся жирным/курсивным посимвольно, а не ломается
-  // на середине тега. Зовёт onDone, когда напечатался последний символ.
-  function typewriteInto(el, html, onDone) {
-    el.innerHTML = html;
-    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-    var textNodes = [];
-    var node;
-    while ((node = walker.nextNode())) textNodes.push(node);
-
+  // Печатает текст посимвольно (каждый символ — свой <span> с задержкой
+  // анимации). Зовёт onDone, когда напечатался последний символ.
+  function typewriteInto(el, text, onDone) {
+    el.textContent = '';
     var CHAR_STEP_MS = 22;
-    var i = 0;
-    textNodes.forEach(function (textNode) {
-      var frag = document.createDocumentFragment();
-      textNode.textContent.split('').forEach(function (ch) {
-        var span = document.createElement('span');
-        span.className = 'loading-screen__fact-char';
-        span.style.animationDelay = i * CHAR_STEP_MS + 'ms';
-        span.textContent = ch;
-        frag.appendChild(span);
-        i += 1;
-      });
-      textNode.parentNode.replaceChild(frag, textNode);
+    var frag = document.createDocumentFragment();
+    text.split('').forEach(function (ch, i) {
+      var span = document.createElement('span');
+      span.className = 'loading-screen__status-char';
+      span.style.animationDelay = i * CHAR_STEP_MS + 'ms';
+      span.textContent = ch;
+      frag.appendChild(span);
     });
+    el.appendChild(frag);
 
-    var totalMs = i * CHAR_STEP_MS + 220; // + длительность анимации последнего символа
+    var totalMs = text.length * CHAR_STEP_MS + 220; // + длительность анимации последнего символа
     return setTimeout(onDone, totalMs);
   }
 
-  // Печатает по кругу факты из shuffled-очереди, пока жив #loading-screen
-  // — если загрузка идёт долго, есть что почитать; MutationObserver
+  // Печатает по кругу статусы из shuffled-очереди, пока жив #loading-screen
+  // — если загрузка идёт долго, статус продолжает меняться; MutationObserver
   // останавливает цикл сразу, как только экран спрятан (.is-hidden или
   // [hidden]), чтобы не тикать таймерами вникуда.
-  function startFactTypewriter(screen, el, facts) {
-    var order = facts.slice();
+  function startStatusTypewriter(screen, el, statuses) {
+    var order = statuses.slice();
     for (var i = order.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
       var tmp = order[i]; order[i] = order[j]; order[j] = tmp;
@@ -143,7 +131,7 @@
     var idx = 0;
     var stopped = false;
     var pendingTimer = null;
-    var HOLD_MS = 2600; // держим дочитанный факт на экране, прежде чем сменить
+    var HOLD_MS = 1600; // держим показанный статус на экране, прежде чем сменить
 
     function isScreenGone() {
       return screen.classList.contains('is-hidden') || screen.hidden;
@@ -151,9 +139,9 @@
 
     function showNext() {
       if (stopped || isScreenGone()) return;
-      var html = order[idx % order.length];
+      var text = order[idx % order.length];
       idx += 1;
-      typewriteInto(el, html, function () {
+      typewriteInto(el, text, function () {
         if (stopped || isScreenGone()) return;
         pendingTimer = setTimeout(showNext, HOLD_MS);
       });
@@ -171,7 +159,7 @@
   }
 
   if (loadingScreen) {
-    // Экран загрузки ждёт больше, чем шелл — держит чашку, пока не
+    // Экран загрузки ждёт больше, чем шелл — держит бриллиант, пока не
     // готовы шрифты, аватар и медиа первого экрана галереи. Предохранитель
     // тут щедрее (9с): если какое-то вложение зависнет и не отдаст load,
     // экран всё равно не заблокирует сайт навсегда.

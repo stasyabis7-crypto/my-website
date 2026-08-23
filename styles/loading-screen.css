@@ -1,20 +1,18 @@
 /*
   Полноэкранный экран загрузки — вместо мелькания скелетонов
   (.is-page-loading в loading.css) первой отрисовкой видна эта
-  плашка: чашка кофе + короткий фан-факт под ней. Держит их вместе,
-  пока не готов и сам shell (шрифты/аватар — см. .is-page-loading),
-  и медиа в галерее работ (см. loading.js) — тогда сайт открывается
-  сразу целиком, а не по кусочкам.
+  плашка: парящий бриллиант + короткий статус-текст под ним. Держит
+  их вместе, пока не готов и сам shell (шрифты/аватар — см.
+  .is-page-loading), и медиа в галерее работ (см. loading.js) —
+  тогда сайт открывается сразу целиком, а не по кусочкам.
 
-  Цвета берём из тех же токенов темы, что и весь сайт (--color-bg/
-  --color-ink, см. theme.css) — никакого отдельного prefers-color-
-  scheme, тема уже решена атрибутом data-theme на <html> (theme.js
-  выставляет его до первой отрисовки).
+  Фон — тот же градиент, что у .hero (см. hero.css, держите оба
+  значения в синхроне) — экран загрузки визуально продолжает тему
+  баннера, а не свою отдельную палитру. Низ градиента — var(--color-bg)
+  сайта, поэтому тема (theme.js выставляет data-theme на <html> до
+  первой отрисовки) решена и здесь без отдельного prefers-color-scheme.
 */
 .loading-screen {
-  --coffee-bg: var(--color-bg);
-  --coffee-fg: var(--color-ink);
-  --coffee-trans-dur: 0.3s;
   position: fixed;
   inset: 0;
   z-index: 1000;
@@ -24,8 +22,8 @@
   justify-content: center;
   gap: 2rem;
   padding: var(--page-px, 10px);
-  background: var(--coffee-bg);
-  color: var(--coffee-fg);
+  background: linear-gradient(180deg, #1d77ff 0%, var(--color-bg) 92%);
+  color: var(--color-text);
   font-size: clamp(0.875rem, 0.75rem + 0.6vw, 1.25rem);
   transition:
     opacity 0.6s ease,
@@ -45,32 +43,21 @@
   display: none;
 }
 
-.loading-screen__fact {
+.loading-screen__status {
   max-width: 22rem;
   text-align: center;
-  color: var(--color-text-muted);
-}
-
-.loading-screen__fact strong {
   color: var(--color-text);
-  font-weight: var(--font-weight-bold);
-}
-
-.loading-screen__fact em {
-  font-style: italic;
   font-weight: var(--font-weight-medium);
 }
 
 /* Печатная машинка — каждый символ свой <span> (см. loading.js), у
-   каждого своя animation-delay, поэтому текст будто вводится по буквам,
-   не ломая жирный/курсивный текст внутри (обёрнуты только текстовые
-   узлы, теги остаются как есть). */
-.loading-screen__fact-char {
+   каждого своя animation-delay, поэтому текст будто вводится по буквам. */
+.loading-screen__status-char {
   opacity: 0;
-  animation: loading-fact-char-in 0.22s ease-out forwards;
+  animation: loading-status-char-in 0.22s ease-out forwards;
 }
 
-@keyframes loading-fact-char-in {
+@keyframes loading-status-char-in {
   from {
     opacity: 0;
   }
@@ -80,241 +67,53 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .loading-screen__fact-char {
+  .loading-screen__status-char {
     animation: none;
     opacity: 1;
   }
 }
 
-/* ------------ КОФЕЙНАЯ ЧАШКА ------------
-   Адаптация под токены темы сайта: var(--bg)/var(--fg) исходного
-   снипета -> var(--coffee-bg)/var(--coffee-fg), без своих :root/*
-   ресетов и без прибитого font-size на body — тут всё в масштабе
-   .loading-screen (em считается от него, см. font-size выше). */
-.coffee {
-  font-size: 0.6em;
-  position: relative;
-  width: 21.5em;
-  height: 9em;
-}
-.coffee:before {
-  border-bottom: 0.25em dashed var(--color-border);
-  content: "";
-  display: block;
-  position: absolute;
-  top: 7.5em;
-  width: 100%;
-}
-.coffee__cup,
-.coffee__cup-part,
-.coffee__cup-handle,
-.coffee__steam-part {
-  animation-duration: 8s;
-  animation-iteration-count: infinite;
-}
-.coffee__cup,
-.coffee__cup-part,
-.coffee__cup-handle {
-  animation-timing-function: cubic-bezier(0.9, 0, 0.1, 1);
-}
-.coffee__cup {
-  animation-name: coffee-cup;
-  position: relative;
-  width: 11.25em;
-  height: 9em;
-}
-.coffee__cup-part {
-  background-color: var(--coffee-bg);
-  position: absolute;
-  transition:
-    background-color var(--coffee-trans-dur),
-    box-shadow var(--coffee-trans-dur);
-}
-.coffee__cup-part--a {
-  animation-name: coffee-cup-part-a;
-  border-radius: 5.625em 5.625em 5.625em 5.625em / 2em 2em 2.7em 2.7em;
-  box-shadow: 0 0 0 0.3em var(--coffee-fg) inset;
-  top: 4.3em;
-  width: 11.25em;
-  height: 4.7em;
-}
-.coffee__cup-part--b {
-  animation-name: coffee-cup-part-b;
-  background-color: transparent;
-  border-radius: 5.625em / 2em;
-  box-shadow: 0 0 0 0.2em var(--coffee-fg) inset;
-  top: 4.3em;
-  width: 11.25em;
-  height: 4em;
-}
-.coffee__cup-part--c {
-  animation-name: coffee-cup-part-c;
-  border-radius: 1.7em / 0.45em;
-  box-shadow: 0 0 0 0.2em var(--coffee-fg) inset;
-  top: 7.1em;
-  left: 3.925em;
-  width: 3.4em;
-  height: 0.9em;
-}
-.coffee__cup-part--d,
-.coffee__cup-part--e,
-.coffee__cup-part--f {
-  z-index: 1;
-}
-.coffee__cup-part--d {
-  animation-name: coffee-cup-part-d;
-  border-radius: 3.6em 3.6em 3.3em 3.3em / 1em 1em 3.5em 3.5em;
-  box-shadow: 0 0 0 0.2em var(--coffee-fg) inset;
-  top: 2.55em;
-  left: 2.025em;
-  width: 7.2em;
-  height: 5.15em;
-}
-.coffee__cup-part--e {
-  animation-name: coffee-cup-part-e;
-  background-color: var(--coffee-fg);
-  box-shadow:
-    0 0 0 0.2em var(--coffee-fg) inset,
-    0 1em 0 var(--coffee-bg) inset;
-  border-radius: 3.5em / 1em;
-  top: 2.65em;
-  left: 2.125em;
-  width: 7em;
-  height: 2em;
-}
-.coffee__cup-part--f {
-  animation-name: coffee-cup-part-f;
-  background-color: transparent;
-  top: 4.1em;
-  left: 5.925em;
-  width: 4.8em;
-  height: 3em;
-  /* <svg> по умолчанию overflow:hidden (в отличие от остальных
-     элементов) — ручка ниже анимируется с translate(0,15px) и в части
-     кадров вылезает за viewBox, дефолтный clip обрезал её почти
-     целиком, оставляя только обрубок штриха. */
-  overflow: visible;
-}
-.coffee__cup-handle {
-  animation-name: coffee-cup-handle;
-}
-.coffee__cup,
-.coffee__steam {
-  transform: translateX(-50%);
-}
-.coffee__steam {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3.5em;
-  height: 3.5em;
-}
-.coffee__steam--right {
-  right: 0;
-  left: auto;
-  transform: translateX(50%);
-}
-.coffee__steam-part {
-  animation-name: coffee-steam-left;
-  stroke-dashoffset: 48;
-}
-.coffee__steam--right .coffee__steam-part {
-  animation-name: coffee-steam-right;
-  stroke-dashoffset: 35;
-}
-.coffee__steam-part--a {
-  stroke-dasharray: 24 142;
-}
-.coffee__steam-part--b {
-  stroke-dasharray: 30 8 10 130;
-}
-.coffee__steam-part--c {
-  stroke-dasharray: 15 6 1 134;
-}
-.coffee__steam-part--d {
-  stroke-dasharray: 18 6 1 90;
-}
-.coffee__steam-part--e {
-  stroke-dasharray: 25 6 4 76;
+/* ------------ БРИЛЛИАНТ ------------
+   Два вложенных слоя — внешний (.loading-screen__diamond) парит
+   (translateY), внутренний (img) время от времени крутится вокруг
+   своей оси: одна CSS-анимация на transform не смогла бы одновременно
+   и покачивать, и вращать (последнее объявление просто перебило бы
+   первое) — раз transform на каждом уровне свой, они складываются
+   через обычную вложенность коробок, а не конфликтуют.
+*/
+.loading-screen__diamond {
+  width: clamp(5rem, 18vw, 7.5rem);
+  animation: diamond-float 2.6s ease-in-out infinite;
 }
 
-@keyframes coffee-cup {
-  from, 25%, 75%, to { left: 0; }
-  50% { left: 21.5em; }
+.loading-screen__diamond img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* "Крутится вокруг своей оси и потом опять парит" — один длинный
+     цикл, где вращение занимает только последний кусок: on 0%..72%
+     оба стоп-кадра держат одно и то же значение (0deg), поэтому
+     интерполяция между ними — просто пауза, а сам оборот укладывается
+     в оставшиеся ~28% цикла. */
+  animation: diamond-spin 4.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
-@keyframes coffee-cup-part-a {
-  from, 50%, to { width: 11.25em; }
-  25%, 75% { width: calc(11.25em + 21.5em); }
+
+@keyframes diamond-float {
+  from, to { transform: translateY(0); }
+  50% { transform: translateY(-0.75rem); }
 }
-@keyframes coffee-cup-part-b {
-  from, 50%, to { width: 11.25em; }
-  25%, 75% { width: calc(11.25em + 21.5em); }
-}
-@keyframes coffee-cup-part-c {
-  from, 50%, to { width: 3.4em; }
-  25%, 75% { width: calc(3.4em + 21.5em); }
-}
-@keyframes coffee-cup-part-d {
-  from, 50%, to { width: 7.2em; }
-  25%, 75% { width: calc(7.2em + 21.5em); }
-}
-@keyframes coffee-cup-part-e {
-  from, 50%, to {
-    box-shadow:
-      0 0 0 0.2em var(--coffee-fg) inset,
-      0 1em 0 var(--coffee-bg) inset;
-    width: 7em;
-  }
-  25%, 75% {
-    box-shadow:
-      0 0 0 0.2em var(--coffee-fg) inset,
-      0 1.5em 0 var(--coffee-bg) inset;
-    width: calc(7em + 21.5em);
-  }
-}
-@keyframes coffee-cup-part-f {
-  from { left: 5.925em; z-index: 0; }
-  25% { left: calc(5.925em + 8.35em); z-index: 0; }
-  50% { left: 0.525em; z-index: 0; }
-  50.01% { left: 0.525em; z-index: 1; }
-  75% { left: calc(5.925em + 8.35em); z-index: 1; }
-  to { left: 5.925em; z-index: 1; }
-}
-@keyframes coffee-cup-handle {
-  from, to {
-    animation-timing-function: ease-in;
-    d: path("M64,4.413s6.64-2.913,11-2.913c11.739,0,19.5,10.759,19.5,22.497,0,23.475-45,22.497-45,22.497");
-    transform: translate(0, 0);
-  }
-  10%, 40%, 60%, 90% {
-    animation-timing-function: ease-out;
-    d: path("M48.036,4.415s-.03-2.913-.049-2.913c-.052,0-.087,10.759-.087,22.497,0,23.475,.2,22.497,.2,22.497");
-    transform: translate(0, 15px);
-  }
-  50% {
-    animation-timing-function: ease-in;
-    d: path("M32,4.413s-6.64-2.913-11-2.913C9.261,1.5,1.5,12.259,1.5,23.997c0,23.475,45,22.497,45,22.497");
-    transform: translate(0, 0);
-  }
-}
-@keyframes coffee-steam-left {
-  from { stroke-dashoffset: 48; }
-  25%, to { stroke-dashoffset: -66; }
-}
-@keyframes coffee-steam-right {
-  from, 50% { stroke-dashoffset: 35; }
-  75%, to { stroke-dashoffset: -76; }
+
+@keyframes diamond-spin {
+  0%, 72% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .loading-screen {
     transition-duration: 0.01ms;
   }
-  .coffee__cup,
-  .coffee__cup-part,
-  .coffee__cup-handle,
-  .coffee__steam-part {
+  .loading-screen__diamond,
+  .loading-screen__diamond img {
     animation: none !important;
   }
 }
