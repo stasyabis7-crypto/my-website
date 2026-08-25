@@ -1,26 +1,21 @@
 /*
-  Hero — первый экран, во всю высоту вьюпорта, начинается с самого верха
-  страницы (y=0) — плавающие хедер/футер (оба position: fixed) лежат НАД
-  ним, а не над отступом перед ним. .hero лежит первым ребёнком внутри
-  .page-works, у которой (и у body на моб/планшете) есть свой padding-top
-  под хедер (см. header.css/index.html) — тот же отступ, что резервирует
-  место для первого ряда галереи. Здесь он ровно компенсируется
-  отрицательным margin-top той же формулой, чтобы .hero перекрыл его и
-  стартовал от истинного верха экрана.
+  Hero — первый экран страницы, во всю высоту вьюпорта, начинается с
+  самого верха страницы (y=0) — плавающие хедер/футер (оба position:
+  fixed) лежат НАД ним, а не над отступом перед ним. .hero лежит первым
+  ребёнком внутри .page-works, у которой (и у body на моб/планшете)
+  есть свой padding-top под хедер (см. header.css/index.html) — тот же
+  отступ, что резервирует место для первого ряда галереи. Здесь он
+  ровно компенсируется отрицательным margin-top той же формулой, чтобы
+  .hero перекрыл его и стартовал от истинного верха экрана.
 
   Ширина — на весь вьюпорт, а не по .container: классический full-bleed
   трюк 100vw + отрицательный margin, работает независимо от паддингов/
   max-width родителя.
 
-  Фон — линейный градиент от фирменного синего (#1D77FF) вверху до
-  var(--color-bg) внизу: цель градиента читает тему сайта, поэтому смена
-  темы плавно меняет и низ градиента (см. theme.css/theme-transition).
-
-  Всё содержимое (заголовок, я+бриллиант, подзаголовок, кнопка) обязано
-  умещаться в высоту .hero без внутреннего скролла — секция сама
-  скроллится вместе со страницей, но не должна ничего обрезать по
-  вертикали, поэтому все размеры фигуры/облаков — в clamp() с --page-px
-  отступами, см. ниже.
+  Фон — прозрачный, читает --color-bg сайта (меняется вместе с темой);
+  фиксированная (не --color-*) остаётся только сама палитра кругов —
+  как в анимациях карточек галереи works/*, чтобы контраст текста был
+  стабильным на любом из ярких цветов круга.
 */
 
 @font-face {
@@ -48,235 +43,92 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(1.5rem, 6vh, 3rem) var(--page-px, 10px);
-  background: linear-gradient(180deg, #1d77ff 0%, var(--color-bg) 92%);
-  transition: background var(--theme-transition-duration, 0.6s) var(--theme-transition-ease, ease);
+  /* var(--color-bg), а не буквально transparent: та же цветовая цель
+     (совпадает с фоном страницы и меняется с темой), но с реальной
+     заливкой — в просветах между кругами SVG-маска ничего не рисует
+     (там честная прозрачность), и без своей заливки здесь блендить
+     заголовку/подзаголовку было бы не с чем — просто прозрачность,
+     эффект пропадал бы (в светлой теме буквы становились не видны:
+     белый на белом просвете, см. чат). */
+  background: var(--color-bg);
+  /* Заголовок/подзаголовок ниже блендятся (mix-blend-mode) с этим SVG-
+     фоном — isolate держит блендинг внутри .hero, не давая ему утечь
+     на остальную страницу за его пределами. */
+  isolation: isolate;
 }
 
-@media (max-width: 640px) {
-  .hero {
-    min-height: 30rem;
-  }
-}
-
-/* ===== Облака ===================================================== */
-
-.hero__clouds {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.hero__cloud {
-  position: absolute;
-  width: var(--cloud-w);
-  height: auto;
-  opacity: 0;
-  will-change: transform, opacity;
-}
-
-/*
-  Каждое облако задаёт себе transform: translateX(±Nvw) как "скрытое"
-  стартовое положение — та же схема, что у .hero__figure ниже: JS просто
-  анимирует x к 0 и читает актуальную (per-breakpoint) стартовую матрицу
-  из computed style, а не решает сам, с какой стороны въезжает облако.
-  Раньше это решалось в JS по имени класса (--2/--4 = "справа") — ломалось
-  на десктопе, где те же классы стоят по другую сторону (см. чат).
-  Значения в vw (не % от своей ширины) — гарантируют вылет за реальный
-  край вьюпорта независимо от размера самого облака.
-*/
-.hero__cloud--1 { --cloud-w: clamp(9rem, 44vw, 14rem); top: 3%;  left: -11%; transform: translateX(-55vw); }
-.hero__cloud--2 { --cloud-w: clamp(7rem, 34vw, 11rem); top: 48%; right: -13%; transform: translateX(55vw); }
-.hero__cloud--3 { --cloud-w: clamp(6rem, 30vw, 10rem); bottom: 24%; left: -11%; transform: translateX(-55vw); }
-.hero__cloud--4 { --cloud-w: clamp(8rem, 38vw, 12rem); bottom: 1%; right: -15%; transform: translateX(55vw); }
-
-@media (min-width: 900px) {
-  .hero__cloud--1 { --cloud-w: clamp(14rem, 20vw, 20rem); top: 4%;  left: 1%;   right: auto;  bottom: auto; transform: translateX(-35vw); }
-  /* Ближе к центру, не забито в угол под текстом. */
-  .hero__cloud--2 { --cloud-w: clamp(11rem, 15vw, 16rem); bottom: 10%; left: 32%; right: auto; top: auto;   transform: translateX(-35vw); }
-  .hero__cloud--3 { --cloud-w: clamp(10rem, 14vw, 15rem); top: 26%; right: 26%; left: auto;   bottom: auto; transform: translateX(35vw); }
-  /* Поднято и сдвинуто под ноги фигуры (та стоит у правого края, см.
-     .hero__figure ниже), а не в самый угол вьюпорта. */
-  .hero__cloud--4 { --cloud-w: clamp(13rem, 18vw, 19rem); bottom: 12%; right: 12%; left: auto; top: auto;  transform: translateX(35vw); }
-}
-
-/* ===== Контент: заголовок / фигура / подвал ======================= */
-
-.hero__content {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 76rem;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "title"
-    "figure"
-    "foot";
-  align-items: center;
-  justify-items: center;
-  row-gap: 0;
-}
-
-@media (min-width: 900px) {
-  .hero__content {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-areas:
-      "title  figure"
-      "foot   figure";
-    column-gap: clamp(1.5rem, 4vw, 4rem);
-  }
-}
-
-.hero__title,
-.hero__foot {
-  text-align: center;
-  pointer-events: none;
-}
-
-.hero__foot > * {
-  pointer-events: auto;
-}
-
-@media (min-width: 900px) {
-  .hero__title,
-  .hero__foot {
-    text-align: left;
-    justify-self: start;
-  }
-}
-
-.hero__title {
-  grid-area: title;
-  color: var(--color-text);
-  font-family: "Valisca", var(--font-family-heading);
-  text-transform: uppercase;
-  /* .text-h1 даёт --letter-spacing-tight (-0.01em) — в этом шрифте буквы
-     от него слипаются, перебиваем на wide. */
-  letter-spacing: var(--letter-spacing-wide, 0.04em);
-  max-width: 24ch;
-  will-change: transform, opacity;
-}
-
-@media (min-width: 900px) {
-  .hero__title {
-    max-width: 14ch;
-    align-self: end;
-  }
-}
-
-.hero__foot {
-  grid-area: foot;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  will-change: transform, opacity;
-}
-
-@media (min-width: 900px) {
-  .hero__foot {
-    align-items: flex-start;
-    align-self: start;
-  }
-}
-
-.hero__subtitle {
-  color: var(--color-text);
-  margin-top: var(--space-stack-heading-lead);
-}
-
-@media (min-width: 900px) {
-  /* На десктопе заголовок и подзаголовок — в одной текстовой колонке
-     (foot идёт сразу под title, см. grid-template-areas выше), просят
-     фиксированный узкий отступ вместо общего типографского токена.
-     Селектор из двух классов (не просто .hero__subtitle) — иначе
-     проигрывает по специфичности общему сбросу
-     :is(...):first-child{margin-top:0} в typography.css (subtitle тут
-     первый ребёнок .hero__foot, см. чат/index.html). */
-  .hero__subtitle.text-body-lg {
-    margin-top: 8px;
-  }
-}
-
-/* ===== Я + бриллиант ================================================
-   Своя область грида — на мобилке зажата между заголовком и подвалом,
-   но специально даёт себе отрицательные поля (см. ниже), чтобы фигура
-   могла слегка наезжать на текст сверху/снизу — по ТЗ это ожидаемо, не
-   баг (см. память проекта про zoom/overflow в анимациях works/*).
-   На десктопе — просто вторая колонка, растянутая на оба ряда текста. */
-.hero__figure {
-  grid-area: figure;
-  position: relative;
-  width: clamp(11rem, 46vw, 15rem);
-  aspect-ratio: 820 / 1458;
-  margin-block: -1.75rem;
-  z-index: 1;
-  opacity: 0;
-  /* vw, не % от своей ширины — гарантирует старт за реальным краем
-     вьюпорта (видно "выезжает справа"), а не просто небольшой сдвиг
-     внутри уже видимой области. */
-  transform: translateX(70vw) rotate(-6deg);
-  will-change: transform, opacity;
-}
-
-@media (min-width: 900px) {
-  .hero__figure {
-    grid-row: 1 / 3;
-    /* Без align-self grid растянул бы .hero__figure по высоте объединённых
-       строк title+foot (их суммарная высота от текста, не от картинки),
-       а object-fit: contain на фиксированной ширине тогда центрировал бы
-       саму картинку с пустым зазором сверху/снизу — все top/left-проценты
-       у .hero__brilliant ниже (посчитанные от кадра картинки) поехали бы
-       вниз. align-self: center держит бокс строго по aspect-ratio
-       картинки, просто центрируя его в объединённой высоте двух строк. */
-    align-self: center;
-    width: clamp(19rem, 29vw, 28rem);
-    margin-block: 0;
-    justify-self: end;
-    transform: translateX(40vw) rotate(-6deg);
-  }
-}
-
-.hero__me {
+.hero__bg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  display: block;
+  touch-action: none;
 }
 
-.hero__brilliant {
-  /* Позиция подогнана под кончик рукояти метлы на me.webp (~7% слева,
-     ~23% сверху от кадра картинки, см. чат/скрипт замера пикселей) —
-     бриллиантик висит рядом с ним, слегка заходя за левый край фигуры. */
+/* Мягкий переход в фон страницы снизу — вместо резкого обреза кругов
+   маской. var(--color-bg) — та же цель, что у самого .hero, поэтому
+   переход неотличим на глаз от реального фона в любой теме. */
+.hero__fade {
   position: absolute;
-  width: 26%;
-  /* height: auto нужен явно — иначе HTML-атрибут height="420" картинки
-     (презентационный хинт, но без своего author-height здесь он бы
-     победил) растягивал бы бриллиантик по высоте оригинала вместо
-     квадрата от aspect-ratio. */
-  height: auto;
-  aspect-ratio: 1 / 1;
-  top: 10%;
-  left: -4%;
-  transform-origin: 50% 50%;
-  opacity: 0;
-  scale: 0.4;
-  will-change: transform, opacity;
+  inset: auto 0 0 0;
+  height: clamp(4rem, 12%, 9rem);
+  background: linear-gradient(to bottom, transparent, var(--color-bg));
+  pointer-events: none;
+}
+
+.hero__content {
+  /* БЕЗ position/z-index: они создали бы свой стек-контекст и обрубили
+     бы mix-blend-mode текста внутри от SVG-фона снаружи (тексту стало
+     бы не с чем блендиться, см. чат) — здесь просто div, наверх кладёт
+     сам DOM-порядок (идёт после .hero__bg). */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 42rem;
+  padding-inline: var(--page-px, 10px);
+  pointer-events: none; /* сама плашка не ловит клики — только кнопка ниже */
+}
+
+.hero__content > * {
+  pointer-events: auto;
 }
 
 /*
-  Заголовок/подзаголовок — текст читает --color-text напрямую (не
-  mix-blend-mode, как в прежней версии): градиентный фон уже достаточно
-  контрастный сам по себе, а различие тёмная/светлая тема даёт разный
-  --color-text без ручной подгонки.
+  Текст поверх кругов — вместо подсветки тенью/ореолом (не сочеталось с
+  тёмной темой, см. чат) буквы сами инвертируют то, что под ними:
+  mix-blend-mode: difference с белым текстом даёт разный видимый цвет
+  на каждом круге и на фоне (фон тоже посчитан — тёмный/светлый читает
+  --color-bg, см. .hero) без всякой ручной подгонки под тему.
 */
+.hero__title,
+.hero__subtitle {
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
+.hero__title {
+  font-family: "Valisca", var(--font-family-heading);
+  text-transform: uppercase;
+  /* .text-h1 даёт --letter-spacing-tight (-0.01em) — в этом шрифте
+     буквы от него слипаются, перебиваем на wide. */
+  letter-spacing: var(--letter-spacing-wide, 0.04em);
+}
+
+.hero__subtitle {
+  margin-top: var(--space-stack-heading-lead);
+}
 
 /*
-  Кнопка "Смотреть работы" — тот же общий hover/press-фидбек, что и у
-  остальных контролов сайта (см. button-hover.css, .hero__cta в общих
-  :is(...)-списках), классы не меняем, только позиция/окружение.
+  Кнопка "Смотреть работы" — --color-ink/--color-ink-contrast (белая в
+  тёмной теме, чёрная в светлой — тот же инвертирующийся токен, что и
+  у монохромных иконок/контролов сайта, см. theme.css). Форма/отступы
+  свои (кнопка гораздо крупнее компактных плашек хедера/футера), но
+  hover/focus/press-фидбек — тот же общий механизм, что у остальных
+  контролов сайта (розовое пятно из точки курсора — layout-chrome.js
+  добавляет .hero__cta в тот же список, что и "Резюме PDF", см. общие
+  :is(...)-списки button-hover.css), а не своя копия анимации.
 */
 .hero__cta {
   margin-top: clamp(1.5rem, 4vw, 2.5rem);
@@ -299,24 +151,7 @@
 }
 
 @media (max-width: 640px) {
-  /* Одинаковой ширины с плавающей кнопкой "Написать в tg" (см.
-     .site-footer__telegram в footer.css — держите оба значения в
-     синхроне) — ширина взята по более длинному тексту (эта кнопка),
-     та просто центрирует свой короче текст внутри той же ширины. */
-  .hero__cta {
-    width: 13.5rem;
-    justify-content: center;
+  .hero {
+    min-height: 30rem;
   }
-}
-
-/* ===== Приведённое состояние (нет JS/GSAP или reduced-motion) ====== */
-.hero.is-static .hero__figure,
-.hero.is-static .hero__cloud {
-  opacity: 1;
-  transform: none;
-}
-
-.hero.is-static .hero__brilliant {
-  opacity: 1;
-  scale: 1;
 }
