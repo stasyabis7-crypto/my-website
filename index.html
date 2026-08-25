@@ -11,19 +11,14 @@
 <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png" />
 <script src="styles/analytics-config.js?v=1"></script>
 <script src="styles/analytics.js?v=1" defer></script>
-<!-- Ставит data-theme на <html> до первой отрисовки — без этого у тех,
-     кто уже переключался на светлую тему, при заходе мелькнёт тёмная
-     (дефолтная) перед переключением на сохранённую светлую. -->
-
-<script src="styles/theme.js?v=22"></script>
+<script src="styles/theme.js?v=23"></script>
 <script>document.documentElement.classList.add('is-page-loading')</script>
 <link rel="stylesheet" href="styles/scale.css?v=18" />
 <link rel="stylesheet" href="styles/typography.css?v=18" />
-<link rel="stylesheet" href="styles/theme.css?v=22" />
-<link rel="stylesheet" href="styles/icons.css?v=2" />
+<link rel="stylesheet" href="styles/theme.css?v=23" />
+<link rel="stylesheet" href="styles/icons.css?v=3" />
 <link rel="stylesheet" href="styles/header.css?v=29" />
 <link rel="stylesheet" href="styles/footer.css?v=46" />
-<link rel="stylesheet" href="styles/theme-toggle.css?v=27" />
 <link rel="stylesheet" href="styles/button-hover.css?v=26" />
 <link rel="stylesheet" href="styles/works-grid.css?v=4" />
 <link rel="stylesheet" href="styles/works-paginate.css?v=1" />
@@ -205,22 +200,6 @@
     </a>
   </header>
 
-  <!-- Отдельная плашка, специально не внутри .site-header — см. theme-toggle.css.
-       Тумблер "луна/солнце" — input[checkbox] даёт нативное состояние
-       вкл/выкл клавиатуре и скринридеру, сам он прозрачный и растянут на
-       всю плашку (ловит клик/фокус), трек+костяшка под ним — чистый CSS
-       от :checked (см. theme-toggle.css), синхронизирует theme.js. -->
-  <div class="theme-toggle">
-    <input type="checkbox" id="theme-toggle" class="theme-toggle__input" aria-label="Переключить тему" />
-    <label for="theme-toggle" class="theme-toggle__track">
-      <span class="theme-toggle__knob">
-        <span class="theme-toggle__crater theme-toggle__crater--a"></span>
-        <span class="theme-toggle__crater theme-toggle__crater--b"></span>
-        <span class="theme-toggle__crater theme-toggle__crater--c"></span>
-      </span>
-    </label>
-  </div>
-
   <main class="container page-works">
     <!--
       Hero — первый экран, сразу под навигацией (её отступ уже резервирует
@@ -357,7 +336,7 @@
         <img src="works/13-charity-entry-banners-ab/cover.webp?v=16de6a3c" alt="Charity Entry Banners A/B"  loading="lazy" />
       </div>
       <div class="works-grid__item works-grid__item--square" data-slot="14" data-title="ESG Report">
-        <video class="works-grid__video" data-src-dark="works/14-esg-report/cover-dark.mp4?v=3" data-src-light="works/14-esg-report/cover-light.mp4?v=3" autoplay muted loop playsinline preload="metadata" aria-label="ESG Report"></video>
+        <video class="works-grid__video" src="works/14-esg-report/cover-dark.mp4?v=3" autoplay muted loop playsinline preload="metadata" aria-label="ESG Report"></video>
       </div>
       <div class="works-grid__item works-grid__item--square" data-slot="15" data-title="SPIEF 2025">
         <video class="works-grid__video" src="works/15-spief-2025/cover.mp4?v=2" autoplay muted loop playsinline preload="metadata" aria-label="SPIEF 2025"></video>

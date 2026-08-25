@@ -19,7 +19,6 @@
 | `telegram_open` | Переход в Telegram |
 | `works_cta_click` | Клик по CTA к работам |
 | `project_impression` | Не менее 50% карточки работы видно на экране |
-| `theme_change` | Переключение светлой/тёмной темы |
 | `scroll_depth` | Достижение 25%, 50%, 75% или 90% страницы |
 | `scroll_to_top` | Клик по кнопке «Наверх» |
 | `outbound_click` | Переход на другой внешний сайт |

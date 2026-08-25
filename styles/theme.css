@@ -1,11 +1,10 @@
 /*
-  Цветовые токены темы. По умолчанию — тёмная (см. :root ниже),
-  светлая — оверрайд через [data-theme="light"] на <html> (ставит
-  переключатель, см. theme.js).
+  Цветовые токены темы. Сайт всегда тёмный (см. :root ниже) —
+  переключателя темы нет.
 
   Единственное место, где заданы конкретные HEX/rgba-значения — все
-  компоненты (header.css/footer.css/masonry.css/theme-toggle.css)
-  читают только var(--color-*), без хардкода.
+  компоненты (header.css/footer.css/masonry.css) читают только
+  var(--color-*), без хардкода.
 */
 
 :root {
@@ -17,8 +16,8 @@
   --glass-saturate: 180%;
 
   /* «Liquid glass» — второй рецепт стекла, используется только у
-     хедера, футера, тумблера темы и кнопки "наверх" (см. header.css/
-     footer.css/theme-toggle.css) — тоньше размытие, выше насыщенность
+     хедера, футера и кнопки "наверх" (см. header.css/footer.css) —
+     тоньше размытие, выше насыщенность
      + SVG-фильтр (feTurbulence+feDisplacementMap, см.
      #liquid-glass-distort в index.html), слегка "гнущий" картинку под
      стеклом вместо идеально ровного блюра. Цифры подобраны и
@@ -41,7 +40,7 @@
 /* WebKit (весь мобильный браузер на iOS, а не только сама Safari) не
    умеет url()-ссылку на SVG-фильтр внутри backdrop-filter — вместо
    игнора непонятной части он бракует ВСЁ значение целиком и откатывает
-   на none, стекло у хедера/футера/тумблера/кнопки "наверх" пропадает
+   на none, стекло у хедера/футера/кнопки "наверх" пропадает
    полностью, а не просто теряет рябь. Пробник в index.html определяет
    это на реальном рендере (надёжнее @supports — тот в WebKit считает
    синтаксис валидным) и ставит класс сюда.
@@ -59,16 +58,15 @@ html.no-liquid-glass-distort {
 
 /* Настоящий фикс для WebKit — см. комментарий выше: var() внутри
    backdrop-filter там не резолвится вообще, поэтому хедеру/футеру/
-   кнопке "наверх"/тумблеру нужно буквальное значение без переменных.
+   кнопке "наверх" нужно буквальное значение без переменных.
    Числа продублированы из --liquid-glass-blur/--liquid-glass-saturate
    вручную — иначе никак, но если поменяете рецепт там, поменяйте и
    здесь. Селекторы перечислены явно (а не через .site-header и т.д.
    в своих файлах) — так весь WebKit-костыль лежит в одном месте, а не
-   размазан по header.css/footer.css/theme-toggle.css. */
+   размазан по header.css/footer.css. */
 html.no-liquid-glass-distort .site-header,
 html.no-liquid-glass-distort .site-footer,
 html.no-liquid-glass-distort .site-footer__top-btn,
-html.no-liquid-glass-distort .theme-toggle__track,
 html.no-liquid-glass-distort:not(.chrome--compact) .site-footer.is-collapsed {
   backdrop-filter: blur(4px) saturate(210%);
   -webkit-backdrop-filter: blur(4px) saturate(210%);
@@ -86,17 +84,14 @@ html.no-liquid-glass-distort .footer-menu-panel__bar {
 }
 
 :root {
-  /* Общий тайминг переключения темы — читают html/body ниже и
-     theme-toggle.css (костяшка тумблера), чтобы вся страница
-     переходила между темами в один и тот же плавный такт, а не
-     дёргано (было: html/body вообще без transition, отдельные
-     компоненты — каждый на своей длительности). */
+  /* Общий тайминг плавных переходов фона/цвета — читают html/body
+     ниже и works-grid.css, чтобы такие переходы шли в один и тот же
+     плавный такт, а не дёргано. */
   --theme-transition-duration: 0.6s;
   --theme-transition-ease: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-:root,
-[data-theme="dark"] {
+:root {
   color-scheme: dark;
 
   --color-bg: #14161a;
@@ -121,32 +116,13 @@ html.no-liquid-glass-distort .footer-menu-panel__bar {
   --color-glass-border: rgba(244, 245, 247, 0.1);
 }
 
-[data-theme="light"] {
-  color-scheme: light;
-
-  --color-bg: #ffffff;
-  --color-surface: #ffffff;
-  --color-surface-alt: #f0f1f4;
-  --color-text: #14161a;
-  --color-text-muted: #6b7280;
-  --color-border: #e2e5eb;
-
-  --color-ink: #14161a;
-  --color-ink-contrast: #ffffff;
-
-  --color-glass: rgba(255, 255, 255, 0.55);
-  --color-glass-alt: rgba(240, 241, 244, 0.55);
-  --color-glass-border: rgba(20, 22, 26, 0.08);
-}
-
 /*
-  Переливающаяся обводка стеклянных плашек (хедер/футер/панель меню —
-  тумблер темы теперь отдельно, см. ниже почему) — conic-gradient,
-  замаскированный так, что виден только тонкий кольцевой контур, а не
-  вся заливка. Псевдоэлемент, НЕ настоящий border: реальный border
-  (пробовали раньше) на box-sizing:border-box отъедает 1px у padding-
-  box изнутри и сдвигает то, что позиционировано абсолютными px
-  (костяшка тумблера) — у ::after с position:absolute; inset:0 такого
+  Переливающаяся обводка стеклянных плашек (хедер/футер/панель меню) —
+  conic-gradient, замаскированный так, что виден только тонкий
+  кольцевой контур, а не вся заливка. Псевдоэлемент, НЕ настоящий
+  border: реальный border (пробовали раньше) на box-sizing:border-box
+  отъедает 1px у padding-box изнутри и сдвигает то, что позиционировано
+  абсолютными px — у ::after с position:absolute; inset:0 такого
   побочного эффекта нет. Именно ::after, не ::before — у
   .site-footer__top-btn ::before уже занят розовым hover-пятном из
   button-hover.css, второй эффект на том же псевдоэлементе конфликтовал
@@ -158,15 +134,7 @@ html.no-liquid-glass-distort .footer-menu-panel__bar {
   хедер — розовая кнопка "Резюме PDF" (сидит справа), футер и панель
   меню — активный розовый пункт "Работы" (сидит слева/сверху-слева).
   У кнопки "наверх" в футере цветного контента нет — акцент остаётся
-  прозрачным, только нейтральный белый слой. Тумблер темы устроен
-  иначе (цвет реально переключается местами) — свой рецепт, см.
-  .theme-toggle__track::after в theme-toggle.css.
-
-  Не крутится сам по себе постоянно — вращение (белый слой) должно
-  "реагировать" на смену цвета внутренних элементов, а не жить своей
-  жизнью. Анимация запускается только на html.theme-transitioning —
-  этот класс на 1с ставит theme.js в момент реальной смены темы (см.
-  triggerGlassShimmer там же), ровно тогда, когда красятся сами плашки.
+  прозрачным, только нейтральный белый слой.
 */
 @property --glass-shimmer-angle {
   syntax: "<angle>";
@@ -261,38 +229,6 @@ html.no-liquid-glass-distort .footer-menu-panel__bar {
      hover (--button-hover-duration — тот же такт, что и у их
      собственного цвета в button-hover.css). */
   transition: --glass-accent var(--button-hover-duration, 0.5s) ease;
-}
-
-html.theme-transitioning :is(
-  .site-header,
-  .site-footer,
-  .site-footer__top-btn,
-  .footer-menu-panel__bar
-)::after {
-  animation: glass-shimmer-sweep 1s ease-out;
-}
-
-@keyframes glass-shimmer-sweep {
-  from {
-    --glass-shimmer-angle: 0deg;
-  }
-  to {
-    /* Полный оборот, не половина — 360deg визуально совпадает с 0deg
-       (градиент периодичен), поэтому свип каждый раз стартует с той же
-       точки без видимого скачка между переключениями темы. */
-    --glass-shimmer-angle: 360deg;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html.theme-transitioning :is(
-    .site-header,
-    .site-footer,
-    .site-footer__top-btn,
-    .footer-menu-panel__bar
-  )::after {
-    animation: none;
-  }
 }
 
 html,

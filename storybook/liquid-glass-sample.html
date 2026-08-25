@@ -12,12 +12,11 @@
 <link rel="stylesheet" href="../styles/icons.css" />
 <link rel="stylesheet" href="../styles/header.css" />
 <link rel="stylesheet" href="../styles/footer.css" />
-<link rel="stylesheet" href="../styles/theme-toggle.css" />
 <link rel="stylesheet" href="../styles/button-hover.css" />
 
 <style>
   /*
-    Тестовая песочница: реальные стили хедера/футера/тоггла/кнопки
+    Тестовая песочница: реальные стили хедера/футера/кнопки
     "наверх" подключены как есть (см. head) — правим только здесь,
     сам сайт (styles/*.css, index.html) не трогаем. Задача — на глаз
     сравнить нынешний backdrop-filter: blur()+saturate() с вариантом,
@@ -87,8 +86,8 @@
   }
 
   /* ---------- Реальные плашки — просто якорим по месту сайта ---------- */
-  /* header.css/footer.css/theme-toggle.css сами не меняем, только не
-     мешаем их position:fixed — весь чужой контент оставляем пустым. */
+  /* header.css/footer.css сами не меняем, только не мешаем их
+     position:fixed — весь чужой контент оставляем пустым. */
 
   #footer-top-btn-desktop { display: none; }
   @media (min-width: 1101px) {
@@ -99,7 +98,6 @@
 
   body.mode-liquid :is(
     .site-header,
-    .theme-toggle__track,
     .site-footer,
     #footer-top-btn-desktop
   ) {
@@ -110,10 +108,9 @@
   /* Блик по кромке — как в референсе (inset box-shadow), поверх
      собственного ::after сайта (переливающаяся обводка) не мешает:
      тот использует ::after, этот — ::before, оба свободны у всех
-     четырёх плашек. */
+     плашек. */
   body.mode-liquid :is(
     .site-header,
-    .theme-toggle__track,
     .site-footer,
     #footer-top-btn-desktop
   )::before {
@@ -227,7 +224,7 @@
   <div class="bg-layer bg-photo" id="bg-photo"></div>
   <div class="bg-layer bg-flat" id="bg-flat"></div>
 
-  <!-- ==== реальная разметка хедера/тоггла/футера, 1:1 с index.html ==== -->
+  <!-- ==== реальная разметка хедера/футера, 1:1 с index.html ==== -->
 
   <header class="site-header">
     <div class="site-header__identity">
@@ -243,17 +240,6 @@
       Резюме PDF
     </a>
   </header>
-
-  <div class="theme-toggle">
-    <input type="checkbox" id="theme-toggle" class="theme-toggle__input" aria-label="Переключить тему" />
-    <label for="theme-toggle" class="theme-toggle__track">
-      <span class="theme-toggle__knob">
-        <span class="theme-toggle__crater theme-toggle__crater--a"></span>
-        <span class="theme-toggle__crater theme-toggle__crater--b"></span>
-        <span class="theme-toggle__crater theme-toggle__crater--c"></span>
-      </span>
-    </label>
-  </div>
 
   <footer class="site-footer">
     <nav class="site-footer__nav-wrap">

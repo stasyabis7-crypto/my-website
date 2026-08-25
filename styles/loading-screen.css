@@ -7,9 +7,8 @@
   сразу целиком, а не по кусочкам.
 
   Цвета берём из тех же токенов темы, что и весь сайт (--color-bg/
-  --color-ink, см. theme.css) — никакого отдельного prefers-color-
-  scheme, тема уже решена атрибутом data-theme на <html> (theme.js
-  выставляет его до первой отрисовки).
+  --color-ink, см. theme.css) — сайт всегда тёмный, отдельного
+  prefers-color-scheme не нужно.
 */
 .loading-screen {
   --coffee-bg: var(--color-bg);

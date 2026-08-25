@@ -6,10 +6,6 @@
   --skeleton-base: color-mix(in srgb, var(--color-surface-alt) 85%, white 15%);
   --skeleton-shine: color-mix(in srgb, var(--color-surface-alt) 65%, white 35%);
 }
-[data-theme="light"]{
-  --skeleton-base: color-mix(in srgb, var(--color-surface-alt) 90%, black 10%);
-  --skeleton-shine: var(--color-surface-alt);
-}
 @keyframes skeleton-shimmer{
   from{background-position:200% 0}
   to{background-position:-200% 0}
@@ -53,12 +49,10 @@
 .is-page-loading .site-header__avatar img,
 .is-page-loading .site-header__logo-mark,
 .is-page-loading .site-header__cta>* ,
-.is-page-loading .theme-toggle>* ,
 .is-page-loading .site-footer__link>*{opacity:0!important}
 .is-page-loading .site-header__avatar,
 .is-page-loading .site-header__logo,
 .is-page-loading .site-header__cta,
-.is-page-loading .theme-toggle,
 .is-page-loading .site-footer__link{
   color:transparent!important;
   border-color:transparent!important;
@@ -70,7 +64,6 @@
 .site-header__avatar,
 .site-header__logo,
 .site-header__cta,
-.theme-toggle,
 .site-footer__link{transition:background-color .25s ease,color .25s ease,opacity .25s ease}
 
 @media (prefers-reduced-motion:reduce){
@@ -79,6 +72,5 @@
   .is-page-loading .site-header__avatar,
   .is-page-loading .site-header__logo,
   .is-page-loading .site-header__cta,
-  .is-page-loading .theme-toggle,
   .is-page-loading .site-footer__link{animation:none!important}
 }

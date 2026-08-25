@@ -104,13 +104,6 @@
     }
   });
 
-  var themeToggle = document.getElementById('theme-toggle');
-  if (themeToggle) {
-    themeToggle.addEventListener('change', function () {
-      track('theme_change', { theme: themeToggle.checked ? 'light' : 'dark' });
-    });
-  }
-
   var seenProjects = new Set();
   var projectObserver = 'IntersectionObserver' in window && new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
