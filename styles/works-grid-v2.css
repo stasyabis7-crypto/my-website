@@ -21,7 +21,7 @@
 
 :root {
   --wg-gap: 24px;
-  --wg-radius: 40px;
+  --wg-radius: 28px;
   --wg-side: clamp(100px, 12vw, 320px);
   --wg-max-width: 1920px;
 }
@@ -32,7 +32,7 @@
 @media (max-width: 1100px) {
   :root {
     --wg-gap: 10px;
-    --wg-radius: 32px;
+    --wg-radius: 22px;
     --wg-side: 64px;
   }
 }
@@ -40,7 +40,7 @@
 @media (max-width: 640px) {
   :root {
     --wg-side: 20px;
-    --wg-radius: 20px;
+    --wg-radius: 14px;
   }
 }
 
