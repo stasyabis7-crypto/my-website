@@ -24,7 +24,7 @@
 <link rel="preload" as="font" type="font/ttf" href="styles/Valisca%204.ttf" crossorigin />
 <link rel="stylesheet" href="styles/hero.css?v=1" />
 <link rel="stylesheet" href="styles/loading.css?v=1" />
-<link rel="stylesheet" href="styles/loading-screen.css?v=2" />
+<link rel="stylesheet" href="styles/loading-screen.css?v=3" />
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -106,14 +106,13 @@
 </head>
 <body>
   <!--
-    Экран загрузки — держит котика-лоадер + фан-факт на весь экран, пока
-    не готов shell (шрифты/аватар) и медиа в галерее работ (см.
-    loading.js). Прячется классом .is-hidden (loading-screen.css),
-    после чего снимается [hidden] — см. loading.js.
+    Экран загрузки — держит котика-лоадер на весь экран, пока не готов
+    shell (шрифты/аватар) и медиа в галерее работ (см. loading.js).
+    Прячется классом .is-hidden (loading-screen.css), после чего
+    снимается [hidden] — см. loading.js.
   -->
   <div class="loading-screen" id="loading-screen" role="status" aria-live="polite">
     <img class="loading-screen__cat" src="assets/loading-cat.gif" alt="" aria-hidden="true" />
-    <p class="text-body-sm loading-screen__fact" id="loading-screen-fact"></p>
   </div>
   <noscript><style>#loading-screen{display:none}</style></noscript>
 
@@ -443,7 +442,7 @@
   <script src="styles/layout-chrome.js?v=22"></script>
   <script src="styles/embed-scale.js?v=19"></script>
   <script src="styles/works-anim-gate.js?v=2"></script>
-  <script src="styles/loading.js?v=2"></script>
+  <script src="styles/loading.js?v=3"></script>
   <script src="styles/typography-rules.js?v=1"></script>
   <script src="styles/haptics.js?v=1"></script>
 </body>

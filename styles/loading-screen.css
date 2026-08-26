@@ -1,10 +1,10 @@
 /*
   Полноэкранный экран загрузки — вместо мелькания скелетонов
-  (.is-page-loading в loading.css) первой отрисовкой видна эта
-  плашка: котик-лоадер (assets/loading-cat.gif) + короткий фан-факт
-  под ней. Держит их вместе, пока не готов и сам shell (шрифты/аватар
-  — см. .is-page-loading), и медиа в галерее работ (см. loading.js) —
-  тогда сайт открывается сразу целиком, а не по кусочкам.
+  (.is-page-loading в loading.css) первой отрисовкой видна эта плашка:
+  котик-лоадер (assets/loading-cat.gif). Держит его, пока не готов и
+  сам shell (шрифты/аватар — см. .is-page-loading), и медиа в галерее
+  работ (см. loading.js) — тогда сайт открывается сразу целиком, а не
+  по кусочкам.
 
   Фон — --color-bg сайта (см. theme.css, сейчас #080808) — сайт всегда
   тёмный, отдельного prefers-color-scheme не нужно.
@@ -14,14 +14,11 @@
   inset: 0;
   z-index: 1000;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
   padding: var(--page-px, 10px);
   background: var(--color-bg);
   color: var(--color-ink);
-  font-size: clamp(0.875rem, 0.75rem + 0.6vw, 1.25rem);
   transition:
     opacity 0.6s ease,
     visibility 0.6s ease;
@@ -54,47 +51,6 @@
    выставить [hidden], а плашка осталась бы видна поверх сайта. */
 .loading-screen[hidden] {
   display: none;
-}
-
-.loading-screen__fact {
-  max-width: 22rem;
-  text-align: center;
-  color: var(--color-text-muted);
-}
-
-.loading-screen__fact strong {
-  color: var(--color-text);
-  font-weight: var(--font-weight-bold);
-}
-
-.loading-screen__fact em {
-  font-style: italic;
-  font-weight: var(--font-weight-medium);
-}
-
-/* Печатная машинка — каждый символ свой <span> (см. loading.js), у
-   каждого своя animation-delay, поэтому текст будто вводится по буквам,
-   не ломая жирный/курсивный текст внутри (обёрнуты только текстовые
-   узлы, теги остаются как есть). */
-.loading-screen__fact-char {
-  opacity: 0;
-  animation: loading-fact-char-in 0.22s ease-out forwards;
-}
-
-@keyframes loading-fact-char-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .loading-screen__fact-char {
-    animation: none;
-    opacity: 1;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
