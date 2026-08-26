@@ -62,8 +62,10 @@
   // Реальные ассеты, загруженные в grid-test-assets/{слот}-{slug}/cover.*
   // — по мере загрузки новых просто добавляйте сюда номер слота.
   var ASSETS = {
-    1: "grid-test-assets/01-recycle-map/cover.mp4",
-    6: "grid-test-assets/06-esg-report/cover.mp4"
+    1: { type: "image", src: "grid-test-assets/01-recycle-map/cover.png" },
+    2: { type: "image", src: "grid-test-assets/02-about-company/cover.png" },
+    3: { type: "image", src: "grid-test-assets/03-checkout-subscription/cover.png" },
+    4: { type: "image", src: "grid-test-assets/04-ihelp-in-profile/cover.png" }
   };
 
   var wg = document.getElementById("wg");
@@ -75,17 +77,23 @@
     rowDef.items.forEach(function (title) {
       var item = document.createElement("div");
       item.className = "wg__item";
-      var src = ASSETS[slot];
-      if (src) {
+      var asset = ASSETS[slot];
+      if (asset && asset.type === "video") {
         var video = document.createElement("video");
         video.className = "wg__video";
-        video.src = src;
+        video.src = asset.src;
         video.muted = true;
         video.loop = true;
         video.playsInline = true;
         video.preload = "metadata";
         item.appendChild(video);
         videos.push(video);
+      } else if (asset && asset.type === "image") {
+        var img = document.createElement("img");
+        img.src = asset.src;
+        img.alt = title;
+        img.loading = "lazy";
+        item.appendChild(img);
       } else {
         item.innerHTML =
           '<span class="wg__ph"><b>' + slot + ". " + title + '</b><span>' +
