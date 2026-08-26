@@ -1,0 +1,211 @@
+/*
+  Галерея работ — brick-сетка (в отличие от Pinterest-masonry, см.
+  masonry.css/masonry.js): у каждой карточки одна из четырёх ЯВНЫХ
+  форм, а не произвольная пропорция реального фото:
+
+    --square      — квадрат, 1 колонка
+    --wide-left   — широкая, колонки 1–2 (третья в ряду — соседний квадрат)
+    --wide-right  — широкая, колонки 2–3
+    --tall        — высокая, 1 колонка, 2 строки
+
+  --wide-left/--wide-right — сознательно два разных класса, а не один
+  --wide (span 2) с надеждой, что dense-паковка сама раскидает их по
+  разным сторонам: на практике так не выходит — dense каждый раз ищет
+  первое подходящее место СНАЧАЛА сетки, и почти все --wide без
+  соседней --tall стабильно находят себе место у левого края, отчего
+  все широкие карточки визуально шли одна под другой слева. Сторона
+  поэтому прибита явно, в разметке, а не отдана на волю алгоритма.
+
+  Раскладка — чистый CSS Grid (grid-auto-flow: dense), без JS. Высота
+  ряда — auto, а квадратную форму каждая карточка получает сама по
+  себе через aspect-ratio (от СВОЕЙ ширины, которая уже известна из
+  ширины колонки) — --tall специально БЕЗ aspect-ratio, чтобы просто
+  растянуться на высоту двух auto-строк, а эти строки, в свою очередь,
+  получают нужную высоту от соседних --square/--wide в тех же рядах
+  (у них аspect-ratio есть, значит есть и интринзик-высота, по которой
+  auto-трек и считается). Более ранняя версия пыталась вместо этого
+  считать высоту ряда через container query units (grid-auto-rows:
+  cqw) — красивее в теории (ряд не зависит от соседей вообще), но на
+  практике самого разного повторного прогона внутри ЭТОЙ страницы
+  временами возвращала верное число, а временами тихо схлопывалась в
+  "auto" без каких-либо изменений в разметке — недостаточно надёжно
+  для продакшена. Обычный aspect-ratio таких сюрпризов не даёт.
+
+  Три брейкпоинта:
+    десктоп  >=1101px — 3 колонки
+    планшет  641–1100px — 2 колонки; --wide-left и --wide-right тут —
+             уже вся строка целиком, отличать лево/право не от чего
+    мобилка  <=640px — 1 колонка, карточки идут одна за другой;
+             --wide-*, --tall получают явный aspect-ratio (в 1 колонку
+             colspan/rowspan уже ничего не значат, а --tall больше не
+             может получить высоту от соседа, поэтому она нужна явно)
+*/
+
+:root {
+  /* Гэп и скругление карточек — фиксированные на всех брейкпоинтах
+     (не резинятся), поэтому просто константы в :root, а не что-то,
+     что пришлось бы пересчитывать в медиа-запросах. */
+  --works-grid-gap: 10px;
+  --works-grid-radius: 1.5rem;
+}
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: row dense;
+  gap: var(--works-grid-gap);
+}
+
+.works-grid__item {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  border-radius: var(--works-grid-radius);
+  overflow: hidden;
+  background: var(--color-surface-alt);
+  text-decoration: none;
+  transition: background-color var(--theme-transition-duration, 0.6s) var(--theme-transition-ease, ease);
+}
+
+
+.works-grid__item--square {
+  aspect-ratio: 1 / 1;
+  /* width/height: 100% явно, ОБА — квадрат (aspect-ratio: 1/1) и
+     широкая карточка в той же строке никогда не дают одинаковую
+     auto-высоту: у широкой высота считается от ширины 2 колонок +
+     гэп между ними / 2, у квадрата — от ширины 1 колонки, разница
+     ровно в половину --works-grid-gap. Если оставить только
+     align-self: stretch, aspect-ratio в ответ тянет уже ШИРИНУ
+     квадрата вверх вместе с высотой (чтобы остаться 1:1) — квадрат
+     раздаётся за пределы своей колонки и съедает часть гэпа сбоку.
+     Явные width/height: 100% фиксируют оба измерения по факту
+     реальной ячейки грида — aspect-ratio у элемента становится не у
+     дел ровно в тех редких строках, где квадрат и широкая всё же
+     разошлись на 5px (там квадрат на 1% не идеально квадратный,
+     незаметно), а сама auto-высота строки по-прежнему считается по
+     aspect-ratio, потому что берёт её ДО стадии alignment/stretch. */
+  width: 100%;
+  height: 100%;
+}
+
+.works-grid__item--wide-left {
+  grid-column: 1 / span 2;
+  aspect-ratio: 2 / 1;
+  width: 100%;
+  height: 100%;
+}
+
+.works-grid__item--wide-right {
+  grid-column: 2 / span 2;
+  aspect-ratio: 2 / 1;
+  width: 100%;
+  height: 100%;
+}
+
+.works-grid__item--tall {
+  grid-row: span 2;
+}
+
+@media (max-width: 1100px) and (min-width: 641px) {
+  .works-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .works-grid__item--wide-left,
+  .works-grid__item--wide-right {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .works-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .works-grid__item--wide-left,
+  .works-grid__item--wide-right {
+    grid-column: span 1;
+  }
+
+  .works-grid__item--tall {
+    grid-row: span 1;
+    aspect-ratio: 1 / 2;
+  }
+}
+
+.works-grid__item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.works-grid__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Исходник слота 48 уже ровно 2000×1000 — показываем кадр целиком,
+   не увеличивая его для компенсации редких расхождений высоты grid-строки. */
+.works-grid__item[data-slot="48"] .works-grid__video {
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Слот 14 — единственный оставшийся переведённый на видео слот (см.
+   index.html); нативная пропорция не совпадает с формой --square,
+   дефолтный cover обрезал бы часть интерфейса, поэтому здесь contain,
+   как раньше был у iframe через embed-scale.js. */
+.works-grid__item[data-slot="14"] .works-grid__video {
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Плейсхолдер-подпись у пустых плашек — номер слота, форма и рабочее
+   название проекта, чтобы удобно было готовить визуал под конкретный
+   слот. У карточек с реальным контентом этой подписи нет. */
+.works-grid__ph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  font-family: var(--font-family-mono);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.works-grid__ph b {
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+/* Карточка-проект — вместо картинки внутри крутится готовый
+   самостоятельный HTML (см. works/*.html), встроенный через iframe в
+   его РЕАЛЬНОМ (нативном) размере и сжатый transform: scale() под
+   ширину карточки (см. embed-scale.js). pointer-events: none на
+   iframe — карточки пока не кликабельны (просто галерея). */
+.works-grid__embed {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.works-grid__embed-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+  pointer-events: none;
+  transform-origin: top left;
+}

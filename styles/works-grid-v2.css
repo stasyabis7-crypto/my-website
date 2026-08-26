@@ -1,0 +1,110 @@
+/*
+  Тестовая версия сетки (grid-redesign-test) — НЕ подключена к
+  боевому index.html. Архив прежней версии: styles/archive/works-grid.v1.css
+
+  Отличие от v1: вместо dense-паковки произвольных карточек — явная
+  последовательность СТРОК, у каждой строки один из 4 типов:
+
+    --row-big   — 1 карточка на всю ширину контента, aspect 1852:1158
+    --row-el3   — 3 карточки в ряд, aspect 596:1290 (вытянутые/tall)
+    --row-sq2   — 2 квадратные карточки в ряд
+    --row-sq3   — 3 квадратные карточки в ряд
+
+  Ширина карточек в --row-el3/--row-sq3 (596px на фрейме 2099px) и
+  --row-sq2 (910px) сама получается из flexbox (flex:1 1 0 делит
+  ширину строки поровну за вычетом гэпов) — считать вручную не нужно.
+
+  Мобилка: строки становятся колонками (flex-direction: column),
+  каждая карточка — 100% ширины, aspect-ratio у неё остаётся ТОЙ ЖЕ,
+  что на десктопе — высота просто пересчитывается пропорционально.
+*/
+
+:root {
+  --wg-gap: 32px;
+  --wg-radius: 40px;
+  --wg-side: clamp(40px, 5.9vw, 160px);
+  --wg-max-width: 1920px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --wg-gap: 10px;
+    --wg-radius: 32px;
+    --wg-side: 10px;
+  }
+}
+
+.wg {
+  max-width: var(--wg-max-width);
+  margin-inline: auto;
+  padding-inline: var(--wg-side);
+  display: flex;
+  flex-direction: column;
+  gap: var(--wg-gap);
+}
+
+.wg__row {
+  display: flex;
+  gap: var(--wg-gap);
+}
+
+.wg__item {
+  flex: 1 1 0;
+  min-width: 0;
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  border-radius: var(--wg-radius);
+  overflow: hidden;
+  background: var(--color-surface-alt);
+}
+
+.wg__row--big .wg__item {
+  aspect-ratio: 1852 / 1158;
+}
+
+.wg__row--el3 .wg__item {
+  aspect-ratio: 596 / 1290;
+}
+
+.wg__row--sq2 .wg__item,
+.wg__row--sq3 .wg__item {
+  aspect-ratio: 1 / 1;
+}
+
+@media (max-width: 640px) {
+  .wg__row {
+    flex-direction: column;
+  }
+}
+
+.wg__item img,
+.wg__item video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Плейсхолдер-подпись — только для примерки сетки, у боевых карточек
+   такого не будет. */
+.wg__ph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--color-text-muted, #9aa1ae);
+  text-align: center;
+}
+
+.wg__ph b {
+  font-size: 1rem;
+  color: var(--color-text, #f4f5f7);
+  font-weight: 700;
+}

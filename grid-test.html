@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Grid v2 — примерка</title>
+<link rel="stylesheet" href="styles/theme.css?v=23" />
+<link rel="stylesheet" href="styles/works-grid-v2.css?v=1" />
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding-block: 40px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  .wg__ph {
+    background:
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0 10px, transparent 10px 20px);
+  }
+  .wg__row--big .wg__ph b { color: #ffb020; }
+  .wg__row--el3 .wg__ph b { color: #6fd0ff; }
+  .wg__row--sq2 .wg__ph b { color: #9dff8f; }
+  .wg__row--sq3 .wg__ph b { color: #ff8fd0; }
+</style>
+</head>
+<body>
+
+<div class="wg" id="wg"></div>
+
+<script>
+  // Последовательность типов строк 1–21, как в списке заказчика.
+  var ROWS = [
+    "big", "el3", "sq2", "big", "sq2", "el3", "sq2", "big", "el3", "big",
+    "sq3", "big", "big", "el3", "big", "el3", "big", "big", "sq2", "sq2", "big"
+  ];
+  var COUNT = { big: 1, el3: 3, sq2: 2, sq3: 3 };
+  var LABEL = { big: "1 большой", el3: "3 вытянутых", sq2: "2 квадрата", sq3: "3 квадрата" };
+
+  var wg = document.getElementById("wg");
+  var slot = 1;
+  ROWS.forEach(function (type, i) {
+    var row = document.createElement("div");
+    row.className = "wg__row wg__row--" + type;
+    for (var n = 0; n < COUNT[type]; n++) {
+      var item = document.createElement("div");
+      item.className = "wg__item";
+      item.innerHTML =
+        '<span class="wg__ph"><b>#' + (i + 1) + "</b><span>" + LABEL[type] +
+        "</span><span>слот " + slot + "</span></span>";
+      row.appendChild(item);
+      slot++;
+    }
+    wg.appendChild(row);
+  });
+</script>
+
+</body>
+</html>
