@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Grid v2 — примерка</title>
 <link rel="stylesheet" href="styles/theme.css?v=23" />
-<link rel="stylesheet" href="styles/works-grid-v2.css?v=1" />
+<link rel="stylesheet" href="styles/works-grid-v2.css?v=2" />
 <style>
   * { box-sizing: border-box; }
   body {
@@ -28,28 +28,51 @@
 <div class="wg" id="wg"></div>
 
 <script>
-  // Последовательность типов строк 1–21, как в списке заказчика.
+  // Реальный список проектов (2026-08-26), сгруппированный в строки
+  // по заявленным типам. big — 1 большой на всю ширину, el3 — 3
+  // вытянутых вертикальных в строке, sq2 — 2 больших квадрата в
+  // строке, sq3 — 3 маленьких квадрата в строке.
   var ROWS = [
-    "big", "el3", "sq2", "big", "sq2", "el3", "sq2", "big", "el3", "big",
-    "sq3", "big", "big", "el3", "big", "el3", "big", "big", "sq2", "sq2", "big"
+    { type: "big", items: ["Recycle map"] },
+    { type: "el3", items: ["About company", "Checkout subscription", "Ihelp in profile"] },
+    { type: "sq2", items: ["Banners with new branding charity", "ESG report"] },
+    { type: "big", items: ["CRM system"] },
+    { type: "sq2", items: ["Customer portrait", "Prices table"] },
+    { type: "el3", items: ["Boosting in the app", "VAT", "Minimal price"] },
+    { type: "sq2", items: ["Photoshop post", "Boosting prices"] },
+    { type: "big", items: ["Wild nature"] },
+    { type: "el3", items: ["ihelp SPEF", "Donation flow", "Gamification portal"] },
+    { type: "big", items: ["Hero banner ihelp"] },
+    { type: "sq3", items: ["Blanket post", "Where is money post", "Silver wishes post"] },
+    { type: "big", items: ["It volunteering"] },
+    { type: "big", items: ["Angel project for HR"] },
+    { type: "el3", items: ["Onboarding", "Medical app gamification", "Medical app watch"] },
+    { type: "big", items: ["Dashboard for doctors"] },
+    { type: "big", items: ["Dashboard concept"] },
+    { type: "el3", items: ["Educational app", "Mail app", "Share project"] },
+    { type: "big", items: ["TLM landing"] },
+    { type: "big", items: ["Music controller"] },
+    { type: "sq2", items: ["Object settings", "Your custom"] },
+    { type: "sq2", items: ["Time warp", "Flecto"] },
+    { type: "big", items: ["Offer story"] },
+    { type: "big", items: ["Ai assistant"] }
   ];
-  var COUNT = { big: 1, el3: 3, sq2: 2, sq3: 3 };
   var LABEL = { big: "1 большой", el3: "3 вытянутых", sq2: "2 квадрата", sq3: "3 квадрата" };
 
   var wg = document.getElementById("wg");
   var slot = 1;
-  ROWS.forEach(function (type, i) {
+  ROWS.forEach(function (rowDef) {
     var row = document.createElement("div");
-    row.className = "wg__row wg__row--" + type;
-    for (var n = 0; n < COUNT[type]; n++) {
+    row.className = "wg__row wg__row--" + rowDef.type;
+    rowDef.items.forEach(function (title) {
       var item = document.createElement("div");
       item.className = "wg__item";
       item.innerHTML =
-        '<span class="wg__ph"><b>#' + (i + 1) + "</b><span>" + LABEL[type] +
-        "</span><span>слот " + slot + "</span></span>";
+        '<span class="wg__ph"><b>' + (slot) + ". " + title + '</b><span>' +
+        LABEL[rowDef.type] + "</span></span>";
       row.appendChild(item);
       slot++;
-    }
+    });
     wg.appendChild(row);
   });
 </script>
