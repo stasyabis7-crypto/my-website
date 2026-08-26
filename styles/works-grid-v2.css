@@ -22,7 +22,7 @@
 :root {
   --wg-gap: 32px;
   --wg-radius: 40px;
-  --wg-side: clamp(40px, 5.9vw, 160px);
+  --wg-side: 24px;
   --wg-max-width: 1920px;
 }
 
