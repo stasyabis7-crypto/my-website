@@ -72,6 +72,16 @@
   z-index: 50;
 }
 
+/* Моб/планшет — плашка по центру экрана, а не у левого края (десктоп
+   не трогаем, там остаётся left). left:50% + translateX(-50%), а не
+   right:auto с margin — ширина hug-content, точный центр только так. */
+@media (max-width: 1100px) {
+  .site-header {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 .site-header__identity {
   display: flex;
   align-items: center;
