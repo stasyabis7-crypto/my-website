@@ -59,22 +59,57 @@
   ];
   var LABEL = { big: "1 большой", el3: "3 вытянутых", sq2: "2 квадрата", sq3: "3 квадрата" };
 
+  // Реальные ассеты, загруженные в grid-test-assets/{слот}-{slug}/cover.*
+  // — по мере загрузки новых просто добавляйте сюда номер слота.
+  var ASSETS = {
+    1: "grid-test-assets/01-recycle-map/cover.mp4",
+    6: "grid-test-assets/06-esg-report/cover.mp4"
+  };
+
   var wg = document.getElementById("wg");
   var slot = 1;
+  var videos = [];
   ROWS.forEach(function (rowDef) {
     var row = document.createElement("div");
     row.className = "wg__row wg__row--" + rowDef.type;
     rowDef.items.forEach(function (title) {
       var item = document.createElement("div");
       item.className = "wg__item";
-      item.innerHTML =
-        '<span class="wg__ph"><b>' + (slot) + ". " + title + '</b><span>' +
-        LABEL[rowDef.type] + "</span></span>";
+      var src = ASSETS[slot];
+      if (src) {
+        var video = document.createElement("video");
+        video.className = "wg__video";
+        video.src = src;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.preload = "metadata";
+        item.appendChild(video);
+        videos.push(video);
+      } else {
+        item.innerHTML =
+          '<span class="wg__ph"><b>' + slot + ". " + title + '</b><span>' +
+          LABEL[rowDef.type] + "</span></span>";
+      }
       row.appendChild(item);
       slot++;
     });
     wg.appendChild(row);
   });
+
+  // Играет, только пока карточка во вьюпорте — вне его пауза, чтобы
+  // не грузить декодер видео впустую на длинной странице.
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      var v = entry.target;
+      if (entry.isIntersecting) {
+        v.play().catch(function () {});
+      } else {
+        v.pause();
+      }
+    });
+  }, { threshold: 0.1 });
+  videos.forEach(function (v) { io.observe(v); });
 </script>
 
 </body>
