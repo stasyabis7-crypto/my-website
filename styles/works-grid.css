@@ -86,23 +86,25 @@
      scale-фидбек не должен читаться как обещание клика. */
   cursor: default;
   scale: 1;
+  /* Свой, более лёгкий и медленный scale, чем --button-press-scale
+     (0.96/0.12s — снэппи "нажатие" для настоящих кнопок): тут не фидбек
+     на клик, а мягкая реакция на наведение, резкая просадка смотрелась
+     как баг, а не как дизайн. */
+  --wg-hover-scale: 0.985;
   transition:
     background-color var(--theme-transition-duration, 0.6s) var(--theme-transition-ease, ease),
-    scale var(--button-press-duration, 0.12s) ease-out;
+    scale 0.35s var(--button-hover-ease, ease-out);
 }
 
-/* Тот же тактильный приём, что у реальных кнопок (см. button-hover.css:
-   --button-press-scale) — курсор с мыши на hover, тач на mobile/planshet
-   через :active (там hover не бывает вообще). */
 @media (hover: hover) and (pointer: fine) {
   .works-grid__item:hover {
-    scale: var(--button-press-scale, 0.96);
+    scale: var(--wg-hover-scale);
   }
 }
 
 .works-grid__item:active {
-  scale: var(--button-press-scale, 0.96);
-  transition-duration: 0.06s;
+  scale: var(--wg-hover-scale);
+  transition-duration: 0.2s;
 }
 
 .works-grid__row--big .works-grid__item {
