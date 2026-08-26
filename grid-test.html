@@ -44,7 +44,6 @@
     { type: "el3", items: ["ihelp SPEF", "Donation flow", "Gamification portal"] },
     { type: "big", items: ["Hero banner ihelp"] },
     { type: "sq3", items: ["Blanket post", "Where is money post", "Silver wishes post"] },
-    { type: "big", items: ["It volunteering"] },
     { type: "big", items: ["Angel project for HR"] },
     { type: "el3", items: ["Onboarding", "Medical app gamification", "Medical app watch"] },
     { type: "big", items: ["Dashboard for doctors"] },
@@ -60,47 +59,48 @@
   var LABEL = { big: "1 большой", el3: "3 вытянутых", sq2: "2 квадрата", sq3: "3 квадрата" };
 
   // Реальные ассеты, загруженные в grid-test-assets/{слот}-{slug}/cover.*
-  // — по мере загрузки новых просто добавляйте сюда номер слота.
+  // Привязка по НАЗВАНИЮ проекта (не по номеру слота) — так строки
+  // можно убирать/переставлять, не пересчитывая номера вручную.
   var ASSETS = {
-    1: { type: "image", src: "grid-test-assets/01-recycle-map/cover.png" },
-    2: { type: "image", src: "grid-test-assets/02-about-company/cover.png" },
-    3: { type: "image", src: "grid-test-assets/03-checkout-subscription/cover.png" },
-    4: { type: "image", src: "grid-test-assets/04-ihelp-in-profile/cover.png" },
-    5: { type: "image", src: "grid-test-assets/05-banners-with-new-branding-charity/cover.png" },
-    6: { type: "image", src: "grid-test-assets/06-esg-report/cover.png" },
-    7: { type: "image", src: "grid-test-assets/07-crm-system/cover.png" },
-    8: { type: "image", src: "grid-test-assets/08-customer-portrait/cover.png" },
-    9: { type: "image", src: "grid-test-assets/09-prices-table/cover.png" },
-    10: { type: "image", src: "grid-test-assets/10-boosting-in-the-app/cover.png" },
-    11: { type: "image", src: "grid-test-assets/11-vat/cover.png" },
-    12: { type: "image", src: "grid-test-assets/12-minimal-price/cover.png" },
-    13: { type: "image", src: "grid-test-assets/13-photoshop-post/cover.png" },
-    14: { type: "image", src: "grid-test-assets/14-boosting-prices/cover.png" },
-    15: { type: "image", src: "grid-test-assets/15-wild-nature/cover.png" },
-    16: { type: "image", src: "grid-test-assets/16-ihelp-spef/cover.png" },
-    17: { type: "image", src: "grid-test-assets/17-donation-flow/cover.png" },
-    18: { type: "image", src: "grid-test-assets/18-gamification-portal/cover.png" },
-    19: { type: "image", src: "grid-test-assets/19-hero-banner-ihelp/cover.png" },
-    20: { type: "image", src: "grid-test-assets/20-blanket-post/cover.png" },
-    21: { type: "image", src: "grid-test-assets/21-where-is-money-post/cover.png" },
-    22: { type: "image", src: "grid-test-assets/22-silver-wishes-post/cover.png" },
-    24: { type: "image", src: "grid-test-assets/24-angel-project-for-hr/cover.png" },
-    25: { type: "image", src: "grid-test-assets/25-onboarding/cover.png" },
-    26: { type: "image", src: "grid-test-assets/26-medical-app-gamification/cover.png" },
-    27: { type: "image", src: "grid-test-assets/27-medical-app-watch/cover.png" },
-    28: { type: "image", src: "grid-test-assets/28-dashboard-for-doctors/cover.png" },
-    29: { type: "image", src: "grid-test-assets/29-dashboard-concept/cover.png" },
-    30: { type: "image", src: "grid-test-assets/30-educational-app/cover.png" },
-    31: { type: "image", src: "grid-test-assets/31-mail-app/cover.png" },
-    32: { type: "image", src: "grid-test-assets/32-share-project/cover.png" },
-    33: { type: "image", src: "grid-test-assets/33-tlm-landing/cover.png" },
-    34: { type: "image", src: "grid-test-assets/34-music-controller/cover.png" },
-    35: { type: "image", src: "grid-test-assets/35-object-settings/cover.png" },
-    36: { type: "image", src: "grid-test-assets/36-your-custom/cover.png" },
-    37: { type: "image", src: "grid-test-assets/37-time-warp/cover.png" },
-    38: { type: "image", src: "grid-test-assets/38-flecto/cover.png" },
-    39: { type: "image", src: "grid-test-assets/39-offer-story/cover.png" },
-    40: { type: "image", src: "grid-test-assets/40-ai-assistant/cover.png" }
+    "Recycle map": { type: "image", src: "grid-test-assets/01-recycle-map/cover.png" },
+    "About company": { type: "image", src: "grid-test-assets/02-about-company/cover.png" },
+    "Checkout subscription": { type: "image", src: "grid-test-assets/03-checkout-subscription/cover.png" },
+    "Ihelp in profile": { type: "image", src: "grid-test-assets/04-ihelp-in-profile/cover.png" },
+    "Banners with new branding charity": { type: "image", src: "grid-test-assets/05-banners-with-new-branding-charity/cover.png" },
+    "ESG report": { type: "image", src: "grid-test-assets/06-esg-report/cover.png" },
+    "CRM system": { type: "image", src: "grid-test-assets/07-crm-system/cover.png" },
+    "Customer portrait": { type: "image", src: "grid-test-assets/08-customer-portrait/cover.png" },
+    "Prices table": { type: "image", src: "grid-test-assets/09-prices-table/cover.png" },
+    "Boosting in the app": { type: "image", src: "grid-test-assets/10-boosting-in-the-app/cover.png" },
+    "VAT": { type: "image", src: "grid-test-assets/11-vat/cover.png" },
+    "Minimal price": { type: "image", src: "grid-test-assets/12-minimal-price/cover.png" },
+    "Photoshop post": { type: "image", src: "grid-test-assets/13-photoshop-post/cover.png" },
+    "Boosting prices": { type: "image", src: "grid-test-assets/14-boosting-prices/cover.png" },
+    "Wild nature": { type: "image", src: "grid-test-assets/15-wild-nature/cover.png" },
+    "ihelp SPEF": { type: "image", src: "grid-test-assets/16-ihelp-spef/cover.png" },
+    "Donation flow": { type: "image", src: "grid-test-assets/17-donation-flow/cover.png" },
+    "Gamification portal": { type: "image", src: "grid-test-assets/18-gamification-portal/cover.png" },
+    "Hero banner ihelp": { type: "image", src: "grid-test-assets/19-hero-banner-ihelp/cover.png" },
+    "Blanket post": { type: "image", src: "grid-test-assets/20-blanket-post/cover.png" },
+    "Where is money post": { type: "image", src: "grid-test-assets/21-where-is-money-post/cover.png" },
+    "Silver wishes post": { type: "image", src: "grid-test-assets/22-silver-wishes-post/cover.png" },
+    "Angel project for HR": { type: "image", src: "grid-test-assets/24-angel-project-for-hr/cover.png" },
+    "Onboarding": { type: "image", src: "grid-test-assets/25-onboarding/cover.png" },
+    "Medical app gamification": { type: "image", src: "grid-test-assets/26-medical-app-gamification/cover.png" },
+    "Medical app watch": { type: "image", src: "grid-test-assets/27-medical-app-watch/cover.png" },
+    "Dashboard for doctors": { type: "image", src: "grid-test-assets/28-dashboard-for-doctors/cover.png" },
+    "Dashboard concept": { type: "image", src: "grid-test-assets/29-dashboard-concept/cover.png" },
+    "Educational app": { type: "image", src: "grid-test-assets/30-educational-app/cover.png" },
+    "Mail app": { type: "image", src: "grid-test-assets/31-mail-app/cover.png" },
+    "Share project": { type: "image", src: "grid-test-assets/32-share-project/cover.png" },
+    "TLM landing": { type: "image", src: "grid-test-assets/33-tlm-landing/cover.png" },
+    "Music controller": { type: "image", src: "grid-test-assets/34-music-controller/cover.png" },
+    "Object settings": { type: "image", src: "grid-test-assets/35-object-settings/cover.png" },
+    "Your custom": { type: "image", src: "grid-test-assets/36-your-custom/cover.png" },
+    "Time warp": { type: "image", src: "grid-test-assets/37-time-warp/cover.png" },
+    "Flecto": { type: "image", src: "grid-test-assets/38-flecto/cover.png" },
+    "Offer story": { type: "image", src: "grid-test-assets/39-offer-story/cover.png" },
+    "Ai assistant": { type: "image", src: "grid-test-assets/40-ai-assistant/cover.png" }
   };
 
   var wg = document.getElementById("wg");
@@ -112,7 +112,7 @@
     rowDef.items.forEach(function (title) {
       var item = document.createElement("div");
       item.className = "wg__item";
-      var asset = ASSETS[slot];
+      var asset = ASSETS[title];
       if (asset && asset.type === "video") {
         var video = document.createElement("video");
         video.className = "wg__video";
