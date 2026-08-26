@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Карта раздельного сбора</title>
+<style>:root{color-scheme:normal;--stage-bg:#f0f1f4}
+[data-embed-theme="dark"]{--stage-bg:#262a33}
+@font-face{font-family:CoFo;src:url("../fonts/CoFoAvitoText-Regular.woff2") format("woff2");font-weight:400}
+@font-face{font-family:CoFo;src:url("../fonts/CoFoAvitoText-Medium.woff2") format("woff2");font-weight:500}
+@font-face{font-family:CoFo;src:url("../fonts/CoFoAvitoText-ExtraBold.woff2") format("woff2");font-weight:800}
+*{box-sizing:border-box}button,input,select,textarea{color:inherit}html,body{width:100%;height:100%;margin:0;overflow:hidden}
+body{display:grid;place-items:center;background:var(--stage-bg);font-family:CoFo,Arial,sans-serif;color:#000}
+.stage{position:relative;width:100vw;height:100vh;background:#f8faf2;overflow:hidden}
+.viewport{position:absolute;inset:0;width:100%;height:100%;filter:none}
+.tablet-frame{display:none}
+.tablet-screen{position:absolute;inset:0;overflow:hidden;border:0;border-radius:0;background:#fff;box-shadow:none}
+.canvas{position:absolute;inset:0 auto auto 0;width:1280px;height:800px;transform-origin:0 0;background:#f8faf2}
+.map{position:absolute;inset:0;background:
+ linear-gradient(21deg,transparent 47%,#f3c565 48% 48.5%,transparent 49.5%),
+ linear-gradient(112deg,transparent 46%,#b8ddf3 47% 47.7%,transparent 48.7%),
+ radial-gradient(ellipse at 15% 15%,#d8efc9 0 8%,transparent 8.5%),
+ radial-gradient(ellipse at 82% 25%,#d8efc9 0 15%,transparent 15.5%),
+ radial-gradient(ellipse at 72% 82%,#c9e8f7 0 15%,transparent 15.5%),#fbfaf3}
+.map:after{content:"";position:absolute;inset:0;background-color:#fbfaf3;background-image:url("./assets/map-background.webp");background-position:center;background-repeat:no-repeat;background-size:100% 100%;opacity:.88}
+.site-nav{position:absolute;z-index:4;right:12px;top:12px;width:max-content;height:auto;padding:16px 24px 20px;background:#fff;border-radius:18px;display:flex;align-items:center;justify-content:center;gap:20px;box-shadow:0 4px 24px #00000014}
+.nav-item{position:relative;height:20px;display:flex;align-items:center;gap:4px;font-size:15px;font-weight:500;white-space:nowrap}.nav-label{position:relative;display:inline-block}.nav-item.active .nav-label:after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1.5px;background:#333}.nav-chevron{width:8px;height:8px;border-right:1.7px solid;border-bottom:1.7px solid;transform:rotate(45deg) translateY(-2px);transform-origin:center}
+.markers{position:absolute;inset:0;z-index:2}.point{position:absolute;width:208px;height:48px;padding:6px 12px 6px 6px;border-radius:14px;background:#fff;box-shadow:0 4px 18px #00000024;display:flex;align-items:center;gap:7px;transition:.38s cubic-bezier(.2,.8,.2,1);transform-origin:50% 125%}
+.point:before{content:"";position:absolute;left:50%;bottom:-8px;width:28px;height:9px;background:#fff;transform:translateX(-50%);clip-path:path("M0 0H28C22 0 19 1 18 3C17 5 15 8 14 9C13 8 11 5 10 3C9 1 6 0 0 0Z")}
+.point:after{content:"";position:absolute;left:50%;bottom:-22px;width:8px;height:8px;border:3px solid #fff;border-radius:50%;background:#1f1f1f;transform:translateX(-50%);box-shadow:0 1px 4px #0003}
+.point-icon{width:36px;height:36px;border-radius:9px;overflow:hidden;display:block;flex:none}.point-icon img{display:block;width:100%;height:100%;object-fit:cover}.point-copy{min-width:0}.point-copy b,.point-copy span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.point-copy b{font-size:13px;line-height:16px;font-weight:800}.point-copy span{font-size:13px;line-height:16px}.point.hidden,.point.search-hidden{opacity:0;transform:scale(.25)}
+.point.p1{left:534px;top:144px}.point.p2{left:614px;top:324px}.point.p3{left:479px;top:303px}.point.p4{left:705px;top:548px}.point.p5{left:600px;top:424px}.pin-favorite{position:absolute;right:-8px;top:-8px;width:20px;height:20px;display:block}
+.cluster{position:absolute;height:29px;padding:0 12px;border-radius:15px;background:#fff;box-shadow:0 4px 18px #0002;display:grid;place-items:center;font-size:13px;font-weight:800;transition:.38s cubic-bezier(.2,.8,.2,1);transform-origin:50% 140%}.cluster:before{content:"";position:absolute;left:50%;bottom:-8px;width:28px;height:9px;background:#fff;transform:translateX(-50%);clip-path:path("M0 0H28C22 0 19 1 18 3C17 5 15 8 14 9C13 8 11 5 10 3C9 1 6 0 0 0Z")}.cluster:after{content:"";position:absolute;left:50%;bottom:-21px;width:7px;height:7px;border:3px solid #fff;border-radius:50%;background:#1f1f1f;transform:translateX(-50%)}.cluster.c1{left:767px;top:165px}.cluster.c2{left:596px;top:653px}.cluster.hidden,.cluster.search-hidden{opacity:0;transform:scale(.25)}
+.map-controls{position:absolute;z-index:3;right:2px;top:300px;width:68px;display:flex;flex-direction:column;gap:8px}.map-controls img{display:block;width:68px;height:auto}
+.sidebar{position:absolute;z-index:5;left:12px;top:12px;width:100px;height:776px;overflow:visible;border-radius:24px;background:#fff;box-shadow:0 4px 24px #0000001f;transition:width .52s cubic-bezier(.2,.8,.2,1),border-radius .52s}
+.sidebar.open{width:375px;border-radius:28px}.toggle{position:absolute;left:84px;top:24px;width:32px;height:32px;border:2px solid #fff;border-radius:10px;background:#f5f5f5;display:grid;place-items:center;box-shadow:0 2px 8px #0001;transition:left .52s cubic-bezier(.2,.8,.2,1)}
+.toggle:after{content:"";width:8px;height:8px;border-top:2px solid;border-right:2px solid;transform:rotate(45deg)}.open .toggle{left:auto;right:-16px}.open .toggle:after{transform:rotate(225deg)}
+.symbol{position:absolute;left:31px;top:22px;width:38px;height:38px;transition:opacity .15s}.symbol img{display:block;width:100%;height:100%;object-fit:contain}.open .symbol{opacity:0}
+.rail{position:absolute;left:10px;top:72px;bottom:14px;width:80px;overflow:hidden;transition:opacity .18s}.open .rail{opacity:0;pointer-events:none}.rail-actions,.rail-categories{display:flex;flex-direction:column;align-items:center}.rail-actions{gap:8px}.rail-categories{gap:18px;margin-top:22px;transition:transform .42s cubic-bezier(.2,.8,.2,1)}.rail.scrolled .rail-categories{transform:translateY(-228px)}.rail-action{width:52px;height:52px;border-radius:16px;background:#f2f1f0;display:grid;place-items:center}.rail-action img{width:20px;height:20px;display:block}.rail-actions .rail-action:first-child img{filter:brightness(0)}.rail-item{width:76px;text-align:center;font-size:13px;line-height:17px;transition:color .18s}.rail-item.active{color:var(--active,#111);font-weight:500}.rail-item b{height:24px;display:grid;place-items:center}.rail-item b img{width:20px;height:20px;display:block}.rail-fade{position:absolute;z-index:2;left:0;right:0;bottom:0;height:98px;background:linear-gradient(to bottom,#fff0 0,#fff 58%,#fff 100%);pointer-events:none}.rail-down{position:absolute;z-index:3;left:50%;bottom:8px;width:34px;height:34px;padding:0;border:0;background:transparent;transform:translateX(-50%);display:grid;place-items:center;pointer-events:auto;cursor:pointer}.rail-down:after{content:"";width:10px;height:10px;border-right:2px solid #111;border-bottom:2px solid #111;transform:rotate(45deg) translate(-2px,-2px);transition:transform .3s}.rail.scrolled .rail-down:after{transform:rotate(225deg) translate(-2px,-2px)}
+.menu,.search-screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .22s}.open .menu{opacity:1;pointer-events:auto}.sidebar.searching .menu{opacity:0;pointer-events:none}.sidebar.searching .search-screen{opacity:1;pointer-events:auto}
+.brand{position:absolute;left:24px;top:20px;width:126px;height:38px}.brand img{display:block;width:100%;height:100%;object-fit:contain;object-position:left center}
+.searchbox{position:absolute;left:24px;right:24px;top:71px;height:53px;border-radius:16px;background:#f2f1f0;display:flex;align-items:center;padding:0 18px;gap:8px;color:#757575;font-size:15px}.search-icon{width:20px;height:20px;display:block;flex:none}
+.favorite{position:absolute;left:24px;right:24px;top:141px;height:64px;padding:10px 4px 10px 0}.favorite b{display:block;font-size:16px;line-height:20px;font-weight:800}.favorite span{font-size:15px;line-height:22px}.favorite:after{content:"";position:absolute;right:7px;top:25px;width:9px;height:9px;border-top:2px solid;border-right:2px solid;transform:rotate(45deg)}
+.category-title{position:absolute;left:24px;top:227px;font-size:16px;font-weight:800}.categories{position:absolute;left:24px;right:24px;top:263px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:44px;column-gap:16px}
+.category{height:44px;display:flex;align-items:center;gap:6px;font-size:15px;line-height:20px;color:#000;transition:color .18s}.category-icon{width:20px;height:20px;display:block;background:currentColor;-webkit-mask:var(--icon) center/20px 20px no-repeat;mask:var(--icon) center/20px 20px no-repeat;transform-origin:50% 50%;transition:transform .18s,color .18s}.category.hover{color:#757575}.category.hover .category-icon{transform:rotate(15deg)}.category.active{color:var(--active,#f79900)}.category.active .category-icon{-webkit-mask-image:var(--icon-active);mask-image:var(--icon-active)}.category.active.hover{color:var(--active,#f79900)}.category.active.hover .category-icon{transform:rotate(15deg)}
+.territory{position:absolute;left:24px;right:24px;bottom:24px;height:43px;display:flex;align-items:center;font-size:15px}.switch{margin-left:auto;width:40px;height:20px;border-radius:12px;background:#161616;padding:3px}.switch:after{content:"";display:block;margin-left:20px;width:14px;height:14px;border-radius:50%;background:#fff}
+.search-head{position:absolute;left:10px;top:16px;width:355px;height:52px;text-align:center;font-size:18px;line-height:52px;font-weight:800}.back{position:absolute;left:14px;top:6px;width:40px;height:40px;display:grid;place-items:center}.back img{display:block;width:32px;height:32px}.search-screen .searchbox{top:71px;color:#000}.query{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.caret{width:1px;height:20px;background:#000;animation:blink .8s steps(1) infinite}@keyframes blink{50%{opacity:0}}
+.suggestions{position:absolute;left:24px;right:24px;top:151px}.suggestions b{display:block;font-size:16px;margin:12px 0 14px}.suggestion{font-size:15px;line-height:20px;margin-bottom:20px}.suggestion small{display:block;color:#757575;font-size:13px;line-height:16px}
+.empty{position:absolute;inset:225px 24px 0;text-align:center;opacity:0;transition:opacity .3s}.empty.show{opacity:1}.empty-art{width:260px;height:260px;margin:-8px auto -47px}.empty-art img{display:block;width:100%;height:100%;object-fit:contain}.empty b{position:relative;z-index:1;display:block;font-size:21px;line-height:26px;font-weight:800;margin-bottom:4px}.empty p{position:relative;z-index:1;font-size:15px;line-height:22px;margin:0}.suggestions.fade{opacity:0}
+.cursor{position:absolute;left:0;top:0;width:24px;height:24px;z-index:20;pointer-events:none;transform-origin:4px 3px;will-change:transform,opacity}
+</style>
+  <script src="../shared/raf-gate.js"></script><script src="../shared/theme-sync.js" defer></script>
+</head>
+<body>
+<main class="stage">
+ <div class="viewport" id="viewport">
+  <div class="tablet-screen" id="tabletScreen"><div class="canvas" id="canvas">
+  <div class="map"></div>
+  <div class="markers">
+   <div class="point p1" data-kind="clothes"><span class="point-icon"><img src="./assets/pin-clothes.webp" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span></div>
+   <div class="point p2" data-kind="caps"><span class="point-icon"><img src="./assets/pin-caps.webp" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span></div>
+   <div class="point p3" data-kind="danger"><span class="point-icon"><img src="./assets/pin-plastic.webp" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span></div>
+   <div class="point p4" data-kind="danger"><span class="point-icon"><img src="./assets/pin-danger.webp" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span></div>
+   <div class="point p5" data-kind="tetrapak"><span class="point-icon"><img src="./assets/pin-tetrapak.webp" alt=""></span><span class="point-copy"><b>Контейнеры — сетки для вторсырья «Эколайн»</b><span>11:00 — 21:00, без перерывов</span></span><img class="pin-favorite" src="./assets/pin-favorite.webp" alt=""></div>
+   <div class="cluster c1">4 пункта</div><div class="cluster c2">3 пункта</div>
+  </div>
+  <nav class="site-nav"><div class="nav-item"><span class="nav-label">#яПомогаю</span></div><div class="nav-item"><span class="nav-label">Благотворительность</span><i class="nav-chevron"></i></div><div class="nav-item"><span class="nav-label">Кризисная помощь</span><i class="nav-chevron"></i></div><div class="nav-item active"><span class="nav-label">Экология</span><i class="nav-chevron"></i></div></nav>
+  <aside class="sidebar" id="sidebar">
+   <div class="symbol"><img src="./assets/logo-symbol.svg" alt="Avito"></div><div class="toggle"></div>
+   <div class="rail">
+    <div class="rail-actions"><div class="rail-action"><img src="./assets/search.svg" alt="Поиск"></div><div class="rail-action"><img src="./assets/favorites.svg" alt="Избранное"></div></div>
+    <div class="rail-categories">
+     <div class="rail-item" style="--active:#f79900"><b><img src="./assets/filter-clothes.svg" data-active="./assets/filter-clothes-active.svg" alt=""></b>Одежда</div>
+     <div class="rail-item" style="--active:#ff4053"><b><img src="./assets/filter-plastic.svg" data-active="./assets/filter-plastic-active.svg" alt=""></b>Пластик</div>
+     <div class="rail-item"><b><img src="./assets/filter-paper.svg" alt=""></b>Бумага</div>
+     <div class="rail-item"><b><img src="./assets/filter-caps.svg" alt=""></b>Крышечки</div>
+     <div class="rail-item"><b><img src="./assets/filter-glass.svg" alt=""></b>Стекло</div>
+     <div class="rail-item"><b><img src="./assets/filter-tires.svg" alt=""></b>Шины</div>
+     <div class="rail-item"><b><img src="./assets/filter-batteries.svg" alt=""></b>Батарейки</div>
+     <div class="rail-item"><b><img src="./assets/filter-tetrapak.svg" alt=""></b>Тетрапак</div>
+     <div class="rail-item"><b><img src="./assets/filter-danger.svg" alt=""></b>Опасные отходы</div>
+     <div class="rail-item"><b><img src="./assets/filter-appliances.svg" alt=""></b>Техника</div>
+     <div class="rail-item"><b><img src="./assets/filter-metal.svg" alt=""></b>Металл</div>
+     <div class="rail-item"><b><img src="./assets/filter-bulbs.svg" alt=""></b>Лампочки</div>
+     <div class="rail-item"><b><img src="./assets/filter-other.svg" alt=""></b>Другое</div>
+    </div>
+    <div class="rail-fade"></div><button class="rail-down" type="button" aria-label="Показать следующие фильтры"></button>
+   </div>
+   <section class="menu">
+    <div class="brand"><img src="./assets/logo-full.svg" alt="Avito"></div>
+    <div class="searchbox"><img class="search-icon" src="./assets/search.svg" alt="">Поиск по городу или адресу</div>
+    <div class="favorite"><b>Избранное</b><span>2 пункта переработки</span></div>
+    <div class="category-title">Что вы хотите сдать</div>
+    <div class="categories">
+     <div class="category" style="--active:#f79900"><span class="category-icon" style="--icon:url('./assets/filter-clothes.svg');--icon-active:url('./assets/filter-clothes-active.svg')"></span>Одежда</div>
+     <div class="category" style="--active:#0099f7"><span class="category-icon" style="--icon:url('./assets/filter-tetrapak.svg');--icon-active:url('./assets/filter-tetrapak-active.svg')"></span>Тетрапак</div>
+     <div class="category" style="--active:#ff4053"><span class="category-icon" style="--icon:url('./assets/filter-plastic.svg');--icon-active:url('./assets/filter-plastic-active.svg')"></span>Пластик</div>
+     <div class="category" style="--active:#f54a80"><span class="category-icon" style="--icon:url('./assets/filter-danger.svg');--icon-active:url('./assets/filter-danger-active.svg')"></span>Опасные отходы</div>
+     <div class="category" style="--active:#00a34c"><span class="category-icon" style="--icon:url('./assets/filter-paper.svg');--icon-active:url('./assets/filter-paper-active.svg')"></span>Бумага</div>
+     <div class="category" style="--active:#45c1ff"><span class="category-icon" style="--icon:url('./assets/filter-appliances.svg');--icon-active:url('./assets/filter-appliances-active.svg')"></span>Бытовая техника</div>
+     <div class="category" style="--active:#8f7f5e"><span class="category-icon" style="--icon:url('./assets/filter-caps.svg');--icon-active:url('./assets/filter-caps-active.svg')"></span>Крышечки</div>
+     <div class="category" style="--active:#0073e5"><span class="category-icon" style="--icon:url('./assets/filter-metal.svg');--icon-active:url('./assets/filter-metal-active.svg')"></span>Металл</div>
+     <div class="category" style="--active:#965cff"><span class="category-icon" style="--icon:url('./assets/filter-glass.svg');--icon-active:url('./assets/filter-glass-active.svg')"></span>Стекло</div>
+     <div class="category" style="--active:#f2b200"><span class="category-icon" style="--icon:url('./assets/filter-bulbs.svg');--icon-active:url('./assets/filter-bulbs-active.svg')"></span>Лампочки</div>
+     <div class="category" style="--active:#8b8b88"><span class="category-icon" style="--icon:url('./assets/filter-tires.svg');--icon-active:url('./assets/filter-tires-active.svg')"></span>Шины</div>
+     <div class="category" style="--active:#fca400"><span class="category-icon" style="--icon:url('./assets/filter-other.svg');--icon-active:url('./assets/filter-other-active.svg')"></span>Другое</div>
+     <div class="category" style="--active:#00d170"><span class="category-icon" style="--icon:url('./assets/filter-batteries.svg');--icon-active:url('./assets/filter-batteries-active.svg')"></span>Батарейки</div>
+    </div>
+    <div class="territory">Пункты на закрытой территории<span class="switch"></span></div>
+   </section>
+   <section class="search-screen">
+    <div class="search-head"><span class="back"><img src="./assets/left-content.svg" alt="Назад"></span>Поиск</div>
+    <div class="searchbox"><img class="search-icon" src="./assets/search.svg" alt=""><span class="query" id="query"></span><span class="caret"></span></div>
+    <div class="suggestions" id="suggestions"><b>Уже искали</b><div class="suggestion">улица Скульптора Мухиной, 6<small>Москва</small></div><b>Другие адреса</b><div class="suggestion">улица Скульптора Мухиной, 8<small>Москва</small></div><div class="suggestion">улица Скульптора Мухиной, 10<small>Москва</small></div><div class="suggestion">улица Скульптора Мухиной, 3<small>Москва</small></div><div class="suggestion">улица Скульптора Мухиной, 1<small>Москва</small></div></div>
+    <div class="empty" id="empty"><div class="empty-art"><img src="./assets/empty-cactus.webp" alt=""></div><b>Ничего не нашли</b><p>Попробуйте изменить поисковый запрос<br>или вернуться позже</p></div>
+   </section>
+  </aside>
+  <div class="map-controls"><img src="./assets/zoom.svg" alt="Масштаб карты"><img src="./assets/location.svg" alt="Мое местоположение"></div>
+  <img class="cursor" id="cursorDefault" src="./assets/cursor-default.svg" alt="">
+  <img class="cursor" id="cursorPointer" src="./assets/cursor-pointer.svg" alt="">
+ </div></div></div>
+</main>
+<script>
+const viewport=document.getElementById('viewport'),tabletScreen=document.getElementById('tabletScreen'),canvas=document.getElementById('canvas'),sidebar=document.getElementById('sidebar');
+const normal=document.getElementById('cursorDefault'),pointer=document.getElementById('cursorPointer'),cats=[...document.querySelectorAll('.category')],railCats=[...document.querySelectorAll('.rail-item')],marks=[...document.querySelectorAll('.point,.cluster')];
+const query=document.getElementById('query'),suggestions=document.getElementById('suggestions'),empty=document.getElementById('empty');
+const rail=document.querySelector('.rail'),railDown=document.querySelector('.rail-down');
+const duration=13200;let cycle=-1;
+const P={start:[1120,720],toggle:[111,52],c1:[93,293],c2:[93,337],search:[184,98],back:[52,42]};
+const clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>n<.5?4*n*n*n:1-Math.pow(-2*n+2,3)/2,mix=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
+function progress(t,a,b){return ease(clamp((t-a)/(b-a)))}function place(el,p,s=1){el.style.transform=`translate(${p[0]}px,${p[1]}px) scale(${s})`}
+function resize(){const scale=Math.min(tabletScreen.clientWidth/1280,tabletScreen.clientHeight/800),x=(tabletScreen.clientWidth-1280*scale)/2,y=(tabletScreen.clientHeight-800*scale)/2;canvas.style.transform=`translate(${x}px,${y}px) scale(${scale})`}
+function setRailActive(index,active){const item=railCats[index],img=item.querySelector('img');if(!img.dataset.default)img.dataset.default=img.getAttribute('src');item.classList.toggle('active',active);img.setAttribute('src',active&&img.dataset.active?img.dataset.active:img.dataset.default)}
+function reset(){sidebar.className='sidebar';cats.forEach(c=>c.className='category');railCats.forEach((_,i)=>setRailActive(i,false));marks.forEach(m=>{m.classList.remove('hidden','search-hidden');m.style.opacity='';m.style.transform=''});query.textContent='';suggestions.classList.remove('fade');empty.classList.remove('show')}
+function press(t,a){return 1-.14*Math.sin(clamp((t-a)/260)*Math.PI)}
+function animate(now){
+ const c=Math.floor(now/duration),t=now%duration;if(c!==cycle){reset();cycle=c}
+ let p=P.start,s=1,hand=false;
+ if(t<900)marks.forEach((m,i)=>{const q=progress(t,80+i*75,500+i*75);m.style.opacity=q;m.style.transform=`scale(${.45+.55*q})`});
+ else marks.forEach(m=>{m.style.opacity='';m.style.transform=''});
+ if(t>=7950&&t<10100)marks.forEach(m=>m.classList.add('search-hidden'));
+ else marks.forEach(m=>m.classList.remove('search-hidden'));
+ if(t<900)p=P.start;
+ else if(t<1750)p=mix(P.start,P.toggle,progress(t,900,1750));
+ else if(t<2150){p=P.toggle;hand=true;s=press(t,1790)}
+ else if(t<2850){sidebar.classList.add('open');p=[365,52]}
+ else if(t<3450){p=mix([365,52],P.c1,progress(t,2850,3450));hand=true}
+ else if(t<3850){p=P.c1;hand=true;cats[0].classList.add('hover');s=press(t,3520)}
+ else if(t<4350){cats[0].classList.add('active');cats[0].classList.remove('hover');setRailActive(0,true);marks[1].classList.add('hidden');marks[5].classList.add('hidden');p=mix(P.c1,P.c2,progress(t,3850,4350));hand=true}
+ else if(t<4750){p=P.c2;hand=true;cats[2].classList.add('hover');s=press(t,4420)}
+ else if(t<5300){cats[2].classList.add('active');cats[2].classList.remove('hover');setRailActive(1,true);marks[2].classList.add('hidden');marks[4].classList.add('hidden');p=mix(P.c2,P.search,progress(t,4750,5300));hand=true}
+ else if(t<5700){p=P.search;hand=true;s=press(t,5360)}
+ else if(t<6250){sidebar.classList.add('searching');p=[180,98]}
+ else if(t<7950){p=[180,98];const text='улица Скульптора Мухиной';query.textContent=text.slice(0,Math.floor(text.length*progress(t,6250,7750)))}
+ else if(t<9000){p=[180,98];suggestions.classList.add('fade');empty.classList.add('show');marks.forEach(m=>m.classList.add('search-hidden'))}
+ else if(t<9700){p=mix([180,98],P.back,progress(t,9000,9700));marks.forEach(m=>m.classList.add('search-hidden'))}
+ else if(t<10100){p=P.back;hand=true;s=press(t,9760)}
+ else if(t<10800){sidebar.classList.remove('searching');marks.forEach(m=>m.classList.remove('search-hidden'));p=mix(P.back,[365,52],progress(t,10100,10800))}
+ else if(t<11200){p=[365,52];hand=true;s=press(t,10850)}
+ else if(t<11900){sidebar.classList.remove('open');p=mix(P.toggle,P.start,progress(t,11200,11900))}
+ else p=P.start;
+ normal.style.opacity=hand?0:1;pointer.style.opacity=hand?1:0;place(normal,p,s);place(pointer,p,s);requestAnimationFrame(animate)
+}
+railDown.addEventListener('click',()=>rail.classList.toggle('scrolled'));
+addEventListener('resize',resize);resize();requestAnimationFrame(animate);
+</script>
+</body>
+</html>

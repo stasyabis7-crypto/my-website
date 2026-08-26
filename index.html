@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="styles/header.css?v=29" />
 <link rel="stylesheet" href="styles/footer.css?v=46" />
 <link rel="stylesheet" href="styles/button-hover.css?v=26" />
-<link rel="stylesheet" href="styles/works-grid.css?v=4" />
+<link rel="stylesheet" href="styles/works-grid.css?v=5" />
 <link rel="stylesheet" href="styles/works-paginate.css?v=1" />
 <link rel="preload" as="font" type="font/ttf" href="styles/Valisca%204.ttf" crossorigin />
 <link rel="stylesheet" href="styles/hero.css?v=1" />
@@ -268,139 +268,105 @@
     </section>
 
     <!--
-      55 плашек-слотов под проекты. Каждая — data-slot (номер, см. таблицу
-      проектов) и одна из четырёх ЯВНЫХ форм (works-grid__item--square /
-      --wide-left / --wide-right / --tall, см. works-grid.css) —
-      раскладка чистым CSS Grid, без JS вообще.
+      Галерея v2 (2026-08-26) — построчная раскладка, см. works-grid.css.
+      Каждая .works-grid__row — один из 4 типов (--big/--el3/--sq2/--sq3),
+      тип задаёт и aspect-ratio карточек, и их число в строке; ширина
+      карточки внутри строки считается флексбоксом сама. Прежний dense-grid
+      список (55 проектов) архивирован в works-archive/, полная замена
+      контента по договорённости.
 
-      Когда добавляете проект в слот: положите внутрь .works-grid__item
-      либо <img src="..." alt="...">, либо .works-grid__embed+iframe
-      (как в слоте 1) — класс формы (--square/--wide-left/--wide-right/
-      --tall) на самом элементе не трогайте, она уже под слот подобрана. Карточки пока НЕ
-      кликабельны (просто галерея) — страница-описание проекта будет
-      сделана позже по шаблону, тогда .works-grid__item сменится на
-      <a href="...">.
+      Порядок строк — заданная последовательность, шаффла между визитами
+      больше нет (works-shuffle.js был завязан на классы форм --square/
+      --wide-left/--wide-right/--tall, которых у новой структуры нет —
+      скрипт убран из подключения, а не оставлен молча простаивать).
     -->
     <div class="works-grid" id="works-gallery">
-      <div class="works-grid__item works-grid__item--square" data-slot="1" data-title="CRM Widget on Homepage">
-        <span class="works-grid__embed">
-          <iframe loading="lazy" class="works-grid__embed-frame" src="works/01-crm-widget-homepage/index.html" data-native-w="1080" data-native-h="1080" tabindex="-1" scrolling="no" title="CRM Widget on Homepage"></iframe>
-        </span>
+     <div class="works-grid__inner">
+      <div class="works-grid__row works-grid__row--big">
+        <div class="works-grid__item" data-slot="1" data-title="Recycle map"><img src="works/01-recycle-map/cover.png" alt="Recycle map" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--square" data-slot="2" data-title="Avito Menu Audit">
-        <span class="works-grid__embed">
-          <iframe loading="lazy" class="works-grid__embed-frame" src="works/02-avito-menu-audit/index.html?v=3" data-native-w="1000" data-native-h="750" tabindex="-1" scrolling="no" title="Avito Menu Audit"></iframe>
-        </span>
+      <div class="works-grid__row works-grid__row--el3">
+        <div class="works-grid__item" data-slot="2" data-title="About company"><img src="works/02-about-company/cover.png" alt="About company" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="3" data-title="Checkout subscription"><img src="works/03-checkout-subscription/cover.png" alt="Checkout subscription" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="4" data-title="Ihelp in profile"><img src="works/04-ihelp-in-profile/cover.png" alt="Ihelp in profile" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--tall" data-slot="3" data-title="Donation Flow">
-        <span class="works-grid__embed">
-          <iframe loading="lazy" class="works-grid__embed-frame" src="works/03-donation-flow/index.html?v=6" data-native-w="540" data-native-h="1040" tabindex="-1" scrolling="no" title="Donation Flow"></iframe>
-        </span>
+      <div class="works-grid__row works-grid__row--sq2">
+        <div class="works-grid__item" data-slot="5" data-title="Banners with new branding charity"><img src="works/05-banners-with-new-branding-charity/cover.png" alt="Banners with new branding charity" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="6" data-title="ESG report"><img src="works/06-esg-report/cover.png" alt="ESG report" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--square" data-slot="4" data-title="Light/Dark Theme Banner">
-        <span class="works-grid__embed">
-          <iframe loading="lazy" class="works-grid__embed-frame" src="works/04-theme-banner/index.html" data-native-w="750" data-native-h="750" tabindex="-1" scrolling="no" title="Light/Dark Theme Banner"></iframe>
-        </span>
+      <div class="works-grid__row works-grid__row--big">
+        <div class="works-grid__item" data-slot="7" data-title="CRM system"><img src="works/07-crm-system/cover.png" alt="CRM system" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--wide-left" data-slot="5" data-title="Recycling Map">
-        <span class="works-grid__embed">
-          <iframe loading="lazy" class="works-grid__embed-frame" src="works/05-recycling-map/index.html?v=9" data-native-w="1280" data-native-h="814" tabindex="-1" scrolling="no" title="Recycling Map"></iframe>
-        </span>
+      <div class="works-grid__row works-grid__row--sq2">
+        <div class="works-grid__item" data-slot="8" data-title="Customer portrait"><img src="works/08-customer-portrait/cover.png" alt="Customer portrait" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="9" data-title="Prices table"><img src="works/09-prices-table/cover.png" alt="Prices table" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--wide-right" data-slot="6" data-title="Music Controller Concept">
-        <img src="works/06-music-controller-concept/cover-dark.webp?v=be0d4348" alt="Music Controller Concept"  loading="lazy" />
+      <div class="works-grid__row works-grid__row--el3">
+        <div class="works-grid__item" data-slot="10" data-title="Boosting in the app"><img src="works/10-boosting-in-the-app/cover.png" alt="Boosting in the app" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="11" data-title="VAT"><img src="works/11-vat/cover.png" alt="VAT" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="12" data-title="Minimal price"><img src="works/12-minimal-price/cover.png" alt="Minimal price" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--square" data-slot="7" data-title="Flecto Concept">
-        <img src="works/07-flecto-concept/cover.webp?v=6cb86f60" alt="Flecto Concept"  loading="lazy" />
+      <div class="works-grid__row works-grid__row--sq2">
+        <div class="works-grid__item" data-slot="13" data-title="Photoshop post"><img src="works/13-photoshop-post/cover.png" alt="Photoshop post" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="14" data-title="Boosting prices"><img src="works/14-boosting-prices/cover.png" alt="Boosting prices" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--square" data-slot="8" data-title="CRM Banner">
-        <img src="works/08-crm-banner/cover.webp?v=d5a79296" alt="CRM Banner"  loading="lazy" />
+      <div class="works-grid__row works-grid__row--big">
+        <div class="works-grid__item" data-slot="15" data-title="Wild nature"><img src="works/15-wild-nature/cover.png" alt="Wild nature" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--square" data-slot="9" data-title="Temporary Min-Price Onboarding">
-        <span class="works-grid__embed">
-          <iframe loading="lazy" class="works-grid__embed-frame" src="works/09-min-price-onboarding/index.html?v=7" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" title="Temporary Min-Price Onboarding"></iframe>
-        </span>
+      <div class="works-grid__row works-grid__row--el3">
+        <div class="works-grid__item" data-slot="16" data-title="ihelp SPEF"><img src="works/16-ihelp-spef/cover.png" alt="ihelp SPEF" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="17" data-title="Donation flow"><img src="works/17-donation-flow/cover.png" alt="Donation flow" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="18" data-title="Gamification portal"><img src="works/18-gamification-portal/cover.png" alt="Gamification portal" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--wide-left" data-slot="10" data-title="Offer Story">
-        <img src="works/10-offer-story/cover-light.webp?v=b63f71b2" alt="Offer Story"  loading="lazy" />
+      <div class="works-grid__row works-grid__row--big">
+        <div class="works-grid__item" data-slot="19" data-title="Hero banner ihelp"><img src="works/19-hero-banner-ihelp/cover.png" alt="Hero banner ihelp" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--square" data-slot="11" data-title="&quot;Znak Dobra&quot; Charity Sheet">
-        <span class="works-grid__embed">
-          <iframe loading="lazy" class="works-grid__embed-frame" src="works/11-znak-dobra-charity-sheet/index.html?v=7" data-native-w="1400" data-native-h="1400" tabindex="-1" scrolling="no" title="&quot;Znak Dobra&quot; Charity Sheet"></iframe>
-        </span>
+      <div class="works-grid__row works-grid__row--sq3">
+        <div class="works-grid__item" data-slot="20" data-title="Blanket post"><img src="works/20-blanket-post/cover.png" alt="Blanket post" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="21" data-title="Where is money post"><img src="works/21-where-is-money-post/cover.png" alt="Where is money post" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="22" data-title="Silver wishes post"><img src="works/22-silver-wishes-post/cover.png" alt="Silver wishes post" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--square" data-slot="12" data-title="&quot;1 Ruble&quot; Charity Round-Up">
-        <img src="works/12-one-ruble-charity/cover-light.webp?v=22840b86" alt="&quot;1 Ruble&quot; Charity Round-Up"  loading="lazy" />
+      <div class="works-grid__row works-grid__row--big">
+        <div class="works-grid__item" data-slot="23" data-title="Angel project for HR"><img src="works/23-angel-project-for-hr/cover.png" alt="Angel project for HR" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--square" data-slot="13" data-title="Charity Entry Banners A/B">
-        <img src="works/13-charity-entry-banners-ab/cover.webp?v=16de6a3c" alt="Charity Entry Banners A/B"  loading="lazy" />
+      <div class="works-grid__row works-grid__row--el3">
+        <div class="works-grid__item" data-slot="24" data-title="Onboarding"><img src="works/24-onboarding/cover.png" alt="Onboarding" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="25" data-title="Medical app gamification"><img src="works/25-medical-app-gamification/cover.png" alt="Medical app gamification" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="26" data-title="Medical app watch"><img src="works/26-medical-app-watch/cover.png" alt="Medical app watch" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--square" data-slot="14" data-title="ESG Report">
-        <video class="works-grid__video" src="works/14-esg-report/cover-dark.mp4?v=3" autoplay muted loop playsinline preload="metadata" aria-label="ESG Report"></video>
+      <div class="works-grid__row works-grid__row--big">
+        <div class="works-grid__item" data-slot="27" data-title="Dashboard for doctors"><img src="works/27-dashboard-for-doctors/cover.png" alt="Dashboard for doctors" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--square" data-slot="15" data-title="SPIEF 2025">
-        <video class="works-grid__video" src="works/15-spief-2025/cover.mp4?v=2" autoplay muted loop playsinline preload="metadata" aria-label="SPIEF 2025"></video>
+      <div class="works-grid__row works-grid__row--big">
+        <div class="works-grid__item" data-slot="28" data-title="Dashboard concept"><img src="works/28-dashboard-concept/cover.png" alt="Dashboard concept" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--wide-right" data-slot="16" data-title="Dashboard Concept">
-        <img src="works/16-dashboard-concept/cover.webp?v=a4520b5b" alt="Dashboard Concept"  loading="lazy" />
+      <div class="works-grid__row works-grid__row--el3">
+        <div class="works-grid__item" data-slot="29" data-title="Educational app"><img src="works/29-educational-app/cover.png" alt="Educational app" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="30" data-title="Mail app"><img src="works/30-mail-app/cover.png" alt="Mail app" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="31" data-title="Share project"><img src="works/31-share-project/cover.png" alt="Share project" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--wide-left" data-slot="17" data-title="CRM Customer Segments">
-        <span class="works-grid__embed">
-          <iframe loading="lazy" class="works-grid__embed-frame" src="works/17-crm-customer-segments/index.html?v=6" data-native-w="1000" data-native-h="800" tabindex="-1" scrolling="no" title="CRM Customer Segments"></iframe>
-        </span>
+      <div class="works-grid__row works-grid__row--big">
+        <div class="works-grid__item" data-slot="32" data-title="TLM landing"><img src="works/32-tlm-landing/cover.png" alt="TLM landing" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--square" data-slot="18" data-title="Education Platform Concept">
-        <img src="works/18-education-platform-concept/cover.webp?v=24f82797" alt="Education Platform Concept"  loading="lazy" />
+      <div class="works-grid__row works-grid__row--big">
+        <div class="works-grid__item" data-slot="33" data-title="Music controller"><img src="works/33-music-controller/cover.png" alt="Music controller" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--square" data-slot="19" data-title="&quot;yPomogayu&quot; Blue Badge">
-        <span class="works-grid__embed">
-          <iframe loading="lazy" class="works-grid__embed-frame" src="works/19-ypomogayu-blue-badge/index.html?v=10" data-native-w="1000" data-native-h="500" data-fit="cover" tabindex="-1" scrolling="no" title="&quot;yPomogayu&quot; Blue Badge"></iframe>
-        </span>
+      <div class="works-grid__row works-grid__row--sq2">
+        <div class="works-grid__item" data-slot="34" data-title="Object settings"><img src="works/34-object-settings/cover.png" alt="Object settings" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="35" data-title="Your custom"><img src="works/35-your-custom/cover.png" alt="Your custom" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--square" data-slot="20" data-title="3D Vectors Concept">
-        <img src="works/20-3d-vectors-concept/cover.webp?v=f408e2d6" alt="3D Vectors Concept"  loading="lazy" />
+      <div class="works-grid__row works-grid__row--sq2">
+        <div class="works-grid__item" data-slot="36" data-title="Time warp"><img src="works/36-time-warp/cover.png" alt="Time warp" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="37" data-title="Flecto"><img src="works/37-flecto/cover.png" alt="Flecto" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--wide-right" data-slot="21" data-title="Hero Banner Rebrand">
-        <img src="works/21-hero-banner-rebrand/cover.webp?v=5a58cf96" alt="Hero Banner Rebrand"  loading="lazy" />
+      <div class="works-grid__row works-grid__row--big">
+        <div class="works-grid__item" data-slot="38" data-title="Offer story"><img src="works/38-offer-story/cover.png" alt="Offer story" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--wide-left" data-slot="22" data-title="TLM Concept">
-        <img src="works/22-tlm-concept/cover.webp?v=b16b7cd2" alt="TLM Concept"  loading="lazy" />
+      <div class="works-grid__row works-grid__row--big">
+        <div class="works-grid__item" data-slot="39" data-title="Ai assistant"><img src="works/39-ai-assistant/cover.png" alt="Ai assistant" loading="lazy" /></div>
       </div>
-      <div class="works-grid__item works-grid__item--wide-right" data-slot="23" data-title="Price Table Alerting"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/23-price-table-alerting/index.html?v=22" data-native-w="1000" data-native-h="500" tabindex="-1" scrolling="no" title="Price Table Alerting"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="24" data-title="About Us Landing Page"><img src="works/24-about-us-landing/cover.webp?v=8148fa1c" alt="About Us Landing Page"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--wide-left" data-slot="25" data-title="Internal Volunteering"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/25-internal-volunteering/index.html?v=9" data-native-w="1000" data-native-h="500" tabindex="-1" scrolling="no" title="Internal Volunteering"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="26" data-title="Mail App Concept"><img src="works/26-mail-app-concept/cover.webp?v=fe02dc41" alt="Mail App Concept"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="27" data-title="VAT"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/27-vat/index.html?v=19" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" title="VAT"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--wide-right" data-slot="28" data-title="Customer Portrait"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/28-customer-portrait/index.html?v=6" data-native-w="1000" data-native-h="667" tabindex="-1" scrolling="no" title="Customer Portrait"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="29" data-title="RFM for Help Center"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/29-rfm-help-center/index.html?v=7" data-native-w="1000" data-native-h="800" tabindex="-1" scrolling="no" title="RFM for Help Center"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="30" data-title="Customer List"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/30-customer-list/index.html?v=15" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" title="Customer List"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--wide-left" data-slot="31" data-title="Mailing Page"><img src="works/31-mailing-page/cover-light.webp?v=a327f2e1" alt="Mailing Page"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="32" data-title="Toast Copy Fix"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/32-toast-copy-fix/index.html?v=5" data-native-w="1000" data-native-h="750" tabindex="-1" scrolling="no" title="Toast Copy Fix"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="33" data-title="Price Analytics Metrics"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/33-price-analytics-metrics/index.html?v=8" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" allowtransparency="true" title="Price Analytics Metrics"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="34" data-title="Margin &amp; Cost Price"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/34-margin-cost-price/index.html?v=3" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" allowtransparency="true" title="Margin &amp; Cost Price"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="35" data-title="Popover Improvements"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/35-popover-improvements/index.html?v=6" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" allowtransparency="true" title="Popover Improvements"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="36" data-title="Price Table Redesign"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/36-price-table-redesign/index.html?v=5" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" allowtransparency="true" title="Price Table Redesign"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="37" data-title="Promotions &amp; Boosting"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/37-promotions-boosting/index.html?v=4" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" allowtransparency="true" title="Promotions &amp; Boosting"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--wide-right" data-slot="38" data-title="Quick Discount Bar"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/38-quick-discount-bar/index.html?v=3" data-native-w="2000" data-native-h="1000" tabindex="-1" scrolling="no" allowtransparency="true" title="Quick Discount Bar"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="39" data-title="Discount Ladder"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/39-discount-ladder/index.html?v=11" data-native-w="1000" data-native-h="1000" tabindex="-1" scrolling="no" allowtransparency="true" title="Discount Ladder"></iframe></span></div>
-        <div class="works-grid__item works-grid__item--wide-left" data-slot="40" data-title="Tooltip Concept"><img src="works/40-tooltip-concept/cover.webp?v=b762ffd2" alt="Tooltip Concept" loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="41" data-title="Ozon Telegram Channel"><img src="works/41-ozon-telegram-channel/cover.webp?v=973d35df" alt="Ozon Telegram Channel"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--tall" data-slot="42" data-title="Charity Subscription Checkout"><img src="works/42-charity-subscription-checkout/cover-light.webp?v=11f5d400" alt="Charity Subscription Checkout"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--wide-right" data-slot="43" data-title="HR Web Portal"><img src="works/43-hr-web-portal/cover.webp?v=eb4bfabc" alt="HR Web Portal"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--wide-left" data-slot="44" data-title="Time Warp"><img src="works/44-time-warp/cover.webp?v=537cb94a" alt="Time Warp"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--tall" data-slot="45" data-title="Profile Hub Screen"><img src="works/45-profile-hub-screen/cover.webp?v=e9d13612" alt="Profile Hub Screen"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--wide-right" data-slot="46" data-title="SPIEF 2026"><img src="works/46-spief-2026/cover.webp?v=b09fbe27" alt="SPIEF 2026"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--wide-left" data-slot="47" data-title="Success Screens Rework"><span class="works-grid__embed"><iframe loading="lazy" class="works-grid__embed-frame" src="works/47-success-screens-rework/index.html?v=2" data-native-w="2000" data-native-h="1000" tabindex="-1" scrolling="no" title="Success Screens Rework"></iframe></span></div>
-      <div class="works-grid__item works-grid__item--wide-right" data-slot="48" data-title="Category Hero Banners Redesign"><video class="works-grid__video" src="works/48-category-hero-banners-redesign/cover.mp4?v=2" autoplay muted loop playsinline preload="metadata" aria-label="Category Hero Banners Redesign"></video></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="49" data-title="Prolaio Patient App"><img src="works/49-prolaio-patient-app/cover.webp?v=ecd1b389" alt="Prolaio Patient App"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="50" data-title="Prolaio Watch App"><img src="works/50-prolaio-watch-app/cover.webp?v=06e9a155" alt="Prolaio Watch App"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--wide-left" data-slot="51" data-title="Prolaio Medical Dashboard"><img src="works/51-prolaio-medical-dashboard/cover.webp?v=3b847a88" alt="Prolaio Medical Dashboard"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="52" data-title="TG Avito"><img src="works/52-tg-avito/cover.jpg?v=2be29449" alt="TG Avito"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="53" data-title="your-cstm"><img src="works/53-your-cstm/cover.webp?v=49e4b949" alt="your-cstm"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--square" data-slot="54" data-title="TG Charity"><img src="works/54-tg-charity/cover.webp?v=1cd211da" alt="TG Charity"  loading="lazy" /></div>
-      <div class="works-grid__item works-grid__item--wide-right" data-slot="55" data-title="Yandex Match"><img src="works/55-yandex-match/cover.webp?v=6f5b5f82" alt="Yandex Match"  loading="lazy" /></div>
+     </div>
     </div>
-    <script src="styles/works-shuffle.js?v=1"></script>
   </main>
 
   <footer class="site-footer">
