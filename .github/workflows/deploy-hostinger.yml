@@ -22,8 +22,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
-          log-level: verbose
-          dangerous-clean-slate: true
           local-dir: ./
           server-dir: /domains/stasyabis.com/public_html/
           exclude: |
