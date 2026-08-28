@@ -23,6 +23,7 @@ jobs:
           protocol: ftps
           port: 21
           log-level: verbose
+          dangerous-clean-slate: true
           local-dir: ./
           server-dir: /public_html/
           exclude: |
