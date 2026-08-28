@@ -25,7 +25,7 @@ jobs:
           log-level: verbose
           dangerous-clean-slate: true
           local-dir: ./
-          server-dir: /public_html/
+          server-dir: /domains/stasyabis.com/public_html/
           exclude: |
             **/.git*
             **/.git*/**
