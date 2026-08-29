@@ -265,35 +265,34 @@
   opacity: 0.75;
 }
 
+/* Ховер обеих кнопок баннера — через общий radial-::before из
+   button-hover.css (заливка растёт из точки входа курсора, как у
+   «Резюме PDF»). У больших кнопок круг 300% накрывает всё мгновенно —
+   сужаем до 200%, чтобы рост был виден. НИКАКОГО прямого background на
+   :hover — иначе заливка становится равномерной и «телепортируется». */
+.garden__cta::before {
+  width: 200%;
+}
+
+/* «Смотреть работы» уже розовая → розовый ::before на ней не виден:
+   перекрашиваем растущий круг в белый, текст/иконку — в тёмные. */
+.garden__cta--primary:hover::before,
+.garden__cta--primary:focus-visible::before {
+  background: #fff;
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.6);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .garden__cta:not(.garden__cta--planted):hover {
     transform: translateY(-1px);
   }
-  .garden__cta--plant:hover {
-    background: #ff10c1;
-    color: #fff;
-  }
-  /* «Смотреть работы» уже розовая — общий розовый radial-hover
-     (button-hover.css) на ней не виден. Делаем как у соседней «Посадить
-     цветок»: заливка едет из точки входа курсора (::before), но белым,
-     + плавная смена фона (0.2s из .garden__cta), текст/иконка → тёмные. */
   .garden__cta--primary:hover {
-    background: #fff;
     color: #101014;
-  }
-  .garden__cta--primary:hover::before {
-    background: #fff;
-    box-shadow: 0 0 22px rgba(255, 255, 255, 0.6);
   }
 }
 
 .garden__cta--primary:focus-visible {
-  background: #fff;
   color: #101014;
-}
-.garden__cta--primary:focus-visible::before {
-  background: #fff;
-  box-shadow: 0 0 22px rgba(255, 255, 255, 0.6);
 }
 
 .garden__cta:active {
