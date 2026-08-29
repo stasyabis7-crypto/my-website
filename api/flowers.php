@@ -204,23 +204,33 @@ function garden_row_to_public(array $r, bool $mine): array
 /**
  * Пинг о новом цветке. Работает, только если в config.php заданы
  * notify_email ИЛИ notify_telegram (bot_token + chat_id). Иначе — тихо.
+ * Всё best-effort: ошибки отправки не роняют ответ на посадку.
  */
 function garden_notify_new(int $id, string $key, string $variant, ?string $note): void
 {
     $c = garden_config();
-    $text = sprintf(
-        "Новый цветок в саду #%d: %s%s%s",
-        $id,
-        $key,
-        $variant !== '' ? " ($variant)" : '',
-        $note ? " — «{$note}»" : ''
-    );
+
+    // Человеческое имя вида из каталога (в БД лежит ключ вроде "hydrangea").
+    $name = $key;
+    foreach (garden_catalog()['flowers'] ?? [] as $f) {
+        if (($f['key'] ?? null) === $key && !empty($f['name'])) {
+            $name = (string) $f['name'];
+            break;
+        }
+    }
+
+    $line = sprintf('Новый цветок в саду: %s (#%d)', $name, $id);
+    $body = $line;
+    if ($note !== null && $note !== '') {
+        $body .= "\n\nПослание:\n«{$note}»";
+    }
+    $body .= "\n\n" . 'https://stasyabis.com/';
 
     if (!empty($c['notify_telegram']['bot_token']) && !empty($c['notify_telegram']['chat_id'])) {
         $url = 'https://api.telegram.org/bot' . $c['notify_telegram']['bot_token'] . '/sendMessage';
         $payload = http_build_query([
             'chat_id' => $c['notify_telegram']['chat_id'],
-            'text'    => $text,
+            'text'    => $body,
         ]);
         $ctx = stream_context_create(['http' => [
             'method'  => 'POST',
@@ -232,6 +242,19 @@ function garden_notify_new(int $id, string $key, string $variant, ?string $note)
     }
 
     if (!empty($c['notify_email'])) {
-        @mail($c['notify_email'], 'Новый цветок в саду', $text);
+        // Заголовки: без валидного From на Hostinger письмо часто режется
+        // в спам или вовсе не уходит. From — на своём домене.
+        $host = $_SERVER['SERVER_NAME'] ?? 'stasyabis.com';
+        $from = $c['notify_from'] ?? ('garden@' . $host);
+        $subject = '=?UTF-8?B?' . base64_encode('🌱 ' . $name . ' в саду') . '?=';
+        $headers = implode("\r\n", [
+            'MIME-Version: 1.0',
+            'Content-Type: text/plain; charset=UTF-8',
+            'Content-Transfer-Encoding: 8bit',
+            'From: stasyabis garden <' . $from . '>',
+            'Reply-To: ' . $from,
+            'X-Mailer: garden',
+        ]);
+        @mail((string) $c['notify_email'], $subject, $body, $headers, '-f' . $from);
     }
 }
