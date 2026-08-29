@@ -56,6 +56,12 @@
   var fontsReady = document.fonts && document.fonts.ready
     ? document.fonts.ready.catch(function () {})
     : Promise.resolve();
+
+  // hero-garden.js выставляет __gardenReady — резолвится, когда цветы
+  // сада отрисованы и их картинки загрузились (с 7с-предохранителем там же).
+  var gardenReady = window.__gardenReady && typeof window.__gardenReady.then === 'function'
+    ? window.__gardenReady.catch(function () {})
+    : Promise.resolve();
   var avatar = document.querySelector('.site-header__avatar img');
   var avatarReady = avatar && avatar.decode
     ? avatar.decode().catch(function () {})
@@ -86,7 +92,7 @@
     var overlaySafetyTimeout = new Promise(function (resolve) { setTimeout(resolve, 9000); });
 
     Promise.race([
-      Promise.all([fontsReady, avatarReady].concat(aboveFoldMediaReadyPromises)),
+      Promise.all([fontsReady, avatarReady, gardenReady].concat(aboveFoldMediaReadyPromises)),
       overlaySafetyTimeout
     ]).then(function () {
       loadingScreen.classList.add('is-hidden');

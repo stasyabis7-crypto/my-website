@@ -22,6 +22,14 @@
   var root = document.documentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* Экран загрузки (loading.js) ждёт этот промис — держит котика, пока
+     цветы сада не отрисованы и их картинки не загрузились. Предохранитель
+     7с — раньше 9с-таймаута самого экрана, чтобы сад его не блокировал
+     навсегда при сбое. */
+  var gardenReadyDone;
+  window.__gardenReady = new Promise(function (res) { gardenReadyDone = res; });
+  setTimeout(function () { gardenReadyDone(); }, 7000);
+
   /* Блокировка скролла фона под попапом/шторкой. position:fixed на body
      (а не только overflow:hidden) — иначе iOS Safari всё равно тянет
      страницу. Позицию восстанавливаем при разблокировке. */
@@ -180,7 +188,21 @@
   var counterEl = document.getElementById('garden-counter');
   var plantBtn = document.getElementById('garden-plant');
   var helpBtn = document.getElementById('garden-help');
-  if (!flowersEl) return;
+  if (!flowersEl) { gardenReadyDone(); return; }
+
+  /* Резолвим __gardenReady, когда все отрисованные цветы (их <img>)
+     загрузились. Нет цветов — сразу. */
+  function whenFlowersLoaded() {
+    var imgs = flowersEl.querySelectorAll('img');
+    if (!imgs.length) { gardenReadyDone(); return; }
+    var left = imgs.length;
+    var tick = function () { if (--left <= 0) gardenReadyDone(); };
+    imgs.forEach(function (im) {
+      if (im.complete && im.naturalWidth > 0) { tick(); return; }
+      im.addEventListener('load', tick, { once: true });
+      im.addEventListener('error', tick, { once: true });
+    });
+  }
 
   var stage = flowersEl.parentElement; // .garden__stage
   var bloomingEl = counterEl && counterEl.querySelector('[data-count="blooming"]');
@@ -727,9 +749,11 @@
     }
 
     layout();
+    whenFlowersLoaded();
   }).catch(function () {
     if (counterEl) counterEl.removeAttribute('data-loading');
     if (bloomingEl) bloomingEl.textContent = '—';
     if (plantedEl) plantedEl.textContent = '—';
+    gardenReadyDone();
   });
 })();
