@@ -1,0 +1,14 @@
+# API-эндпоинты сада — никогда не кэшировать.
+<IfModule LiteSpeed>
+  RewriteEngine On
+  RewriteRule .* - [E=Cache-Control:no-cache]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header set Cache-Control "no-store, no-cache, must-revalidate"
+</IfModule>
+
+# На всякий случай — не отдавать файлы, которые не должны быть публичными.
+<FilesMatch "^(_.*|.*\.(inc|sql|md))$">
+  Require all denied
+</FilesMatch>

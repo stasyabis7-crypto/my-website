@@ -38,7 +38,7 @@
 @media (max-width: 640px) {
   :root {
     --wg-side: 20px;
-    --wg-radius: 14px;
+    --wg-radius: 24px;
   }
 }
 

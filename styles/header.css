@@ -121,6 +121,13 @@
   outline: none;
 }
 
+/* layout-chrome.js прячет логотип на узких экранах, когда сжимать
+   словомарк дальше уже некуда (см. syncLogoScale). Своё правило нужно
+   потому, что display:inline-flex выше перебивает штатный [hidden]. */
+.site-header__logo[hidden] {
+  display: none;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .site-header__logo:hover {
     color: var(--color-action-hover);

@@ -1,0 +1,1178 @@
+/*
+  Баннер-сад — первый экран. Голубая скруглённая плашка во всю ширину
+  (минус --page-px по краям), внутри: счётчик, заголовок (Fraunces),
+  подзаголовок и кнопки (IBM Plex Mono), слой посаженных посетителями
+  цветов (styles/hero-garden.js разбрасывает их по слотам от сервера).
+
+  Интерьер баннера НЕ зависит от темы сайта (голубой фон, белый текст) —
+  как анимации в works/*, меняется только внешний отступ вокруг плашки.
+  Шрифты подключаются только здесь (styles/fonts.css), на остальной сайт
+  не влияют.
+*/
+
+:root {
+  /* Зазор от края вьюпорта до баннера — одинаковый сверху/слева/справа.
+     На десктопе чуть больше. Без 100vw-трюка: .garden просто живёт
+     внутри .container (у него уже padding-inline: --page-px), поэтому
+     ширина честная, без вычета скроллбара и без перекоса вправо. */
+  --gd-edge: 10px;
+  --gd-chrome-inset: 10px;   /* отступ хедера/соцсетей от кромки баннера */
+}
+
+@media (min-width: 1024px) {
+  :root { --gd-edge: 16px; }
+}
+
+.garden {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  /* .container даёт padding-inline: --page-px; добавляем разницу до
+     --gd-edge, чтобы боковой зазор был ровно --gd-edge. */
+  padding-inline: calc(var(--gd-edge) - var(--page-px, 10px));
+  /* Гасим верхний padding под фиксированный хедер (та же формула, что у
+     body/.page-works — см. index.html) и добавляем --gd-edge, чтобы
+     верхний зазор был равен боковым. */
+  margin-top: calc(-1 * (var(--page-px, 10px) + var(--header-h, 3.5rem) + 10px) + var(--gd-edge));
+  /* Расстояние до первого проекта: 40px моб / 60px десктоп (см. медиа ниже). */
+  margin-bottom: 40px;
+}
+
+@media (min-width: 1024px) {
+  .garden { margin-bottom: 60px; }
+}
+
+/* Пропорции баннера фиксированы по брейкпоинту — совпадают с фреймами
+   zones-xl/lg/sm/xs в Figma, чтобы нарисованные слоты (styles/
+   garden-zones.json) ложились 1:1. Высота ограничена вьюпортом; если
+   упёрлась — слоты просто чуть сожмутся по вертикали (они в долях). */
+.garden__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1440 / 800;
+  max-height: calc(100svh - 2 * var(--gd-edge));
+  min-height: 22rem;
+  border-radius: clamp(22px, 2.6vw, 40px);
+  background: #2679bd;
+  overflow: hidden;
+  isolation: isolate;
+  color: #fff;
+  --gd-serif: "Fraunces", "Times New Roman", Georgia, serif;
+  --gd-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* Единый размер для «цветёт/посажено», подзаголовка и кнопок. */
+  --gd-text: clamp(0.9rem, 1.35vw, 1.06rem);
+}
+
+@media (max-width: 1359px) { .garden__stage { aspect-ratio: 1080 / 660; } }
+
+/* Мобилка: баннер не по жёсткой пропорции — тянется вниз под контент
+   (и цветы вместе с ним, они в долях от реальной высоты), с запасом
+   снизу от кнопок. min-height задаёт нижнюю границу ~пропорцией кадра,
+   но контент может растянуть плашку дальше — без обрезки (в отличие от
+   aspect-ratio + overflow:hidden). Скругление крупнее. */
+@media (max-width: 899px) {
+  .garden__stage {
+    aspect-ratio: auto;
+    height: auto;
+    min-height: min(135vw, 78svh);
+    max-height: none;
+    border-radius: clamp(30px, 8vw, 42px);
+  }
+}
+@media (max-width: 599px) {
+  .garden__stage { min-height: min(150vw, 82svh); }
+}
+@media (max-width: 449px) {
+  .garden__stage { min-height: min(178vw, 88svh); }
+}
+
+/* ---------- Контент ---------- */
+
+.garden__content {
+  position: relative;
+  z-index: 2;
+  max-width: min(46rem, 84%);
+  margin-inline: auto;
+  padding-top: clamp(2.25rem, 11vh, 6rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Мобилка: контент ниже (не под плавающим хедером — считаем от его
+   реальной высоты) и с запасом снизу, чтобы кнопки не упирались в край
+   баннера даже на очень узких экранах. */
+@media (max-width: 899px) {
+  .garden__content {
+    padding-top: calc(var(--header-h, 3.5rem) + clamp(1.5rem, 7vw, 2.75rem));
+    padding-bottom: clamp(2rem, 9vw, 3.25rem);
+  }
+}
+@media (max-width: 449px) {
+  .garden__content {
+    padding-top: calc(var(--header-h, 3.5rem) + clamp(2.75rem, 13vw, 4.25rem));
+    padding-bottom: clamp(2.5rem, 11vw, 3.75rem);
+  }
+}
+
+.garden__content > * {
+  pointer-events: auto;
+}
+
+.garden__counter {
+  margin: 0;
+  font-family: var(--gd-mono);
+  font-weight: 400;
+  font-size: var(--gd-text);
+  letter-spacing: -0.03em;
+  line-height: 1.35;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.28em;
+}
+
+/* Цифры — Fraunces как акцент, но того же кегля, что и слова. */
+.garden__count {
+  font-family: var(--gd-serif);
+  font-weight: 400;
+  font-size: 1.35em;
+  line-height: 1;
+  font-variation-settings: "opsz" 40, "SOFT" 0, "WONK" 1;
+}
+
+.garden__counter[data-loading] .garden__count {
+  opacity: 0.35;
+}
+
+.garden__help {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.35em;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.garden__help img {
+  display: block;
+  width: 1.75em;
+  height: 1.75em;
+}
+
+.garden__help:hover,
+.garden__help:focus-visible {
+  opacity: 1;
+  outline: none;
+}
+
+.garden__title {
+  margin: clamp(0.4rem, 1.5vh, 1rem) 0 0;
+  font-family: var(--gd-serif);
+  font-weight: 600;
+  font-variation-settings: "opsz" 120, "SOFT" 0, "WONK" 1;
+  font-size: clamp(2.4rem, 6.4vw, 4.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+.garden__subtitle {
+  margin: clamp(0.7rem, 2vh, 1.3rem) 0 0;
+  max-width: 40rem;
+  font-family: var(--gd-mono);
+  font-weight: 400;
+  font-size: var(--gd-text);
+  line-height: 1.42;
+  letter-spacing: -0.03em;
+}
+
+/* Ручные переносы подзаголовка — только на десктопе; на мобилке текст
+   переносится сам (max-width выше держит его в разумной колонке). */
+.garden__br-dt { display: none; }
+
+@media (min-width: 900px) {
+  .garden__br-dt { display: inline; }
+  .garden__subtitle { max-width: none; }
+}
+
+.garden__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: clamp(1.1rem, 3vh, 1.9rem);
+}
+
+/* < 600px — кнопки строго друг под другом. */
+@media (max-width: 599px) {
+  .garden__actions {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+}
+
+.garden__cta {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  height: clamp(3rem, 4.4vw, 4rem);
+  padding-inline: clamp(1.1rem, 2vw, 1.6rem);
+  border: 0;
+  border-radius: 999px;
+  font-family: var(--gd-mono);
+  font-weight: 400;
+  font-size: var(--gd-text);
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.garden__cta .icon {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.garden__cta--primary {
+  background: #ff10c1;
+  color: #fff;
+}
+
+.garden__cta--plant {
+  background: #fff;
+  color: #101014;
+}
+
+.garden__cta--planted {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  cursor: default;
+}
+
+.garden__cta[disabled] {
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .garden__cta:not(.garden__cta--planted):hover {
+    transform: translateY(-1px);
+  }
+  .garden__cta--plant:hover {
+    background: #ff10c1;
+    color: #fff;
+  }
+  /* «Смотреть работы» уже розовая — общий розовый radial-hover
+     (button-hover.css) на ней не виден. Перекрашиваем заливку в белую,
+     текст и иконку (currentColor) — в тёмный. */
+  .garden__cta--primary:hover {
+    color: #101014;
+  }
+  .garden__cta--primary:hover::before {
+    background: #fff;
+    box-shadow: none;
+  }
+}
+
+.garden__cta--primary:focus-visible {
+  color: #101014;
+}
+.garden__cta--primary:focus-visible::before {
+  background: #fff;
+  box-shadow: none;
+}
+
+.garden__cta:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ---------- Слой цветов ---------- */
+
+.garden__flowers {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* JS ставит left/top = центр бокса, width/height = размер невращённого
+   бокса, --gd-rot = наклон вида из garden-zones.json (снят из макета).
+   Отсюда translate(-50%,-50%) + rotate. grow/sway трогают отдельные
+   свойства scale/translate/rotate у .garden-flower__img, не этот
+   transform, поэтому не конфликтуют. */
+.garden-flower {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  pointer-events: auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transform: translate(-50%, -50%) rotate(var(--gd-rot, 0deg));
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .garden-flower:hover {
+    transform: translate(-50%, -50%) rotate(var(--gd-rot, 0deg)) scale(1.08);
+    z-index: 6;
+  }
+}
+
+.garden-flower__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: bottom center;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
+  animation:
+    gd-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1) both,
+    gd-sway 6s ease-in-out var(--gd-sway-delay, 0s) infinite alternate;
+}
+
+/* Свой цветок — не обводка, а мягкая пульсирующая белая размытая тень. */
+.garden-flower--mine .garden-flower__img {
+  animation:
+    gd-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1) both,
+    gd-sway 6s ease-in-out var(--gd-sway-delay, 0s) infinite alternate,
+    gd-mine 2.6s ease-in-out infinite;
+}
+
+.garden-flower:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@keyframes gd-grow {
+  from { opacity: 0; scale: 0.35; translate: 0 10px; }
+  to   { opacity: 1; scale: 1; translate: 0 0; }
+}
+
+@keyframes gd-sway {
+  from { rotate: -1.5deg; }
+  to   { rotate: 1.5deg; }
+}
+
+@keyframes gd-mine {
+  0%, 100% { filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 5px rgba(255, 255, 255, 0.3)); }
+  50%      { filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 18px rgba(255, 255, 255, 0.9)); }
+}
+
+/* ---------- Тост (например «вы уже посадили цветок») ---------- */
+
+.garden-pop {
+  position: fixed;
+  z-index: 90;
+  max-width: min(20rem, 84vw);
+  background: #1c1f26;
+  color: #f4f5f7;
+  color-scheme: dark;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 0.7rem 0.95rem;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.28);
+  font: 400 0.82rem/1.4 "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+/* ---------- Карточка открытого цветка (общая: попап + шторка) ---------- */
+
+.garden-flower-info {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Подзаголовок — значение вида, цветом заголовка (не приглушённый). */
+.garden-flower-info__meaning {
+  margin: 0.2rem 0 0;
+  color: #f4f5f7;
+  line-height: 1.45;
+}
+
+.garden-flower-info__pic {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin: 0.95rem 0 0;
+}
+
+.garden-flower-info__pic img {
+  max-width: 62%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 26px rgba(0, 0, 0, 0.45));
+}
+
+/* Послание гостя — «сообщение из чата» с хвостиком снизу-слева. */
+.garden-flower-info__msg {
+  --fi-msg-bg: #2b303b;
+  position: relative;
+  align-self: flex-start;
+  max-width: 100%;
+  margin: 1.05rem 0 0;
+  padding: 0.7rem 0.9rem;
+  background: var(--fi-msg-bg);
+  border-radius: 16px 16px 16px 5px;
+}
+
+.garden-flower-info__msg::after {
+  content: "";
+  position: absolute;
+  left: -6px;
+  bottom: 0;
+  border: 8px solid transparent;
+  border-right-color: var(--fi-msg-bg);
+  border-left: 0;
+  border-bottom: 0;
+}
+
+.garden-flower-info__msg-text {
+  margin: 0;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.garden-flower-info__msg-date {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 0.72rem;
+  opacity: 0.5;
+}
+
+/* Дата без послания — отдельный светлый чип. */
+.garden-flower-info__date {
+  align-self: flex-start;
+  margin: 1.05rem 0 0;
+  padding: 0.32rem 0.72rem;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 999px;
+  font-size: 0.74rem;
+  opacity: 0.8;
+}
+
+.garden-flower-sheet .garden-flower-info__pic { height: clamp(150px, 40vw, 230px); }
+
+/* ---------- Попап посадки (desktop) / шторка (mobile) ---------- */
+
+/* Пока открыт любой попап/шторка сада — фон под ним не скроллится
+   (ставит/снимает hero-garden.js: класс + body.style.top = -scrollY).
+   position:fixed на body, а не только overflow:hidden — иначе iOS
+   Safari всё равно тянет страницу за краем. */
+html.gd-scroll-lock {
+  overflow: hidden;
+}
+
+html.gd-scroll-lock body {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.garden-picker {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.garden-picker[hidden] {
+  display: none;
+}
+
+.garden-picker__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 10, 20, 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.garden-picker__panel {
+  position: relative;
+  width: min(34rem, 92vw);
+  max-height: min(90vh, 46rem);
+  overflow-y: auto;
+  /* Тёмная тема — попап/шторка не зависят от темы сайта, всегда тёмные
+     (значения из :root dark в theme.css, но литералами: интерьер сада
+     самостоятельный). */
+  background: #1c1f26;
+  color: #f4f5f7;
+  color-scheme: dark;
+  border: 0;
+  border-radius: 30px;
+  box-shadow: 0 30px 70px -16px rgba(0, 0, 0, 0.6);
+  padding: clamp(1.1rem, 3vw, 1.8rem);
+  font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  letter-spacing: -0.02em;
+  animation: gd-picker-in 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.garden-picker__panel::-webkit-scrollbar {
+  width: 10px;
+}
+
+.garden-picker__panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.garden-picker__panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  border: 3px solid #1c1f26;
+}
+
+.garden-picker__panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.34);
+}
+
+@keyframes gd-picker-in {
+  from { transform: translateY(18px) scale(0.985); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+.garden-picker__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.garden-picker__title {
+  margin: 0;
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+.garden-picker__close {
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f4f5f7;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.garden-picker__label {
+  display: block;
+  margin: 1rem 0 0.4rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  opacity: 0.55;
+}
+
+/* ---------- Липкий низ с кнопкой (посадка) ---------- */
+
+/* Панель = колонка: шапка и низ с кнопкой закреплены, между ними
+   прокручивается тело. Кнопка «Посадить цветок» всегда видна на белой
+   плашке. */
+.garden-picker--plant .garden-picker__panel {
+  --gp-pad: clamp(1.1rem, 3vw, 1.8rem);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+.garden-picker--plant .garden-picker__head {
+  flex: none;
+  margin: 0;
+  padding: var(--gp-pad) var(--gp-pad) 0.7rem;
+}
+
+.garden-picker__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 var(--gp-pad, 1.4rem) 0.6rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.garden-picker__body::-webkit-scrollbar { width: 10px; }
+.garden-picker__body::-webkit-scrollbar-track { background: transparent; }
+.garden-picker__body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  border: 3px solid #1c1f26;
+}
+
+/* Закреплён внизу панели: тело формы прокручивается за ним, кнопку
+   всегда видно. В цвет попапа, без разделительной полоски. */
+.garden-picker__footer {
+  flex: none;
+  padding: 0.85rem var(--gp-pad, 1.4rem);
+  /* Снизу до кромки попапа — чуть больше, чем боковые паддинги. */
+  padding-bottom: calc(var(--gp-pad, 1.4rem) + 0.4rem + env(safe-area-inset-bottom, 0px));
+  background: #1c1f26;
+}
+
+.garden-picker__footer .garden-picker__submit {
+  margin: 0;
+}
+
+/* ---------- Упрощённая посадка (garden-picker--plant) ---------- */
+
+/* Превью случайного цветка. Картинка прямая (без наклона) — наклон вид
+   получает уже на баннере из garden-zones.json. */
+.garden-plant__preview {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: clamp(150px, 34vh, 240px);
+  margin: 0.2rem 0 0.5rem;
+}
+
+.garden-plant__img {
+  max-width: 62%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 26px rgba(0, 0, 0, 0.45));
+}
+
+.garden-plant__name {
+  text-align: center;
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+.garden-plant__meaning {
+  margin: 0.35rem 0 0;
+  text-align: center;
+  color: #9aa1ae;
+  line-height: 1.4;
+  /* Держим место под 2 строки всегда — «Сгенерировать другой» не
+     прыгает при генерации следующего цветка. */
+  min-height: 2.8em;
+}
+
+.garden-plant__name:empty,
+.garden-plant__meaning:empty {
+  display: none;
+}
+
+.garden-plant__reroll {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  width: 100%;
+  height: 2.9rem;
+  margin-top: 0.6rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f4f5f7;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .garden-plant__reroll:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+}
+
+.garden-plant__reroll:active {
+  transform: scale(0.99);
+}
+
+.garden-plant__reroll-mark {
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+.garden-picker__note {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 3.4rem;
+  margin-top: 0.4rem;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid transparent; /* обводка появляется только в фокусе */
+  border-radius: 12px;
+  background: #262a33;
+  color: #f4f5f7;
+  font: inherit;
+  resize: vertical;
+  transition: border-color 0.15s ease;
+}
+
+.garden-picker__note:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.garden-picker__note::placeholder {
+  color: rgba(244, 245, 247, 0.4);
+}
+
+.garden-picker__count {
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
+  opacity: 0.5;
+  text-align: right;
+}
+
+.garden-picker__hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.garden-picker__error {
+  margin-top: 0.6rem;
+  color: #ff8fc3;
+  font-size: 0.8rem;
+  min-height: 1.2em;
+}
+
+.garden-picker__submit {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  height: 3.2rem;
+  margin-top: 0.9rem;
+  border: 0;
+  border-radius: 999px;
+  background: #ff10c1;
+  color: #fff;
+  font-family: inherit;
+  font-weight: 400;
+  font-size: 1rem;
+  cursor: pointer;
+  --hover-x: 50%;
+  --hover-y: 50%;
+  transition: color 0.3s ease, scale var(--button-press-duration, 0.12s) ease-out;
+}
+
+/* Ховер как на всём сайте: белая заливка расходится от точки входа
+   курсора (--hover-x/--hover-y ставит hero-garden.js), текст темнеет. */
+.garden-picker__submit::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: var(--hover-x);
+  top: var(--hover-y);
+  width: 300%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform var(--button-hover-duration, 0.5s) var(--button-hover-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .garden-picker__submit:hover {
+    color: #101014;
+  }
+  .garden-picker__submit:hover::before {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+.garden-picker__submit:focus-visible {
+  color: #101014;
+  outline: none;
+}
+.garden-picker__submit:focus-visible::before {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.garden-picker__submit[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Пояснение «?» — та же оболочка .garden-picker, контент проще. */
+.garden-help__panel {
+  width: min(28rem, 92vw);
+}
+
+.garden-help__text {
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.garden-help__text p {
+  margin: 0 0 0.7rem;
+}
+
+.garden-help__text p:last-child {
+  margin-bottom: 0;
+}
+
+.garden-help__text b {
+  font-weight: 600;
+}
+
+@media (max-width: 899px) {
+  /* Все попапы сада на мобилке — шторки: выезжают снизу. */
+  .garden-picker {
+    align-items: flex-end;
+  }
+  .garden-picker__panel {
+    width: 100%;
+    max-height: 88vh;
+    border-radius: 34px 34px 0 0;
+    animation-name: gd-sheet-in;
+    animation-duration: 0.42s;
+  }
+  @keyframes gd-sheet-in {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+}
+
+/* ---------- Карточка цветка: десктоп — центрированный попап,
+   мобилка — шторка снизу ---------- */
+/* Оболочка .garden-picker; содержимое — .garden-flower-info (общее).
+   На десктопе — уже модалки справки (под фото + короткий текст); на
+   мобилке (≤899px) остаётся шторкой во всю ширину, см. media-блок ниже
+   с width:100%. */
+@media (min-width: 900px) {
+  .garden-flower-sheet .garden-picker__panel {
+    width: min(26rem, 92vw);
+  }
+}
+
+.garden-flower-sheet .garden-picker__title {
+  font-size: 1.35rem;
+}
+
+/* Зазор заголовок → подзаголовок (значение вида) — ровно 6px. */
+.garden-flower-sheet .garden-picker__head {
+  margin-bottom: 6px;
+}
+.garden-flower-sheet .garden-flower-info__meaning {
+  margin-top: 0;
+}
+
+/* ---------- Соцсети (top-level chrome, рядом с .site-header) ---------- */
+
+/* --gd-socials-offset — ширина плашки футера в правом верхнем углу
+   (на десктопе там остаётся навигация "Работы", см. footer.css).
+   hero-garden.js меряет её и ставит сюда, чтобы ряд соцсетей встал
+   ЛЕВЕЕ футера. На моб/планшете футер снизу → offset = 0. */
+.site-socials {
+  position: fixed;
+  z-index: 51;
+  top: var(--page-px, 10px);
+  right: calc(var(--page-px, 10px) + var(--gd-socials-offset, 0px));
+  /* Ряд соцсетей центрируется по вертикали в полосе высотой с плашку
+     хедера (--header-h меряет layout-chrome.js), поэтому кружки/кнопка
+     стоят ровно на уровне кнопки «Резюме PDF», а не по верхней кромке
+     плашки. */
+  display: flex;
+  align-items: center;
+  height: var(--header-h, 3.5rem);
+  /* Полоса выше самих иконок — только для выравнивания, клики сквозь неё
+     идут на баннер; ловят их обратно сами иконки/кнопка. */
+  pointer-events: none;
+  transition: top 0.25s ease, right 0.25s ease;
+}
+
+.site-socials__list li,
+.site-socials__toggle {
+  pointer-events: auto;
+}
+
+/* Пока не проскроллено — хедер и соцсети визуально внутри баннера,
+   в 10px от его кромки (кромка = --gd-edge от вьюпорта). При скролле
+   hero-garden.js ставит html.chrome--pinned → уезжают в углы. */
+html:not(.chrome--pinned) .site-socials {
+  top: calc(var(--gd-edge, 10px) + var(--gd-chrome-inset, 10px));
+  right: calc(var(--gd-edge, 10px) + var(--gd-chrome-inset, 10px) + var(--gd-socials-offset, 0px));
+}
+
+/* Десктоп/планшет (≥900px): хедер слева (в баннере на скролл-топе, в
+   углу при скролле), соцсети — отдельная плавающая хрома справа.
+   Перебиваем центрирование из header.css. */
+.site-header {
+  transform: none;
+  transition: top 0.25s ease, left 0.25s ease;
+}
+
+@media (min-width: 900px) {
+  html:not(.chrome--pinned) .site-header {
+    top: calc(var(--gd-edge, 10px) + var(--gd-chrome-inset, 10px));
+    left: calc(var(--gd-edge, 10px) + var(--gd-chrome-inset, 10px));
+  }
+
+  html.chrome--pinned .site-header {
+    left: var(--page-px, 10px);
+  }
+}
+
+/* Кнопка «Резюме PDF» в хедере — тем же шрифтом, что и баннер. */
+.site-header__cta {
+  font-family: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-weight: 400;
+}
+
+.site-socials__list {
+  display: flex;
+  gap: clamp(4px, 0.5vw, 8px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Подложка под вырезом глифа — её цвет виден сквозь вырез. По умолчанию
+   тёмная (цвет фона сайта), при наведении — белая → глиф белеет, а сам
+   кружок (см. .site-socials__link) розовеет.
+   Это ::before c inset, а не фон самого li: если красить весь li, из-под
+   белого диска-маски по кромке вылезает тонкое тёмное кольцо (край
+   squircle-маски чуть не доходит до 100% на диагоналях). */
+.site-socials__list li {
+  position: relative;
+  display: flex;
+  background: none;
+}
+
+/* Круг чуть меньше белой squircle-маски: покрывает даже те глифы, что
+   почти достают до кромки (Dribbble, Figma — их шар/логотип идут до ~13%
+   от края), но не вылезает за белую область (её плоские грани доходят до
+   кромки, у круга здесь зазор ~6% → тёмное кольцо не проступает). */
+.site-socials__list li::before {
+  content: "";
+  position: absolute;
+  inset: 6%;
+  border-radius: 50%;
+  background: #0e0e10;
+  transition: background-color 0.3s var(--button-hover-ease, ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-socials__list li:hover::before {
+    background: #fff;
+  }
+}
+
+.site-socials__toggle {
+  display: none;
+}
+
+/* SVG из assets/socials (кружок с вырезанным глифом) — МАСКА на ссылке.
+   Сам кружок красится background-ом: белый → на ховере розовый (вся
+   плашка). Глиф — вырез, сквозь него виден цвет подложки .site-socials
+   __list li (тёмный → на ховере белый). */
+.site-socials__link {
+  box-sizing: border-box;
+  position: relative; /* над ::before-подложкой li */
+  display: block;
+  /* Ровно высота кнопки «Резюме PDF» (её меряет layout-chrome.js) — на
+     всех разрешениях, а не resize по vw. */
+  width: var(--chrome-item-h, 3rem);
+  height: var(--chrome-item-h, 3rem);
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  background: #fff;
+  transition: background-color 0.3s var(--button-hover-ease, ease);
+  -webkit-mask: var(--gd-icon) center / 100% 100% no-repeat;
+  mask: var(--gd-icon) center / 100% 100% no-repeat;
+}
+
+.site-socials__name {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-socials__link:hover {
+    background: var(--color-action-hover, #ff10c1);
+  }
+}
+
+.site-socials__copied {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: #101014;
+  color: #fff;
+  font: 0.72rem/1.2 "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.site-socials__copied[hidden] {
+  display: none;
+}
+
+/* Мобилка (≤899px): вся хрома в одной плашке-хедере по центру экрана —
+   аватар, лого, «Резюме PDF» и круглая кнопка соцсетей справа от неё
+   (тап → шторка снизу). Ряд иконок и плавающее позиционирование соцсетей
+   выключены — это теперь обычный элемент внутри <header>. */
+@media (max-width: 899px) {
+  .site-header {
+    left: 50%;
+    transform: translateX(-50%);
+    /* Паддинг между «Резюме» и кнопкой соцсетей (и заодно до аватара). */
+    gap: 6px;
+  }
+  html:not(.chrome--pinned) .site-header {
+    top: calc(var(--gd-edge, 10px) + var(--gd-chrome-inset, 10px));
+    left: 50%;
+  }
+  html.chrome--pinned .site-header {
+    top: var(--page-px, 10px);
+    left: 50%;
+  }
+
+  .site-socials,
+  html:not(.chrome--pinned) .site-socials {
+    position: static;
+    inset: auto;
+    height: auto;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    transition: none;
+  }
+  .site-socials__list {
+    display: none;
+  }
+  .site-socials__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--chrome-item-h, 3rem);
+    height: var(--chrome-item-h, 3rem);
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    /* Глиф — тёмный, в цвет фона сайта (как подложка кружков в
+       десктопном ряду .site-socials__list li). */
+    color: #0e0e10;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+  }
+  .site-socials__toggle .icon {
+    width: 44%;
+    height: 44%;
+  }
+  /* Лого ужимается / убирается из JS (layout-chrome.js), чтобы плашка по
+     центру влезала в экран; это — страховочный потолок. */
+  .site-header__logo-mark {
+    max-width: 42vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header__logo-mark { max-width: 34vw; }
+}
+
+/* Шторка соцсетей (мобилка) — оболочка .garden-picker, синяя, глифы
+   белые. */
+.garden-socials-sheet .garden-picker__panel {
+  background: #2679bd;
+  color: #fff;
+  color-scheme: dark;
+}
+
+.garden-socials-sheet .garden-picker__title {
+  color: #fff;
+}
+
+.garden-socials-sheet .garden-picker__close {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.garden-socials__row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: 100%;
+  padding: 0.7rem 0.5rem;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #fff;
+  font: 400 1rem/1.2 "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  letter-spacing: -0.02em;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.garden-socials__row:active {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.garden-socials__chip {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #0e0e10;
+}
+
+.garden-socials__ico {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  -webkit-mask: var(--i) center / 100% 100% no-repeat;
+  mask: var(--i) center / 100% 100% no-repeat;
+}
+
+/* ---------- Уважение к prefers-reduced-motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .garden-flower,
+  .garden-flower__img,
+  .garden-picker__panel {
+    animation: none !important;
+  }
+  .garden-pop {
+    transition: none;
+  }
+  .site-header,
+  .site-socials {
+    transition: none;
+  }
+  /* свой цветок без пульсации — статичное мягкое свечение */
+  .garden-flower--mine .garden-flower__img {
+    filter:
+      drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2))
+      drop-shadow(0 0 12px rgba(255, 255, 255, 0.75)) !important;
+  }
+}

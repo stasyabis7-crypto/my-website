@@ -32,5 +32,9 @@ jobs:
             **/scripts/**
             **/node_modules/**
             **/.claude/**
+            **/config.php
+            assets/garden/flowers-src/**
+            assets/garden/flowers new/**
+            _*.html
             package.json
             README_AUTOCOMMIT.md

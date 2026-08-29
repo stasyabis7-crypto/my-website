@@ -16,13 +16,14 @@
 <link rel="stylesheet" href="styles/scale.css?v=18" />
 <link rel="stylesheet" href="styles/typography.css?v=18" />
 <link rel="stylesheet" href="styles/theme.css?v=23" />
-<link rel="stylesheet" href="styles/icons.css?v=3" />
-<link rel="stylesheet" href="styles/header.css?v=30" />
+<link rel="stylesheet" href="styles/icons.css?v=4" />
+<link rel="stylesheet" href="styles/header.css?v=31" />
 <link rel="stylesheet" href="styles/footer.css?v=46" />
 <link rel="stylesheet" href="styles/button-hover.css?v=26" />
-<link rel="stylesheet" href="styles/works-grid.css?v=7" />
+<link rel="stylesheet" href="styles/works-grid.css?v=8" />
 <link rel="preload" as="font" type="font/ttf" href="styles/Valisca%204.ttf" crossorigin />
-<link rel="stylesheet" href="styles/hero.css?v=1" />
+<link rel="stylesheet" href="styles/fonts.css?v=1" />
+<link rel="stylesheet" href="styles/hero-garden.css?v=13" />
 <link rel="stylesheet" href="styles/loading.css?v=1" />
 <link rel="stylesheet" href="styles/loading-screen.css?v=3" />
 <style>
@@ -172,70 +173,67 @@
     </a>
   </header>
 
+  <!--
+    Соцсети. Десктоп/планшет (≥900px): живёт здесь, в body — плавающий ряд
+    иконок в правом верхнем углу (position: fixed, см. hero-garden.css);
+    при скролле (html.chrome--pinned) уезжает в угол вьюпорта. Мобилка
+    (≤899px): hero-garden.js переносит этот блок ВНУТРЬ <header> (справа
+    от «Резюме PDF»), где он статический — круглая кнопка, тап → шторка
+    снизу. Обратно в body — при возврате на широкий экран. В <header>
+    напрямую держать нельзя: у плашки backdrop-filter, из-за него
+    position:fixed внутри считался бы от самой плашки, не от вьюпорта.
+  -->
+  <div class="site-socials" id="site-socials">
+    <button type="button" class="site-socials__toggle" id="site-socials-toggle"
+            aria-expanded="false" aria-controls="site-socials-list" aria-label="Соцсети">
+      <span class="icon icon--contacts" aria-hidden="true"></span>
+    </button>
+    <ul class="site-socials__list" id="site-socials-list">
+      <li><a class="site-socials__link" style="--gd-icon:url('/assets/socials/Telegram.svg')" href="https://t.me/stasyabis" target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram"><span class="site-socials__name">Написать в tg</span></a></li>
+      <li><button type="button" class="site-socials__link" style="--gd-icon:url('/assets/socials/Google.svg')" data-copy="stasyabis7@gmail.com" aria-label="Скопировать почту"><span class="site-socials__name">Написать на почту</span></button></li>
+      <li><a class="site-socials__link" style="--gd-icon:url('/assets/socials/Dribbble.svg')" href="https://dribbble.com/Stasyabis" target="_blank" rel="noopener noreferrer" aria-label="Dribbble"><span class="site-socials__name">Dribbble</span></a></li>
+      <li><a class="site-socials__link" style="--gd-icon:url('/assets/socials/Figma.svg')" href="https://www.figma.com/@stasyabis" target="_blank" rel="noopener noreferrer" aria-label="Figma community"><span class="site-socials__name">Figma community</span></a></li>
+      <li><a class="site-socials__link" style="--gd-icon:url('/assets/socials/Medium.svg')" href="https://medium.com/@stasyabis" target="_blank" rel="noopener noreferrer" aria-label="Medium"><span class="site-socials__name">Medium</span></a></li>
+      <li><a class="site-socials__link" style="--gd-icon:url('/assets/socials/Habr.svg')" href="https://habr.com/ru/users/stasyabis/" target="_blank" rel="noopener noreferrer" aria-label="Habr"><span class="site-socials__name">Habr</span></a></li>
+    </ul>
+  </div>
+
   <main class="container page-works">
     <!--
-      Hero — первый экран, сразу под навигацией (её отступ уже резервирует
-      padding-top у .page-works ниже/на десктопе, см. header.css — своего
-      отступа сверху у .hero нет и не нужно). Ширина — на весь вьюпорт,
-      вылезает из паддингов .container через 100vw/-50vw, см. hero.css.
-      Фон — анимация из svg+GSAP (styles/hero.js), без JS/GSAP просто
-      показывает статичную цветную сетку (см. дефолтные cx/cy/r у кругов
-      ниже) — деградирует прилично, не пусто.
+      Баннер-сад — первый экран. Голубая скруглённая плашка во всю ширину
+      вьюпорта (минус --page-px по краям, см. hero-garden.css). Внутри —
+      счётчик, заголовок (Fraunces), подзаголовок и кнопки (IBM Plex
+      Mono) и слой .garden__flowers: styles/hero-garden.js тянет
+      посаженные гостями цветы из api/flowers.php и раскидывает их по
+      «подкове» вокруг контента. Без JS показывает просто голубую плашку
+      с текстом и кнопками — деградирует прилично.
     -->
-    <section class="hero" id="hero">
-      <svg class="hero__bg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-        <filter id="hero-noise">
-          <feTurbulence baseFrequency="0.6" seed="1" />
-          <feDisplacementMap in="SourceGraphic" scale="15" />
-        </filter>
+    <section class="garden" id="hero">
+      <div class="garden__stage">
+        <div class="garden__flowers" id="garden-flowers" aria-label="Сад — цветы, посаженные гостями"></div>
 
-        <mask id="hero-mask" fill="#fff">
-          <circle cx="200" cy="200" r="100" />
-          <circle cx="400" cy="200" r="100" />
-          <circle cx="600" cy="200" r="100" />
-          <circle cx="200" cy="400" r="100" />
-          <circle cx="400" cy="400" r="100" />
-          <circle cx="600" cy="400" r="100" />
-          <circle cx="200" cy="600" r="100" />
-          <circle cx="400" cy="600" r="100" />
-          <circle cx="600" cy="600" r="100" />
-        </mask>
-
-        <g id="hero-masked" mask="url(#hero-mask)">
-          <g id="hero-bg">
-            <circle fill="#FB7806" cx="200" cy="200" r="100"/>
-            <circle fill="#FB7806" cx="400" cy="200" r="100"/>
-            <circle fill="#012AF3" cx="600" cy="200" r="100"/>
-            <circle fill="#FF0CC2" cx="200" cy="400" r="100"/>
-            <circle fill="#F3F301" cx="400" cy="400" r="100"/>
-            <circle fill="#4AF301" cx="600" cy="400" r="100"/>
-            <circle fill="#F3F301" cx="200" cy="600" r="100"/>
-            <circle fill="#FB7806" cx="400" cy="600" r="100"/>
-            <circle fill="#FF0CC2" cx="600" cy="600" r="100"/>
-          </g>
-
-          <g id="hero-fg">
-            <circle fill="#4AF301" cx="300" cy="0" r="100"/>
-            <circle fill="#F3F301" cx="500" cy="200" r="100"/>
-            <circle fill="#012AF3" cx="300" cy="200" r="100"/>
-            <circle fill="#FB7806" cx="500" cy="400" r="100"/>
-            <circle fill="#4AF301" cx="300" cy="400" r="100"/>
-            <circle fill="#012AF3" cx="500" cy="600" r="100"/>
-            <circle fill="#FF0CC2" cx="300" cy="600" r="100"/>
-            <circle fill="#F3F301" cx="500" cy="800" r="100"/>
-          </g>
-        </g>
-      </svg>
-
-      <div class="hero__fade" aria-hidden="true"></div>
-
-      <div class="hero__content">
-        <h1 class="hero__title text-h1">Вы искали продуктового дизайнера</h1>
-        <p class="hero__subtitle text-body-lg">И вы его нашли</p>
-        <a href="#works-gallery" class="hero__cta">
-          <span class="text-button">Смотреть работы</span>
-          <span class="icon icon--down" aria-hidden="true"></span>
-        </a>
+        <div class="garden__content">
+          <p class="garden__counter" id="garden-counter" data-loading>
+            <span class="garden__count" data-count="blooming">·</span><span>&nbsp;цветёт</span>
+            <span aria-hidden="true">&nbsp;·&nbsp;</span>
+            <span class="garden__count" data-count="planted">·</span><span>&nbsp;посажено</span>
+            <button type="button" class="garden__help" id="garden-help" aria-label="Как работает сад">
+              <img src="assets/socials/Octagon_Help.svg" alt="" width="24" height="24" />
+            </button>
+          </p>
+          <h1 class="garden__title">Product Designer</h1>
+          <!-- Переносы строк в подзаголовке заданы вручную и работают
+               только на десктопе (min-width: 900px, см. .garden__br-dt в
+               hero-garden.css); на мобилке текст переносится сам. -->
+          <p class="garden__subtitle">Я проектирую интерфейсы, которым доверяют с первого <br class="garden__br-dt" />взгляда. Этот сад растёт так же, как растут мои продукты <br class="garden__br-dt" />— вместе с людьми, которые в него приходят</p>
+          <div class="garden__actions">
+            <a href="#works-gallery" class="garden__cta garden__cta--primary">
+              <span>Смотреть работы</span>
+              <span class="icon icon--down" aria-hidden="true"></span>
+            </a>
+            <button type="button" class="garden__cta garden__cta--plant" id="garden-plant">Посадить цветок</button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -342,12 +340,8 @@
   </main>
 
   <footer class="site-footer">
-    <a
-      href="https://t.me/stasyabis"
-      class="site-footer__telegram text-button"
-      target="_blank"
-      rel="noopener noreferrer"
-    >Написать в tg</a>
+    <!-- Кнопка "Написать в tg" убрана — контакт теперь через ряд соцсетей
+         в баннере (см. .site-socials выше). -->
     <!-- Список ссылок — виден всегда, пока страница не проскроллена
          (и всегда на десктопе). При скролле моб/планшет прячет его и
          показывает вместо него "Меню" + стрелку вверх (см. footer.css). -->
@@ -438,8 +432,8 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="styles/hero.js?v=1"></script>
-  <script src="styles/layout-chrome.js?v=22"></script>
+  <script src="styles/hero-garden.js?v=8"></script>
+  <script src="styles/layout-chrome.js?v=24"></script>
   <script src="styles/embed-scale.js?v=19"></script>
   <script src="styles/works-anim-gate.js?v=2"></script>
   <script src="styles/loading.js?v=3"></script>

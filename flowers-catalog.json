@@ -1,0 +1,83 @@
+{
+  "slots": 6,
+  "flowers": [
+    {
+      "key": "iris",
+      "name": "Ирис",
+      "meaning": "Для тех, кто верит в идею и решается её сделать.",
+      "variants": [
+        {
+          "id": "1",
+          "img": "assets/garden/flowers/iris.webp",
+          "w": 770,
+          "h": 1026
+        }
+      ]
+    },
+    {
+      "key": "protea",
+      "name": "Протея",
+      "meaning": "Для тех, кто держит характер там, где трудно.",
+      "variants": [
+        {
+          "id": "1",
+          "img": "assets/garden/flowers/protea.webp",
+          "w": 770,
+          "h": 1027
+        }
+      ]
+    },
+    {
+      "key": "tulip",
+      "name": "Тюльпан",
+      "meaning": "Для тех, кто наконец на своём месте.",
+      "variants": [
+        {
+          "id": "1",
+          "img": "assets/garden/flowers/tulip.webp",
+          "w": 770,
+          "h": 1026
+        }
+      ]
+    },
+    {
+      "key": "peony",
+      "name": "Пион",
+      "meaning": "Для тех, у кого всё сложилось и хочется поделиться.",
+      "variants": [
+        {
+          "id": "1",
+          "img": "assets/garden/flowers/peony.webp",
+          "w": 770,
+          "h": 1026
+        }
+      ]
+    },
+    {
+      "key": "hydrangea",
+      "name": "Гортензия",
+      "meaning": "Для тех, кто собирает целое из маленьких решений.",
+      "variants": [
+        {
+          "id": "1",
+          "img": "assets/garden/flowers/hydrangea.webp",
+          "w": 770,
+          "h": 1026
+        }
+      ]
+    },
+    {
+      "key": "amaryllis",
+      "name": "Амариллис",
+      "meaning": "Для тех, кто не боится быть заметным.",
+      "variants": [
+        {
+          "id": "1",
+          "img": "assets/garden/flowers/amaryllis.webp",
+          "w": 768,
+          "h": 1026
+        }
+      ]
+    }
+  ]
+}

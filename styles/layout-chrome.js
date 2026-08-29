@@ -28,7 +28,8 @@
 (function () {
   var DESKTOP_MIN = 1101;
   var TOGGLE_GAP = 10; // px, зазор между плашкой хедера и кнопкой темы
-  var LOGO_TOGGLE_GAP = 6; // px, мин. зазор хедер/кнопка темы на моб/планшете (см. syncLogoScale)
+  var HEADER_EDGE_GAP = 12; // px, минимальный зазор от плашки-хедера по центру до края экрана на мобилке (см. syncLogoScale)
+  var LOGO_MIN_WIDTH = 80; // px, ниже этой ширины логотип-словомарк не сжимаем дальше, а убираем совсем (см. syncLogoScale)
   var COLLISION_GAP = 16; // px, минимальный зазор между переключателем темы и футером
   var FOOTER_COLLAPSE_SCREENS = 2; // сколько высот экрана нужно проскроллить, прежде чем футер свернётся в "Меню" + стрелку вверх
   // Длительность закрытия панели меню — держите синхронно с transition
@@ -40,6 +41,7 @@
   var header = document.querySelector('.site-header');
   var footer = document.querySelector('.site-footer');
   var headerCta = document.querySelector('.site-header__cta');
+  var logoLink = document.querySelector('.site-header__logo');
   var logoMark = document.querySelector('.site-header__logo-mark');
   var themeToggle = document.querySelector('.theme-toggle');
   var menuBtn = document.getElementById('footer-menu-btn');
@@ -101,28 +103,29 @@
     themeToggle.style.left = Math.round(rect.right + TOGGLE_GAP) + 'px';
   }
 
-  /* На моб/планшете кнопка темы стоит в своём углу независимо от
-     хедера (см. .theme-toggle { right: page-px } в theme-toggle.css)
-     — если хедер (аватар+имя+кнопка) вырос и полез под неё, схлопывать
-     раскладку в chrome--compact тут незачем (это чисто десктопный
-     механизм, см. updateCompactOverride): вместо этого сжимаем только
-     логотип — просим ужаться ровно настолько, чтобы между хедером и
-     кнопкой остался LOGO_TOGGLE_GAP. На десктопе кнопка сама следует
-     за хедером (см. syncThemeTogglePosition) — коллизии там нет,
-     логотип всегда в своём натуральном размере. */
+  /* Мобилка (≤899px): вся хрома в одной плашке-хедере по центру экрана
+     (аватар + лого + «Резюме PDF» + кнопка соцсетей, см.
+     hero-garden.css). Если плашка шире экрана — сжимаем словомарк ровно
+     на величину нехватки; если и сжатый не влезает (< LOGO_MIN_WIDTH) —
+     убираем логотип совсем, остаются аватар, кнопка и соцсети. На
+     десктопе/планшете места хватает — логотип в натуральном размере. */
   function syncLogoScale() {
-    if (!logoMark || !themeToggle) return;
-    // Сбрасываем принудительную ширину — мерить нужно логотип в его
-    // естественном размере (высота = --chrome-item-h, см. header.css),
-    // а не то, до чего он был сжат в прошлый раз.
+    if (!logoMark) return;
+    // Сбрасываем принудительную ширину и скрытие — мерить нужно логотип
+    // в его естественном размере, а не то, до чего он был сжат/спрятан.
     logoMark.style.width = '';
-    if (!isFixedChrome()) return;
-    var headerRect = header.getBoundingClientRect();
-    var toggleRect = themeToggle.getBoundingClientRect();
-    var overlap = headerRect.right + LOGO_TOGGLE_GAP - toggleRect.left;
-    if (overlap > 0) {
-      var logoRect = logoMark.getBoundingClientRect();
-      logoMark.style.width = Math.max(0, logoRect.width - overlap) + 'px';
+    if (logoLink) logoLink.hidden = false;
+    if (window.innerWidth > 899) return;
+
+    var budget = window.innerWidth - 2 * HEADER_EDGE_GAP;
+    var overflow = header.getBoundingClientRect().width - budget;
+    if (overflow <= 0) return;
+
+    var next = logoMark.getBoundingClientRect().width - overflow;
+    if (next < LOGO_MIN_WIDTH) {
+      if (logoLink) logoLink.hidden = true;
+    } else {
+      logoMark.style.width = next + 'px';
     }
   }
 
@@ -248,7 +251,7 @@
   var hoverControls = document.querySelectorAll(
     '.site-header__cta, .site-footer__telegram, .theme-toggle, .site-footer__link, ' +
     '.site-footer__menu-btn, .site-footer__top-btn, ' +
-    '.footer-menu-panel__link, .hero__cta'
+    '.footer-menu-panel__link, .garden__cta'
   );
 
   hoverControls.forEach(function (control) {
