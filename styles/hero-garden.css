@@ -274,23 +274,26 @@
     color: #fff;
   }
   /* «Смотреть работы» уже розовая — общий розовый radial-hover
-     (button-hover.css) на ней не виден. Перекрашиваем заливку в белую,
-     текст и иконку (currentColor) — в тёмный. */
+     (button-hover.css) на ней не виден. Делаем как у соседней «Посадить
+     цветок»: заливка едет из точки входа курсора (::before), но белым,
+     + плавная смена фона (0.2s из .garden__cta), текст/иконка → тёмные. */
   .garden__cta--primary:hover {
+    background: #fff;
     color: #101014;
   }
   .garden__cta--primary:hover::before {
     background: #fff;
-    box-shadow: none;
+    box-shadow: 0 0 22px rgba(255, 255, 255, 0.6);
   }
 }
 
 .garden__cta--primary:focus-visible {
+  background: #fff;
   color: #101014;
 }
 .garden__cta--primary:focus-visible::before {
   background: #fff;
-  box-shadow: none;
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.6);
 }
 
 .garden__cta:active {
@@ -471,18 +474,10 @@
 /* ---------- Попап посадки (desktop) / шторка (mobile) ---------- */
 
 /* Пока открыт любой попап/шторка сада — фон под ним не скроллится
-   (ставит/снимает hero-garden.js: класс + body.style.top = -scrollY).
-   position:fixed на body, а не только overflow:hidden — иначе iOS
-   Safari всё равно тянет страницу за краем. */
-html.gd-scroll-lock {
-  overflow: hidden;
-}
-
+   (класс ставит/снимает hero-garden.js). Только overflow:hidden — без
+   position:fixed, чтобы страница не сдвигалась при открытии/закрытии. */
+html.gd-scroll-lock,
 html.gd-scroll-lock body {
-  position: fixed;
-  left: 0;
-  right: 0;
-  width: 100%;
   overflow: hidden;
   overscroll-behavior: none;
 }

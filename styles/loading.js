@@ -81,8 +81,32 @@
     });
   });
 
-  // ------------ Экран загрузки (котик-лоадер) ------------
+  // ------------ Экран загрузки (цветок + «думающая» фраза) ------------
   var loadingScreen = document.getElementById('loading-screen');
+
+  // Сменяющаяся фраза + «печатающиеся» точки. Таймеры гасим, когда
+  // экран прячется.
+  var loadingTimers = [];
+  var phraseText = document.getElementById('loading-phrase-text');
+  var phraseDots = document.getElementById('loading-phrase-dots');
+  if (phraseText) {
+    var phrases = [
+      'Сажаем цветы', 'Поливаем клумбу', 'Расставляем горшки',
+      'Ждём, пока распустится', 'Ловим солнце', 'Разгоняем облака'
+    ];
+    var pi = 0;
+    loadingTimers.push(setInterval(function () {
+      pi = (pi + 1) % phrases.length;
+      phraseText.textContent = phrases[pi];
+    }, 2400));
+  }
+  if (phraseDots) {
+    var dc = 0;
+    loadingTimers.push(setInterval(function () {
+      dc = (dc + 1) % 4;
+      phraseDots.textContent = dc ? Array(dc + 1).join('.') : '';
+    }, 380));
+  }
 
   if (loadingScreen) {
     // Экран загрузки ждёт больше, чем шелл — держит чашку, пока не
@@ -95,6 +119,7 @@
       Promise.all([fontsReady, avatarReady, gardenReady].concat(aboveFoldMediaReadyPromises)),
       overlaySafetyTimeout
     ]).then(function () {
+      loadingTimers.forEach(clearInterval);
       loadingScreen.classList.add('is-hidden');
       // Убираем из раскладки/a11y-дерева только после того, как доиграет
       // fade (.6s, см. loading-screen.css) — иначе переход обрежется.

@@ -1,10 +1,9 @@
 /*
   Полноэкранный экран загрузки — вместо мелькания скелетонов
   (.is-page-loading в loading.css) первой отрисовкой видна эта плашка:
-  котик-лоадер (assets/loading-cat.gif). Держит его, пока не готов и
-  сам shell (шрифты/аватар — см. .is-page-loading), и медиа в галерее
-  работ (см. loading.js) — тогда сайт открывается сразу целиком, а не
-  по кусочкам.
+  цветок из сада + сменяющаяся фраза с «думающими» точками. Держит его,
+  пока не готовы shell (шрифты/аватар — см. .is-page-loading), медиа
+  первого экрана галереи и цветы сада (см. loading.js).
 
   Фон — --color-bg сайта (см. theme.css, сейчас #080808) — сайт всегда
   тёмный, отдельного prefers-color-scheme не нужно.
@@ -14,8 +13,10 @@
   inset: 0;
   z-index: 1000;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1.2rem;
   padding: var(--page-px, 10px);
   background: var(--color-bg);
   color: var(--color-ink);
@@ -24,19 +25,45 @@
     visibility 0.6s ease;
 }
 
-/* 100×100 на десктопе, поменьше на планшете/мобилке (тот же
-   брейкпоинт 1100px, что у остальной хром-раскладки сайта). */
-.loading-screen__cat {
+.loading-screen__flower {
   display: block;
-  width: 100px;
-  height: 100px;
+  width: 118px;
+  height: 158px;
   object-fit: contain;
+  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.5));
+  animation: ls-bob 2.6s ease-in-out infinite;
 }
 
 @media (max-width: 1100px) {
-  .loading-screen__cat {
-    width: 72px;
-    height: 72px;
+  .loading-screen__flower {
+    width: 92px;
+    height: 124px;
+  }
+}
+
+.loading-screen__phrase {
+  margin: 0;
+  font: 400 clamp(0.9rem, 3.4vw, 1.05rem) / 1.3 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  opacity: 0.82;
+}
+
+/* Ширина зарезервирована под «...», чтобы фраза не дёргалась. */
+.loading-screen__dots {
+  display: inline-block;
+  width: 1.6ch;
+  text-align: left;
+}
+
+@keyframes ls-bob {
+  0%, 100% { transform: translateY(0) rotate(-2.5deg); }
+  50%      { transform: translateY(-9px) rotate(2.5deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen__flower {
+    animation: none;
   }
 }
 

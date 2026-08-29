@@ -30,21 +30,15 @@
   window.__gardenReady = new Promise(function (res) { gardenReadyDone = res; });
   setTimeout(function () { gardenReadyDone(); }, 7000);
 
-  /* Блокировка скролла фона под попапом/шторкой. position:fixed на body
-     (а не только overflow:hidden) — иначе iOS Safari всё равно тянет
-     страницу. Позицию восстанавливаем при разблокировке. */
-  var lockedScrollY = 0;
+  /* Блокировка скролла фона под попапом/шторкой — просто overflow:hidden
+     на html+body (см. .gd-scroll-lock в hero-garden.css). Без
+     position:fixed / сохранения scrollY: страница остаётся ровно там,
+     где была, ничего не «прыгает». */
   function lockScroll() {
-    if (root.classList.contains('gd-scroll-lock')) return;
-    lockedScrollY = window.scrollY || window.pageYOffset || 0;
-    document.body.style.top = -lockedScrollY + 'px';
     root.classList.add('gd-scroll-lock');
   }
   function unlockScroll() {
-    if (!root.classList.contains('gd-scroll-lock')) return;
     root.classList.remove('gd-scroll-lock');
-    document.body.style.top = '';
-    window.scrollTo(0, lockedScrollY);
   }
 
   /* ---------- chrome: pinned-on-scroll ---------- */
@@ -99,10 +93,15 @@
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(done, function () {});
       } else {
+        // Фолбэк (не-secure-контекст). textarea фиксируем в углу вьюпорта
+        // и прозрачным — иначе .select() проскроллит страницу к нему.
         var ta = document.createElement('textarea');
         ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;opacity:0;pointer-events:none';
         document.body.appendChild(ta);
         ta.select();
+        try { ta.setSelectionRange(0, text.length); } catch (e) {}
         try { document.execCommand('copy'); done(); } catch (e) {}
         document.body.removeChild(ta);
       }
@@ -155,8 +154,11 @@
             el.type = 'button';
             el.addEventListener('click', function () {
               copyText(it.copy, function () {});
+              // Не закрываем шторку — показываем подтверждение и через
+              // пару секунд возвращаем подпись.
               el.lastChild.textContent = 'Почта скопирована';
-              setTimeout(closeSheet, 700);
+              clearTimeout(el._t);
+              el._t = setTimeout(function () { el.lastChild.textContent = it.label; }, 1800);
             });
           } else {
             el = document.createElement('a');
