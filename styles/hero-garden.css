@@ -221,6 +221,9 @@
 
 .garden__cta {
   box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -229,6 +232,8 @@
   padding-inline: clamp(1.1rem, 2vw, 1.6rem);
   border: 0;
   border-radius: 999px;
+  --hover-x: 50%;
+  --hover-y: 50%;
   font-family: var(--gd-mono);
   font-weight: 400;
   font-size: var(--gd-text);
@@ -265,34 +270,53 @@
   opacity: 0.75;
 }
 
-/* Ховер обеих кнопок баннера — через общий radial-::before из
-   button-hover.css (заливка растёт из точки входа курсора, как у
-   «Резюме PDF»). У больших кнопок круг 300% накрывает всё мгновенно —
-   сужаем до 200%, чтобы рост был виден. НИКАКОГО прямого background на
-   :hover — иначе заливка становится равномерной и «телепортируется». */
+/* Ховер кнопок баннера — свой radial из точки входа курсора (как у
+   «Резюме PDF» / «Посадить цветок» в попапе). НЕ через ::before из
+   button-hover.css: у широких кнопок его 300%-круг накрывает всё
+   мгновенно, и заливка «телепортируется», а на part-конфигах (pointer
+   не fine) он и вовсе не проявлялся. Глушим его и рисуем свой ::after;
+   --hover-x/--hover-y ставит layout-chrome.js на pointerenter. */
 .garden__cta::before {
-  width: 200%;
+  display: none;
 }
 
-/* «Смотреть работы» уже розовая → розовый ::before на ней не виден:
-   перекрашиваем растущий круг в белый, текст/иконку — в тёмные. */
-.garden__cta--primary:hover::before,
-.garden__cta--primary:focus-visible::before {
-  background: #fff;
-  box-shadow: 0 0 22px rgba(255, 255, 255, 0.6);
+.garden__cta::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: var(--hover-x, 50%);
+  top: var(--hover-y, 50%);
+  width: 240%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  pointer-events: none;
+}
+
+.garden__cta--primary::after { background: #fff; }
+.garden__cta--plant::after { background: #ff10c1; }
+
+.garden__cta:not(.garden__cta--planted):hover::after,
+.garden__cta:not(.garden__cta--planted):focus-visible::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Текст/иконка (currentColor) под растущей заливкой: у «Смотреть работы»
+   белый круг → тёмные, у «Посадить цветок» розовый круг → белые. */
+.garden__cta--primary:hover,
+.garden__cta--primary:focus-visible {
+  color: #101014;
+}
+.garden__cta--plant:hover,
+.garden__cta--plant:focus-visible {
+  color: #fff;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .garden__cta:not(.garden__cta--planted):hover {
     transform: translateY(-1px);
   }
-  .garden__cta--primary:hover {
-    color: #101014;
-  }
-}
-
-.garden__cta--primary:focus-visible {
-  color: #101014;
 }
 
 .garden__cta:active {
@@ -1158,6 +1182,9 @@ html:not(.chrome--pinned) .site-socials {
   }
   .garden-pop {
     transition: none;
+  }
+  .garden__cta::after {
+    transition-duration: 0.01ms;
   }
   .site-header,
   .site-socials {
