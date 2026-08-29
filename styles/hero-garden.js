@@ -41,6 +41,28 @@
     root.classList.remove('gd-scroll-lock');
   }
 
+  /* Закрытие любого попапа/шторки сада с анимацией: вешаем .is-closing
+     (CSS проигрывает gd-picker-out / gd-sheet-out на .garden-picker__panel),
+     после её конца прячем и чистим. Предохранитель на случай, если
+     animationend не прилетит. */
+  function closeModal(el, done) {
+    if (!el || el.hidden || el.classList.contains('is-closing')) return;
+    if (reduceMotion) { el.hidden = true; if (done) done(); return; }
+    el.classList.add('is-closing');
+    var panel = el.querySelector('.garden-picker__panel') || el;
+    var t;
+    var finish = function (e) {
+      if (e && e.animationName && !/-out$/.test(e.animationName)) return;
+      panel.removeEventListener('animationend', finish);
+      clearTimeout(t);
+      el.hidden = true;
+      el.classList.remove('is-closing');
+      if (done) done();
+    };
+    panel.addEventListener('animationend', finish);
+    t = setTimeout(finish, 450);
+  }
+
   /* ---------- chrome: pinned-on-scroll ---------- */
   function updatePinned() {
     root.classList.toggle('chrome--pinned', window.scrollY > 20);
@@ -127,10 +149,10 @@
     // мобилка: круглая кнопка → шторка снизу
     var sheet;
     function closeSheet() {
-      if (!sheet) return;
-      sheet.hidden = true;
-      unlockScroll();
-      if (toggle) { toggle.setAttribute('aria-expanded', 'false'); toggle.focus(); }
+      closeModal(sheet, function () {
+        unlockScroll();
+        if (toggle) { toggle.setAttribute('aria-expanded', 'false'); toggle.focus(); }
+      });
     }
     function openSheet() {
       if (!sheet) {
@@ -399,9 +421,7 @@
   }
 
   function closeFlowerModal() {
-    if (!fmodal || fmodal.hidden) return;
-    fmodal.hidden = true;
-    unlockScroll();
+    closeModal(fmodal, unlockScroll);
   }
 
   function openFlowerModal(fl) {
@@ -452,10 +472,10 @@
   /* «?» у счётчика — попап (desktop) / шторка (mobile) с пояснением. */
   var helpModal;
   function closeHelp() {
-    if (!helpModal) return;
-    helpModal.hidden = true;
-    unlockScroll();
-    if (helpBtn) helpBtn.focus();
+    closeModal(helpModal, function () {
+      unlockScroll();
+      if (helpBtn) helpBtn.focus();
+    });
   }
   function openHelp() {
     if (!helpModal) {
@@ -619,10 +639,10 @@
   }
 
   function closePicker() {
-    if (!picker) return;
-    picker.hidden = true;
-    unlockScroll();
-    if (lastFocus && lastFocus.focus) lastFocus.focus();
+    closeModal(picker, function () {
+      unlockScroll();
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    });
   }
 
   function markPlanted() {

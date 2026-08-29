@@ -235,7 +235,7 @@
   --hover-x: 50%;
   --hover-y: 50%;
   font-family: var(--gd-mono);
-  font-weight: 400;
+  font-weight: 600;
   font-size: var(--gd-text);
   letter-spacing: -0.03em;
   white-space: nowrap;
@@ -571,6 +571,23 @@ html.gd-scroll-lock body {
   to   { transform: none; opacity: 1; }
 }
 
+/* ---- Закрытие: .is-closing ставит hero-garden.js, ждёт animationend ---- */
+.garden-picker.is-closing {
+  pointer-events: none;
+}
+.garden-picker.is-closing .garden-picker__backdrop {
+  animation: gd-backdrop-out 0.24s ease both;
+}
+.garden-picker.is-closing .garden-picker__panel {
+  animation: gd-picker-out 0.26s cubic-bezier(0.4, 0, 1, 1) both;
+}
+@keyframes gd-picker-out {
+  to { transform: translateY(10px) scale(0.97); opacity: 0; }
+}
+@keyframes gd-backdrop-out {
+  to { opacity: 0; }
+}
+
 .garden-picker__head {
   display: flex;
   align-items: flex-start;
@@ -712,6 +729,7 @@ html.gd-scroll-lock body {
   background: rgba(255, 255, 255, 0.08);
   color: #f4f5f7;
   font: inherit;
+  font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -789,7 +807,7 @@ html.gd-scroll-lock body {
   background: #ff10c1;
   color: #fff;
   font-family: inherit;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   --hover-x: 50%;
@@ -873,6 +891,16 @@ html.gd-scroll-lock body {
   @keyframes gd-sheet-in {
     from { transform: translateY(100%); }
     to   { transform: translateY(0); }
+  }
+  /* Шторка при закрытии уезжает вниз. */
+  .garden-picker.is-closing .garden-picker__panel {
+    animation-name: gd-sheet-out;
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  @keyframes gd-sheet-out {
+    from { transform: translateY(0); }
+    to   { transform: translateY(100%); }
   }
 }
 
@@ -959,7 +987,7 @@ html:not(.chrome--pinned) .site-socials {
 /* Кнопка «Резюме PDF» в хедере — тем же шрифтом, что и баннер. */
 .site-header__cta {
   font-family: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 .site-socials__list {
@@ -1144,7 +1172,7 @@ html:not(.chrome--pinned) .site-socials {
   border-radius: 12px;
   background: transparent;
   color: #fff;
-  font: 400 1rem/1.2 "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  font: 600 1rem/1.2 "IBM Plex Mono", ui-monospace, Menlo, monospace;
   letter-spacing: -0.02em;
   text-align: left;
   text-decoration: none;
