@@ -151,8 +151,8 @@ function garden_handle_post(): void
 
     try {
         $ins = $db->prepare(
-            "INSERT INTO flowers (flower_key, variant, tilt, note, slot, ip_hash)
-             VALUES (:k, :v, :t, :n, :s, :h)"
+            "INSERT INTO flowers (flower_key, variant, tilt, note, slot, ip_hash, created_at)
+             VALUES (:k, :v, :t, :n, :s, :h, UTC_TIMESTAMP())"
         );
         $ins->execute([
             ':k' => $key, ':v' => $variant, ':t' => $tilt,
@@ -189,6 +189,10 @@ function garden_handle_post(): void
 
 function garden_row_to_public(array $r, bool $mine): array
 {
+    // created_at лежит в UTC. Не подставляем «сейчас» при кривом значении —
+    // иначе старые строки с 0000-00-00 вечно выглядят как «сегодня».
+    $ts = strtotime(((string) $r['created_at']) . ' UTC');
+
     return [
         'id'        => (int) $r['id'],
         'key'       => (string) $r['flower_key'],
@@ -197,7 +201,7 @@ function garden_row_to_public(array $r, bool $mine): array
         'note'      => $r['note'] !== null ? (string) $r['note'] : '',
         'slot'      => (int) $r['slot'],
         'mine'      => $mine,
-        'createdAt' => gmdate('c', strtotime(((string) $r['created_at']) . ' UTC') ?: time()),
+        'createdAt' => $ts ? gmdate('c', $ts) : null,
     ];
 }
 

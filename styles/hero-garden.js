@@ -327,13 +327,19 @@
   /* ---------- карточка цветка / справка ---------- */
 
   function daysAgoLabel(iso) {
-    var then = new Date(iso).getTime();
-    if (isNaN(then)) return '';
-    var d = Math.floor((Date.now() - then) / 86400000);
+    var t = new Date(iso);
+    if (isNaN(t.getTime())) return '';
+    // Разница в КАЛЕНДАРНЫХ днях по локальному времени зрителя: сравниваем
+    // полночь даты посадки с сегодняшней полночью, а не «прошло 24 часа».
+    var now = new Date();
+    var planted = new Date(t.getFullYear(), t.getMonth(), t.getDate());
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var d = Math.round((today - planted) / 86400000);
     if (d <= 0) return 'сегодня';
     if (d === 1) return 'вчера';
-    if (d < 5) return d + ' дня назад';
-    return d + ' дней назад';
+    var m10 = d % 10, m100 = d % 100;
+    var word = (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) ? 'дня' : 'дней';
+    return d + ' ' + word + ' назад';
   }
 
   /* Содержимое карточки открытого цветка — один порядок и для десктопного
