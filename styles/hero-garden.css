@@ -347,11 +347,20 @@
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transform: translate(-50%, -50%) rotate(var(--gd-rot, 0deg));
-  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Цветок — тоже <button>, и попадает под общий press-feedback
+   (styles/button-hover.css: scale ->0.96 на :active). На нём это читалось
+   как рывок вниз прямо посреди роста от ховера — глушим специально
+   для цветка, оставляем только плавный ховер/--active выше. */
+.garden-flower:active {
+  scale: 1;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .garden-flower:hover {
+  .garden-flower:hover,
+  .garden-flower--active {
     transform: translate(-50%, -50%) rotate(var(--gd-rot, 0deg)) scale(1.08);
     z-index: 6;
   }

@@ -426,8 +426,18 @@
     window.addEventListener('resize', closeFlowerModal);
   }
 
+  // Цветок, «застёгнутый» в увеличенном (hover) виде на время просмотра
+  // карточки — см. клик по .garden-flower ниже: почему не просто :hover.
+  var activeFlowerEl = null;
+
   function closeFlowerModal() {
-    closeModal(fmodal, unlockScroll);
+    closeModal(fmodal, function () {
+      unlockScroll();
+      if (activeFlowerEl) {
+        activeFlowerEl.classList.remove('garden-flower--active');
+        activeFlowerEl = null;
+      }
+    });
   }
 
   function openFlowerModal(fl) {
@@ -472,7 +482,15 @@
     }
     if (!chosen) return;
     var fl = flowerById(chosen.getAttribute('data-id'));
-    if (fl) openFlowerModal(fl);
+    if (!fl) return;
+    // Курсор остаётся над цветком, но попап и его затемнение фона
+    // перекрывают его сверху — браузер тут же снимает :hover, и цветок
+    // дёргано сжимается в тот же момент, когда попап ещё открывается.
+    // Фиксируем увеличенный вид классом на время просмотра — обратно
+    // он уменьшится плавно, только когда попап закроется (см. выше).
+    activeFlowerEl = chosen;
+    chosen.classList.add('garden-flower--active');
+    openFlowerModal(fl);
   });
 
   /* «?» у счётчика — попап (desktop) / шторка (mobile) с пояснением. */
