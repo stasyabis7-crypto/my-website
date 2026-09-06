@@ -483,6 +483,64 @@
       if (helpBtn) helpBtn.focus();
     });
   }
+  function buildHelpCard(fl) {
+    var f = catByKey[fl.key] || {};
+    var v = variantOf(fl.key);
+    var card = document.createElement('div');
+    card.className = 'garden-help__card' + (fl.mine ? ' garden-help__card--mine' : '');
+
+    var thumb = document.createElement('div');
+    thumb.className = 'garden-help__card-thumb';
+    var img = document.createElement('img');
+    img.alt = '';
+    img.loading = 'lazy';
+    if (v) img.src = v.img;
+    thumb.appendChild(img);
+    card.appendChild(thumb);
+
+    var main = document.createElement('div');
+    main.className = 'garden-help__card-main';
+
+    var head = document.createElement('div');
+    head.className = 'garden-help__card-head';
+    var name = document.createElement('span');
+    name.className = 'garden-help__card-name';
+    name.textContent = f.name || 'Цветок';
+    head.appendChild(name);
+    var date = document.createElement('span');
+    date.className = 'garden-help__card-date';
+    date.textContent = (fl.mine ? 'ваш · ' : '') + (daysAgoLabel(fl.createdAt) || '');
+    head.appendChild(date);
+    main.appendChild(head);
+
+    if (fl.note) {
+      var note = document.createElement('p');
+      note.className = 'garden-help__card-note';
+      note.textContent = '«' + fl.note + '»';
+      main.appendChild(note);
+    }
+
+    card.appendChild(main);
+    return card;
+  }
+
+  function renderHelpList() {
+    if (!helpModal) return;
+    var list = helpModal.querySelector('[data-help-list]');
+    if (!list) return;
+    list.innerHTML = '';
+    if (!flowers.length) {
+      var empty = document.createElement('p');
+      empty.className = 'garden-help__empty';
+      empty.textContent = 'Пока в саду нет ни одного цветка — станьте первой/первым.';
+      list.appendChild(empty);
+      return;
+    }
+    flowers.forEach(function (fl) {
+      list.appendChild(buildHelpCard(fl));
+    });
+  }
+
   function openHelp() {
     if (!helpModal) {
       helpModal = document.createElement('div');
@@ -498,10 +556,14 @@
         '    <h2 class="garden-picker__title">Как устроен сад</h2>',
         '    <button type="button" class="garden-picker__close" data-close aria-label="Закрыть">×</button>',
         '  </div>',
-        '  <div class="garden-help__text">',
-        '    <p><b>Цветёт</b> — то, что вы видите на баннере прямо сейчас.</p>',
-        '    <p><b>Посажено</b> — сколько всего людей оставили здесь свой след за всё время.</p>',
-        '    <p>Посадить можно <b>только один цветок</b> — он останется на баннере с вашим коротким посланием.</p>',
+        '  <div class="garden-help__body">',
+        '    <div class="garden-help__text">',
+        '      <p>Посадить можно <b>только один цветок</b> — он останется на баннере с вашим коротким посланием.</p>',
+        '      <p><b>Цветёт</b> — то, что вы видите на баннере прямо сейчас.</p>',
+        '      <p><b>Посажено</b> — сколько всего людей оставили здесь свой след за всё время.</p>',
+        '    </div>',
+        '    <div class="garden-help__list-title">Цветы в саду</div>',
+        '    <div class="garden-help__list" data-help-list></div>',
         '  </div>',
         '</div>'
       ].join('');
@@ -513,6 +575,7 @@
         if (e.key === 'Escape' && helpModal && !helpModal.hidden) closeHelp();
       });
     }
+    renderHelpList();
     helpModal.hidden = false;
     lockScroll();
     var c = helpModal.querySelector('.garden-picker__close');
@@ -554,6 +617,40 @@
 
   function rerollFlower() {
     setPreview(randomKey(pickerState.key));
+  }
+
+  // Растим textarea пожелания под введённый текст — весь ввод виден
+  // без внутреннего скролла поля (высоту-«пол» держит min-height в CSS).
+  function autosizeNote() {
+    var el = pickerEls.note;
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
+
+  // Свайп по превью цветка — тот же rerollFlower, что и по кнопке
+  // «Сгенерировать другой». Только touch: мышь/трекпад свайпы не шлют
+  // touch-события, так что на десктопе это не мешает обычному ховеру.
+  var SWIPE_MIN_DX = 32;
+  function bindPreviewSwipe(el) {
+    if (!el) return;
+    var startX = null;
+    var startY = null;
+    el.addEventListener('touchstart', function (e) {
+      var t = e.touches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+    }, { passive: true });
+    el.addEventListener('touchend', function (e) {
+      if (startX === null) return;
+      var t = e.changedTouches[0];
+      var dx = t.clientX - startX;
+      var dy = t.clientY - startY;
+      startX = null;
+      startY = null;
+      if (Math.abs(dx) > SWIPE_MIN_DX && Math.abs(dx) > Math.abs(dy)) {
+        rerollFlower();
+      }
+    }, { passive: true });
   }
 
   function buildPicker() {
@@ -603,8 +700,10 @@
     pickerEls.submit = picker.querySelector('[data-submit]');
 
     picker.querySelector('[data-reroll]').addEventListener('click', rerollFlower);
+    bindPreviewSwipe(picker.querySelector('.garden-plant__preview'));
     pickerEls.note.addEventListener('input', function () {
       pickerEls.noteCount.textContent = pickerEls.note.value.length + ' / ' + NOTE_MAX;
+      autosizeNote();
     });
     picker.querySelectorAll('[data-close]').forEach(function (el) {
       el.addEventListener('click', closePicker);
@@ -633,6 +732,7 @@
     if (!picker) buildPicker();
     lastFocus = document.activeElement;
     pickerEls.note.value = '';
+    pickerEls.note.style.height = '';
     pickerEls.noteCount.textContent = '0 / ' + NOTE_MAX;
     pickerEls.error.textContent = '';
     pickerEls.submit.disabled = false;

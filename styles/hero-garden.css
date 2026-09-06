@@ -496,9 +496,19 @@
 
 /* ---------- Попап посадки (desktop) / шторка (mobile) ---------- */
 
+/* Резервируем место под вертикальный скроллбар всегда — тогда при
+   overflow:hidden ниже (когда открыт попап) полоса пропадает, а
+   зарезервированная колонка остаётся, и баннер/контент не «прыгает»
+   по горизонтали. На macOS с overlay-скроллбарами ничего не меняется. */
+html {
+  scrollbar-gutter: stable;
+}
+
 /* Пока открыт любой попап/шторка сада — фон под ним не скроллится
    (класс ставит/снимает hero-garden.js). Только overflow:hidden — без
-   position:fixed, чтобы страница не сдвигалась при открытии/закрытии. */
+   position:fixed, чтобы страница не сдвигалась при открытии/закрытии.
+   Скроллбар гасим, но его колонка сохраняется за счёт scrollbar-gutter
+   выше — сдвига layout нет. */
 html.gd-scroll-lock,
 html.gd-scroll-lock body {
   overflow: hidden;
@@ -653,6 +663,19 @@ html.gd-scroll-lock body {
   scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
 }
 
+/* Тело упрощённой посадки — сама колонка: превью гибкое (уступает
+   первым при нехватке высоты, см. flex на .garden-plant__preview
+   ниже), остальное — фиксированного размера, не сжимается. Так на
+   невысоких шторках вместо скролла сжимается только картинка, и поле
+   пожелания остаётся видно сразу. */
+.garden-picker--plant .garden-picker__body {
+  display: flex;
+  flex-direction: column;
+}
+.garden-picker--plant .garden-picker__body > *:not(.garden-plant__preview) {
+  flex: none;
+}
+
 .garden-picker__body::-webkit-scrollbar { width: 10px; }
 .garden-picker__body::-webkit-scrollbar-track { background: transparent; }
 .garden-picker__body::-webkit-scrollbar-thumb {
@@ -683,7 +706,11 @@ html.gd-scroll-lock body {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  height: clamp(150px, 34vh, 240px);
+  /* flex-basis — предпочтительная высота, но на невысоких шторках
+     превью первым уступает место (min-height — пол), чтобы поле
+     пожелания не оказывалось за кромкой скролла. */
+  flex: 0 1 clamp(150px, 34vh, 240px);
+  min-height: 112px;
   margin: 0.2rem 0 0.5rem;
 }
 
@@ -760,7 +787,11 @@ html.gd-scroll-lock body {
   background: #262a33;
   color: #f4f5f7;
   font: inherit;
-  resize: vertical;
+  /* Высоту растит hero-garden.js по мере ввода (autosizeNote) — весь
+     текст остаётся виден без внутреннего скролла поля. Резиз рукой
+     убран, чтобы не спорить с этим. */
+  resize: none;
+  overflow: hidden;
   transition: border-color 0.15s ease;
 }
 
@@ -854,9 +885,40 @@ html.gd-scroll-lock body {
   cursor: default;
 }
 
-/* Пояснение «?» — та же оболочка .garden-picker, контент проще. */
+/* Пояснение «?» — та же оболочка .garden-picker, контент — текст +
+   список посаженных цветов. Список может быть длинным, поэтому панель
+   строим так же, как у посадки: шапка закреплена, тело скроллится. */
 .garden-help__panel {
-  width: min(28rem, 92vw);
+  --gp-pad: clamp(1.1rem, 3vw, 1.8rem);
+  width: min(30rem, 92vw);
+  max-height: min(84vh, 44rem);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+.garden-help__panel .garden-picker__head {
+  flex: none;
+  margin: 0;
+  padding: var(--gp-pad) var(--gp-pad) 0.7rem;
+}
+
+.garden-help__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 var(--gp-pad) calc(var(--gp-pad) + env(safe-area-inset-bottom, 0px));
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.garden-help__body::-webkit-scrollbar { width: 10px; }
+.garden-help__body::-webkit-scrollbar-track { background: transparent; }
+.garden-help__body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  border: 3px solid #1c1f26;
 }
 
 .garden-help__text {
@@ -876,6 +938,91 @@ html.gd-scroll-lock body {
   font-weight: 600;
 }
 
+.garden-help__list-title {
+  margin: 1.1rem 0 0.6rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  opacity: 0.55;
+}
+
+.garden-help__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.garden-help__card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 14px;
+  background: #262a33;
+}
+
+.garden-help__card--mine {
+  background: rgba(255, 16, 193, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 16, 193, 0.35);
+}
+
+.garden-help__card-thumb {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.garden-help__card-thumb img {
+  max-width: 78%;
+  max-height: 78%;
+  object-fit: contain;
+}
+
+.garden-help__card-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.garden-help__card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.garden-help__card-name {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.garden-help__card-date {
+  flex: none;
+  font-size: 0.7rem;
+  opacity: 0.55;
+  white-space: nowrap;
+}
+
+.garden-help__card-note {
+  margin: 0.3rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: #c7cad1;
+  overflow-wrap: anywhere;
+}
+
+.garden-help__empty {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
 @media (max-width: 899px) {
   /* Все попапы сада на мобилке — шторки: выезжают снизу. */
   .garden-picker {
@@ -883,7 +1030,7 @@ html.gd-scroll-lock body {
   }
   .garden-picker__panel {
     width: 100%;
-    max-height: 88vh;
+    max-height: 94vh;
     border-radius: 34px 34px 0 0;
     animation-name: gd-sheet-in;
     animation-duration: 0.42s;
