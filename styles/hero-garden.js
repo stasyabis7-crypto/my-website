@@ -645,32 +645,6 @@
     el.style.height = el.scrollHeight + 'px';
   }
 
-  // Свайп по превью цветка — тот же rerollFlower, что и по кнопке
-  // «Сгенерировать другой». Только touch: мышь/трекпад свайпы не шлют
-  // touch-события, так что на десктопе это не мешает обычному ховеру.
-  var SWIPE_MIN_DX = 32;
-  function bindPreviewSwipe(el) {
-    if (!el) return;
-    var startX = null;
-    var startY = null;
-    el.addEventListener('touchstart', function (e) {
-      var t = e.touches[0];
-      startX = t.clientX;
-      startY = t.clientY;
-    }, { passive: true });
-    el.addEventListener('touchend', function (e) {
-      if (startX === null) return;
-      var t = e.changedTouches[0];
-      var dx = t.clientX - startX;
-      var dy = t.clientY - startY;
-      startX = null;
-      startY = null;
-      if (Math.abs(dx) > SWIPE_MIN_DX && Math.abs(dx) > Math.abs(dy)) {
-        rerollFlower();
-      }
-    }, { passive: true });
-  }
-
   function buildPicker() {
     picker = document.createElement('div');
     picker.className = 'garden-picker garden-picker--plant';
@@ -692,9 +666,7 @@
       '    </div>',
       '    <div class="garden-plant__name" data-name></div>',
       '    <p class="garden-plant__meaning" data-meaning></p>',
-      '    <button type="button" class="garden-plant__reroll" data-reroll>',
-      '      <span class="garden-plant__reroll-mark" aria-hidden="true">↻</span>Сгенерировать другой',
-      '    </button>',
+      '    <button type="button" class="garden-plant__reroll" data-reroll>Сгенерировать другой</button>',
       '    <label class="garden-picker__label" for="garden-plant-note">Послание Анастасии или гостям сайта (необязательно)</label>',
       '    <textarea id="garden-plant-note" class="garden-picker__note" data-note maxlength="' + NOTE_MAX + '" rows="2"></textarea>',
       '    <div class="garden-picker__count" data-note-count>0 / ' + NOTE_MAX + '</div>',
@@ -718,7 +690,6 @@
     pickerEls.submit = picker.querySelector('[data-submit]');
 
     picker.querySelector('[data-reroll]').addEventListener('click', rerollFlower);
-    bindPreviewSwipe(picker.querySelector('.garden-plant__preview'));
     pickerEls.note.addEventListener('input', function () {
       pickerEls.noteCount.textContent = pickerEls.note.value.length + ' / ' + NOTE_MAX;
       autosizeNote();

@@ -672,16 +672,14 @@ html.gd-scroll-lock body {
   scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
 }
 
-/* Тело упрощённой посадки — сама колонка: превью гибкое (уступает
-   первым при нехватке высоты, см. flex на .garden-plant__preview
-   ниже), остальное — фиксированного размера, не сжимается. Так на
-   невысоких шторках вместо скролла сжимается только картинка, и поле
-   пожелания остаётся видно сразу. */
+/* Тело упрощённой посадки — колонка с секциями фиксированной высоты;
+   если всё не помещается, скроллится .garden-picker__body целиком (см.
+   overflow-y: auto выше), а не картинка цветка. */
 .garden-picker--plant .garden-picker__body {
   display: flex;
   flex-direction: column;
 }
-.garden-picker--plant .garden-picker__body > *:not(.garden-plant__preview) {
+.garden-picker--plant .garden-picker__body > * {
   flex: none;
 }
 
@@ -715,11 +713,13 @@ html.gd-scroll-lock body {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  /* flex-basis — предпочтительная высота, но на невысоких шторках
-     превью первым уступает место (min-height — пол), чтобы поле
-     пожелания не оказывалось за кромкой скролла. */
-  flex: 0 1 clamp(150px, 34vh, 240px);
-  min-height: 112px;
+  /* Высота фиксированная (не flex-basis с сжатием), чтобы max-height:
+     100% у картинки ниже всегда резолвился в конкретное число — иначе
+     в части браузеров процент от «гибкой» высоты не считается definite,
+     и картинка вместо уменьшения обрезается. Если места не хватает,
+     скроллится .garden-picker__body целиком. */
+  flex: none;
+  height: clamp(150px, 34vh, 240px);
   margin: 0.2rem 0 0.5rem;
 }
 
@@ -756,7 +756,6 @@ html.gd-scroll-lock body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5em;
   width: 100%;
   height: 2.9rem;
   margin-top: 0.6rem;
@@ -778,11 +777,6 @@ html.gd-scroll-lock body {
 
 .garden-plant__reroll:active {
   transform: scale(0.99);
-}
-
-.garden-plant__reroll-mark {
-  font-size: 1.2em;
-  line-height: 1;
 }
 
 .garden-picker__note {
@@ -1039,7 +1033,7 @@ html.gd-scroll-lock body {
   }
   .garden-picker__panel {
     width: 100%;
-    max-height: 94vh;
+    max-height: calc(100svh - env(safe-area-inset-top, 0px) - 12px);
     border-radius: 34px 34px 0 0;
     animation-name: gd-sheet-in;
     animation-duration: 0.42s;
