@@ -242,9 +242,7 @@
       Галерея v2 (2026-08-26) — построчная раскладка, см. works-grid.css.
       Каждая .works-grid__row — один из 4 типов (--big/--el3/--sq2/--sq3),
       тип задаёт и aspect-ratio карточек, и их число в строке; ширина
-      карточки внутри строки считается флексбоксом сама. Прежний dense-grid
-      список (55 проектов) архивирован в works-archive/, полная замена
-      контента по договорённости.
+      карточки внутри строки считается флексбоксом сама.
 
       Порядок строк — заданная последовательность, шаффла между визитами
       больше нет (works-shuffle.js был завязан на классы форм --square/
@@ -254,7 +252,7 @@
     <div class="works-grid" id="works-gallery">
      <div class="works-grid__inner">
       <div class="works-grid__row works-grid__row--big">
-        <div class="works-grid__item" data-slot="1" data-title="Recycle map"><img src="works/01-recycle-map/cover.png" alt="Recycle map" loading="lazy" /></div>
+        <div class="works-grid__item" data-slot="1" data-title="Recycle map"><video class="works-grid__video" data-src="works/01-recycle-map/ekokarta-pererabotki.webm" poster="works/01-recycle-map/cover.png" muted loop playsinline preload="none" aria-label="Карта раздельного сбора"></video></div>
       </div>
       <div class="works-grid__row works-grid__row--el3">
         <div class="works-grid__item" data-slot="2" data-title="About company"><img src="works/02-about-company/cover.png" alt="About company" loading="lazy" /></div>
@@ -436,7 +434,8 @@
   <script src="styles/hero-garden.js?v=15"></script>
   <script src="styles/layout-chrome.js?v=24"></script>
   <script src="styles/embed-scale.js?v=19"></script>
-  <script src="styles/works-anim-gate.js?v=2"></script>
+  <script src="styles/works-anim-gate.js?v=3"></script>
+  <script src="styles/works-video.js?v=1"></script>
   <script src="styles/loading.js?v=5"></script>
   <script src="styles/typography-rules.js?v=1"></script>
   <script src="styles/haptics.js?v=1"></script>

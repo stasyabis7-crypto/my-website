@@ -64,7 +64,7 @@
     { rootMargin: PAUSE_MARGIN }
   );
 
-  var targets = document.querySelectorAll('.works-grid__embed-frame, .works-grid__video');
+  var targets = document.querySelectorAll('.works-grid__embed-frame');
   targets.forEach(function (el) {
     pauseObserver.observe(el);
     // На случай, если iframe ещё не отдал contentWindow к моменту первого
