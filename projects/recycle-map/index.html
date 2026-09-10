@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Recycle map — stasyabis</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" type="image/png" sizes="64x64" href="../../assets/favicon.png" />
+<link rel="stylesheet" href="../../styles/scale.css?v=18" />
+<link rel="stylesheet" href="../../styles/typography.css?v=18" />
+<link rel="stylesheet" href="../../styles/theme.css?v=23" />
+<link rel="stylesheet" href="../../styles/icons.css?v=5" />
+<link rel="stylesheet" href="../../styles/button-hover.css?v=26" />
+<style>
+  /*
+    Каркас страницы проекта — только для того, чтобы кнопка-стрелка на
+    карточке "Recycle map" (см. .works-grid__page-link в works-grid.css)
+    вела куда-то реальное, а не в 404. Сам разбор проекта (задача,
+    процесс, результат) сюда ещё не завезён — это следующий шаг,
+    описанный в задаче отдельно.
+  */
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    min-height: 100%;
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+  }
+  .page {
+    max-width: 60rem;
+    margin-inline: auto;
+    padding: 2.5rem 1.25rem 6rem;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .back-link .icon {
+    width: 1rem;
+    height: 1rem;
+    background-color: currentColor;
+  }
+  .placeholder-note {
+    margin: 0 0 2rem;
+    padding: 0.875rem 1.125rem;
+    border-radius: 14px;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    opacity: 0.72;
+  }
+  .cover {
+    display: block;
+    width: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--color-surface);
+    margin-top: 2rem;
+  }
+  .cover video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <a class="back-link text-button" href="../../index.html#works-gallery">
+      <span class="icon icon--arrow-left" aria-hidden="true"></span>
+      Ко всем проектам
+    </a>
+
+    <h1 class="text-display">Recycle map</h1>
+    <p class="text-body-lg">Карта раздельного сбора — интерактивная карта пунктов приёма вторсырья.</p>
+
+    <p class="placeholder-note text-body-sm">
+      Страница проекта в разработке: здесь появится разбор задачи, процесса и результата.
+    </p>
+
+    <figure class="cover">
+      <video src="../../works/01-recycle-map/ekokarta-pererabotki.webm" poster="../../works/01-recycle-map/cover.png" muted loop playsinline autoplay aria-label="Карта раздельного сбора"></video>
+    </figure>
+  </div>
+</body>
+</html>

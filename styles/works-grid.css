@@ -143,6 +143,67 @@
   object-fit: cover;
 }
 
+/* Кнопка-badge "у проекта есть страница" — белый кружок со стрелкой
+   (Arrow Big diagonal, см. icons.css), верхний левый угол карточки.
+   Белый цвет захардкожен (не токен темы): бейдж лежит поверх обложки
+   произвольного цвета, а не на фоне страницы, поэтому не должен гаснуть
+   вместе с тёмной темой сайта. На тач-устройствах (нет честного hover)
+   видна всегда — иначе узнать, что у карточки есть страница, было бы
+   неоткуда. На hover-способных устройствах появляется по наведению на
+   карточку, тем же приёмом, что и .works-grid__item:hover выше. */
+.works-grid__page-link {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+  opacity: 1;
+  scale: 1;
+}
+
+.works-grid__page-link .icon {
+  width: 22px;
+  height: 22px;
+  background-color: #14161a;
+}
+
+@media (max-width: 640px) {
+  .works-grid__page-link {
+    top: 14px;
+    left: 14px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .works-grid__page-link .icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .works-grid__page-link {
+    opacity: 0;
+    scale: 0.9;
+    transition:
+      opacity 0.25s var(--button-hover-ease, ease-out),
+      scale 0.25s var(--button-hover-ease, ease-out);
+  }
+
+  .works-grid__item:hover .works-grid__page-link,
+  .works-grid__item:focus-within .works-grid__page-link {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
 /* Карточка-проект — вместо картинки внутри крутится готовый
    самостоятельный HTML (см. works/*.html), встроенный через iframe в
    его РЕАЛЬНОМ (нативном) размере и сжатый transform: scale() под

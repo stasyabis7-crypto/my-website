@@ -53,6 +53,11 @@
   mask-image: url("../assets/icons/Arrow/arrow-left.svg");
 }
 
+.icon--arrow-diagonal {
+  -webkit-mask-image: url("../assets/icons/Arrow/arrow-diagonal.svg");
+  mask-image: url("../assets/icons/Arrow/arrow-diagonal.svg");
+}
+
 .icon--works {
   -webkit-mask-image: url("../assets/icons/Interface/works.svg");
   mask-image: url("../assets/icons/Interface/works.svg");
