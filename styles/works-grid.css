@@ -143,18 +143,27 @@
   object-fit: cover;
 }
 
-/* Кнопка-badge "у проекта есть страница" — белый кружок со стрелкой
-   (Arrow Big diagonal, см. icons.css), верхний левый угол карточки.
-   Белый цвет захардкожен (не токен темы): бейдж лежит поверх обложки
-   произвольного цвета, а не на фоне страницы, поэтому не должен гаснуть
-   вместе с тёмной темой сайта. На тач-устройствах (нет честного hover)
-   видна всегда — иначе узнать, что у карточки есть страница, было бы
-   неоткуда. На hover-способных устройствах появляется по наведению на
-   карточку, тем же приёмом, что и .works-grid__item:hover выше. */
+/* Вся карточка с .works-grid__item--linked — ссылка на страницу
+   проекта (см. index.html), поэтому здесь курсор уже pointer, в
+   отличие от обычных некликабельных карточек выше. */
+.works-grid__item--linked {
+  cursor: pointer;
+}
+
+/* Индикатор "у проекта есть страница" — белый кружок со стрелкой
+   (Arrow Big diagonal, см. icons.css), верхний правый угол карточки.
+   Чисто декоративный (кликается вся карточка, не он) — pointer-events
+   выключены. Белый цвет захардкожен (не токен темы): лежит поверх
+   обложки произвольного цвета, а не на фоне страницы, поэтому не
+   должен гаснуть вместе с тёмной темой сайта. На тач-устройствах (нет
+   честного hover) виден всегда — иначе узнать, что у карточки есть
+   страница, было бы неоткуда. На hover-способных устройствах
+   появляется по наведению на карточку, тем же приёмом, что и
+   .works-grid__item:hover выше. */
 .works-grid__page-link {
   position: absolute;
   top: 20px;
-  left: 20px;
+  right: 20px;
   z-index: 2;
   display: flex;
   align-items: center;
@@ -166,6 +175,7 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
   opacity: 1;
   scale: 1;
+  pointer-events: none;
 }
 
 .works-grid__page-link .icon {
@@ -177,7 +187,7 @@
 @media (max-width: 640px) {
   .works-grid__page-link {
     top: 14px;
-    left: 14px;
+    right: 14px;
     width: 40px;
     height: 40px;
   }
@@ -198,7 +208,7 @@
   }
 
   .works-grid__item:hover .works-grid__page-link,
-  .works-grid__item:focus-within .works-grid__page-link {
+  .works-grid__item:focus-visible .works-grid__page-link {
     opacity: 1;
     scale: 1;
   }
