@@ -117,6 +117,16 @@ body.case-page {
   height: 1rem;
   background-color: currentColor;
 }
+/* Голый текстовый узел красился бы в белый на hover, но всё равно
+   оставался бы не виден: без своего z-index он красится (шаг 5
+   в порядке отрисовки CSS2.1) РАНЬШЕ позиционированной заливки
+   ::before (шаг 6, z-index:auto = stack level 0), поэтому круг рисуется
+   поверх него — виден оставался только icon (у него z-index:1, шаг 7,
+   уже выше заливки). Оборачиваем текст в свой элемент с тем же приёмом. */
+.case-back__label {
+  position: relative;
+  z-index: 1;
+}
 .case-back::before {
   content: "";
   position: absolute;
@@ -823,9 +833,8 @@ body.case-page {
 
   <nav class="case-rail" id="case-rail" aria-label="Разделы кейса">
     <ol>
-      <li><a href="#cover"><span class="case-rail__dot" aria-hidden="true"></span><span class="case-rail__label">О проекте</span></a></li>
       <li><a href="#role"><span class="case-rail__dot" aria-hidden="true"></span><span class="case-rail__label">Моя роль</span></a></li>
-      <li><a href="#context"><span class="case-rail__dot" aria-hidden="true"></span><span class="case-rail__label">Задача</span></a></li>
+      <li><a href="#context"><span class="case-rail__dot" aria-hidden="true"></span><span class="case-rail__label">О проекте</span></a></li>
       <li><a href="#nav"><span class="case-rail__dot" aria-hidden="true"></span><span class="case-rail__label">Навигация</span></a></li>
       <li><a href="#filters"><span class="case-rail__dot" aria-hidden="true"></span><span class="case-rail__label">Фильтры</span></a></li>
       <li><a href="#saved"><span class="case-rail__dot" aria-hidden="true"></span><span class="case-rail__label">Избранное</span></a></li>
@@ -841,19 +850,18 @@ body.case-page {
   <div class="case-sheet" id="case-sheet" role="dialog" aria-label="Содержание кейса" hidden>
     <div class="case-sheet__grip" aria-hidden="true"></div>
     <p class="case-sheet__title text-overline">Содержание</p>
-    <a class="case-navlink" href="#cover"><span class="case-navlink__num">01</span>О проекте</a>
-    <a class="case-navlink" href="#role"><span class="case-navlink__num">02</span>Моя роль</a>
-    <a class="case-navlink" href="#context"><span class="case-navlink__num">03</span>Задача</a>
-    <a class="case-navlink" href="#nav"><span class="case-navlink__num">04</span>Навигация</a>
-    <a class="case-navlink" href="#filters"><span class="case-navlink__num">05</span>Фильтры</a>
-    <a class="case-navlink" href="#saved"><span class="case-navlink__num">06</span>Избранное</a>
-    <a class="case-navlink" href="#results"><span class="case-navlink__num">07</span>Результаты</a>
+    <a class="case-navlink" href="#role"><span class="case-navlink__num">01</span>Моя роль</a>
+    <a class="case-navlink" href="#context"><span class="case-navlink__num">02</span>О проекте</a>
+    <a class="case-navlink" href="#nav"><span class="case-navlink__num">03</span>Навигация</a>
+    <a class="case-navlink" href="#filters"><span class="case-navlink__num">04</span>Фильтры</a>
+    <a class="case-navlink" href="#saved"><span class="case-navlink__num">05</span>Избранное</a>
+    <a class="case-navlink" href="#results"><span class="case-navlink__num">06</span>Результаты</a>
   </div>
 
   <main class="case">
     <a class="case-back text-button" href="../../index.html#works-gallery">
       <span class="icon icon--arrow-left" aria-hidden="true"></span>
-      Ко всем проектам
+      <span class="case-back__label">Ко всем проектам</span>
     </a>
 
     <!-- 01 · О проекте -->
@@ -1219,7 +1227,10 @@ body.case-page {
       });
     }
 
-    var SECTIONS = ['cover', 'role', 'context', 'nav', 'filters', 'saved', 'results'];
+    // Обложка (#cover) — не пункт навигации, но остаётся секцией на
+    // странице: рельс/кнопка «Содержание» просто скрыты, пока активного
+    // пункта ещё нет (см. idx=-1 в onScroll ниже).
+    var SECTIONS = ['role', 'context', 'nav', 'filters', 'saved', 'results'];
     var nodes = SECTIONS.map(function (id) { return document.getElementById(id); });
 
     var rail = document.getElementById('case-rail');
@@ -1240,12 +1251,14 @@ body.case-page {
       active = i;
       railLinks.forEach(function (a, k) { a.classList.toggle('is-active', k === i); });
       navLinks.forEach(function (a) {
-        a.classList.toggle('is-active', a.getAttribute('href') === '#' + SECTIONS[i]);
+        a.classList.toggle('is-active', i >= 0 && a.getAttribute('href') === '#' + SECTIONS[i]);
       });
-      if (rail) rail.classList.toggle('is-visible', i >= 1);
-      if (tocBtn) tocBtn.classList.toggle('is-visible', i >= 1);
+      // Рельс/«Содержание» появляются, как только страница ушла дальше
+      // обложки (i перестаёт быть -1) — сама обложка пунктом не считается.
+      if (rail) rail.classList.toggle('is-visible', i >= 0);
+      if (tocBtn) tocBtn.classList.toggle('is-visible', i >= 0);
 
-      var want = i === 0 ? '' : SECTIONS[i];
+      var want = i >= 0 ? SECTIONS[i] : '';
       if (want !== lastHash) {
         lastHash = want;
         try {
@@ -1256,7 +1269,7 @@ body.case-page {
 
     function onScroll() {
       var line = window.innerHeight * 0.35;
-      var idx = 0;
+      var idx = -1;
       for (var i = 0; i < nodes.length; i++) {
         if (nodes[i] && nodes[i].getBoundingClientRect().top - line <= 0) idx = i;
       }
