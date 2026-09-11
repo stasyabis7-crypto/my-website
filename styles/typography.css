@@ -21,9 +21,16 @@
 */
 
 :root {
-  /* --- Семейства шрифтов --- */
-  --font-family-heading: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-family-body: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* --- Семейства шрифтов ---
+     Те же две гарнитуры, что несёт заголовок/подзаголовок на главной
+     (см. --gd-serif/--gd-mono в hero-garden.css) — здесь заведены как
+     общесайтовые токены, чтобы все роли текста (кнопки, лейблы, кейсы
+     проектов и т.д.), а не только сад на главной, звучали одним и тем
+     же шрифтом. Начертания и unicode-range (кириллица включена) — в
+     fonts.css, подключать его нужно на каждой странице, где используются
+     эти роли. */
+  --font-family-heading: "Fraunces", "Times New Roman", Georgia, serif;
+  --font-family-body: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 
   /* --- Шкала размеров (база 390px = 16px root) ---
