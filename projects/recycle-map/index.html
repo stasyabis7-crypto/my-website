@@ -84,12 +84,127 @@ body.case-page {
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 2.5rem;
-  color: var(--color-text);
+  padding: 0.65rem 1.15rem 0.65rem 0.9rem;
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: var(--color-ink-contrast);
   text-decoration: none;
+  transition: opacity 0.25s ease;
 }
 .case-back .icon { width: 1rem; height: 1rem; background-color: currentColor; }
-@media (hover: hover) { .case-back:hover { color: var(--color-action-hover); } }
-.case-back:focus-visible { outline: 2px solid var(--color-action-hover); outline-offset: 4px; border-radius: 4px; }
+@media (hover: hover) { .case-back:hover { opacity: 0.82; } }
+.case-back:focus-visible { outline: 2px solid var(--color-action-hover); outline-offset: 3px; }
+
+/* ─── Соцсети — тот же ряд и поведение, что в хедере на главной ──── */
+
+.case-socials {
+  position: fixed;
+  top: var(--page-px, 10px);
+  right: var(--page-px, 10px);
+  z-index: 51;
+  display: flex;
+  align-items: center;
+  height: var(--header-h, 3.5rem);
+}
+@media (max-width: 899px) { .case-socials { display: none; } }
+
+.case-socials__list { display: flex; gap: clamp(4px, 0.5vw, 8px); margin: 0; padding: 0; list-style: none; }
+.case-socials__item { position: relative; display: flex; }
+.case-socials__item::before {
+  content: "";
+  position: absolute;
+  inset: 6%;
+  border-radius: 50%;
+  background: var(--color-bg);
+  transition: background-color 0.3s var(--button-hover-ease, ease);
+}
+@media (hover: hover) and (pointer: fine) { .case-socials__item:hover::before { background: #fff; } }
+
+.case-socials__link {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  width: var(--chrome-item-h, 3rem);
+  height: var(--chrome-item-h, 3rem);
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background: #fff;
+  transition: background-color 0.3s var(--button-hover-ease, ease);
+  -webkit-mask: var(--i) center / 100% 100% no-repeat;
+  mask: var(--i) center / 100% 100% no-repeat;
+}
+@media (hover: hover) and (pointer: fine) { .case-socials__link:hover { background: var(--color-action-hover); } }
+.case-socials__link:focus-visible { outline: 2px solid var(--color-action-hover); outline-offset: 3px; }
+
+.case-socials__copied {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: #101014;
+  color: #fff;
+  font-size: 0.72rem;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.case-socials__copied[hidden] { display: none; }
+
+/* ≤899 — одна круглая кнопка вместо ряда, тап открывает шторку. Не в
+   одном углу с хедером: тот на мобилке центрирован и на узких экранах
+   (360–414px) реально доходит почти до правого края — кнопка над ним
+   пересеклась бы. Ставим её ниже, под плашкой хедера. */
+.case-socials-toggle {
+  position: fixed;
+  top: calc(var(--page-px, 10px) + var(--header-h, 3.5rem) + 10px);
+  right: var(--page-px, 10px);
+  z-index: 51;
+  width: var(--chrome-item-h, 3rem);
+  height: var(--chrome-item-h, 3rem);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-ink);
+  color: var(--color-ink-contrast);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+}
+.case-socials-toggle .icon { width: 44%; height: 44%; background-color: currentColor; }
+.case-socials-toggle:focus-visible { outline: 2px solid var(--color-action-hover); outline-offset: 3px; }
+@media (max-width: 899px) { .case-socials-toggle { display: inline-flex; } }
+
+/* Строка соцсети внутри шторки (мобилка/планшет). */
+.case-social-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 0.85rem;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: var(--color-text);
+  text-decoration: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+@media (hover: hover) { .case-social-row:hover { background: var(--color-glass-alt); } }
+.case-social-row:focus-visible { outline: 2px solid var(--color-action-hover); outline-offset: -2px; }
+.case-social-row__ico {
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: #fff;
+  -webkit-mask: var(--i) center / 100% 100% no-repeat;
+  mask: var(--i) center / 100% 100% no-repeat;
+}
 
 .case-sec {
   padding-block: clamp(3.5rem, 10vw, 9rem);
@@ -390,8 +505,8 @@ body.case-page {
   letter-spacing: var(--letter-spacing-tight);
   white-space: nowrap;
 }
-.case-stat__unit { color: var(--color-text-muted); margin-left: 0.35rem; white-space: nowrap; }
-.case-stat__label { display: block; margin-top: 0.6rem; color: var(--color-text-muted); }
+.case-stat__unit { color: var(--color-text); margin-left: 0.35rem; white-space: nowrap; }
+.case-stat__label { display: block; margin-top: 0.6rem; color: var(--color-text); }
 .case-stats--big { margin-top: 1.5rem; }
 .case-stats--big .case-stat { background: none; padding: 1rem 0; }
 .case-stats--big .case-stat__value { font-size: clamp(2.25rem, 6.5vw, 3.5rem); }
@@ -564,7 +679,14 @@ body.case-page {
 
 @media (max-width: 1100px) { .case-rail { display: none; } }
 @media (min-width: 1101px) {
-  .case-progress, .case-toc-btn, .case-sheet, .case-sheet-backdrop { display: none !important; }
+  #case-progress, #case-toc-btn, #case-sheet, #case-sheet-backdrop { display: none !important; }
+}
+/* Шторка соцсетей — своя точка перелома (900px), общая с рядом иконок
+   выше, а не с брейкпоинтом навигации по разделам (1100px). Те же
+   классы .case-sheet/.case-sheet-backdrop переиспользованы для вида —
+   поэтому скрываем по id, а не по классу. */
+@media (min-width: 900px) {
+  #case-socials-sheet, #case-socials-sheet-backdrop { display: none !important; }
 }
 
 /* ─── Появление на скролле ───────────────────────────────────────── */
@@ -620,6 +742,34 @@ body.case-page {
     </a>
   </header>
 
+  <!-- Соцсети — ≥900: плавающий ряд справа, как на главной. ≤899: одна
+       круглая кнопка в том же углу, тап открывает шторку (см. скрипт). -->
+  <div class="case-socials" id="case-socials">
+    <ul class="case-socials__list">
+      <li class="case-socials__item"><a class="case-socials__link" style="--i:url('/assets/socials/Telegram.svg')" href="https://t.me/stasyabis" target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram"></a></li>
+      <li class="case-socials__item"><button type="button" class="case-socials__link" style="--i:url('/assets/socials/Google.svg')" data-copy="stasyabis7@gmail.com" aria-label="Скопировать почту"></button></li>
+      <li class="case-socials__item"><a class="case-socials__link" style="--i:url('/assets/socials/Dribbble.svg')" href="https://dribbble.com/Stasyabis" target="_blank" rel="noopener noreferrer" aria-label="Dribbble"></a></li>
+      <li class="case-socials__item"><a class="case-socials__link" style="--i:url('/assets/socials/Figma.svg')" href="https://www.figma.com/@stasyabis" target="_blank" rel="noopener noreferrer" aria-label="Figma community"></a></li>
+      <li class="case-socials__item"><a class="case-socials__link" style="--i:url('/assets/socials/Medium.svg')" href="https://medium.com/@stasyabis" target="_blank" rel="noopener noreferrer" aria-label="Medium"></a></li>
+      <li class="case-socials__item"><a class="case-socials__link" style="--i:url('/assets/socials/Habr.svg')" href="https://habr.com/ru/users/stasyabis/" target="_blank" rel="noopener noreferrer" aria-label="Habr"></a></li>
+    </ul>
+    <span class="case-socials__copied" id="case-socials-copied" hidden>Почта скопирована</span>
+  </div>
+  <button type="button" class="case-socials-toggle" id="case-socials-toggle" aria-haspopup="dialog" aria-controls="case-socials-sheet" aria-expanded="false" aria-label="Соцсети">
+    <span class="icon icon--contacts" aria-hidden="true"></span>
+  </button>
+  <div class="case-sheet-backdrop" id="case-socials-sheet-backdrop" hidden></div>
+  <div class="case-sheet" id="case-socials-sheet" role="dialog" aria-label="Соцсети" hidden>
+    <div class="case-sheet__grip" aria-hidden="true"></div>
+    <p class="case-sheet__title text-overline">Связаться</p>
+    <a class="case-social-row" href="https://t.me/stasyabis" target="_blank" rel="noopener noreferrer"><span class="case-social-row__ico" style="--i:url('/assets/socials/Telegram.svg')"></span>Написать в Telegram</a>
+    <button type="button" class="case-social-row" data-copy="stasyabis7@gmail.com"><span class="case-social-row__ico" style="--i:url('/assets/socials/Google.svg')"></span><span data-label>Написать на почту</span></button>
+    <a class="case-social-row" href="https://dribbble.com/Stasyabis" target="_blank" rel="noopener noreferrer"><span class="case-social-row__ico" style="--i:url('/assets/socials/Dribbble.svg')"></span>Dribbble</a>
+    <a class="case-social-row" href="https://www.figma.com/@stasyabis" target="_blank" rel="noopener noreferrer"><span class="case-social-row__ico" style="--i:url('/assets/socials/Figma.svg')"></span>Figma community</a>
+    <a class="case-social-row" href="https://medium.com/@stasyabis" target="_blank" rel="noopener noreferrer"><span class="case-social-row__ico" style="--i:url('/assets/socials/Medium.svg')"></span>Medium</a>
+    <a class="case-social-row" href="https://habr.com/ru/users/stasyabis/" target="_blank" rel="noopener noreferrer"><span class="case-social-row__ico" style="--i:url('/assets/socials/Habr.svg')"></span>Habr</a>
+  </div>
+
   <div class="case-progress" id="case-progress" aria-hidden="true"></div>
 
   <nav class="case-rail" id="case-rail" aria-label="Разделы кейса">
@@ -659,23 +809,21 @@ body.case-page {
 
     <!-- 01 · О проекте -->
     <section class="case-sec" id="cover">
-      <p class="text-overline reveal" style="color: var(--color-action-hover)">Кейс · Авито ESG</p>
       <h1 class="text-display reveal">Карта раздельного сбора</h1>
-      <p class="text-h3 reveal" style="color: var(--color-text-muted); margin-top: var(--space-stack-heading-heading)">Найти пункт приёма, а не искать его</p>
-      <p class="text-body-sm reveal" style="margin-top: 1.25rem">Авито ESG · Product Designer · Web и Mobile · 2025</p>
+      <p class="text-body-lg reveal">Найти пункт приёма, а не искать его</p>
 
       <div class="case-stats reveal-group">
         <div class="case-stat">
-          <span class="case-stat__value" data-count="306">306</span><span class="case-stat__unit">тыс.</span>
-          <span class="case-stat__label">загрузок точек</span>
+          <span class="case-stat__value" data-count="306">306</span><span class="case-stat__unit">K</span>
+          <span class="case-stat__label">Загрузок точек</span>
         </div>
         <div class="case-stat">
-          <span class="case-stat__value">1,5–3</span><span class="case-stat__unit">тыс.</span>
-          <span class="case-stat__label">открытий в день</span>
+          <span class="case-stat__value">1,5–3</span><span class="case-stat__unit">K</span>
+          <span class="case-stat__label">Открытий в день</span>
         </div>
         <div class="case-stat">
           <span class="case-stat__value">до <span data-count="70">70</span></span>
-          <span class="case-stat__label">сохранений в день</span>
+          <span class="case-stat__label">Сохранений в день</span>
         </div>
       </div>
 
@@ -897,15 +1045,15 @@ body.case-page {
       <div class="case-stats case-stats--big reveal-group">
         <div class="case-stat">
           <span class="case-stat__value">до <span data-count="70">70</span></span>
-          <span class="case-stat__label">сохранений в день — функциональности раньше не было вовсе</span>
+          <span class="case-stat__label">Сохранений в день — функциональности раньше не было вовсе</span>
         </div>
         <div class="case-stat">
-          <span class="case-stat__value">1,5–15</span><span class="case-stat__unit">тыс.</span>
-          <span class="case-stat__label">открытий в день, верх — в промопериоды</span>
+          <span class="case-stat__value">1,5–15</span><span class="case-stat__unit">K</span>
+          <span class="case-stat__label">Открытий в день, верх — в промопериоды</span>
         </div>
         <div class="case-stat">
-          <span class="case-stat__value" data-count="306">306</span><span class="case-stat__unit">тыс.</span>
-          <span class="case-stat__label">загрузок точек на карте</span>
+          <span class="case-stat__value" data-count="306">306</span><span class="case-stat__unit">K</span>
+          <span class="case-stat__label">Загрузок точек на карте</span>
         </div>
       </div>
 
@@ -1092,6 +1240,86 @@ body.case-page {
         closeSheet();
       });
     });
+
+    // ── Соцсети: копирование почты (desktop) + шторка (≤899) ──
+    (function socials() {
+      var EMAIL = 'stasyabis7@gmail.com';
+      var copiedToast = document.getElementById('case-socials-copied');
+      var socialsToggle = document.getElementById('case-socials-toggle');
+      var socialsSheet = document.getElementById('case-socials-sheet');
+      var socialsBackdrop = document.getElementById('case-socials-sheet-backdrop');
+
+      function copyText(text, done) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, function () {});
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;opacity:0;pointer-events:none';
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); done(); } catch (e) {}
+          document.body.removeChild(ta);
+        }
+      }
+
+      // Ряд иконок (≥900) — копирование почты с тостом рядом.
+      document.querySelectorAll('.case-socials [data-copy]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          copyText(btn.getAttribute('data-copy'), function () {
+            if (!copiedToast) return;
+            copiedToast.hidden = false;
+            clearTimeout(copiedToast._t);
+            copiedToast._t = setTimeout(function () { copiedToast.hidden = true; }, 1600);
+          });
+        });
+      });
+
+      // Шторка (≤899).
+      function openSocialsSheet() {
+        if (!socialsSheet) return;
+        socialsBackdrop.hidden = false; socialsSheet.hidden = false;
+        if (socialsToggle) socialsToggle.setAttribute('aria-expanded', 'true');
+        requestAnimationFrame(function () {
+          socialsBackdrop.classList.add('is-open'); socialsSheet.classList.add('is-open');
+        });
+      }
+      function closeSocialsSheet() {
+        if (!socialsSheet || socialsSheet.hidden) return;
+        socialsBackdrop.classList.remove('is-open'); socialsSheet.classList.remove('is-open');
+        if (socialsToggle) socialsToggle.setAttribute('aria-expanded', 'false');
+        window.setTimeout(function () {
+          if (!socialsSheet.classList.contains('is-open')) { socialsSheet.hidden = true; socialsBackdrop.hidden = true; }
+        }, reduce ? 0 : 360);
+      }
+      if (socialsToggle) socialsToggle.addEventListener('click', function () {
+        if (socialsSheet.hidden) openSocialsSheet(); else closeSocialsSheet();
+      });
+      if (socialsBackdrop) socialsBackdrop.addEventListener('click', closeSocialsSheet);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSocialsSheet(); });
+
+      // Пункт «Написать на почту» внутри шторки — копирует, не закрывая её.
+      var mailRow = socialsSheet && socialsSheet.querySelector('[data-copy]');
+      if (mailRow) {
+        var label = mailRow.querySelector('[data-label]');
+        mailRow.addEventListener('click', function () {
+          copyText(EMAIL, function () {
+            if (!label) return;
+            var original = label.textContent;
+            label.textContent = 'Почта скопирована';
+            clearTimeout(mailRow._t);
+            mailRow._t = setTimeout(function () { label.textContent = original; }, 1800);
+          });
+        });
+      }
+      // Остальные ссылки в шторке — просто закрывают её после перехода.
+      if (socialsSheet) {
+        socialsSheet.querySelectorAll('a.case-social-row').forEach(function (a) {
+          a.addEventListener('click', function () { setTimeout(closeSocialsSheet, 60); });
+        });
+      }
+    })();
 
     // ── Появление блоков ──
     var revealEls = [].slice.call(document.querySelectorAll('.reveal, .reveal-group'));
