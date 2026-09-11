@@ -79,7 +79,20 @@ body.case-page {
   }
 }
 
+/* Тот же приём заливки, что у розовых кнопок сайта (см. ::before в
+   button-hover.css) — круг растёт из точки входа курсора и целиком
+   закрашивает кнопку. Отличие только одно: те кнопки уже розовые и
+   стеклянные, поэтому у них заливка сидит НИЖЕ (z-index:-1) и только
+   подсвечивает края; эта кнопка сплошная белая, поэтому заливка идёт
+   НАД фоном (обычный порядок псевдоэлемента, без z-index), а текст —
+   ещё выше, чтобы оставался читаемым. --hover-x/--hover-y здесь свои
+   (общий трекер в layout-chrome.js обслуживает только фиксированный
+   список кнопок хедера/футера, эту сюда не добавляем — см. скрипт
+   внизу страницы). */
 .case-back {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -89,17 +102,47 @@ body.case-page {
   background: var(--color-ink);
   color: var(--color-ink-contrast);
   text-decoration: none;
+  --hover-x: 50%;
+  --hover-y: 50%;
   /* scale — тот же press-feedback на :active, что у любой ссылки/кнопки
      сайта (см. общее правило в button-hover.css); шорткод transition
      переопределяет ВСЕ подсвойства сразу, поэтому scale перечислен
      здесь явно, а не только color — иначе он молча пропадает. */
   transition: scale var(--button-press-duration, 0.12s) ease-out, color 0.3s ease;
 }
-.case-back .icon { width: 1rem; height: 1rem; background-color: currentColor; }
-/* Тот же приём, что у остальных ссылок кейса (рельс, шторка): просто
-   уходит в розовый на ховере — без своей отдельной анимации. */
-@media (hover: hover) { .case-back:hover { color: var(--color-action-hover); } }
-.case-back:focus-visible { outline: 2px solid var(--color-action-hover); outline-offset: 3px; }
+.case-back .icon {
+  position: relative;
+  z-index: 1;
+  width: 1rem;
+  height: 1rem;
+  background-color: currentColor;
+}
+.case-back::before {
+  content: "";
+  position: absolute;
+  left: var(--hover-x);
+  top: var(--hover-y);
+  width: 300%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-action-hover);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform var(--button-hover-duration, 0.5s) var(--button-hover-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+  pointer-events: none;
+}
+.case-back:focus-visible {
+  outline: 2px solid var(--color-action-hover);
+  outline-offset: 3px;
+  color: var(--color-action-hover-text);
+}
+.case-back:focus-visible::before { transform: translate(-50%, -50%) scale(1.08); }
+@media (hover: hover) {
+  .case-back:hover { color: var(--color-action-hover-text); }
+  .case-back:hover::before { transform: translate(-50%, -50%) scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .case-back, .case-back::before { transition-duration: 0.01ms; }
+}
 
 /* ─── Соцсети — тот же ряд и поведение, что в хедере на главной ──── */
 
@@ -1157,6 +1200,24 @@ body.case-page {
   */
   (function () {
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Точка входа курсора для розовой заливки «Ко всем проектам» — та
+    // же логика, что в layout-chrome.js для кнопок хедера/футера
+    // (hoverControls), только своя копия: общий трекер там обслуживает
+    // фиксированный список чужих селекторов, эту кнопку в него не
+    // добавляем (см. styles/layout-chrome.js).
+    var backBtn = document.querySelector('.case-back');
+    if (backBtn) {
+      backBtn.addEventListener('pointerenter', function (event) {
+        var rect = backBtn.getBoundingClientRect();
+        backBtn.style.setProperty('--hover-x', event.clientX - rect.left + 'px');
+        backBtn.style.setProperty('--hover-y', event.clientY - rect.top + 'px');
+      });
+      backBtn.addEventListener('focus', function () {
+        backBtn.style.setProperty('--hover-x', '50%');
+        backBtn.style.setProperty('--hover-y', '50%');
+      });
+    }
 
     var SECTIONS = ['cover', 'role', 'context', 'nav', 'filters', 'saved', 'results'];
     var nodes = SECTIONS.map(function (id) { return document.getElementById(id); });
