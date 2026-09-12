@@ -1,0 +1,109 @@
+/*
+  Кейсы — реестр переиспользуемых блоков-компонентов для описания
+  проектов (страницы projects/<slug>/). Пока в процессе визуального
+  подбора — новый блок/вариант добавляется сюда, а не в <style>
+  конкретной страницы, чтобы все кейсы собирались из одного набора.
+
+  Шрифт/цвет текста берём из токенов typography.css (не изобретаем
+  новых), но вертикальные отступы внутри блоков — фиксированные px по
+  ТЗ, поэтому у заголовка/подзаголовка явно переопределён автоматический
+  межролевой margin-top из typography.css (см. .case-cover__subtitle
+  ниже — тот же приоритет правила, побеждает подключением ПОСЛЕ
+  typography.css).
+
+  ─── .case-tag — тег/чип (не кнопка, см. правило в buttons.css) ───────
+  Тёмная пилюля-лейбл, высота 44px, ширина по контенту (паддинг 20px по
+  бокам). .case-tag--logo — модификатор под лого компании: картинка
+  внутри масштабируется пропорционально по высоте тега.
+
+  ─── .case-cover — блок обложки кейса ──────────────────────────────────
+  Теги → 16px → заголовок → 8px → подзаголовок → 32px → медиа (горизон-
+  тальная фотка, как «большая» карточка на Главной — aspect-ratio из
+  works-grid.css). Мобилка (≤640px, тот же порог, что у works-grid): фото
+  не горизонтальное, а натуральных пропорций (высота по фото, ширина по
+  сетке). Дальше (когда появятся карточки) — 16px → .case-cover__metrics,
+  блок опциональный, показывается не в каждом кейсе.
+*/
+
+.case-tag {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding-inline: 20px;
+  border-radius: 999px;
+  background: #252525;
+  color: #fff;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-text);
+  line-height: 1;
+  letter-spacing: var(--letter-spacing-text);
+  font-weight: var(--font-weight-regular);
+  white-space: nowrap;
+}
+
+.case-tag--logo {
+  padding-block: 8px;
+}
+
+.case-tag--logo img {
+  display: block;
+  height: 100%;
+  width: auto;
+}
+
+.case-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.case-cover__title {
+  margin-top: 16px;
+}
+
+/* Специфичность (2 класса) намеренно равна typography.css-правилу
+   `.text-h1 + .text-body-lg` (0.55em) — побеждает порядком подключения
+   (case-blocks.css идёт после typography.css в <head>). */
+.case-cover__subtitle.text-body-lg {
+  margin-top: 8px;
+}
+
+.case-cover__media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1852 / 1158;
+  overflow: hidden;
+  border-radius: var(--wg-radius, 28px);
+  background: var(--color-surface-alt);
+  margin-top: 32px;
+}
+
+.case-cover__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 640px) {
+  .case-cover__media {
+    aspect-ratio: auto;
+  }
+
+  .case-cover__media img {
+    height: auto;
+  }
+}
+
+/* Блок метрик — опциональный, не в каждом кейсе. Карточки внутри пока
+   не делаем (разные наборы под разные кейсы, соберём позже) — здесь
+   только отступ до блока на случай, если он есть. */
+.case-cover__metrics {
+  margin-top: 16px;
+}

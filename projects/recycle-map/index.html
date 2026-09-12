@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="../../styles/buttons.css?v=2" />
 <link rel="stylesheet" href="../../styles/works-grid.css?v=11" />
 <link rel="stylesheet" href="../../styles/fonts.css?v=2" />
+<link rel="stylesheet" href="../../styles/case-blocks.css?v=1" />
 
 <style>
 /*
@@ -114,7 +115,28 @@ body {
 
   <main class="case">
     <div class="case__blocks">
-      <!-- Блоки контента кейса добавятся сюда -->
+
+      <!-- Обложка — компонент .case-cover (styles/case-blocks.css).
+           Логотип и фото обложки — временные заглушки, заменить на
+           реальные ассеты проекта. -->
+      <section class="case-block case-cover">
+        <ul class="case-tags">
+          <li class="case-tag case-tag--logo">
+            <img src="../../assets/logo.svg" alt="Название компании — заглушка" />
+          </li>
+          <li class="case-tag">Web</li>
+          <li class="case-tag">Mobile</li>
+          <li class="case-tag">2024</li>
+        </ul>
+
+        <h1 class="case-cover__title text-h1">Карта раздельного сбора</h1>
+        <p class="case-cover__subtitle text-body-lg">Подзаголовок кейса — короткое описание проекта, заглушка на время подбора компонентов.</p>
+
+        <div class="case-cover__media">
+          <img src="../../assets/placeholder/case-cover.svg" alt="" />
+        </div>
+      </section>
+
     </div>
   </main>
 
