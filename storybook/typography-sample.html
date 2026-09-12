@@ -6,6 +6,7 @@
 <title>Typography sample</title>
 <link rel="stylesheet" href="../styles/scale.css" />
 <link rel="stylesheet" href="../styles/typography.css" />
+<link rel="stylesheet" href="../styles/fonts.css" />
 <style>
   body {
     margin: 0;
@@ -129,33 +130,33 @@
   <div class="live-root-size" id="root-size">html font-size: —</div>
 
   <p class="page-heading">Типографика — библиотека ролей</p>
-  <p class="page-sub">Стандартный системный шрифт. Body/caption/label растут вместе с шириной вьюпорта (390–950px) и дальше зафиксированы — не раздуваются на десктопе. Заголовки и Display продолжают расти явными шагами на 1101px и 1441px.</p>
+  <p class="page-sub">Body/label растут вместе с шириной вьюпорта (390–950px) и дальше зафиксированы — не раздуваются на десктопе. Заголовки и Display продолжают расти явными шагами на 1101px и 1441px.</p>
 
   <section class="sample-group">
     <h2 class="sample-group__title">Заголовки</h2>
 
     <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-display-lg</b>--font-size-4xl · bold · 1.1</div>
+      <div class="sample-row__meta"><b>.text-display-lg</b>--font-size-4xl · тот же шрифт, что у H1 (см. ниже), только крупнее</div>
       <div class="sample-row__text text-display-lg">Вы искали продуктового дизайнера</div>
     </div>
     <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-display</b>--font-size-3xl · bold · 1.1</div>
+      <div class="sample-row__meta"><b>.text-display</b>--font-size-3xl · тот же шрифт, что у H1</div>
       <div class="sample-row__text text-display">Вы искали продуктового дизайнера</div>
     </div>
     <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-h1</b>--font-size-2xl · semibold · 1.1</div>
+      <div class="sample-row__meta"><b>.text-h1</b>--font-size-2xl · Alice, regular (единственное начертание) · 1.04</div>
       <div class="sample-row__text text-h1">Заголовок первого уровня</div>
     </div>
     <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-h2</b>--font-size-xl · semibold · 1.25</div>
+      <div class="sample-row__meta"><b>.text-h2</b>--font-size-xl · тот же шрифт, что у H1, меньше размером</div>
       <div class="sample-row__text text-h2">Заголовок второго уровня</div>
     </div>
     <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-h3</b>--font-size-lg · semibold · 1.25</div>
+      <div class="sample-row__meta"><b>.text-h3</b>--font-size-lg · тот же шрифт, что у H1, меньше размером</div>
       <div class="sample-row__text text-h3">Заголовок третьего уровня</div>
     </div>
     <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-h4</b>--font-size-md · semibold · 1.25</div>
+      <div class="sample-row__meta"><b>.text-h4</b>--font-size-md · тот же шрифт, что у H1, меньше размером</div>
       <div class="sample-row__text text-h4">Заголовок четвёртого уровня</div>
     </div>
   </section>
@@ -164,24 +165,16 @@
     <h2 class="sample-group__title">Текст</h2>
 
     <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-body-lg</b>--font-size-md · regular · 1.5</div>
+      <div class="sample-row__meta"><b>.text-body-lg</b>один стиль с .text-body/.text-body-sm (снят с подзаголовка Главной), отличается только max-width</div>
       <div class="sample-row__text text-body-lg">Крупный body-текст — вступление, лид-абзац, важное пояснение под заголовком.</div>
     </div>
     <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-body</b>--font-size-base · regular · 1.5</div>
+      <div class="sample-row__meta"><b>.text-body</b>--font-size-text · regular · 1.42 · снят с подзаголовка Главной</div>
       <div class="sample-row__text text-body">Обычный текст интерфейса и абзацев — базовый размер шкалы, 1rem.</div>
     </div>
     <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-body-sm</b>--font-size-sm · regular · 1.5</div>
+      <div class="sample-row__meta"><b>.text-body-sm</b>один стиль с .text-body/.text-body-lg, отличается только max-width</div>
       <div class="sample-row__text text-body-sm">Мелкий body-текст — вторичные описания, подписи под контролами.</div>
-    </div>
-    <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-caption</b>--font-size-2xs · regular · 1.3</div>
-      <div class="sample-row__text text-caption">Caption — подпись к карточке, метаданные, таймстемп.</div>
-    </div>
-    <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-micro</b>--font-size-3xs · regular · 1.3</div>
-      <div class="sample-row__text text-micro">Micro — самые мелкие лейблы (напр. подписи BottomNav).</div>
     </div>
   </section>
 
@@ -197,16 +190,8 @@
       <div class="sample-row__text text-overline">Категория проекта</div>
     </div>
     <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-button</b>--font-size-sm · semibold · 1.3</div>
+      <div class="sample-row__meta"><b>.text-button</b>--font-size-text · semibold · снят с кнопок Главной, один для любой кнопки</div>
       <div class="sample-row__text text-button">Смотреть проект</div>
-    </div>
-    <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-link</b>--font-size-base · medium · underline</div>
-      <div class="sample-row__text text-link">Ссылка на резюме PDF</div>
-    </div>
-    <div class="sample-row">
-      <div class="sample-row__meta"><b>.text-code</b>--font-size-sm · mono</div>
-      <div class="sample-row__text text-code">--font-size-base: 1rem;</div>
     </div>
   </section>
 

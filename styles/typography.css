@@ -22,16 +22,35 @@
 
 :root {
   /* --- Семейства шрифтов ---
-     Те же две гарнитуры, что несёт заголовок/подзаголовок на главной
-     (см. --gd-serif/--gd-mono в hero-garden.css) — здесь заведены как
-     общесайтовые токены, чтобы все роли текста (кнопки, лейблы, кейсы
-     проектов и т.д.), а не только сад на главной, звучали одним и тем
-     же шрифтом. Начертания и unicode-range (кириллица включена) — в
-     fonts.css, подключать его нужно на каждой странице, где используются
-     эти роли. */
-  --font-family-heading: "Fraunces", "Times New Roman", Georgia, serif;
+     Body — та же гарнитура, что несёт подзаголовок на главной (см.
+     --gd-mono в hero-garden.css), заведена как общесайтовый токен.
+     Heading — Alice, НЕ Fraunces: у Fraunces на Google Fonts нет
+     кириллического набора вообще (только vietnamese/latin-ext/latin,
+     проверено 2026-09-12) — кириллические заголовки молча откатывались
+     на фолбэк (Georgia/Times New Roman) вместо самого шрифта. Alice
+     кириллицу несёт полноценно (см. fonts.css). H1 Главной
+     (.garden__title, --gd-serif в hero-garden.css) на Fraunces
+     остаётся — там текст латиницей, эту замену не трогает, свой
+     отдельный токен. Начертания и unicode-range — в fonts.css,
+     подключать его нужно на каждой странице, где используются эти роли. */
+  --font-family-heading: "Alice", "Times New Roman", Georgia, serif;
   --font-family-body: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  /* --- Заголовки: один и тот же шрифт на всех уровнях — отличается
+     только font-size (см. --font-size-* ниже), family/вес/интерлиньяж
+     одни на всех: Display/H1/H2/H3/H4. Вес — regular: у Alice нет
+     жирного начертания вообще (единственный вариант — 400), псевдо-
+     жирный синтез браузера сознательно не используем. Трекинг — 0. */
+  --letter-spacing-heading: 0;
+  --line-height-heading: 1.04;
+
+  /* --- Обычный текст и кнопки: один размер/интерлиньяж/трекинг на весь
+     сайт, снят с подзаголовка Главной (.garden__subtitle) — кнопки
+     дополнительно берут тот же трекинг (.garden__cta использует его же). */
+  --font-size-text: clamp(0.9rem, 1.35vw, 1.06rem);
+  --line-height-text: 1.42;
+  --letter-spacing-text: -0.03em;
 
   /* --- Шкала размеров (база 390px = 16px root) ---
      Значения в rem: 1rem = текущий font-size html (см. scale.css). Шаг
@@ -56,14 +75,15 @@
 
   /* --- Межстрочные интервалы (unitless-множители — сами масштабируются
      вместе с font-size, отдельно на брейкпоинты подстраивать не нужно) --- */
-  --line-height-tight: 1.1;    /* крупные display/H1 */
-  --line-height-heading: 1.25; /* H2–H4 */
   --line-height-default: 1.3;  /* короткие UI-строки (кнопки, лейблы) */
   --line-height-body: 1.5;     /* длинный текст-абзац */
 
-  /* --- Трекинг --- */
-  --letter-spacing-tight: -0.01em;   /* крупные заголовки */
-  --letter-spacing-tighter: -0.02em; /* display на очень крупных размерах (1101+) */
+  /* --- Трекинг ---
+     Заголовочные роли (Display/H1–H4) используют --letter-spacing-heading
+     выше, эти два — не для ролей, только для крупных декоративных цифр
+     на страницах кейсов (.case-head__num/.case-stat__value и т.п.). */
+  --letter-spacing-tight: -0.01em;
+  --letter-spacing-tighter: -0.02em;
   --letter-spacing-normal: 0;
   --letter-spacing-wide: 0.04em;     /* overline/лейблы КАПСОМ */
 
@@ -92,11 +112,15 @@
 */
 @media (min-width: 1101px) {
   :root {
-    --font-size-lg: 2rem;      /* 32px — H3 */
-    --font-size-xl: 2.5rem;    /* 40px — H2 */
-    --font-size-2xl: 3.25rem;  /* 52px — H1 */
-    --font-size-3xl: 4.25rem;  /* 68px — Display */
-    --font-size-4xl: 5.25rem;  /* 84px — Display large */
+    /* px, не rem: root к этой ширине уже заморожен на ~21.47px (см.
+       scale.css), а не на 16px — те же значения в rem (2rem и т.д.)
+       рендерились почти на 35% крупнее, чем задумано (найдено и
+       исправлено 2026-09-12, см. память project_typography_unification). */
+    --font-size-lg: 32px;      /* H3 */
+    --font-size-xl: 40px;      /* H2 */
+    --font-size-2xl: 52px;     /* H1 */
+    --font-size-3xl: 68px;     /* Display */
+    --font-size-4xl: 84px;     /* Display large */
   }
 }
 
@@ -106,11 +130,11 @@
    по-прежнему не зависит нигде. */
 @media (min-width: 1441px) {
   :root {
-    --font-size-lg: 2.125rem;  /* 34px — H3 */
-    --font-size-xl: 2.75rem;   /* 44px — H2 */
-    --font-size-2xl: 3.625rem; /* 58px — H1 */
-    --font-size-3xl: 4.75rem;  /* 76px — Display */
-    --font-size-4xl: 6rem;     /* 96px — Display large */
+    --font-size-lg: 34px;      /* H3 */
+    --font-size-xl: 44px;      /* H2 */
+    --font-size-2xl: 58px;     /* H1 */
+    --font-size-3xl: 76px;     /* Display */
+    --font-size-4xl: 96px;     /* Display large */
   }
 }
 
@@ -127,98 +151,67 @@ body {
    вешать на любой элемент (div/span/h1/p), верстая по BEM-компонентам,
    как в остальном проекте. */
 
-.text-display-lg {
+.text-display-lg,
+.text-display,
+.text-h1,
+.text-h2,
+.text-h3,
+.text-h4 {
   font-family: var(--font-family-heading);
-  font-size: var(--font-size-4xl);
-  line-height: var(--line-height-tight);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-heading);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-heading);
   margin: 0;
+}
+
+.text-display-lg {
+  font-size: var(--font-size-4xl);
 }
 
 .text-display {
-  font-family: var(--font-family-heading);
   font-size: var(--font-size-3xl);
-  line-height: var(--line-height-tight);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: var(--letter-spacing-tight);
-  margin: 0;
 }
 
 .text-h1 {
-  font-family: var(--font-family-heading);
   font-size: var(--font-size-2xl);
-  line-height: var(--line-height-tight);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: var(--letter-spacing-tight);
-  margin: 0;
 }
 
 .text-h2 {
-  font-family: var(--font-family-heading);
   font-size: var(--font-size-xl);
-  line-height: var(--line-height-heading);
-  font-weight: var(--font-weight-semibold);
-  margin: 0;
 }
 
 .text-h3 {
-  font-family: var(--font-family-heading);
   font-size: var(--font-size-lg);
-  line-height: var(--line-height-heading);
-  font-weight: var(--font-weight-semibold);
-  margin: 0;
 }
 
 .text-h4 {
-  font-family: var(--font-family-heading);
   font-size: var(--font-size-md);
-  line-height: var(--line-height-heading);
-  font-weight: var(--font-weight-semibold);
+}
+
+/* Обычный текст сайта — один стиль на всех ролях (подзаголовок Главной),
+   .text-body-lg/.text-body-sm остаются отдельными классами только ради
+   max-width (длина строки), не ради другого шрифта/размера. */
+.text-body-lg,
+.text-body,
+.text-body-sm {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-text);
+  line-height: var(--line-height-text);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-text);
   margin: 0;
 }
 
 .text-body-lg {
-  font-family: var(--font-family-body);
-  font-size: var(--font-size-md);
-  line-height: var(--line-height-body);
-  font-weight: var(--font-weight-regular);
   max-width: var(--measure-body-lg);
-  margin: 0;
 }
 
 .text-body {
-  font-family: var(--font-family-body);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-body);
-  font-weight: var(--font-weight-regular);
   max-width: var(--measure-body);
-  margin: 0;
 }
 
 .text-body-sm {
-  font-family: var(--font-family-body);
-  font-size: var(--font-size-sm);
-  line-height: var(--line-height-body);
-  font-weight: var(--font-weight-regular);
   max-width: var(--measure-body-sm);
-  margin: 0;
-}
-
-.text-caption {
-  font-family: var(--font-family-body);
-  font-size: var(--font-size-2xs);
-  line-height: var(--line-height-default);
-  font-weight: var(--font-weight-regular);
-  margin: 0;
-}
-
-.text-micro {
-  font-family: var(--font-family-body);
-  font-size: var(--font-size-3xs);
-  line-height: var(--line-height-default);
-  font-weight: var(--font-weight-regular);
-  margin: 0;
 }
 
 .text-label {
@@ -237,37 +230,15 @@ body {
   text-transform: uppercase;
 }
 
+/* Текст кнопок — один и тот же на любой кнопке сайта (большой или
+   маленькой), снят с кнопок Главной (.garden__cta): та же пара
+   размер/трекинг, что и у обычного текста, только полужирный. */
 .text-button {
   font-family: var(--font-family-body);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-text);
   line-height: var(--line-height-default);
   font-weight: var(--font-weight-semibold);
-}
-
-.text-link {
-  font-family: var(--font-family-body);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-body);
-  font-weight: var(--font-weight-medium);
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
-}
-
-.text-code {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-sm);
-  line-height: var(--line-height-body);
-  font-weight: var(--font-weight-regular);
-}
-
-/* На крупных display-размерах (1101+, см. шаги выше) трекинг слегка
-   поджимается дополнительно — оптически крупные буквы кажутся более
-   разреженными, чем тот же -0.01em на мобильном размере. */
-@media (min-width: 1101px) {
-  .text-display-lg,
-  .text-display {
-    letter-spacing: var(--letter-spacing-tighter);
-  }
+  letter-spacing: var(--letter-spacing-text);
 }
 
 /*
@@ -283,9 +254,9 @@ body {
      свободнее, но всё ещё явно "принадлежит" заголовку сверху.
   3) Текст → текст (Body/Body-lg/Body-sm вперемешку) — обычный ритм
      абзацев.
-  4) Текст (или caption/micro) → новый заголовок — начало новой секции,
-     самый большой отступ: заголовок явно отделяется от предыдущего блока
-     и группируется с тем, что идёт ПОСЛЕ него (см. случаи 1–2 выше).
+  4) Текст → новый заголовок — начало новой секции, самый большой отступ:
+     заголовок явно отделяется от предыдущего блока и группируется с тем,
+     что идёт ПОСЛЕ него (см. случаи 1–2 выше).
 
   Первый элемент в контейнере — без отступа сверху (см. :first-child в
   конце), чтобы не было лишнего воздуха у самого начала блока.
@@ -329,14 +300,14 @@ body {
   margin-top: var(--space-stack-paragraph);
 }
 
-:is(.text-body-lg, .text-body, .text-body-sm, .text-caption, .text-micro)
+:is(.text-body-lg, .text-body, .text-body-sm)
   + :is(.text-display-lg, .text-display, .text-h1, .text-h2, .text-h3, .text-h4) {
   margin-top: var(--space-stack-section);
 }
 
 :is(
   .text-display-lg, .text-display, .text-h1, .text-h2, .text-h3, .text-h4,
-  .text-body-lg, .text-body, .text-body-sm, .text-caption, .text-micro
+  .text-body-lg, .text-body, .text-body-sm
 ):first-child {
   margin-top: 0;
 }

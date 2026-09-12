@@ -1,0 +1,241 @@
+/*
+  ДС — Кнопки. Единый источник правды для типов/состояний кнопок сайта.
+
+  ПРАВИЛО (жёсткое, без исключений): ЛЮБАЯ новая кнопка на сайте берёт
+  вид ТОЛЬКО отсюда — класс .btn + один --fill-* и (опционально) один
+  --icon-*. Свой цвет/ховер/заливку/transition для кнопки в другом
+  файле или в <style> страницы — ЗАПРЕЩЕНО, даже "только на этой одной
+  странице" и даже "чуть-чуть иначе". Нужного типа нет — новый тип
+  добавляется СЮДА (новый .btn--fill-*/--icon-*), а не рядом с местом
+  использования.
+
+  Единственное, что стилями кнопки не является и правилом не
+  ограничено — расположение самой кнопки на странице (позиционирование,
+  отступы, ширина контейнера и т.п.), это по-прежнему живёт в файле
+  страницы/секции.
+
+  ГРАНИЦА КЛАССА: .btn — это ТОЛЬКО кликабельный контрол-действие
+  (<button>, <a href> в роли действия, [role="button"]). Тег/бейдж/
+  лейбл/чип/пилюля-статус и любой другой некликабельный или не
+  вызывающий действие элемент — НЕ кнопка, даже если внешне похож
+  (скругление 999px, паддинг, т.п.): для него свой отдельный класс
+  (например .tag/.badge — заводится по факту первой необходимости,
+  вне этого файла), .btn на него не вешать. И наоборот: если элемент
+  кликабелен и запускает действие — это .btn, отдельный "почти как
+  кнопка" класс под него заводить нельзя.
+
+  Ничего из существующей разметки Главной этот файл не трогает и не
+  переопределяет — .garden__cta, .site-header__cta, .site-socials__link
+  и т.д. остаются как есть, каждый в своём файле (hero-garden.css,
+  header.css, footer.css). Они не переведены на .btn задним числом —
+  риск визуальной регрессии; для НИХ это просто эталон/документация.
+  Ниже те же самые состояния оформлены как переиспользуемые классы,
+  чтобы у НОВОЙ кнопки нужно было только выбрать тип — заливку и
+  расположение иконки, — а не придумывать ховер заново (см. feedback
+  "никогда не изобретать свой ховер для кнопок", styles/button-hover.css
+  уже задаёт базовый press-scale и переменные --color-action-*).
+
+  ─────────────────────────────────────────────────────────────────────
+  ТИПЫ ЗАЛИВКИ (--fill, выбрать один) — реестр состояний с Главной:
+  ─────────────────────────────────────────────────────────────────────
+    .btn--fill-pink   розовая → по ховеру белая (текст/иконка темнеют)
+                      эталон: .garden__cta--primary «Смотреть работы»
+                      (styles/hero-garden.css)
+
+    .btn--fill-white  белая → по ховеру розовая (текст/иконка белеют)
+                      эталон: .garden__cta--plant «Посадить цветок» и
+                      .site-socials__link (иконки соцсетей в хедере)
+                      (styles/hero-garden.css)
+
+  Заливка растёт кругом из точки входа курсора (--hover-x/--hover-y,
+  их выставляет layout-chrome.js на pointerenter/pointermove — см. тот
+  же приём у .garden__cta). Без JS-хука круг просто растёт из центра —
+  деградирует не ломая кнопку.
+
+  ─────────────────────────────────────────────────────────────────────
+  ТИПЫ РАСПОЛОЖЕНИЯ (--icon, выбрать один; можно не выбирать — тогда
+  кнопка без иконки, только текст):
+  ─────────────────────────────────────────────────────────────────────
+    (нет класса)     только текст, без иконки
+                      эталон: .garden__cta--plant «Посадить цветок»
+
+    .btn--icon-left  иконка слева от подписи
+    .btn--icon-right иконка справа от подписи
+                      эталон: .garden__cta--primary «Смотреть работы»
+                      (иконка icon--down справа от текста)
+
+    .btn--icon-top   иконка над подписью, компактная пилюля-навигация
+                      (высота по контенту, а не фиксированная)
+                      эталон: .site-header__cta «Резюме PDF» и пункты
+                      футера .site-footer__link/.footer-menu-panel__link
+                      (styles/header.css, styles/footer.css — общая
+                      заготовка «иконка сверху, подпись снизу»)
+
+    .btn--icon-only  только иконка, без подписи, круглая форма
+                      эталон: .site-socials__link (иконки соцсетей) и
+                      .site-footer__top-btn/.site-footer__menu-btn
+                      (кнопка «наверх»/«меню» — круглые иконки-кнопки)
+                      Обязателен aria-label на самом элементе.
+
+  Класс с иконкой не рисует иконку сам — внутрь кладём обычный
+  <span class="icon icon--имя"> (styles/icons.css, currentColor),
+  порядок в разметке неважен: --icon-left/right/top переставляют
+  иконку через order, а не полагаются на порядок тегов.
+
+  ─────────────────────────────────────────────────────────────────────
+  ПРИМЕРЫ СОСТАВЛЕНИЯ НОВОЙ КНОПКИ:
+  ─────────────────────────────────────────────────────────────────────
+    <a class="btn btn--fill-pink btn--icon-right" href="…">
+      <span>Текст</span>
+      <span class="icon icon--arrow-right" aria-hidden="true"></span>
+    </a>
+
+    <button class="btn btn--fill-white" type="button">Текст без иконки</button>
+
+    <button class="btn btn--fill-pink btn--icon-only" type="button" aria-label="Действие">
+      <span class="icon icon--close" aria-hidden="true"></span>
+    </button>
+
+  Пресс-фидбэк (scale при active) уже даёт глобально styles/scale.css
+  всем a[href]/button — здесь его дублировать не нужно.
+*/
+
+.btn {
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  height: clamp(3rem, 4.4vw, 4rem);
+  padding-inline: clamp(1.1rem, 2vw, 1.6rem);
+  border: 0;
+  border-radius: 999px;
+  --hover-x: 50%;
+  --hover-y: 50%;
+  /* Текст кнопки — .text-button из typography.css (та же пара
+     размер/трекинг, что у обычного текста, только полужирный), один и
+     тот же на любой кнопке сайта, большой или маленькой. */
+  font-family: var(--font-family-body, "IBM Plex Mono", ui-monospace, monospace);
+  font-size: var(--font-size-text, clamp(0.9rem, 1.35vw, 1.06rem));
+  font-weight: var(--font-weight-semibold, 600);
+  letter-spacing: var(--letter-spacing-text, -0.03em);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn .icon {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+/* Глушим общий ::before-глоу из button-hover.css — у крупных кнопок он
+   мгновенно накрывает всё и заливка «телепортируется» (тот же вывод,
+   что и в комментарии у .garden__cta::before). Рисуем свой ::after,
+   растущий из --hover-x/--hover-y. */
+.btn::before {
+  display: none;
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: var(--hover-x, 50%);
+  top: var(--hover-y, 50%);
+  width: 240%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform var(--button-hover-duration, 0.5s) var(--button-hover-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+  pointer-events: none;
+}
+
+.btn:hover::after,
+.btn:focus-visible::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ---------- Типы заливки ---------- */
+
+.btn--fill-pink {
+  background: var(--color-action-active, #ff0cc2);
+  color: #fff;
+}
+
+.btn--fill-pink::after {
+  background: #fff;
+}
+
+.btn--fill-pink:hover,
+.btn--fill-pink:focus-visible {
+  color: #101014;
+}
+
+.btn--fill-white {
+  background: #fff;
+  color: #101014;
+}
+
+.btn--fill-white::after {
+  background: var(--color-action-hover, #ff0cc2);
+}
+
+.btn--fill-white:hover,
+.btn--fill-white:focus-visible {
+  color: #fff;
+}
+
+/* ---------- Типы расположения иконки ---------- */
+
+.btn--icon-left .icon {
+  order: -1;
+}
+
+.btn--icon-right .icon {
+  order: 1;
+}
+
+.btn--icon-top {
+  flex-direction: column;
+  height: auto;
+  padding-block: 0.5rem;
+  gap: 4px;
+}
+
+.btn--icon-top .icon {
+  order: -1;
+}
+
+.btn--icon-only {
+  width: clamp(3rem, 4.4vw, 4rem);
+  height: clamp(3rem, 4.4vw, 4rem);
+  padding: 0;
+  aspect-ratio: 1;
+}
+
+.btn--icon-only .icon {
+  width: 1.3em;
+  height: 1.3em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn::after {
+    transition-duration: 0.01ms;
+  }
+}

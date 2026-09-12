@@ -14,6 +14,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check design system (buttons/fonts)
+        run: node scripts/check-design-system.js
+
       - name: Deploy to Hostinger hosting
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
