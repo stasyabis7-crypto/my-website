@@ -179,10 +179,10 @@
   }
 }
 
-/* 1 большой баннер слева + N карточек друг под другом справа. */
+/* Баннер слева + N карточек друг под другом справа, поровну (1fr 1fr). */
 .case-cards-feature {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
