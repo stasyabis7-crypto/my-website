@@ -70,6 +70,25 @@
   (≤900px) — тот же .case-cards-feature уже умеет схлопываться в 1
   колонку (большая карточка сверху, 3 маленьких друг под другом ниже) —
   ничего специально для этого блока не потребовалось.
+
+  ─── .case-scenario — блок сценария (готовый компонент) ────────────────
+  Заголовок — H1, тот же класс-паттерн, что у .case-role (просто
+  text-h1, без подзаголовка). Ниже — .case-scenario__flow: ряд стеклянных
+  плашек .case-scenario__step (--color-glass/--color-glass-border +
+  --glass-blur/--glass-saturate, тот же "обычный" рецепт стекла, что и у
+  панели мобильного меню — НЕ liquid-glass хедера/футера, тот рецепт
+  зарезервирован только за ними, см. комментарий в theme.css), соединённых
+  .case-scenario__connector — светящейся линией-градиентом на акцентном
+  --color-action-active (тот же розовый, что у кнопок/CTA сайта — своего
+  цвета для "красивого флоу" не выдумываем).
+
+  Раскладка адаптивная без брейкпоинта под конкретную ширину: плашки —
+  flex-shrink (не nowrap), поэтому длинная подпись просто переносится на
+  2 строки на "неудобных" промежуточных десктопных ширинах, вместо того
+  чтобы вылезать за контейнер — соединители тем временем сами растут
+  (flex-grow), заполняя весь ряд. На ≤900px (тот же порог, что у
+  остальных блоков) flow становится колонкой, коннекторы — вертикальными
+  чёрточками под точкой-маркером плашки (margin-left считает её центр).
 */
 
 .case-tag {
@@ -631,4 +650,74 @@
 /* ─── .case-about — заголовок + .case-cards-feature (case-cards.css) ─── */
 .case-about__grid {
   margin-top: 32px;
+}
+
+/* ─── .case-scenario — заголовок + стеклянный флоу шагов ──────────────── */
+.case-scenario__flow {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.case-scenario__step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 1 auto;
+  min-width: 0;
+  padding: 18px 24px;
+  border-radius: 18px;
+  background: var(--color-glass);
+  border: 1px solid var(--color-glass-border);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+.case-scenario__dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-action-active);
+  box-shadow: 0 0 10px 2px color-mix(in srgb, var(--color-action-active) 70%, transparent);
+}
+
+.case-scenario__label {
+  margin: 0;
+}
+
+/* Растёт (flex-grow:1), заполняя весь зазор между плашками — те сами
+   сжимаются/растут по контенту (flex:0 1 auto выше). */
+.case-scenario__connector {
+  flex: 1 1 40px;
+  min-width: 16px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-action-active) 55%, transparent), var(--color-action-active));
+  box-shadow: 0 0 14px 2px color-mix(in srgb, var(--color-action-active) 45%, transparent);
+}
+
+@media (max-width: 900px) {
+  .case-scenario__flow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .case-scenario__step {
+    flex: none;
+  }
+
+  /* Вертикальная чёрточка под точкой-маркером плашки: центр точки —
+     24px паддинга + половина точки (4px) от левого края плашки/flow. */
+  .case-scenario__connector {
+    flex: none;
+    width: 2px;
+    height: 28px;
+    min-width: 0;
+    margin-left: 27px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--color-action-active) 55%, transparent), var(--color-action-active));
+  }
 }
