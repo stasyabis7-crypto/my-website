@@ -63,3 +63,33 @@
 
   els.forEach(function (el) { io.observe(el); });
 })();
+
+/*
+  Карусель метрик (.case-cover__metrics-scroll, ≤900px, case-blocks.css) —
+  fade-градиенты по краям видны только пока с этой стороны действительно
+  есть карточка, уходящая за сетку: .is-at-start снимает левый градиент
+  (первая карточка стоит по сетке, дальше скроллить некуда), .is-at-end —
+  правый (последняя карточка по сетке). В середине (обе карточки
+  выглядывают по бокам) видны оба.
+*/
+(function () {
+  'use strict';
+
+  var EPS = 2;
+
+  document.querySelectorAll('.case-cover__metrics-scroll').forEach(function (wrap) {
+    var track = wrap.querySelector('.case-cover__metrics');
+    if (!track) return;
+
+    function update() {
+      var atStart = track.scrollLeft <= EPS;
+      var atEnd = track.scrollLeft >= track.scrollWidth - track.clientWidth - EPS;
+      wrap.classList.toggle('is-at-start', atStart);
+      wrap.classList.toggle('is-at-end', atEnd);
+    }
+
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  });
+})();

@@ -181,7 +181,13 @@
      скролл-контейнера. .case-cover__metrics-scroll — обёртка снаружи
      скролла специально под это (её нельзя вешать на сам скролл-контейнер:
      псевдоэлементы были бы его контентом и уезжали вместе со скроллом
-     вместо того чтобы стоять на месте у краёв экрана). */
+     вместо того чтобы стоять на месте у краёв экрана).
+
+     Виден только в серединных состояниях, где карточка реально уходит
+     за сетку с этой стороны: .is-at-start/.is-at-end навешивает
+     styles/case-blocks.js по scrollLeft — в крайнем левом состоянии
+     (первая карточка по сетке) левого градиента нет, в крайнем правом
+     (третья по сетке) нет правого. */
   .case-cover__metrics-scroll {
     position: relative;
   }
@@ -195,6 +201,13 @@
     width: 40px;
     z-index: 1;
     pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .case-cover__metrics-scroll.is-at-start::before,
+  .case-cover__metrics-scroll.is-at-end::after {
+    opacity: 0;
   }
 
   .case-cover__metrics-scroll::before {
