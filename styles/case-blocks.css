@@ -800,3 +800,25 @@
 .case-problems__card .case-card__subtitle {
   margin-top: auto;
 }
+
+/* Навигация: ритм «Проблем», сетка и оформление из case-cards.css. */
+.case-navigation__subtitle.text-body-lg {
+  margin-top: 8px;
+}
+
+.case-navigation__grid,
+.case-navigation__description.text-body-lg {
+  margin-top: 32px;
+}
+
+.case-navigation__card.case-card {
+  aspect-ratio: 1;
+  min-height: 0;
+}
+
+/* Планшет — до десктопного брейкпоинта страницы. */
+@media (max-width: 1100px) {
+  .case-navigation__grid.case-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
