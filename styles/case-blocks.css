@@ -147,7 +147,10 @@
   padding: 32px;
 }
 
+.case-metric__value {
+  text-transform: uppercase;
+}
+
 .case-metric__label {
   margin-top: 8px;
-  text-transform: uppercase;
 }
