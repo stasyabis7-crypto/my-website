@@ -175,6 +175,37 @@
   .case-metric:last-child {
     scroll-snap-align: end;
   }
+
+  /* Плавный "срез" карточек, выглядывающих за экран при скролле —
+     градиент из фона страницы (--color-bg) в прозрачный поверх краёв
+     скролл-контейнера. .case-cover__metrics-scroll — обёртка снаружи
+     скролла специально под это (её нельзя вешать на сам скролл-контейнер:
+     псевдоэлементы были бы его контентом и уезжали вместе со скроллом
+     вместо того чтобы стоять на месте у краёв экрана). */
+  .case-cover__metrics-scroll {
+    position: relative;
+  }
+
+  .case-cover__metrics-scroll::before,
+  .case-cover__metrics-scroll::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .case-cover__metrics-scroll::before {
+    left: 0;
+    background: linear-gradient(to right, var(--color-bg), transparent);
+  }
+
+  .case-cover__metrics-scroll::after {
+    right: 0;
+    background: linear-gradient(to left, var(--color-bg), transparent);
+  }
 }
 
 .case-metric {
