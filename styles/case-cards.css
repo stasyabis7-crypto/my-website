@@ -50,6 +50,13 @@
   (обычно вместе с --align-bottom). --bg-custom — сплошной/градиентный
   фон через переменные --card-bg/--card-fg (задаются инлайново на
   конкретной карточке).
+
+  ─── Строка с иконкой: .case-card__icon-row / .case-card__icon ────────
+  Текст слева + иконка 48×48 справа, оба по нижнему краю (обычно вместе
+  с --align-bottom на самой .case-card, чтобы вся строка стояла у низа
+  карточки). align-items:flex-end внутри строки — если подпись в 2
+  строки, а иконка ниже, иконка остаётся на одном уровне с последней
+  строкой текста, а не по центру всего блока.
 */
 
 :root {
@@ -135,6 +142,22 @@
 .case-card--bg-custom {
   background: var(--card-bg, var(--color-action-active));
   color: var(--card-fg, #fff);
+}
+
+/* ─── Строка с иконкой ──────────────────────────────────────────────── */
+
+.case-card__icon-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.case-card__icon {
+  display: block;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
 }
 
 /* ─── Сетки ──────────────────────────────────────────────────────────── */
