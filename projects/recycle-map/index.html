@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="../../styles/works-grid.css?v=11" />
 <link rel="stylesheet" href="../../styles/fonts.css?v=2" />
 <link rel="stylesheet" href="../../styles/case-blocks.css?v=27" />
-<link rel="stylesheet" href="../../styles/case-cards.css?v=5" />
+<link rel="stylesheet" href="../../styles/case-cards.css?v=6" />
 
 <style>
 /*
@@ -221,16 +221,24 @@ body {
       </section>
 
       <!-- О проекте — компонент .case-about (styles/case-blocks.css),
-           карточки — .case-cards-feature/.case-card (styles/case-cards.css). -->
+           карточки — .case-cards-feature/.case-card (styles/case-cards.css).
+
+           У картинок этого блока — свой ?v=N (не только у CSS/JS): CDN
+           Hostinger (hcdn) кеширует статику по URL на 7 дней (max-age=
+           604800) и не видит, что файл по тому же имени переехал —
+           без версии в URL при замене banner.webp/menu.webp CDN отдавал
+           старый закешированный файл ещё несколько дней, хотя ориджин
+           уже обновился. При следующей замене любой картинки этого
+           блока — бампать её ?v=. -->
       <section class="case-block case-about">
         <h1 class="case-about__title text-h1">О проекте</h1>
 
         <div class="case-about__grid case-cards-feature">
           <div class="case-card case-card--media case-card--align-bottom case-cards-feature__banner" style="--card-pad-bottom: 40px">
             <div class="case-card__media">
-              <img src="media/about/banner.webp" alt="" />
+              <img src="media/about/banner.webp?v=2" alt="" />
             </div>
-            <img class="case-card__media-overlay" src="media/about/menu.webp" alt="" aria-hidden="true" />
+            <img class="case-card__media-overlay" src="media/about/menu.webp?v=1" alt="" aria-hidden="true" />
             <p class="case-card__subtitle text-body-lg">Карта помогает найти, куда сдать вторсырьё и вещи на благотворительность</p>
           </div>
 
