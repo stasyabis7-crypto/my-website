@@ -151,18 +151,19 @@
   padding: 32px;
 }
 
+/* Не .text-h2 — тут нужен размер H2 (--font-size-xl), но шрифт текста
+   (--font-family-body, моноширинный), а не заголовочный Alice: у Alice
+   цифры разной высоты/ширины (нет lnum/tnum-фич, проверено — в шрифте
+   только ccmp), в счётчике (styles/case-blocks.js) это было особенно
+   заметно на каждом кадре. */
 .case-metric__value {
-  text-transform: uppercase;
-}
-
-/* Пока идёт счётчик (styles/case-blocks.js) — цифры на шрифте текста
-   (--font-family-body, моноширинный), а не заголовочном Alice: у Alice
-   цифры разной высоты/ширины (нет lnum/tnum, проверено — в шрифте только
-   фича ccmp), на каждом кадре счётчика это дёргается заметнее, чем в
-   статике. По окончании класс снимается, финальное число — обычным
-   заголовочным шрифтом, как остальные .text-h*. */
-.case-metric__value.is-counting {
   font-family: var(--font-family-body);
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-text);
+  letter-spacing: var(--letter-spacing-text);
+  font-weight: var(--font-weight-regular);
+  text-transform: uppercase;
+  margin: 0;
 }
 
 .case-metric__label {
