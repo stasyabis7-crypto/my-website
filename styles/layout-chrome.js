@@ -251,7 +251,7 @@
   var hoverControls = document.querySelectorAll(
     '.site-header__cta, .site-footer__telegram, .theme-toggle, .site-footer__link, ' +
     '.site-footer__menu-btn, .site-footer__top-btn, ' +
-    '.footer-menu-panel__link, .garden__cta'
+    '.footer-menu-panel__link, .garden__cta, .btn'
   );
 
   hoverControls.forEach(function (control) {
