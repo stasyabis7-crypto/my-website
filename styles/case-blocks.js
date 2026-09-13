@@ -31,6 +31,7 @@
     });
 
     var start = null;
+    el.classList.add('is-counting');
 
     function frame(ts) {
       if (start === null) start = ts;
@@ -46,6 +47,7 @@
         requestAnimationFrame(frame);
       } else {
         el.textContent = final;
+        el.classList.remove('is-counting');
       }
     }
 

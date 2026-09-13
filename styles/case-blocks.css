@@ -151,12 +151,18 @@
   padding: 32px;
 }
 
-/* lining-nums — цифры выравниваются по высоте прописных (у Alice дефолтные
-   figures ниже кап-высоты, рядом с заглавным текст-transform:uppercase
-   ".тыс."/"ДО" это заметно "проседает"). */
 .case-metric__value {
   text-transform: uppercase;
-  font-variant-numeric: lining-nums;
+}
+
+/* Пока идёт счётчик (styles/case-blocks.js) — цифры на шрифте текста
+   (--font-family-body, моноширинный), а не заголовочном Alice: у Alice
+   цифры разной высоты/ширины (нет lnum/tnum, проверено — в шрифте только
+   фича ccmp), на каждом кадре счётчика это дёргается заметнее, чем в
+   статике. По окончании класс снимается, финальное число — обычным
+   заголовочным шрифтом, как остальные .text-h*. */
+.case-metric__value.is-counting {
+  font-family: var(--font-family-body);
 }
 
 .case-metric__label {
