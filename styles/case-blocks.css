@@ -149,4 +149,5 @@
 
 .case-metric__label {
   margin-top: 8px;
+  text-transform: uppercase;
 }
