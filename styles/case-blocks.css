@@ -812,7 +812,8 @@
 
 /* Сравнение «До / После»: общий компонент для «Навигации» и «Поиска и
    фильтров». Ритм «Проблем», сетка и оформление из case-cards.css. */
-.case-comparison__subtitle.text-body-lg {
+.case-comparison__subtitle.text-body-lg,
+.case-result__subtitle.text-body-lg {
   margin-top: 8px;
 }
 
