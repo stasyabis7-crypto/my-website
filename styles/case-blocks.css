@@ -660,6 +660,11 @@
   gap: 0;
 }
 
+/* will-change держит плашку в отдельном composited-слое заранее —
+   без него браузер при активном ресайзе окна не успевает пересчитать
+   blur() на каждый кадр, и плашка на миг "гаснет" (заливка/бордер
+   пропадают, виден только фон), пока блюр не досчитается — коннектор
+   рядом рендерится сразу, у него нет backdrop-filter. */
 .case-scenario__step {
   display: flex;
   align-items: center;
@@ -673,6 +678,7 @@
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  will-change: backdrop-filter;
 }
 
 .case-scenario__dot {
