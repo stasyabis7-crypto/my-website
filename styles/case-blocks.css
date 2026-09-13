@@ -89,6 +89,33 @@
   (flex-grow), заполняя весь ряд. На ≤900px (тот же порог, что у
   остальных блоков) flow становится колонкой, коннекторы — вертикальными
   чёрточками под точкой-маркером плашки (margin-left считает её центр).
+
+  ─── .case-problems — блок проблем (готовый компонент) ─────────────────
+  Заголовок + подзаголовок — тот же класс-паттерн, что у .case-role (H1
+  + 8px + text-body-lg). Ниже — обычная 3-колоночная сетка карточек
+  .case-cards-grid--cols-3 (реестр в case-cards.css, схлопывается в 1
+  колонку на ≤900px "бесплатно", ничего своего для мобилки не
+  потребовалось). Внутри карточки — иконка 48×48 в потоке сверху-слева,
+  дальше текст, прибитый к низу карточки через margin-top:auto на самом
+  тексте (а не modifier--align-bottom у .case-card — тот вместе с
+  justify-content:flex-end прибил бы к низу СРАЗУ ВСЁ содержимое,
+  включая иконку, а нужно, чтобы иконка осталась сверху, а к низу ехал
+  только текст, с растягивающимся пустым зазором между ними — высота
+  всех 3 карточек одинаковая "бесплатно" через grid + одинаковый
+  min-height).
+
+  Иконки (media/problems/) — order 1/2/3 у файлов не совпадает с
+  названием (Gestalt-2.svg="1", Gestalt-1.svg="2", Gestalt.svg="3",
+  проверено рендером), в разметке используются в правильном порядке.
+  Сами SVG — stroke="black" (не готовы под тёмную карточку "из коробки",
+  в отличие от иконок .case-about) — .case-problems__icon красит их тем
+  же приёмом, что и сайтовые DS-иконки в icons.css (background-color:
+  currentColor + mask-image, цвет самого stroke в файле неважен, только
+  форма/альфа), но путь к конкретному файлу — через --problems-icon,
+  инлайново в разметке (тот же приём, что --card-pad-bottom/--card-bg
+  в case-cards.css): иконки одноразовые, лежат в media/ конкретного
+  кейса, а не в общем реестре assets/icons, поэтому путь не хардкодится
+  в общем файле компонентов.
 */
 
 .case-tag {
@@ -652,7 +679,7 @@
   margin-top: 32px;
 }
 
-/* ─── .case-scenario — заголовок + стеклянный флоу шагов ──────────────── */
+/* ─── .case-scenario — заголовок + флоу шагов ──────────────────────────── */
 .case-scenario__flow {
   margin-top: 32px;
   display: flex;
@@ -720,4 +747,45 @@
     margin-left: 27px;
     background: linear-gradient(180deg, color-mix(in srgb, var(--color-action-active) 55%, transparent), var(--color-action-active));
   }
+}
+
+/* ─── .case-problems — заголовок + 3 карточки ─────────────────────────── */
+.case-problems__subtitle.text-body-lg {
+  margin-top: 8px;
+}
+
+.case-problems__grid {
+  margin-top: 32px;
+}
+
+.case-problems__card {
+  min-height: 320px;
+}
+
+/* Путь к конкретному SVG — через --problems-icon, задаётся инлайново
+   в разметке (style="--problems-icon: url(...)") на каждой карточке,
+   тем же приёмом, что --card-pad-bottom/--card-bg в case-cards.css:
+   файлы лежат в media/ конкретного кейса, а не в общем реестре
+   assets/icons, поэтому путь не хардкодится здесь. */
+.case-problems__icon {
+  display: block;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-image: var(--problems-icon);
+  mask-image: var(--problems-icon);
+}
+
+/* Текст едет к низу карточки, иконка остаётся сверху (см. комментарий
+   в реестре наверху файла) — margin-top:auto на самом тексте внутри
+   flex-column .case-card, а не modifier--align-bottom. */
+.case-problems__card .case-card__subtitle {
+  margin-top: auto;
 }
