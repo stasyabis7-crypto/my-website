@@ -121,9 +121,32 @@
   }
 }
 
-/* Блок метрик — опциональный, не в каждом кейсе. Карточки внутри пока
-   не делаем (разные наборы под разные кейсы, соберём позже) — здесь
-   только отступ до блока на случай, если он есть. */
+/* Блок метрик — опциональный, не в каждом кейсе. .case-metric — тёмная
+   карточка (тот же серый, что у .case-tag), пока просто число+подпись
+   в левом верхнем углу и запас пустого места снизу под будущую картинку/
+   иконку (оформление — отдельным шагом, когда будут ассеты). Мобилка
+   (≤640px, тот же порог, что у .case-cover__media) — одна колонка. */
 .case-cover__metrics {
   margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--wg-gap, 24px);
+}
+
+@media (max-width: 640px) {
+  .case-cover__metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+.case-metric {
+  aspect-ratio: 6 / 5;
+  border-radius: var(--wg-radius, 28px);
+  background: #252525;
+  color: #fff;
+  padding: 32px;
+}
+
+.case-metric__label {
+  margin-top: 8px;
 }
