@@ -46,6 +46,19 @@
   scroll-snap + fade-градиенты, что у метрик (общий styles/case-blocks.js
   слушает оба .case-cover__metrics-scroll/.case-role__cols-scroll); мобилка
   (≤640px) — просто друг под другом, без скролла, отступ 32px.
+
+  ─── .case-team — блок команды (готовый компонент) ─────────────────────
+  Заголовок/подзаголовок — те же паддинги/шрифты, что у .case-role (H1 +
+  8px + text-body-lg + 32px). Ниже 4 цветных карточки .case-team__card:
+  квадратная картинка (аватар) в левом верхнем углу → 16px → заголовок
+  (h2-размер) → 4px → подпись. Заголовки карточек всегда на одном уровне
+  "бесплатно" — аватар фиксированного (в % от карточки) размера и без
+  вариативной высоты над заголовком, поэтому раскладке не нужен
+  flex-grow/aspect-ratio-трюк, как у .case-cover__metrics/.case-role.
+  Десктоп — грид в 4 колонки; планшет И мобилка (≤900px, порог как у
+  метрик, здесь нет отдельного мобильного "стопкой", как у .case-role) —
+  горизонтальная карусель, тот же fade-градиент (styles/case-blocks.js
+  слушает и .case-team__cards-scroll тем же общим кодом).
 */
 
 .case-tag {
@@ -453,5 +466,117 @@
 
   .case-role__col {
     flex: none;
+  }
+}
+
+/* ─── .case-team — блок команды (заголовок/подзаголовок + 4 карточки) ──
+   Заголовок/подзаголовок — те же классы-паттерны, что у .case-role
+   (H1 + переопределённый margin-top:8px + text-body-lg, 32px до сетки). */
+.case-team__subtitle.text-body-lg {
+  margin-top: 8px;
+}
+
+.case-team__cards-scroll {
+  margin-top: 32px;
+}
+
+.case-team__cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* min-width:0 — та же защита от раздувания grid-колонки контентом, что
+   и у .case-role__col (см. комментарий там); здесь текст переносится
+   свободно (не nowrap), но айтем всё равно не должен сжиматься уже
+   1fr-доли из-за длинного самого широкого слова в подписи. */
+.case-team__card {
+  min-width: 0;
+  border-radius: var(--wg-radius, 28px);
+  padding: 32px;
+  color: #14161a;
+}
+
+.case-team__card--lavender { background: #DDD3FB; }
+.case-team__card--yellow   { background: #FFE9A9; }
+.case-team__card--gray     { background: #D9D9DA; }
+.case-team__card--mint     { background: #C5F1CE; }
+
+/* Аватар — квадрат, ширина в % от карточки (не фиксированный px), чтобы
+   пропорционально масштабировался вместе с карточкой на карусели
+   (карточка там уже своей доли, а не 1/4 сетки). Заголовки карточек
+   оказываются на одном уровне "бесплатно": аватар одного и того же
+   относительного размера + фиксированный отступ 16px до заголовка —
+   без переменной высоты над ним, в отличие от .case-cover__metrics/
+   .case-role, там это специально считалось через flex-grow. */
+.case-team__avatar {
+  display: block;
+  width: 38%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
+
+.case-team__card-title {
+  margin-top: 16px;
+}
+
+.case-team__card-subtitle {
+  margin-top: 4px;
+}
+
+/* Планшет и мобилка (≤900px, порог как у .case-cover__metrics) —
+   горизонтальная карусель, тот же приём scroll-snap + fade-градиент,
+   что у метрик/роли (см. подробные комментарии там и в
+   styles/case-blocks.js). Здесь, в отличие от .case-role, нет отдельной
+   мобильной раскладки "стопкой" — карусель работает на всём диапазоне. */
+@media (max-width: 900px) {
+  .case-team__cards {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .case-team__cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .case-team__card {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .case-team__cards-scroll {
+    position: relative;
+  }
+
+  .case-team__cards-scroll::before,
+  .case-team__cards-scroll::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .case-team__cards-scroll.is-at-start::before,
+  .case-team__cards-scroll.is-at-end::after {
+    opacity: 0;
+  }
+
+  .case-team__cards-scroll::before {
+    left: 0;
+    background: linear-gradient(to right, var(--color-bg), transparent);
+  }
+
+  .case-team__cards-scroll::after {
+    right: 0;
+    background: linear-gradient(to left, var(--color-bg), transparent);
   }
 }

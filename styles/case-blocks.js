@@ -65,8 +65,9 @@
 })();
 
 /*
-  Карусель метрик (.case-cover__metrics-scroll, ≤900px) и колонок роли
-  (.case-role__cols-scroll, 641–900px, оба — case-blocks.css) — общий
+  Карусель метрик (.case-cover__metrics-scroll, ≤900px), колонок роли
+  (.case-role__cols-scroll, 641–900px) и карточек команды
+  (.case-team__cards-scroll, ≤900px, все три — case-blocks.css) — общий
   код: fade-градиенты по краям видны только пока с этой стороны
   действительно есть карточка/колонка, уходящая за сетку: .is-at-start
   снимает левый градиент (первый элемент стоит по сетке, дальше
@@ -78,8 +79,8 @@
 
   var EPS = 2;
 
-  document.querySelectorAll('.case-cover__metrics-scroll, .case-role__cols-scroll').forEach(function (wrap) {
-    var track = wrap.querySelector('.case-cover__metrics, .case-role__cols');
+  document.querySelectorAll('.case-cover__metrics-scroll, .case-role__cols-scroll, .case-team__cards-scroll').forEach(function (wrap) {
+    var track = wrap.querySelector('.case-cover__metrics, .case-role__cols, .case-team__cards');
     if (!track) return;
 
     function update() {
