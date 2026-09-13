@@ -144,11 +144,42 @@
 }
 
 .case-metric {
+  position: relative;
+  overflow: hidden;
   height: 320px;
   border-radius: var(--wg-radius, 28px);
   background: #252525;
   color: #fff;
   padding: 32px;
+}
+
+.case-metric--mint {
+  background: #B7E7CC;
+  color: #123524;
+}
+
+/* Картинка карточки — по умолчанию (десктоп 3 колонки И мобилка ≤640px,
+   там же порог, что у .case-cover__media) снизу по центру. На планшете
+   (641–900px, .case-cover__metrics уже в 1 колонку — карточка стала
+   широкой "горизонтальной" полосой) — к правому нижнему углу и крупнее,
+   чтобы не терялась на выросшей ширине. */
+.case-metric__art {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  height: 140px;
+  width: auto;
+  pointer-events: none;
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .case-metric__art {
+    left: auto;
+    right: 0;
+    transform: none;
+    height: 220px;
+  }
 }
 
 /* Не .text-h2 — тут нужен размер H2 (--font-size-xl), но шрифт текста
