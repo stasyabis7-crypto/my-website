@@ -73,14 +73,14 @@
 
   ─── .case-scenario — блок сценария (готовый компонент) ────────────────
   Заголовок — H1, тот же класс-паттерн, что у .case-role (просто
-  text-h1, без подзаголовка). Ниже — .case-scenario__flow: ряд стеклянных
-  плашек .case-scenario__step (--color-glass/--color-glass-border +
-  --glass-blur/--glass-saturate, тот же "обычный" рецепт стекла, что и у
-  панели мобильного меню — НЕ liquid-glass хедера/футера, тот рецепт
-  зарезервирован только за ними, см. комментарий в theme.css), соединённых
-  .case-scenario__connector — светящейся линией-градиентом на акцентном
-  --color-action-active (тот же розовый, что у кнопок/CTA сайта — своего
-  цвета для "красивого флоу" не выдумываем).
+  text-h1, без подзаголовка). Ниже — .case-scenario__flow: ряд плашек
+  .case-scenario__step (сплошная заливка #252525, тот же серый, что у
+  .case-tag/.case-metric, без обводки — раньше было стекло
+  --color-glass+backdrop-filter, убрали: лагало на активном ресайзе
+  окна, см. историю в git), соединённых .case-scenario__connector —
+  светящейся линией-градиентом на акцентном --color-action-active (тот
+  же розовый, что у кнопок/CTA сайта — своего цвета для "красивого
+  флоу" не выдумываем).
 
   Раскладка адаптивная без брейкпоинта под конкретную ширину: плашки —
   flex-shrink (не nowrap), поэтому длинная подпись просто переносится на
@@ -660,11 +660,9 @@
   gap: 0;
 }
 
-/* will-change держит плашку в отдельном composited-слое заранее —
-   без него браузер при активном ресайзе окна не успевает пересчитать
-   blur() на каждый кадр, и плашка на миг "гаснет" (заливка/бордер
-   пропадают, виден только фон), пока блюр не досчитается — коннектор
-   рядом рендерится сразу, у него нет backdrop-filter. */
+/* Сплошная заливка (тот же серый, что у .case-tag/.case-metric), без
+   стекла и обводки — ничего не гаснет на ресайзе (см. историю в git:
+   backdrop-filter лагал при активном ресайзе окна). */
 .case-scenario__step {
   display: flex;
   align-items: center;
@@ -673,12 +671,8 @@
   min-width: 0;
   padding: 18px 24px;
   border-radius: 18px;
-  background: var(--color-glass);
-  border: 1px solid var(--color-glass-border);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  background: #252525;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
-  will-change: backdrop-filter;
 }
 
 .case-scenario__dot {
