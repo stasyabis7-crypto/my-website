@@ -845,4 +845,5 @@
 /* Отступ до изображений задаёт сетка; внутри — общий зазор карточек. */
 .case-schedule__grid .case-cover__media {
   margin-top: 0;
+  background: transparent;
 }
