@@ -165,8 +165,31 @@
   padding-top: 60px;
 }
 
-.case-cover__title {
+/* .case-cover__head — заголовок+подзаголовок слева, кнопка «Смотреть
+   на проде» справа, выровненная по верху с заголовком и по правому
+   краю сетки. Кнопка не сжимается (flex-shrink:0), текстовый блок
+   растягивается на всё оставшееся место (min-width:0) — при нехватке
+   ширины просто переносится текст, а не наезжает на кнопку. Мобилка
+   (≤640px, тот же порог, что у .case-cover__media) — колонка, кнопка
+   на всю ширину под подзаголовком, отступ 16px. */
+.case-cover__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
   margin-top: 16px;
+}
+
+.case-cover__head-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.case-cover__cta {
+  flex-shrink: 0;
+}
+
+.case-cover__title {
+  margin-top: 0;
 }
 
 /* Специфичность (2 класса) намеренно равна typography.css-правилу
@@ -174,6 +197,18 @@
    (case-blocks.css идёт после typography.css в <head>). */
 .case-cover__subtitle.text-body-lg {
   margin-top: 8px;
+}
+
+@media (max-width: 640px) {
+  .case-cover__head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .case-cover__cta {
+    width: 100%;
+  }
 }
 
 /* Текстовые блоки кейса (подзаголовки/лиды) — не тянутся на всю ширину
