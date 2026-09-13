@@ -813,18 +813,24 @@
 /* Сравнение «До / После»: общий компонент для «Навигации» и «Поиска и
    фильтров». Ритм «Проблем», сетка и оформление из case-cards.css. */
 .case-comparison__subtitle.text-body-lg,
-.case-result__subtitle.text-body-lg {
+.case-result__subtitle.text-body-lg,
+.case-favorites__subtitle.text-body-lg {
   margin-top: 8px;
 }
 
 .case-comparison__grid,
-.case-comparison__description.text-body-lg {
+.case-comparison__description.text-body-lg,
+.case-favorites__description {
   margin-top: 32px;
 }
 
 .case-comparison__card.case-card {
   aspect-ratio: 1;
   min-height: 0;
+}
+
+.case-favorites__description .text-body-lg + .text-body-lg {
+  margin-top: 8px;
 }
 
 /* Планшет — до десктопного брейкпоинта страницы. */
