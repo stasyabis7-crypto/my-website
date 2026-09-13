@@ -820,7 +820,8 @@
 
 .case-comparison__grid,
 .case-comparison__description.text-body-lg,
-.case-favorites__description {
+.case-favorites__description,
+.case-schedule__grid {
   margin-top: 32px;
 }
 
@@ -835,7 +836,13 @@
 
 /* Планшет — до десктопного брейкпоинта страницы. */
 @media (max-width: 1100px) {
-  .case-comparison__grid.case-cards-grid {
+  .case-comparison__grid.case-cards-grid,
+  .case-schedule__grid.case-cards-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Отступ до изображений задаёт сетка; внутри — общий зазор карточек. */
+.case-schedule__grid .case-cover__media {
+  margin-top: 0;
 }
