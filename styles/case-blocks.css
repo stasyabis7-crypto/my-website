@@ -35,6 +35,17 @@
   считается из контента и всегда равна (grid/flex stretch + flex-grow
   у картинки) — при переносе на новый кейс просто скопировать разметку
   и подставить текст/картинки, ничего вручную не подгонять.
+
+  ─── .case-role — блок роли (готовый компонент) ────────────────────────
+  Заголовок + подзаголовок блока, ниже 3 колонки .case-role__col (заголовок
+  h2-размера + подпись + вертикальная картинка, та же пропорция 596:1290,
+  что у вертикальных карточек Главной — works-grid.css). Три состояния по
+  ширине, у каждого своя раскладка (не общая с .case-cover__metrics, у
+  которого тоже 3 колонки, но два состояния): десктоп (>900px) — грид;
+  планшет (641–900px) — горизонтальная карусель, тот же приём
+  scroll-snap + fade-градиенты, что у метрик (общий styles/case-blocks.js
+  слушает оба .case-cover__metrics-scroll/.case-role__cols-scroll); мобилка
+  (≤640px) — просто друг под другом, без скролла, отступ 32px.
 */
 
 .case-tag {
@@ -300,4 +311,130 @@
 
 .case-metric__label {
   margin-top: 8px;
+}
+
+/* ─── .case-role — блок роли (заголовок/подзаголовок + 3 колонки) ──────
+   Специфичность override-ов подзаголовков (2 класса) — та же причина,
+   что у .case-cover__subtitle.text-body-lg выше: побеждает автоматическое
+   вертикальное правило typography.css (.text-h2 + .text-body-lg) только
+   порядком подключения файла, не числом классов. */
+.case-role__subtitle.text-body-lg {
+  margin-top: 8px;
+}
+
+.case-role__cols-scroll {
+  margin-top: 32px;
+}
+
+.case-role__cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.case-role__col-subtitle {
+  margin-top: 4px;
+}
+
+/* Картинка колонки — та же пропорция (596:1290) и тот же вид, что у
+   вертикальных карточек Главной (works-grid__row--el3), чтобы кейс и
+   Главная выглядели одним набором компонентов. */
+.case-role__col-art {
+  display: block;
+  width: 100%;
+  aspect-ratio: 596 / 1290;
+  margin-top: 16px;
+  overflow: hidden;
+  border-radius: var(--wg-radius, 28px);
+  background: var(--color-surface-alt);
+}
+
+.case-role__col-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Планшет (641–900px) — карусель, тот же приём, что у .case-cover__metrics
+   (см. подробный комментарий там): flex вместо grid, ширина карточки
+   фиксированная доля, scroll-snap на 3 позиции (старт/центр/конец), общий
+   fade-градиент по краям через .case-role__cols-scroll (styles/case-blocks.js
+   слушает и .case-cover__metrics-scroll, и .case-role__cols-scroll одним
+   и тем же кодом). Не растягиваем на весь диапазон ≤900px, как у метрик,
+   — на мобилке (≤640px) у роли своя раскладка, друг под другом,
+   переопределяется ниже отдельным блоком. */
+@media (max-width: 900px) and (min-width: 641px) {
+  .case-role__cols {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .case-role__cols::-webkit-scrollbar {
+    display: none;
+  }
+
+  .case-role__col {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .case-role__col:nth-child(2) {
+    scroll-snap-align: center;
+  }
+
+  .case-role__col:last-child {
+    scroll-snap-align: end;
+  }
+
+  .case-role__cols-scroll {
+    position: relative;
+  }
+
+  .case-role__cols-scroll::before,
+  .case-role__cols-scroll::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .case-role__cols-scroll.is-at-start::before,
+  .case-role__cols-scroll.is-at-end::after {
+    opacity: 0;
+  }
+
+  .case-role__cols-scroll::before {
+    left: 0;
+    background: linear-gradient(to right, var(--color-bg), transparent);
+  }
+
+  .case-role__cols-scroll::after {
+    right: 0;
+    background: linear-gradient(to left, var(--color-bg), transparent);
+  }
+}
+
+/* Мобилка — друг под другом, обычный вертикальный ритм (32px), без
+   скролла/снапа: тот же .case-role__cols, что и на десктопе/планшете,
+   просто в колонку. */
+@media (max-width: 640px) {
+  .case-role__cols {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .case-role__col {
+    flex: none;
+  }
 }

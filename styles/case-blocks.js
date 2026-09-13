@@ -65,20 +65,21 @@
 })();
 
 /*
-  Карусель метрик (.case-cover__metrics-scroll, ≤900px, case-blocks.css) —
-  fade-градиенты по краям видны только пока с этой стороны действительно
-  есть карточка, уходящая за сетку: .is-at-start снимает левый градиент
-  (первая карточка стоит по сетке, дальше скроллить некуда), .is-at-end —
-  правый (последняя карточка по сетке). В середине (обе карточки
-  выглядывают по бокам) видны оба.
+  Карусель метрик (.case-cover__metrics-scroll, ≤900px) и колонок роли
+  (.case-role__cols-scroll, 641–900px, оба — case-blocks.css) — общий
+  код: fade-градиенты по краям видны только пока с этой стороны
+  действительно есть карточка/колонка, уходящая за сетку: .is-at-start
+  снимает левый градиент (первый элемент стоит по сетке, дальше
+  скроллить некуда), .is-at-end — правый (последний элемент по сетке).
+  В середине (оба края выглядывают за экран) видны оба.
 */
 (function () {
   'use strict';
 
   var EPS = 2;
 
-  document.querySelectorAll('.case-cover__metrics-scroll').forEach(function (wrap) {
-    var track = wrap.querySelector('.case-cover__metrics');
+  document.querySelectorAll('.case-cover__metrics-scroll, .case-role__cols-scroll').forEach(function (wrap) {
+    var track = wrap.querySelector('.case-cover__metrics, .case-role__cols');
     if (!track) return;
 
     function update() {
