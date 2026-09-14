@@ -24,16 +24,9 @@
   кликабелен и запускает действие — это .btn, отдельный "почти как
   кнопка" класс под него заводить нельзя.
 
-  Ничего из существующей разметки Главной этот файл не трогает и не
-  переопределяет — .garden__cta, .site-header__cta, .site-socials__link
-  и т.д. остаются как есть, каждый в своём файле (hero-garden.css,
-  header.css, footer.css). Они не переведены на .btn задним числом —
-  риск визуальной регрессии; для НИХ это просто эталон/документация.
-  Ниже те же самые состояния оформлены как переиспользуемые классы,
-  чтобы у НОВОЙ кнопки нужно было только выбрать тип — заливку и
-  расположение иконки, — а не придумывать ховер заново (см. feedback
-  "никогда не изобретать свой ховер для кнопок", styles/button-hover.css
-  уже задаёт базовый press-scale и переменные --color-action-*).
+  Основные действия Главной и кнопка «Резюме PDF» используют .btn.
+  Старые классы .garden__cta и .site-header__cta сохранены как хуки
+  расположения, поведения и аналитики; визуальные стили задаются здесь.
 
   ─────────────────────────────────────────────────────────────────────
   ТИПЫ ЗАЛИВКИ (--fill, выбрать один) — реестр состояний с Главной:
@@ -65,7 +58,7 @@
                       (иконка icon--down справа от текста)
 
     .btn--icon-top   иконка над подписью, компактная пилюля-навигация
-                      (высота по контенту, а не фиксированная)
+                      (общая фиксированная высота, как у остальных вариантов)
                       эталон: .site-header__cta «Резюме PDF» и пункты
                       футера .site-footer__link/.footer-menu-panel__link
                       (styles/header.css, styles/footer.css — общая
@@ -100,6 +93,11 @@
   всем a[href]/button — здесь его дублировать не нужно.
 */
 
+/* Единая высота для всех вариаций .btn, на всех брейкпоинтах. */
+:root {
+  --button-height: 50px;
+}
+
 .btn {
   box-sizing: border-box;
   position: relative;
@@ -109,8 +107,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.5em;
-  height: clamp(3rem, 4.4vw, 4rem);
-  padding-inline: clamp(1.1rem, 2vw, 1.6rem);
+  height: var(--button-height);
+  padding-inline: 28px;
   border: 0;
   border-radius: 999px;
   --hover-x: 50%;
@@ -121,6 +119,7 @@
   font-family: var(--font-family-body, "IBM Plex Mono", ui-monospace, monospace);
   font-size: var(--font-size-text);
   font-weight: var(--font-weight-semibold, 600);
+  line-height: var(--line-height-default);
   letter-spacing: var(--letter-spacing-text, -0.03em);
   white-space: nowrap;
   text-decoration: none;
@@ -212,18 +211,21 @@
 
 .btn--icon-top {
   flex-direction: column;
-  height: auto;
-  padding-block: 0.5rem;
-  gap: 4px;
+  padding-block: 0;
+  padding-inline: 20px;
+  gap: 2px;
 }
 
 .btn--icon-top .icon {
   order: -1;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
 }
 
 .btn--icon-only {
-  width: clamp(3rem, 4.4vw, 4rem);
-  height: clamp(3rem, 4.4vw, 4rem);
+  width: var(--button-height);
+  height: var(--button-height);
   padding: 0;
   aspect-ratio: 1;
 }
@@ -233,18 +235,17 @@
   height: 1.3em;
 }
 
-/* Высота соседнего контрола хедера, измеренная по «Резюме PDF».
-   Совместим с --icon-right и --icon-only. */
+/* Кнопки хедера используют ту же высоту, что и остальные действия. */
 .btn--size-chrome {
-  height: var(--chrome-item-h, 3.5rem);
+  height: var(--button-height);
 }
 /* Подпись с иконкой справа: фиксированные внешние отступы. */
-.btn--size-chrome.btn--icon-right {
+.btn--icon-right {
   padding-left: 28px;
   padding-right: 20px;
 }
 .btn--size-chrome.btn--icon-only {
-  width: var(--chrome-item-h, 3.5rem);
+  width: var(--button-height);
 }
 
 /* Мягкая объёмная тень плавающего действия после начала скролла. */
@@ -260,4 +261,10 @@ html.chrome--pinned .btn--scroll-shadow {
   .btn::after {
     transition-duration: 0.01ms;
   }
+}
+
+.btn:disabled {
+  pointer-events: none;
+  opacity: 0.75;
+  cursor: default;
 }

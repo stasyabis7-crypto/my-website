@@ -50,9 +50,7 @@
 }
 
 :is(
-  .site-header__cta,
   .site-footer__telegram,
-  .garden__cta,
   .site-footer__link,
   .site-footer__menu-btn,
   .site-footer__top-btn,
@@ -77,9 +75,7 @@
    — то держало +4px ширины плашки футера в этом состоянии, оттуда и
    был "прыжок" футера на скролле). */
 :is(
-  .site-header__cta,
   .site-footer__telegram,
-  .garden__cta,
   .site-footer__link,
   .footer-menu-panel__link
 ) {
@@ -87,9 +83,7 @@
 }
 
 :is(
-  .site-header__cta,
   .site-footer__telegram,
-  .garden__cta,
   .site-footer__link,
   .site-footer__menu-btn,
   .site-footer__top-btn,
@@ -121,7 +115,6 @@
    из розового состояния в нейтральный ink темы (белый в dark,
    чёрный в light). */
 :is(
-  .site-header__cta,
   .site-footer__telegram,
   .site-footer__menu-btn,
   .site-footer__link.is-current,
@@ -132,9 +125,7 @@
 }
 
 :is(
-  .site-header__cta,
   .site-footer__telegram,
-  .garden__cta,
   .site-footer__link,
   .site-footer__menu-btn,
   .site-footer__top-btn,
@@ -151,9 +142,7 @@
 }
 
 :is(
-  .site-header__cta,
   .site-footer__telegram,
-  .garden__cta,
   .site-footer__link,
   .site-footer__menu-btn,
   .site-footer__top-btn,
@@ -166,9 +155,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   :is(
-    .site-header__cta,
     .site-footer__telegram,
-    .garden__cta,
     .site-footer__link,
     .site-footer__menu-btn,
     .site-footer__top-btn,
@@ -185,7 +172,6 @@
   }
 
   :is(
-    .site-header__cta,
     .site-footer__telegram,
     .site-footer__menu-btn,
     .site-footer__link.is-current,
@@ -196,9 +182,7 @@
   }
 
   :is(
-    .site-header__cta,
     .site-footer__telegram,
-    .garden__cta,
     .site-footer__link,
     .site-footer__menu-btn,
     .site-footer__top-btn,
@@ -211,7 +195,6 @@
 }
 
 :is(
-  .site-header__cta,
   .site-footer__telegram,
   .site-footer__menu-btn,
   .site-footer__link.is-current,
@@ -222,7 +205,6 @@
 }
 
 @media (hover: none), (pointer: coarse) {
-  .site-header__cta:hover,
   .site-footer__telegram:hover,
   .site-footer__link:hover,
   .footer-menu-panel__link:hover {
@@ -245,18 +227,14 @@
   }
 
   :is(
-    .site-header__cta,
     .site-footer__telegram,
-    .garden__cta,
     .site-footer__link,
     .site-footer__menu-btn,
     .site-footer__top-btn,
     .footer-menu-panel__link
   ),
   :is(
-    .site-header__cta,
     .site-footer__telegram,
-    .garden__cta,
     .site-footer__link,
     .site-footer__menu-btn,
     .site-footer__top-btn,

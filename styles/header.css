@@ -147,112 +147,13 @@
   mask: url("../assets/logo.svg") center / contain no-repeat;
 }
 
-/*
-  Кнопка "Резюме PDF" — автоматически та же заготовка, что и пункт
-  футера (.site-footer__link — иконка сверху, подпись снизу, те же
-  паддинги/гэп/размер иконки), а не своя отдельная раскладка: одно и
-  то же visual "item" переиспользуется в хедере и футере, отсюда же и
-  одинаковая высота плашек хедера/футера (высота обеих теперь считается
-  от одного и того же содержимого, см. .site-footer__link в footer.css).
-  Правило одно на все брейкпоинты — на десктопе меняется только
-  font-size (см. медиа-запрос ниже), не раскладка. */
-.site-header__cta {
-  box-sizing: border-box;
-  flex: 0 0 auto;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  height: auto;
-  padding-block: 0.5rem;
-  padding-inline: 0.75rem;
-  border: 1px solid var(--color-action-active);
-  border-radius: 999px;
-  background: var(--color-action-active);
-  color: var(--color-action-active-text);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.site-header__cta .icon {
-  width: 1.375rem;
-  height: 1.375rem;
-}
-
-/* До десктопного брейкпоинта хедер использует ту же компактную
-   заготовку, что и навигация футера. Высота --chrome-item-h меряется
-   по этой кнопке, поэтому аватар, логотип и переключатель темы
-   подстраиваются под неё автоматически. */
+/* Отступы элементов плашки; типографика и размеры кнопки — в ДС. */
 @media (max-width: 1100px) {
-  .site-header__cta {
-    gap: 3px;
-    padding-block: 6px;
-    padding-inline: 10px;
-    font-size: var(--chrome-label-font-size-compact);
-  }
-
-  .site-header__cta .icon {
-    width: 18px;
-    height: 18px;
-  }
-
-  .site-header__identity {
-    gap: 0.5rem;
-  }
+  .site-header__identity { gap: 0.5rem; }
 }
-
-/* Тот же компактный размер нужен на широком экране, если скрипт
-   включил мобильную раскладку из-за нехватки места между плашками. */
-html.chrome--compact .site-header__cta {
-  gap: 3px;
-  padding-block: 6px;
-  padding-inline: 10px;
-  font-size: var(--chrome-label-font-size-compact);
-}
-
-html.chrome--compact .site-header__cta .icon {
-  width: 18px;
-  height: 18px;
-}
-
-html.chrome--compact .site-header__identity {
-  gap: 0.5rem;
-}
-
-/*
-  Десктоп — та же плашка чуть компактнее (меньше внешний паддинг), раз
-  места на широком экране хватает и без крупных тач-таргетов.
-  --chrome-pad-block — общий токен с footer.css (см. дубль там же и
-  комментарий у :root выше), меняется синхронно. --chrome-item-h не
-  трогаем здесь явно — она меряется по факту (см. :root выше), сама
-  подстроится под уменьшенный font-size кнопки ниже.
-
-  html:not(.chrome--compact) — см. комментарий у .site-header выше:
-  если бы плашки хедера/переключателя/футера не влезли в один ряд,
-  layout-chrome.js откатывает на моб-размер даже на широком экране.
-*/
+html.chrome--compact .site-header__identity { gap: 0.5rem; }
 @media (min-width: 1101px) {
-  html:not(.chrome--compact) {
-    --chrome-pad-block: 4px;
-  }
-
-  /* Текст мельче на десктопе — тот же приём у .site-footer__link в
-     footer.css, держите оба значения в синхроне (иначе высота плашек
-     разойдётся). */
-  html:not(.chrome--compact) .site-header__cta {
-    gap: 3px;
-    padding-block: 6px;
-    padding-inline: 10px;
-    font-size: var(--chrome-label-font-size-desktop);
-  }
-
-  html:not(.chrome--compact) .site-header__cta .icon {
-    width: 18px;
-    height: 18px;
-  }
-
-  html:not(.chrome--compact) .site-header__identity {
-    gap: 0.5rem;
-  }
+  html:not(.chrome--compact) { --chrome-pad-block: 4px; }
+  html:not(.chrome--compact) .site-header__identity { gap: 0.5rem; }
 }
+.site-header__cta { flex: 0 0 auto; }
