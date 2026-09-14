@@ -119,7 +119,7 @@
      размер/трекинг, что у обычного текста, только полужирный), один и
      тот же на любой кнопке сайта, большой или маленькой. */
   font-family: var(--font-family-body, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: var(--font-size-text, clamp(0.9rem, 1.35vw, 1.06rem));
+  font-size: var(--font-size-text);
   font-weight: var(--font-weight-semibold, 600);
   letter-spacing: var(--letter-spacing-text, -0.03em);
   white-space: nowrap;

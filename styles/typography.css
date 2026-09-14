@@ -1,23 +1,11 @@
 /*
-  Типографика — шкала ролей текста (Display/H1–H4/Body/Caption/Label/…)
-  поверх fluid-скейлинга из scale.css.
-
-  Два независимых механизма роста, каждый работает в своей зоне:
-
-  1) 390–950px — все размеры в rem, поэтому каждая роль растёт вместе с
-     html font-size автоматически (см. scale.css), без единой лишней
-     строчки CSS. К 950px root уже вырос ×1.342 от базы — то есть каждая
-     роль тоже в 1.342 раза крупнее мобильного значения ниже.
-
-  2) 950px+ — root заморожен (осознанно, чтобы обычный текст не раздувался
-     на десктопе, см. комментарий в scale.css), а вместе с ним замерли бы
-     и все rem-размеры. Заголовочные роли (H2–H4, Display) на 1101/1441
-     ниже получают явные шаги в px — на широких экранах у них достаточно
-     воздуха, чтобы иерархия продолжала расти, а тело текста (body/
-     caption/label/button) сознательно оставлено на замороженном размере:
-     длинный текст не должен становиться крупнее с одной лишь шириной
-     экрана. Шаги рассчитаны так, чтобы на стыке зон не было скачка —
-     каждый следующий чуть крупнее предыдущего, без разрывов.
+  Типографика ДС: фиксированные размеры по утверждённой таблице
+  для ширин 375, 600, 850, 1000, 1280, 1440, 1920 CSS px.
+  H1–H3, основной текст и кнопки не используют fluid-масштабирование.
+  База действует до 600px (включая 375 и меньше), далее — min-width.
+  Между точками размеры постоянные; на 1920+ действует последняя ступень.
+  Значения в px исключают повторное масштабирование через rem.
+  scale.css продолжает управлять остальными размерами макета.
 */
 
 :root {
@@ -39,7 +27,7 @@
 
   /* --- Заголовки: один и тот же шрифт на всех уровнях — отличается
      только font-size (см. --font-size-* ниже), family/вес/интерлиньяж
-     одни на всех: Display/H1/H2/H3/H4. Вес — regular: у Alice нет
+     одни на всех: Display/H1/H2/H3. Вес — regular: у Alice нет
      жирного начертания вообще (единственный вариант — 400), псевдо-
      жирный синтез браузера сознательно не используем. Трекинг — 0. */
   --letter-spacing-heading: 0;
@@ -48,24 +36,21 @@
   /* --- Обычный текст и кнопки: один размер/интерлиньяж/трекинг на весь
      сайт, снят с подзаголовка Главной (.garden__subtitle) — кнопки
      дополнительно берут тот же трекинг (.garden__cta использует его же). */
-  --font-size-text: clamp(0.9rem, 1.35vw, 1.06rem);
+  --font-size-text: 14px;
   --line-height-text: 1.42;
   --letter-spacing-text: -0.03em;
 
-  /* --- Шкала размеров (база 390px = 16px root) ---
-     Значения в rem: 1rem = текущий font-size html (см. scale.css). Шаг
-     между соседними ролями нигде не уже ~12% — иначе на глаз размеры
-     сливаются и иерархия перестаёт читаться. */
-  --font-size-3xs: 0.625rem;  /* 10px — самые мелкие лейблы/индексы */
-  --font-size-2xs: 0.75rem;   /* 12px — caption, ×1.20 к 3xs */
-  --font-size-sm: 0.875rem;   /* 14px — body small/label/button, ×1.17 */
-  --font-size-base: 1rem;     /* 16px — body, ×1.14 */
-  --font-size-md: 1.125rem;   /* 18px — body large / H4, ×1.13 */
-  --font-size-lg: 1.375rem;   /* 22px — H3, ×1.22 */
-  --font-size-xl: 1.75rem;    /* 28px — H2, ×1.27 */
-  --font-size-2xl: 2.25rem;   /* 36px — H1, ×1.29 */
-  --font-size-3xl: 3rem;      /* 48px — Display, ×1.33 */
-  --font-size-4xl: 3.75rem;   /* 60px — Display large, ×1.25 */
+  /* --- Размеры для 375px и меньше; базовая ступень до 600px --- */
+  --font-size-3xs: 9.9084px;
+  --font-size-2xs: 11.8901px;
+  --font-size-sm: 13.8718px;
+  --font-size-base: 15.8535px;
+
+  --font-size-lg: 22px;
+  --font-size-xl: 26px;
+  --font-size-2xl: 34px;
+  --font-size-3xl: 47.5604px;
+  --font-size-4xl: 59.4505px;
 
   /* --- Начертания --- */
   --font-weight-regular: 400;
@@ -79,7 +64,7 @@
   --line-height-body: 1.5;     /* длинный текст-абзац */
 
   /* --- Трекинг ---
-     Заголовочные роли (Display/H1–H4) используют --letter-spacing-heading
+     Заголовочные роли (Display/H1–H3) используют --letter-spacing-heading
      выше, эти два — не для ролей, только для крупных декоративных цифр
      на страницах кейсов (.case-head__num/.case-stat__value и т.п.). */
   --letter-spacing-tight: -0.01em;
@@ -96,7 +81,7 @@
   /* --- Вертикальный ритм (отступы между ролями) ---
      Всё в em — то есть каждое значение считается от font-size ТОГО
      элемента, на который падает отступ (margin-top второго элемента в
-     паре). Заголовки на 1101/1441 становятся крупнее (см. шаги выше) —
+     паре). Заголовки на новых брейкпоинтах становятся крупнее —
      их отступы в em вырастают вместе с ними автоматически, без отдельных
      переопределений под брейкпоинты. */
   --space-stack-heading-heading: 0.4em;  /* заголовок → подзаголовок-заголовок сразу под ним (Display→H1, H1→H2, …) — тесная группировка */
@@ -105,43 +90,107 @@
   --space-stack-section: 2em;            /* текст → новый заголовок — начало новой секции, отступ крупнее, чем внутри группы */
 }
 
-/*
-  Зона "десктоп" (1101+, root уже заморожен на 950px) — первый явный шаг
-  роста для заголовков и display, продолжающий иерархию, которую дальше
-  сам по себе fluid-скейлинг уже не тянет.
-*/
-@media (min-width: 1101px) {
+/* Размеры каждой контрольной ширины до следующего брейкпоинта. */
+@media (min-width: 600px) {
   :root {
-    /* px, не rem: root к этой ширине уже заморожен на ~21.47px (см.
-       scale.css), а не на 16px — те же значения в rem (2rem и т.д.)
-       рендерились почти на 35% крупнее, чем задумано (найдено и
-       исправлено 2026-09-12, см. память project_typography_unification). */
-    --font-size-lg: 32px;      /* H3 */
-    --font-size-xl: 40px;      /* H2 */
-    --font-size-2xl: 52px;     /* H1 */
-    --font-size-3xl: 68px;     /* Display */
-    --font-size-4xl: 84px;     /* Display large */
+    --font-size-3xs: 11.2821px;
+    --font-size-2xs: 13.5385px;
+    --font-size-sm: 15.7949px;
+    --font-size-base: 18.0513px;
+
+    --font-size-lg: 24px;
+    --font-size-xl: 32px;
+    --font-size-2xl: 40px;
+    --font-size-3xl: 54.1538px;
+    --font-size-4xl: 67.6923px;
+    --font-size-text: 16px;
   }
 }
 
-/* Зона "десктоп XL" (1441+) — второй, чуть более крупный шаг той же
-   лестницы: hero/display-заголовки на очень широких экранах выигрывают
-   от продолжения роста. Тело текста (body/caption/…) от ширины экрана
-   по-прежнему не зависит нигде. */
-@media (min-width: 1441px) {
+@media (min-width: 850px) {
   :root {
-    --font-size-lg: 34px;      /* H3 */
-    --font-size-xl: 44px;      /* H2 */
-    --font-size-2xl: 58px;     /* H1 */
-    --font-size-3xl: 76px;     /* Display */
-    --font-size-4xl: 96px;     /* Display large */
+    --font-size-3xs: 12.8083px;
+    --font-size-2xs: 15.37px;
+    --font-size-sm: 17.9316px;
+    --font-size-base: 20.4933px;
+
+    --font-size-lg: 28px;
+    --font-size-xl: 36px;
+    --font-size-2xl: 46px;
+    --font-size-3xl: 61.4799px;
+    --font-size-4xl: 76.8498px;
+    --font-size-text: 18px;
+  }
+}
+
+@media (min-width: 1000px) {
+  :root {
+    --font-size-3xs: 13.4188px;
+    --font-size-2xs: 16.1026px;
+    --font-size-sm: 18.7863px;
+    --font-size-base: 21.4701px;
+
+    --font-size-lg: 30px;
+    --font-size-xl: 38px;
+    --font-size-2xl: 48px;
+    --font-size-3xl: 64.4103px;
+    --font-size-4xl: 80.5128px;
+    --font-size-text: 20px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --font-size-3xs: 13.4188px;
+    --font-size-2xs: 16.1026px;
+    --font-size-sm: 18.7863px;
+    --font-size-base: 21.4701px;
+
+    --font-size-lg: 32px;
+    --font-size-xl: 40px;
+    --font-size-2xl: 52px;
+    --font-size-3xl: 68px;
+    --font-size-4xl: 84px;
+    --font-size-text: 20px;
+  }
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --font-size-3xs: 13.4188px;
+    --font-size-2xs: 16.1026px;
+    --font-size-sm: 18.7863px;
+    --font-size-base: 21.4701px;
+
+    --font-size-lg: 32px;
+    --font-size-xl: 40px;
+    --font-size-2xl: 52px;
+    --font-size-3xl: 68px;
+    --font-size-4xl: 84px;
+    --font-size-text: 20px;
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --font-size-3xs: 13.4188px;
+    --font-size-2xs: 16.1026px;
+    --font-size-sm: 18.7863px;
+    --font-size-base: 21.4701px;
+
+    --font-size-lg: 34px;
+    --font-size-xl: 44px;
+    --font-size-2xl: 58px;
+    --font-size-3xl: 76px;
+    --font-size-4xl: 96px;
+    --font-size-text: 22px;
   }
 }
 
 /* --- Базовый сброс для примеров/страниц, использующих эту шкалу --- */
 body {
   font-family: var(--font-family-body);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-text);
   line-height: var(--line-height-body);
   font-weight: var(--font-weight-regular);
 }
@@ -155,8 +204,7 @@ body {
 .text-display,
 .text-h1,
 .text-h2,
-.text-h3,
-.text-h4 {
+.text-h3 {
   font-family: var(--font-family-heading);
   line-height: var(--line-height-heading);
   font-weight: var(--font-weight-regular);
@@ -184,9 +232,6 @@ body {
   font-size: var(--font-size-lg);
 }
 
-.text-h4 {
-  font-size: var(--font-size-md);
-}
 
 /* Обычный текст сайта — один стиль на всех ролях (подзаголовок Главной),
    .text-body-lg/.text-body-sm остаются отдельными классами только ради
@@ -247,7 +292,7 @@ body {
   выше). Три смысловых случая, все сочетания ролей внутри каждого:
 
   1) Заголовок → более мелкий заголовок сразу под ним ("подзаголовок",
-     напр. Display → H1, H1 → H2, H2 → H3, H3 → H4, включая пропуск
+     напр. Display → H1, H1 → H2, H2 → H3, включая пропуск
      уровня вроде H1 → H3) — самая тесная группировка, читаются как пара.
   2) Заголовок → лид/текст сразу под ним (напр. H1 → Body-lg, как
      "Вы искали продуктового дизайнера" → "И вы его нашли") — чуть
@@ -268,9 +313,7 @@ body {
 .text-display + .text-h2,
 .text-h1 + .text-h2,
 .text-h1 + .text-h3,
-.text-h2 + .text-h3,
-.text-h2 + .text-h4,
-.text-h3 + .text-h4 {
+.text-h2 + .text-h3 {
   margin-top: var(--space-stack-heading-heading);
 }
 
@@ -283,9 +326,7 @@ body {
 .text-h2 + .text-body-lg,
 .text-h2 + .text-body,
 .text-h3 + .text-body-lg,
-.text-h3 + .text-body,
-.text-h4 + .text-body-lg,
-.text-h4 + .text-body {
+.text-h3 + .text-body {
   margin-top: var(--space-stack-heading-lead);
 }
 
@@ -301,12 +342,12 @@ body {
 }
 
 :is(.text-body-lg, .text-body, .text-body-sm)
-  + :is(.text-display-lg, .text-display, .text-h1, .text-h2, .text-h3, .text-h4) {
+  + :is(.text-display-lg, .text-display, .text-h1, .text-h2, .text-h3) {
   margin-top: var(--space-stack-section);
 }
 
 :is(
-  .text-display-lg, .text-display, .text-h1, .text-h2, .text-h3, .text-h4,
+  .text-display-lg, .text-display, .text-h1, .text-h2, .text-h3,
   .text-body-lg, .text-body, .text-body-sm
 ):first-child {
   margin-top: 0;
@@ -341,7 +382,6 @@ body {
 .text-h1,
 .text-h2,
 .text-h3,
-.text-h4,
 .text-body-lg,
 .text-body,
 .text-body-sm {

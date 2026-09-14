@@ -52,7 +52,7 @@ Claude, другой ИИ-ассистент или человек. Не спе�
 
 - Заголовки — один шрифт на всех уровнях, снят с H1 Главной
   (`.garden__title`): `.text-display-lg`/`.text-display`/`.text-h1`/
-  `.text-h2`/`.text-h3`/`.text-h4` отличаются ТОЛЬКО размером
+  `.text-h2`/`.text-h3` отличаются ТОЛЬКО размером
   (`font-size`), family/вес/трекинг/интерлиньяж/оптические оси —
   общие токены (`--letter-spacing-heading`, `--line-height-heading`,
   `--font-variation-heading`). Новый уровень заголовка не изобретается —
