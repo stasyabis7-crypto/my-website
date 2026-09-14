@@ -183,7 +183,7 @@
 
 .garden__subtitle {
   margin: clamp(0.7rem, 2vh, 1.3rem) 0 0;
-  max-width: 40rem;
+  max-width: 500px;
   font-family: var(--gd-mono);
   font-weight: 400;
   font-size: var(--gd-text);
@@ -197,7 +197,6 @@
 
 @media (min-width: 900px) {
   .garden__br-dt { display: inline; }
-  .garden__subtitle { max-width: none; }
 }
 
 .garden__actions {
