@@ -95,7 +95,7 @@
 
 /* Единая высота для всех вариаций .btn, на всех брейкпоинтах. */
 :root {
-  --button-height: 50px;
+  --button-height: 64px;
 }
 
 .btn {
