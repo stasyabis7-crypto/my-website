@@ -238,6 +238,11 @@
 .btn--size-chrome {
   height: var(--chrome-item-h, 3.5rem);
 }
+/* Подпись с иконкой справа: фиксированные внешние отступы. */
+.btn--size-chrome.btn--icon-right {
+  padding-left: 28px;
+  padding-right: 20px;
+}
 .btn--size-chrome.btn--icon-only {
   width: var(--chrome-item-h, 3.5rem);
 }
