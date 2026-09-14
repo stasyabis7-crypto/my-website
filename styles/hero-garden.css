@@ -1,6 +1,6 @@
 /*
   Баннер-сад — первый экран. Голубая скруглённая плашка во всю ширину
-  (минус --page-px по краям), внутри: счётчик, заголовок (Fraunces),
+  (минус --page-px по краям), внутри: счётчик, заголовок (Alice),
   подзаголовок и кнопки (IBM Plex Mono), слой посаженных посетителями
   цветов (styles/hero-garden.js разбрасывает их по слотам от сервера).
 
@@ -57,7 +57,6 @@
   overflow: hidden;
   isolation: isolate;
   color: #fff;
-  --gd-serif: "Fraunces", "Times New Roman", Georgia, serif;
   --gd-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   /* Единый размер для «цветёт/посажено», подзаголовка и кнопок. */
   --gd-text: clamp(0.9rem, 1.35vw, 1.06rem);
@@ -135,13 +134,13 @@
   gap: 0.28em;
 }
 
-/* Цифры — Fraunces как акцент, но того же кегля, что и слова. */
+/* Цифры — Alice как акцент, но того же кегля, что и слова. */
 .garden__count {
-  font-family: var(--gd-serif);
-  font-weight: 400;
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-regular);
   font-size: 1.35em;
-  line-height: 1;
-  font-variation-settings: "opsz" 40, "SOFT" 0, "WONK" 1;
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-heading);
 }
 
 .garden__counter[data-loading] .garden__count {
@@ -175,12 +174,11 @@
 
 .garden__title {
   margin: clamp(0.4rem, 1.5vh, 1rem) 0 0;
-  font-family: var(--gd-serif);
-  font-weight: 600;
-  font-variation-settings: "opsz" 120, "SOFT" 0, "WONK" 1;
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-regular);
   font-size: clamp(2.4rem, 6.4vw, 4.6rem);
-  line-height: 1.04;
-  letter-spacing: -0.035em;
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-heading);
 }
 
 .garden__subtitle {
@@ -617,10 +615,11 @@ html.gd-scroll-lock body {
 
 .garden-picker__title {
   margin: 0;
-  font-family: "Fraunces", Georgia, serif;
-  font-weight: 600;
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-regular);
   font-size: 1.5rem;
-  line-height: 1.1;
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-heading);
 }
 
 .garden-picker__close {
@@ -732,9 +731,11 @@ html.gd-scroll-lock body {
 
 .garden-plant__name {
   text-align: center;
-  font-family: "Fraunces", Georgia, serif;
-  font-weight: 600;
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-regular);
   font-size: 1.15rem;
+  letter-spacing: var(--letter-spacing-heading);
+  line-height: var(--line-height-heading);
 }
 
 .garden-plant__meaning {
@@ -1000,9 +1001,11 @@ html.gd-scroll-lock body {
 }
 
 .garden-help__card-name {
-  font-family: "Fraunces", Georgia, serif;
-  font-weight: 600;
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-regular);
   font-size: 0.92rem;
+  letter-spacing: var(--letter-spacing-heading);
+  line-height: var(--line-height-heading);
 }
 
 .garden-help__card-date {

@@ -10,17 +10,9 @@
 
 :root {
   /* --- Семейства шрифтов ---
-     Body — та же гарнитура, что несёт подзаголовок на главной (см.
-     --gd-mono в hero-garden.css), заведена как общесайтовый токен.
-     Heading — Alice, НЕ Fraunces: у Fraunces на Google Fonts нет
-     кириллического набора вообще (только vietnamese/latin-ext/latin,
-     проверено 2026-09-12) — кириллические заголовки молча откатывались
-     на фолбэк (Georgia/Times New Roman) вместо самого шрифта. Alice
-     кириллицу несёт полноценно (см. fonts.css). H1 Главной
-     (.garden__title, --gd-serif в hero-garden.css) на Fraunces
-     остаётся — там текст латиницей, эту замену не трогает, свой
-     отдельный токен. Начертания и unicode-range — в fonts.css,
-     подключать его нужно на каждой странице, где используются эти роли. */
+     Alice 400 — все заголовки сайта, включая Главную и попапы.
+     IBM Plex Mono — основной текст и кнопки.
+     Начертания и unicode-range подключаются в fonts.css. */
   --font-family-heading: "Alice", "Times New Roman", Georgia, serif;
   --font-family-body: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
