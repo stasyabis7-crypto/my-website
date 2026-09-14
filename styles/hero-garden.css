@@ -191,6 +191,12 @@
   letter-spacing: -0.03em;
 }
 
+@media (max-width: 850px) {
+  .garden__subtitle {
+    max-width: 400px;
+  }
+}
+
 /* Ручные переносы подзаголовка — только на десктопе; на мобилке текст
    переносится сам (max-width выше держит его в разумной колонке). */
 .garden__br-dt { display: none; }
