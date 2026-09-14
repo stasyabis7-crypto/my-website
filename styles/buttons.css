@@ -201,12 +201,6 @@
 
 /* ---------- Типы расположения иконки ---------- */
 
-/* Оптическое выравнивание иконки рядом с текстом IBM Plex Mono. */
-.btn--icon-left .icon,
-.btn--icon-right .icon {
-  translate: 0 1px;
-}
-
 .btn--icon-left .icon {
   order: -1;
 }
