@@ -1038,20 +1038,14 @@ html.gd-scroll-lock body {
     animation-name: gd-sheet-in;
     animation-duration: 0.42s;
   }
-  @keyframes gd-sheet-in {
-    from { transform: translateY(100%); }
-    to   { transform: translateY(0); }
-  }
+
   /* Шторка при закрытии уезжает вниз. */
   .garden-picker.is-closing .garden-picker__panel {
     animation-name: gd-sheet-out;
     animation-duration: 0.3s;
     animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
   }
-  @keyframes gd-sheet-out {
-    from { transform: translateY(0); }
-    to   { transform: translateY(100%); }
-  }
+
 }
 
 /* ---------- Карточка цветка: десктоп — центрированный попап,
@@ -1102,8 +1096,7 @@ html.gd-scroll-lock body {
   transition: top 0.25s ease, right 0.25s ease;
 }
 
-.site-socials__list li,
-.site-socials__toggle {
+.contact-trigger {
   pointer-events: auto;
 }
 
@@ -1115,7 +1108,7 @@ html:not(.chrome--pinned) .site-socials {
   right: calc(var(--gd-edge, 10px) + var(--gd-chrome-inset, 10px) + var(--gd-socials-offset, 0px));
 }
 
-/* Десктоп/планшет (≥900px): хедер слева (в баннере на скролл-топе, в
+/* Десктоп (≥1000px): хедер слева (в баннере на скролл-топе, в
    углу при скролле), соцсети — отдельная плавающая хрома справа.
    Перебиваем центрирование из header.css. */
 .site-header {
@@ -1123,7 +1116,7 @@ html:not(.chrome--pinned) .site-socials {
   transition: top 0.25s ease, left 0.25s ease;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1000px) {
   html:not(.chrome--pinned) .site-header {
     top: calc(var(--gd-edge, 10px) + var(--gd-chrome-inset, 10px));
     left: calc(var(--gd-edge, 10px) + var(--gd-chrome-inset, 10px));
@@ -1179,9 +1172,6 @@ html:not(.chrome--pinned) .site-socials {
   }
 }
 
-.site-socials__toggle {
-  display: none;
-}
 
 /* SVG из assets/socials (кружок с вырезанным глифом) — МАСКА на ссылке.
    Сам кружок красится background-ом: белый → на ховере розовый (вся
@@ -1236,7 +1226,7 @@ html:not(.chrome--pinned) .site-socials {
    аватар, лого, «Резюме PDF» и круглая кнопка соцсетей справа от неё
    (тап → шторка снизу). Ряд иконок и плавающее позиционирование соцсетей
    выключены — это теперь обычный элемент внутри <header>. */
-@media (max-width: 899px) {
+@media (width < 1000px) {
   .site-header {
     left: 50%;
     transform: translateX(-50%);
@@ -1265,24 +1255,8 @@ html:not(.chrome--pinned) .site-socials {
   .site-socials__list {
     display: none;
   }
-  .site-socials__toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--chrome-item-h, 3rem);
-    height: var(--chrome-item-h, 3rem);
-    border: 0;
-    border-radius: 50%;
-    background: #fff;
-    /* Глиф — тёмный, в цвет фона сайта (как подложка кружков в
-       десктопном ряду .site-socials__list li). */
-    color: #0e0e10;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
-    cursor: pointer;
-  }
-  .site-socials__toggle .icon {
-    width: 44%;
-    height: 44%;
+  .contact-trigger__label {
+    display: none;
   }
   /* Лого ужимается / убирается из JS (layout-chrome.js), чтобы плашка по
      центру влезала в экран; это — страховочный потолок. */
@@ -1374,4 +1348,29 @@ html:not(.chrome--pinned) .site-socials {
       drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2))
       drop-shadow(0 0 12px rgba(255, 255, 255, 0.75)) !important;
   }
+}
+
+/* Единый мобильный хедер и шторка контактов до 1000px. */
+@media (900px <= width < 1000px) {
+  .garden-socials-sheet { align-items: flex-end; }
+  .garden-socials-sheet .garden-picker__panel {
+    width: 100%;
+    max-height: calc(100svh - env(safe-area-inset-top, 0px) - 12px);
+    border-radius: 34px 34px 0 0;
+    animation-name: gd-sheet-in;
+    animation-duration: 0.42s;
+  }
+  .garden-socials-sheet.is-closing .garden-picker__panel {
+    animation-name: gd-sheet-out;
+    animation-duration: 0.3s;
+  }
+}
+
+@keyframes gd-sheet-in {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes gd-sheet-out {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
 }

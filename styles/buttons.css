@@ -233,6 +233,23 @@
   height: 1.3em;
 }
 
+/* Высота соседнего контрола хедера, измеренная по «Резюме PDF».
+   Совместим с --icon-right и --icon-only. */
+.btn--size-chrome {
+  height: var(--chrome-item-h, 3.5rem);
+}
+.btn--size-chrome.btn--icon-only {
+  width: var(--chrome-item-h, 3.5rem);
+}
+
+/* Мягкая объёмная тень плавающего действия после начала скролла. */
+.btn--scroll-shadow {
+  transition: transform 0.12s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.25s ease;
+}
+html.chrome--pinned .btn--scroll-shadow {
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.14), 0 14px 32px -8px rgba(0, 0, 0, 0.2);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .btn,
   .btn::after {

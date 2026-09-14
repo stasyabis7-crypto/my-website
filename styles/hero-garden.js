@@ -81,14 +81,18 @@
     if (!wrap) return;
     var toggle = document.getElementById('site-socials-toggle');
 
-    /* Мобилка (≤899px): переносим блок ВНУТРЬ .site-header (кнопка справа
+    /* Мобилка/планшет (<1000px): переносим блок ВНУТРЬ .site-header (кнопка справа
        от «Резюме PDF», раскладка — hero-garden.css). Десктоп: возвращаем
-       обратно в body сразу после хедера — там это position:fixed ряд в
+       обратно в body сразу после хедера — там это position:fixed кнопка в
        правом верхнем углу, а внутри плашки с backdrop-filter fixed
        считался бы от самой плашки. */
     var headerEl = document.querySelector('.site-header');
-    var socialsMq = window.matchMedia('(max-width: 899px)');
+    var socialsMq = window.matchMedia('(width < 1000px)');
     function placeSocials() {
+      if (toggle) {
+        toggle.classList.toggle('btn--icon-only', socialsMq.matches);
+        toggle.classList.toggle('btn--icon-right', !socialsMq.matches);
+      }
       if (!headerEl) return;
       if (socialsMq.matches) {
         if (wrap.parentElement !== headerEl) headerEl.appendChild(wrap);
@@ -129,24 +133,7 @@
       }
     }
 
-    // desktop-ряд: копирование почты + тост
-    var toast;
-    function showCopied() {
-      if (!toast) {
-        toast = document.createElement('span');
-        toast.className = 'site-socials__copied';
-        toast.textContent = 'Почта скопирована';
-        wrap.appendChild(toast);
-      }
-      toast.hidden = false;
-      clearTimeout(showCopied._t);
-      showCopied._t = setTimeout(function () { if (toast) toast.hidden = true; }, 1600);
-    }
-    wrap.querySelectorAll('[data-copy]').forEach(function (btn) {
-      btn.addEventListener('click', function () { copyText(btn.getAttribute('data-copy'), showCopied); });
-    });
-
-    // мобилка: круглая кнопка → шторка снизу
+    // Общий список: десктопный попап или мобильная шторка.
     var sheet;
     function closeSheet() {
       closeModal(sheet, function () {
@@ -154,10 +141,11 @@
         if (toggle) { toggle.setAttribute('aria-expanded', 'false'); toggle.focus(); }
       });
     }
-    function openSheet() {
+    function ensureSheet() {
       if (!sheet) {
         sheet = document.createElement('div');
         sheet.className = 'garden-picker garden-socials-sheet';
+        sheet.id = 'site-socials-dialog';
         sheet.hidden = true;
         sheet.setAttribute('role', 'dialog');
         sheet.setAttribute('aria-modal', 'true');
@@ -175,12 +163,11 @@
             el = document.createElement('button');
             el.type = 'button';
             el.addEventListener('click', function () {
-              copyText(it.copy, function () {});
-              // Не закрываем шторку — показываем подтверждение и через
-              // пару секунд возвращаем подпись.
-              el.lastChild.textContent = 'Почта скопирована';
-              clearTimeout(el._t);
-              el._t = setTimeout(function () { el.lastChild.textContent = it.label; }, 1800);
+              copyText(it.copy, function () {
+                el.lastChild.textContent = 'Почта скопирована';
+                clearTimeout(el._t);
+                el._t = setTimeout(function () { el.lastChild.textContent = it.label; }, 1800);
+              });
             });
           } else {
             el = document.createElement('a');
@@ -195,15 +182,29 @@
           rows.appendChild(el);
         });
         sheet.querySelectorAll('[data-close]').forEach(function (x) { x.addEventListener('click', closeSheet); });
-        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sheet && !sheet.hidden) closeSheet(); });
+        document.addEventListener('keydown', function (e) {
+          if (!sheet || sheet.hidden) return;
+          if (e.key === 'Escape') { e.preventDefault(); closeSheet(); }
+          if (e.key === 'Tab') {
+            var controls = sheet.querySelectorAll('button, a[href]');
+            var first = controls[0], last = controls[controls.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+          }
+        });
         document.body.appendChild(sheet);
       }
+    }
+    function openSheet() {
+      ensureSheet();
+      if (!sheet.hidden) return;
       sheet.hidden = false;
       lockScroll();
       if (toggle) toggle.setAttribute('aria-expanded', 'true');
       var c = sheet.querySelector('.garden-picker__close');
       if (c) c.focus();
     }
+    ensureSheet();
     if (toggle) toggle.addEventListener('click', function (e) { e.stopPropagation(); openSheet(); });
   })();
 

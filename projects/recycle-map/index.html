@@ -25,9 +25,9 @@
 <link rel="stylesheet" href="../../styles/icons.css?v=5" />
 <link rel="stylesheet" href="../../styles/header.css?v=31" />
 <link rel="stylesheet" href="../../styles/footer.css?v=46" />
-<link rel="stylesheet" href="../../styles/hero-garden.css?v=21" />
+<link rel="stylesheet" href="../../styles/hero-garden.css?v=22" />
 <link rel="stylesheet" href="../../styles/button-hover.css?v=26" />
-<link rel="stylesheet" href="../../styles/buttons.css?v=3" />
+<link rel="stylesheet" href="../../styles/buttons.css?v=4" />
 <link rel="stylesheet" href="../../styles/works-grid.css?v=11" />
 <link rel="stylesheet" href="../../styles/fonts.css?v=2" />
 <link rel="stylesheet" href="../../styles/case-blocks.css?v=41" />
@@ -104,22 +104,13 @@ body {
     </a>
   </header>
 
-  <!-- Соцсети — тот же компонент и разметка, что на Главной (см. index.html):
-       десктоп/планшет — плавающий ряд иконок; мобилка — hero-garden.js
-       переносит блок внутрь <header> как круглую кнопку со шторкой. -->
+  <!-- Связаться: от 1000px справа; ниже — иконка в общем хедере. -->
   <div class="site-socials" id="site-socials">
-    <button type="button" class="site-socials__toggle" id="site-socials-toggle"
-            aria-expanded="false" aria-controls="site-socials-list" aria-label="Соцсети">
+    <button type="button" class="btn btn--fill-white btn--icon-right btn--size-chrome btn--scroll-shadow contact-trigger" id="site-socials-toggle"
+            aria-expanded="false" aria-haspopup="dialog" aria-controls="site-socials-dialog" aria-label="Связаться">
+      <span class="contact-trigger__label">Связаться</span>
       <span class="icon icon--contacts" aria-hidden="true"></span>
     </button>
-    <ul class="site-socials__list" id="site-socials-list">
-      <li><a class="site-socials__link" style="--gd-icon:url('/assets/socials/Telegram.svg')" href="https://t.me/stasyabis" target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram"><span class="site-socials__name">Написать в tg</span></a></li>
-      <li><button type="button" class="site-socials__link" style="--gd-icon:url('/assets/socials/Google.svg')" data-copy="stasyabis7@gmail.com" aria-label="Скопировать почту"><span class="site-socials__name">Написать на почту</span></button></li>
-      <li><a class="site-socials__link" style="--gd-icon:url('/assets/socials/Dribbble.svg')" href="https://dribbble.com/Stasyabis" target="_blank" rel="noopener noreferrer" aria-label="Dribbble"><span class="site-socials__name">Dribbble</span></a></li>
-      <li><a class="site-socials__link" style="--gd-icon:url('/assets/socials/Figma.svg')" href="https://www.figma.com/@stasyabis" target="_blank" rel="noopener noreferrer" aria-label="Figma community"><span class="site-socials__name">Figma community</span></a></li>
-      <li><a class="site-socials__link" style="--gd-icon:url('/assets/socials/Medium.svg')" href="https://medium.com/@stasyabis" target="_blank" rel="noopener noreferrer" aria-label="Medium"><span class="site-socials__name">Medium</span></a></li>
-      <li><a class="site-socials__link" style="--gd-icon:url('/assets/socials/Habr.svg')" href="https://habr.com/ru/users/stasyabis/" target="_blank" rel="noopener noreferrer" aria-label="Habr"><span class="site-socials__name">Habr</span></a></li>
-    </ul>
   </div>
 
   <main class="case">
@@ -542,8 +533,8 @@ body {
     </nav>
   </div>
 
-  <script src="../../styles/hero-garden.js?v=15"></script>
-  <script src="../../styles/layout-chrome.js?v=25"></script>
+  <script src="../../styles/hero-garden.js?v=16"></script>
+  <script src="../../styles/layout-chrome.js?v=26"></script>
   <script src="../../styles/typography-rules.js?v=1"></script>
   <script src="../../styles/haptics.js?v=1"></script>
   <script src="../../styles/case-cards.js?v=1"></script>

@@ -103,7 +103,7 @@
     themeToggle.style.left = Math.round(rect.right + TOGGLE_GAP) + 'px';
   }
 
-  /* Мобилка (≤899px): вся хрома в одной плашке-хедере по центру экрана
+  /* Мобилка/планшет (<1000px): вся хрома в одной плашке-хедере по центру экрана
      (аватар + лого + «Резюме PDF» + кнопка соцсетей, см.
      hero-garden.css). Если плашка шире экрана — сжимаем словомарк ровно
      на величину нехватки; если и сжатый не влезает (< LOGO_MIN_WIDTH) —
@@ -115,7 +115,7 @@
     // в его естественном размере, а не то, до чего он был сжат/спрятан.
     logoMark.style.width = '';
     if (logoLink) logoLink.hidden = false;
-    if (window.innerWidth > 899) return;
+    if (window.innerWidth >= 1000) return;
 
     var budget = window.innerWidth - 2 * HEADER_EDGE_GAP;
     var overflow = header.getBoundingClientRect().width - budget;
