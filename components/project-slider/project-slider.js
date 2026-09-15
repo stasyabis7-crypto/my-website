@@ -1,19 +1,23 @@
 (() => {
   const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  function card(project, index, count, clone = false) {
+  function card(project, index, count, clone = false, variant = 'cover') {
     const title = escape(project.title);
     const sizes = project.format === 'phone'
       ? '(max-width: 599px) 66vw, (max-width: 1199px) 33vw, (pointer: coarse) 33vw, 28vw'
       : '(max-width: 599px) 100vw, (max-width: 1199px) 50vw, (pointer: coarse) 50vw, 40vw';
-    return `<article class="project-card project-card--${escape(project.format)}" data-index="${index}" ${clone ? 'data-loop-copy' : ''} role="group" aria-roledescription="слайд" aria-label="${index + 1} из ${count}: ${title}">
+    const panel = variant === 'panel';
+    const copy = `<div class="project-card__copy"><h3 class="project-card__text text-h2">${title}</h3><p class="project-card__text text-body">${escape(project.description)}</p></div>`;
+    const link = project.href ? `<a class="project-card__link" href="${escape(project.href)}" aria-label="Открыть проект: ${title}" tabindex="-1"></a><a class="project-card__open btn ${panel ? 'btn--fill-pink' : 'btn--fill-white'} btn--icon-only btn--icon-diagonal-motion" href="${escape(project.href)}" aria-label="Открыть проект: ${title}"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : '';
+    return `<article class="project-card project-card--${escape(project.format)}${panel ? ' project-card--panel' : ''}${project.href ? ' project-card--linked' : ''}" ${panel && project.href ? 'data-action-hover' : ''} data-index="${index}" ${clone ? 'data-loop-copy' : ''} role="group" aria-roledescription="слайд" aria-label="${index + 1} из ${count}: ${title}">
+      ${panel ? copy : ''}
       <div class="project-card__media" ${project.href ? 'data-action-hover' : ''}>
         <div class="project-card__cover" style="--cover-color:${escape(project.color)}">
           <img class="project-card__image" src="${escape(project.image)}" srcset="${escape(project.srcset)}" sizes="${sizes}" alt="${title}" loading="lazy" decoding="async" draggable="false">
-          ${project.href ? '' : '<span class="project-card__badge text-body">В работе</span>'}
+          ${project.href || panel ? '' : '<span class="project-card__badge text-body">В работе</span>'}
         </div>
-        ${project.href ? `<a class="project-card__link" href="${escape(project.href)}" aria-label="Открыть проект: ${title}" tabindex="-1"></a><a class="project-card__open btn btn--fill-white btn--icon-only btn--icon-diagonal-motion" href="${escape(project.href)}" aria-label="Открыть проект: ${title}"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : ''}
+        ${panel ? '' : link}
       </div>
-      <div class="project-card__copy"><h3 class="project-card__text text-h2">${title}</h3><p class="project-card__text text-body">${escape(project.description)}</p></div>
+      ${panel ? link : copy}
     </article>`;
   }
   document.querySelectorAll('[data-projects]').forEach(root => {
@@ -29,7 +33,7 @@
     const viewport = root.querySelector('.project-slider__viewport');
     const track = root.querySelector('.project-slider__track');
     const status = root.querySelector('.project-slider__status');
-    track.innerHTML = Array.from({length: 3}, (_, copy) => projects.map((p, i) => card(p, i, count, copy !== 1)).join('')).join('');
+    track.innerHTML = Array.from({length: 3}, (_, copy) => projects.map((p, i) => card(p, i, count, copy !== 1, root.dataset.cardVariant)).join('')).join('');
     const cards = [...track.children];
     let index = count, step = 0, busy = false, timer, pointer, dragged = false, pending = 0, suppressClickUntil = 0;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -190,11 +194,12 @@
       } else {
         root.setAttribute('aria-roledescription', 'карусель'); viewport.tabIndex = 0; track.removeAttribute('role');
       }
-      viewport.setAttribute('aria-label', stacked ? 'Проекты Авито' : 'Проекты Авито. Листайте стрелками или свайпом');
+      const label = root.dataset.projectLabel || 'Проекты Авито';
+      viewport.setAttribute('aria-label', stacked ? label : `${label}. Листайте стрелками или свайпом`);
       const w = cards[count].getBoundingClientRect().width; step = w + 16;
       cards.forEach(el => {
         if (el.hidden) return;
-        if (el.querySelector('.project-card__open')) {
+        if (el.querySelector('.project-card__open') && !el.classList.contains('project-card--panel')) {
           // Follow the button circle with a 12px gap and tangent transitions
           // into the cover edges, without the former horizontal shelf.
           const buttonSize = el.querySelector('.project-card__open').getBoundingClientRect().width;

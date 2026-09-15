@@ -15,13 +15,14 @@
 <script>document.documentElement.classList.add('is-page-loading')</script>
 <link rel="stylesheet" href="styles/scale.css?v=18" />
 <link rel="stylesheet" href="styles/typography.css?v=24" />
+<link rel="stylesheet" href="styles/spacing.css?v=1" />
 <link rel="stylesheet" href="styles/theme.css?v=mood-3" />
 <link rel="stylesheet" href="styles/icons.css?v=7" />
 <link rel="stylesheet" href="styles/header.css?v=101" />
 <link rel="stylesheet" href="styles/footer.css?v=49" />
 <link rel="stylesheet" href="styles/button-hover.css?v=100" />
 <link rel="stylesheet" href="styles/buttons.css?v=touch-1" />
-<link rel="stylesheet" href="components/project-slider/project-slider.css?v=6" />
+<link rel="stylesheet" href="components/project-slider/project-slider.css?v=7" />
 <link rel="preload" as="font" type="font/ttf" href="styles/Valisca%204.ttf" crossorigin />
 <link rel="stylesheet" href="styles/fonts.css?v=3" />
 <link rel="stylesheet" href="styles/site-chrome.css?v=2" />
@@ -246,6 +247,16 @@
       </div>
       <p class="project-slider__status text-body" aria-live="polite" aria-atomic="true"></p>
     </section>
+    <section class="project-slider project-slider--themed" id="ozon-projects" data-projects="ozon" data-card-variant="panel" data-project-label="Проекты Ozon" aria-labelledby="ozon-heading" aria-roledescription="карусель">
+      <div class="project-slider__heading">
+        <h2 class="text-h1" id="ozon-heading">В Ozon создавала</h2>
+        <p class="text-body">CRM, ЛК Селлера, и вела ТГ канал</p>
+      </div>
+      <div class="project-slider__viewport" tabindex="0" aria-label="Проекты Ozon. Листайте стрелками или свайпом">
+        <div class="project-slider__track"></div>
+      </div>
+      <p class="project-slider__status text-body" aria-live="polite" aria-atomic="true"></p>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -346,7 +357,8 @@
   <script src="styles/layout-chrome.js?v=28"></script>
   <script src="styles/loading.js?v=mood-2"></script>
   <script src="components/project-slider/avito.js?v=1"></script>
-  <script src="components/project-slider/project-slider.js?v=5"></script>
+  <script src="components/project-slider/ozon.js?v=1"></script>
+  <script src="components/project-slider/project-slider.js?v=6"></script>
   <script src="styles/typography-rules.js?v=2"></script>
   <script src="styles/haptics.js?v=1"></script>
 </body>
