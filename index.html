@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="styles/footer.css?v=49" />
 <link rel="stylesheet" href="styles/button-hover.css?v=100" />
 <link rel="stylesheet" href="styles/buttons.css?v=touch-1" />
-<link rel="stylesheet" href="components/project-slider/project-slider.css?v=9" />
+<link rel="stylesheet" href="components/project-slider/project-slider.css?v=10" />
 <link rel="preload" as="font" type="font/ttf" href="styles/Valisca%204.ttf" crossorigin />
 <link rel="stylesheet" href="styles/fonts.css?v=3" />
 <link rel="stylesheet" href="styles/site-chrome.css?v=2" />
@@ -232,30 +232,23 @@
     </section>
     <!-- component:hero-mood:end -->
 
-    <section class="project-slider" id="works-gallery" data-projects="avito" aria-labelledby="avito-heading" aria-roledescription="карусель">
+    <section class="project-slider" id="works-gallery" data-projects="avito" aria-labelledby="avito-heading">
       <div class="project-slider__heading">
         <h2 class="text-h1" id="avito-heading">Сейчас проектирую в Avito</h2>
         <p class="text-body">Лендинги, финансы, благотворительность, и веду ТГ канал</p>
       </div>
-      <div class="project-slider__viewport" tabindex="0" aria-label="Проекты Авито. Листайте стрелками или свайпом">
+      <div class="project-slider__viewport" aria-label="Проекты Авито">
         <div class="project-slider__track"></div>
       </div>
-      <div class="project-slider__actions">
-        <button class="btn btn--fill-white btn--icon-only" type="button" data-direction="-1" aria-label="Предыдущий проект"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>
-        <p class="project-slider__count text-body" data-project-count>10 проектов</p>
-        <button class="btn btn--fill-white btn--icon-only" type="button" data-direction="1" aria-label="Следующий проект"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>
-      </div>
-      <p class="project-slider__status text-body" aria-live="polite" aria-atomic="true"></p>
     </section>
-    <section class="project-slider project-slider--themed" id="ozon-projects" data-projects="ozon" data-card-variant="panel" data-project-label="Проекты Ozon" aria-labelledby="ozon-heading" aria-roledescription="карусель">
+    <section class="project-slider project-slider--themed" id="ozon-projects" data-projects="ozon" data-card-variant="panel" data-project-label="Проекты Ozon" aria-labelledby="ozon-heading">
       <div class="project-slider__heading">
         <h2 class="text-h1" id="ozon-heading">В Ozon создавала</h2>
         <p class="text-body">CRM, ЛК Селлера, и вела ТГ канал</p>
       </div>
-      <div class="project-slider__viewport" tabindex="0" aria-label="Проекты Ozon. Листайте стрелками или свайпом">
+      <div class="project-slider__viewport" aria-label="Проекты Ozon">
         <div class="project-slider__track"></div>
       </div>
-      <p class="project-slider__status text-body" aria-live="polite" aria-atomic="true"></p>
     </section>
   </main>
 
@@ -358,7 +351,7 @@
   <script src="styles/loading.js?v=mood-2"></script>
   <script src="components/project-slider/avito.js?v=1"></script>
   <script src="components/project-slider/ozon.js?v=1"></script>
-  <script src="components/project-slider/project-slider.js?v=6"></script>
+  <script src="components/project-slider/project-slider.js?v=7"></script>
   <script src="styles/typography-rules.js?v=2"></script>
   <script src="styles/haptics.js?v=1"></script>
 </body>

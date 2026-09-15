@@ -1,31 +1,16 @@
 /* The homepage container gives the hero and projects the same 16px edges. */
 .project-slider {
-  --project-card-width: calc((100vw - 64px) / 2.55);
   width: 100%;
   margin-inline: 0;
-  --project-fade: 24px;
   padding-block: 32px 0;
   scroll-margin-top: 100px;
   color: var(--color-text);
 }
 .project-slider__heading { text-align: center; padding-inline: 16px; padding-bottom: 32px; }
 .project-slider__heading > .text-body { margin: 16px auto 0; }
-.project-slider__count { padding-inline: 20px; text-align: center; }
-.project-slider__actions { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 40px; }
-/* Fade the content itself: separate overlays can leave a fractional-pixel
-   seam against the GPU-transformed track at non-integer browser scales.
-   The final pixel is fully transparent before the clipping boundary. */
-.project-slider__viewport {
-  overflow: hidden; touch-action: pinch-zoom; user-select: none; -webkit-user-select: none; position: relative;
-  --project-edge-mask: linear-gradient(90deg, #000 0, #000 calc(100% - var(--project-fade)), transparent calc(100% - 1px), transparent 100%);
-  -webkit-mask-image: var(--project-edge-mask);
-  mask-image: var(--project-edge-mask);
-}
-.project-slider[data-moved] .project-slider__viewport {
-  --project-edge-mask: linear-gradient(90deg, transparent 0, transparent 1px, #000 var(--project-fade), #000 calc(100% - var(--project-fade)), transparent calc(100% - 1px), transparent 100%);
-}
-.project-slider__track { display: flex; gap: 16px; will-change: transform; }
-.project-card { flex: 0 0 var(--project-card-width); min-width: 0; }
+.project-slider__viewport { position: relative; overflow: visible; }
+.project-slider__track { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 16px; }
+.project-card { min-width: 0; width: 100%; }
 .project-card__media { position: relative; aspect-ratio: 1; }
 .project-card__cover { position: absolute; inset: 0; overflow: hidden; border-radius: 32px; background: var(--cover-color); }
 .project-card__image { display: block; position: absolute; user-select: none; pointer-events: none; }
@@ -42,39 +27,23 @@
 .project-card__text[data-truncated] { cursor: help; }
 .project-slider__tooltip { position: fixed; z-index: 1000; max-width: min(420px, calc(100vw - 32px)); padding: 16px; border-radius: 16px; color: var(--color-text); background: var(--color-bg); border: 1px solid color-mix(in srgb, var(--color-text) 25%, transparent); box-shadow: 0 8px 30px #0003; pointer-events: none; }
 .project-slider__tooltip .text-body { margin-top: 8px; }
-.project-slider__status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-@media (max-width: 999px) { .project-slider { --project-card-width: calc((100vw - 48px) / 1.65); } }
 @media (max-width: 599px) {
-  .project-slider { --project-card-width: calc(100vw - 64px); padding-top: 16px; }
-  .project-slider__actions { gap: 8px; }
-  .project-slider__count { padding-inline: 16px; }
-  .project-slider__actions > button { flex-shrink: 0; }
+  .project-slider { padding-top: 16px; }
+  .project-slider__track { grid-template-columns: minmax(0, 1fr); }
   .project-card__cover { border-radius: 24px; }
-  .project-slider { --project-fade: 16px; }
 }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .project-card__image { transition: scale .55s cubic-bezier(.2,.65,.3,1); }
   .project-card__media[data-action-hover]:hover .project-card__image { scale: 1.035; }
 }
 
-/* Phones and tablets use a single natural document flow, without loop copies. */
-@media (max-width: 1199px), (hover: none) and (pointer: coarse) {
-  .project-slider__viewport {
-    overflow: visible; touch-action: pan-y pinch-zoom;
-    user-select: auto; -webkit-user-select: auto;
-    -webkit-mask-image: none; mask-image: none;
-  }
-  .project-slider__track { display: grid; grid-template-columns: 1fr; gap: 40px 16px; transform: none; will-change: auto; }
-  .project-card { flex: none; width: 100%; }
-  .project-card[data-loop-copy] { display: none; }
-  .project-slider__actions { display: none; }
-}
-
-@media (min-width: 600px) and (max-width: 1199px), (min-width: 600px) and (hover: none) and (pointer: coarse) {
-  .project-slider__track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* Desktop rows have more breathing room; touch layouts retain 40px. */
+@media (min-width: 1200px) and (hover: hover) and (pointer: fine) {
+  .project-slider__track { row-gap: 56px; }
 }
 
 /* Panel collection: white cards with a text header and square cover below it. */
+.project-slider--themed .project-slider__track { gap: 16px; }
 .project-slider + .project-slider { margin-top: var(--space-section); }
 .project-slider--themed {
   background: var(--mood-bg); color: var(--mood-ink);
