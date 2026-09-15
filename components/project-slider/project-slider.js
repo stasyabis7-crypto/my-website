@@ -20,6 +20,12 @@
     const projects = window.projectCollections?.[root.dataset.projects];
     if (!projects?.length) return;
     const count = projects.length;
+    const countLabel = root.querySelector('[data-project-count]');
+    if (countLabel) {
+      const mod10 = count % 10, mod100 = count % 100;
+      const noun = mod10 === 1 && mod100 !== 11 ? 'проект' : mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14) ? 'проекта' : 'проектов';
+      countLabel.textContent = `${count} ${noun}`;
+    }
     const viewport = root.querySelector('.project-slider__viewport');
     const track = root.querySelector('.project-slider__track');
     const status = root.querySelector('.project-slider__status');
@@ -72,17 +78,16 @@
       const offset = renderedX + index * step;
       position(false, offset);
       pointer = {id: e.pointerId, x: e.clientX, y: e.clientY, dx: offset, offset,
-        lastX: e.clientX, lastTime: performance.now(), velocity: 0};
+        lastX: e.clientX, lastTime: performance.now(), velocity: 0, moved: false};
       dragged = false; suppressClickUntil = 0;
     });
     viewport.addEventListener('dragstart', e => e.preventDefault());
     viewport.addEventListener('pointermove', e => {
       if (!pointer || pointer.id !== e.pointerId) return;
       const dx = e.clientX - pointer.x, dy = e.clientY - pointer.y;
-      if (!dragged && Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx) * 1.2) {
-        pointer = null; position(true); return;
-      }
-      if (!dragged && Math.abs(dx) > 6 && Math.abs(dx) > Math.abs(dy)) {
+      pointer.moved ||= Math.hypot(dx, dy) > 8;
+      // The cover zone owns panning: diagonal gestures use only their X delta.
+      if (!dragged && Math.abs(dx) > 6) {
         dragged = true; viewport.setPointerCapture(e.pointerId); hideTooltip();
         root.dataset.moved = '';
       }
@@ -96,10 +101,10 @@
     });
     function release(e) {
       if (!pointer || e.pointerId !== pointer.id) return;
-      const {dx, velocity, lastTime} = pointer; pointer = null;
+      const {dx, velocity, lastTime, moved} = pointer; pointer = null;
       if (viewport.hasPointerCapture(e.pointerId)) viewport.releasePointerCapture(e.pointerId);
       const flick = performance.now() - lastTime < 120 && Math.abs(velocity) > .3 && Math.abs(dx) > 10;
-      if (dragged) suppressClickUntil = performance.now() + 450;
+      if (moved) suppressClickUntil = performance.now() + 450;
       if (e.type !== 'pointercancel' && dragged && (Math.abs(dx) > Math.min(48, step * .14) || flick)) {
         move(dx < 0 ? 1 : -1);
       } else {

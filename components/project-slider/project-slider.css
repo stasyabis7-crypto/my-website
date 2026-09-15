@@ -10,12 +10,13 @@
 }
 .project-slider__heading { text-align: center; padding-inline: 16px; padding-bottom: 32px; }
 .project-slider__heading > .text-body { margin: 16px auto 0; }
+.project-slider__count { padding-inline: 20px; text-align: center; }
 .project-slider__actions { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 40px; }
 /* Fade the content itself: separate overlays can leave a fractional-pixel
    seam against the GPU-transformed track at non-integer browser scales.
    The final pixel is fully transparent before the clipping boundary. */
 .project-slider__viewport {
-  overflow: hidden; touch-action: pan-y pinch-zoom; position: relative;
+  overflow: hidden; touch-action: pinch-zoom; user-select: none; -webkit-user-select: none; position: relative;
   --project-edge-mask: linear-gradient(90deg, #000 0, #000 calc(100% - var(--project-fade)), transparent calc(100% - 1px), transparent 100%);
   -webkit-mask-image: var(--project-edge-mask);
   mask-image: var(--project-edge-mask);
@@ -46,7 +47,7 @@
 @media (max-width: 599px) {
   .project-slider { --project-card-width: calc(100vw - 64px); padding-top: 16px; }
   .project-slider__actions { gap: 8px; }
-  .project-slider__actions > a { flex: 1; min-width: 0; max-width: max-content; }
+  .project-slider__count { padding-inline: 16px; }
   .project-slider__actions > button { flex-shrink: 0; }
   .project-card__cover { border-radius: 24px; }
   .project-slider { --project-fade: 16px; }

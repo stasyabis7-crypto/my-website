@@ -45,7 +45,7 @@
   let position = { x: 0, y: 0, size: 0 };
   let homeRect, stageRect, headerBottom = 110;
   let following = false;
-  let placement = null; // Document coordinates: a dropped companion stays on the page.
+  let placement = null; // Viewport coordinates: a dropped companion stays fixed on screen.
   let drag = null;
   let suppressCharacterClickUntil = 0;
   let obstacles = [];
@@ -130,18 +130,18 @@
     if (!drag?.active) return;
     placement = {
       x: clamp(drag.clientX - drag.offsetX, 8, innerWidth - drag.size - 8),
-      y: clamp(drag.clientY - drag.offsetY, 8, innerHeight - drag.size - 8) + scrollY,
+      y: clamp(drag.clientY - drag.offsetY, 8, innerHeight - drag.size - 8),
       size: drag.size
     };
-    actor.classList.toggle('is-drop-blocked', !safeSpot(placement.x, placement.y - scrollY, placement.size));
+    actor.classList.toggle('is-drop-blocked', !safeSpot(placement.x, placement.y, placement.size));
   }
   function endDrag(cancel = false) {
     if (!drag) return;
     const current = drag;
     if (current.active) {
       readObstacles();
-      const spot = cancel ? null : nearestSpot(placement.x, placement.y - scrollY, placement.size);
-      placement = spot ? {...spot, y: spot.y + scrollY} : current.previous;
+      const spot = cancel ? null : nearestSpot(placement.x, placement.y, placement.size);
+      placement = spot ? {...spot} : current.previous;
       suppressCharacterClickUntil = performance.now() + 500;
     }
     drag = null;
@@ -185,7 +185,7 @@
     const x = position.x + position.size / 2 - size / 2 + (e.key === 'ArrowLeft' ? -24 : e.key === 'ArrowRight' ? 24 : 0);
     const y = position.y + position.size / 2 - size / 2 + (e.key === 'ArrowUp' ? -24 : e.key === 'ArrowDown' ? 24 : 0);
     const spot = nearestSpot(x, y, size);
-    if (spot) placement = {...spot, y: spot.y + scrollY};
+    if (spot) placement = {...spot};
     layoutDirty = true; forcePaint = true; wake();
   });
 
@@ -220,6 +220,7 @@
     }
     if (placement) {
       placement.x = clamp(placement.x, 8, innerWidth - placement.size - 8);
+      placement.y = clamp(placement.y, 8, innerHeight - placement.size - 8);
       readObstacles();
     }
     layoutDirty = false;
@@ -468,8 +469,6 @@
     if (lastFrame && !fine.matches && !motionOff() && !drag?.active && delta < 30) { wake(); return; }
     lastFrame = now;
     if (drag?.active) {
-      const scrollStep = drag.clientY < 64 ? -12 : drag.clientY > innerHeight - 64 ? 12 : 0;
-      if (scrollStep) { window.scrollBy({top: scrollStep, behavior: 'instant'}); layoutDirty = true; }
       dragPosition();
     }
     if (layoutDirty) measure();
@@ -487,10 +486,7 @@
       target = { x: innerWidth - size - (innerWidth < 600 ? 8 : 24), y: clamp(desiredY, top, bottom), size };
       if (now < freezeUntil && position.size) { target.x = position.x; target.y = position.y; }
     }
-    if (placement) target = {x: placement.x, y: placement.y - scrollY, size: placement.size};
-    // A placed character scrolls with its document position. Hide it while a
-    // fixed control crosses that spot, rather than covering or intercepting it.
-    actor.style.visibility = placement && !drag?.active && !safeSpot(target.x, target.y, target.size) ? 'hidden' : '';
+    if (placement) target = {x: placement.x, y: placement.y, size: placement.size};
     const lerp = drag?.active || placement || motionOff() || !position.size ? 1 : 1 - Math.exp(-delta / (following ? 260 : 150));
     position.x = mix(position.x, target.x, lerp);
     position.y = mix(position.y, target.y, lerp);
