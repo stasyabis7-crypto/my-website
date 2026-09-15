@@ -52,6 +52,20 @@
     row.appendChild(item.mobileLink);
     sheet.querySelector('[data-rows]').appendChild(row);
   });
+  const homeRow = document.createElement('div');
+  homeRow.className = 'contact-dialog__item';
+  homeRow.style.setProperty('--item-index', 5);
+  const homeLink = document.createElement('a');
+  homeLink.className = 'contact-row btn btn--fill-pink';
+  homeLink.href = '../../index.html';
+  homeLink.textContent = 'Вернуться на Главную';
+  homeLink.addEventListener('click', event => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    event.preventDefault();
+    closeSheet(() => window.location.assign(homeLink.href));
+  });
+  homeRow.appendChild(homeLink);
+  sheet.querySelector('[data-rows]').appendChild(homeRow);
   function setActive(item) {
     if (current === item) return;
     current = item;
