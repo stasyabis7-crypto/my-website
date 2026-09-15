@@ -273,6 +273,7 @@
   }
   function draw(now, scene) {
     const compact = following;
+    const heroScale = !compact && innerWidth >= 1000 ? 1.2 : 1;
     const wanted = Math.round((compact ? 160 : 480) * pixelRatio);
     if (resolution !== wanted) { canvas.width = canvas.height = wanted; resolution = wanted; }
     ctx.setTransform(resolution / 480, 0, 0, resolution / 480, 0, 0);
@@ -287,7 +288,7 @@
     ctx.save();
     ctx.translate(240 + scene.x, 240 + bounce + scene.y);
     ctx.rotate(scene.rotate + gaze.x * .035);
-    ctx.scale(breathe * scene.scale * (1 + anger * .08), scene.scale * (1 - anger * .08));
+    ctx.scale(heroScale * breathe * scene.scale * (1 + anger * .08), heroScale * scene.scale * (1 - anger * .08));
     ctx.globalAlpha = scene.opacity;
     // Subtle coloured core keeps the creature legible on dark project covers.
     const core = ctx.createRadialGradient(0, 0, 20, 0, 0, 154);
@@ -387,7 +388,7 @@
     position.size = mix(position.size, target.size, lerp);
     actor.style.width = actor.style.height = position.size + 'px';
     actor.style.transform = `translate3d(${position.x}px,${position.y}px,0)`;
-    actor.style.setProperty('--mood-hit-size', Math.max(64, position.size * .69) + 'px');
+    actor.style.setProperty('--mood-hit-size', Math.max(64, position.size * .69 * (!following && innerWidth >= 1000 ? 1.2 : 1)) + 'px');
     const cx = position.x + position.size / 2, cy = position.y + position.size / 2;
     const gx = point.active ? clamp((point.x - cx) / 210, -1, 1) : 0;
     const gy = point.active ? clamp((point.y - cy) / 210, -1, 1) : 0;
