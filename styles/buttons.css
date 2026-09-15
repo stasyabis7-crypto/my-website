@@ -340,11 +340,29 @@ html.chrome--pinned .btn--scroll-shadow {
 .btn__toc-dot { width: 6px; height: 6px; flex: 0 0 6px; border-radius: 50%; background: #a1a1aa; }
 .btn--fill-toc[aria-current="location"] .btn__toc-dot { background: currentColor; }
 
+/* .btn--fill-toc-trigger: white mobile action; transparent desktop marker
+   control, including hover/expanded states. Retains the shared hit height. */
+.btn--fill-toc-trigger { background: #fff; color: #101014; }
+.btn--fill-toc-trigger::after { background: var(--color-action-hover, #ff0cc2); }
+.btn--fill-toc-trigger:hover,
+.btn--fill-toc-trigger:focus-visible { color: var(--color-action-hover-text, #fff); }
+
 /* Responsive contents trigger: list on mobile, section markers on desktop. */
 .work-toc__bars, .work-toc__toggle .work-toc__close-icon { display: none; }
 .work-toc__toggle[aria-expanded="true"] .work-toc__list-icon { display: none; }
 .work-toc__toggle[aria-expanded="true"] .work-toc__close-icon { display: block; }
 @media (min-width: 1101px) {
+  .btn--fill-toc-trigger,
+  .btn--fill-toc-trigger:hover,
+  .btn--fill-toc-trigger:focus-visible,
+  .btn--fill-toc-trigger:active {
+    background: transparent;
+    color: #3f3f46;
+    box-shadow: none;
+    transform: none;
+  }
+  .btn--fill-toc-trigger::after { display: none; }
+  .btn--fill-toc-trigger:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
   .work-toc__toggle .work-toc__list-icon,
   .work-toc__toggle[aria-expanded="true"] .work-toc__close-icon { display: none; }
   .work-toc__bars { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
