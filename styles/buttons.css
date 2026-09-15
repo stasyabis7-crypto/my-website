@@ -323,7 +323,7 @@ html.chrome--pinned .btn--scroll-shadow {
 .btn--fill-ink::after { background: #fff; }
 .btn--fill-ink:hover, .btn--fill-ink:focus-visible { color: #111111; }
 
-/* Table-of-contents rows: neutral fill, current section marked with a dot.
+/* Table-of-contents rows: theme-aware fill, current section highlighted.
    Usage: .btn.btn--fill-toc; retains the shared height and typography. */
 .btn--fill-toc {
   justify-content: flex-start;
@@ -332,13 +332,11 @@ html.chrome--pinned .btn--scroll-shadow {
   white-space: normal;
   text-align: left;
   background: transparent;
-  color: #52525b;
+  color: var(--mood-ink);
 }
-.btn--fill-toc::after { background: #e4e4e7; }
+.btn--fill-toc::after { background: color-mix(in srgb, var(--mood-ink) 12%, var(--mood-bg)); }
 .btn--fill-toc:hover, .btn--fill-toc:focus-visible,
-.btn--fill-toc[aria-current="location"] { color: #27272a; background: #e4e4e7; }
-.btn__toc-dot { width: 6px; height: 6px; flex: 0 0 6px; border-radius: 50%; background: #a1a1aa; }
-.btn--fill-toc[aria-current="location"] .btn__toc-dot { background: currentColor; }
+.btn--fill-toc[aria-current="location"] { color: var(--mood-ink); background: color-mix(in srgb, var(--mood-ink) 12%, var(--mood-bg)); }
 
 /* .btn--fill-toc-trigger: white mobile action; transparent desktop marker
    control, including hover/expanded states. Retains the shared hit height. */
@@ -369,4 +367,10 @@ html.chrome--pinned .btn--scroll-shadow {
   .work-toc__bars span { width: 24px; height: 2px; border-radius: 2px; background: #d4d4d8; }
   .work-toc__bars span.is-current { width: 32px; background: #3f3f46; }
   .work-toc__toggle:hover .work-toc__bars span { width: 32px; }
+}
+
+/* Current mobile contents row uses the contact surface palette. */
+.work-toc-sheet .contact-row[aria-current="location"] {
+  background: color-mix(in srgb, white 60%, var(--mood-bg));
+  color: var(--mood-ink);
 }
