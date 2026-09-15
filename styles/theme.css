@@ -283,6 +283,13 @@ html[data-mood="stas"] {
   --color-action-active-text: #FFFFFF;
   --color-action-hover-text: #FFFFFF;
 }
+/* Text selection follows the active mood, using its contrasting action pair. */
+html[data-mood]::selection,
+html[data-mood] ::selection {
+  background-color: var(--color-action-active);
+  color: var(--color-action-active-text);
+  text-shadow: none;
+}
 html[data-mood] .site-header {
   --color-text: var(--mood-ink);
   --color-glass: var(--mood-chrome);
