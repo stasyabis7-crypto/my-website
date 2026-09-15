@@ -64,10 +64,10 @@
     user-select: auto; -webkit-user-select: auto;
     -webkit-mask-image: none; mask-image: none;
   }
-  .project-slider__track { display: grid; grid-template-columns: 1fr; gap: 32px 16px; transform: none; will-change: auto; }
+  .project-slider__track { display: grid; grid-template-columns: 1fr; gap: 40px 16px; transform: none; will-change: auto; }
   .project-card { flex: none; width: 100%; }
   .project-card[data-loop-copy] { display: none; }
-  .project-slider__actions [data-direction] { display: none; }
+  .project-slider__actions { display: none; }
 }
 
 @media (min-width: 600px) and (max-width: 1199px), (min-width: 600px) and (hover: none) and (pointer: coarse) {
