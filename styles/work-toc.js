@@ -14,6 +14,7 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let frame = 0, manualUntil = 0, unlockTimer, current;
   let inactive = [], closeTimer, afterClose;
+  let popoverOpen = false, popoverAnimation;
   const sheet = document.createElement('div');
   sheet.className = 'contact-dialog contact-sheet work-toc-sheet';
   sheet.id = 'work-toc-sheet';
@@ -92,10 +93,49 @@
     toggle.setAttribute('aria-label', open ? 'Закрыть оглавление' : 'Оглавление проекта');
   }
   function setPopover(open, restoreFocus = false) {
-    panel.hidden = !open;
-    setExpanded(open);
     if (restoreFocus) toggle.focus({ preventScroll: true });
+    if (!desktop.matches && !open) {
+      if (popoverAnimation) popoverAnimation.cancel();
+      popoverAnimation = null;
+      popoverOpen = false;
+      panel.hidden = true;
+      panel.inert = true;
+      setExpanded(false);
+      return;
+    }
+    if (open === popoverOpen) return;
+    popoverOpen = open;
+    const previous = popoverAnimation ? {
+      clipPath: getComputedStyle(panel).clipPath,
+      opacity: getComputedStyle(panel).opacity,
+      transform: getComputedStyle(panel).transform
+    } : null;
+    if (popoverAnimation) popoverAnimation.cancel();
+    popoverAnimation = null;
+    setExpanded(open);
+    panel.inert = !open;
+    if (reducedMotion.matches || !desktop.matches) { panel.hidden = !open; return; }
+    panel.hidden = false;
     if (open && current) panel.scrollTop = Math.max(0, current.link.offsetTop - panel.clientHeight / 2);
+    const bounds = panel.getBoundingClientRect(), trigger = toggle.getBoundingClientRect();
+    const top = Math.max(0, Math.min(bounds.height - 64, trigger.top - bounds.top));
+    const folded = {
+      clipPath: `inset(${top}px 0px ${Math.max(0, bounds.height - top - 64)}px ${bounds.width - 12}px round 24px)`,
+      opacity: 0, transform: 'translateX(12px) scale(.96)'
+    };
+    const expanded = { clipPath: 'inset(0px 0px 0px 0px round 24px)', opacity: 1, transform: 'translateX(0px) scale(1)' };
+    const animation = panel.animate([previous || (open ? folded : expanded), open ? expanded : folded], {
+      duration: open ? 650 : 400,
+      easing: open ? 'cubic-bezier(.22,1,.36,1)' : 'cubic-bezier(.65,0,.35,1)',
+      fill: 'both'
+    });
+    popoverAnimation = animation;
+    animation.finished.then(() => {
+      if (popoverAnimation !== animation) return;
+      panel.hidden = !popoverOpen;
+      animation.cancel();
+      popoverAnimation = null;
+    }).catch(() => {});
   }
   function setOrigin() {
     const r = surface.getBoundingClientRect(), t = toggle.getBoundingClientRect();
@@ -146,7 +186,7 @@
     if (desktop.matches) toggle.removeAttribute('aria-haspopup');
     else toggle.setAttribute('aria-haspopup', 'dialog');
   }
-  toggle.addEventListener('click', () => desktop.matches ? setPopover(panel.hidden) : openSheet());
+  toggle.addEventListener('click', () => desktop.matches ? setPopover(!popoverOpen) : openSheet());
   root.addEventListener('pointerenter', event => {
     if (desktop.matches && hover.matches && event.pointerType === 'mouse') setPopover(true);
   });

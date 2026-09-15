@@ -362,10 +362,12 @@ html.chrome--pinned .btn--scroll-shadow {
   .btn--fill-toc-trigger:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
   .work-toc__toggle .work-toc__list-icon,
   .work-toc__toggle[aria-expanded="true"] .work-toc__close-icon { display: none; }
-  .work-toc__bars { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
-  .work-toc__bars span { width: 24px; height: 2px; border-radius: 2px; background: #d4d4d8; }
-  .work-toc__bars span.is-current { width: 32px; background: var(--color-action-active); }
-  .work-toc__toggle:hover .work-toc__bars span { width: 32px; }
+  .work-toc__toggle { overflow: visible; width: 80px; }
+  .work-toc__bars { display: flex; flex: none; flex-direction: column; align-items: flex-end; gap: 8px; padding-block: 10px; }
+  .work-toc__bars span { flex-shrink: 0; transition: width .3s ease, background-color .3s ease; }
+  .work-toc__bars span { width: 36px; height: 3px; border-radius: 3px; background: #d4d4d8; }
+  .work-toc__bars span.is-current { width: 48px; background: var(--color-action-active); }
+  .work-toc__toggle:hover .work-toc__bars span { width: 48px; }
 }
 
 /* Current section uses the theme's main action colour on both surfaces. */
@@ -377,4 +379,8 @@ html.chrome--pinned .btn--scroll-shadow {
 .btn--fill-toc[aria-current="location"]::after,
 .work-toc-sheet .contact-row[aria-current="location"]::after {
   background: var(--color-action-active);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-toc__bars span { transition: none; }
 }

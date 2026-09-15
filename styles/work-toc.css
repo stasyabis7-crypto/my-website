@@ -31,10 +31,14 @@
   .work-toc { top: 34vh; bottom: auto; left: auto; right: 16px; }
   .work-toc__panel {
     bottom: auto;
-    top: 0;
+    top: -20vh;
     right: 100%;
-    max-height: calc(66dvh - 24px);
+    width: 420px;
+    padding: 16px;
+    max-height: 80dvh;
+    transform-origin: right 25%;
   }
+  .work-toc__panel nav { gap: 4px; }
 }
 
 html.work-toc-scroll-lock, html.work-toc-scroll-lock body { overflow: hidden; }
