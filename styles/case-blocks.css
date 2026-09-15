@@ -373,9 +373,9 @@
   padding: 32px var(--card-pad-x);
 }
 
-.case-metric--mint {
-  background: #B7E7CC;
-  color: #123524;
+.case-metric--theme {
+  background: var(--mood-bg);
+  color: var(--mood-ink);
 }
 
 /* Картинка карточки (.case-metric__art — обёртка, img внутри) — идёт в
@@ -748,8 +748,8 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--color-action-active);
-  box-shadow: 0 0 10px 2px color-mix(in srgb, var(--color-action-active) 70%, transparent);
+  background: var(--mood-bg);
+  box-shadow: 0 0 10px 2px color-mix(in srgb, var(--mood-bg) 70%, transparent);
 }
 
 .case-scenario__label {
@@ -763,8 +763,8 @@
   min-width: 16px;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--color-action-active) 55%, transparent), var(--color-action-active));
-  box-shadow: 0 0 14px 2px color-mix(in srgb, var(--color-action-active) 45%, transparent);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--mood-bg) 55%, transparent), var(--mood-bg));
+  box-shadow: 0 0 14px 2px color-mix(in srgb, var(--mood-bg) 45%, transparent);
 }
 
 @media (max-width: 900px) {
