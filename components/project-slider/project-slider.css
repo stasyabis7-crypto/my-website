@@ -73,3 +73,9 @@
 }
 
 .project-card[hidden] { display: none; }
+
+/* A themed section never shares its active background colour with a cover.
+   Only the matching palette slot changes; the image itself keeps its colours. */
+html[data-mood="anastasia"] .project-slider--themed { --project-cover-pink: #FDF07F; }
+html[data-mood="stasy"] .project-slider--themed { --project-cover-lilac: #FDF07F; }
+html[data-mood="stas"] .project-slider--themed { --project-cover-yellow: #FEB7D7; }

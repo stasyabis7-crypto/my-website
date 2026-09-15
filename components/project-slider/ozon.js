@@ -15,6 +15,10 @@ window.projectCollections = {
     title, description, format, href: null,
     image: `/assets/covers-ozon/${i + 1}-1280.webp`,
     srcset: `/assets/covers-ozon/${i + 1}-640.webp 640w, /assets/covers-ozon/${i + 1}-1280.webp 1280w`,
-    color: ['#97A6FD', '#FDA597', '#9FE2A4', '#FEB7D7', '#FDF07F', '#97A6FD', '#9FE2A4', '#FEB7D7'][i]
+    color: [
+      'var(--project-cover-lilac, #97A6FD)', '#FDA597', '#9FE2A4',
+      'var(--project-cover-pink, #FEB7D7)', 'var(--project-cover-yellow, #FDF07F)',
+      'var(--project-cover-lilac, #97A6FD)', '#9FE2A4', 'var(--project-cover-pink, #FEB7D7)'
+    ][i]
   }))
 };
