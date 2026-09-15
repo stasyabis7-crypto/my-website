@@ -9,11 +9,12 @@ window.projectCollections = {
     ['ТГ канал', 'Учила делать анимацию в Protopie', 'square'],
     ['Портрет покупателя', 'Нужен для глубокого анализа своей ЦА', 'square'],
     ['Временная мин. цена', 'Сделали её временной и алёртили везде об этом', 'square'],
-    ['Бустинг в ценах', 'Учим пользователей ставить акции на товары', 'square']
+    ['Бустинг в ценах', 'Учим пользователей ставить акции на товары', 'square'],
+    ['Редизайн таблицы цен', 'Поменяли всё от скролла до кол–ва ячеек', 'desktop']
   ].map(([title, description, format], i) => ({
     title, description, format, href: null,
     image: `/assets/covers-ozon/${i + 1}-1280.webp`,
     srcset: `/assets/covers-ozon/${i + 1}-640.webp 640w, /assets/covers-ozon/${i + 1}-1280.webp 1280w`,
-    color: ['#97A6FD', '#FDA597', '#9FE2A4', '#FEB7D7', '#FDF07F', '#97A6FD', '#9FE2A4'][i]
+    color: ['#97A6FD', '#FDA597', '#9FE2A4', '#FEB7D7', '#FDF07F', '#97A6FD', '#9FE2A4', '#FEB7D7'][i]
   }))
 };
