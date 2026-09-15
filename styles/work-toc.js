@@ -12,7 +12,7 @@
   const desktop = matchMedia('(min-width: 1101px)');
   const hover = matchMedia('(hover: hover)');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  let frame = 0, manualUntil = 0, unlockTimer, current;
+  let frame = 0, manualUntil = 0, scrollAnimation = 0, current;
   let inactive = [], closeTimer, afterClose;
   let popoverOpen = false, popoverAnimation;
   const sheet = document.createElement('div');
@@ -211,13 +211,42 @@
     } else if (event.key === 'Escape' && !panel.hidden) setPopover(false, true);
   });
   function navigate(item) {
-    manualUntil = performance.now() + 1000;
+    cancelAnimationFrame(scrollAnimation);
+    scrollAnimation = 0;
     setActive(item);
     history.pushState(null, '', item.link.hash);
     item.section.focus({ preventScroll: true });
-    item.section.scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
-    clearTimeout(unlockTimer);
-    unlockTimer = setTimeout(scheduleUpdate, 1050);
+    const start = window.scrollY;
+    const target = () => {
+      const offset = parseFloat(getComputedStyle(item.section).scrollMarginTop) || 0;
+      return Math.max(0, Math.min(
+        item.section.getBoundingClientRect().top + window.scrollY - offset,
+        document.documentElement.scrollHeight - innerHeight
+      ));
+    };
+    const distance = Math.abs(target() - start);
+    if (reducedMotion.matches || distance < 1) {
+      window.scrollTo({ top: target(), behavior: 'instant' });
+      manualUntil = 0;
+      scheduleUpdate();
+      return;
+    }
+    const duration = Math.min(1500, Math.max(700, 650 + distance * .16));
+    const started = performance.now();
+    manualUntil = Infinity;
+    function tick(now) {
+      const progress = Math.min(1, (now - started) / duration);
+      // Smooth acceleration and deceleration, including long jumps through the case.
+      const eased = progress < .5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2;
+      window.scrollTo({ top: start + (target() - start) * eased, behavior: 'instant' });
+      if (progress < 1) scrollAnimation = requestAnimationFrame(tick);
+      else {
+        scrollAnimation = 0;
+        manualUntil = 0;
+        scheduleUpdate();
+      }
+    }
+    scrollAnimation = requestAnimationFrame(tick);
   }
   items.forEach(item => [item.link, item.mobileLink].forEach(link => link.addEventListener('click', event => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
@@ -225,9 +254,18 @@
     if (!sheet.hidden) closeSheet(() => navigate(item));
     else { setPopover(false); navigate(item); }
   })));
-  function cancelManual() { manualUntil = 0; scheduleUpdate(); }
+  function cancelManual() {
+    cancelAnimationFrame(scrollAnimation);
+    scrollAnimation = 0;
+    manualUntil = 0;
+    scheduleUpdate();
+  }
   window.addEventListener('wheel', cancelManual, { passive: true });
   window.addEventListener('touchstart', cancelManual, { passive: true });
+  window.addEventListener('pointerdown', cancelManual, { passive: true });
+  window.addEventListener('keydown', event => {
+    if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Escape'].includes(event.key)) cancelManual();
+  });
   window.addEventListener('scroll', scheduleUpdate, { passive: true });
   window.addEventListener('resize', () => { scheduleUpdate(); if (!sheet.hidden) setOrigin(); });
   window.addEventListener('hashchange', cancelManual);
