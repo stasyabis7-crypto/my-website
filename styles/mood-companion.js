@@ -296,7 +296,7 @@
     core.addColorStop(1, mood.bg + '00');
     ctx.fillStyle = core;
     ctx.beginPath(); ctx.arc(0, 0, 162, 0, Math.PI * 2); ctx.fill();
-    const count = compact ? 680 : (fine.matches ? 1900 : 1200);
+    const count = compact ? 320 : (fine.matches ? 1900 : 1200);
     for (let i = 0; i < count; i++) {
       const p = particles[Math.floor(i * particles.length / count)];
       const xx = p.x * ca + p.z * sa;
@@ -315,7 +315,7 @@
       const alpha = (.2 + (zz + 1) * .28) * scene.opacity;
       ctx.globalAlpha = alpha;
       ctx.fillStyle = compact && zz < -.1 ? mood.bg : mood.ink;
-      const dot = (compact ? 1.9 : .85) + p.seed * (compact ? 1.7 : .95) + (zz + 1) * .32;
+      const dot = (compact ? 2.8 : .85) + p.seed * (compact ? 2.1 : .95) + (zz + 1) * .32;
       ctx.fillRect(x, y, dot, dot);
       if (!compact && i % 9 === 0) {
         ctx.globalAlpha = alpha * .4;
@@ -376,7 +376,8 @@
       const size = innerWidth < 600 ? 104 : 120;
       const top = Math.max(150, headerBottom + 70);
       const bottom = Math.max(top, innerHeight - size - 110);
-      const desiredY = !motionOff() && point.active && fine.matches ? point.y + 48 : innerHeight * .55 + scrollKick * 35;
+      // Desktop companion stays anchored; only its eyes track the pointer.
+      const desiredY = innerHeight * .55 + (fine.matches ? 0 : scrollKick * 35);
       target = { x: innerWidth - size - (innerWidth < 600 ? 8 : 24), y: clamp(desiredY, top, bottom), size };
       if (now < freezeUntil && position.size) { target.x = position.x; target.y = position.y; }
     }
