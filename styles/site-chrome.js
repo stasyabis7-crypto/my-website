@@ -3,7 +3,7 @@
   'use strict';
 
   var root = document.documentElement;
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   /* Блокировка скролла фона под попапом/шторкой — просто overflow:hidden
      на html+body (см. .contact-scroll-lock в site-chrome.css). Без
@@ -22,12 +22,12 @@
      animationend не прилетит. */
   function closeModal(el, done) {
     if (!el || el.hidden || el.classList.contains('is-closing')) return;
-    if (reduceMotion) { el.hidden = true; if (done) done(); return; }
+    if (reduceMotion.matches) { el.hidden = true; if (done) done(); return; }
     el.classList.add('is-closing');
     var panel = el.querySelector('.contact-dialog__panel') || el;
     var t;
     var finish = function (e) {
-      if (e && e.animationName && !/-out$/.test(e.animationName)) return;
+      if (e && (e.target !== panel || e.animationName !== 'contact-surface-out')) return;
       panel.removeEventListener('animationend', finish);
       clearTimeout(t);
       el.hidden = true;
@@ -35,7 +35,7 @@
       if (done) done();
     };
     panel.addEventListener('animationend', finish);
-    t = setTimeout(finish, 450);
+    t = setTimeout(finish, 750);
   }
 
   /* ---------- chrome: pinned-on-scroll ---------- */
@@ -82,12 +82,12 @@
 
     var EMAIL = 'stasyabis7@gmail.com';
     var ITEMS = [
-      { label: 'Написать в tg', img: '/assets/socials/Telegram.svg', href: 'https://t.me/stasyabis' },
-      { label: 'Написать на почту', img: '/assets/socials/Google.svg', copy: EMAIL },
-      { label: 'Dribbble', img: '/assets/socials/Dribbble.svg', href: 'https://dribbble.com/Stasyabis' },
-      { label: 'Figma community', img: '/assets/socials/Figma.svg', href: 'https://www.figma.com/@stasyabis' },
-      { label: 'Medium', img: '/assets/socials/Medium.svg', href: 'https://medium.com/@stasyabis' },
-      { label: 'Habr', img: '/assets/socials/Habr.svg', href: 'https://habr.com/ru/users/stasyabis/' }
+      { label: 'Telegram', icon: 'telegram', href: 'https://t.me/stasyabis' },
+      { label: 'Написать на почту', icon: 'email', copy: EMAIL },
+      { label: 'Dribbble', icon: 'dribbble', href: 'https://dribbble.com/Stasyabis' },
+      { label: 'Figma community', icon: 'figma', href: 'https://www.figma.com/@stasyabis' },
+      { label: 'Medium', icon: 'medium', href: 'https://medium.com/@stasyabis' },
+      { label: 'Habr', icon: 'habr', href: 'https://habr.com/ru/users/stasyabis/' }
     ];
 
     function copyText(text, done) {
@@ -110,8 +110,30 @@
 
     // Общий список: десктопный попап или мобильная шторка.
     var sheet;
+    var inactive = [];
+    function setBackgroundInert() {
+      inactive = Array.from(document.body.children).filter(function (el) { return el !== sheet && !el.inert; });
+      inactive.forEach(function (el) { el.inert = true; });
+    }
+    function restoreBackground() {
+      inactive.forEach(function (el) { el.inert = false; });
+      inactive = [];
+    }
+    function setOrigin() {
+      var panel = sheet.querySelector('.contact-dialog__panel');
+      var r = panel.getBoundingClientRect();
+      var t = toggle.getBoundingClientRect();
+      var clamp = function (v, max) { return Math.max(0, Math.min(max, v)); };
+      var top = clamp(t.top - r.top, r.height);
+      var left = clamp(t.left - r.left, r.width);
+      var right = clamp(r.right - t.right, r.width - left);
+      var bottom = clamp(r.bottom - t.bottom, r.height - top);
+      panel.style.setProperty('--contact-origin', 'inset(' + top + 'px ' + right + 'px ' + bottom + 'px ' + left + 'px round 32px)');
+    }
+    window.addEventListener('resize', function () { if (sheet && !sheet.hidden) setOrigin(); });
     function closeSheet() {
       closeModal(sheet, function () {
+        restoreBackground();
         unlockScroll();
         if (toggle) { toggle.setAttribute('aria-expanded', 'false'); toggle.focus(); }
       });
@@ -126,13 +148,14 @@
         sheet.setAttribute('aria-modal', 'true');
         sheet.setAttribute('aria-label', 'Соцсети');
         var head = '<div class="contact-dialog__backdrop" data-close></div>' +
-          '<div class="contact-dialog__panel"><div class="contact-dialog__head">' +
-          '<h2 class="contact-dialog__title text-h2">Связаться</h2>' +
-          '<button type="button" class="contact-dialog__close btn btn--fill-white btn--icon-only" data-close aria-label="Закрыть">×</button>' +
-          '</div><div data-rows></div></div>';
+          '<div class="contact-dialog__panel"><div class="contact-dialog__body"><div class="contact-dialog__inner">' +
+          '<div class="contact-dialog__head"><h2 class="contact-dialog__title text-h2">Связаться</h2></div>' +
+          '<div data-rows></div></div></div><div class="contact-dialog__footer"><div class="contact-dialog__close-wrap">' +
+          '<button type="button" class="contact-dialog__close btn btn--fill-ink btn--icon-right" data-close aria-label="Закрыть контакты">' +
+          '<span>Закрыть</span><span class="icon icon--close" aria-hidden="true"></span></button></div></div></div>';
         sheet.innerHTML = head;
         var rows = sheet.querySelector('[data-rows]');
-        ITEMS.forEach(function (it) {
+        ITEMS.forEach(function (it, index) {
           var el;
           if (it.copy) {
             el = document.createElement('button');
@@ -152,9 +175,13 @@
             el.addEventListener('click', function () { setTimeout(closeSheet, 60); });
           }
           el.className = 'contact-row btn btn--fill-white btn--icon-left';
-          el.innerHTML = '<img src="' + it.img + '" width="32" height="32" alt="" aria-hidden="true">';
+          el.innerHTML = '<span class="icon icon--social-' + it.icon + '" aria-hidden="true"></span>';
           el.appendChild(document.createTextNode(it.label));
-          rows.appendChild(el);
+          var item = document.createElement('div');
+          item.className = 'contact-dialog__item';
+          item.style.setProperty('--item-index', index);
+          item.appendChild(el);
+          rows.appendChild(item);
         });
         sheet.querySelectorAll('[data-close]').forEach(function (x) { x.addEventListener('click', closeSheet); });
         document.addEventListener('keydown', function (e) {
@@ -174,10 +201,13 @@
       ensureSheet();
       if (!sheet.hidden) return;
       sheet.hidden = false;
+      sheet.querySelector('.contact-dialog__body').scrollTop = 0;
+      setOrigin();
+      setBackgroundInert();
       lockScroll();
       if (toggle) toggle.setAttribute('aria-expanded', 'true');
       var c = sheet.querySelector('.contact-dialog__close');
-      if (c) c.focus();
+      if (c) c.focus({ preventScroll: true });
     }
     ensureSheet();
     if (toggle) toggle.addEventListener('click', function (e) { e.stopPropagation(); openSheet(); });

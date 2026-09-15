@@ -179,8 +179,8 @@
 }
 
 .works-grid__page-link .icon {
-  width: 22px;
-  height: 22px;
+  width: var(--icon-size);
+  height: var(--icon-size);
   background-color: #14161a;
 }
 
@@ -193,8 +193,8 @@
   }
 
   .works-grid__page-link .icon {
-    width: 18px;
-    height: 18px;
+    width: var(--icon-size);
+    height: var(--icon-size);
   }
 }
 

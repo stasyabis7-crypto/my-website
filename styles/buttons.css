@@ -40,6 +40,8 @@
                       .site-socials__link (иконки соцсетей в хедере)
                       (styles/site-chrome.css)
 
+    .btn--fill-ink    спокойная тёмная заливка → белая по наведению.
+
     .btn--fill-character прозрачная кнопка персонажа; круглая область
                          нажатия под размер иллюстрации, высота .btn общая.
                          Используется с .btn--icon-only, нужен aria-label.
@@ -133,8 +135,8 @@
 }
 
 .btn .icon {
-  width: 1.1em;
-  height: 1.1em;
+  width: var(--icon-size);
+  height: var(--icon-size);
 }
 
 /* Глушим общий ::before-глоу из button-hover.css — у крупных кнопок он
@@ -223,9 +225,9 @@
 
 .btn--icon-top .icon {
   order: -1;
-  width: 16px;
-  height: 16px;
-  flex: 0 0 16px;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  flex: 0 0 var(--icon-size);
 }
 
 .btn--icon-only {
@@ -236,8 +238,8 @@
 }
 
 .btn--icon-only .icon {
-  width: 1.3em;
-  height: 1.3em;
+  width: var(--icon-size);
+  height: var(--icon-size);
 }
 
 /* Кнопки хедера используют ту же высоту, что и остальные действия. */
@@ -313,4 +315,10 @@ html.chrome--pinned .btn--scroll-shadow {
 }
 
 /* Shared contact actions use the same DS height and fills. */
-.contact-row.btn { justify-content: flex-start; gap: 16px; }
+.contact-row.btn { justify-content: center; gap: 16px; }
+
+/* Quiet dark fill for dismiss actions. Same shared height and icon dimensions.
+   Usage: .btn.btn--fill-ink with an optional .btn--icon-* layout. */
+.btn--fill-ink { background: #111111; color: var(--mood-bg, #fff); }
+.btn--fill-ink::after { background: #fff; }
+.btn--fill-ink:hover, .btn--fill-ink:focus-visible { color: #111111; }

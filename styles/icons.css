@@ -2,16 +2,21 @@
   DS-иконки — общий реестр SVG-иконок проекта (assets/icons/Interface,
   assets/icons/Arrow). Иконка — заливка currentColor, обрезанная по
   alpha-маске SVG-файла (mask-image), поэтому одна и та же .icon сама
-  подстраивается под цвет текста в любом контроле — размер задаёт
-  только контекст использования (header.css/footer.css), сама .icon
-  его не фиксирует.
+  подстраивается под цвет текста в любом контроле. Общий размер
+  интерфейсных иконок — 24 × 24 px, задан токеном --icon-size.
 
   Новый файл в assets/icons/{Interface,Arrow} — новый модификатор
   здесь, дальше переиспользуем везде через <span class="icon icon--x">,
   а не копируем разметку SVG по месту использования.
 */
 
+:root { --icon-size: 24px; }
+
 .icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  min-width: var(--icon-size);
+  min-height: var(--icon-size);
   display: block;
   flex: 0 0 auto;
   background-color: currentColor;
@@ -29,8 +34,8 @@
 }
 
 .icon--close {
-  -webkit-mask-image: url("../assets/icons/Interface/close.svg");
-  mask-image: url("../assets/icons/Interface/close.svg");
+  -webkit-mask-image: url("../assets/icons/Interface/close.svg?v=2");
+  mask-image: url("../assets/icons/Interface/close.svg?v=2");
 }
 
 .icon--up {
@@ -86,4 +91,34 @@
 .icon--play {
   -webkit-mask-image: url("../assets/icons/Interface/play.svg");
   mask-image: url("../assets/icons/Interface/play.svg");
+}
+
+.icon--social-telegram {
+  -webkit-mask-image: url("../assets/socials/Telegram.svg");
+  mask-image: url("../assets/socials/Telegram.svg");
+}
+
+.icon--social-email {
+  -webkit-mask-image: url("../assets/socials/Google.svg");
+  mask-image: url("../assets/socials/Google.svg");
+}
+
+.icon--social-dribbble {
+  -webkit-mask-image: url("../assets/socials/Dribbble.svg");
+  mask-image: url("../assets/socials/Dribbble.svg");
+}
+
+.icon--social-figma {
+  -webkit-mask-image: url("../assets/socials/Figma.svg");
+  mask-image: url("../assets/socials/Figma.svg");
+}
+
+.icon--social-medium {
+  -webkit-mask-image: url("../assets/socials/Medium.svg");
+  mask-image: url("../assets/socials/Medium.svg");
+}
+
+.icon--social-habr {
+  -webkit-mask-image: url("../assets/socials/Habr.svg");
+  mask-image: url("../assets/socials/Habr.svg");
 }

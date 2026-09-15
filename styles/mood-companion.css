@@ -138,7 +138,7 @@ html[data-mood-paused] .mood-stage,
 html[data-mood-paused] .mood-speech { transition: none; }
 html[data-mood-paused] .mood-wave.is-playing { animation: none; }
 
-.mood-cursor .icon { width: 1.1em; height: 1.1em; }
+.mood-cursor .icon { width: var(--icon-size); height: var(--icon-size); }
 
 /* A project mounts just the compact companion, without a hero layout. */
 .mood-actor--project:not(.is-ready) { display: none; }
