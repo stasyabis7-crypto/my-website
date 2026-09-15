@@ -38,3 +38,11 @@
 }
 
 html.work-toc-scroll-lock, html.work-toc-scroll-lock body { overflow: hidden; }
+
+/* Fade only overflowing contents; the fixed close action stays fully visible. */
+.work-toc-sheet .contact-dialog__body {
+  --toc-fade-top: 0px;
+  --toc-fade-bottom: 0px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--toc-fade-top), #000 calc(100% - var(--toc-fade-bottom)), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 var(--toc-fade-top), #000 calc(100% - var(--toc-fade-bottom)), transparent 100%);
+}

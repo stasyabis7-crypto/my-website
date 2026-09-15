@@ -31,6 +31,17 @@
       </button></div></div></div>`;
   document.body.appendChild(sheet);
   const surface = sheet.querySelector('.contact-dialog__panel');
+  const scrollBody = sheet.querySelector('.contact-dialog__body');
+  function updateScrollFade() {
+    if (sheet.hidden) return;
+    const remaining = scrollBody.scrollHeight - scrollBody.clientHeight - scrollBody.scrollTop;
+    scrollBody.style.setProperty('--toc-fade-top', `${Math.min(40, Math.max(0, scrollBody.scrollTop))}px`);
+    scrollBody.style.setProperty('--toc-fade-bottom', `${Math.min(40, Math.max(0, remaining))}px`);
+  }
+  scrollBody.addEventListener('scroll', updateScrollFade, { passive: true });
+  const fadeObserver = new ResizeObserver(updateScrollFade);
+  fadeObserver.observe(scrollBody);
+  fadeObserver.observe(sheet.querySelector('.contact-dialog__inner'));
   const closeButton = sheet.querySelector('button[data-close]');
   items.forEach((item, index) => {
     const row = document.createElement('div');
@@ -104,7 +115,8 @@
   function openSheet() {
     if (!sheet.hidden) return;
     sheet.hidden = false;
-    sheet.querySelector('.contact-dialog__body').scrollTop = 0;
+    scrollBody.scrollTop = 0;
+    updateScrollFade();
     setOrigin();
     inactive = [...document.body.children].filter(el => el !== sheet && !el.inert);
     inactive.forEach(el => { el.inert = true; });
