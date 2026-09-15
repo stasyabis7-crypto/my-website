@@ -43,7 +43,7 @@
 }
 
 /* Panel collection: white cards with a text header and square cover below it. */
-.project-slider--themed .project-slider__track { gap: 16px; }
+.project-slider--themed .project-slider__track { gap: 16px; align-items: start; }
 .project-slider + .project-slider { margin-top: var(--space-section); }
 .project-slider--themed {
   background: var(--mood-bg); color: var(--mood-ink);
@@ -56,10 +56,10 @@
 }
 .project-card--panel .project-card__copy {
   margin: 0; padding: 32px;
-  min-height: calc(2 * var(--font-size-xl) * var(--line-height-heading) + 2 * var(--font-size-text) * var(--line-height-text) + 80px);
+  min-height: 0;
 }
 .project-card--panel.project-card--linked .project-card__copy { padding-right: calc(var(--button-height) + 32px); }
-.project-card--panel .project-card__media { width: 100%; flex-shrink: 0; margin-top: auto; }
+.project-card--panel .project-card__media { width: 100%; flex-shrink: 0; margin-top: 0; }
 .project-card--panel .project-card__open { top: 16px; bottom: auto; right: 16px; }
 .project-card--panel .project-card__text { position: relative; z-index: 2; }
 .project-card--panel.project-card--linked .project-card__text:not([data-truncated]) { pointer-events: none; }
