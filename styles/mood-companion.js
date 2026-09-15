@@ -220,7 +220,7 @@
     wake();
   };
   reduced.addEventListener('change', syncMotion);
-  pauseButton.addEventListener('click', () => {
+  if (pauseButton) pauseButton.addEventListener('click', () => {
     paused = !paused;
     if (paused) { clearTimeout(speechTimer); speech.classList.remove('is-visible'); }
     scheduleIdle();
