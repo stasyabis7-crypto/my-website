@@ -4,6 +4,7 @@
   if (!root) return;
   const toggle = root.querySelector('.work-toc__toggle');
   const panel = root.querySelector('.work-toc__panel');
+  const desktopScroll = panel.querySelector('nav');
   const items = [...panel.querySelectorAll('a[href^="#"]')].map(link => ({
     link, section: document.getElementById(link.hash.slice(1)),
     marker: root.querySelector(`[data-toc-marker="${link.hash.slice(1)}"]`)
@@ -34,14 +35,19 @@
   const surface = sheet.querySelector('.contact-dialog__panel');
   const scrollBody = sheet.querySelector('.contact-dialog__body');
   function updateScrollFade() {
-    if (sheet.hidden) return;
-    const remaining = scrollBody.scrollHeight - scrollBody.clientHeight - scrollBody.scrollTop;
-    scrollBody.style.setProperty('--toc-fade-top', `${Math.min(40, Math.max(0, scrollBody.scrollTop))}px`);
-    scrollBody.style.setProperty('--toc-fade-bottom', `${Math.min(40, Math.max(0, remaining))}px`);
+    [desktopScroll, scrollBody].forEach(scroller => {
+      if (!scroller.clientHeight) return;
+      const remaining = scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop;
+      scroller.style.setProperty('--toc-fade-top', `${Math.min(40, Math.max(0, scroller.scrollTop))}px`);
+      scroller.style.setProperty('--toc-fade-bottom', `${Math.min(40, Math.max(0, remaining))}px`);
+    });
   }
   scrollBody.addEventListener('scroll', updateScrollFade, { passive: true });
+  desktopScroll.addEventListener('scroll', updateScrollFade, { passive: true });
   const fadeObserver = new ResizeObserver(updateScrollFade);
   fadeObserver.observe(scrollBody);
+  fadeObserver.observe(desktopScroll);
+  items.forEach(item => fadeObserver.observe(item.link));
   fadeObserver.observe(sheet.querySelector('.contact-dialog__inner'));
   const closeButton = sheet.querySelector('button[data-close]');
   items.forEach((item, index) => {
@@ -114,9 +120,13 @@
     popoverAnimation = null;
     setExpanded(open);
     panel.inert = !open;
+    if (open) {
+      panel.hidden = false;
+      if (current) desktopScroll.scrollTop = Math.max(0, current.link.offsetTop - desktopScroll.clientHeight / 2);
+      updateScrollFade();
+    }
     if (reducedMotion.matches || !desktop.matches) { panel.hidden = !open; return; }
     panel.hidden = false;
-    if (open && current) panel.scrollTop = Math.max(0, current.link.offsetTop - panel.clientHeight / 2);
     const bounds = panel.getBoundingClientRect(), trigger = toggle.getBoundingClientRect();
     const top = Math.max(0, Math.min(bounds.height - 64, trigger.top - bounds.top));
     const folded = {

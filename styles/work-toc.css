@@ -14,8 +14,7 @@
   bottom: calc(100% + 12px);
   width: min(360px, calc(100vw - 32px));
   max-height: calc(100dvh - var(--header-h, 80px) - 200px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  overflow: hidden;
   padding: 8px;
   border: 1px solid color-mix(in srgb, var(--mood-ink) 12%, transparent);
   border-radius: 24px;
@@ -24,12 +23,12 @@
   box-shadow: 0 12px 32px rgba(24, 24, 27, .12);
   backdrop-filter: blur(16px);
 }
-.work-toc__panel nav { display: grid; gap: 2px; }
+.work-toc__panel nav { position: relative; display: grid; gap: 2px; overflow-y: auto; overscroll-behavior: contain; }
 .work-toc__panel .btn { width: 100%; }
 /* Keep scrolling available without visible scrollbar tracks. */
-.work-toc__panel,
+.work-toc__panel nav,
 .work-toc-sheet .contact-dialog__body { scrollbar-width: none; }
-.work-toc__panel::-webkit-scrollbar,
+.work-toc__panel nav::-webkit-scrollbar,
 .work-toc-sheet .contact-dialog__body::-webkit-scrollbar { display: none; }
 .case__blocks > [id] { scroll-margin-top: calc(var(--header-h, 80px) + 36px); }
 @media (min-width: 1101px) {
@@ -43,12 +42,13 @@
     max-height: 80dvh;
     transform-origin: right 25%;
   }
-  .work-toc__panel nav { gap: 4px; }
+  .work-toc__panel nav { gap: 4px; max-height: calc(80dvh - 34px); }
 }
 
 html.work-toc-scroll-lock, html.work-toc-scroll-lock body { overflow: hidden; }
 
-/* Fade only overflowing contents; the fixed close action stays fully visible. */
+/* Fade contents, preserving the surface background and fixed close action. */
+.work-toc__panel nav,
 .work-toc-sheet .contact-dialog__body {
   --toc-fade-top: 0px;
   --toc-fade-bottom: 0px;
