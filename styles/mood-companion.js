@@ -473,7 +473,7 @@
     }
     if (layoutDirty) measure();
     const wasFollowing = following;
-    following = !!placement || standalone || homeRect.bottom < 100 || stageRect.bottom < innerHeight * .18;
+    following = !!drag?.active || standalone || homeRect.bottom < 100 || stageRect.bottom < innerHeight * .18;
     actor.classList.toggle('is-following', following);
     if (following !== wasFollowing) { hideCursor(); freezeUntil = 0; forcePaint = true; if (following && !placement && !motionOff()) say('Я рядом. Смотрим?', 2200); }
     let target = standalone ? { x: 0, y: 0, size: 120 } : { x: homeRect.left, y: homeRect.top, size: homeRect.width };
@@ -486,8 +486,12 @@
       target = { x: innerWidth - size - (innerWidth < 600 ? 8 : 24), y: clamp(desiredY, top, bottom), size };
       if (now < freezeUntil && position.size) { target.x = position.x; target.y = position.y; }
     }
-    if (placement) target = {x: placement.x, y: placement.y, size: placement.size};
-    const lerp = drag?.active || placement || motionOff() || !position.size ? 1 : 1 - Math.exp(-delta / (following ? 260 : 150));
+    // The visible hero always owns the character; remember the custom screen
+    // position for the next time the visitor scrolls below the hero.
+    const pinned = following && placement;
+    if (pinned) target = {x: placement.x, y: placement.y, size: placement.size};
+    const settledPin = pinned && Math.abs(position.size - target.size) < .1;
+    const lerp = drag?.active || settledPin || motionOff() || !position.size ? 1 : 1 - Math.exp(-delta / (following ? 260 : 150));
     position.x = mix(position.x, target.x, lerp);
     position.y = mix(position.y, target.y, lerp);
     position.size = mix(position.size, target.size, lerp);
