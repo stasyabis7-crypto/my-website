@@ -96,7 +96,7 @@
 .project-card--panel.project-card--linked .project-card__text:not([data-truncated]) { pointer-events: none; }
 @media (max-width: 599px) {
   .project-card--panel { border-radius: 24px; }
-  .project-card--panel .project-card__copy { padding: 24px; }
+  .project-card--panel .project-card__copy { padding: 24px; min-height: 0; }
   .project-card--panel.project-card--linked .project-card__copy { padding-right: calc(var(--button-height) + 24px); }
 }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
