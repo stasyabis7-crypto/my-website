@@ -24,7 +24,7 @@
 .project-card__image { display: block; position: absolute; user-select: none; pointer-events: none; }
 .project-card--phone .project-card__image { width: 66%; height: auto; top: 17%; left: 17%; }
 .project-card--desktop .project-card__image { width: 88%; height: auto; top: 50%; left: 6%; transform: translateY(-50%); border-radius: 8px; }
-.project-card--square .project-card__image { width: 82%; height: 82%; object-fit: contain; top: 9%; left: 9%; border-radius: 12px; }
+.project-card--square .project-card__image { width: 100%; height: 100%; object-fit: cover; top: 0; left: 0; }
 .project-card__link { position: absolute; inset: 0; z-index: 1; border-radius: 32px; }
 .project-card__link:focus-visible { outline: 3px solid var(--color-action-active); outline-offset: -5px; }
 .project-card__open { position: absolute; right: 0; bottom: 0; z-index: 2; }
@@ -47,5 +47,5 @@
 }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .project-card__image { transition: scale .55s cubic-bezier(.2,.65,.3,1); }
-  .project-card__media:hover .project-card__image { scale: 1.035; }
+  .project-card__media[data-action-hover]:hover .project-card__image { scale: 1.035; }
 }

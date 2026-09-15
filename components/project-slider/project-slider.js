@@ -2,10 +2,13 @@
   const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function card(project, index, count) {
     const title = escape(project.title);
+    const sizes = project.format === 'phone'
+      ? '(max-width: 599px) 66vw, (max-width: 999px) 40vw, 28vw'
+      : '(max-width: 599px) 100vw, (max-width: 999px) 61vw, 40vw';
     return `<article class="project-card project-card--${escape(project.format)}" data-index="${index}" role="group" aria-roledescription="слайд" aria-label="${index + 1} из ${count}: ${title}">
-      <div class="project-card__media" data-action-hover>
+      <div class="project-card__media" ${project.href ? 'data-action-hover' : ''}>
         <div class="project-card__cover" style="--cover-color:${escape(project.color)}">
-          <img class="project-card__image" src="${escape(project.image)}" srcset="${escape(project.srcset)}" sizes="(max-width: 599px) 66vw, (max-width: 999px) 40vw, 28vw" alt="${title}" loading="lazy" decoding="async" draggable="false">
+          <img class="project-card__image" src="${escape(project.image)}" srcset="${escape(project.srcset)}" sizes="${sizes}" alt="${title}" loading="lazy" decoding="async" draggable="false">
           ${project.href ? '' : '<span class="project-card__badge text-body">В работе</span>'}
         </div>
         ${project.href ? `<a class="project-card__link" href="${escape(project.href)}" aria-label="Открыть проект: ${title}" tabindex="-1"></a><a class="project-card__open btn btn--fill-white btn--icon-only btn--icon-diagonal-motion" href="${escape(project.href)}" aria-label="Открыть проект: ${title}"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : ''}
@@ -88,8 +91,18 @@
       if (!wheelLocked && Math.abs(e.deltaX) > 4) { move(Math.sign(e.deltaX)); wheelLocked = true; }
       clearTimeout(wheelTimer); wheelTimer = setTimeout(() => { wheelLocked = false; }, 180);
     }, {passive: false});
+    // Compare layout heights, not scrollHeight: glyphs may overflow the tight
+    // heading line box by a few pixels even when no text is clamped.
+    function isTruncated(el) {
+      const clampedHeight = el.getBoundingClientRect().height;
+      const previousClamp = el.style.webkitLineClamp;
+      el.style.webkitLineClamp = 'unset';
+      const fullHeight = el.getBoundingClientRect().height;
+      el.style.webkitLineClamp = previousClamp;
+      return fullHeight > clampedHeight + 0.5;
+    }
     function showTooltip(el) {
-      if (!el.hasAttribute('data-truncated')) return;
+      if (!isTruncated(el)) { hideTooltip(); return; }
       hideTooltip(); tooltipOwner = el; el.setAttribute('aria-describedby', tooltip.id);
       const project = projects[Number(el.closest('.project-card').dataset.index)];
       tooltip.innerHTML = `<div class="text-h2">${escape(project.title)}</div><p class="text-body">${escape(project.description)}</p>`;
@@ -113,11 +126,16 @@
       const w = cards[0].getBoundingClientRect().width; step = w + 16;
       cards.forEach(el => {
         if (el.querySelector('.project-card__open')) {
-          const a = w - 80;
-          el.querySelector('.project-card__cover').style.clipPath = `path("M 32 0 H ${w-32} Q ${w} 0 ${w} 32 V ${a-24} Q ${w} ${a} ${w-24} ${a} H ${a+24} Q ${a} ${a} ${a} ${a+24} V ${w-24} Q ${a} ${w} ${a-24} ${w} H 32 Q 0 ${w} 0 ${w-32} V 32 Q 0 0 32 0 Z")`;
+          // Follow the button circle with a 12px gap and tangent transitions
+          // into the cover edges, without the former horizontal shelf.
+          const buttonSize = el.querySelector('.project-card__open').getBoundingClientRect().width;
+          const center = w - buttonSize / 2;
+          const radius = buttonSize / 2 + 12;
+          const edge = center - radius;
+          el.querySelector('.project-card__cover').style.clipPath = `path("M 32 0 H ${w-32} Q ${w} 0 ${w} 32 V ${edge-24} C ${w} ${edge-8} ${center+18} ${edge} ${center} ${edge} A ${radius} ${radius} 0 0 0 ${edge} ${center} C ${edge} ${center+18} ${edge-8} ${w} ${edge-24} ${w} H 32 Q 0 ${w} 0 ${w-32} V 32 Q 0 0 32 0 Z")`;
         }
         el.querySelectorAll('.project-card__text').forEach(text => {
-          const truncated = text.scrollHeight > text.clientHeight + 1;
+          const truncated = isTruncated(text);
           text.toggleAttribute('data-truncated', truncated);
           if (truncated) text.tabIndex = 0; else text.removeAttribute('tabindex');
         });
