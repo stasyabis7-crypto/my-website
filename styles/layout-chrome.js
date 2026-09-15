@@ -316,5 +316,28 @@
     });
   });
 
+  // Delegation includes dynamically rendered carousel buttons. Some mobile
+  // browsers delay :active; explicit pointer state gives immediate press feedback.
+  var touchPress = null;
+  function clearTouchPress() {
+    if (touchPress) touchPress.button.classList.remove('is-touch-pressed');
+    touchPress = null;
+  }
+  document.addEventListener('pointerdown', function (event) {
+    if (event.pointerType !== 'touch' || !event.isPrimary) return;
+    clearTouchPress();
+    var button = event.target.closest('.btn');
+    if (!button || button.disabled) return;
+    touchPress = { button: button, id: event.pointerId, x: event.clientX, y: event.clientY };
+    button.classList.add('is-touch-pressed');
+  }, { passive: true });
+  document.addEventListener('pointermove', function (event) {
+    if (touchPress && event.pointerId === touchPress.id &&
+        Math.hypot(event.clientX - touchPress.x, event.clientY - touchPress.y) > 8) clearTouchPress();
+  }, { passive: true });
+  document.addEventListener('pointerup', clearTouchPress, { passive: true });
+  document.addEventListener('pointercancel', clearTouchPress, { passive: true });
+  window.addEventListener('blur', clearTouchPress);
+
   syncAll();
 })();

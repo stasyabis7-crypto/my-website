@@ -45,6 +45,11 @@
   let position = { x: 0, y: 0, size: 0 };
   let homeRect, stageRect, headerBottom = 110;
   let following = false;
+  let placement = null; // Document coordinates: a dropped companion stays on the page.
+  let drag = null;
+  let suppressCharacterClickUntil = 0;
+  let obstacles = [];
+  const interactive = 'a[href], button, input, select, textarea, summary, [role="button"], [role="link"], [contenteditable="true"], [tabindex]:not([tabindex="-1"]), iframe, video[controls]';
   let hovering = false;
   let freezeUntil = 0;
   let change = null;
@@ -96,6 +101,94 @@
   // Moving the actor out of the clipped hero keeps one continuous character on scroll.
   document.body.appendChild(actor);
   actor.classList.add('is-ready');
+  character.setAttribute('aria-description', 'Можно перетащить в свободное место. С клавиатуры: Alt и стрелки; Escape — вернуть на исходное место.');
+  function readObstacles() {
+    obstacles = [...document.querySelectorAll(interactive)].filter(el =>
+      !actor.contains(el) && !el.closest('[inert], [hidden]') &&
+      !el.classList.contains('project-slider__viewport') &&
+      getComputedStyle(el).visibility !== 'hidden' && getComputedStyle(el).pointerEvents !== 'none'
+    ).flatMap(el => [...el.getClientRects()]).filter(r => r.width && r.height && r.bottom > 0 && r.top < innerHeight);
+  }
+  function safeSpot(x, y, size) {
+    const padding = 8;
+    return !obstacles.some(r => x < r.right + padding && x + size > r.left - padding &&
+      y < r.bottom + padding && y + size > r.top - padding);
+  }
+  function nearestSpot(x, y, size) {
+    const bound = (x, y) => ({x: clamp(x, 8, innerWidth - size - 8), y: clamp(y, 8, innerHeight - size - 8), size});
+    const desired = bound(x, y);
+    if (safeSpot(desired.x, desired.y, size)) return desired;
+    for (let radius = 24; radius < Math.max(innerWidth, innerHeight); radius += 24) {
+      for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 12) {
+        const candidate = bound(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius);
+        if (safeSpot(candidate.x, candidate.y, size)) return candidate;
+      }
+    }
+    return null;
+  }
+  function dragPosition() {
+    if (!drag?.active) return;
+    placement = {
+      x: clamp(drag.clientX - drag.offsetX, 8, innerWidth - drag.size - 8),
+      y: clamp(drag.clientY - drag.offsetY, 8, innerHeight - drag.size - 8) + scrollY,
+      size: drag.size
+    };
+    actor.classList.toggle('is-drop-blocked', !safeSpot(placement.x, placement.y - scrollY, placement.size));
+  }
+  function endDrag(cancel = false) {
+    if (!drag) return;
+    const current = drag;
+    if (current.active) {
+      readObstacles();
+      const spot = cancel ? null : nearestSpot(placement.x, placement.y - scrollY, placement.size);
+      placement = spot ? {...spot, y: spot.y + scrollY} : current.previous;
+      suppressCharacterClickUntil = performance.now() + 500;
+    }
+    drag = null;
+    if (character.hasPointerCapture(current.id)) character.releasePointerCapture(current.id);
+    actor.classList.remove('is-dragging', 'is-drop-blocked');
+    root.classList.remove('mood-character-dragging');
+    layoutDirty = true; forcePaint = true; wake();
+  }
+  character.addEventListener('pointerdown', e => {
+    if (e.button !== 0 || !e.isPrimary || change) return;
+    const size = innerWidth < 600 ? 104 : 120;
+    drag = {id: e.pointerId, startX: e.clientX, startY: e.clientY,
+      clientX: e.clientX, clientY: e.clientY, size, previous: placement && {...placement}, active: false,
+      offsetX: clamp((e.clientX - position.x) / position.size, 0, 1) * size,
+      offsetY: clamp((e.clientY - position.y) / position.size, 0, 1) * size};
+    character.setPointerCapture(e.pointerId);
+    readObstacles();
+  });
+  character.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    drag.clientX = e.clientX; drag.clientY = e.clientY;
+    if (!drag.active && Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) > 7) {
+      drag.active = true; character.setPointerCapture(e.pointerId);
+      hideCursor(); speech.classList.remove('is-visible');
+      actor.classList.add('is-dragging'); root.classList.add('mood-character-dragging');
+    }
+    if (drag.active) { e.preventDefault(); dragPosition(); wake(); }
+  });
+  character.addEventListener('pointerup', e => { if (e.pointerId === drag?.id) endDrag(); });
+  character.addEventListener('pointercancel', e => { if (e.pointerId === drag?.id) endDrag(true); });
+  character.addEventListener('lostpointercapture', () => { if (drag) endDrag(true); });
+  character.addEventListener('dragstart', e => e.preventDefault());
+  window.addEventListener('blur', () => endDrag(true));
+  character.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      e.preventDefault(); endDrag(true); placement = null; freezeUntil = 0; hideCursor(); layoutDirty = true; wake(); return;
+    }
+    if (!e.altKey || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
+    e.preventDefault(); hideCursor(); readObstacles();
+    const size = innerWidth < 600 ? 104 : 120;
+    const x = position.x + position.size / 2 - size / 2 + (e.key === 'ArrowLeft' ? -24 : e.key === 'ArrowRight' ? 24 : 0);
+    const y = position.y + position.size / 2 - size / 2 + (e.key === 'ArrowUp' ? -24 : e.key === 'ArrowDown' ? 24 : 0);
+    const spot = nearestSpot(x, y, size);
+    if (spot) placement = {...spot, y: spot.y + scrollY};
+    layoutDirty = true; forcePaint = true; wake();
+  });
+
 
   function updateCopy() {
     if (name) name.textContent = mood.name;
@@ -125,6 +218,10 @@
       const rect = footer.getBoundingClientRect();
       root.style.setProperty('--chrome-socials-offset', rect.top < 140 && rect.right > innerWidth - 260 ? Math.ceil(rect.width + 12) + 'px' : '0px');
     }
+    if (placement) {
+      placement.x = clamp(placement.x, 8, innerWidth - placement.size - 8);
+      readObstacles();
+    }
     layoutDirty = false;
   }
   function applyMood(nextIndex, persist = true) {
@@ -151,10 +248,13 @@
     say(mood.reaction, 850);
     wake();
   }
-  character.addEventListener('click', switchMood);
+  character.addEventListener('click', e => {
+    if (performance.now() < suppressCharacterClickUntil) { e.preventDefault(); return; }
+    switchMood();
+  });
   nextButton?.addEventListener('click', switchMood);
   character.addEventListener('pointerenter', e => {
-    if (!fine.matches || e.pointerType === 'touch' || change) return;
+    if (!fine.matches || e.pointerType === 'touch' || change || drag?.active) return;
     hovering = true;
     freezeUntil = Infinity;
     root.classList.add('mood-cursor-active');
@@ -365,13 +465,18 @@
     if (!mounted || document.hidden) return;
     const delta = lastFrame ? Math.min(now - lastFrame, 64) : 16;
     // Limit particle redraws to 30fps on touch devices; transforms remain time-based.
-    if (lastFrame && !fine.matches && !motionOff() && delta < 30) { wake(); return; }
+    if (lastFrame && !fine.matches && !motionOff() && !drag?.active && delta < 30) { wake(); return; }
     lastFrame = now;
+    if (drag?.active) {
+      const scrollStep = drag.clientY < 64 ? -12 : drag.clientY > innerHeight - 64 ? 12 : 0;
+      if (scrollStep) { window.scrollBy({top: scrollStep, behavior: 'instant'}); layoutDirty = true; }
+      dragPosition();
+    }
     if (layoutDirty) measure();
     const wasFollowing = following;
-    following = standalone || homeRect.bottom < 100 || stageRect.bottom < innerHeight * .18;
+    following = !!placement || standalone || homeRect.bottom < 100 || stageRect.bottom < innerHeight * .18;
     actor.classList.toggle('is-following', following);
-    if (following !== wasFollowing) { hideCursor(); freezeUntil = 0; forcePaint = true; if (following && !motionOff()) say('Я рядом. Смотрим?', 2200); }
+    if (following !== wasFollowing) { hideCursor(); freezeUntil = 0; forcePaint = true; if (following && !placement && !motionOff()) say('Я рядом. Смотрим?', 2200); }
     let target = standalone ? { x: 0, y: 0, size: 120 } : { x: homeRect.left, y: homeRect.top, size: homeRect.width };
     if (following) {
       const size = innerWidth < 600 ? 104 : 120;
@@ -382,7 +487,11 @@
       target = { x: innerWidth - size - (innerWidth < 600 ? 8 : 24), y: clamp(desiredY, top, bottom), size };
       if (now < freezeUntil && position.size) { target.x = position.x; target.y = position.y; }
     }
-    const lerp = motionOff() || !position.size ? 1 : 1 - Math.exp(-delta / (following ? 260 : 150));
+    if (placement) target = {x: placement.x, y: placement.y - scrollY, size: placement.size};
+    // A placed character scrolls with its document position. Hide it while a
+    // fixed control crosses that spot, rather than covering or intercepting it.
+    actor.style.visibility = placement && !drag?.active && !safeSpot(target.x, target.y, target.size) ? 'hidden' : '';
+    const lerp = drag?.active || placement || motionOff() || !position.size ? 1 : 1 - Math.exp(-delta / (following ? 260 : 150));
     position.x = mix(position.x, target.x, lerp);
     position.y = mix(position.y, target.y, lerp);
     position.size = mix(position.size, target.size, lerp);
@@ -427,7 +536,7 @@
     }
     const moving = Math.abs(position.x - target.x) + Math.abs(position.y - target.y) + Math.abs(position.size - target.size) > .1;
     if (!motionOff() || forcePaint || moving) { draw(now, scene); forcePaint = false; }
-    if (!motionOff() || moving || change) wake();
+    if (!motionOff() || moving || change || drag?.active) wake();
   }
   function wake() { if (!frame && mounted && !document.hidden) frame = requestAnimationFrame(tick); }
   applyMood(index, false);

@@ -412,3 +412,24 @@ html.chrome--pinned .btn--scroll-shadow {
 
 /* Text may wrap within the shared height when flanked by icon-only actions. */
 .btn--label-wrap { white-space: normal; padding-inline: 16px; text-align: center; }
+
+/* Touch devices keep their resting fill: only a brief press scale changes.
+   Keyboard focus remains visible through an outline, without a touch hover latch. */
+@media (hover: none), (pointer: coarse) {
+  .btn::after { display: none; }
+  .btn:hover { transform: none; }
+  .btn:active, .btn.is-touch-pressed { transform: none; scale: .97; }
+  .btn { transition: scale .16s ease-out; -webkit-tap-highlight-color: transparent; }
+  .btn.btn--fill-pink { background: var(--color-action-active, #ff0cc2); color: var(--color-action-active-text, #fff); }
+  .btn.btn--fill-white, .btn.btn--fill-toc-trigger { background: #fff; color: #101014; }
+  .btn.btn--fill-ink { background: #111; color: var(--mood-bg, #fff); }
+  .btn.btn--fill-toc { background: transparent; color: var(--mood-ink); }
+  .btn.btn--fill-toc[aria-current="location"] { background: var(--color-action-active); color: var(--color-action-active-text); }
+  .btn:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+  .btn.btn--fill-character:active, .btn.btn--fill-character.is-touch-pressed { scale: 1; }
+}
+/* The character is a draggable action; a short tap still changes the mood. */
+.btn--fill-character { touch-action: none; user-select: none; }
+html.mood-character-dragging .btn--fill-character { cursor: grabbing; }
+
+@media (prefers-reduced-motion: reduce) { .btn { transition-duration: .01ms; } }

@@ -25,7 +25,7 @@
     const status = root.querySelector('.project-slider__status');
     track.innerHTML = Array.from({length: 3}, () => projects.map((p, i) => card(p, i, count)).join('')).join('');
     const cards = [...track.children];
-    let index = count, step = 0, busy = false, timer, pointer, dragged = false, pending = 0;
+    let index = count, step = 0, busy = false, timer, pointer, dragged = false, pending = 0, suppressClickUntil = 0;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const tooltip = document.createElement('div');
     tooltip.className = 'project-slider__tooltip'; tooltip.role = 'tooltip'; tooltip.hidden = true;
@@ -38,7 +38,7 @@
       cards.forEach((el, i) => { el.inert = i < index || i >= index + visible; el.setAttribute('aria-hidden', String(el.inert)); });
     }
     function position(animate = false, offset = 0) {
-      track.style.transition = animate && !reduced.matches ? 'transform 450ms cubic-bezier(.22,.7,.25,1)' : 'none';
+      track.style.transition = animate && !reduced.matches ? 'transform 620ms cubic-bezier(.16,1,.3,1)' : 'none';
       track.style.transform = `translate3d(${-index * step + offset}px,0,0)`;
     }
     function finish() {
@@ -56,7 +56,7 @@
       hideTooltip(); root.dataset.moved = ''; busy = true; index += direction; position(true);
       const current = ((index % count) + count) % count;
       status.textContent = `${current + 1} из ${count}. ${projects[current].title}`;
-      timer = setTimeout(finish, reduced.matches ? 0 : 470);
+      timer = setTimeout(finish, reduced.matches ? 0 : 650);
     }
     root.querySelectorAll('[data-direction]').forEach(button => button.addEventListener('click', () => move(Number(button.dataset.direction))));
     viewport.addEventListener('keydown', e => {
@@ -64,26 +64,57 @@
       if (e.key === 'Escape') hideTooltip();
     });
     viewport.addEventListener('pointerdown', e => {
-      if (e.button !== 0 || busy) return;
-      pointer = {id: e.pointerId, x: e.clientX, y: e.clientY, dx: 0}; dragged = false;
+      if (e.button !== 0 || !e.isPrimary) return;
+      // Pick up the rendered position, even in the middle of a settling animation.
+      const renderedX = new DOMMatrixReadOnly(getComputedStyle(track).transform).m41;
+      clearTimeout(timer); busy = false; pending = 0;
+      index = Math.round(-renderedX / step);
+      const offset = renderedX + index * step;
+      position(false, offset);
+      pointer = {id: e.pointerId, x: e.clientX, y: e.clientY, dx: offset, offset,
+        lastX: e.clientX, lastTime: performance.now(), velocity: 0};
+      dragged = false; suppressClickUntil = 0;
     });
+    viewport.addEventListener('dragstart', e => e.preventDefault());
     viewport.addEventListener('pointermove', e => {
       if (!pointer || pointer.id !== e.pointerId) return;
       const dx = e.clientX - pointer.x, dy = e.clientY - pointer.y;
-      if (!dragged && Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 8) { pointer = null; return; }
-      if (Math.abs(dx) > 8) { dragged = true; viewport.setPointerCapture(e.pointerId); hideTooltip(); }
-      if (dragged) { pointer.dx = dx; position(false, Math.max(-step, Math.min(step, dx))); }
+      if (!dragged && Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx) * 1.2) {
+        pointer = null; position(true); return;
+      }
+      if (!dragged && Math.abs(dx) > 6 && Math.abs(dx) > Math.abs(dy)) {
+        dragged = true; viewport.setPointerCapture(e.pointerId); hideTooltip();
+        root.dataset.moved = '';
+      }
+      if (dragged) {
+        const now = performance.now();
+        pointer.velocity = (e.clientX - pointer.lastX) / Math.max(1, now - pointer.lastTime);
+        pointer.lastX = e.clientX; pointer.lastTime = now;
+        pointer.dx = Math.max(-step, Math.min(step, pointer.offset + dx));
+        position(false, pointer.dx);
+      }
     });
     function release(e) {
       if (!pointer || e.pointerId !== pointer.id) return;
-      const dx = pointer.dx; pointer = null;
+      const {dx, velocity, lastTime} = pointer; pointer = null;
       if (viewport.hasPointerCapture(e.pointerId)) viewport.releasePointerCapture(e.pointerId);
-      if (e.type !== 'pointercancel' && Math.abs(dx) > 40) move(dx < 0 ? 1 : -1);
-      else position(true);
-      setTimeout(() => { dragged = false; }, 0);
+      const flick = performance.now() - lastTime < 120 && Math.abs(velocity) > .3 && Math.abs(dx) > 10;
+      if (dragged) suppressClickUntil = performance.now() + 450;
+      if (e.type !== 'pointercancel' && dragged && (Math.abs(dx) > Math.min(48, step * .14) || flick)) {
+        move(dx < 0 ? 1 : -1);
+      } else {
+        position(true); busy = true; timer = setTimeout(finish, reduced.matches ? 0 : 650);
+      }
+      dragged = false;
     }
     viewport.addEventListener('pointerup', release); viewport.addEventListener('pointercancel', release);
-    viewport.addEventListener('click', e => { if (dragged) { e.preventDefault(); e.stopImmediatePropagation(); } }, true);
+    viewport.addEventListener('mousedown', e => {
+      // Touch compatibility events must not focus/scroll the carousel after a swipe.
+      if (performance.now() < suppressClickUntil) e.preventDefault();
+    }, true);
+    viewport.addEventListener('click', e => {
+      if (performance.now() < suppressClickUntil) { e.preventDefault(); e.stopImmediatePropagation(); }
+    }, true);
     let wheelLocked = false, wheelTimer;
     viewport.addEventListener('wheel', e => {
       if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
@@ -142,7 +173,11 @@
       });
       hideTooltip(); position(); accessibility();
     }
-    new ResizeObserver(resize).observe(viewport);
+    let measuredWidth = viewport.clientWidth;
+    new ResizeObserver(() => {
+      if (viewport.clientWidth === measuredWidth) return;
+      measuredWidth = viewport.clientWidth; resize();
+    }).observe(viewport);
     document.fonts.ready.then(resize);
     resize();
   });

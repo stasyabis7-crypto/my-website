@@ -144,3 +144,6 @@ html[data-mood-paused] .mood-wave.is-playing { animation: none; }
 .mood-actor--project:not(.is-ready) { display: none; }
 .mood-project-pause { position: absolute; left: calc(50% - 32px); top: 100%; pointer-events: auto; }
 .mood-project-description { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.mood-actor.is-dragging { z-index: 80; }
+.mood-actor.is-drop-blocked .mood-canvas { opacity: .55; }
