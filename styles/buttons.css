@@ -322,3 +322,33 @@ html.chrome--pinned .btn--scroll-shadow {
 .btn--fill-ink { background: #111111; color: var(--mood-bg, #fff); }
 .btn--fill-ink::after { background: #fff; }
 .btn--fill-ink:hover, .btn--fill-ink:focus-visible { color: #111111; }
+
+/* Table-of-contents rows: neutral fill, current section marked with a dot.
+   Usage: .btn.btn--fill-toc; retains the shared height and typography. */
+.btn--fill-toc {
+  justify-content: flex-start;
+  padding-inline: 16px;
+  border-radius: 16px;
+  white-space: normal;
+  text-align: left;
+  background: transparent;
+  color: #52525b;
+}
+.btn--fill-toc::after { background: #e4e4e7; }
+.btn--fill-toc:hover, .btn--fill-toc:focus-visible,
+.btn--fill-toc[aria-current="location"] { color: #27272a; background: #e4e4e7; }
+.btn__toc-dot { width: 6px; height: 6px; flex: 0 0 6px; border-radius: 50%; background: #a1a1aa; }
+.btn--fill-toc[aria-current="location"] .btn__toc-dot { background: currentColor; }
+
+/* Responsive contents trigger: list on mobile, section markers on desktop. */
+.work-toc__bars, .work-toc__toggle .work-toc__close-icon { display: none; }
+.work-toc__toggle[aria-expanded="true"] .work-toc__list-icon { display: none; }
+.work-toc__toggle[aria-expanded="true"] .work-toc__close-icon { display: block; }
+@media (min-width: 1101px) {
+  .work-toc__toggle .work-toc__list-icon,
+  .work-toc__toggle[aria-expanded="true"] .work-toc__close-icon { display: none; }
+  .work-toc__bars { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+  .work-toc__bars span { width: 24px; height: 2px; border-radius: 2px; background: #d4d4d8; }
+  .work-toc__bars span.is-current { width: 32px; background: #3f3f46; }
+  .work-toc__toggle:hover .work-toc__bars span { width: 32px; }
+}
