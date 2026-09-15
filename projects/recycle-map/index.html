@@ -32,6 +32,7 @@
 <link rel="stylesheet" href="../../styles/fonts.css?v=3" />
 <link rel="stylesheet" href="../../styles/case-blocks.css?v=41" />
 <link rel="stylesheet" href="../../styles/case-cards.css?v=7" />
+<link rel="stylesheet" href="../../styles/mood-companion.css?v=3" />
 
 <style>
 /*
@@ -533,6 +534,18 @@ body {
     </nav>
   </div>
 
+            <div class="mood-actor mood-actor--project" id="mood-actor">
+              <canvas class="mood-canvas" id="mood-canvas" width="480" height="480" aria-hidden="true"></canvas>
+              <button type="button" class="btn btn--fill-character btn--icon-only mood-character" id="mood-character" aria-label="Anastasia. Поменять тему на сиреневую" aria-describedby="mood-description">
+                <svg class="mood-fallback" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="currentColor"/><ellipse cx="23" cy="28" rx="9" ry="11" fill="white"/><ellipse cx="42" cy="28" rx="9" ry="11" fill="white"/><circle cx="25" cy="30" r="5"/><circle cx="40" cy="30" r="5"/></svg>
+              </button>
+              <div class="mood-speech text-body" id="mood-speech" aria-hidden="true"></div>
+                          <button type="button" class="btn btn--fill-white btn--icon-only mood-project-pause" id="mood-pause" aria-label="Приостановить анимацию персонажа" aria-pressed="false" title="Приостановить анимацию">
+                <svg class="mood-pause-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M5 3h3v14H5zM12 3h3v14h-3z" /></svg>
+              </button>
+              <p class="mood-project-description text-body" id="mood-description" aria-live="polite">Цвет настроеееения розовый.</p>
+            </div>
+  <script src="../../styles/mood-companion.js?v=3"></script>
   <script src="../../styles/site-chrome.js?v=1"></script>
   <script src="../../styles/layout-chrome.js?v=26"></script>
   <script src="../../styles/typography-rules.js?v=1"></script>

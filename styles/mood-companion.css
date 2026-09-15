@@ -139,3 +139,8 @@ html[data-mood-paused] .mood-speech { transition: none; }
 html[data-mood-paused] .mood-wave.is-playing { animation: none; }
 
 .mood-cursor .icon { width: 1.1em; height: 1.1em; }
+
+/* A project mounts just the compact companion, without a hero layout. */
+.mood-actor--project:not(.is-ready) { display: none; }
+.mood-project-pause { position: absolute; left: calc(50% - 32px); top: 100%; pointer-events: auto; }
+.mood-project-description { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

@@ -6,7 +6,8 @@
   const home = document.getElementById('mood-home');
   const actor = document.getElementById('mood-actor');
   const canvas = document.getElementById('mood-canvas');
-  if (!home || !actor || !canvas) return;
+  if (!actor || !canvas) return;
+  const standalone = !home;
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const character = document.getElementById('mood-character');
@@ -23,9 +24,9 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const fine = matchMedia('(hover: hover) and (pointer: fine)');
   const moods = [
-    { id: 'anastasia', name: 'Anastasia', colour: 'розовое', next: 'сиреневую', ink: '#581B3A', bg: '#FEB7D7', reaction: 'Ну всё. Я обиделась.', hello: 'Ладно, я снова с вами.' },
-    { id: 'stasy', name: 'Stasy', colour: 'сиреневое', next: 'жёлтую', ink: '#242C65', bg: '#97A6FD', reaction: 'Лови следующее настроение!', hello: 'О, а что у нас тут?' },
-    { id: 'stas', name: 'Stas', colour: 'жёлтое', next: 'розовую', ink: '#52451A', bg: '#FDF07F', reaction: 'Ясно. Ухожу.', hello: 'Так. Смотрим работы.' }
+    { id: 'anastasia', name: 'Anastasia', colour: 'розовый', next: 'сиреневую', ink: '#581B3A', bg: '#FEB7D7', reaction: 'Ну всё. Я обиделась.', hello: 'Ладно, я снова с вами.' },
+    { id: 'stasy', name: 'Stasy', colour: 'сиреневый', next: 'жёлтую', ink: '#242C65', bg: '#97A6FD', reaction: 'Лови следующее настроение!', hello: 'О, а что у нас тут?' },
+    { id: 'stas', name: 'Stas', colour: 'жёлтый', next: 'розовую', ink: '#52451A', bg: '#FDF07F', reaction: 'Ясно. Ухожу.', hello: 'Так. Смотрим работы.' }
   ];
   let index = Math.max(0, moods.findIndex(m => m.id === root.dataset.mood));
   let mood = moods[index];
@@ -56,6 +57,33 @@
   let lastScroll = scrollY;
   let scrollKick = 0;
   let idleAt = performance.now();
+  let idleTimer;
+  let idleCount = 0;
+  let idleSpeech = false;
+  let idlePhrase = 0;
+  const idleLines = [
+    ['Я пока порепетировала эффектное появление.', 'Ты читаешь, а я делаю вид, что работаю.', 'Если что, я всё ещё очень розовая.'],
+    ['Кажется, курсор ушёл за кофе без нас.', 'Я уже пересчитала все свои частицы.', 'Пс-с. А дальше тоже красиво.'],
+    ['Так. Перерыв согласован?', 'Я не завис. Я задумался.', 'Ладно, пять минут можно ничего не делать.']
+  ];
+  function scheduleIdle(delay = 35000) {
+    clearTimeout(idleTimer);
+    if (!mounted || document.hidden || paused || idleCount >= 3) return;
+    idleTimer = setTimeout(() => {
+      if (change || document.querySelector('[role="dialog"]:not([hidden])')) { scheduleIdle(15000); return; }
+      if (document.hidden || paused || !mounted) return;
+      say(idleLines[index][idlePhrase++ % 3], 6500);
+      idleSpeech = true;
+      idleCount++;
+      scheduleIdle(90000);
+    }, delay);
+  }
+  function activity() {
+    idleAt = performance.now();
+    idleCount = 0;
+    if (idleSpeech) { speech.classList.remove('is-visible'); idleSpeech = false; }
+    scheduleIdle();
+  }
   let blinkAt = performance.now() + 1800;
   let blinkStart = -10000;
   let forcePaint = true;
@@ -70,12 +98,13 @@
   actor.classList.add('is-ready');
 
   function updateCopy() {
-    name.textContent = mood.name;
-    description.replaceChildren(document.createTextNode('Сегодня настроение ' + mood.colour + '.'), document.createElement('br'), document.createTextNode('Можешь его поменять.'));
+    if (name) name.textContent = mood.name;
+    if (description) description.replaceChildren(document.createTextNode('Цвет настроеееения ' + mood.colour + '.'), document.createElement('br'), document.createTextNode('Можешь его поменять.'));
     character.setAttribute('aria-label', mood.name + '. Поменять тему на ' + mood.next);
   }
   function say(text, duration = 1900) {
     clearTimeout(speechTimer);
+    idleSpeech = false;
     speech.textContent = text;
     speech.classList.add('is-visible');
     speechTimer = setTimeout(() => speech.classList.remove('is-visible'), duration);
@@ -85,12 +114,12 @@
     root.classList.remove('mood-cursor-active');
   }
   function measure() {
-    homeRect = home.getBoundingClientRect();
-    stageRect = stage.getBoundingClientRect();
+    homeRect = home?.getBoundingClientRect();
+    stageRect = stage?.getBoundingClientRect();
     headerBottom = header ? header.getBoundingClientRect().bottom : 110;
     // Select existing DS heading roles on the narrowest phones.
-    heading.classList.toggle('text-display', innerWidth < 360);
-    heading.classList.toggle('text-display-lg', innerWidth >= 360);
+    heading?.classList.toggle('text-display', innerWidth < 360);
+    heading?.classList.toggle('text-display-lg', innerWidth >= 360);
     const footer = document.querySelector('.site-footer');
     if (footer && innerWidth >= 1000) {
       const rect = footer.getBoundingClientRect();
@@ -109,7 +138,7 @@
   function switchMood() {
     if (change) return; // One scene per activation, including rapid touch/keyboard input.
     hideCursor();
-    idleAt = performance.now();
+    activity();
     if (motionOff()) {
       applyMood((index + 1) % moods.length);
       say(mood.hello);
@@ -117,13 +146,13 @@
       return;
     }
     change = { start: performance.now(), from: index, applied: false };
-    nextButton.setAttribute('aria-busy', 'true');
+    nextButton?.setAttribute('aria-busy', 'true');
     character.setAttribute('aria-busy', 'true');
     say(mood.reaction, 850);
     wake();
   }
   character.addEventListener('click', switchMood);
-  nextButton.addEventListener('click', switchMood);
+  nextButton?.addEventListener('click', switchMood);
   character.addEventListener('pointerenter', e => {
     if (!fine.matches || e.pointerType === 'touch' || change) return;
     hovering = true;
@@ -135,7 +164,7 @@
   character.addEventListener('blur', () => { freezeUntil = performance.now() + 1200; });
   window.addEventListener('pointermove', e => {
     point = { x: e.clientX, y: e.clientY, active: e.pointerType !== 'touch' };
-    idleAt = performance.now();
+    activity();
     if (fine.matches) {
       const x = clamp(e.clientX + 16, 8, innerWidth - cursor.offsetWidth - 8);
       const y = clamp(e.clientY + 18, 8, innerHeight - 76);
@@ -146,7 +175,10 @@
   }, { passive: true });
   document.addEventListener('pointerleave', () => { point.active = false; hideCursor(); freezeUntil = 0; });
   window.addEventListener('blur', () => { point.active = false; hideCursor(); freezeUntil = 0; });
+  window.addEventListener('pointerdown', activity, { passive: true });
+  window.addEventListener('keydown', activity);
   window.addEventListener('scroll', () => {
+    activity();
     scrollKick = clamp((scrollY - lastScroll) * .02, -1, 1);
     lastScroll = scrollY;
     layoutDirty = true;
@@ -163,8 +195,8 @@
     wake();
   });
   const observer = new ResizeObserver(() => { layoutDirty = true; forcePaint = true; wake(); });
-  observer.observe(home);
-  observer.observe(stage);
+  if (home) observer.observe(home);
+  if (stage) observer.observe(stage);
   const header = document.querySelector('.site-header');
   if (header) observer.observe(header);
   const syncMotion = () => {
@@ -175,6 +207,8 @@
   reduced.addEventListener('change', syncMotion);
   pauseButton.addEventListener('click', () => {
     paused = !paused;
+    if (paused) { clearTimeout(speechTimer); speech.classList.remove('is-visible'); }
+    scheduleIdle();
     root.toggleAttribute('data-mood-paused', paused);
     pauseButton.setAttribute('aria-pressed', String(paused));
     pauseButton.setAttribute('aria-label', paused ? 'Продолжить анимацию персонажа' : 'Приостановить анимацию персонажа');
@@ -192,18 +226,17 @@
     wake();
   });
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { cancelAnimationFrame(frame); frame = 0; hideCursor(); }
-    else { lastFrame = 0; layoutDirty = true; forcePaint = true; wake(); }
+    if (document.hidden) { clearTimeout(idleTimer); clearTimeout(speechTimer); speech.classList.remove('is-visible'); cancelAnimationFrame(frame); frame = 0; hideCursor(); }
+    else { activity(); lastFrame = 0; layoutDirty = true; forcePaint = true; wake(); }
   });
-  window.addEventListener('pagehide', () => { mounted = false; cancelAnimationFrame(frame); frame = 0; clearTimeout(speechTimer); });
-  window.addEventListener('pageshow', () => { mounted = true; layoutDirty = true; forcePaint = true; wake(); });
+  window.addEventListener('pagehide', () => { mounted = false; clearTimeout(idleTimer); cancelAnimationFrame(frame); frame = 0; clearTimeout(speechTimer); });
+  window.addEventListener('pageshow', () => { mounted = true; activity(); layoutDirty = true; forcePaint = true; wake(); });
 
   function finishChange() {
     change = null;
-    nextButton.removeAttribute('aria-busy');
+    nextButton?.removeAttribute('aria-busy');
     character.removeAttribute('aria-busy');
-    wave.classList.remove('is-playing');
-    wave.style.background = '';
+    if (wave) { wave.classList.remove('is-playing'); wave.style.background = ''; }
   }
   function roundedEye(x, y, rx, ry, pupilX, pupilY, lid) {
     ctx.save();
@@ -319,10 +352,10 @@
     lastFrame = now;
     if (layoutDirty) measure();
     const wasFollowing = following;
-    following = homeRect.bottom < 100 || stageRect.bottom < innerHeight * .18;
+    following = standalone || homeRect.bottom < 100 || stageRect.bottom < innerHeight * .18;
     actor.classList.toggle('is-following', following);
     if (following !== wasFollowing) { hideCursor(); freezeUntil = 0; forcePaint = true; if (following && !motionOff()) say('Я рядом. Смотрим?', 2200); }
-    let target = { x: homeRect.left, y: homeRect.top, size: homeRect.width };
+    let target = standalone ? { x: 0, y: 0, size: 120 } : { x: homeRect.left, y: homeRect.top, size: homeRect.width };
     if (following) {
       const size = innerWidth < 600 ? 104 : 120;
       const top = Math.max(150, headerBottom + 70);
@@ -357,12 +390,14 @@
         scene.scatter = p * .65;
       } else {
         if (!change.applied) {
-          const r = stage.getBoundingClientRect();
-          wave.style.setProperty('--wave-x', clamp((cx - r.left) / r.width * 100, 0, 100) + '%');
-          wave.style.setProperty('--wave-y', clamp((cy - r.top) / r.height * 100, 0, 100) + '%');
           applyMood((change.from + 1) % moods.length);
-          wave.style.background = mood.bg;
-          wave.classList.add('is-playing');
+          if (stage && wave) {
+            const r = stage.getBoundingClientRect();
+            wave.style.setProperty('--wave-x', clamp((cx - r.left) / r.width * 100, 0, 100) + '%');
+            wave.style.setProperty('--wave-y', clamp((cy - r.top) / r.height * 100, 0, 100) + '%');
+            wave.style.background = mood.bg;
+            wave.classList.add('is-playing');
+          }
           change.applied = true;
           say(mood.hello, 1800);
         }
@@ -379,5 +414,6 @@
   function wake() { if (!frame && mounted && !document.hidden) frame = requestAnimationFrame(tick); }
   applyMood(index, false);
   measure();
+  scheduleIdle();
   wake();
 })();
