@@ -26,6 +26,11 @@
 }
 .work-toc__panel nav { display: grid; gap: 2px; }
 .work-toc__panel .btn { width: 100%; }
+/* Keep scrolling available without visible scrollbar tracks. */
+.work-toc__panel,
+.work-toc-sheet .contact-dialog__body { scrollbar-width: none; }
+.work-toc__panel::-webkit-scrollbar,
+.work-toc-sheet .contact-dialog__body::-webkit-scrollbar { display: none; }
 .case__blocks > [id] { scroll-margin-top: calc(var(--header-h, 80px) + 36px); }
 @media (min-width: 1101px) {
   .work-toc { top: 34vh; bottom: auto; left: auto; right: 16px; }
