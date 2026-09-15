@@ -281,7 +281,8 @@ html.chrome--compact .site-footer__link .icon {
     max-width 0.45s var(--footer-ease),
     opacity 0.3s var(--footer-ease),
     visibility 0s linear 0.45s,
-    filter 0.3s var(--footer-ease);
+    filter 0.3s var(--footer-ease),
+    box-shadow 0.25s ease;
 }
 
 /* Приоритет 1: кнопка меню — розовый акцентный контрол. */
@@ -837,3 +838,6 @@ html.footer-menu-open {
     position: static;
   }
 }
+
+/* Same scroll elevation as the shared contact action. */
+html.chrome--pinned .site-footer__top-btn { box-shadow: var(--control-scroll-shadow); }

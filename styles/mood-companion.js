@@ -163,9 +163,9 @@
   character.addEventListener('focus', () => { freezeUntil = Infinity; });
   character.addEventListener('blur', () => { freezeUntil = performance.now() + 1200; });
   window.addEventListener('pointermove', e => {
-    point = { x: e.clientX, y: e.clientY, active: e.pointerType !== 'touch' };
+    point = { x: e.clientX, y: e.clientY, active: true, touch: e.pointerType === 'touch' };
     activity();
-    if (fine.matches) {
+    if (fine.matches && e.pointerType !== 'touch') {
       const x = clamp(e.clientX + 16, 8, innerWidth - cursor.offsetWidth - 8);
       const y = clamp(e.clientY + 18, 8, innerHeight - 76);
       cursor.style.transform = `translate3d(${x}px,${y}px,0)`;
@@ -173,9 +173,24 @@
     forcePaint = true;
     wake();
   }, { passive: true });
-  document.addEventListener('pointerleave', () => { point.active = false; hideCursor(); freezeUntil = 0; });
+  document.addEventListener('pointerleave', () => { if (!point.touch) point.active = false; hideCursor(); freezeUntil = 0; });
   window.addEventListener('blur', () => { point.active = false; hideCursor(); freezeUntil = 0; });
-  window.addEventListener('pointerdown', activity, { passive: true });
+  function trackTouch(event) {
+    const touch = event.touches[0] || event.changedTouches[0];
+    if (!touch) return;
+    point = { x: touch.clientX, y: touch.clientY, active: true, touch: true };
+    activity();
+    forcePaint = true;
+    wake();
+  }
+  // Native scrolling cancels Pointer Events; passive Touch Events keep reporting
+  // the finger's position without blocking the browser's scrolling gesture.
+  window.addEventListener('touchstart', trackTouch, { passive: true });
+  window.addEventListener('touchmove', trackTouch, { passive: true });
+  window.addEventListener('pointerdown', e => {
+    point = { x: e.clientX, y: e.clientY, active: true, touch: e.pointerType === 'touch' };
+    activity(); forcePaint = true; wake();
+  }, { passive: true });
   window.addEventListener('keydown', activity);
   window.addEventListener('scroll', () => {
     activity();
@@ -213,7 +228,8 @@
     pauseButton.setAttribute('aria-pressed', String(paused));
     pauseButton.setAttribute('aria-label', paused ? 'Продолжить анимацию персонажа' : 'Приостановить анимацию персонажа');
     pauseButton.title = paused ? 'Продолжить анимацию' : 'Приостановить анимацию';
-    pauseButton.querySelector('path').setAttribute('d', paused ? 'M6 3l11 7-11 7z' : 'M5 3h3v14H5zM12 3h3v14h-3z');
+    pauseButton.querySelector('.icon').classList.toggle('icon--pause', !paused);
+    pauseButton.querySelector('.icon').classList.toggle('icon--play', paused);
     syncMotion();
   });
   fine.addEventListener('change', () => { hideCursor(); freezeUntil = 0; wake(); });

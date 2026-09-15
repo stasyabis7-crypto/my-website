@@ -78,3 +78,12 @@
   mask-image: url("../assets/icons/Interface/cv.svg");
 }
 
+
+.icon--pause {
+  -webkit-mask-image: url("../assets/icons/pause.svg");
+  mask-image: url("../assets/icons/pause.svg");
+}
+.icon--play {
+  -webkit-mask-image: url("../assets/icons/Interface/play.svg");
+  mask-image: url("../assets/icons/Interface/play.svg");
+}

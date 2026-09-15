@@ -201,17 +201,66 @@
     });
   }
 
-  if (topBtn) {
-    topBtn.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  // Shared, time-based navigation scroll: soft acceleration and a long landing.
+  // Manual input always takes control immediately; reduced motion jumps directly.
+  var scrollFrame = 0;
+  var savedScrollBehavior = '';
+  var scrollRunning = false;
+  var scrollMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function cancelNavigationScroll() {
+    if (!scrollRunning) return;
+    cancelAnimationFrame(scrollFrame);
+    scrollFrame = 0;
+    scrollRunning = false;
+    root.style.scrollBehavior = savedScrollBehavior;
   }
-
-  if (topBtnDesktop) {
-    topBtnDesktop.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  function navigateScroll(destination) {
+    cancelNavigationScroll();
+    var start = window.scrollY;
+    var target = Math.max(0, Math.min(destination, document.documentElement.scrollHeight - window.innerHeight));
+    var distance = target - start;
+    if (scrollMotion.matches || Math.abs(distance) < 2) {
+      window.scrollTo({ top: target, behavior: 'instant' });
+      return;
+    }
+    savedScrollBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    scrollRunning = true;
+    var duration = Math.min(2100, 1200 + Math.abs(distance) * 0.16);
+    var started = performance.now();
+    function step(now) {
+      var progress = Math.min(1, (now - started) / duration);
+      var eased = (1 - Math.cos(Math.PI * progress)) / 2;
+      window.scrollTo({ top: start + distance * eased, behavior: 'instant' });
+      if (progress < 1) scrollFrame = requestAnimationFrame(step);
+      else cancelNavigationScroll();
+    }
+    scrollFrame = requestAnimationFrame(step);
   }
+  [topBtn, topBtnDesktop].forEach(function (button) {
+    if (button) button.addEventListener('click', function () { navigateScroll(0); });
+  });
+  document.querySelectorAll('a[href="#works-gallery"]').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      var gallery = document.getElementById('works-gallery');
+      if (!gallery) return;
+      event.preventDefault();
+      var inset = header ? header.getBoundingClientRect().height + 26 : 20;
+      var destination = window.scrollY + gallery.getBoundingClientRect().top - inset;
+      if (location.hash !== '#works-gallery') history.pushState(null, '', '#works-gallery');
+      navigateScroll(destination);
+    });
+  });
+  window.addEventListener('wheel', cancelNavigationScroll, { passive: true });
+  window.addEventListener('touchstart', cancelNavigationScroll, { passive: true });
+  window.addEventListener('pointerdown', cancelNavigationScroll, { passive: true });
+  window.addEventListener('resize', cancelNavigationScroll);
+  window.addEventListener('pagehide', cancelNavigationScroll);
+  scrollMotion.addEventListener('change', cancelNavigationScroll);
+  window.addEventListener('keydown', function (event) {
+    if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Escape'].indexOf(event.key) !== -1) cancelNavigationScroll();
+  });
 
   document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') closeMenu();
