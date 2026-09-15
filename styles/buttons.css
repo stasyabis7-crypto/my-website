@@ -384,3 +384,18 @@ html.chrome--pinned .btn--scroll-shadow {
 @media (prefers-reduced-motion: reduce) {
   .work-toc__bars span { transition: none; }
 }
+
+/* Mobile contents: press feedback only, without persistent touch hover fills. */
+@media (max-width: 1100px) {
+  .work-toc__toggle::after,
+  .work-toc-sheet .btn::after { display: none; }
+  .work-toc__toggle:hover:not(:active),
+  .work-toc-sheet .btn:hover:not(:active) { transform: none; }
+  .work-toc__toggle:hover,
+  .work-toc__toggle:focus-visible,
+  .work-toc-sheet .btn--fill-white:not([aria-current]) { color: #101014; }
+  .work-toc-sheet .btn--fill-pink { color: var(--color-action-active-text); }
+  .work-toc-sheet .btn--fill-ink { color: var(--mood-bg); }
+  .work-toc__toggle:focus-visible,
+  .work-toc-sheet .btn:focus-visible { outline: 2px solid var(--mood-ink); outline-offset: 3px; }
+}
