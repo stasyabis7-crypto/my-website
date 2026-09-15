@@ -56,3 +56,20 @@
   .project-card__image { transition: scale .55s cubic-bezier(.2,.65,.3,1); }
   .project-card__media[data-action-hover]:hover .project-card__image { scale: 1.035; }
 }
+
+/* Phones and tablets use a single natural document flow, without loop copies. */
+@media (max-width: 1199px), (hover: none) and (pointer: coarse) {
+  .project-slider__viewport {
+    overflow: visible; touch-action: pan-y pinch-zoom;
+    user-select: auto; -webkit-user-select: auto;
+    -webkit-mask-image: none; mask-image: none;
+  }
+  .project-slider__track { display: grid; grid-template-columns: 1fr; gap: 32px 16px; transform: none; will-change: auto; }
+  .project-card { flex: none; width: 100%; }
+  .project-card[data-loop-copy] { display: none; }
+  .project-slider__actions [data-direction] { display: none; }
+}
+
+@media (min-width: 600px) and (max-width: 1199px), (min-width: 600px) and (hover: none) and (pointer: coarse) {
+  .project-slider__track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

@@ -1,11 +1,11 @@
 (() => {
   const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  function card(project, index, count) {
+  function card(project, index, count, clone = false) {
     const title = escape(project.title);
     const sizes = project.format === 'phone'
-      ? '(max-width: 599px) 66vw, (max-width: 999px) 40vw, 28vw'
-      : '(max-width: 599px) 100vw, (max-width: 999px) 61vw, 40vw';
-    return `<article class="project-card project-card--${escape(project.format)}" data-index="${index}" role="group" aria-roledescription="слайд" aria-label="${index + 1} из ${count}: ${title}">
+      ? '(max-width: 599px) 66vw, (max-width: 1199px) 33vw, (pointer: coarse) 33vw, 28vw'
+      : '(max-width: 599px) 100vw, (max-width: 1199px) 50vw, (pointer: coarse) 50vw, 40vw';
+    return `<article class="project-card project-card--${escape(project.format)}" data-index="${index}" ${clone ? 'data-loop-copy' : ''} role="group" aria-roledescription="слайд" aria-label="${index + 1} из ${count}: ${title}">
       <div class="project-card__media" ${project.href ? 'data-action-hover' : ''}>
         <div class="project-card__cover" style="--cover-color:${escape(project.color)}">
           <img class="project-card__image" src="${escape(project.image)}" srcset="${escape(project.srcset)}" sizes="${sizes}" alt="${title}" loading="lazy" decoding="async" draggable="false">
@@ -29,10 +29,11 @@
     const viewport = root.querySelector('.project-slider__viewport');
     const track = root.querySelector('.project-slider__track');
     const status = root.querySelector('.project-slider__status');
-    track.innerHTML = Array.from({length: 3}, () => projects.map((p, i) => card(p, i, count)).join('')).join('');
+    track.innerHTML = Array.from({length: 3}, (_, copy) => projects.map((p, i) => card(p, i, count, copy !== 1)).join('')).join('');
     const cards = [...track.children];
     let index = count, step = 0, busy = false, timer, pointer, dragged = false, pending = 0, suppressClickUntil = 0;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    const listMode = matchMedia('(max-width: 1199px), (hover: none) and (pointer: coarse)');
     const tooltip = document.createElement('div');
     tooltip.className = 'project-slider__tooltip'; tooltip.role = 'tooltip'; tooltip.hidden = true;
     tooltip.id = `project-tooltip-${root.dataset.projects}`;
@@ -41,9 +42,13 @@
     function hideTooltip() { tooltip.hidden = true; tooltipOwner?.removeAttribute('aria-describedby'); tooltipOwner = null; }
     function accessibility() {
       const visible = Math.ceil(viewport.clientWidth / step);
-      cards.forEach((el, i) => { el.inert = i < index || i >= index + visible; el.setAttribute('aria-hidden', String(el.inert)); });
+      cards.forEach((el, i) => {
+        el.inert = listMode.matches ? el.hasAttribute('data-loop-copy') : i < index || i >= index + visible;
+        el.setAttribute('aria-hidden', String(el.inert));
+      });
     }
     function position(animate = false, offset = 0) {
+      if (listMode.matches) { track.style.transition = 'none'; track.style.transform = 'none'; return; }
       track.style.transition = animate && !reduced.matches ? 'transform 620ms cubic-bezier(.16,1,.3,1)' : 'none';
       track.style.transform = `translate3d(${-index * step + offset}px,0,0)`;
     }
@@ -58,6 +63,7 @@
       if (pending) { const direction = Math.sign(pending); pending -= direction; requestAnimationFrame(() => move(direction)); }
     }
     function move(direction) {
+      if (listMode.matches) return;
       if (busy) { pending = Math.max(-count, Math.min(count, pending + direction)); return; }
       hideTooltip(); root.dataset.moved = ''; busy = true; index += direction; position(true);
       const current = ((index % count) + count) % count;
@@ -66,25 +72,28 @@
     }
     root.querySelectorAll('[data-direction]').forEach(button => button.addEventListener('click', () => move(Number(button.dataset.direction))));
     viewport.addEventListener('keydown', e => {
+      if (listMode.matches) return;
       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); move(e.key === 'ArrowRight' ? 1 : -1); }
       if (e.key === 'Escape') hideTooltip();
     });
     viewport.addEventListener('pointerdown', e => {
-      if (e.button !== 0 || !e.isPrimary) return;
+      if (listMode.matches || e.button !== 0 || !e.isPrimary) return;
       // Pick up the rendered position, even in the middle of a settling animation.
       const renderedX = new DOMMatrixReadOnly(getComputedStyle(track).transform).m41;
       clearTimeout(timer); busy = false; pending = 0;
-      index = Math.round(-renderedX / step);
+      // Keep the previous destination: a second swipe should advance another
+      // card, even when the first animation has barely started.
       const offset = renderedX + index * step;
       position(false, offset);
-      pointer = {id: e.pointerId, x: e.clientX, y: e.clientY, dx: offset, offset,
+      pointer = {id: e.pointerId, x: e.clientX, y: e.clientY, dx: offset, offset, travel: 0,
         lastX: e.clientX, lastTime: performance.now(), velocity: 0, moved: false};
       dragged = false; suppressClickUntil = 0;
     });
-    viewport.addEventListener('dragstart', e => e.preventDefault());
+    viewport.addEventListener('dragstart', e => { if (!listMode.matches) e.preventDefault(); });
     viewport.addEventListener('pointermove', e => {
       if (!pointer || pointer.id !== e.pointerId) return;
       const dx = e.clientX - pointer.x, dy = e.clientY - pointer.y;
+      pointer.travel = dx;
       pointer.moved ||= Math.hypot(dx, dy) > 8;
       // The cover zone owns panning: diagonal gestures use only their X delta.
       if (!dragged && Math.abs(dx) > 6) {
@@ -101,7 +110,7 @@
     });
     function release(e) {
       if (!pointer || e.pointerId !== pointer.id) return;
-      const {dx, velocity, lastTime, moved} = pointer; pointer = null;
+      const {travel: dx, velocity, lastTime, moved} = pointer; pointer = null;
       if (viewport.hasPointerCapture(e.pointerId)) viewport.releasePointerCapture(e.pointerId);
       const flick = performance.now() - lastTime < 120 && Math.abs(velocity) > .3 && Math.abs(dx) > 10;
       if (moved) suppressClickUntil = performance.now() + 450;
@@ -120,12 +129,20 @@
     viewport.addEventListener('click', e => {
       if (performance.now() < suppressClickUntil) { e.preventDefault(); e.stopImmediatePropagation(); }
     }, true);
-    let wheelLocked = false, wheelTimer;
+    let wheelLocked = false, wheelTimer, lastWheelDelta = 0, lastWheelStep = 0;
     viewport.addEventListener('wheel', e => {
+      if (listMode.matches) return;
       if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
       e.preventDefault();
-      if (!wheelLocked && Math.abs(e.deltaX) > 4) { move(Math.sign(e.deltaX)); wheelLocked = true; }
-      clearTimeout(wheelTimer); wheelTimer = setTimeout(() => { wheelLocked = false; }, 180);
+      const amount = Math.abs(e.deltaX), now = performance.now();
+      // A fresh acceleration after the first swipe can start the next step;
+      // decaying trackpad momentum still belongs to the existing gesture.
+      const freshImpulse = now - lastWheelStep > 300 && amount > 8 && amount > lastWheelDelta * 1.8;
+      if ((!wheelLocked || freshImpulse) && amount > 4) {
+        move(Math.sign(e.deltaX)); wheelLocked = true; lastWheelStep = now;
+      }
+      lastWheelDelta = amount;
+      clearTimeout(wheelTimer); wheelTimer = setTimeout(() => { wheelLocked = false; lastWheelDelta = 0; }, 100);
     }, {passive: false});
     // Compare layout heights, not scrollHeight: glyphs may overflow the tight
     // heading line box by a few pixels even when no text is clamped.
@@ -157,10 +174,26 @@
     window.addEventListener('scroll', hideTooltip, {passive:true});
     document.addEventListener('keydown', e => { if (e.key === 'Escape') hideTooltip(); });
     function resize() {
-      clearTimeout(timer); busy = false; pending = 0;
+      clearTimeout(timer); busy = false; pending = 0; suppressClickUntil = 0;
+      if (pointer && viewport.hasPointerCapture(pointer.id)) viewport.releasePointerCapture(pointer.id);
+      pointer = null; dragged = false;
       index = count + ((index % count) + count) % count;
-      const w = cards[0].getBoundingClientRect().width; step = w + 16;
+      const stacked = listMode.matches;
       cards.forEach(el => {
+        el.hidden = stacked && el.hasAttribute('data-loop-copy');
+        el.setAttribute('role', stacked ? 'listitem' : 'group');
+        if (stacked) el.removeAttribute('aria-roledescription'); else el.setAttribute('aria-roledescription', 'слайд');
+      });
+      if (stacked) {
+        root.removeAttribute('aria-roledescription'); viewport.removeAttribute('tabindex');
+        track.setAttribute('role', 'list'); status.textContent = '';
+      } else {
+        root.setAttribute('aria-roledescription', 'карусель'); viewport.tabIndex = 0; track.removeAttribute('role');
+      }
+      viewport.setAttribute('aria-label', stacked ? 'Проекты Авито' : 'Проекты Авито. Листайте стрелками или свайпом');
+      const w = cards[count].getBoundingClientRect().width; step = w + 16;
+      cards.forEach(el => {
+        if (el.hidden) return;
         if (el.querySelector('.project-card__open')) {
           // Follow the button circle with a 12px gap and tangent transitions
           // into the cover edges, without the former horizontal shelf.
@@ -183,6 +216,7 @@
       if (viewport.clientWidth === measuredWidth) return;
       measuredWidth = viewport.clientWidth; resize();
     }).observe(viewport);
+    listMode.addEventListener('change', resize);
     document.fonts.ready.then(resize);
     resize();
   });
