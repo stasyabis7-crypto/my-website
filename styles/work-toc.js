@@ -141,6 +141,7 @@
   function syncMode() {
     if (!sheet.hidden) finishClose();
     setPopover(false);
+    toggle.classList.toggle('btn--scroll-shadow', !desktop.matches);
     toggle.setAttribute('aria-controls', desktop.matches ? panel.id : sheet.id);
     if (desktop.matches) toggle.removeAttribute('aria-haspopup');
     else toggle.setAttribute('aria-haspopup', 'dialog');
