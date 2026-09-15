@@ -256,3 +256,50 @@ html {
     scroll-behavior: auto;
   }
 }
+
+/* Mood experiment. Palette roles are shared by hero, chrome and DS buttons.
+   Project artwork/embeds retain their original colours. */
+html[data-mood] {
+  --mood-bg: #FEB7D7;
+  --mood-chrome: #F9E8EF;
+  --mood-ink: #111111;
+  --mood-particle: #581B3A;
+  --color-action-active: #2448FF;
+  --color-action-hover: #2448FF;
+  --color-action-active-text: #FFFFFF;
+  --color-action-hover-text: #FFFFFF;
+}
+html[data-mood="stasy"] {
+  --mood-bg: #97A6FD;
+  --mood-chrome: #E9ECFF;
+  --mood-particle: #242C65;
+  --color-action-active: #D5FF00;
+  --color-action-hover: #D5FF00;
+  --color-action-active-text: #111111;
+  --color-action-hover-text: #111111;
+}
+html[data-mood="stas"] {
+  --mood-bg: #FDF07F;
+  --mood-chrome: #F7F2D9;
+  --mood-particle: #52451A;
+  --color-action-active: #D60067;
+  --color-action-hover: #D60067;
+  --color-action-active-text: #FFFFFF;
+  --color-action-hover-text: #FFFFFF;
+}
+html[data-mood] .site-header {
+  --color-text: var(--mood-ink);
+  --color-glass: var(--mood-chrome);
+  background: var(--mood-chrome);
+  transition: background-color .55s ease, top .25s ease, left .25s ease;
+}
+html[data-mood] .garden-socials-sheet .garden-picker__panel {
+  background: var(--mood-bg);
+  color: var(--mood-ink);
+  color-scheme: light;
+}
+html[data-mood] .garden-socials-sheet .garden-picker__title { color: var(--mood-ink); }
+html[data-mood] .garden-socials__row { color: var(--mood-ink); }
+@media (prefers-reduced-motion: reduce) {
+  html[data-mood] .site-header { transition: none; }
+}

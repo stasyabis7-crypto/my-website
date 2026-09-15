@@ -1,27 +1,40 @@
-    <section class="garden" id="hero">
-      <div class="garden__stage">
-        <div class="garden__flowers" id="garden-flowers" aria-label="Сад — цветы, посаженные гостями"></div>
-
-        <div class="garden__content">
-          <p class="garden__counter" id="garden-counter" data-loading>
-            <span class="garden__count" data-count="blooming">·</span><span>&nbsp;цветёт</span>
-            <span aria-hidden="true">&nbsp;·&nbsp;</span>
-            <span class="garden__count" data-count="planted">·</span><span>&nbsp;посажено</span>
-            <button type="button" class="garden__help" id="garden-help" aria-label="Как работает сад">
-              <img src="assets/socials/Octagon_Help.svg" alt="" width="24" height="24" />
-            </button>
-          </p>
-          <h1 class="garden__title">Sr Product Designer</h1>
-          <!-- Переносы строк в подзаголовке заданы вручную и работают
-               только на десктопе (min-width: 900px, см. .garden__br-dt в
-               hero-garden.css); на мобилке текст переносится сам. -->
-          <p class="garden__subtitle">6 лет проектирую B2B, B2C интерфейсы, лендинги.<br class="garden__br-dt" /> Работаю с платёжными флоу, ЛК, CRM, KPI системами</p>
-          <div class="garden__actions">
+    <section class="garden mood-hero" id="hero" aria-labelledby="mood-heading">
+      <div class="mood-stage">
+        <div class="mood-wave" aria-hidden="true"></div>
+        <div class="mood-content">
+          <h1 class="mood-title text-display-lg" id="mood-heading">Sr Product Designer</h1>
+          <p class="mood-subtitle text-body">6 лет проектирую B2B, B2C интерфейсы, лендинги.<br class="garden__br-dt" /> Работаю с платёжными флоу, ЛК, CRM, KPI системами</p>
+          <div class="mood-actions">
             <a href="#works-gallery" class="garden__cta btn btn--fill-pink btn--icon-right">
               <span>Смотреть работы</span>
               <span class="icon icon--down" aria-hidden="true"></span>
             </a>
-            <button type="button" class="garden__cta btn btn--fill-white" id="garden-plant">Посадить цветок</button>
+          </div>
+        </div>
+        <div class="mood-exhibit">
+          <div class="mood-home" id="mood-home">
+            <div class="mood-actor" id="mood-actor">
+              <canvas class="mood-canvas" id="mood-canvas" width="480" height="480" aria-hidden="true"></canvas>
+              <button type="button" class="btn btn--fill-character btn--icon-only mood-character" id="mood-character" aria-label="Anastasia. Поменять тему на сиреневую" aria-describedby="mood-description">
+                <svg class="mood-fallback" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="currentColor"/><ellipse cx="23" cy="28" rx="9" ry="11" fill="white"/><ellipse cx="42" cy="28" rx="9" ry="11" fill="white"/><circle cx="25" cy="30" r="5"/><circle cx="40" cy="30" r="5"/></svg>
+              </button>
+              <div class="mood-speech text-body" id="mood-speech" aria-hidden="true"></div>
+            </div>
+          </div>
+          <div class="mood-caption">
+            <p class="mood-name text-h2" id="mood-name">Anastasia</p>
+            <p class="mood-description text-body" id="mood-description" aria-live="polite" aria-atomic="true">Сегодня настроение розовое.<br />Можешь его поменять.</p>
+            <div class="mood-controls">
+              <div class="mood-control-actions">
+              <button type="button" class="btn btn--fill-white btn--icon-right" id="mood-next">
+                <span>Поменять тему</span><span aria-hidden="true">↗</span>
+              </button>
+              <button type="button" class="btn btn--fill-white btn--icon-only" id="mood-pause" aria-label="Приостановить анимацию персонажа" aria-pressed="false" title="Приостановить анимацию">
+                <svg class="mood-pause-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M5 3h3v14H5zM12 3h3v14h-3z" /></svg>
+              </button>
+              </div>
+              <div class="mood-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+            </div>
           </div>
         </div>
       </div>

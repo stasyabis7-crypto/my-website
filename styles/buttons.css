@@ -40,6 +40,10 @@
                       .site-socials__link (иконки соцсетей в хедере)
                       (styles/hero-garden.css)
 
+    .btn--fill-character прозрачная кнопка персонажа; круглая область
+                         нажатия под размер иллюстрации, высота .btn общая.
+                         Используется с .btn--icon-only, нужен aria-label.
+
   Заливка растёт кругом из точки входа курсора (--hover-x/--hover-y,
   их выставляет layout-chrome.js на pointerenter/pointermove — см. тот
   же приём у .garden__cta). Без JS-хука круг просто растёт из центра —
@@ -173,7 +177,7 @@
 
 .btn--fill-pink {
   background: var(--color-action-active, #ff0cc2);
-  color: #fff;
+  color: var(--color-action-active-text, #fff);
 }
 
 .btn--fill-pink::after {
@@ -196,7 +200,7 @@
 
 .btn--fill-white:hover,
 .btn--fill-white:focus-visible {
-  color: #fff;
+  color: var(--color-action-hover-text, #fff);
 }
 
 /* ---------- Типы расположения иконки ---------- */
@@ -267,4 +271,42 @@ html.chrome--pinned .btn--scroll-shadow {
   pointer-events: none;
   opacity: 0.75;
   cursor: default;
+}
+
+/* Character action: the control retains the shared 64px height. Its transparent
+   circular hit halo follows the illustration; all control styling stays in DS.
+   Usage: .btn.btn--fill-character.btn--icon-only with a decorative canvas sibling. */
+.btn--fill-character {
+  overflow: visible;
+  isolation: auto;
+  background: transparent;
+  color: var(--mood-particle, #111111);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn--fill-character::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: var(--mood-hit-size, 64px);
+  height: var(--mood-hit-size, 64px);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: transparent;
+}
+.btn--fill-character::after { display: none; }
+.btn--fill-character:hover,
+.btn--fill-character:active { transform: none; scale: 1; }
+.btn--fill-character:focus-visible { outline: none; }
+.btn--fill-character:focus-visible::before {
+  outline: 2px solid var(--color-action-active);
+  outline-offset: 8px;
+}
+@media (hover: hover) and (pointer: fine) {
+  html.mood-cursor-active .btn--fill-character { cursor: none; }
 }

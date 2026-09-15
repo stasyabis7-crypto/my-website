@@ -90,7 +90,7 @@
   var phraseText = document.getElementById('loading-phrase-text');
   var phraseDots = document.getElementById('loading-phrase-dots');
   if (phraseText) {
-    var phrases = [
+    var phrases = root.hasAttribute('data-mood') ? ['Знакомимся', 'Просыпаемся', 'Собираем настроение'] : [
       'Сажаем цветы', 'Поливаем клумбу', 'Расставляем горшки',
       'Ждём, пока распустится', 'Ловим солнце', 'Разгоняем облака'
     ];
