@@ -64,9 +64,7 @@ html.no-liquid-glass-distort {
    здесь. Селекторы перечислены явно (а не через .site-header и т.д.
    в своих файлах) — так весь WebKit-костыль лежит в одном месте, а не
    размазан по header.css/footer.css. */
-html.no-liquid-glass-distort .site-header,
 html.no-liquid-glass-distort .site-footer,
-html.no-liquid-glass-distort .site-footer__top-btn,
 html.no-liquid-glass-distort:not(.chrome--compact) .site-footer.is-collapsed {
   backdrop-filter: blur(4px) saturate(210%);
   -webkit-backdrop-filter: blur(4px) saturate(210%);
@@ -201,9 +199,7 @@ html.no-liquid-glass-distort .footer-menu-panel__bar {
    ниже в самом ::after. */
 
 :is(
-  .site-header,
   .site-footer,
-  .site-footer__top-btn,
   .footer-menu-panel__bar
 )::after {
   content: "";
@@ -293,13 +289,6 @@ html[data-mood] .site-header {
   background: var(--mood-chrome);
   transition: background-color .55s ease, top .25s ease, left .25s ease;
 }
-html[data-mood] .garden-socials-sheet .garden-picker__panel {
-  background: var(--mood-bg);
-  color: var(--mood-ink);
-  color-scheme: light;
-}
-html[data-mood] .garden-socials-sheet .garden-picker__title { color: var(--mood-ink); }
-html[data-mood] .garden-socials__row { color: var(--mood-ink); }
 @media (prefers-reduced-motion: reduce) {
   html[data-mood] .site-header { transition: none; }
 }

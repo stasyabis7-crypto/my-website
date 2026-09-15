@@ -1,4 +1,4 @@
-# API-эндпоинты сада — никогда не кэшировать.
+# Не кэшировать ответы служебного каталога.
 <IfModule LiteSpeed>
   RewriteEngine On
   RewriteRule .* - [E=Cache-Control:no-cache]

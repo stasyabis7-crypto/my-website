@@ -290,14 +290,13 @@ html.chrome--compact .site-footer__link .icon {
   color: var(--color-action-active-text);
 }
 
-/* Liquid glass — только у кнопки "наверх" (см. --liquid-glass-* в
-   theme.css), кнопка "Меню" остаётся на обычном рецепте выше: она
-   всё равно сплошная розовая, эффекта стекла на ней не видно, а
-   искажать процедурным шумом нечего. */
+/* Непрозрачная белая кнопка «Вверх», как «Связаться». */
 .site-footer__top-btn {
-  backdrop-filter: var(--liquid-glass-filter);
-  -webkit-backdrop-filter: var(--liquid-glass-filter);
-  box-shadow: var(--liquid-glass-glow);
+  background: #fff;
+  color: #101014;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
 }
 
 .site-footer__top-btn .icon {

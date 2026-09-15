@@ -1,3 +1,8 @@
+/* Main hero spacing; the artwork and content retain their approved layout. */
+.mood-hero { position: relative; box-sizing: border-box; width: 100%; padding-inline: calc(var(--hero-edge) - var(--page-px, 10px)); margin-top: calc(-1 * (var(--page-px, 10px) + var(--header-h, 3.5rem) + 10px) + var(--hero-edge)); margin-bottom: 40px; }
+@media (min-width: 1024px) { .mood-hero { margin-bottom: 60px; } }
+.mood-br { display: none; }
+@media (min-width: 900px) { .mood-br { display: inline; } }
 /* Layout and decorative motion for the particle companion experiment.
    Typography comes from .text-*; every action's appearance lives in buttons.css. */
 .mood-stage {
@@ -85,7 +90,7 @@ html.mood-cursor-active .mood-cursor { opacity: 1; }
 .mood-loading-eyes i::after { content: ''; position: absolute; width: 14px; height: 18px; border-radius: 50%; background: #111111; top: 13px; left: 10px; }
 @keyframes mood-loading { 50% { transform: translateY(-8px) rotate(-5deg); } }
 @media (min-width: 1000px) {
-  .mood-subtitle .garden__br-dt { display: none; }
+  .mood-subtitle .mood-br { display: none; }
 }
 @media (max-width: 999px) {
   .mood-stage { grid-template-columns: 1fr; gap: 12px; padding: calc(var(--header-h, 80px) + 56px) 28px 42px; min-height: calc(100svh - 20px); }
@@ -132,3 +137,5 @@ html.mood-cursor-active .mood-cursor { opacity: 1; }
 html[data-mood-paused] .mood-stage,
 html[data-mood-paused] .mood-speech { transition: none; }
 html[data-mood-paused] .mood-wave.is-playing { animation: none; }
+
+.mood-cursor .icon { width: 1.1em; height: 1.1em; }

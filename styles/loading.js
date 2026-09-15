@@ -57,11 +57,6 @@
     ? document.fonts.ready.catch(function () {})
     : Promise.resolve();
 
-  // hero-garden.js выставляет __gardenReady — резолвится, когда цветы
-  // сада отрисованы и их картинки загрузились (с 7с-предохранителем там же).
-  var gardenReady = window.__gardenReady && typeof window.__gardenReady.then === 'function'
-    ? window.__gardenReady.catch(function () {})
-    : Promise.resolve();
   var avatar = document.querySelector('.site-header__avatar img');
   var avatarReady = avatar && avatar.decode
     ? avatar.decode().catch(function () {})
@@ -81,7 +76,7 @@
     });
   });
 
-  // ------------ Экран загрузки (цветок + «думающая» фраза) ------------
+  // ------------ Экран загрузки (глазки + «думающая» фраза) ------------
   var loadingScreen = document.getElementById('loading-screen');
 
   // Сменяющаяся фраза + «печатающиеся» точки. Таймеры гасим, когда
@@ -90,10 +85,7 @@
   var phraseText = document.getElementById('loading-phrase-text');
   var phraseDots = document.getElementById('loading-phrase-dots');
   if (phraseText) {
-    var phrases = root.hasAttribute('data-mood') ? ['Знакомимся', 'Просыпаемся', 'Собираем настроение'] : [
-      'Сажаем цветы', 'Поливаем клумбу', 'Расставляем горшки',
-      'Ждём, пока распустится', 'Ловим солнце', 'Разгоняем облака'
-    ];
+    var phrases = ['Знакомимся', 'Просыпаемся', 'Собираем настроение'];
     var pi = 0;
     loadingTimers.push(setInterval(function () {
       pi = (pi + 1) % phrases.length;
@@ -116,7 +108,7 @@
     var overlaySafetyTimeout = new Promise(function (resolve) { setTimeout(resolve, 9000); });
 
     Promise.race([
-      Promise.all([fontsReady, avatarReady, gardenReady].concat(aboveFoldMediaReadyPromises)),
+      Promise.all([fontsReady, avatarReady].concat(aboveFoldMediaReadyPromises)),
       overlaySafetyTimeout
     ]).then(function () {
       loadingTimers.forEach(clearInterval);

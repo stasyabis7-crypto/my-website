@@ -105,7 +105,7 @@
 
   /* Мобилка/планшет (<1000px): вся хрома в одной плашке-хедере по центру экрана
      (аватар + лого + «Резюме PDF» + кнопка соцсетей, см.
-     hero-garden.css). Если плашка шире экрана — сжимаем словомарк ровно
+     site-chrome.css). Если плашка шире экрана — сжимаем словомарк ровно
      на величину нехватки; если и сжатый не влезает (< LOGO_MIN_WIDTH) —
      убираем логотип совсем, остаются аватар, кнопка и соцсети. На
      десктопе/планшете места хватает — логотип в натуральном размере. */
@@ -251,7 +251,7 @@
   var hoverControls = document.querySelectorAll(
     '.site-header__cta, .site-footer__telegram, .theme-toggle, .site-footer__link, ' +
     '.site-footer__menu-btn, .site-footer__top-btn, ' +
-    '.footer-menu-panel__link, .garden__cta, .btn'
+    '.footer-menu-panel__link, .btn'
   );
 
   hoverControls.forEach(function (control) {

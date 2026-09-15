@@ -63,7 +63,7 @@
   const cursor = document.createElement('div');
   cursor.className = 'mood-cursor text-button';
   cursor.setAttribute('aria-hidden', 'true');
-  cursor.innerHTML = '<span>Поменять тему</span><span>↗</span>';
+  cursor.innerHTML = '<span>Поменять тему</span><span class="icon icon--arrow-diagonal"></span>';
   document.body.appendChild(cursor);
   // Moving the actor out of the clipped hero keeps one continuous character on scroll.
   document.body.appendChild(actor);
@@ -94,7 +94,7 @@
     const footer = document.querySelector('.site-footer');
     if (footer && innerWidth >= 1000) {
       const rect = footer.getBoundingClientRect();
-      root.style.setProperty('--gd-socials-offset', rect.top < 140 && rect.right > innerWidth - 260 ? Math.ceil(rect.width + 12) + 'px' : '0px');
+      root.style.setProperty('--chrome-socials-offset', rect.top < 140 && rect.right > innerWidth - 260 ? Math.ceil(rect.width + 12) + 'px' : '0px');
     }
     layoutDirty = false;
   }

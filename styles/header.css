@@ -41,12 +41,12 @@
   height: auto;
   padding-block: var(--chrome-pad-block);
   padding-inline: var(--chrome-pad-block);
-  background: var(--color-glass);
-  backdrop-filter: var(--liquid-glass-filter);
-  -webkit-backdrop-filter: var(--liquid-glass-filter);
-  box-shadow: var(--liquid-glass-glow);
+  background: var(--mood-chrome, #fff);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
   border-radius: 999px;
-  /* Переливающаяся обводка — псевдоэлемент, см. theme.css. */
+  /* Сплошной фон выбранной темы, без стекла и бликов. */
 }
 
 /*
