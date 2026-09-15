@@ -22,7 +22,7 @@
 }
 .mood-content, .mood-exhibit { position: relative; z-index: 1; min-width: 0; }
 .mood-title { max-width: 760px; text-wrap: balance; }
-.mood-subtitle { max-width: 550px; margin-top: 28px !important; }
+.mood-subtitle { max-width: 550px; margin-top: 16px !important; }
 .mood-actions { margin-top: 32px; }
 .mood-exhibit { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .mood-home { width: min(100%, 420px); aspect-ratio: 1; position: relative; }
@@ -96,7 +96,7 @@ html.mood-cursor-active .mood-cursor { opacity: 1; }
   .mood-stage { grid-template-columns: 1fr; gap: 12px; padding: calc(var(--header-h, 80px) + 56px) 28px 42px; min-height: calc(100svh - 20px); }
   .mood-content { text-align: center; }
   .mood-title { max-width: 760px; margin-inline: auto; }
-  .mood-subtitle { margin: 22px auto 0 !important; }
+  .mood-subtitle { margin: 12px auto 0 !important; }
   .mood-actions { margin-top: 26px; }
   .mood-home { width: min(46vw, 310px); }
   .mood-caption { margin-top: -8px; }
@@ -128,7 +128,7 @@ html.mood-cursor-active .mood-cursor { opacity: 1; }
    viewports scroll naturally instead of clipping text or shrinking DS controls. */
 @media (max-width: 599px) {
   .mood-stage { padding-top: calc(var(--header-h, 80px) + 26px); padding-bottom: 26px; }
-  .mood-subtitle { margin-top: 16px !important; }
+  .mood-subtitle { margin-top: 10px !important; }
   .mood-actions { margin-top: 20px; }
   .mood-home { width: min(56vw, 220px); }
   .mood-caption { margin-top: -20px; }
