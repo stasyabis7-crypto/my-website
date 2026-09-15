@@ -1,8 +1,9 @@
-/* Homepage projects alone break out of the existing, frozen hero container. */
+/* The homepage container gives the hero and projects the same 16px edges. */
 .project-slider {
   --project-card-width: calc((100vw - 64px) / 2.55);
-  width: calc(100vw - 32px);
-  margin-inline: calc((100% - 100vw) / 2 + 16px);
+  width: 100%;
+  margin-inline: 0;
+  --project-fade: 24px;
   padding-block: 32px 64px;
   scroll-margin-top: 100px;
   color: var(--color-text);
@@ -10,13 +11,18 @@
 .project-slider__heading { text-align: center; padding-inline: 16px; }
 .project-slider__heading > .text-body { margin: 16px auto 24px; }
 .project-slider__actions { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 40px; }
-.project-slider__viewport { overflow: hidden; touch-action: pan-y pinch-zoom; position: relative; }
-.project-slider__viewport::before, .project-slider__viewport::after {
-  content: ''; position: absolute; top: 0; bottom: 0; width: 24px; z-index: 2; pointer-events: none;
+/* Fade the content itself: separate overlays can leave a fractional-pixel
+   seam against the GPU-transformed track at non-integer browser scales.
+   The final pixel is fully transparent before the clipping boundary. */
+.project-slider__viewport {
+  overflow: hidden; touch-action: pan-y pinch-zoom; position: relative;
+  --project-edge-mask: linear-gradient(90deg, #000 0, #000 calc(100% - var(--project-fade)), transparent calc(100% - 1px), transparent 100%);
+  -webkit-mask-image: var(--project-edge-mask);
+  mask-image: var(--project-edge-mask);
 }
-.project-slider__viewport::before { left: 0; background: linear-gradient(90deg, var(--color-bg), transparent); opacity: 0; transition: opacity .2s; }
-.project-slider[data-moved] .project-slider__viewport::before { opacity: 1; }
-.project-slider__viewport::after { right: 0; background: linear-gradient(270deg, var(--color-bg), transparent); }
+.project-slider[data-moved] .project-slider__viewport {
+  --project-edge-mask: linear-gradient(90deg, transparent 0, transparent 1px, #000 var(--project-fade), #000 calc(100% - var(--project-fade)), transparent calc(100% - 1px), transparent 100%);
+}
 .project-slider__track { display: flex; gap: 16px; will-change: transform; }
 .project-card { flex: 0 0 var(--project-card-width); min-width: 0; }
 .project-card__media { position: relative; aspect-ratio: 1; }
@@ -43,7 +49,7 @@
   .project-slider__actions > a { flex: 1; min-width: 0; max-width: max-content; }
   .project-slider__actions > button { flex-shrink: 0; }
   .project-card__cover { border-radius: 24px; }
-  .project-slider__viewport::before, .project-slider__viewport::after { width: 16px; }
+  .project-slider { --project-fade: 16px; }
 }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .project-card__image { transition: scale .55s cubic-bezier(.2,.65,.3,1); }
