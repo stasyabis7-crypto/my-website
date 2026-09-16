@@ -1,0 +1,25 @@
+/* Homepage motion: no transformed page wrapper, so fixed chrome stays fixed. */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  z-index: 2147483647;
+  opacity: 0;
+  transition: width .22s ease, height .22s ease, opacity .12s ease;
+}
+.cursor-dot.is-visible { opacity: 1; }
+.cursor-dot.is-action { width: 36px; height: 36px; }
+@media (hover: hover) and (pointer: fine) {
+  html.has-dot-cursor, html.has-dot-cursor * { cursor: none !important; }
+}
+html.has-project-overlap #works-gallery { position: relative; z-index: 0; }
+html.has-project-overlap #ozon-projects { position: relative; z-index: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .cursor-dot { transition: none; }
+}
