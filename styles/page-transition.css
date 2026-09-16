@@ -1,5 +1,9 @@
 /* One curtain shared by the initial reveal and real document navigation.
    Only transforms animate; no page wrapper, layout shifts or blur passes. */
+.is-transition-pending body > :not(.page-transition) {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 .page-transition {
   /* Shared by CSS and JS, so navigation never cuts a ribbon short. */
   --transition-cover-ms: 800;

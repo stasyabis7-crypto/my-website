@@ -40,6 +40,26 @@
     const r = Math.sqrt(1 - z * z);
     return { x: Math.cos(a) * r, y: z, z: Math.sin(a) * r, seed: random(i), layer: .68 + random(i + 99) * .32 };
   });
+  const shapes = ['wave', 'flower', 'heart', 'star'];
+  let shapeIndex = 0;
+  // A radial heart silhouette keeps each particle's identity during morphs.
+  const heartOutline = Array.from({ length: 360 }, (_, i) => {
+    const angle = i / 360 * Math.PI * 2;
+    let low = 0, high = 1.6;
+    for (let step = 0; step < 16; step++) {
+      const r = (low + high) / 2;
+      const x = Math.cos(angle) * r, y = -Math.sin(angle) * r;
+      if (Math.pow(x * x + y * y - 1, 3) - x * x * y * y * y <= 0) low = r;
+      else high = r;
+    }
+    return (low + high) / 2 * .93;
+  });
+  function silhouette(shape, angle, time) {
+    if (shape === 1) return 1 + .21 * Math.cos(angle * 5 + .25 * Math.sin(time));
+    if (shape === 2) return heartOutline[Math.round((angle + Math.PI * 2) / (Math.PI * 2) * 360) % 360];
+    if (shape === 3) return .98 + .2 * Math.cos(angle * 5 + Math.PI / 2);
+    return 1 + .095 * Math.sin(angle * 3 + time * 1.4) + .055 * Math.sin(angle * 5 - time * 1.8);
+  }
   let point = { x: innerWidth / 2, y: innerHeight / 2, active: false };
   let gaze = { x: 0, y: 0 };
   let position = { x: 0, y: 0, size: 0 };
@@ -96,12 +116,12 @@
   const cursor = document.createElement('div');
   cursor.className = 'mood-cursor text-button';
   cursor.setAttribute('aria-hidden', 'true');
-  cursor.innerHTML = '<span>Поменять тему</span><span class="icon icon--arrow-diagonal"></span>';
+  cursor.innerHTML = '<span>А если нажать?</span><span class="icon icon--arrow-diagonal"></span>';
   document.body.appendChild(cursor);
   // Moving the actor out of the clipped hero keeps one continuous character on scroll.
   document.body.appendChild(actor);
   actor.classList.add('is-ready');
-  character.setAttribute('aria-description', 'Можно перетащить в свободное место. С клавиатуры: Alt и стрелки; Escape — вернуть на исходное место.');
+  character.setAttribute('aria-description', 'Нажатие меняет форму и настроение. Можно перетащить в свободное место. С клавиатуры: Alt и стрелки; Escape — вернуть на исходное место.');
   function readObstacles() {
     obstacles = [...document.querySelectorAll(interactive)].filter(el =>
       !actor.contains(el) && !el.closest('[inert], [hidden]') &&
@@ -192,8 +212,8 @@
 
   function updateCopy() {
     if (name) name.textContent = mood.name;
-    if (description) description.replaceChildren(document.createTextNode('Цвет настроеееения ' + mood.colour + '.'), document.createElement('br'), document.createTextNode('Можешь его поменять.'));
-    character.setAttribute('aria-label', mood.name + '. Поменять тему на ' + mood.next);
+    if (description) description.replaceChildren(document.createTextNode('Цвет настроеееения ' + mood.colour + '.'), document.createElement('br'), document.createTextNode('Нажми на меня — я умею превращаться.'));
+    character.setAttribute('aria-label', mood.name + '. Изменить форму и поменять тему на ' + mood.next);
   }
   function say(text, duration = 1900) {
     clearTimeout(speechTimer);
@@ -238,15 +258,17 @@
     hideCursor();
     activity();
     if (motionOff()) {
+      shapeIndex = (shapeIndex + 1) % shapes.length;
+      actor.dataset.shape = shapes[shapeIndex];
       applyMood((index + 1) % moods.length);
       say(mood.hello);
       wake();
       return;
     }
-    change = { start: performance.now(), from: index, applied: false };
+    change = { start: performance.now(), from: index, fromShape: shapeIndex, toShape: (shapeIndex + 1) % shapes.length, applied: false };
     nextButton?.setAttribute('aria-busy', 'true');
     character.setAttribute('aria-busy', 'true');
-    say(mood.reaction, 850);
+    say(['Сейчас будет магия.', 'А вот так умеешь?', 'Так. Меняю форму.'][index], 850);
     wake();
   }
   character.addEventListener('click', e => {
@@ -316,7 +338,7 @@
   const header = document.querySelector('.site-header');
   if (header) observer.observe(header);
   const syncMotion = () => {
-    if (change) { applyMood((change.from + 1) % moods.length); finishChange(); }
+    if (change) { if (!change.applied) applyMood((change.from + 1) % moods.length); finishChange(); }
     forcePaint = true;
     wake();
   };
@@ -350,6 +372,8 @@
   window.addEventListener('pageshow', () => { mounted = true; activity(); layoutDirty = true; forcePaint = true; wake(); });
 
   function finishChange() {
+    if (change) shapeIndex = change.toShape;
+    actor.dataset.shape = shapes[shapeIndex];
     change = null;
     nextButton?.removeAttribute('aria-busy');
     character.removeAttribute('aria-busy');
@@ -374,7 +398,7 @@
   }
   function draw(now, scene) {
     const compact = following;
-    const heroScale = !compact && innerWidth >= 1000 ? 1.2 : 1;
+    const heroScale = compact ? 1 : 1.12;
     const wanted = Math.round((compact ? 160 : 480) * pixelRatio);
     if (resolution !== wanted) { canvas.width = canvas.height = wanted; resolution = wanted; }
     ctx.setTransform(resolution / 480, 0, 0, resolution / 480, 0, 0);
@@ -405,14 +429,21 @@
       const zz = p.z * ca - p.x * sa;
       const wobble = Math.sin(p.y * 7 + t * 1.7 + p.seed * 4) * 5 + Math.cos(xx * 6 - t) * 4;
       const fuzz = Math.sin(t * 4 + p.seed * 70) * (hovering ? 4.5 : 1.6);
-      const radius = (151 + wobble + fuzz + anger * 14 * p.seed) * p.layer;
+      const angle = Math.atan2(p.y, xx);
+      const morph = scene.morph || 0;
+      const outline = change
+        ? mix(silhouette(change.fromShape, angle, t), silhouette(change.toShape, angle, t), morph)
+        : silhouette(shapeIndex, angle, t);
+      const ripple = motionOff() ? 0 : Math.sin(angle * 7 - t * 3.2 + p.layer * 3) * (hovering ? 8 : 3);
+      const radius = (151 * outline + wobble + fuzz + ripple + anger * 14 * p.seed) * p.layer;
       const spread = scene.scatter * (40 + p.seed * 90);
       let x = xx * (radius + spread);
       let y = p.y * (radius + spread);
       if (!motionOff() && !compact && point.active) {
-        const gx = gaze.x * 100, gy = gaze.y * 85;
+        const gx = (point.x - position.x - position.size / 2) * 480 / position.size / heroScale;
+        const gy = (point.y - position.y - position.size / 2) * 480 / position.size / heroScale;
         const dist = Math.hypot(x - gx, y - gy);
-        if (dist < 62) { const repel = (1 - dist / 62) * (hovering ? 16 : 5); x += (x - gx) / (dist || 1) * repel; y += (y - gy) / (dist || 1) * repel; }
+        if (dist < 90) { const repel = (1 - dist / 90) * (hovering ? 32 : 12); x += (x - gx) / (dist || 1) * repel; y += (y - gy) / (dist || 1) * repel; }
       }
       const alpha = (.2 + (zz + 1) * .28) * scene.opacity;
       ctx.globalAlpha = alpha;
@@ -497,7 +528,7 @@
     position.size = mix(position.size, target.size, lerp);
     actor.style.width = actor.style.height = position.size + 'px';
     actor.style.transform = `translate3d(${position.x}px,${position.y}px,0)`;
-    actor.style.setProperty('--mood-hit-size', Math.max(64, position.size * .69 * (!following && innerWidth >= 1000 ? 1.2 : 1)) + 'px');
+    actor.style.setProperty('--mood-hit-size', Math.max(64, position.size * .69 * (!following ? 1.25 : 1)) + 'px');
     const cx = position.x + position.size / 2, cy = position.y + position.size / 2;
     const gx = point.active ? clamp((point.x - cx) / 210, -1, 1) : 0;
     const gy = point.active ? clamp((point.y - cy) / 210, -1, 1) : 0;
@@ -508,37 +539,34 @@
     const scene = { x: 0, y: 0, scale: 1, rotate: 0, anger: 0, opacity: 1, scatter: 0 };
     if (change) {
       const elapsed = now - change.start;
-      if (elapsed < 320) { scene.anger = ease(elapsed / 320); scene.scale = 1 - Math.sin(elapsed / 320 * Math.PI) * .1; }
-      else if (elapsed < 760) {
-        const p = ease((elapsed - 320) / 440);
-        scene.anger = 1; scene.x = p * 165; scene.opacity = 1 - p; scene.scale = 1 - p * .3;
-        scene.rotate = change.from === 1 ? p * 2.8 : p * .16;
-        scene.y = change.from === 1 ? -Math.sin(p * Math.PI) * 80 : Math.sin(p * Math.PI * 6) * 9;
-        scene.scatter = p * .65;
-      } else {
-        if (!change.applied) {
-          applyMood((change.from + 1) % moods.length);
-          if (stage && wave) {
-            const r = stage.getBoundingClientRect();
-            wave.style.setProperty('--wave-x', clamp((cx - r.left) / r.width * 100, 0, 100) + '%');
-            wave.style.setProperty('--wave-y', clamp((cy - r.top) / r.height * 100, 0, 100) + '%');
-            wave.style.background = mood.bg;
-            wave.classList.add('is-playing');
-          }
-          change.applied = true;
-          say(mood.hello, 1800);
+      const progress = clamp(elapsed / 1350, 0, 1);
+      scene.morph = progress * progress * (3 - 2 * progress);
+      const play = Math.sin(progress * Math.PI);
+      scene.scatter = play * .16;
+      scene.scale = 1 - play * .09;
+      scene.rotate = Math.sin(progress * Math.PI * 2) * (change.from === 1 ? .16 : .09);
+      scene.y = -play * 12;
+      if (progress >= .5 && !change.applied) {
+        applyMood((change.from + 1) % moods.length);
+        if (stage && wave) {
+          const r = stage.getBoundingClientRect();
+          wave.style.setProperty('--wave-x', clamp((cx - r.left) / r.width * 100, 0, 100) + '%');
+          wave.style.setProperty('--wave-y', clamp((cy - r.top) / r.height * 100, 0, 100) + '%');
+          wave.style.background = mood.bg;
+          wave.classList.add('is-playing');
         }
-        const p = ease((elapsed - 760) / 620);
-        scene.x = -95 * (1 - p); scene.scale = .6 + p * .4; scene.opacity = p; scene.scatter = (1 - p) * .8;
-        scene.y = -Math.sin(p * Math.PI) * (index === 1 ? 50 : 18);
-        if (elapsed >= 1450) finishChange();
+        change.applied = true;
+        say(['Смотри, как я умею!', 'Сегодня я цветочек.', 'Это тебе ♥', 'Мой звёздный час!'][change.toShape], 2200);
       }
+      if (progress >= 1) finishChange();
     }
+
     const moving = Math.abs(position.x - target.x) + Math.abs(position.y - target.y) + Math.abs(position.size - target.size) > .1;
     if (!motionOff() || forcePaint || moving) { draw(now, scene); forcePaint = false; }
     if (!motionOff() || moving || change || drag?.active) wake();
   }
   function wake() { if (!frame && mounted && !document.hidden) frame = requestAnimationFrame(tick); }
+  actor.dataset.shape = shapes[shapeIndex];
   applyMood(index, false);
   measure();
   scheduleIdle();

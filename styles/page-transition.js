@@ -13,7 +13,7 @@
   var warmed = new Set();
   var handoffKey = 'mood-transition:' + siteBase.pathname;
   var incoming = false;
-  var classes = ['is-transition-boot', 'is-transition-covering', 'is-transition-revealing'];
+  var classes = ['is-transition-pending', 'is-transition-boot', 'is-transition-covering', 'is-transition-revealing'];
 
   function pageKey(href) {
     var url = new URL(href, location.href);
@@ -41,7 +41,9 @@
   // covered. Direct visits and reloads begin with ribbons offscreen and play
   // the entire entrance, hold and exit sequence.
   if (!reduced.matches) {
-    root.classList.add(incoming ? 'is-transition-boot' : 'is-transition-covering');
+    // This blocking head script hides the new document before its first paint.
+    // Outgoing navigation does not use pending: it covers the current page.
+    root.classList.add('is-transition-pending', incoming ? 'is-transition-boot' : 'is-transition-covering');
     safetyTimer = setTimeout(reset, 4000);
   }
 
