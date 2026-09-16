@@ -52,7 +52,7 @@
   let gaze = { x: 0, y: 0 };
   let position = { x: 0, y: 0, size: 0 };
   const exhibition = document.querySelector('.work-gallery');
-  let homeRect, stageRect, exhibitionTop = Infinity, headerBottom = 110;
+  let homeRect, stageRect, exhibitionTop = Infinity;
   let following = false;
   let placement = null; // Viewport coordinates: a dropped companion stays fixed on screen.
   let drag = null;
@@ -224,7 +224,6 @@
     homeRect = home?.getBoundingClientRect();
     stageRect = stage?.getBoundingClientRect();
     exhibitionTop = exhibition?.getBoundingClientRect().top ?? Infinity;
-    headerBottom = header ? header.getBoundingClientRect().bottom : 110;
     // Select existing DS heading roles on the narrowest phones.
     const shortLandscape = innerWidth >= 600 && innerHeight < 550;
     heading?.classList.toggle('text-h1', shortLandscape);
@@ -469,12 +468,9 @@
     let target = standalone ? { x: 0, y: 0, size: 120 } : { x: homeRect.left + (homeRect.width - homeSize) / 2, y: homeRect.top + (homeRect.height - homeSize) / 2, size: homeSize };
     if (following) {
       const size = innerWidth < 600 ? 104 : 120;
-      const top = Math.max(150, headerBottom + 70);
-      const bottom = Math.max(top, dockHeight - size - 110);
       // A fixed dock on both input types: scroll-event velocity must not
       // change the destination while the character is flying towards it.
-      const desiredY = dockHeight * .55;
-      target = { x: innerWidth - size - (innerWidth < 600 ? 8 : 24), y: clamp(desiredY, top, bottom), size };
+      target = { x: (innerWidth - size) / 2, y: Math.max(8, dockHeight - size - 16), size };
       if (now < freezeUntil && position.size) { target.x = position.x; target.y = position.y; }
     }
     // A manual drop owns the screen position until another drag or Escape,
