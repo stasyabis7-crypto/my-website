@@ -272,7 +272,12 @@
     closeMenu();
   });
 
+  var chromeLayoutWidth = window.innerWidth;
   window.addEventListener('resize', function () {
+    // Mobile browser bars change height while scrolling, not the header layout.
+    // Avoid resetting and remeasuring the logo repeatedly during that gesture.
+    if (window.innerWidth === chromeLayoutWidth && window.matchMedia('(pointer: coarse)').matches) return;
+    chromeLayoutWidth = window.innerWidth;
     syncAll();
     closeMenu();
   });

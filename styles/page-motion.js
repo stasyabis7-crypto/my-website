@@ -122,47 +122,121 @@
       return { surface: surface, underlay: surface.previousElementSibling, start: 0, end: 0, fadeStart: 0, fadeDistance: 1 };
     });
   if (!overlaps.length) return;
-  var overlapFrame = 0;
+  var overlapFrame = 0, measureFrame = 0;
+  var layoutWidth = innerWidth, viewportHeight = innerHeight;
+  var timeline = typeof ScrollTimeline === 'function'
+    ? new ScrollTimeline({ source: document.scrollingElement, axis: 'block' }) : null;
+  function layoutTop(element) {
+    var top = 0;
+    for (var node = element; node; node = node.offsetParent) top += node.offsetTop;
+    return top;
+  }
+  function cancelAnimations(pair) {
+    (pair.animations || []).forEach(function (animation) { animation.cancel(); });
+    pair.animations = [];
+  }
+  function animateOverlap(pair, extent) {
+    if (!timeline || reduced.matches) {
+      cancelAnimations(pair);
+      return;
+    }
+    var travel = Math.max(0, pair.end - pair.start);
+    function range(value) { return (value / extent * 100) + '%'; }
+    var ranges = [range(pair.start), range(Math.max(pair.start + 1, pair.end)),
+      range(pair.fadeStart), range(pair.fadeStart + pair.fadeDistance)];
+    try {
+      if (!pair.animations || !pair.animations.length) {
+        pair.animations = [];
+        pair.animations.push(pair.underlay.animate([
+          { transform: 'translate3d(0,0,0)' },
+          { transform: 'translate3d(0,' + travel + 'px,0)' }
+        ], { timeline: timeline, duration: 'auto', rangeStart: ranges[0],
+          rangeEnd: ranges[1], fill: 'both' }));
+        pair.animations.push(pair.underlay.animate([
+          { opacity: 1 }, { opacity: 0 }
+        ], { timeline: timeline, duration: 'auto', rangeStart: ranges[2],
+          rangeEnd: ranges[3], easing: 'cubic-bezier(.33,0,.67,1)', fill: 'both' }));
+        if (!('rangeStart' in pair.animations[0])) throw new Error('Unsupported animation ranges');
+      } else {
+        // Keep the same compositor animations alive during browser-bar resizes.
+        // Cancelling and recreating them causes a blank/stale frame on mobile.
+        if (pair.travel !== travel) pair.animations[0].effect.setKeyframes([
+          { transform: 'translate3d(0,0,0)' },
+          { transform: 'translate3d(0,' + travel + 'px,0)' }
+        ]);
+        if (pair.ranges[0] !== ranges[0]) pair.animations[0].rangeStart = ranges[0];
+        if (pair.ranges[1] !== ranges[1]) pair.animations[0].rangeEnd = ranges[1];
+        if (pair.ranges[2] !== ranges[2]) pair.animations[1].rangeStart = ranges[2];
+        if (pair.ranges[3] !== ranges[3]) pair.animations[1].rangeEnd = ranges[3];
+      }
+      pair.travel = travel;
+      pair.ranges = ranges;
+    } catch (_) {
+      cancelAnimations(pair);
+    }
+  }
   function paintOverlap() {
     overlapFrame = 0;
+    var enabled = !reduced.matches;
+    var scroll = window.scrollY;
     overlaps.forEach(function (pair) {
-      var enabled = !reduced.matches;
-      pair.underlay.classList.toggle('overlap-underlay', enabled);
-      pair.surface.classList.toggle('overlap-surface', enabled);
-      // Fade only once the next surface enters the viewport. Tie opacity to
-      // scroll so reversing direction restores the previous content smoothly.
       var progress = enabled ? Math.max(0, Math.min(1,
-        (window.scrollY - pair.fadeStart) / pair.fadeDistance)) : 0;
-      var fade = progress * progress * (3 - 2 * progress);
-      pair.underlay.style.setProperty('--overlap-opacity', 1 - fade);
+        (scroll - pair.fadeStart) / pair.fadeDistance)) : 0;
       pair.underlay.classList.toggle('is-covered', enabled && progress === 1);
+      // Native timelines keep transform and opacity in sync with compositor
+      // scrolling. JS only updates accessibility at the fully hidden boundary.
+      if (pair.animations && pair.animations.length) return;
+      var fade = progress * progress * (3 - 2 * progress);
+      pair.underlay.style.opacity = enabled ? String(1 - fade) : '';
       pair.underlay.style.transform = enabled
-        ? 'translate3d(0,' + Math.max(0, Math.min(pair.end - pair.start, window.scrollY - pair.start)) + 'px,0)'
+        ? 'translate3d(0,' + Math.max(0, Math.min(pair.end - pair.start, scroll - pair.start)) + 'px,0)'
         : '';
     });
     cursorTarget();
   }
   function measure() {
-    overlaps.forEach(function (pair) { pair.underlay.style.transform = ''; });
+    measureFrame = 0;
+    // Read layout coordinates without resetting transforms and forcing another
+    // layout. Browser toolbar height changes do not alter this geometry.
     overlaps.forEach(function (pair) {
-      var bounds = pair.surface.getBoundingClientRect();
-      pair.fadeStart = window.scrollY + bounds.top - innerHeight;
-      pair.fadeDistance = Math.max(1, Math.min(bounds.height, innerHeight) * 0.65);
-      pair.start = window.scrollY + pair.underlay.getBoundingClientRect().bottom - innerHeight;
-      pair.end = window.scrollY + Math.min(bounds.top, bounds.bottom - innerHeight);
+      var top = layoutTop(pair.surface), height = pair.surface.offsetHeight;
+      pair.fadeStart = top - viewportHeight;
+      pair.fadeDistance = Math.max(1, Math.min(height, viewportHeight) * 0.65);
+      pair.start = layoutTop(pair.underlay) + pair.underlay.offsetHeight - viewportHeight;
+      pair.end = Math.min(top, top + height - viewportHeight);
+    });
+    var extent = Math.max(1, document.scrollingElement.scrollHeight - document.scrollingElement.clientHeight);
+    overlaps.forEach(function (pair) {
+      pair.underlay.classList.toggle('overlap-underlay', !reduced.matches);
+      pair.surface.classList.toggle('overlap-surface', !reduced.matches);
+      animateOverlap(pair, extent);
+      if (reduced.matches || (pair.animations && pair.animations.length)) {
+        pair.underlay.style.transform = '';
+        pair.underlay.style.opacity = '';
+      }
     });
     paintOverlap();
+  }
+  function scheduleMeasure() {
+    if (!measureFrame) measureFrame = requestAnimationFrame(measure);
   }
   window.addEventListener('scroll', function () {
     if (!overlapFrame) overlapFrame = requestAnimationFrame(paintOverlap);
   }, { passive: true });
-  window.addEventListener('resize', measure);
-  reduced.addEventListener('change', measure);
-  var overlapObserver = new ResizeObserver(measure);
+  window.addEventListener('resize', function () {
+    if (!fine.matches && innerWidth === layoutWidth) { scheduleMeasure(); return; }
+    layoutWidth = innerWidth;
+    viewportHeight = innerHeight;
+    scheduleMeasure();
+  });
+  reduced.addEventListener('change', scheduleMeasure);
+  var overlapObserver = new ResizeObserver(scheduleMeasure);
   overlaps.forEach(function (pair) {
     overlapObserver.observe(pair.underlay);
     overlapObserver.observe(pair.surface);
   });
-  document.fonts.ready.then(measure);
+  overlapObserver.observe(document.body);
+  overlapObserver.observe(document.documentElement);
+  document.fonts.ready.then(scheduleMeasure);
   measure();
 })();
