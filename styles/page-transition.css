@@ -1,0 +1,80 @@
+/* One curtain shared by the initial reveal and real document navigation.
+   Only transforms animate; no page wrapper, layout shifts or blur passes. */
+.page-transition {
+  display: none;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 2147483646;
+  pointer-events: none;
+  contain: strict;
+}
+:is(.is-transition-boot, .is-transition-covering, .is-transition-revealing) .page-transition {
+  display: block;
+}
+.is-transition-covering .page-transition { pointer-events: auto; }
+.page-transition__stage {
+  position: absolute;
+  inset: -8vmax;
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  transform: rotate(-4deg);
+}
+.page-transition__band {
+  --band-direction: 1;
+  --band-delay: 0ms;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  margin-block: -1px;
+  overflow: hidden;
+  background: var(--transition-anastasia-bg);
+  color: var(--transition-anastasia-ink);
+  will-change: transform;
+}
+.page-transition__band:nth-child(2) {
+  --band-direction: -1;
+  --band-delay: 35ms;
+}
+.page-transition__band:nth-child(3) { --band-delay: 70ms; }
+.page-transition__band[data-transition-mood="stasy"] {
+  background: var(--transition-stasy-bg);
+  color: var(--transition-stasy-ink);
+}
+.page-transition__band[data-transition-mood="stas"] {
+  background: var(--transition-stas-bg);
+  color: var(--transition-stas-ink);
+}
+.page-transition__words {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: clamp(24px, 5vw, 100px);
+  white-space: nowrap;
+}
+.page-transition__words i {
+  flex: none;
+  width: .65em;
+  height: .65em;
+  border: .12em solid currentColor;
+  border-radius: 50%;
+}
+.is-transition-covering .page-transition__band {
+  animation: transition-cover 300ms cubic-bezier(.76, 0, .24, 1) var(--band-delay) both;
+}
+.is-transition-revealing .page-transition__band {
+  animation: transition-reveal 340ms cubic-bezier(.76, 0, .24, 1) var(--band-delay) both;
+}
+@keyframes transition-cover {
+  from { transform: translate3d(calc(-110% * var(--band-direction)), 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+@keyframes transition-reveal {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(calc(110% * var(--band-direction)), 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.is-transition-boot, .is-transition-covering, .is-transition-revealing) .page-transition { display: none; }
+  .page-transition__band { animation: none; }
+}
