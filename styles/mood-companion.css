@@ -1,6 +1,5 @@
 /* Main hero spacing; the artwork and content retain their approved layout. */
-.mood-hero { position: relative; box-sizing: border-box; width: 100%; padding-inline: 0; margin-top: calc(-1 * (var(--page-px, 10px) + var(--header-h, 3.5rem) + 10px) + var(--hero-edge)); margin-bottom: 40px; }
-@media (min-width: 1024px) { .mood-hero { margin-bottom: 60px; } }
+.mood-hero { position: relative; box-sizing: border-box; width: 100%; padding: var(--hero-edge); margin: 0; }
 .mood-br { display: none; }
 @media (min-width: 900px) { .mood-br { display: inline; } }
 /* Layout and decorative motion for the particle companion experiment.
@@ -12,7 +11,9 @@
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   align-items: center;
   gap: clamp(24px, 4vw, 72px);
-  min-height: min(880px, calc(100svh - 32px));
+  height: calc(100svh - 2 * var(--hero-edge));
+  height: calc(100dvh - 2 * var(--hero-edge));
+  min-height: 0;
   padding: 142px clamp(32px, 6vw, 110px) 72px;
   border-radius: clamp(28px, 3vw, 44px);
   background: var(--mood-bg);
@@ -144,3 +145,26 @@ html.mood-cursor-active .mood-cursor { opacity: 1; }
 
 .mood-actor.is-dragging { z-index: 80; }
 .mood-actor.is-drop-blocked .mood-canvas { opacity: .55; }
+
+/* The home banner occupies one viewport, with artwork fitted to the space
+   left by the existing typography and floating site navigation. */
+.mood-stage { padding-bottom: 90px; }
+.mood-home { width: min(100%, 540px, 52svh); }
+@media (max-width: 999px) {
+  .mood-stage { min-height: 0; grid-template-rows: auto minmax(0, 1fr); padding-top: calc(var(--header-h, 64px) + 24px); padding-bottom: calc(var(--footer-h, 64px) + 20px); }
+  .mood-exhibit { height: 100%; min-height: 0; }
+  .mood-home { flex: 1; min-height: 0; width: min(100%, 380px); aspect-ratio: auto; }
+  .mood-caption { flex-shrink: 0; }
+  .mood-description { min-height: 0; }
+}
+@media (max-width: 999px) and (max-height: 700px) {
+  .mood-stage { gap: 4px; padding-top: calc(var(--header-h, 64px) + 14px); padding-bottom: calc(var(--footer-h, 64px) + 12px); }
+  .mood-actions { margin-top: 12px; }
+  .mood-caption { margin-top: 0; }
+  .mood-description { margin-top: 4px; }
+}
+@media (min-width: 600px) and (max-width: 999px) and (max-height: 550px) {
+  .mood-stage { grid-template-columns: 1.2fr 1fr; grid-template-rows: minmax(0, 1fr); gap: 20px; padding-bottom: 80px; }
+  .mood-content { text-align: left; }
+  .mood-home { width: min(100%, 200px); }
+}

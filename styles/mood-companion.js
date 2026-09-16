@@ -51,7 +51,8 @@
   let point = { x: innerWidth / 2, y: innerHeight / 2, active: false };
   let gaze = { x: 0, y: 0 };
   let position = { x: 0, y: 0, size: 0 };
-  let homeRect, stageRect, headerBottom = 110;
+  const exhibition = document.querySelector('.work-gallery');
+  let homeRect, stageRect, exhibitionTop = Infinity, headerBottom = 110;
   let following = false;
   let placement = null; // Viewport coordinates: a dropped companion stays fixed on screen.
   let drag = null;
@@ -222,10 +223,13 @@
   function measure() {
     homeRect = home?.getBoundingClientRect();
     stageRect = stage?.getBoundingClientRect();
+    exhibitionTop = exhibition?.getBoundingClientRect().top ?? Infinity;
     headerBottom = header ? header.getBoundingClientRect().bottom : 110;
     // Select existing DS heading roles on the narrowest phones.
-    heading?.classList.toggle('text-display', innerWidth < 360);
-    heading?.classList.toggle('text-display-lg', innerWidth >= 360);
+    const shortLandscape = innerWidth >= 600 && innerHeight < 550;
+    heading?.classList.toggle('text-h1', shortLandscape);
+    heading?.classList.toggle('text-display', !shortLandscape && innerWidth < 360);
+    heading?.classList.toggle('text-display-lg', !shortLandscape && innerWidth >= 360);
     const footer = document.querySelector('.site-footer');
     if (footer && innerWidth >= 1000) {
       const rect = footer.getBoundingClientRect();
@@ -456,11 +460,12 @@
     if (layoutDirty) measure();
     const wasFollowing = following;
     const exitThreshold = wasFollowing ? 140 : 100;
-    following = !!drag?.active || standalone || homeRect.bottom < exitThreshold ||
+    following = !!drag?.active || standalone || exhibitionTop < innerHeight * .8 || homeRect.bottom < exitThreshold ||
       stageRect.bottom < dockHeight * (wasFollowing ? .22 : .18);
     actor.classList.toggle('is-following', following);
     if (following !== wasFollowing) { hideCursor(); freezeUntil = 0; forcePaint = true; if (following && !placement && !motionOff()) say('Я рядом. Смотрим?', 2200); }
-    let target = standalone ? { x: 0, y: 0, size: 120 } : { x: homeRect.left, y: homeRect.top, size: homeRect.width };
+    const homeSize = standalone ? 120 : Math.max(0, Math.min(homeRect.width, homeRect.height));
+    let target = standalone ? { x: 0, y: 0, size: 120 } : { x: homeRect.left + (homeRect.width - homeSize) / 2, y: homeRect.top + (homeRect.height - homeSize) / 2, size: homeSize };
     if (following) {
       const size = innerWidth < 600 ? 104 : 120;
       const top = Math.max(150, headerBottom + 70);
