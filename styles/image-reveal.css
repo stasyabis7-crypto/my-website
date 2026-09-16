@@ -1,0 +1,2 @@
+/* Preserve layout while an image loads and decodes. Applied only by JS. */
+img[data-image-pending] { visibility: hidden; }
