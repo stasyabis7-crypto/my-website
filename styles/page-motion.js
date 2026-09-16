@@ -135,6 +135,10 @@
     group.append(pair.underlay, pair.surface);
     pair.group = group;
     pair.underlay.classList.add('overlap-sticky');
+    // Collections can span thousands of pixels. Fade a screen-sized cover,
+    // rather than compositing the entire image gallery with changing opacity.
+    pair.screenFade = pair.underlay.matches('.project-slider');
+    pair.underlay.classList.toggle('overlap-sticky--screen-fade', pair.screenFade);
     pair.surface.classList.add('overlap-surface');
     var marker = document.createElement('span');
     marker.className = 'overlap-marker';
@@ -147,6 +151,7 @@
     measureFrame = 0;
     overlaps.forEach(function (pair) {
       pair.underlay.style.setProperty('--overlap-pin-top', Math.min(0, viewportHeight - pair.underlay.offsetHeight) + 'px');
+      if (pair.screenFade) pair.underlay.style.setProperty('--overlap-screen-height', viewportHeight + 'px');
     });
   }
   function scheduleOverlapMeasure() {
@@ -156,7 +161,10 @@
     if (fadeObserver) fadeObserver.disconnect();
     overlaps.forEach(function (pair) {
       pair.group.classList.toggle('is-motion-disabled', reduced.matches);
-      if (reduced.matches) pair.underlay.classList.remove('is-faded');
+      if (reduced.matches) {
+        pair.underlay.classList.remove('is-faded');
+        if (pair.screenFade) pair.underlay.inert = false;
+      }
     });
     if (reduced.matches) return;
     // The marker remains inside the observer after leaving the top edge,
@@ -165,6 +173,7 @@
       entries.forEach(function (entry) {
         var pair = overlaps.find(function (item) { return item.marker === entry.target; });
         pair.underlay.classList.toggle('is-faded', entry.isIntersecting);
+        if (pair.screenFade) pair.underlay.inert = entry.isIntersecting;
       });
     }, { rootMargin: '100000px 0px -' + Math.round(viewportHeight * .2) + 'px 0px' });
     overlaps.forEach(function (pair) { fadeObserver.observe(pair.marker); });
