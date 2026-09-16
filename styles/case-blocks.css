@@ -393,7 +393,7 @@
 /* The favourite badge extends beyond the callout on the right. Compensate
    for that visual weight on the mobile metric card without moving its frame. */
 @media (max-width: 900px) {
-  .case-metric__art--point img { transform: translateX(-2.5%); }
+  .case-metric__art--point img { transform: translateX(calc(-2.5% - 10px)); }
 }
 
 /* Не .text-h2 — тут нужен размер H2 (--font-size-xl), но шрифт текста
