@@ -119,188 +119,67 @@
   var overlaps = Array.from(document.querySelectorAll('.project-slider--themed, .case-block--surface'))
     .filter(function (surface) { return surface.previousElementSibling; })
     .map(function (surface) {
-      return { surface: surface, underlay: surface.previousElementSibling, start: 0, end: 0, fadeStart: 0, fadeDistance: 1 };
+      return { surface: surface, underlay: surface.previousElementSibling };
     });
   if (!overlaps.length) return;
-  // Touch scrolling is asynchronous in embedded browsers. Keep the overlap
-  // entirely in native sticky layout; fade once per crossing, not once per
-  // scroll sample. No scroll-linked JS transforms or timeline ranges on touch.
-  if (!fine.matches) {
-    root.classList.add('has-native-overlap');
-    var mobileWidth = innerWidth, mobileHeight = innerHeight;
-    overlaps.forEach(function (pair) {
-      var group = document.createElement('div');
-      group.className = 'overlap-group';
-      var gap = getComputedStyle(pair.surface.parentElement).rowGap;
-      group.style.gap = gap === 'normal' ? '0px' : gap;
-      pair.underlay.before(group);
-      group.append(pair.underlay, pair.surface);
-      pair.group = group;
-      pair.underlay.classList.add('overlap-sticky');
-      pair.surface.classList.add('overlap-surface');
-      var marker = document.createElement('span');
-      marker.className = 'overlap-marker';
-      marker.setAttribute('aria-hidden', 'true');
-      pair.surface.prepend(marker);
-      pair.marker = marker;
-    });
-    var mobileFrame = 0, fadeObserver;
-    function measureMobile() {
-      mobileFrame = 0;
-      overlaps.forEach(function (pair) {
-        pair.underlay.style.setProperty('--overlap-pin-top', Math.min(0, mobileHeight - pair.underlay.offsetHeight) + 'px');
-      });
-    }
-    function scheduleMobileMeasure() {
-      if (!mobileFrame) mobileFrame = requestAnimationFrame(measureMobile);
-    }
-    function observeFade() {
-      if (fadeObserver) fadeObserver.disconnect();
-      overlaps.forEach(function (pair) {
-        pair.group.classList.toggle('is-motion-disabled', reduced.matches);
-        if (reduced.matches) pair.underlay.classList.remove('is-faded');
-      });
-      if (reduced.matches) return;
-      // The marker remains inside the observer after leaving the top edge,
-      // so scrolling farther down never resurrects the covered section.
-      fadeObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          var pair = overlaps.find(function (item) { return item.marker === entry.target; });
-          pair.underlay.classList.toggle('is-faded', entry.isIntersecting);
-        });
-      }, { rootMargin: '100000px 0px -' + Math.round(mobileHeight * .2) + 'px 0px' });
-      overlaps.forEach(function (pair) { fadeObserver.observe(pair.marker); });
-    }
-    var mobileObserver = new ResizeObserver(scheduleMobileMeasure);
-    overlaps.forEach(function (pair) { mobileObserver.observe(pair.underlay); });
-    window.addEventListener('resize', function () {
-      if (innerWidth === mobileWidth) return;
-      mobileWidth = innerWidth;
-      mobileHeight = innerHeight;
-      scheduleMobileMeasure();
-      observeFade();
-    });
-    reduced.addEventListener('change', observeFade);
-    document.fonts.ready.then(scheduleMobileMeasure);
-    measureMobile();
-    observeFade();
-    return;
-  }
-  var overlapFrame = 0, measureFrame = 0;
+  // One implementation for every input type: native sticky positioning and
+  // one fade per crossing, with no per-scroll style writes or timeline ranges.
+  root.classList.add('has-native-overlap');
   var layoutWidth = innerWidth, viewportHeight = innerHeight;
-  var timeline = typeof ScrollTimeline === 'function'
-    ? new ScrollTimeline({ source: document.scrollingElement, axis: 'block' }) : null;
-  function layoutTop(element) {
-    var top = 0;
-    for (var node = element; node; node = node.offsetParent) top += node.offsetTop;
-    return top;
-  }
-  function cancelAnimations(pair) {
-    (pair.animations || []).forEach(function (animation) { animation.cancel(); });
-    pair.animations = [];
-  }
-  function animateOverlap(pair, extent) {
-    if (!timeline || reduced.matches) {
-      cancelAnimations(pair);
-      return;
-    }
-    var travel = Math.max(0, pair.end - pair.start);
-    function range(value) { return (value / extent * 100) + '%'; }
-    var ranges = [range(pair.start), range(Math.max(pair.start + 1, pair.end)),
-      range(pair.fadeStart), range(pair.fadeStart + pair.fadeDistance)];
-    try {
-      if (!pair.animations || !pair.animations.length) {
-        pair.animations = [];
-        pair.animations.push(pair.underlay.animate([
-          { transform: 'translate3d(0,0,0)' },
-          { transform: 'translate3d(0,' + travel + 'px,0)' }
-        ], { timeline: timeline, duration: 'auto', rangeStart: ranges[0],
-          rangeEnd: ranges[1], fill: 'both' }));
-        pair.animations.push(pair.underlay.animate([
-          { opacity: 1 }, { opacity: 0 }
-        ], { timeline: timeline, duration: 'auto', rangeStart: ranges[2],
-          rangeEnd: ranges[3], easing: 'cubic-bezier(.33,0,.67,1)', fill: 'both' }));
-        if (!('rangeStart' in pair.animations[0])) throw new Error('Unsupported animation ranges');
-      } else {
-        // Keep the same compositor animations alive during browser-bar resizes.
-        // Cancelling and recreating them causes a blank/stale frame on mobile.
-        if (pair.travel !== travel) pair.animations[0].effect.setKeyframes([
-          { transform: 'translate3d(0,0,0)' },
-          { transform: 'translate3d(0,' + travel + 'px,0)' }
-        ]);
-        if (pair.ranges[0] !== ranges[0]) pair.animations[0].rangeStart = ranges[0];
-        if (pair.ranges[1] !== ranges[1]) pair.animations[0].rangeEnd = ranges[1];
-        if (pair.ranges[2] !== ranges[2]) pair.animations[1].rangeStart = ranges[2];
-        if (pair.ranges[3] !== ranges[3]) pair.animations[1].rangeEnd = ranges[3];
-      }
-      pair.travel = travel;
-      pair.ranges = ranges;
-    } catch (_) {
-      cancelAnimations(pair);
-    }
-  }
-  function paintOverlap() {
-    overlapFrame = 0;
-    var enabled = !reduced.matches;
-    var scroll = window.scrollY;
-    overlaps.forEach(function (pair) {
-      var progress = enabled ? Math.max(0, Math.min(1,
-        (scroll - pair.fadeStart) / pair.fadeDistance)) : 0;
-      pair.underlay.classList.toggle('is-covered', enabled && progress === 1);
-      // Native timelines keep transform and opacity in sync with compositor
-      // scrolling. JS only updates accessibility at the fully hidden boundary.
-      if (pair.animations && pair.animations.length) return;
-      var fade = progress * progress * (3 - 2 * progress);
-      pair.underlay.style.opacity = enabled ? String(1 - fade) : '';
-      pair.underlay.style.transform = enabled
-        ? 'translate3d(0,' + Math.max(0, Math.min(pair.end - pair.start, scroll - pair.start)) + 'px,0)'
-        : '';
-    });
-    cursorTarget();
-  }
-  function measure() {
+  overlaps.forEach(function (pair) {
+    var group = document.createElement('div');
+    group.className = 'overlap-group';
+    var gap = getComputedStyle(pair.surface.parentElement).rowGap;
+    group.style.gap = gap === 'normal' ? '0px' : gap;
+    pair.underlay.before(group);
+    group.append(pair.underlay, pair.surface);
+    pair.group = group;
+    pair.underlay.classList.add('overlap-sticky');
+    pair.surface.classList.add('overlap-surface');
+    var marker = document.createElement('span');
+    marker.className = 'overlap-marker';
+    marker.setAttribute('aria-hidden', 'true');
+    pair.surface.prepend(marker);
+    pair.marker = marker;
+  });
+  var measureFrame = 0, fadeObserver;
+  function measureOverlap() {
     measureFrame = 0;
-    // Read layout coordinates without resetting transforms and forcing another
-    // layout. Browser toolbar height changes do not alter this geometry.
     overlaps.forEach(function (pair) {
-      var top = layoutTop(pair.surface), height = pair.surface.offsetHeight;
-      pair.fadeStart = top - viewportHeight;
-      pair.fadeDistance = Math.max(1, Math.min(height, viewportHeight) * 0.65);
-      pair.start = layoutTop(pair.underlay) + pair.underlay.offsetHeight - viewportHeight;
-      pair.end = Math.min(top, top + height - viewportHeight);
+      pair.underlay.style.setProperty('--overlap-pin-top', Math.min(0, viewportHeight - pair.underlay.offsetHeight) + 'px');
     });
-    var extent = Math.max(1, document.scrollingElement.scrollHeight - document.scrollingElement.clientHeight);
+  }
+  function scheduleOverlapMeasure() {
+    if (!measureFrame) measureFrame = requestAnimationFrame(measureOverlap);
+  }
+  function observeFade() {
+    if (fadeObserver) fadeObserver.disconnect();
     overlaps.forEach(function (pair) {
-      pair.underlay.classList.toggle('overlap-underlay', !reduced.matches);
-      pair.surface.classList.toggle('overlap-surface', !reduced.matches);
-      animateOverlap(pair, extent);
-      if (reduced.matches || (pair.animations && pair.animations.length)) {
-        pair.underlay.style.transform = '';
-        pair.underlay.style.opacity = '';
-      }
+      pair.group.classList.toggle('is-motion-disabled', reduced.matches);
+      if (reduced.matches) pair.underlay.classList.remove('is-faded');
     });
-    paintOverlap();
+    if (reduced.matches) return;
+    // The marker remains inside the observer after leaving the top edge,
+    // so scrolling farther down never resurrects the covered section.
+    fadeObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var pair = overlaps.find(function (item) { return item.marker === entry.target; });
+        pair.underlay.classList.toggle('is-faded', entry.isIntersecting);
+      });
+    }, { rootMargin: '100000px 0px -' + Math.round(viewportHeight * .2) + 'px 0px' });
+    overlaps.forEach(function (pair) { fadeObserver.observe(pair.marker); });
   }
-  function scheduleMeasure() {
-    if (!measureFrame) measureFrame = requestAnimationFrame(measure);
-  }
-  window.addEventListener('scroll', function () {
-    if (!overlapFrame) overlapFrame = requestAnimationFrame(paintOverlap);
-  }, { passive: true });
+  var sizeObserver = new ResizeObserver(scheduleOverlapMeasure);
+  overlaps.forEach(function (pair) { sizeObserver.observe(pair.underlay); });
   window.addEventListener('resize', function () {
-    if (!fine.matches && innerWidth === layoutWidth) { scheduleMeasure(); return; }
+    if (!fine.matches && innerWidth === layoutWidth) return;
     layoutWidth = innerWidth;
     viewportHeight = innerHeight;
-    scheduleMeasure();
+    scheduleOverlapMeasure();
+    observeFade();
   });
-  reduced.addEventListener('change', scheduleMeasure);
-  var overlapObserver = new ResizeObserver(scheduleMeasure);
-  overlaps.forEach(function (pair) {
-    overlapObserver.observe(pair.underlay);
-    overlapObserver.observe(pair.surface);
-  });
-  overlapObserver.observe(document.body);
-  overlapObserver.observe(document.documentElement);
-  document.fonts.ready.then(scheduleMeasure);
-  measure();
+  reduced.addEventListener('change', observeFade);
+  document.fonts.ready.then(scheduleOverlapMeasure);
+  measureOverlap();
+  observeFade();
 })();

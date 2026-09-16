@@ -364,9 +364,9 @@ html.chrome--pinned .btn--scroll-shadow {
   .work-toc__toggle[aria-expanded="true"] .work-toc__close-icon { display: none; }
   .work-toc__toggle { overflow: visible; width: 80px; }
   .work-toc__bars { display: flex; flex: none; flex-direction: column; align-items: flex-end; gap: 8px; padding-block: 10px; }
-  .work-toc__bars span { flex-shrink: 0; transition: width .3s ease, background-color .3s ease; }
+  .work-toc__bars span { flex-shrink: 0; transition: width .3s ease, height .3s ease, background-color .3s ease; }
   .work-toc__bars span { width: 36px; height: 3px; border-radius: 3px; background: #fff; }
-  .work-toc__bars span.is-current { width: 48px; background: var(--color-action-active); }
+  .work-toc__bars span.is-current { width: 48px; height: 5px; background: var(--color-action-active); }
   .work-toc__toggle:hover .work-toc__bars span { width: 48px; }
 }
 

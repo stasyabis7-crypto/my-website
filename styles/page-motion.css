@@ -19,16 +19,13 @@
 @media (hover: hover) and (pointer: fine) {
   html.has-dot-cursor, html.has-dot-cursor * { cursor: none !important; }
 }
-.overlap-underlay { position: relative; z-index: 0; }
-/* Fully covered content must not retain invisible click or keyboard targets. */
-.overlap-underlay.is-covered { visibility: hidden; pointer-events: none; }
 .overlap-surface { position: relative; z-index: 1; }
 @media (prefers-reduced-motion: reduce) {
   .cursor-dot { transition: none; }
 }
 
-/* Native mobile overlap: sticky positioning stays on the browser's scroll
-   path. The fade is a single compositor transition, independent of touch pace. */
+/* Shared overlap: sticky positioning stays on the browser's scroll
+   path. The fade is a single compositor transition, independent of scroll pace. */
 html.has-native-overlap body { overflow-x: clip; }
 .overlap-group { display: flex; flex-direction: column; min-width: 0; }
 .overlap-sticky {
