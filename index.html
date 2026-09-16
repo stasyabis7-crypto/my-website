@@ -19,12 +19,12 @@
 <link rel="stylesheet" href="styles/typography.css?v=24" />
 <link rel="stylesheet" href="styles/spacing.css?v=1" />
 <link rel="stylesheet" href="styles/theme.css?v=mood-4" />
-<link rel="stylesheet" href="styles/icons.css?v=7" />
+<link rel="stylesheet" href="styles/icons.css?v=filter-8" />
 <link rel="stylesheet" href="styles/header.css?v=101" />
 <link rel="stylesheet" href="styles/footer.css?v=49" />
 <link rel="stylesheet" href="styles/button-hover.css?v=100" />
 <link rel="stylesheet" href="styles/buttons.css?v=gallery-heading-1" />
-<link rel="stylesheet" href="components/work-gallery/work-gallery.css?v=caption-3" />
+<link rel="stylesheet" href="components/work-gallery/work-gallery.css?v=filter-4" />
 <link rel="preload" as="font" type="font/ttf" href="styles/Valisca%204.ttf" crossorigin />
 <link rel="stylesheet" href="styles/fonts.css?v=3" />
 <link rel="stylesheet" href="styles/content-reveal.css?v=1" />
@@ -141,6 +141,12 @@
     </button>
   </div>
 
+  <div class="gallery-filter-dock" hidden>
+    <button class="btn btn--fill-white btn--icon-only btn--scroll-shadow" id="gallery-filter" type="button" aria-label="Фильтр работ: все компании" title="Фильтр работ: все компании" aria-haspopup="dialog" aria-controls="gallery-filter-dialog" aria-expanded="false">
+      <span class="icon icon--filter" aria-hidden="true"></span>
+    </button>
+  </div>
+
   <main class="container page-works">
     <!-- Три настроения и облако частиц. Источник — template.html. -->
     <!-- component:hero-mood:start -->
@@ -178,11 +184,6 @@
     <!-- component:hero-mood:end -->
 
     <section class="work-gallery project-slider--themed" id="works-gallery" aria-label="Галерея работ" aria-roledescription="карусель">
-      <div class="work-gallery__toolbar">
-        <button class="btn btn--fill-white btn--icon-right" id="gallery-filter" type="button" aria-haspopup="dialog" aria-controls="gallery-filter-dialog" aria-expanded="false">
-          <span data-filter-label>Все компании</span><span class="icon icon--menu" aria-hidden="true"></span>
-        </button>
-      </div>
       <div class="work-gallery__viewport" tabindex="0" aria-label="Работы. Влево и вправо — листать, вверх или Escape — вернуться к баннеру">
         <div class="work-gallery__track"></div>
       </div>
@@ -290,7 +291,7 @@
   <script src="styles/loading.js?v=mood-3"></script>
   <script src="components/project-slider/avito.js?v=5"></script>
   <script src="components/project-slider/ozon.js?v=7"></script>
-  <script src="components/work-gallery/work-gallery.js?v=caption-3"></script>
+  <script src="components/work-gallery/work-gallery.js?v=filter-4"></script>
   <script src="styles/typography-rules.js?v=2"></script>
   <script src="styles/haptics.js?v=1"></script>
   <script src="styles/page-motion.js?v=10"></script>

@@ -127,3 +127,8 @@
   -webkit-mask-image: url("../assets/icons/Interface/check-01.svg");
   mask-image: url("../assets/icons/Interface/check-01.svg");
 }
+
+.icon--filter {
+  -webkit-mask-image: url("../assets/icons/Interface/filter.svg");
+  mask-image: url("../assets/icons/Interface/filter.svg");
+}

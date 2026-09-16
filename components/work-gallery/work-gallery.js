@@ -6,6 +6,14 @@
   const track = gallery.querySelector('.work-gallery__track');
   const status = gallery.querySelector('.work-gallery__status');
   const filter = document.getElementById('gallery-filter');
+  const filterDock = document.querySelector('.gallery-filter-dock');
+  const header = document.querySelector('.site-header');
+  new ResizeObserver(() => {
+    document.documentElement.style.setProperty('--gallery-header-width', `${header.getBoundingClientRect().width}px`);
+  }).observe(header);
+  new IntersectionObserver(entries => {
+    filterDock.hidden = !entries[0].isIntersecting;
+  }, { threshold: 0, rootMargin: '0px 0px -25% 0px' }).observe(gallery);
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const all = Object.entries(window.projectCollections || {}).flatMap(([company, projects]) =>
     projects.map((project, i) => ({ ...project, company, id: `${company}-${i}` })));
@@ -81,15 +89,15 @@
     if (Math.abs(left - viewport.scrollLeft) > 1) viewport.scrollTo({ left, behavior: 'instant' });
     update();
   }
-  function moveBy(delta) {
-    viewport.scrollTo({ left: loopPosition(viewport.scrollLeft + delta), behavior: 'instant' });
-    update();
-  }
-  function goTo(value) {
-    recenter();
-    const target = Math.max(0, Math.min(slides.length - 1, physical + value));
+  function centerAt(target) {
+    target = Math.max(0, Math.min(slides.length - 1, target));
     viewport.scrollTo({ left: offsets[target], behavior: reduced.matches ? 'instant' : 'smooth' });
   }
+  function goTo(value) { recenter(); centerAt(physical + value); }
+  function showGallery() {
+    window.scrollTo({ top: scrollY + gallery.getBoundingClientRect().top, behavior: reduced.matches ? 'instant' : 'smooth' });
+  }
+  function showHero() { window.scrollTo({ top: 0, behavior: reduced.matches ? 'instant' : 'smooth' }); }
   function render() {
     clearTimeout(settleTimer);
     touch = null; drag = null;
@@ -98,7 +106,7 @@
       <img class="work-gallery__image" src="${escape(p.image)}" srcset="${escape(p.srcset)}" sizes="(max-width: 999px) 80vw, 58vw" alt="${escape(p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false">
       <div class="work-gallery__caption"><div class="work-gallery__title-row">
         <h3 class="text-h2">${escape(p.title)}</h3>
-        ${p.href ? `<a class="btn btn--fill-pink btn--icon-only btn--size-heading btn--hit-area" href="${escape(p.href)}" ${p.href.startsWith('https:') ? 'target="_blank" rel="noopener noreferrer"' : ''} aria-label="Открыть: ${escape(p.title)}" draggable="false"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : ''}
+        ${p.href ? `<a class="btn btn--fill-pink btn--icon-only btn--size-heading btn--hit-area btn--icon-diagonal-motion" href="${escape(p.href)}" ${p.href.startsWith('https:') ? 'target="_blank" rel="noopener noreferrer"' : ''} aria-label="Открыть: ${escape(p.title)}" draggable="false"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : ''}
       </div><p class="text-body">${escape(p.description)}</p></div>
     </article>`).join('');
     slides = [...track.children];
@@ -135,68 +143,106 @@
     return rect.top < innerHeight * .3 && rect.bottom > innerHeight * .65;
   };
   const locked = () => document.documentElement.classList.contains('contact-scroll-lock');
-  gallery.addEventListener('wheel', e => {
-    if (e.ctrlKey || e.metaKey || !e.cancelable || !visible() || locked()) return;
+  // One wheel burst includes its momentum tail. A page transition consumes the
+  // complete burst, so entering the gallery never also advances the first work.
+  let wheelTimer, wheelKind = null, wheelDirection = 0;
+  window.addEventListener('wheel', e => {
+    if (e.ctrlKey || e.metaKey || !e.cancelable || locked() || e.target.closest('[role="dialog"], input, textarea, select')) return;
     const horizontal = e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY);
-    const delta = (horizontal ? e.deltaX || e.deltaY : e.deltaY) * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? viewport.clientWidth : 1);
+    const delta = horizontal ? e.deltaX || e.deltaY : e.deltaY;
     if (!delta) return;
+    const direction = Math.sign(delta);
     e.preventDefault();
-    if (!horizontal && delta < 0) { window.scrollBy({ top: delta, behavior: 'instant' }); return; }
-    // Continuous displacement: no threshold, cooldown or snap swallowing small
-    // trackpad deltas, and no competing page-motion animation on this surface.
-    moveBy(delta);
-  }, { passive: false });
+    clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(() => { wheelKind = null; }, 240);
+    if (wheelKind && (wheelKind === 'page' || direction === wheelDirection)) return;
+    wheelDirection = direction;
+    if (!horizontal && delta < 0) { wheelKind = 'page'; showHero(); return; }
+    if (!visible()) {
+      if (!horizontal && delta > 0) { wheelKind = 'page'; showGallery(); }
+      return;
+    }
+    wheelKind = 'work';
+    goTo(direction);
+  }, { passive: false, capture: true });
 
-  // Horizontal swipes use native scrolling. Vertical swipes move the same
-  // horizontal surface directly; a backward vertical gesture returns to the page.
+  function beginGesture(x, y) {
+    recenter();
+    const start = nearest();
+    viewport.scrollTo({ left: offsets[start], behavior: 'instant' });
+    return { x, y, start, axis: null, delta: 0, page: false };
+  }
+  function previewGesture(gesture, x, y) {
+    const dx = gesture.x - x, dy = gesture.y - y;
+    if (!gesture.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 5) {
+      gesture.axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
+      gesture.page = gesture.axis === 'y' && dy < 0;
+    }
+    if (!gesture.axis) return false;
+    gesture.delta = gesture.axis === 'x' ? dx : dy;
+    if (!gesture.page) {
+      const direction = Math.sign(gesture.delta);
+      const distance = Math.abs(offsets[gesture.start + direction] - offsets[gesture.start]);
+      const amount = Math.min(Math.abs(gesture.delta), distance * .85);
+      viewport.scrollTo({ left: offsets[gesture.start] + direction * amount, behavior: 'instant' });
+    }
+    return true;
+  }
+  function finishGesture(gesture, cancelled = false) {
+    if (!gesture) return;
+    const step = !cancelled && Math.abs(gesture.delta) > 28 ? Math.sign(gesture.delta) : 0;
+    if (gesture.page) { if (step) showHero(); return; }
+    centerAt(gesture.start + step);
+  }
   viewport.addEventListener('touchstart', e => {
     if (e.touches.length !== 1 || !visible() || locked()) { touch = null; return; }
-    touch = { x: e.touches[0].clientX, y: e.touches[0].clientY, axis: null, last: e.touches[0].clientY };
+    touch = beginGesture(e.touches[0].clientX, e.touches[0].clientY);
+    suppressClick = false;
   }, { passive: true });
   viewport.addEventListener('touchmove', e => {
     if (!touch || e.touches.length !== 1) return;
-    const dx = touch.x - e.touches[0].clientX;
-    const dy = touch.y - e.touches[0].clientY;
-    if (!touch.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 5) touch.axis = Math.abs(dy) > Math.abs(dx) ? 'y' : 'x';
-    if (touch.axis === 'y' && e.cancelable) {
-      e.preventDefault();
-      const delta = touch.last - e.touches[0].clientY;
-      if (touch.page === undefined) touch.page = dy < 0;
-      if (touch.page) window.scrollBy({ top: delta, behavior: 'instant' });
-      else moveBy(delta);
-      touch.last = e.touches[0].clientY;
+    if (previewGesture(touch, e.touches[0].clientX, e.touches[0].clientY) && e.cancelable) {
+      e.preventDefault(); suppressClick = true;
     }
   }, { passive: false });
-  function finishTouch() { touch = null; clearTimeout(settleTimer); settleTimer = setTimeout(recenter, 180); }
+  function finishTouch(e) {
+    const gesture = touch; touch = null;
+    finishGesture(gesture, e.type === 'touchcancel');
+  }
   viewport.addEventListener('touchend', finishTouch);
   viewport.addEventListener('touchcancel', finishTouch);
 
+  const hero = document.querySelector('.mood-hero');
+  let heroTouch;
+  hero.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1 || e.target.closest('button, a')) { heroTouch = null; return; }
+    heroTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY, delta: 0 };
+  }, { passive: true });
+  hero.addEventListener('touchmove', e => {
+    if (!heroTouch || e.touches.length !== 1) return;
+    const dx = heroTouch.x - e.touches[0].clientX, dy = heroTouch.y - e.touches[0].clientY;
+    if (dy > 5 && Math.abs(dy) > Math.abs(dx) && e.cancelable) { e.preventDefault(); heroTouch.delta = dy; }
+  }, { passive: false });
+  hero.addEventListener('touchend', () => { if (heroTouch?.delta > 28) showGallery(); heroTouch = null; });
+  hero.addEventListener('touchcancel', () => { heroTouch = null; });
+
   viewport.addEventListener('pointerdown', e => {
     if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('button, a:not(.btn--hit-area)')) return;
-    drag = { x: e.clientX, y: e.clientY, last: 0, axis: null, id: e.pointerId };
+    drag = { ...beginGesture(e.clientX, e.clientY), id: e.pointerId };
     suppressClick = false;
   });
   viewport.addEventListener('pointermove', e => {
-    if (!drag) return;
-    const dx = drag.x - e.clientX, dy = drag.y - e.clientY;
-    if (!drag.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 5) drag.axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
-    if (!drag.axis) return;
+    if (!drag || !previewGesture(drag, e.clientX, e.clientY)) return;
     if (!viewport.hasPointerCapture(drag.id)) viewport.setPointerCapture(drag.id);
     suppressClick = true;
     viewport.classList.add('is-dragging');
-    const delta = drag.axis === 'x' ? dx : dy;
-    if (drag.axis === 'y' && drag.page === undefined) drag.page = dy < 0;
-    if (drag.page) window.scrollBy({ top: delta - drag.last, behavior: 'instant' });
-    else moveBy(delta - drag.last);
-    drag.last = delta;
   });
-  function finishDrag() {
+  function finishDrag(e) {
     if (!drag) return;
-    const id = drag.id;
-    drag = null;
-    if (viewport.hasPointerCapture(id)) viewport.releasePointerCapture(id);
+    const gesture = drag; drag = null;
+    if (viewport.hasPointerCapture(gesture.id)) viewport.releasePointerCapture(gesture.id);
     viewport.classList.remove('is-dragging');
-    recenter();
+    finishGesture(gesture, e.type === 'pointercancel');
   }
   window.addEventListener('pointerup', finishDrag);
   viewport.addEventListener('pointercancel', finishDrag);
@@ -259,7 +305,9 @@
       el.classList.toggle('btn--fill-pink', active);
       el.classList.toggle('btn--fill-white', !active);
     });
-    filter.querySelector('[data-filter-label]').textContent = names[selected] || 'Все компании';
+    const filterLabel = `Фильтр работ: ${names[selected] || 'все компании'}`;
+    filter.setAttribute('aria-label', filterLabel);
+    filter.title = filterLabel;
     render(); close();
   }));
   dialog.querySelector('[data-company="all"]').classList.replace('btn--fill-white', 'btn--fill-pink');

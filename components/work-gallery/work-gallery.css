@@ -2,25 +2,19 @@
 .work-gallery {
   position: relative;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   height: 100svh;
   height: 100dvh;
   min-height: 0;
   padding-block: calc(var(--header-h, 64px) + 42px) max(24px, env(safe-area-inset-bottom));
-  background: var(--mood-chrome);
-  color: var(--mood-ink);
+  background-color: var(--color-bg);
+  background-image: radial-gradient(circle, rgb(255 255 255 / .16) 1px, transparent 1.5px);
+  background-size: 24px 24px;
+  color: var(--color-text);
   overflow: hidden;
 }
-.work-gallery__toolbar {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 16px;
-  padding-inline: clamp(20px, 4vw, 80px);
-}
 .work-gallery__viewport {
-  grid-row: 2;
+  grid-row: 1;
   min-height: 0;
   overflow-x: auto;
   overflow-y: hidden;
@@ -64,20 +58,17 @@
 .work-gallery__title-row h3 { min-width: 0; margin: 0; overflow-wrap: anywhere; }
 .work-gallery .work-gallery__caption p { margin: 10px 0 0; }
 @media (max-width: 999px) {
-  .work-gallery { padding-bottom: calc(var(--footer-h, 64px) + 30px); }
+  .work-gallery { padding-bottom: calc(var(--button-height) + 30px + env(safe-area-inset-bottom, 0px)); }
   .work-gallery__track { --work-width: 76vw; gap: 8vw; }
-  .work-gallery__toolbar { padding-inline: 20px; }
   .work-gallery__work { gap: 16px; padding-block: 20px; grid-template-rows: minmax(0, 1fr) 180px; }
 }
 @media (max-width: 599px) {
   .work-gallery { padding-top: calc(var(--header-h, 64px) + 28px); }
-  .work-gallery__toolbar { gap: 10px; }
   .work-gallery__track { --work-width: 74vw; gap: 4vw; }
   .work-gallery__work { padding-block: 16px; gap: 12px; }
 }
 @media (max-height: 550px) and (min-width: 600px) {
   .work-gallery { padding-top: 90px; padding-bottom: 14px; }
-  .work-gallery__toolbar { position: absolute; top: 100px; left: 0; flex-direction: column; align-items: flex-start; width: 24vw; padding-inline: 20px; }
   .work-gallery__track { --work-width: 48vw; }
   .work-gallery__caption > p { display: none; }
   .work-gallery__work { padding-block: 10px; gap: 8px; grid-template-rows: minmax(0, 1fr) 80px; }
@@ -95,3 +86,21 @@
   .work-gallery__work { grid-template-rows: minmax(0, 1fr) 112px; }
   .work-gallery__caption > p { display: none; }
 }
+
+/* Positioning only: the white fill, circle, hover and elevation are DS styles. */
+.gallery-filter-dock { position: fixed; z-index: 51; left: var(--page-px, 10px); bottom: calc(var(--page-px, 10px) + env(safe-area-inset-bottom, 0px)); }
+.gallery-filter-dock[hidden] { display: none; }
+@media (min-width: 1000px) {
+  .gallery-filter-dock {
+    left: calc(var(--page-px, 10px) + var(--gallery-header-width, 500px) + 12px);
+    top: calc(var(--page-px, 10px) + (var(--header-h, 64px) - var(--button-height)) / 2);
+    bottom: auto;
+  }
+  html:not(.chrome--pinned) .gallery-filter-dock {
+    left: calc(var(--hero-edge, 16px) + var(--hero-chrome-inset, 10px) + var(--gallery-header-width, 500px) + 12px);
+    top: calc(var(--hero-edge, 16px) + var(--hero-chrome-inset, 10px) + (var(--header-h, 64px) - var(--button-height)) / 2);
+  }
+}
+
+/* Fade the sticky hero only once this full-screen surface almost covers it. */
+.work-gallery > .overlap-marker { top: 75%; }
