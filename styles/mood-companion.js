@@ -415,13 +415,36 @@
     ctx.rotate(scene.rotate + gaze.x * .035);
     ctx.scale(heroScale * breathe * scene.scale * (1 + anger * .08), heroScale * scene.scale * (1 - anger * .08));
     ctx.globalAlpha = scene.opacity;
+    const outlineAt = angle => change
+      ? mix(silhouette(change.fromShape, angle, t), silhouette(change.toShape, angle, t), scene.morph || 0)
+      : silhouette(shapeIndex, angle, t);
     // Subtle coloured core keeps the creature legible on dark project covers.
     const core = ctx.createRadialGradient(0, 0, 20, 0, 0, 154);
     core.addColorStop(0, mood.bg + (compact ? 'F0' : '22'));
     core.addColorStop(.65, mood.bg + (compact ? 'D0' : '12'));
     core.addColorStop(1, mood.bg + '00');
     ctx.fillStyle = core;
-    ctx.beginPath(); ctx.arc(0, 0, 162, 0, Math.PI * 2); ctx.fill();
+    if (compact) {
+      // Nested translucent silhouettes feather the edge without a circular halo.
+      // Use the same contour and morph progress as the particle cloud.
+      ctx.fillStyle = mood.bg;
+      for (let layer = 0; layer < 14; layer++) {
+        const inset = 1 - layer * .035;
+        ctx.globalAlpha = scene.opacity * .15;
+        ctx.beginPath();
+        for (let step = 0; step <= 120; step++) {
+          const angle = step / 120 * Math.PI * 2;
+          const radius = 151 * outlineAt(angle) * inset;
+          const x = Math.cos(angle) * radius, y = Math.sin(angle) * radius;
+          if (step === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fill();
+      }
+    } else {
+      ctx.beginPath(); ctx.arc(0, 0, 162, 0, Math.PI * 2); ctx.fill();
+    }
     const count = compact ? 320 : (fine.matches ? 1900 : 1200);
     for (let i = 0; i < count; i++) {
       const p = particles[Math.floor(i * particles.length / count)];
@@ -430,10 +453,7 @@
       const wobble = Math.sin(p.y * 7 + t * 1.7 + p.seed * 4) * 5 + Math.cos(xx * 6 - t) * 4;
       const fuzz = Math.sin(t * 4 + p.seed * 70) * (hovering ? 4.5 : 1.6);
       const angle = Math.atan2(p.y, xx);
-      const morph = scene.morph || 0;
-      const outline = change
-        ? mix(silhouette(change.fromShape, angle, t), silhouette(change.toShape, angle, t), morph)
-        : silhouette(shapeIndex, angle, t);
+      const outline = outlineAt(angle);
       const ripple = motionOff() ? 0 : Math.sin(angle * 7 - t * 3.2 + p.layer * 3) * (hovering ? 8 : 3);
       const radius = (151 * outline + wobble + fuzz + ripple + anger * 14 * p.seed) * p.layer;
       const spread = scene.scatter * (40 + p.seed * 90);
