@@ -13,12 +13,10 @@ window.projectCollections = {
     ['Редизайн таблицы цен', 'Поменяли всё от скролла до кол–ва ячеек', 'desktop']
   ].map(([title, description, format], i) => ({
     title, description, format, href: null,
-    image: `/assets/covers-ozon/${i + 1}-1280.webp`,
-    srcset: `/assets/covers-ozon/${i + 1}-640.webp 640w, /assets/covers-ozon/${i + 1}-1280.webp 1280w`,
-    color: [
-      'var(--project-cover-lilac, #97A6FD)', '#FDA597', '#9FE2A4',
-      'var(--project-cover-pink, #FEB7D7)', 'var(--project-cover-yellow, #FDF07F)',
-      'var(--project-cover-lilac, #97A6FD)', '#9FE2A4', 'var(--project-cover-pink, #FEB7D7)'
-    ][i]
+    image: i === 3 ? `/assets/covers-ozon/4-original.webp` : `/assets/covers-ozon/${i + 1}-1280.webp`,
+    srcset: i === 3
+      ? `/assets/covers-ozon/4-original.webp 1302w`
+      : `/assets/covers-ozon/${i + 1}-640.webp 640w, /assets/covers-ozon/${i + 1}-1280.webp 1280w`,
+    color: '#EEF0F4'
   }))
 };

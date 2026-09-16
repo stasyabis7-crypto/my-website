@@ -15,8 +15,11 @@ window.projectCollections = {
     ['Пост в ТГ', 'Покупка благотворительных товаров на Авито', 'square']
   ].map(([title, description, format, href], i) => ({
     title, description, format, href: href || null,
-    image: `/assets/covers-avito/${i + 1}-1280.webp`,
-    srcset: `/assets/covers-avito/${i + 1}-640.webp 640w, /assets/covers-avito/${i + 1}-1280.webp 1280w`,
+    image: i >= 7 ? `/assets/covers-avito/${i + 1}-original.webp` : `/assets/covers-avito/${i + 1}-1280.webp`,
+    // Telegram artwork keeps the original pixels, including its small text.
+    srcset: i >= 7
+      ? `/assets/covers-avito/${i + 1}-original.webp ${i === 7 ? 1190 : 1192}w`
+      : `/assets/covers-avito/${i + 1}-640.webp 640w, /assets/covers-avito/${i + 1}-1280.webp 1280w`,
     // Balanced, mixed sequence. Neighbours differ, including the loop seam.
     color: ['#9FE2A4', '#97A6FD', '#FEB7D7', '#FDF07F', '#FDA597', '#97A6FD', '#9FE2A4', '#FDF07F', '#FEB7D7', '#FDA597'][i]
   }))
