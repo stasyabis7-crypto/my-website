@@ -63,6 +63,11 @@
   let change = null;
   let frame = 0;
   let lastFrame = 0;
+  let lastPaint = 0;
+  // Mobile browser chrome resizes the viewport while scrolling. Keep the dock
+  // anchor stable until the layout width changes (rotation / real resize).
+  let dockWidth = innerWidth;
+  let dockHeight = innerHeight;
   let speechTimer;
   let mounted = true;
   let pixelRatio = Math.min(devicePixelRatio || 1, 2);
@@ -312,6 +317,10 @@
     wake();
   }, { passive: true });
   window.addEventListener('resize', () => {
+    if (fine.matches || innerWidth !== dockWidth) {
+      dockWidth = innerWidth;
+      dockHeight = innerHeight;
+    }
     pixelRatio = Math.min(devicePixelRatio || 1, 2);
     layoutDirty = true;
     forcePaint = true;
@@ -373,8 +382,11 @@
     ctx.restore();
   }
   function draw(now, scene) {
-    const compact = following;
-    const heroScale = compact ? 1 : 1.12;
+    const miniSize = innerWidth < 600 ? 104 : 120;
+    const heroAmount = standalone ? 0 : clamp((position.size - miniSize) / Math.max(1, homeRect.width - miniSize), 0, 1);
+    const heroScale = mix(1, 1.12, heroAmount);
+    // Keep the detailed bitmap throughout the flight, then downsample at rest.
+    const compact = following && position.size <= miniSize + .5;
     const wanted = Math.round((compact ? 160 : 480) * pixelRatio);
     if (resolution !== wanted) { canvas.width = canvas.height = wanted; resolution = wanted; }
     ctx.setTransform(resolution / 480, 0, 0, resolution / 480, 0, 0);
@@ -383,7 +395,7 @@
     const sleepy = !motionOff() && now - idleAt > 14000;
     const breathe = motionOff() ? 1 : 1 + Math.sin(t * 1.65) * .024;
     const anger = scene.anger;
-    const bounce = motionOff() ? 0 : Math.sin(t * 1.9) * 5 + Math.sin(t * 12) * Math.abs(scrollKick) * 5;
+    const bounce = motionOff() ? 0 : Math.sin(t * 1.9) * 5 + Math.sin(t * 12) * (fine.matches ? Math.abs(scrollKick) : 0) * 5;
     ctx.save();
     ctx.translate(240 + scene.x, 240 + bounce + scene.y);
     ctx.rotate(scene.rotate + gaze.x * .035);
@@ -435,24 +447,27 @@
     frame = 0;
     if (!mounted || document.hidden) return;
     const delta = lastFrame ? Math.min(now - lastFrame, 64) : 16;
-    // Limit canvas redraws to 30fps on touch devices; transforms remain time-based.
-    if (lastFrame && !fine.matches && !motionOff() && !drag?.active && delta < 30) { wake(); return; }
+    // Position updates run on every animation frame. Only canvas paint is
+    // capped on touch devices; skipping the whole tick made the flight stutter.
     lastFrame = now;
     if (drag?.active) {
       dragPosition();
     }
     if (layoutDirty) measure();
     const wasFollowing = following;
-    following = !!drag?.active || standalone || homeRect.bottom < 100 || stageRect.bottom < innerHeight * .18;
+    const exitThreshold = wasFollowing ? 140 : 100;
+    following = !!drag?.active || standalone || homeRect.bottom < exitThreshold ||
+      stageRect.bottom < dockHeight * (wasFollowing ? .22 : .18);
     actor.classList.toggle('is-following', following);
     if (following !== wasFollowing) { hideCursor(); freezeUntil = 0; forcePaint = true; if (following && !placement && !motionOff()) say('Я рядом. Смотрим?', 2200); }
     let target = standalone ? { x: 0, y: 0, size: 120 } : { x: homeRect.left, y: homeRect.top, size: homeRect.width };
     if (following) {
       const size = innerWidth < 600 ? 104 : 120;
       const top = Math.max(150, headerBottom + 70);
-      const bottom = Math.max(top, innerHeight - size - 110);
-      // Desktop companion stays anchored; only its eyes track the pointer.
-      const desiredY = innerHeight * .55 + (fine.matches ? 0 : scrollKick * 35);
+      const bottom = Math.max(top, dockHeight - size - 110);
+      // A fixed dock on both input types: scroll-event velocity must not
+      // change the destination while the character is flying towards it.
+      const desiredY = dockHeight * .55;
       target = { x: innerWidth - size - (innerWidth < 600 ? 8 : 24), y: clamp(desiredY, top, bottom), size };
       if (now < freezeUntil && position.size) { target.x = position.x; target.y = position.y; }
     }
@@ -462,15 +477,17 @@
     if (pinned) target = {x: placement.x, y: placement.y, size: placement.size};
     const settledPin = pinned && Math.abs(position.size - target.size) < .1;
     const lerp = drag?.active || settledPin || motionOff() || !position.size ? 1 : 1 - Math.exp(-delta / (following ? 260 : 150));
-    position.x = mix(position.x, target.x, lerp);
-    position.y = mix(position.y, target.y, lerp);
+    const atHome = !following && Math.abs(position.size - target.size) < .1;
+    position.x = mix(position.x, target.x, atHome ? 1 : lerp);
+    position.y = mix(position.y, target.y, atHome ? 1 : lerp);
     position.size = mix(position.size, target.size, lerp);
+    // Read before layout-affecting writes to avoid a forced layout per frame.
+    const speechHalf = speech.offsetWidth / 2;
     actor.style.width = actor.style.height = position.size + 'px';
     actor.style.transform = `translate3d(${position.x}px,${position.y}px,0)`;
     actor.style.setProperty('--mood-hit-size', Math.max(64, position.size * .69 * (!following ? 1.25 : 1)) + 'px');
     const cx = position.x + position.size / 2, cy = position.y + position.size / 2;
     // Keep the bubble on screen while its pointed tail stays above the character.
-    const speechHalf = speech.offsetWidth / 2;
     speech.style.setProperty('--speech-shift', (clamp(cx, speechHalf + 16, innerWidth - speechHalf - 16) - cx) + 'px');
     const gx = point.active ? clamp((point.x - cx) / 210, -1, 1) : 0;
     const gy = point.active ? clamp((point.y - cy) / 210, -1, 1) : 0;
@@ -505,7 +522,12 @@
     }
 
     const moving = Math.abs(position.x - target.x) + Math.abs(position.y - target.y) + Math.abs(position.size - target.size) > .1;
-    if (!motionOff() || forcePaint || moving) { draw(now, scene); forcePaint = false; }
+    const paintDue = fine.matches || motionOff() || drag?.active || now - lastPaint >= 1000 / 30;
+    if (paintDue && (!motionOff() || forcePaint || moving)) {
+      draw(now, scene);
+      lastPaint = now;
+      forcePaint = false;
+    }
     if (!motionOff() || moving || change || drag?.active) wake();
   }
   function wake() { if (!frame && mounted && !document.hidden) frame = requestAnimationFrame(tick); }
