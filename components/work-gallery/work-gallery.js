@@ -21,7 +21,7 @@
   const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   let projects = all, index = 0, selected = 'all';
   let slides = [], offsets = [], physical = 0, settleTimer;
-  let drag = null, touch = null, suppressClick = false;
+  let drag = null, touch = null, suppressClick = false, pendingTarget = null;
   const modulo = value => (value % projects.length + projects.length) % projects.length;
   function nearest() {
     return offsets.reduce((best, offset, i) => Math.abs(offset - viewport.scrollLeft) < Math.abs(offsets[best] - viewport.scrollLeft) ? i : best, 0);
@@ -46,8 +46,7 @@
     const widths = slides.map(slide => {
       const image = slide.querySelector('img');
       if (!image.naturalWidth) return null;
-      const rect = image.getBoundingClientRect();
-      return Math.min(rect.width, rect.height * image.naturalWidth / image.naturalHeight);
+      return Math.min(image.clientWidth, image.clientHeight * image.naturalWidth / image.naturalHeight);
     });
     slides.forEach((slide, i) => {
       if (widths[i] !== null) slide.style.setProperty('--cover-width', `${widths[i]}px`);
@@ -60,10 +59,11 @@
     areas.forEach(area => {
       if (!area) return;
       const { link, rect, button } = area;
-      link.style.setProperty('--hit-left', `${rect.left - button.left}px`);
-      link.style.setProperty('--hit-top', `${rect.top - button.top}px`);
-      link.style.setProperty('--hit-width', `${rect.width}px`);
-      link.style.setProperty('--hit-height', `${rect.height}px`);
+      const scale = button.width / link.offsetWidth || 1;
+      link.style.setProperty('--hit-left', `${(rect.left - button.left) / scale}px`);
+      link.style.setProperty('--hit-top', `${(rect.top - button.top) / scale}px`);
+      link.style.setProperty('--hit-width', `${rect.width / scale}px`);
+      link.style.setProperty('--hit-height', `${rect.height / scale}px`);
     });
   }
   function scheduleFit() {
@@ -85,32 +85,47 @@
   }
   function recenter() {
     if (drag || touch) return;
+    if (pendingTarget !== null && Math.abs(viewport.scrollLeft - offsets[pendingTarget]) > 2) return;
+    pendingTarget = null;
     const left = loopPosition(viewport.scrollLeft);
     if (Math.abs(left - viewport.scrollLeft) > 1) viewport.scrollTo({ left, behavior: 'instant' });
     update();
   }
   function centerAt(target) {
     target = Math.max(0, Math.min(slides.length - 1, target));
+    pendingTarget = target;
     viewport.scrollTo({ left: offsets[target], behavior: reduced.matches ? 'instant' : 'smooth' });
   }
-  function goTo(value) { recenter(); centerAt(physical + value); }
+  function goTo(value) {
+    if (pendingTarget === null) recenter();
+    let from = pendingTarget ?? physical;
+    const middle = projects.length + modulo(from);
+    if (middle !== from) {
+      viewport.scrollTo({ left: viewport.scrollLeft + offsets[middle] - offsets[from], behavior: 'instant' });
+      from = middle;
+    }
+    centerAt(from + value);
+  }
   function showGallery() {
     window.scrollTo({ top: scrollY + gallery.getBoundingClientRect().top, behavior: reduced.matches ? 'instant' : 'smooth' });
   }
   function showHero() { window.scrollTo({ top: 0, behavior: reduced.matches ? 'instant' : 'smooth' }); }
   function render() {
     clearTimeout(settleTimer);
-    touch = null; drag = null;
+    touch = null; drag = null; pendingTarget = null;
     const repeated = [...projects, ...projects, ...projects];
-    track.innerHTML = repeated.map((p, i) => `<article class="work-gallery__work" data-format="${escape(p.format)}" data-project-id="${escape(p.id)}" aria-roledescription="слайд" aria-label="${i % projects.length + 1} из ${projects.length}: ${escape(p.title)}">
-      <img class="work-gallery__image" src="${escape(p.image)}" srcset="${escape(p.srcset)}" sizes="(max-width: 999px) 80vw, 58vw" alt="${escape(p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false">
+    track.innerHTML = repeated.map((p, i) => `<article class="work-gallery__work" data-format="${escape(p.format)}" data-project-id="${escape(p.id)}" ${p.href ? 'data-action-hover' : ''} aria-roledescription="слайд" aria-label="${i % projects.length + 1} из ${projects.length}: ${escape(p.title)}">
+      <div class="work-gallery__presentation"><img class="work-gallery__image" src="${escape(p.image)}" srcset="${escape(p.srcset)}" sizes="(max-width: 999px) 80vw, 58vw" alt="${escape(p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false">
       <div class="work-gallery__caption"><div class="work-gallery__title-row">
         <h3 class="text-h2">${escape(p.title)}</h3>
         ${p.href ? `<a class="btn btn--fill-pink btn--icon-only btn--size-heading btn--hit-area btn--icon-diagonal-motion" href="${escape(p.href)}" ${p.href.startsWith('https:') ? 'target="_blank" rel="noopener noreferrer"' : ''} aria-label="Открыть: ${escape(p.title)}" draggable="false"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : ''}
-      </div><p class="text-body">${escape(p.description)}</p></div>
+      </div><p class="text-body">${escape(p.description)}</p></div></div>
     </article>`).join('');
     slides = [...track.children];
-    slides.forEach(slide => slide.querySelector('img').addEventListener('load', scheduleFit, { once: true }));
+    slides.forEach(slide => {
+      slide.querySelector('img').addEventListener('load', scheduleFit, { once: true });
+      slide.querySelector('.work-gallery__presentation').addEventListener('transitionend', scheduleFit);
+    });
     measure();
     viewport.scrollTo({ left: offsets[projects.length], behavior: 'instant' });
     update();
@@ -118,7 +133,8 @@
   render();
   document.fonts.ready.then(() => { fitCaptions(); measure(); });
   new ResizeObserver(() => {
-    const active = index;
+    const active = pendingTarget === null ? index : modulo(pendingTarget);
+    pendingTarget = null;
     measure();
     viewport.scrollTo({ left: offsets[projects.length + active], behavior: 'instant' });
     update();
@@ -145,30 +161,48 @@
   const locked = () => document.documentElement.classList.contains('contact-scroll-lock');
   // One wheel burst includes its momentum tail. A page transition consumes the
   // complete burst, so entering the gallery never also advances the first work.
-  let wheelTimer, wheelKind = null, wheelDirection = 0;
+  let wheel = null;
   window.addEventListener('wheel', e => {
     if (e.ctrlKey || e.metaKey || !e.cancelable || locked() || e.target.closest('[role="dialog"], input, textarea, select')) return;
-    const horizontal = e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY);
-    const delta = horizontal ? e.deltaX || e.deltaY : e.deltaY;
-    if (!delta) return;
-    const direction = Math.sign(delta);
+    const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? viewport.clientWidth : 1;
+    const dx = (e.shiftKey ? e.deltaX || e.deltaY : e.deltaX) * unit;
+    const dy = (e.shiftKey ? 0 : e.deltaY) * unit;
+    if (!dx && !dy) return;
     e.preventDefault();
-    clearTimeout(wheelTimer);
-    wheelTimer = setTimeout(() => { wheelKind = null; }, 240);
-    if (wheelKind && (wheelKind === 'page' || direction === wheelDirection)) return;
-    wheelDirection = direction;
-    if (!horizontal && delta < 0) { wheelKind = 'page'; showHero(); return; }
+    const now = performance.now();
+    if (wheel && now - wheel.lastAt > 160) wheel = null;
+    if (wheel?.kind === 'work') {
+      const delta = wheel.axis === 'x' ? dx : dy;
+      const amplitude = Math.abs(delta);
+      const reversal = amplitude >= 6 && Math.sign(delta) !== wheel.direction;
+      const renewed = now - wheel.started > 180 && amplitude >= 12 && wheel.lastAmplitude < wheel.peak * .4 && amplitude > wheel.lastAmplitude * 2.2;
+      const newAxis = now - wheel.started > 180 && (wheel.axis === 'x' ? Math.abs(dy) > Math.max(24, Math.abs(dx) * 2) : Math.abs(dx) > Math.max(24, Math.abs(dy) * 2));
+      if (reversal || renewed || newAxis) wheel = null;
+      else { wheel.lastAmplitude = amplitude; wheel.peak = Math.max(wheel.peak, amplitude); }
+    }
+    if (!wheel) wheel = { x: 0, y: 0, kind: null, started: now, lastAt: now, lastAmplitude: 0, peak: 0 };
+    wheel.lastAt = now;
+    if (wheel.kind) return;
+    wheel.x += dx; wheel.y += dy;
+    // Establish the intended axis before reacting to tiny vertical trackpad noise.
+    if (Math.max(Math.abs(wheel.x), Math.abs(wheel.y)) < 6) return;
+    wheel.axis = Math.abs(wheel.x) >= Math.abs(wheel.y) * .8 ? 'x' : 'y';
+    const delta = wheel.axis === 'x' ? wheel.x : wheel.y;
+    wheel.direction = Math.sign(delta);
+    wheel.lastAmplitude = wheel.peak = Math.abs(delta);
+    if (wheel.axis === 'y' && delta < 0) { wheel.kind = 'page'; showHero(); return; }
     if (!visible()) {
-      if (!horizontal && delta > 0) { wheelKind = 'page'; showGallery(); }
+      if (delta > 0) { wheel.kind = 'page'; showGallery(); }
       return;
     }
-    wheelKind = 'work';
-    goTo(direction);
+    wheel.kind = 'work';
+    goTo(wheel.direction);
   }, { passive: false, capture: true });
 
   function beginGesture(x, y) {
     recenter();
-    const start = nearest();
+    const start = pendingTarget ?? nearest();
+    pendingTarget = null;
     viewport.scrollTo({ left: offsets[start], behavior: 'instant' });
     return { x, y, start, axis: null, delta: 0, page: false };
   }

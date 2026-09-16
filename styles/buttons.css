@@ -507,4 +507,5 @@ html.mood-character-dragging .btn--fill-character { cursor: grabbing; }
 .btn--hit-area::after { display: none; }
 .btn--hit-area:hover, .btn--hit-area:active { transform: none; scale: 1; }
 .btn--hit-area.btn--fill-pink:hover,
-.btn--hit-area.btn--fill-pink:focus-visible { background: #fff; color: #101014; }
+.btn--hit-area.btn--fill-pink:focus-visible,
+[data-action-hover]:hover .btn--hit-area.btn--fill-pink { background: #fff; color: #101014; }
