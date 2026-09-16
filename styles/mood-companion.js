@@ -27,6 +27,7 @@
   ];
   let index = Math.max(0, moods.findIndex(m => m.id === root.dataset.mood));
   let mood = moods[index];
+  let primary = mood.bg;
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const mix = (a, b, t) => a + (b - a) * t;
   const ease = t => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
@@ -236,6 +237,7 @@
     index = nextIndex;
     mood = moods[index];
     root.dataset.mood = mood.id;
+    primary = getComputedStyle(root).getPropertyValue('--color-action-active').trim() || mood.bg;
     updateCopy();
     if (persist) { try { localStorage.setItem('stasyabis-mood', mood.id); } catch (_) {} }
     forcePaint = true;
@@ -391,8 +393,7 @@
     fallback.arc(0, 0, 150, 0, Math.PI * 2);
     const body = formPaths[shapeIndex] || fallback;
     ctx.save();
-    const shade = ['219,74,133', '83,100,213', '218,159,27'][index];
-    ctx.shadowColor = `rgba(${shade},.16)`;
+    ctx.shadowColor = primary + '28';
     ctx.shadowBlur = compact ? 12 : 18;
     ctx.shadowOffsetY = 9;
     ctx.fillStyle = mood.bg;
@@ -402,22 +403,22 @@
     ctx.clip(body);
     const lightX = -57 + gaze.x * 12, lightY = -70 + gaze.y * 8;
     const light = ctx.createRadialGradient(lightX, lightY, 8, -20, -30, 195);
-    light.addColorStop(0, 'rgba(255,255,255,.65)');
-    light.addColorStop(.36, 'rgba(255,255,255,.26)');
-    light.addColorStop(.54, 'rgba(255,255,255,0)');
-    light.addColorStop(.78, `rgba(${shade},.34)`);
-    light.addColorStop(1, `rgba(${shade},.60)`);
+    light.addColorStop(0, mood.bg);
+    light.addColorStop(.36, mood.bg);
+    light.addColorStop(.62, primary + '66');
+    light.addColorStop(.84, primary + 'CC');
+    light.addColorStop(1, primary);
     ctx.fillStyle = light;
     ctx.fillRect(-210, -210, 420, 420);
-    // Broad reflected light and subtle thumb impressions suggest hand-worked clay.
+    // Body-coloured highlights keep the lighting within the active theme palette.
     const sheen = ctx.createRadialGradient(lightX - 6, lightY - 12, 0, lightX, lightY, 100);
-    sheen.addColorStop(0, 'rgba(255,255,255,.36)');
-    sheen.addColorStop(1, 'rgba(255,255,255,0)');
+    sheen.addColorStop(0, mood.bg + '99');
+    sheen.addColorStop(1, mood.bg + '00');
     ctx.fillStyle = sheen;
     ctx.fillRect(-210, -210, 420, 420);
     const reflected = ctx.createRadialGradient(108, 92, 0, 108, 92, 100);
-    reflected.addColorStop(0, 'rgba(255,255,255,.24)');
-    reflected.addColorStop(1, 'rgba(255,255,255,0)');
+    reflected.addColorStop(0, mood.bg + '66');
+    reflected.addColorStop(1, mood.bg + '00');
     ctx.fillStyle = reflected;
     ctx.fillRect(-210, -210, 420, 420);
     ctx.restore();
