@@ -119,7 +119,7 @@
   function readObstacles() {
     obstacles = [...document.querySelectorAll(interactive)].filter(el =>
       !actor.contains(el) && !el.closest('[inert], [hidden]') &&
-      !el.classList.contains('project-slider__viewport') &&
+      !el.matches('.project-slider__viewport, .work-gallery__viewport') &&
       getComputedStyle(el).visibility !== 'hidden' && getComputedStyle(el).pointerEvents !== 'none'
     ).flatMap(el => [...el.getClientRects()]).filter(r => r.width && r.height && r.bottom > 0 && r.top < innerHeight);
   }
@@ -235,11 +235,6 @@
       const rect = footer.getBoundingClientRect();
       root.style.setProperty('--chrome-socials-offset', rect.top < 140 && rect.right > innerWidth - 260 ? Math.ceil(rect.width + 12) + 'px' : '0px');
     }
-    if (placement) {
-      placement.x = clamp(placement.x, 8, innerWidth - placement.size - 8);
-      placement.y = clamp(placement.y, 8, innerHeight - placement.size - 8);
-      readObstacles();
-    }
     layoutDirty = false;
   }
   function applyMood(nextIndex, persist = true) {
@@ -324,6 +319,12 @@
     if (fine.matches || innerWidth !== dockWidth) {
       dockWidth = innerWidth;
       dockHeight = innerHeight;
+      // A toolbar resizing during mobile scroll must not rewrite a custom drop.
+      // Rebound only on an actual window resize or orientation change.
+      if (placement) {
+        placement.x = clamp(placement.x, 8, innerWidth - placement.size - 8);
+        placement.y = clamp(placement.y, 8, innerHeight - placement.size - 8);
+      }
     }
     pixelRatio = Math.min(devicePixelRatio || 1, 2);
     layoutDirty = true;
@@ -399,7 +400,7 @@
     const sleepy = !motionOff() && now - idleAt > 14000;
     const breathe = motionOff() ? 1 : 1 + Math.sin(t * 1.65) * .024;
     const anger = scene.anger;
-    const bounce = motionOff() ? 0 : Math.sin(t * 1.9) * 5 + Math.sin(t * 12) * (fine.matches ? Math.abs(scrollKick) : 0) * 5;
+    const bounce = motionOff() ? 0 : Math.sin(t * 1.9) * 5 + Math.sin(t * 12) * (fine.matches && !placement ? Math.abs(scrollKick) : 0) * 5;
     ctx.save();
     ctx.translate(240 + scene.x, 240 + bounce + scene.y);
     ctx.rotate(scene.rotate + gaze.x * .035);
@@ -460,7 +461,7 @@
     if (layoutDirty) measure();
     const wasFollowing = following;
     const exitThreshold = wasFollowing ? 140 : 100;
-    following = !!drag?.active || standalone || exhibitionTop < innerHeight * .8 || homeRect.bottom < exitThreshold ||
+    following = !!placement || !!drag?.active || standalone || exhibitionTop < innerHeight * .8 || homeRect.bottom < exitThreshold ||
       stageRect.bottom < dockHeight * (wasFollowing ? .22 : .18);
     actor.classList.toggle('is-following', following);
     if (following !== wasFollowing) { hideCursor(); freezeUntil = 0; forcePaint = true; if (following && !placement && !motionOff()) say('Я рядом. Смотрим?', 2200); }
@@ -476,9 +477,9 @@
       target = { x: innerWidth - size - (innerWidth < 600 ? 8 : 24), y: clamp(desiredY, top, bottom), size };
       if (now < freezeUntil && position.size) { target.x = position.x; target.y = position.y; }
     }
-    // The visible hero always owns the character; remember the custom screen
-    // position for the next time the visitor scrolls below the hero.
-    const pinned = following && placement;
+    // A manual drop owns the screen position until another drag or Escape,
+    // including when scrolling back to the hero.
+    const pinned = placement;
     if (pinned) target = {x: placement.x, y: placement.y, size: placement.size};
     const settledPin = pinned && Math.abs(position.size - target.size) < .1;
     const lerp = drag?.active || settledPin || motionOff() || !position.size ? 1 : 1 - Math.exp(-delta / (following ? 260 : 150));
