@@ -30,7 +30,7 @@
 .work-toc-sheet .contact-dialog__body { scrollbar-width: none; }
 .work-toc__panel nav::-webkit-scrollbar,
 .work-toc-sheet .contact-dialog__body::-webkit-scrollbar { display: none; }
-.case__blocks > [id] { scroll-margin-top: calc(var(--header-h, 80px) + 36px); }
+.case__blocks > [id], .case__blocks > .overlap-group > [id] { scroll-margin-top: calc(var(--header-h, 80px) + 36px); }
 @media (min-width: 1101px) {
   .work-toc { top: 34vh; bottom: auto; left: auto; right: 16px; }
   .work-toc__panel {

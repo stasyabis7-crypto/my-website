@@ -84,12 +84,17 @@
       entry.marker.classList.toggle('is-current', entry === item);
     });
   }
+  function sectionTop(section) {
+    // A sticky section's visual rect moves; navigation uses its flow position.
+    const anchor = section.classList.contains('overlap-sticky') ? section.parentElement : section;
+    return anchor.getBoundingClientRect().top;
+  }
   function update() {
     frame = 0;
     if (performance.now() < manualUntil) return;
     const offset = parseFloat(getComputedStyle(items[0].section).scrollMarginTop) + 24;
     let active = items[0];
-    for (const item of items) if (item.section.getBoundingClientRect().top <= offset) active = item;
+    for (const item of items) if (sectionTop(item.section) <= offset) active = item;
     if (window.scrollY > 0 && innerHeight + scrollY >= document.documentElement.scrollHeight - 2) active = items.at(-1);
     setActive(active);
   }
@@ -230,7 +235,7 @@
     const target = () => {
       const offset = parseFloat(getComputedStyle(item.section).scrollMarginTop) || 0;
       return Math.max(0, Math.min(
-        item.section.getBoundingClientRect().top + window.scrollY - offset,
+        sectionTop(item.section) + window.scrollY - offset,
         document.documentElement.scrollHeight - innerHeight
       ));
     };

@@ -26,3 +26,27 @@
 @media (prefers-reduced-motion: reduce) {
   .cursor-dot { transition: none; }
 }
+
+/* Native mobile overlap: sticky positioning stays on the browser's scroll
+   path. The fade is a single compositor transition, independent of touch pace. */
+html.has-native-overlap body { overflow-x: clip; }
+.overlap-group { display: flex; flex-direction: column; min-width: 0; }
+.overlap-sticky {
+  position: sticky;
+  top: var(--overlap-pin-top, 0px);
+  z-index: 0;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 420ms ease, visibility 0s;
+}
+.overlap-sticky.is-faded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 420ms ease, visibility 0s 420ms;
+}
+.overlap-marker { position: absolute; top: 0; left: 0; width: 1px; height: 1px; pointer-events: none; }
+.overlap-group.is-motion-disabled > .overlap-sticky { position: relative; top: auto; transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .overlap-sticky, .overlap-sticky.is-faded { transition: none; }
+}
