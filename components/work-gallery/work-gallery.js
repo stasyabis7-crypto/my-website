@@ -108,41 +108,11 @@
     }
     centerAt(from + value);
   }
-  let pageAnchor = null, landingTimer, landing = false;
-  function finishLanding() {
-    if (!pageAnchor || document.documentElement.classList.contains('contact-scroll-lock')) return;
-    const top = pageAnchor === gallery ? scrollY + gallery.getBoundingClientRect().top : 0;
-    if (Math.abs(scrollY - top) > 1) window.scrollTo({ top, behavior: 'instant' });
-    landing = false;
+  // Button, wheel and touch share one navigation animation and landing.
+  function showGallery() {
+    window.siteNavigation.scrollTo(() => scrollY + gallery.getBoundingClientRect().top);
   }
-  function scheduleLanding() {
-    clearTimeout(landingTimer);
-    landingTimer = setTimeout(finishLanding, 180);
-  }
-  function movePage(anchor) {
-    pageAnchor = anchor;
-    landing = true;
-    window.scrollTo({ top: anchor === gallery ? scrollY + gallery.getBoundingClientRect().top : 0,
-      behavior: reduced.matches ? 'instant' : 'smooth' });
-    scheduleLanding();
-  }
-  // iOS toolbars can resize the viewport during native smooth scrolling.
-  // Re-read the destination after scrolling/resizing settles instead of keeping
-  // the original pixel offset. The same native transition handles every device.
-  window.addEventListener('scroll', () => {
-    if (landing) scheduleLanding();
-    else if (pageAnchor && Math.abs(pageAnchor === gallery ? gallery.getBoundingClientRect().top : scrollY) > 2) pageAnchor = null;
-  }, { passive: true });
-  document.querySelector('.mood-primary[href="#works-gallery"]')?.addEventListener('click', () => {
-    pageAnchor = gallery; landing = true; scheduleLanding();
-  });
-  function resizeLanding() {
-    if (pageAnchor) { landing = true; scheduleLanding(); }
-  }
-  window.addEventListener('resize', resizeLanding, { passive: true });
-  window.visualViewport?.addEventListener('resize', resizeLanding, { passive: true });
-  function showGallery() { movePage(gallery); }
-  function showHero() { movePage(document.querySelector('.mood-hero')); }
+  function showHero() { window.siteNavigation.scrollTo(0); }
   function render() {
     clearTimeout(settleTimer);
     touch = null; drag = null; pendingTarget = null;

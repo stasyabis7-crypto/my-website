@@ -206,6 +206,11 @@
   var scrollFrame = 0;
   var savedScrollBehavior = '';
   var scrollRunning = false;
+  var settledDestination = null, settledTarget = 0;
+  function navigationTarget(destination) {
+    var value = typeof destination === 'function' ? destination() : destination;
+    return Math.max(0, Math.min(value, root.scrollHeight - innerHeight));
+  }
   var scrollMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   function cancelNavigationScroll() {
     if (!scrollRunning) return;
@@ -217,10 +222,12 @@
   function navigateScroll(destination) {
     cancelNavigationScroll();
     var start = window.scrollY;
-    var target = Math.max(0, Math.min(destination, document.documentElement.scrollHeight - window.innerHeight));
+    settledDestination = null;
+    var target = navigationTarget(destination);
     var distance = target - start;
     if (scrollMotion.matches || Math.abs(distance) < 2) {
       window.scrollTo({ top: target, behavior: 'instant' });
+      settledDestination = destination; settledTarget = target;
       return;
     }
     savedScrollBehavior = root.style.scrollBehavior;
@@ -228,15 +235,27 @@
     scrollRunning = true;
     var duration = Math.min(2100, 1200 + Math.abs(distance) * 0.16);
     var started = performance.now();
+    var previousEase = 0, current = start;
     function step(now) {
-      var progress = Math.min(1, (now - started) / duration);
+      var progress = Math.max(0, Math.min(1, (now - started) / duration));
       var eased = (1 - Math.cos(Math.PI * progress)) / 2;
-      window.scrollTo({ top: start + distance * eased, behavior: 'instant' });
+      // The destination can move as mobile browser chrome changes height.
+      // Use the remaining eased distance, without an instant correction or a
+      // second animation competing with this one.
+      target = navigationTarget(destination);
+      var portion = (eased - previousEase) / (1 - previousEase);
+      current += (target - current) * portion;
+      window.scrollTo({ top: current, behavior: 'instant' });
+      previousEase = eased;
       if (progress < 1) scrollFrame = requestAnimationFrame(step);
-      else cancelNavigationScroll();
+      else {
+        cancelNavigationScroll();
+        settledDestination = destination; settledTarget = target;
+      }
     }
     scrollFrame = requestAnimationFrame(step);
   }
+  window.siteNavigation = { scrollTo: navigateScroll };
   [topBtn, topBtnDesktop].forEach(function (button) {
     if (button) button.addEventListener('click', function () { navigateScroll(0); });
   });
@@ -247,19 +266,27 @@
       if (!gallery) return;
       event.preventDefault();
       var inset = gallery.classList.contains('work-gallery') ? 0 : header ? header.getBoundingClientRect().height + 26 : 20;
-      var destination = window.scrollY + gallery.getBoundingClientRect().top - inset;
+      var destination = function () { return window.scrollY + gallery.getBoundingClientRect().top - inset; };
       if (location.hash !== '#works-gallery') history.pushState(null, '', '#works-gallery');
       navigateScroll(destination);
     });
   });
-  window.addEventListener('wheel', cancelNavigationScroll, { passive: true });
+  window.addEventListener('wheel', function (event) {
+    if (!event.defaultPrevented) cancelNavigationScroll();
+  }, { passive: true });
   window.addEventListener('touchstart', cancelNavigationScroll, { passive: true });
   window.addEventListener('pointerdown', cancelNavigationScroll, { passive: true });
-  window.addEventListener('resize', cancelNavigationScroll);
+  function resizeNavigation() {
+    if (!scrollRunning && typeof settledDestination === 'function' && Math.abs(scrollY - settledTarget) < 2) {
+      navigateScroll(settledDestination);
+    }
+  }
+  window.addEventListener('resize', resizeNavigation);
+  window.visualViewport?.addEventListener('resize', resizeNavigation);
   window.addEventListener('pagehide', cancelNavigationScroll);
   scrollMotion.addEventListener('change', cancelNavigationScroll);
   window.addEventListener('keydown', function (event) {
-    if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Escape'].indexOf(event.key) !== -1) cancelNavigationScroll();
+    if (!event.defaultPrevented && ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Escape'].indexOf(event.key) !== -1) cancelNavigationScroll();
   });
 
   document.addEventListener('keydown', function (event) {
