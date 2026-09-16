@@ -63,7 +63,7 @@
   ничего специально для этого блока не потребовалось.
 
   ─── .case-scenario — анимированный путь пользователя ────────────────
-  Белые карточки на точечной сетке, пунктирные связи и CSS-подсветка
+  Белые карточки на сплошном фоне, пунктирные связи и CSS-подсветка
   шагов по очереди. На мобильном — вертикальный маршрут. Анимация
   запускается во вьюпорте; reduced-motion оставляет статичную схему.
 
@@ -656,15 +656,13 @@
   margin-top: 32px;
 }
 
-/* ─── .case-scenario — последовательность шагов на точечной сетке ─── */
+/* ─── .case-scenario — последовательность шагов на сплошном фоне ─── */
 .case-scenario {
   padding-block: clamp(56px, 7vw, 100px);
   color: var(--mood-ink);
 }
 .case-scenario::before {
-  background-color: var(--mood-chrome);
-  background-image: radial-gradient(circle, rgb(17 17 17 / .12) 1px, transparent 1.5px);
-  background-size: 24px 24px;
+  background: var(--mood-chrome);
 }
 .case-scenario__flow {
   list-style: none;
