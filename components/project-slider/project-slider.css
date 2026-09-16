@@ -6,6 +6,8 @@
   scroll-margin-top: 100px;
   color: var(--color-text);
 }
+/* Keep the last descriptions above the edge before Ozon starts covering Avito. */
+.project-slider[data-projects="avito"] { padding-bottom: calc(var(--space-section) * 1.5); }
 .project-slider__heading { text-align: center; padding-inline: 16px; padding-bottom: 32px; }
 .project-slider__heading > .text-body { margin: 16px auto 0; }
 .project-slider__viewport { position: relative; overflow: visible; }
