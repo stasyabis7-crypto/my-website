@@ -337,12 +337,12 @@ html.chrome--pinned .btn--scroll-shadow {
 .btn--fill-toc::after { background: color-mix(in srgb, var(--mood-ink) 12%, var(--mood-bg)); }
 .btn--fill-toc:hover, .btn--fill-toc:focus-visible { color: var(--mood-ink); background: color-mix(in srgb, var(--mood-ink) 12%, var(--mood-bg)); }
 
-/* .btn--fill-toc-trigger: white mobile action; transparent desktop marker
+/* .btn--fill-toc-trigger: primary mobile action; transparent desktop marker
    control, including hover/expanded states. Retains the shared hit height. */
-.btn--fill-toc-trigger { background: #fff; color: #101014; }
-.btn--fill-toc-trigger::after { background: var(--color-action-hover, #ff0cc2); }
+.btn--fill-toc-trigger { background: var(--color-action-active, #ff0cc2); color: var(--color-action-active-text, #fff); }
+.btn--fill-toc-trigger::after { background: var(--color-action-active, #ff0cc2); }
 .btn--fill-toc-trigger:hover,
-.btn--fill-toc-trigger:focus-visible { color: var(--color-action-hover-text, #fff); }
+.btn--fill-toc-trigger:focus-visible { color: var(--color-action-active-text, #fff); }
 
 /* Responsive contents trigger: list on mobile, section markers on desktop. */
 .work-toc__bars, .work-toc__toggle .work-toc__close-icon { display: none; }
@@ -392,7 +392,7 @@ html.chrome--pinned .btn--scroll-shadow {
   .work-toc__toggle:hover:not(:active),
   .work-toc-sheet .btn:hover:not(:active) { transform: none; }
   .work-toc__toggle:hover,
-  .work-toc__toggle:focus-visible,
+  .work-toc__toggle:focus-visible { color: var(--color-action-active-text, #fff); }
   .work-toc-sheet .btn--fill-white:not([aria-current]) { color: #101014; }
   .work-toc-sheet .btn--fill-pink { color: var(--color-action-active-text); }
   .work-toc-sheet .btn--fill-ink { color: var(--mood-bg); }
@@ -421,7 +421,7 @@ html.chrome--pinned .btn--scroll-shadow {
   .btn:active, .btn.is-touch-pressed { transform: none; scale: .97; }
   .btn { transition: scale .16s ease-out; -webkit-tap-highlight-color: transparent; }
   .btn.btn--fill-pink { background: var(--color-action-active, #ff0cc2); color: var(--color-action-active-text, #fff); }
-  .btn.btn--fill-white, .btn.btn--fill-toc-trigger { background: #fff; color: #101014; }
+  .btn.btn--fill-white { background: #fff; color: #101014; }
   .btn.btn--fill-ink { background: #111; color: var(--mood-bg, #fff); }
   .btn.btn--fill-toc { background: transparent; color: var(--mood-ink); }
   .btn.btn--fill-toc[aria-current="location"] { background: var(--color-action-active); color: var(--color-action-active-text); }
