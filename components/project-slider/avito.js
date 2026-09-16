@@ -12,7 +12,7 @@ window.projectCollections = {
     ['Геймификация в ЛК', 'Баллы за хорошие дела', 'phone'],
     ['Пост в ТГ', 'Почему важно показывать, куда ушли деньги с пожертвования', 'square', 'https://t.me/designavito/1874?single'],
     ['Пост в ТГ', 'Подробнее о проекте «Серебряные желания»', 'square', 'https://t.me/designavito/1971'],
-    ['Пост в ТГ', 'Покупка благотворительных товаров на Авито', 'square']
+    ['Пост в ТГ', 'Покупка благотворительных товаров на Авито', 'square', 'https://t.me/designavito/1848']
   ].map(([title, description, format, href], i) => ({
     title, description, format, href: href || null,
     image: i >= 7 ? `/assets/covers-avito/${i + 1}-original.webp` : `/assets/covers-avito/${i + 1}-1280.webp`,
