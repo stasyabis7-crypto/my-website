@@ -428,6 +428,17 @@ html.chrome--pinned .btn--scroll-shadow {
   .btn:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
   .btn.btn--fill-character:active, .btn.btn--fill-character.is-touch-pressed { scale: 1; }
 }
+/* A tap, including focus moved into/returned from a modal, has no focus ring.
+   Tab/keyboard navigation restores the existing :focus-visible styles.
+   Text fields keep their native focus feedback. */
+@media (hover: none), (pointer: coarse) {
+  html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[href]):focus,
+  html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[href]):focus::before,
+  html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[href]):focus::after {
+    outline: none;
+  }
+}
+
 /* The character is a draggable action; a short tap still changes the mood. */
 .btn--fill-character { touch-action: none; user-select: none; }
 html.mood-character-dragging .btn--fill-character { cursor: grabbing; }

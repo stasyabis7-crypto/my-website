@@ -5,6 +5,18 @@
   var root = document.documentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  // Programmatic modal focus can match :focus-visible even after a tap.
+  // Keep actual focus/trapping intact, but show its ring only for keyboard use.
+  document.addEventListener('pointerdown', function (event) {
+    root.dataset.focusInput = event.pointerType === 'touch' || event.pointerType === 'pen' ? 'touch' : 'pointer';
+  }, { capture: true, passive: true });
+  document.addEventListener('keydown', function (event) {
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+    if (['Tab', 'Enter', ' ', 'Escape', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].indexOf(event.key) !== -1) {
+      root.dataset.focusInput = 'keyboard';
+    }
+  }, true);
+
   /* Блокировка скролла фона под попапом/шторкой — просто overflow:hidden
      на html+body (см. .contact-scroll-lock в site-chrome.css). Без
      position:fixed / сохранения scrollY: страница остаётся ровно там,
