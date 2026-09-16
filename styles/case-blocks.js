@@ -159,3 +159,28 @@
     next.hidden = false;
   });
 })();
+
+
+/* Run the scenario only while it is visible. CSS owns every animation frame. */
+(function () {
+  'use strict';
+  var scenarios = document.querySelectorAll('.case-scenario');
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  if (!scenarios.length || !('IntersectionObserver' in window)) return;
+  function sync(section) {
+    var paused = !section.dataset.inView || document.hidden || reduced.matches;
+    if (!paused) section.classList.add('is-running');
+    section.classList.toggle('is-paused', paused);
+  }
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) entry.target.dataset.inView = 'true';
+      else delete entry.target.dataset.inView;
+      sync(entry.target);
+    });
+  }, { threshold: .15 });
+  scenarios.forEach(function (section) { observer.observe(section); });
+  function syncAll() { scenarios.forEach(sync); }
+  document.addEventListener('visibilitychange', syncAll);
+  reduced.addEventListener('change', syncAll);
+})();

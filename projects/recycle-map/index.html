@@ -35,7 +35,7 @@
 <link rel="stylesheet" href="../../styles/fonts.css?v=3" />
 <link rel="stylesheet" href="../../styles/content-reveal.css?v=1" />
 <link rel="stylesheet" href="../../styles/page-motion.css?v=7" />
-<link rel="stylesheet" href="../../styles/case-blocks.css?v=49" />
+<link rel="stylesheet" href="../../styles/case-blocks.css?v=50" />
 <link rel="stylesheet" href="../../styles/case-cards.css?v=7" />
 <link rel="stylesheet" href="../../styles/mood-companion.css?v=speech-tail-2" />
 
@@ -312,30 +312,43 @@ body {
         </div>
       </section>
 
-      <!-- Сценарий — компонент .case-scenario (styles/case-blocks.css). -->
-      <section class="case-block case-scenario" id="scenario" tabindex="-1">
+      <!-- Сценарий — анимированная цепочка шагов (styles/case-blocks.css). -->
+      <section class="case-block case-scenario case-block--surface" id="scenario" tabindex="-1">
         <h1 class="case-scenario__title text-h1">Сценарий</h1>
-        <div class="case-scenario__flow">
-          <div class="case-scenario__step">
-            <span class="case-scenario__dot" aria-hidden="true"></span>
-            <p class="case-scenario__label text-body">Найти пункт</p>
-          </div>
-          <div class="case-scenario__connector" aria-hidden="true"></div>
-          <div class="case-scenario__step">
-            <span class="case-scenario__dot" aria-hidden="true"></span>
-            <p class="case-scenario__label text-body">Использовать фильтры</p>
-          </div>
-          <div class="case-scenario__connector" aria-hidden="true"></div>
-          <div class="case-scenario__step">
-            <span class="case-scenario__dot" aria-hidden="true"></span>
-            <p class="case-scenario__label text-body">Проверить условия</p>
-          </div>
-          <div class="case-scenario__connector" aria-hidden="true"></div>
-          <div class="case-scenario__step">
-            <span class="case-scenario__dot" aria-hidden="true"></span>
-            <p class="case-scenario__label text-body">Сдать вещи</p>
-          </div>
-        </div>
+        <ol class="case-scenario__flow" aria-label="Путь пользователя">
+          <li class="case-scenario__step" style="--step-index: 0">
+            <div class="case-scenario__card">
+              <span class="case-scenario__dot" aria-hidden="true"></span>
+              <p class="case-scenario__label text-body">Найти пункт</p>
+              <span class="case-scenario__number text-body-sm" aria-hidden="true">01 / 04</span>
+              <span class="case-scenario__check" aria-hidden="true">✓</span>
+            </div>
+          </li>
+          <li class="case-scenario__step" style="--step-index: 1">
+            <div class="case-scenario__card">
+              <span class="case-scenario__dot" aria-hidden="true"></span>
+              <p class="case-scenario__label text-body">Использовать фильтры</p>
+              <span class="case-scenario__number text-body-sm" aria-hidden="true">02 / 04</span>
+              <span class="case-scenario__check" aria-hidden="true">✓</span>
+            </div>
+          </li>
+          <li class="case-scenario__step" style="--step-index: 2">
+            <div class="case-scenario__card">
+              <span class="case-scenario__dot" aria-hidden="true"></span>
+              <p class="case-scenario__label text-body">Проверить условия</p>
+              <span class="case-scenario__number text-body-sm" aria-hidden="true">03 / 04</span>
+              <span class="case-scenario__check" aria-hidden="true">✓</span>
+            </div>
+          </li>
+          <li class="case-scenario__step" style="--step-index: 3">
+            <div class="case-scenario__card">
+              <span class="case-scenario__dot" aria-hidden="true"></span>
+              <p class="case-scenario__label text-body">Сдать вещи</p>
+              <span class="case-scenario__number text-body-sm" aria-hidden="true">04 / 04</span>
+              <span class="case-scenario__check" aria-hidden="true">✓</span>
+            </div>
+          </li>
+        </ol>
       </section>
 
       <!-- Проблемы — компонент .case-problems (styles/case-blocks.css). -->
@@ -583,7 +596,7 @@ body {
   <script src="../../styles/typography-rules.js?v=2"></script>
   <script src="../../styles/haptics.js?v=1"></script>
   <script src="../../styles/case-cards.js?v=1"></script>
-  <script src="../../styles/case-blocks.js?v=8"></script>
+  <script src="../../styles/case-blocks.js?v=9"></script>
   <script src="../../styles/work-toc.js?v=9"></script>
   <script src="../../styles/content-reveal.js?v=1"></script>
   <script src="../../styles/page-motion.js?v=9"></script>
