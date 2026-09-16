@@ -13,10 +13,10 @@ window.projectCollections = {
     ['Редизайн таблицы цен', 'Поменяли всё от скролла до кол–ва ячеек', 'desktop']
   ].map(([title, description, format], i) => ({
     title, description, format, href: null,
-    image: i === 3 ? `/assets/covers-ozon/4-original.webp` : `/assets/covers-ozon/${i + 1}-1280.webp`,
+    image: i === 3 ? `/assets/covers-ozon/4-original.webp` : `/assets/covers-ozon/${i + 1}-1280.webp${i === 2 ? "?v=2" : ""}`,
     srcset: i === 3
       ? `/assets/covers-ozon/4-original.webp 1302w`
-      : `/assets/covers-ozon/${i + 1}-640.webp 640w, /assets/covers-ozon/${i + 1}-1280.webp 1280w`,
+      : `/assets/covers-ozon/${i + 1}-640.webp${i === 2 ? "?v=2" : ""} 640w, /assets/covers-ozon/${i + 1}-1280.webp${i === 2 ? "?v=2" : ""} 1280w`,
     color: '#EEF0F4'
   }))
 };
