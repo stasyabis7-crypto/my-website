@@ -11,7 +11,22 @@
   var revealVersion = 0;
   var curtain;
   var warmed = new Set();
+  var handoffKey = 'mood-transition:' + siteBase.pathname;
+  var incoming = false;
   var classes = ['is-transition-boot', 'is-transition-covering', 'is-transition-revealing'];
+
+  function pageKey(href) {
+    var url = new URL(href, location.href);
+    return url.origin + url.pathname.replace(/index\.html$/, '').replace(/\/$/, '') + url.search;
+  }
+
+  try {
+    var handoff = JSON.parse(sessionStorage.getItem(handoffKey) || 'null');
+    sessionStorage.removeItem(handoffKey);
+    var navigation = performance.getEntriesByType('navigation')[0];
+    incoming = !!(handoff && handoff.page === pageKey(location.href) &&
+      Date.now() - handoff.at < 15000 && (!navigation || navigation.type === 'navigate'));
+  } catch (_) { /* Without storage, use the complete entrance/exit sequence. */ }
 
   function reset() {
     clearTimeout(navigationTimer);
@@ -22,11 +37,11 @@
     classes.forEach(function (name) { root.classList.remove(name); });
   }
 
-  // This script runs in the head: the first paint already has the curtain.
-  // No storage dependency, so private mode works too. A failsafe releases it
-  // even if document parsing or font loading is interrupted.
+  // Only a navigation whose source has already covered the screen starts
+  // covered. Direct visits and reloads begin with ribbons offscreen and play
+  // the entire entrance, hold and exit sequence.
   if (!reduced.matches) {
-    root.classList.add('is-transition-boot');
+    root.classList.add(incoming ? 'is-transition-boot' : 'is-transition-covering');
     safetyTimer = setTimeout(reset, 4000);
   }
 
@@ -77,7 +92,8 @@
     if (!curtain) { reset(); return; }
     var version = revealVersion;
     var fontBudget = new Promise(function (resolve) { setTimeout(resolve, 700); });
-    var hold = new Promise(function (resolve) { setTimeout(resolve, 320); });
+    var entranceTime = incoming ? 320 : duration('cover', 800) + 2 * duration('stagger', 90) + 120;
+    var hold = new Promise(function (resolve) { setTimeout(resolve, entranceTime); });
     var fonts = document.fonts ? document.fonts.ready.catch(function () {}) : Promise.resolve();
     Promise.all([hold, Promise.race([fonts, fontBudget])]).then(function () {
       if (version === revealVersion && !busy) reveal();
@@ -105,7 +121,12 @@
       busy = true;
       warm(url);
       // All three ribbons finish, then rest briefly at full coverage.
-      navigationTimer = setTimeout(function () { location.assign(url.href); }, duration('cover', 800) + 2 * duration('stagger', 90) + 120);
+      navigationTimer = setTimeout(function () {
+        try {
+          sessionStorage.setItem(handoffKey, JSON.stringify({ page: pageKey(url.href), at: Date.now() }));
+        } catch (_) { /* Navigation still works when storage is disabled. */ }
+        location.assign(url.href);
+      }, duration('cover', 800) + 2 * duration('stagger', 90) + 120);
       // A canceled or stalled navigation must never leave a blocking overlay.
       safetyTimer = setTimeout(reset, 8000);
     });
