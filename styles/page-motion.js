@@ -119,7 +119,7 @@
   var overlaps = Array.from(document.querySelectorAll('.project-slider--themed, .case-block--surface'))
     .filter(function (surface) { return surface.previousElementSibling; })
     .map(function (surface) {
-      return { surface: surface, underlay: surface.previousElementSibling, start: 0, end: 0 };
+      return { surface: surface, underlay: surface.previousElementSibling, start: 0, end: 0, fadeStart: 0, fadeDistance: 1 };
     });
   if (!overlaps.length) return;
   var overlapFrame = 0;
@@ -129,6 +129,13 @@
       var enabled = !reduced.matches;
       pair.underlay.classList.toggle('overlap-underlay', enabled);
       pair.surface.classList.toggle('overlap-surface', enabled);
+      // Fade only once the next surface enters the viewport. Tie opacity to
+      // scroll so reversing direction restores the previous content smoothly.
+      var progress = enabled ? Math.max(0, Math.min(1,
+        (window.scrollY - pair.fadeStart) / pair.fadeDistance)) : 0;
+      var fade = progress * progress * (3 - 2 * progress);
+      pair.underlay.style.setProperty('--overlap-opacity', 1 - fade);
+      pair.underlay.classList.toggle('is-covered', enabled && progress === 1);
       pair.underlay.style.transform = enabled
         ? 'translate3d(0,' + Math.max(0, Math.min(pair.end - pair.start, window.scrollY - pair.start)) + 'px,0)'
         : '';
@@ -139,6 +146,8 @@
     overlaps.forEach(function (pair) { pair.underlay.style.transform = ''; });
     overlaps.forEach(function (pair) {
       var bounds = pair.surface.getBoundingClientRect();
+      pair.fadeStart = window.scrollY + bounds.top - innerHeight;
+      pair.fadeDistance = Math.max(1, Math.min(bounds.height, innerHeight) * 0.65);
       pair.start = window.scrollY + pair.underlay.getBoundingClientRect().bottom - innerHeight;
       pair.end = window.scrollY + Math.min(bounds.top, bounds.bottom - innerHeight);
     });

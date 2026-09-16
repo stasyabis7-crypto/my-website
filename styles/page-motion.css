@@ -19,7 +19,9 @@
 @media (hover: hover) and (pointer: fine) {
   html.has-dot-cursor, html.has-dot-cursor * { cursor: none !important; }
 }
-.overlap-underlay { position: relative; z-index: 0; }
+.overlap-underlay { position: relative; z-index: 0; opacity: var(--overlap-opacity, 1); }
+/* Fully covered content must not retain invisible click or keyboard targets. */
+.overlap-underlay.is-covered { visibility: hidden; pointer-events: none; }
 .overlap-surface { position: relative; z-index: 1; }
 @media (prefers-reduced-motion: reduce) {
   .cursor-dot { transition: none; }
