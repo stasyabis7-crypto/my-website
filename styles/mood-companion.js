@@ -445,7 +445,7 @@
     } else {
       ctx.beginPath(); ctx.arc(0, 0, 162, 0, Math.PI * 2); ctx.fill();
     }
-    const count = compact ? 170 : (fine.matches ? 1000 : 650);
+    const count = compact ? 90 : (fine.matches ? 520 : 340);
     for (let i = 0; i < count; i++) {
       const p = particles[Math.floor(i * particles.length / count)];
       const xx = p.x * ca + p.z * sa;
@@ -468,12 +468,10 @@
       const alpha = (.2 + (zz + 1) * .28) * scene.opacity;
       ctx.globalAlpha = alpha;
       ctx.fillStyle = compact && zz < -.1 ? mood.bg : mood.ink;
-      const dot = (compact ? 3.9 : 1.25) + p.seed * (compact ? 2.9 : 1.35) + (zz + 1) * .45;
-      ctx.fillRect(x, y, dot, dot);
-      if (!compact && i % 9 === 0) {
-        ctx.globalAlpha = alpha * .4;
-        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + xx * 4, y + p.y * 4); ctx.strokeStyle = mood.ink; ctx.lineWidth = .6; ctx.stroke();
-      }
+      const dot = (compact ? 6 : 2.1) + p.seed * (compact ? 4.2 : 2) + (zz + 1) * .65;
+      ctx.beginPath();
+      ctx.arc(x, y, dot / 2, 0, Math.PI * 2);
+      ctx.fill();
     }
     ctx.globalAlpha = scene.opacity;
     const blink = now - blinkStart;
