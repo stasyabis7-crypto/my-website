@@ -43,10 +43,12 @@
   }
   let fitFrame = 0;
   function fitCaptions() {
+    slides.forEach(slide => slide.style.removeProperty('--cover-width'));
     const widths = slides.map(slide => {
       const image = slide.querySelector('img');
       if (!image.naturalWidth) return null;
-      return Math.min(image.clientWidth, image.clientHeight * image.naturalWidth / image.naturalHeight);
+      slide.style.setProperty('--cover-ratio', image.naturalWidth / image.naturalHeight);
+      return innerWidth < 1000 ? image.clientWidth : Math.min(image.clientWidth, image.clientHeight * image.naturalWidth / image.naturalHeight);
     });
     slides.forEach((slide, i) => {
       if (widths[i] !== null) slide.style.setProperty('--cover-width', `${widths[i]}px`);
@@ -106,16 +108,47 @@
     }
     centerAt(from + value);
   }
-  function showGallery() {
-    window.scrollTo({ top: scrollY + gallery.getBoundingClientRect().top, behavior: reduced.matches ? 'instant' : 'smooth' });
+  let pageAnchor = null, landingTimer, landing = false;
+  function finishLanding() {
+    if (!pageAnchor || document.documentElement.classList.contains('contact-scroll-lock')) return;
+    const top = pageAnchor === gallery ? scrollY + gallery.getBoundingClientRect().top : 0;
+    if (Math.abs(scrollY - top) > 1) window.scrollTo({ top, behavior: 'instant' });
+    landing = false;
   }
-  function showHero() { window.scrollTo({ top: 0, behavior: reduced.matches ? 'instant' : 'smooth' }); }
+  function scheduleLanding() {
+    clearTimeout(landingTimer);
+    landingTimer = setTimeout(finishLanding, 180);
+  }
+  function movePage(anchor) {
+    pageAnchor = anchor;
+    landing = true;
+    window.scrollTo({ top: anchor === gallery ? scrollY + gallery.getBoundingClientRect().top : 0,
+      behavior: reduced.matches ? 'instant' : 'smooth' });
+    scheduleLanding();
+  }
+  // iOS toolbars can resize the viewport during native smooth scrolling.
+  // Re-read the destination after scrolling/resizing settles instead of keeping
+  // the original pixel offset. The same native transition handles every device.
+  window.addEventListener('scroll', () => {
+    if (landing) scheduleLanding();
+    else if (pageAnchor && Math.abs(pageAnchor === gallery ? gallery.getBoundingClientRect().top : scrollY) > 2) pageAnchor = null;
+  }, { passive: true });
+  document.querySelector('.mood-primary[href="#works-gallery"]')?.addEventListener('click', () => {
+    pageAnchor = gallery; landing = true; scheduleLanding();
+  });
+  function resizeLanding() {
+    if (pageAnchor) { landing = true; scheduleLanding(); }
+  }
+  window.addEventListener('resize', resizeLanding, { passive: true });
+  window.visualViewport?.addEventListener('resize', resizeLanding, { passive: true });
+  function showGallery() { movePage(gallery); }
+  function showHero() { movePage(document.querySelector('.mood-hero')); }
   function render() {
     clearTimeout(settleTimer);
     touch = null; drag = null; pendingTarget = null;
     const repeated = [...projects, ...projects, ...projects];
     track.innerHTML = repeated.map((p, i) => `<article class="work-gallery__work" data-format="${escape(p.format)}" data-project-id="${escape(p.id)}" ${p.href ? 'data-action-hover' : ''} aria-roledescription="слайд" aria-label="${i % projects.length + 1} из ${projects.length}: ${escape(p.title)}">
-      <div class="work-gallery__presentation"><img class="work-gallery__image" src="${escape(p.image)}" srcset="${escape(p.srcset)}" sizes="(max-width: 999px) 80vw, 58vw" alt="${escape(p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false">
+      <div class="work-gallery__presentation"><div class="work-gallery__media"><img class="work-gallery__image" src="${escape(p.image)}" srcset="${escape(p.srcset)}" sizes="(max-width: 999px) 80vw, 58vw" alt="${escape(p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false"></div>
       <div class="work-gallery__caption"><div class="work-gallery__title-row">
         <h3 class="text-h2">${escape(p.title)}</h3>
         ${p.href ? `<a class="btn btn--fill-pink btn--icon-only btn--size-heading btn--hit-area btn--icon-diagonal-motion" href="${escape(p.href)}" ${p.href.startsWith('https:') ? 'target="_blank" rel="noopener noreferrer"' : ''} aria-label="Открыть: ${escape(p.title)}" draggable="false"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : ''}
@@ -147,7 +180,7 @@
   }, { passive: true });
   gallery.addEventListener('keydown', e => {
     if (e.altKey || e.ctrlKey || e.metaKey || e.target.closest('button, a')) return;
-    if (['Escape', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); window.scrollTo({ top: 0, behavior: reduced.matches ? 'instant' : 'smooth' }); return; }
+    if (['Escape', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); showHero(); return; }
     const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, Home: -index, End: projects.length - 1 - index };
     if (!(e.key in keys)) return;
     e.preventDefault(); goTo(keys[e.key]);
@@ -228,12 +261,12 @@
     if (gesture.page) { if (step) showHero(); return; }
     centerAt(gesture.start + step);
   }
-  viewport.addEventListener('touchstart', e => {
+  gallery.addEventListener('touchstart', e => {
     if (e.touches.length !== 1 || !visible() || locked()) { touch = null; return; }
     touch = beginGesture(e.touches[0].clientX, e.touches[0].clientY);
     suppressClick = false;
   }, { passive: true });
-  viewport.addEventListener('touchmove', e => {
+  gallery.addEventListener('touchmove', e => {
     if (!touch || e.touches.length !== 1) return;
     if (previewGesture(touch, e.touches[0].clientX, e.touches[0].clientY) && e.cancelable) {
       e.preventDefault(); suppressClick = true;
@@ -243,13 +276,13 @@
     const gesture = touch; touch = null;
     finishGesture(gesture, e.type === 'touchcancel');
   }
-  viewport.addEventListener('touchend', finishTouch);
-  viewport.addEventListener('touchcancel', finishTouch);
+  gallery.addEventListener('touchend', finishTouch);
+  gallery.addEventListener('touchcancel', finishTouch);
 
   const hero = document.querySelector('.mood-hero');
   let heroTouch;
   hero.addEventListener('touchstart', e => {
-    if (e.touches.length !== 1 || e.target.closest('button, a')) { heroTouch = null; return; }
+    if (e.touches.length !== 1 || locked()) { heroTouch = null; return; }
     heroTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY, delta: 0 };
   }, { passive: true });
   hero.addEventListener('touchmove', e => {
