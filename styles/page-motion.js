@@ -34,13 +34,14 @@
   window.addEventListener('blur', hideCursor);
   document.addEventListener('pointerdown', function (event) { if (event.pointerType === 'touch') hideCursor(); });
   fine.addEventListener('change', hideCursor);
+  window.addEventListener('scroll', cursorTarget, { passive: true });
 
   // Wheel easing uses native scroll positions; anchors, keyboard and touch keep
   // their normal behavior. Never consume zoom or scroll inside a dialog/control.
   var frame = 0, targetY = 0, previousTime = 0, writtenY = 0;
   function stopScroll() { cancelAnimationFrame(frame); frame = 0; }
   function locked() {
-    return root.classList.contains('contact-scroll-lock') || root.classList.contains('is-page-loading');
+    return root.classList.contains('contact-scroll-lock') || root.classList.contains('work-toc-scroll-lock') || root.classList.contains('is-page-loading');
   }
   function step(now) {
     if (locked() || Math.abs(window.scrollY - writtenY) > 2) { stopScroll(); return; }

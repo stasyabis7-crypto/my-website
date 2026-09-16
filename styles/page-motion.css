@@ -1,4 +1,4 @@
-/* Homepage motion: no transformed page wrapper, so fixed chrome stays fixed. */
+/* Shared page motion: no transformed page wrapper, so fixed chrome stays fixed. */
 .cursor-dot {
   position: fixed;
   top: 0;

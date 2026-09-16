@@ -1,0 +1,9 @@
+/* Only JS-registered, below-the-fold content waits for its first entrance. */
+.content-reveal-pending { opacity: 0; }
+.image-reveal-pending { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .content-reveal-pending, .image-reveal-pending { opacity: 1; }
+}
+@media print {
+  .content-reveal-pending, .image-reveal-pending { opacity: 1; }
+}

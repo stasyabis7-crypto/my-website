@@ -33,8 +33,15 @@
   .project-card__cover { border-radius: 24px; }
 }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .project-card__image { transition: scale .55s cubic-bezier(.2,.65,.3,1); }
-  .project-card__media[data-action-hover]:hover .project-card__image { scale: 1.035; }
+  .project-card--interface .project-card__image {
+    filter: drop-shadow(0 0 0 rgb(25 35 55 / 0));
+    transition: scale .55s cubic-bezier(.2,.65,.3,1), filter .55s cubic-bezier(.2,.65,.3,1);
+  }
+  .project-card--interface .project-card__media:hover .project-card__image,
+  .project-card--interface:focus-within .project-card__image {
+    scale: 1.035;
+    filter: drop-shadow(0 14px 20px rgb(25 35 55 / .18));
+  }
 }
 
 /* Desktop rows have more breathing room; touch layouts retain 40px. */
@@ -67,9 +74,6 @@
   .project-card--panel { border-radius: 24px; }
   .project-card--panel .project-card__copy { padding: 24px; min-height: 0; }
   .project-card--panel.project-card--linked .project-card__copy { padding-right: calc(var(--button-height) + 24px); }
-}
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .project-card--panel[data-action-hover]:hover .project-card__image { scale: 1.035; }
 }
 
 .project-card[hidden] { display: none; }
