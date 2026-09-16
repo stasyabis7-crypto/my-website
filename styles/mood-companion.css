@@ -40,7 +40,8 @@
   bottom: 88%;
   left: 50%;
   width: max-content;
-  max-width: min(260px, 80vw);
+  max-width: min(260px, calc(100vw - 32px));
+  box-sizing: border-box;
   padding: 12px 18px;
   border-radius: 18px;
   background: #111111;

@@ -471,7 +471,7 @@
     const cx = position.x + position.size / 2, cy = position.y + position.size / 2;
     // Keep the bubble on screen while its pointed tail stays above the character.
     const speechHalf = speech.offsetWidth / 2;
-    speech.style.setProperty('--speech-shift', (clamp(cx, speechHalf + 8, innerWidth - speechHalf - 8) - cx) + 'px');
+    speech.style.setProperty('--speech-shift', (clamp(cx, speechHalf + 16, innerWidth - speechHalf - 16) - cx) + 'px');
     const gx = point.active ? clamp((point.x - cx) / 210, -1, 1) : 0;
     const gy = point.active ? clamp((point.y - cy) / 210, -1, 1) : 0;
     gaze.x = mix(gaze.x, gx, motionOff() ? 1 : .13);
