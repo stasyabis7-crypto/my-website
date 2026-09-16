@@ -390,6 +390,12 @@
   object-position: bottom;
 }
 
+/* The favourite badge extends beyond the callout on the right. Compensate
+   for that visual weight on the mobile metric card without moving its frame. */
+@media (max-width: 900px) {
+  .case-metric__art--point img { transform: translateX(-1.2%); }
+}
+
 /* Не .text-h2 — тут нужен размер H2 (--font-size-xl), но шрифт текста
    (--font-family-body, моноширинный), а не заголовочный Alice: у Alice
    цифры разной высоты/ширины (нет lnum/tnum-фич, проверено — в шрифте
