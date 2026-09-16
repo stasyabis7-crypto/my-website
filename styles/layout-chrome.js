@@ -272,7 +272,7 @@
     });
   });
   window.addEventListener('wheel', function (event) {
-    if (!event.defaultPrevented) cancelNavigationScroll();
+    if (event.cancelable && !event.defaultPrevented) cancelNavigationScroll();
   }, { passive: true });
   window.addEventListener('touchstart', cancelNavigationScroll, { passive: true });
   window.addEventListener('pointerdown', cancelNavigationScroll, { passive: true });

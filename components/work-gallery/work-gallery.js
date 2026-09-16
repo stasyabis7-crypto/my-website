@@ -169,33 +169,58 @@
   // complete burst, so entering the gallery never also advances the first work.
   let wheel = null;
   window.addEventListener('wheel', e => {
-    if (e.ctrlKey || e.metaKey || !e.cancelable || locked() || e.target.closest('[role="dialog"], input, textarea, select')) return;
+    if (e.ctrlKey || e.metaKey || locked() || e.target.closest('[role="dialog"], input, textarea, select')) return;
     const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? viewport.clientWidth : 1;
     const dx = (e.shiftKey ? e.deltaX || e.deltaY : e.deltaX) * unit;
     const dy = (e.shiftKey ? 0 : e.deltaY) * unit;
     if (!dx && !dy) return;
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault();
     const now = performance.now();
-    // Wheel events have no reliable touch-start/end phase on a trackpad.
-    // Acceleration, direction noise and gaps inside inertia are not new swipes.
-    // Same-direction inertia stays consumed. A deliberate horizontal reversal
-    // can start immediately, but a single small opposite pulse cannot.
+    // A stream includes finger movement and browser-generated inertia. Keep
+    // observing non-cancelable events too: some browsers only allow canceling
+    // the first wheel event. They still carry gesture timing and direction.
     if (wheel && now - wheel.lastAt > 160) wheel = null;
-    if (wheel?.kind === 'work') {
-      const reversing = Math.abs(dx) > Math.abs(dy) * 1.5 && Math.sign(dx) === -wheel.direction;
-      if (reversing) {
-        wheel.reverseDistance = (wheel.reverseDistance || 0) + Math.abs(dx);
-        wheel.reverseEvents = (wheel.reverseEvents || 0) + 1;
-        if (Math.abs(dx) >= 24 || (wheel.reverseEvents >= 2 && wheel.reverseDistance >= 10)) {
-          const reverseX = Math.sign(dx) * wheel.reverseDistance;
-          wheel = { x: reverseX - dx, y: -dy, kind: null, lastAt: now };
+    if (wheel?.kind) {
+      const axis = Math.abs(dx) > Math.abs(dy) * 1.5 ? 'x' : wheel.axis;
+      const delta = axis === 'x' ? dx : dy;
+      const amplitude = Math.abs(delta);
+      const sameAxis = axis === wheel.axis;
+      const reversal = Math.abs(dx) > Math.abs(dy) * 1.5 && Math.sign(dx) === -wheel.direction;
+      const newAxis = axis !== wheel.axis && visible();
+      const renewed = sameAxis && wheel.decayed && now - wheel.started >= 180 &&
+        Math.sign(delta) === wheel.direction && amplitude >= Math.max(4, wheel.floor * 2.5);
+      const intent = reversal ? 'reverse' : newAxis ? 'axis' : renewed ? 'renew' : null;
+      if (intent && amplitude >= 2) {
+        const candidate = wheel.candidate;
+        if (!candidate || candidate.intent !== intent || candidate.axis !== axis) {
+          wheel.candidate = { intent, axis, direction: Math.sign(delta), count: 0, distance: 0, started: now };
         }
-      } else {
-        wheel.reverseDistance = 0;
-        wheel.reverseEvents = 0;
+        const next = wheel.candidate;
+        next.count++;
+        next.distance += amplitude;
+        // Reversal is unambiguous sooner. Same-direction renewal needs sustained
+        // input after deceleration, not a single rebound in the momentum tail.
+        const confirmed = intent === 'reverse'
+          ? amplitude >= 24 || next.count >= 2 && next.distance >= 10
+          : intent === 'axis'
+            ? next.count >= 2 && next.distance >= 12
+            : next.count >= 3 && next.distance >= 18 && now - next.started >= 30;
+        if (confirmed) {
+          wheel = { x: axis === 'x' ? next.direction * next.distance - dx : -dx,
+            y: axis === 'y' ? next.direction * next.distance - dy : -dy,
+            kind: null, lastAt: now, started: now, peak: 0, floor: Infinity, decayed: false };
+        }
+      } else wheel.candidate = null;
+      if (wheel.kind && sameAxis) {
+        wheel.peak = Math.max(wheel.peak, amplitude);
+        if (now - wheel.started >= 120 && amplitude <= wheel.peak * .4) {
+          wheel.decayed = true;
+          wheel.floor = Math.min(wheel.floor, Math.max(.5, amplitude));
+        }
       }
     }
-    if (!wheel) wheel = { x: 0, y: 0, kind: null, lastAt: now };
+    if (!wheel) wheel = { x: 0, y: 0, kind: null, lastAt: now, started: now,
+      peak: 0, floor: Infinity, decayed: false };
     wheel.lastAt = now;
     if (wheel.kind) return;
     wheel.x += dx; wheel.y += dy;
@@ -204,6 +229,7 @@
     wheel.axis = Math.abs(wheel.x) >= Math.abs(wheel.y) * .8 ? 'x' : 'y';
     const delta = wheel.axis === 'x' ? wheel.x : wheel.y;
     wheel.direction = Math.sign(delta);
+    wheel.peak = Math.abs(wheel.axis === 'x' ? dx : dy);
     if (wheel.axis === 'y' && delta < 0) { wheel.kind = 'page'; showHero(); return; }
     if (!visible()) {
       if (delta > 0) { wheel.kind = 'page'; showGallery(); }

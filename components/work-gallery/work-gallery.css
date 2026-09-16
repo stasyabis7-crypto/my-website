@@ -16,7 +16,8 @@
 .work-gallery__viewport {
   grid-row: 1;
   min-height: 0;
-  overflow-x: auto;
+  /* Position is controlled by the gallery; native inertia must not compete. */
+  overflow-x: hidden;
   overflow-y: hidden;
   scroll-behavior: auto;
   overscroll-behavior-x: contain;
