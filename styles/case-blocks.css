@@ -571,6 +571,7 @@
   position: relative;
   isolation: isolate;
   padding-block: clamp(56px, 7vw, 100px);
+  padding-bottom: calc(clamp(56px, 7vw, 100px) + 64px);
   color: var(--mood-ink);
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -651,7 +652,7 @@
   }
 }
 @media (max-width: 700px) {
-  .case-team { grid-template-columns: 1fr; gap: 24px; padding-bottom: 96px; }
+  .case-team { grid-template-columns: 1fr; gap: 24px; padding-bottom: 112px; }
   .case-team__carousel { padding-inline: 56px 0; }
   .case-team__card { padding: 20px 20px 28px; }
   .case-team__avatar { width: min(100%, 200px); }
