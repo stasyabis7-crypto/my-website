@@ -658,7 +658,7 @@
 
 /* ─── .case-scenario — последовательность шагов на сплошном фоне ─── */
 .case-scenario {
-  padding-block: clamp(56px, 7vw, 100px);
+  padding-block: clamp(80px, 10vw, 148px);
   color: var(--mood-ink);
 }
 .case-scenario::before {

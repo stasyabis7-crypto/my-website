@@ -122,3 +122,8 @@
   -webkit-mask-image: url("../assets/socials/Habr.svg");
   mask-image: url("../assets/socials/Habr.svg");
 }
+
+.icon--check {
+  -webkit-mask-image: url("../assets/icons/Interface/check-01.svg");
+  mask-image: url("../assets/icons/Interface/check-01.svg");
+}
