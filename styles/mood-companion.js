@@ -470,7 +470,7 @@
       const size = innerWidth < 600 ? 104 : 120;
       // A fixed dock on both input types: scroll-event velocity must not
       // change the destination while the character is flying towards it.
-      target = { x: (innerWidth - size) / 2, y: Math.max(8, dockHeight - size - 16), size };
+      target = { x: innerWidth >= 1101 ? 16 : innerWidth - size - 16, y: Math.max(8, dockHeight - size - 16), size };
       if (now < freezeUntil && position.size) { target.x = position.x; target.y = position.y; }
     }
     // A manual drop owns the screen position until another drag or Escape,
