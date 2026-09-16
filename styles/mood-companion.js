@@ -36,6 +36,19 @@
   const random = n => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
   const shapes = ['wave', 'flower', 'heart', 'star'];
   let shapeIndex = 0;
+  const sculptButton = document.getElementById('mood-sculpt');
+  const sculptSave = document.getElementById('mood-sculpt-save');
+  const sculptReset = document.getElementById('mood-sculpt-reset');
+  const sculptCancel = document.getElementById('mood-sculpt-cancel');
+  const sculptHelp = document.getElementById('mood-sculpt-help');
+  const sculptKey = 'stasyabis-clay-shape-v1';
+  let savedShape = null, clayShape = null, sculpting = false, sculptDrag = null;
+  try {
+    const value = JSON.parse(sessionStorage.getItem(sculptKey));
+    if (Array.isArray(value) && value.length === 96 && value.every(v => Number.isFinite(v) && v >= .55 && v <= 1.28)) savedShape = value;
+  } catch (_) {}
+  clayShape = savedShape && [...savedShape];
+
   // A radial heart silhouette keeps the contour continuous during morphs.
   const heartOutline = Array.from({ length: 360 }, (_, i) => {
     const angle = i / 360 * Math.PI * 2;
@@ -48,9 +61,23 @@
     }
     return (low + high) / 2 * .93;
   });
+  const roundedHeart = heartOutline.map((_, i) => {
+    let sum = 0, weight = 0;
+    for (let offset = -20; offset <= 20; offset++) {
+      const w = 21 - Math.abs(offset);
+      sum += heartOutline[(i + offset + 360) % 360] * w;
+      weight += w;
+    }
+    return sum / weight;
+  });
   function silhouette(shape, angle, time) {
+    if (clayShape) {
+      const sample = ((angle / (Math.PI * 2) % 1 + 1) % 1) * clayShape.length;
+      const start = Math.floor(sample);
+      return mix(clayShape[start], clayShape[(start + 1) % clayShape.length], sample - start);
+    }
     if (shape === 1) return 1 + .21 * Math.cos(angle * 5 + .25 * Math.sin(time));
-    if (shape === 2) return heartOutline[Math.round((angle + Math.PI * 2) / (Math.PI * 2) * 360) % 360];
+    if (shape === 2) return roundedHeart[Math.round((angle + Math.PI * 2) / (Math.PI * 2) * 360) % 360];
     if (shape === 3) return .98 + .2 * Math.cos(angle * 5 + Math.PI / 2);
     return 1 + .07 * Math.sin(angle * 3 + time * .35) + .035 * Math.sin(angle * 5 - time * .28);
   }
@@ -165,6 +192,7 @@
     layoutDirty = true; forcePaint = true; wake();
   }
   character.addEventListener('pointerdown', e => {
+    if (sculpting) return;
     if (e.button !== 0 || !e.isPrimary || change) return;
     const size = innerWidth < 600 ? 104 : 120;
     drag = {id: e.pointerId, startX: e.clientX, startY: e.clientY,
@@ -203,6 +231,76 @@
     layoutDirty = true; forcePaint = true; wake();
   });
 
+
+  function sculptUI(active) {
+    sculpting = active; sculptDrag = null;
+    root.classList.toggle('mood-sculpting', active);
+    sculptButton?.setAttribute('aria-pressed', String(active));
+    if (sculptButton) sculptButton.hidden = active;
+    for (const button of [sculptSave, sculptReset, sculptCancel]) if (button) button.hidden = !active;
+    if (sculptHelp) sculptHelp.hidden = !active;
+    if (nextButton) nextButton.disabled = active;
+    character.setAttribute('aria-label', active ? 'Лепка: тяни за край. Стрелки вытягивают, Shift со стрелками вдавливает.' : mood.name + '. Поменять тему');
+    hideCursor(); forcePaint = true; wake();
+  }
+  sculptButton?.addEventListener('click', () => {
+    if (change) return;
+    clayShape = clayShape || Array.from({length: 96}, (_, i) => clamp(silhouette(shapeIndex, i / 96 * Math.PI * 2, 0), .55, 1.28));
+    sculptUI(true);
+  });
+  sculptSave?.addEventListener('click', () => {
+    savedShape = [...clayShape];
+    try { sessionStorage.setItem(sculptKey, JSON.stringify(savedShape)); }
+    catch (_) { say('Форма сохранена до обновления страницы.'); sculptUI(false); return; }
+    sculptUI(false); say('Сохранила форму для этой вкладки.');
+  });
+  sculptReset?.addEventListener('click', () => {
+    clayShape = null;
+    clayShape = Array.from({length: 96}, (_, i) => clamp(silhouette(shapeIndex, i / 96 * Math.PI * 2, 0), .55, 1.28));
+    forcePaint = true; wake();
+  });
+  sculptCancel?.addEventListener('click', () => { clayShape = savedShape && [...savedShape]; sculptUI(false); });
+  function sculptPoint(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scale = following ? 1 : 1.12;
+    return {x: ((e.clientX - rect.left) * 480 / rect.width - 240) / scale,
+      y: ((e.clientY - rect.top) * 480 / rect.height - 240) / scale};
+  }
+  function sculptPull(angle, amount, base) {
+    clayShape = base.map((r, i) => {
+      const distance = Math.atan2(Math.sin(i / 96 * Math.PI * 2 - angle), Math.cos(i / 96 * Math.PI * 2 - angle));
+      return clamp(r + amount * Math.exp(-distance * distance / .20), .55, 1.28);
+    });
+    forcePaint = true; wake();
+  }
+  actor.addEventListener('pointerdown', e => {
+    if (!sculpting || !e.isPrimary || e.button !== 0) return;
+    const p = sculptPoint(e);
+    if (Math.hypot(p.x, p.y) < 35) return;
+    e.preventDefault(); e.stopPropagation();
+    sculptDrag = {id: e.pointerId, angle: Math.atan2(p.y, p.x), start: p, base: [...clayShape]};
+    actor.setPointerCapture(e.pointerId);
+  }, true);
+  actor.addEventListener('pointermove', e => {
+    if (!sculptDrag || sculptDrag.id !== e.pointerId) return;
+    e.preventDefault(); e.stopPropagation();
+    const p = sculptPoint(e), d = sculptDrag;
+    sculptPull(d.angle, ((p.x - d.start.x) * Math.cos(d.angle) + (p.y - d.start.y) * Math.sin(d.angle)) / 151, d.base);
+  }, true);
+  const finishSculpt = e => {
+    if (sculptDrag?.id !== e.pointerId) return;
+    sculptDrag = null; suppressCharacterClickUntil = performance.now() + 400;
+    if (actor.hasPointerCapture(e.pointerId)) actor.releasePointerCapture(e.pointerId);
+  };
+  actor.addEventListener('pointerup', finishSculpt);
+  actor.addEventListener('pointercancel', finishSculpt);
+  actor.addEventListener('lostpointercapture', () => { sculptDrag = null; });
+  character.addEventListener('keydown', e => {
+    if (!sculpting) return;
+    const angles = {ArrowRight: 0, ArrowDown: Math.PI / 2, ArrowLeft: Math.PI, ArrowUp: -Math.PI / 2};
+    if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); clayShape = savedShape && [...savedShape]; sculptUI(false); }
+    else if (e.key in angles) { e.preventDefault(); e.stopImmediatePropagation(); sculptPull(angles[e.key], e.shiftKey ? -.06 : .06, [...clayShape]); }
+  }, true);
 
   function updateCopy() {
     if (name) name.textContent = mood.name;
@@ -248,7 +346,7 @@
     forcePaint = true;
   }
   function switchMood() {
-    if (change) return; // One scene per activation, including rapid touch/keyboard input.
+    if (sculpting || change) return; // One scene per activation, including rapid touch/keyboard input.
     hideCursor();
     activity();
     if (motionOff()) {
@@ -266,12 +364,12 @@
     wake();
   }
   character.addEventListener('click', e => {
-    if (performance.now() < suppressCharacterClickUntil) { e.preventDefault(); return; }
+    if (sculpting || performance.now() < suppressCharacterClickUntil) { e.preventDefault(); return; }
     switchMood();
   });
   nextButton?.addEventListener('click', switchMood);
   character.addEventListener('pointerenter', e => {
-    if (!fine.matches || e.pointerType === 'touch' || change || drag?.active) return;
+    if (sculpting || !fine.matches || e.pointerType === 'touch' || change || drag?.active) return;
     hovering = true;
     freezeUntil = Infinity;
     root.classList.add('mood-cursor-active');
@@ -397,14 +495,14 @@
     if (resolution !== wanted) { canvas.width = canvas.height = wanted; resolution = wanted; }
     ctx.setTransform(resolution / 480, 0, 0, resolution / 480, 0, 0);
     ctx.clearRect(0, 0, 480, 480);
-    const t = motionOff() ? 0 : now * .001;
+    const t = motionOff() || sculpting ? 0 : now * .001;
     const sleepy = !motionOff() && now - idleAt > 14000;
-    const breathe = motionOff() ? 1 : 1 + Math.sin(t * 1.65) * .024;
+    const breathe = motionOff() || sculpting ? 1 : 1 + Math.sin(t * 1.65) * .024;
     const anger = scene.anger;
-    const bounce = motionOff() ? 0 : Math.sin(t * 1.9) * 5 + Math.sin(t * 12) * Math.abs(scrollKick) * 5;
+    const bounce = motionOff() || sculpting ? 0 : Math.sin(t * 1.9) * 5 + Math.sin(t * 12) * Math.abs(scrollKick) * 5;
     ctx.save();
     ctx.translate(240 + scene.x, 240 + bounce + scene.y);
-    ctx.rotate(scene.rotate + gaze.x * .035);
+    ctx.rotate(scene.rotate + (sculpting ? 0 : gaze.x * .035));
     ctx.scale(heroScale * breathe * scene.scale * (1 + anger * .08), heroScale * scene.scale * (1 - anger * .08));
     ctx.globalAlpha = scene.opacity;
     const outlineAt = angle => change
@@ -414,14 +512,15 @@
     const body = new Path2D();
     for (let step = 0; step <= 180; step++) {
       const angle = step / 180 * Math.PI * 2;
-      const radius = 151 * outlineAt(angle);
+      const radius = 151 * outlineAt(angle) * (1 + .009 * Math.sin(angle * 9 + .8) + .006 * Math.cos(angle * 13));
       const x = Math.cos(angle) * radius, y = Math.sin(angle) * radius;
       if (step === 0) body.moveTo(x, y);
       else body.lineTo(x, y);
     }
     body.closePath();
     ctx.save();
-    ctx.shadowColor = 'rgba(35, 20, 45, .22)';
+    const shade = ['219,74,133', '83,100,213', '218,159,27'][index];
+    ctx.shadowColor = `rgba(${shade},.16)`;
     ctx.shadowBlur = compact ? 12 : 18;
     ctx.shadowOffsetY = 9;
     ctx.fillStyle = mood.bg;
@@ -430,30 +529,38 @@
     ctx.save();
     ctx.clip(body);
     const lightX = -57 + gaze.x * 12, lightY = -70 + gaze.y * 8;
-    const light = ctx.createRadialGradient(lightX, lightY, 8, -20, -30, 240);
+    const light = ctx.createRadialGradient(lightX, lightY, 8, -20, -30, 195);
     light.addColorStop(0, 'rgba(255,255,255,.65)');
     light.addColorStop(.36, 'rgba(255,255,255,.26)');
-    light.addColorStop(.64, 'rgba(255,255,255,0)');
-    light.addColorStop(.88, 'rgba(51,28,66,.20)');
-    light.addColorStop(1, 'rgba(36,20,49,.38)');
+    light.addColorStop(.54, 'rgba(255,255,255,0)');
+    light.addColorStop(.78, `rgba(${shade},.34)`);
+    light.addColorStop(1, `rgba(${shade},.60)`);
     ctx.fillStyle = light;
     ctx.fillRect(-210, -210, 420, 420);
-    // A soft edge shade follows every shape, including the heart and flower.
-    ctx.strokeStyle = 'rgba(50,25,65,.12)';
-    ctx.lineWidth = 22;
-    ctx.filter = 'blur(10px)';
-    ctx.stroke(body);
-    ctx.filter = 'none';
-    // Fixed low-contrast grain suggests clay without animated speckle.
-    if (!compact) {
-      ctx.fillStyle = 'rgba(70,35,70,.045)';
-      for (let i = 0; i < 650; i++) {
-        const x = (random(i + 2000) - .5) * 370;
-        const y = (random(i + 4000) - .5) * 370;
-        ctx.beginPath();
-        ctx.arc(x, y, .35 + random(i + 6000) * .35, 0, Math.PI * 2);
-        ctx.fill();
-      }
+    // Broad reflected light and subtle thumb impressions suggest hand-worked clay.
+    const sheen = ctx.createRadialGradient(lightX - 6, lightY - 12, 0, lightX, lightY, 100);
+    sheen.addColorStop(0, 'rgba(255,255,255,.36)');
+    sheen.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = sheen;
+    ctx.fillRect(-210, -210, 420, 420);
+    const reflected = ctx.createRadialGradient(108, 92, 0, 108, 92, 100);
+    reflected.addColorStop(0, 'rgba(255,255,255,.24)');
+    reflected.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = reflected;
+    ctx.fillRect(-210, -210, 420, 420);
+    // Fixed shallow indentations stay attached to the material, never shimmer.
+    for (const [x, y, radius] of [[-92, 26, 25], [73, 76, 32], [48, -103, 22], [-37, 110, 24]]) {
+      const dent = ctx.createRadialGradient(x - 3, y - 4, 0, x, y, radius);
+      dent.addColorStop(0, `rgba(${shade},.075)`);
+      dent.addColorStop(.65, `rgba(${shade},.035)`);
+      dent.addColorStop(1, `rgba(${shade},0)`);
+      ctx.fillStyle = dent;
+      ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
+      const lip = ctx.createRadialGradient(x + 4, y + 7, 0, x + 4, y + 7, radius * .8);
+      lip.addColorStop(0, 'rgba(255,255,255,.10)');
+      lip.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = lip;
+      ctx.beginPath(); ctx.arc(x + 4, y + 7, radius, 0, Math.PI * 2); ctx.fill();
     }
     ctx.restore();
     ctx.globalAlpha = scene.opacity;

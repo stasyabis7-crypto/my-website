@@ -146,3 +146,7 @@ html[data-mood-paused] .mood-wave.is-playing { animation: none; }
 
 .mood-actor.is-dragging { z-index: 80; }
 .mood-actor.is-drop-blocked .mood-canvas { opacity: .55; }
+
+.mood-sculpt-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.mood-sculpt-actions [hidden], #mood-sculpt-help[hidden] { display: none; }
+html.mood-sculpting .mood-actor { touch-action: none; pointer-events: auto; }
