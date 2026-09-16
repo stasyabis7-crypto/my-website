@@ -4,9 +4,7 @@
   if (!gallery) return;
   const viewport = gallery.querySelector('.work-gallery__viewport');
   const track = gallery.querySelector('.work-gallery__track');
-  const count = gallery.querySelector('.work-gallery__count');
-  const prev = gallery.querySelector('[data-gallery-prev]');
-  const next = gallery.querySelector('[data-gallery-next]');
+  const status = gallery.querySelector('.work-gallery__status');
   const filter = document.getElementById('gallery-filter');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const all = Object.entries(window.projectCollections || {}).flatMap(([company, projects]) =>
@@ -14,15 +12,25 @@
   const names = { avito: 'Avito', ozon: 'Ozon' };
   const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   let projects = all, index = 0, selected = 'all';
-  let slides = [], offsets = [], scrollFrame = 0;
+  let slides = [], offsets = [], physical = 0, settleTimer;
+  let drag = null, touch = null, suppressClick = false;
+  const modulo = value => (value % projects.length + projects.length) % projects.length;
+  function nearest() {
+    return offsets.reduce((best, offset, i) => Math.abs(offset - viewport.scrollLeft) < Math.abs(offsets[best] - viewport.scrollLeft) ? i : best, 0);
+  }
   function update() {
-    count.textContent = `${String(index + 1).padStart(2, '0')} / ${String(projects.length).padStart(2, '0')}`;
-    prev.disabled = index === 0;
-    next.disabled = index === projects.length - 1;
+    physical = nearest();
+    index = modulo(physical);
+    gallery.dataset.activeProject = projects[index].id;
+    const label = `${projects[index].title}, ${index + 1} из ${projects.length}`;
+    if (status.textContent !== label) status.textContent = label;
     slides.forEach((slide, i) => {
-      slide.setAttribute('aria-current', String(i === index));
+      const active = i === physical;
+      slide.setAttribute('aria-current', String(active));
+      // Repeated cycles are visual neighbours, not duplicate focus stops.
+      slide.setAttribute('aria-hidden', String(!active));
       const link = slide.querySelector('a');
-      if (link) link.tabIndex = i === index ? 0 : -1;
+      if (link) link.tabIndex = active ? 0 : -1;
     });
   }
   function measure() {
@@ -31,119 +39,133 @@
     const left = viewport.getBoundingClientRect().left;
     offsets = slides.map(slide => slide.getBoundingClientRect().left - left + viewport.scrollLeft - (viewport.clientWidth - slide.offsetWidth) / 2);
   }
-  function goTo(value, instant = false) {
-    index = Math.max(0, Math.min(projects.length - 1, value));
-    viewport.scrollTo({ left: offsets[index], behavior: instant || reduced.matches ? 'instant' : 'smooth' });
+  // Three identical cycles keep neighbours on both sides, including at startup.
+  // Moving by one exact cycle preserves every visible pixel and variable width.
+  function loopPosition(left) {
+    const start = offsets[projects.length];
+    const period = offsets[projects.length * 2] - start;
+    return start + ((left - start) % period + period) % period;
+  }
+  function recenter() {
+    if (drag || touch) return;
+    const left = loopPosition(viewport.scrollLeft);
+    if (Math.abs(left - viewport.scrollLeft) > 1) viewport.scrollTo({ left, behavior: 'instant' });
     update();
   }
+  function moveBy(delta) {
+    viewport.scrollTo({ left: loopPosition(viewport.scrollLeft + delta), behavior: 'instant' });
+    update();
+  }
+  function goTo(value) {
+    recenter();
+    const target = Math.max(0, Math.min(slides.length - 1, physical + value));
+    viewport.scrollTo({ left: offsets[target], behavior: reduced.matches ? 'instant' : 'smooth' });
+  }
   function render() {
-    track.innerHTML = projects.map((p, i) => `<article class="work-gallery__work" data-format="${escape(p.format)}" aria-roledescription="слайд" aria-label="${i + 1} из ${projects.length}: ${escape(p.title)}">
-      <img class="work-gallery__image" src="${escape(p.image)}" srcset="${escape(p.srcset)}" sizes="(max-width: 999px) 80vw, 58vw" alt="${escape(p.title)}" loading="${i < 2 ? 'eager' : 'lazy'}" decoding="async" draggable="false">
+    clearTimeout(settleTimer);
+    touch = null; drag = null;
+    const repeated = [...projects, ...projects, ...projects];
+    track.innerHTML = repeated.map((p, i) => `<article class="work-gallery__work" data-format="${escape(p.format)}" data-project-id="${escape(p.id)}" aria-roledescription="слайд" aria-label="${i % projects.length + 1} из ${projects.length}: ${escape(p.title)}">
+      <img class="work-gallery__image" src="${escape(p.image)}" srcset="${escape(p.srcset)}" sizes="(max-width: 999px) 80vw, 58vw" alt="${escape(p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false">
       <div class="work-gallery__caption"><div class="work-gallery__copy">
-        <p class="work-gallery__company text-body">${names[p.company]}</p>
         <h3 class="text-h2">${escape(p.title)}</h3>
         <p class="text-body">${escape(p.description)}</p>
       </div>${p.href ? `<a class="btn btn--fill-pink btn--icon-only" href="${escape(p.href)}" ${p.href.startsWith('https:') ? 'target="_blank" rel="noopener noreferrer"' : ''} aria-label="Открыть: ${escape(p.title)}"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : ''}</div>
     </article>`).join('');
     slides = [...track.children];
     measure();
-    goTo(0, true);
+    viewport.scrollTo({ left: offsets[projects.length], behavior: 'instant' });
+    update();
   }
   render();
-  new ResizeObserver(() => { measure(); goTo(index, true); }).observe(viewport);
+  new ResizeObserver(() => {
+    const active = index;
+    measure();
+    viewport.scrollTo({ left: offsets[projects.length + active], behavior: 'instant' });
+    update();
+  }).observe(viewport);
   viewport.addEventListener('scroll', () => {
-    if (scrollFrame) return;
-    scrollFrame = requestAnimationFrame(() => {
-      scrollFrame = 0;
-      const nearest = offsets.reduce((best, offset, i) => Math.abs(offset - viewport.scrollLeft) < Math.abs(offsets[best] - viewport.scrollLeft) ? i : best, 0);
-      if (nearest !== index) { index = nearest; update(); }
-    });
+    update();
+    clearTimeout(settleTimer);
+    // Wait for native touch momentum / keyboard smooth scrolling to finish.
+    settleTimer = setTimeout(recenter, 180);
   }, { passive: true });
-  prev.addEventListener('click', () => goTo(index - 1));
-  next.addEventListener('click', () => goTo(index + 1));
   gallery.addEventListener('keydown', e => {
     if (e.altKey || e.ctrlKey || e.metaKey || e.target.closest('button, a')) return;
-    const keys = { ArrowRight: index + 1, ArrowDown: index + 1, ArrowLeft: index - 1, ArrowUp: index - 1, Home: 0, End: projects.length - 1 };
+    if (e.key === 'Escape') { window.scrollTo({ top: 0, behavior: reduced.matches ? 'instant' : 'smooth' }); return; }
+    const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1, Home: -index, End: projects.length - 1 - index };
     if (!(e.key in keys)) return;
     e.preventDefault(); goTo(keys[e.key]);
   });
 
-  // Only consume a vertical gesture once the exhibition fills the screen.
-  // At either end, scrolling returns to the normal document flow.
-  const aligned = () => Math.abs(gallery.getBoundingClientRect().top) < 3;
-  const canMove = delta => delta > 0 ? index < projects.length - 1 : index > 0;
-  let wheelAt = 0, wheelTotal = 0, wheelDirection = 0, lastWheel = 0;
+  // A partial landing, browser toolbar or rounding must not disable input.
+  const visible = () => {
+    const rect = gallery.getBoundingClientRect();
+    return rect.top < innerHeight * .3 && rect.bottom > innerHeight * .65;
+  };
+  const locked = () => document.documentElement.classList.contains('contact-scroll-lock');
   gallery.addEventListener('wheel', e => {
-    if (e.ctrlKey || e.metaKey || !aligned() || document.documentElement.classList.contains('contact-scroll-lock')) return;
-    const delta = (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1);
+    if (e.ctrlKey || e.metaKey || !e.cancelable || !visible() || locked()) return;
+    const horizontal = e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY);
+    // The toolbar remains a normal page-scroll surface for returning to the hero.
+    if (!horizontal && e.deltaY < 0 && e.target.closest('.work-gallery__toolbar')) return;
+    const delta = (horizontal ? e.deltaX || e.deltaY : e.deltaY) * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? viewport.clientWidth : 1);
     if (!delta) return;
-    const now = performance.now();
-    const direction = Math.sign(delta);
-    const continuing = now - lastWheel < 180 && direction === wheelDirection;
-    lastWheel = now;
-    if (!canMove(delta) && !(continuing && now - wheelAt < 850)) return;
     e.preventDefault();
-    if (!continuing) wheelTotal = 0;
-    wheelDirection = direction;
-    if (now - wheelAt < 650) return;
-    wheelTotal += delta;
-    if (Math.abs(wheelTotal) < 32) return;
-    goTo(index + direction); wheelAt = now; wheelTotal = 0;
+    // Continuous displacement: no threshold, cooldown or snap swallowing small
+    // trackpad deltas, and no competing page-motion animation on this surface.
+    moveBy(delta);
   }, { passive: false });
 
-  // Horizontal touch remains native; a vertical swipe selects a neighbouring work.
-  // Explicitly hand a backward swipe at the first work to the page: browsers
-  // can latch it to the nested horizontal scroll surface even at its boundary.
-  let touch;
+  // Horizontal swipes use native scrolling. Vertical swipes move the same
+  // horizontal surface directly, while the toolbar keeps native page scrolling.
   viewport.addEventListener('touchstart', e => {
-    if (e.touches.length !== 1) { touch = null; return; }
-    touch = { x: e.touches[0].clientX, y: e.touches[0].clientY, delta: 0, vertical: false };
+    if (e.touches.length !== 1 || !visible() || locked()) { touch = null; return; }
+    touch = { x: e.touches[0].clientX, y: e.touches[0].clientY, axis: null, last: e.touches[0].clientY };
   }, { passive: true });
   viewport.addEventListener('touchmove', e => {
-    if (!touch || e.touches.length !== 1 || !aligned()) return;
+    if (!touch || e.touches.length !== 1) return;
     const dx = touch.x - e.touches[0].clientX;
     const dy = touch.y - e.touches[0].clientY;
-    if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 8 && (canMove(dy) || dy < 0 && index === 0)) {
-      if (e.cancelable) e.preventDefault();
-      touch.delta = dy; touch.vertical = true;
-      touch.returnToPage = dy < 0 && index === 0;
+    if (!touch.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 5) touch.axis = Math.abs(dy) > Math.abs(dx) ? 'y' : 'x';
+    if (touch.axis === 'y' && e.cancelable) {
+      e.preventDefault();
+      moveBy(touch.last - e.touches[0].clientY);
+      touch.last = e.touches[0].clientY;
     }
   }, { passive: false });
-  viewport.addEventListener('touchend', () => {
-    if (touch?.vertical && Math.abs(touch.delta) > 32) {
-      if (touch.returnToPage) window.scrollBy({ top: touch.delta, behavior: reduced.matches ? 'instant' : 'smooth' });
-      else goTo(index + Math.sign(touch.delta));
-    }
-    touch = null;
-  });
-  viewport.addEventListener('touchcancel', () => { touch = null; });
+  function finishTouch() { touch = null; clearTimeout(settleTimer); settleTimer = setTimeout(recenter, 180); }
+  viewport.addEventListener('touchend', finishTouch);
+  viewport.addEventListener('touchcancel', finishTouch);
 
-  let drag, suppressClick = false;
   viewport.addEventListener('pointerdown', e => {
     if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('a, button')) return;
-    drag = { x: e.clientX, left: viewport.scrollLeft, id: e.pointerId };
+    drag = { x: e.clientX, y: e.clientY, last: 0, axis: null, id: e.pointerId };
     suppressClick = false;
+    viewport.setPointerCapture(e.pointerId);
   });
   viewport.addEventListener('pointermove', e => {
     if (!drag) return;
-    const delta = e.clientX - drag.x;
-    if (Math.abs(delta) > 5) {
-      suppressClick = true;
-      viewport.setPointerCapture(drag.id);
-      viewport.classList.add('is-dragging');
-      viewport.scrollLeft = drag.left - delta;
-    }
+    const dx = drag.x - e.clientX, dy = drag.y - e.clientY;
+    if (!drag.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 5) drag.axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
+    if (!drag.axis) return;
+    suppressClick = true;
+    viewport.classList.add('is-dragging');
+    const delta = drag.axis === 'x' ? dx : dy;
+    moveBy(delta - drag.last);
+    drag.last = delta;
   });
   function finishDrag() {
     if (!drag) return;
-    const nearest = offsets.reduce((best, offset, i) => Math.abs(offset - viewport.scrollLeft) < Math.abs(offsets[best] - viewport.scrollLeft) ? i : best, 0);
-    if (viewport.hasPointerCapture(drag.id)) viewport.releasePointerCapture(drag.id);
+    const id = drag.id;
     drag = null;
+    if (viewport.hasPointerCapture(id)) viewport.releasePointerCapture(id);
     viewport.classList.remove('is-dragging');
-    goTo(nearest);
+    recenter();
   }
   window.addEventListener('pointerup', finishDrag);
   viewport.addEventListener('pointercancel', finishDrag);
+  viewport.addEventListener('lostpointercapture', finishDrag);
   viewport.addEventListener('click', e => { if (suppressClick) { e.preventDefault(); suppressClick = false; } }, true);
 
   // Reuse the contact surface, origin animation and design-system buttons.

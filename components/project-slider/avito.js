@@ -3,10 +3,10 @@
 window.projectCollections = {
   ...window.projectCollections,
   avito: [
-    ['Карта переработки вещей', 'Поиск, выбор и сохранение пунктов приёма в избранное', 'phone', '/projects/recycle-map/'],
-    ['Лендинг о компании', 'Как выросло посещение сайта после редизайна', 'phone'],
-    ['Проект для ПМЭФ', 'Укороченный флоу пожертвования для форума', 'phone'],
-    ['Редизайн hero—баннера', 'Что будет, если форму пожертвования вынести на первый скролл', 'desktop'],
+    ['Карта переработки вещей', 'Поиск, выбор и сохранение пунктов приёма в избранное', 'square', '/projects/recycle-map/'],
+    ['Лендинг о компании', 'Как выросло посещение сайта после редизайна', 'desktop'],
+    ['Проект для ПМЭФ', 'Укороченный флоу пожертвования для форума', 'desktop'],
+    ['Редизайн hero—баннера', 'Что будет, если форму пожертвования вынести на первый скролл', 'square'],
     ['Чарити в профиле', 'Страница с механиками благотворительности в профиле Авито', 'phone'],
     ['Чарити в чекауте', 'Добавили благотворительность при каждом заказе с доставкой', 'phone'],
     ['Геймификация в ЛК', 'Баллы за хорошие дела', 'phone'],
@@ -15,9 +15,11 @@ window.projectCollections = {
     ['Пост в ТГ', 'Покупка благотворительных товаров на Авито', 'square', 'https://t.me/designavito/1848']
   ].map(([title, description, format, href], i) => ({
     title, description, format, href: href || null,
-    image: i >= 7 ? `/assets/covers-avito/${i + 1}-original.webp` : `/assets/covers-avito/${i + 1}-1280.webp`,
+    image: i < 4 ? `/assets/covers-avito/${i + 1}-1920.webp?v=2` : i >= 7 ? `/assets/covers-avito/${i + 1}-original.webp` : `/assets/covers-avito/${i + 1}-1280.webp`,
     // Telegram artwork keeps the original pixels, including its small text.
-    srcset: i >= 7
+    srcset: i < 4
+      ? `/assets/covers-avito/${i + 1}-640.webp?v=2 640w, /assets/covers-avito/${i + 1}-1280.webp?v=2 1280w, /assets/covers-avito/${i + 1}-1920.webp?v=2 1920w`
+      : i >= 7
       ? `/assets/covers-avito/${i + 1}-original.webp ${i === 7 ? 1190 : 1192}w`
       : `/assets/covers-avito/${i + 1}-640.webp 640w, /assets/covers-avito/${i + 1}-1280.webp 1280w`,
     // Balanced, mixed sequence. Neighbours differ, including the loop seam.

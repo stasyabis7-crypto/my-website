@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="styles/footer.css?v=49" />
 <link rel="stylesheet" href="styles/button-hover.css?v=100" />
 <link rel="stylesheet" href="styles/buttons.css?v=toc-active-1" />
-<link rel="stylesheet" href="components/work-gallery/work-gallery.css?v=1" />
+<link rel="stylesheet" href="components/work-gallery/work-gallery.css?v=infinite-2" />
 <link rel="preload" as="font" type="font/ttf" href="styles/Valisca%204.ttf" crossorigin />
 <link rel="stylesheet" href="styles/fonts.css?v=3" />
 <link rel="stylesheet" href="styles/content-reveal.css?v=1" />
@@ -177,24 +177,16 @@
     </section>
     <!-- component:hero-mood:end -->
 
-    <section class="work-gallery project-slider--themed" id="works-gallery" aria-labelledby="gallery-heading" aria-roledescription="карусель">
+    <section class="work-gallery project-slider--themed" id="works-gallery" aria-label="Галерея работ" aria-roledescription="карусель">
       <div class="work-gallery__toolbar">
-        <h2 class="text-h3" id="gallery-heading">Работы</h2>
         <button class="btn btn--fill-white btn--icon-right" id="gallery-filter" type="button" aria-haspopup="dialog" aria-controls="gallery-filter-dialog" aria-expanded="false">
           <span data-filter-label>Все компании</span><span class="icon icon--menu" aria-hidden="true"></span>
         </button>
       </div>
-      <div class="work-gallery__viewport" tabindex="0" aria-label="Работы. Используйте стрелки влево и вправо" aria-describedby="gallery-help">
+      <div class="work-gallery__viewport" tabindex="0" aria-label="Работы. Стрелки — листать, Escape — вернуться к баннеру">
         <div class="work-gallery__track"></div>
       </div>
-      <div class="work-gallery__bottom">
-        <p class="text-body" id="gallery-help">Листайте вниз или вправо</p>
-        <div class="work-gallery__navigation">
-          <button class="btn btn--fill-white btn--icon-only" type="button" data-gallery-prev aria-label="Предыдущая работа"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>
-          <span class="work-gallery__count text-body" aria-live="polite" aria-atomic="true"></span>
-          <button class="btn btn--fill-white btn--icon-only" type="button" data-gallery-next aria-label="Следующая работа"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>
-        </div>
-      </div>
+      <p class="work-gallery__status" role="status" aria-live="polite" aria-atomic="true"></p>
       <noscript><p class="text-body">Для просмотра галереи включите JavaScript. <a href="/projects/recycle-map/">Карта переработки вещей</a></p></noscript>
     </section>
   </main>
@@ -296,9 +288,9 @@
   <script src="styles/mood-companion.js?v=fullscreen-1"></script>
   <script src="styles/layout-chrome.js?v=gallery-1"></script>
   <script src="styles/loading.js?v=mood-3"></script>
-  <script src="components/project-slider/avito.js?v=3"></script>
+  <script src="components/project-slider/avito.js?v=4"></script>
   <script src="components/project-slider/ozon.js?v=7"></script>
-  <script src="components/work-gallery/work-gallery.js?v=1"></script>
+  <script src="components/work-gallery/work-gallery.js?v=infinite-2"></script>
   <script src="styles/typography-rules.js?v=2"></script>
   <script src="styles/haptics.js?v=1"></script>
   <script src="styles/page-motion.js?v=10"></script>
