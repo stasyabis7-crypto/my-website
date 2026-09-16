@@ -1,6 +1,10 @@
 /* One curtain shared by the initial reveal and real document navigation.
    Only transforms animate; no page wrapper, layout shifts or blur passes. */
 .page-transition {
+  /* Shared by CSS and JS, so navigation never cuts a ribbon short. */
+  --transition-cover-ms: 800;
+  --transition-reveal-ms: 850;
+  --transition-stagger-ms: 90;
   display: none;
   position: fixed;
   inset: 0;
@@ -29,22 +33,23 @@
   min-width: 0;
   margin-block: -1px;
   overflow: hidden;
-  background: var(--transition-anastasia-bg);
-  color: var(--transition-anastasia-ink);
+  /* Fallbacks keep ribbons opaque with a stale or unavailable theme sheet. */
+  background: var(--transition-anastasia-bg, #2448FF);
+  color: var(--transition-anastasia-ink, #FEB7D7);
   will-change: transform;
 }
 .page-transition__band:nth-child(2) {
   --band-direction: -1;
-  --band-delay: 35ms;
+  --band-delay: calc(var(--transition-stagger-ms) * 1ms);
 }
-.page-transition__band:nth-child(3) { --band-delay: 70ms; }
+.page-transition__band:nth-child(3) { --band-delay: calc(var(--transition-stagger-ms) * 2ms); }
 .page-transition__band[data-transition-mood="stasy"] {
-  background: var(--transition-stasy-bg);
-  color: var(--transition-stasy-ink);
+  background: var(--transition-stasy-bg, #D5FF00);
+  color: var(--transition-stasy-ink, #242C65);
 }
 .page-transition__band[data-transition-mood="stas"] {
-  background: var(--transition-stas-bg);
-  color: var(--transition-stas-ink);
+  background: var(--transition-stas-bg, #D60067);
+  color: var(--transition-stas-ink, #FDF07F);
 }
 .page-transition__words {
   display: flex;
@@ -61,10 +66,10 @@
   border-radius: 50%;
 }
 .is-transition-covering .page-transition__band {
-  animation: transition-cover 300ms cubic-bezier(.76, 0, .24, 1) var(--band-delay) both;
+  animation: transition-cover calc(var(--transition-cover-ms) * 1ms) cubic-bezier(.65, 0, .25, 1) var(--band-delay) both;
 }
 .is-transition-revealing .page-transition__band {
-  animation: transition-reveal 340ms cubic-bezier(.76, 0, .24, 1) var(--band-delay) both;
+  animation: transition-reveal calc(var(--transition-reveal-ms) * 1ms) cubic-bezier(.65, 0, .25, 1) var(--band-delay) both;
 }
 @keyframes transition-cover {
   from { transform: translate3d(calc(-110% * var(--band-direction)), 0, 0); }
