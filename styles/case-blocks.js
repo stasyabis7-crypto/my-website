@@ -66,8 +66,7 @@
 
 /*
   Карусель метрик (.case-cover__metrics-scroll, ≤900px), колонок роли
-  (.case-role__cols-scroll, 641–900px) и карточек команды
-  (.case-team__cards-scroll, ≤900px, все три — case-blocks.css) — общий
+  (.case-role__cols-scroll, 641–900px, case-blocks.css) — общий
   код: fade-градиенты по краям видны только пока с этой стороны
   действительно есть карточка/колонка, уходящая за сетку: .is-at-start
   снимает левый градиент (первый элемент стоит по сетке, дальше
@@ -79,8 +78,8 @@
 
   var EPS = 2;
 
-  document.querySelectorAll('.case-cover__metrics-scroll, .case-role__cols-scroll, .case-team__cards-scroll').forEach(function (wrap) {
-    var track = wrap.querySelector('.case-cover__metrics, .case-role__cols, .case-team__cards');
+  document.querySelectorAll('.case-cover__metrics-scroll, .case-role__cols-scroll').forEach(function (wrap) {
+    var track = wrap.querySelector('.case-cover__metrics, .case-role__cols');
     if (!track) return;
 
     function update() {
@@ -93,5 +92,78 @@
     track.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
     update();
+  });
+})();
+
+
+/* Стопка команды: автоматическое перелистывание и кнопка, без свайпа. */
+(function () {
+  'use strict';
+  document.querySelectorAll('.case-team__carousel').forEach(function (carousel) {
+    var cards = Array.from(carousel.querySelectorAll('.case-team__card'));
+    if (cards.length < 2) return;
+    var next = carousel.querySelector('[data-team-next]');
+    var pause = carousel.querySelector('[data-team-pause]');
+    var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var active = 0, busy = false, visible = false, paused = motion.matches;
+    var timer;
+
+    function render() {
+      cards.forEach(function (card, i) {
+        var position = (i - active + cards.length) % cards.length;
+        card.dataset.position = position;
+        card.setAttribute('aria-hidden', String(position !== 0));
+      });
+    }
+    function schedule() {
+      clearTimeout(timer);
+      if (!paused && visible && !document.hidden &&
+          !carousel.matches(':hover') && !carousel.contains(document.activeElement)) {
+        timer = setTimeout(advance, 4500);
+      }
+    }
+    function advance() {
+      if (busy) return;
+      clearTimeout(timer);
+      busy = true;
+      var outgoing = cards[active];
+      outgoing.classList.add('is-leaving');
+      setTimeout(function () {
+        active = (active + 1) % cards.length;
+        render();
+        outgoing.classList.remove('is-leaving');
+        busy = false;
+        schedule();
+      }, motion.matches ? 0 : 650);
+    }
+    function updatePause() {
+      pause.setAttribute('aria-pressed', String(paused));
+      pause.setAttribute('aria-label', paused ? 'Включить переключение' : 'Приостановить переключение');
+      pause.firstElementChild.textContent = paused ? '▷' : 'Ⅱ';
+    }
+    next.addEventListener('click', advance);
+    pause.addEventListener('click', function () {
+      paused = !paused;
+      updatePause();
+      schedule();
+    });
+    carousel.addEventListener('mouseenter', schedule);
+    carousel.addEventListener('mouseleave', schedule);
+    carousel.addEventListener('focusin', schedule);
+    carousel.addEventListener('focusout', function () { setTimeout(schedule, 0); });
+    document.addEventListener('visibilitychange', schedule);
+    motion.addEventListener('change', function () {
+      paused = motion.matches;
+      updatePause();
+      schedule();
+    });
+    new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      schedule();
+    }, { threshold: 0.5 }).observe(carousel);
+    render();
+    updatePause();
+    carousel.classList.add('is-ready');
+    carousel.querySelector('.case-team__controls').hidden = false;
   });
 })();

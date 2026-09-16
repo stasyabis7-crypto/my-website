@@ -35,7 +35,7 @@
 <link rel="stylesheet" href="../../styles/fonts.css?v=3" />
 <link rel="stylesheet" href="../../styles/content-reveal.css?v=1" />
 <link rel="stylesheet" href="../../styles/page-motion.css?v=2" />
-<link rel="stylesheet" href="../../styles/case-blocks.css?v=45" />
+<link rel="stylesheet" href="../../styles/case-blocks.css?v=46" />
 <link rel="stylesheet" href="../../styles/case-cards.css?v=7" />
 <link rel="stylesheet" href="../../styles/mood-companion.css?v=speech-tail-2" />
 
@@ -251,31 +251,36 @@ body {
 
       <!-- Команда — компонент .case-team (styles/case-blocks.css). -->
       <section class="case-block case-team" id="team" tabindex="-1">
-        <h1 class="case-team__title text-h1">Команда</h1>
-        <p class="case-team__subtitle case-subtitle text-body-lg">Разработка длилась три месяца от постановки задачи до запуска. Общались всей командой.</p>
-
-        <div class="case-team__cards-scroll">
+        <div class="case-team__intro">
+          <h1 class="case-team__title text-h1">Команда</h1>
+          <p class="case-team__subtitle case-subtitle text-body-lg">Разработка длилась три месяца от постановки задачи до запуска. Общались всей командой.</p>
+        </div>
+        <div class="case-team__carousel" aria-label="Команда проекта" aria-roledescription="карусель">
           <div class="case-team__cards">
-            <div class="case-team__card case-team__card--lavender">
-              <img class="case-team__avatar" src="media/team/1.webp" alt="" aria-hidden="true" />
+            <article class="case-team__card" aria-label="1 из 4">
+              <img class="case-team__avatar" src="media/team/1.webp" alt="" width="600" height="600" />
               <h3 class="case-team__card-title text-h2">Продакт</h3>
               <p class="case-team__card-subtitle text-body-sm">Обсуждали цели и гипотезы</p>
-            </div>
-            <div class="case-team__card case-team__card--yellow">
-              <img class="case-team__avatar" src="media/team/2.webp" alt="" aria-hidden="true" />
+            </article>
+            <article class="case-team__card" aria-label="2 из 4">
+              <img class="case-team__avatar" src="media/team/2.webp" alt="" width="600" height="600" />
               <h3 class="case-team__card-title text-h2">Проджект</h3>
               <p class="case-team__card-subtitle text-body-sm">Согласовывали концепты</p>
-            </div>
-            <div class="case-team__card case-team__card--gray">
-              <img class="case-team__avatar" src="media/team/3.webp" alt="" aria-hidden="true" />
+            </article>
+            <article class="case-team__card" aria-label="3 из 4">
+              <img class="case-team__avatar" src="media/team/3.webp" alt="" width="600" height="600" />
               <h3 class="case-team__card-title text-h2">Бекенд</h3>
               <p class="case-team__card-subtitle text-body-sm">Продумывали логику</p>
-            </div>
-            <div class="case-team__card case-team__card--mint">
-              <img class="case-team__avatar" src="media/team/4.webp" alt="" aria-hidden="true" />
+            </article>
+            <article class="case-team__card" aria-label="4 из 4">
+              <img class="case-team__avatar" src="media/team/4.webp" alt="" width="600" height="600" />
               <h3 class="case-team__card-title text-h2">Фронтенд</h3>
               <p class="case-team__card-subtitle text-body-sm">Проводили дизайн ревью</p>
-            </div>
+            </article>
+          </div>
+          <div class="case-team__controls" hidden>
+            <button class="btn btn--fill-white" type="button" data-team-next>Следующая карточка</button>
+            <button class="btn btn--fill-white btn--icon-only" type="button" data-team-pause aria-label="Приостановить переключение" aria-pressed="false"><span aria-hidden="true">Ⅱ</span></button>
           </div>
         </div>
       </section>
@@ -577,7 +582,7 @@ body {
   <script src="../../styles/typography-rules.js?v=2"></script>
   <script src="../../styles/haptics.js?v=1"></script>
   <script src="../../styles/case-cards.js?v=1"></script>
-  <script src="../../styles/case-blocks.js?v=6"></script>
+  <script src="../../styles/case-blocks.js?v=7"></script>
   <script src="../../styles/work-toc.js?v=8"></script>
   <script src="../../styles/content-reveal.js?v=1"></script>
   <script src="../../styles/page-motion.js?v=3"></script>

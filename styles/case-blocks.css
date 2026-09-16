@@ -48,17 +48,8 @@
   (≤640px) — просто друг под другом, без скролла, отступ 32px.
 
   ─── .case-team — блок команды (готовый компонент) ─────────────────────
-  Заголовок/подзаголовок — те же паддинги/шрифты, что у .case-role (H1 +
-  8px + text-body-lg + 32px). Ниже 4 цветных карточки .case-team__card:
-  квадратная картинка (аватар) в левом верхнем углу → 16px → заголовок
-  (h2-размер) → 4px → подпись. Заголовки карточек всегда на одном уровне
-  "бесплатно" — аватар фиксированного (в % от карточки) размера и без
-  вариативной высоты над заголовком, поэтому раскладке не нужен
-  flex-grow/aspect-ratio-трюк, как у .case-cover__metrics/.case-role.
-  Десктоп — грид в 4 колонки; планшет И мобилка (≤900px, порог как у
-  метрик, здесь нет отдельного мобильного "стопкой", как у .case-role) —
-  горизонтальная карусель, тот же fade-градиент (styles/case-blocks.js
-  слушает и .case-team__cards-scroll тем же общим кодом).
+  Белая стопка: персонаж, роль, описание сотрудничества. Фон — тема
+  страницы. Автопереключение и кнопки, без горизонтального свайпа.
 
   ─── .case-about — блок «О проекте» (готовый компонент) ────────────────
   Заголовок (H1) → 32px → .case-cards-feature (см. реестр карточек в
@@ -575,144 +566,74 @@
   }
 }
 
-/* ─── .case-team — блок команды (заголовок/подзаголовок + 4 карточки) ──
-   Заголовок/подзаголовок — те же классы-паттерны, что у .case-role
-   (H1 + переопределённый margin-top:8px + text-body-lg, 32px до сетки). */
-.case-team__subtitle.text-body-lg {
-  margin-top: 8px;
-}
-
-.case-team__cards-scroll {
-  margin-top: 32px;
-}
-
-.case-team__cards {
+/* ─── .case-team — белая стопка карточек на фоне темы ─── */
+.case-team {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 48px;
 }
-
-/* min-width:0 — та же защита от раздувания grid-колонки контентом, что
-   и у .case-role__col (см. комментарий там); здесь текст переносится
-   свободно (не nowrap), но айтем всё равно не должен сжиматься уже
-   1fr-доли из-за длинного самого широкого слова в подписи. */
+.case-team__subtitle.text-body-lg { margin-top: 8px; }
+.case-team__carousel { min-width: 0; padding: 24px 24px 0; }
+.case-team__cards { display: grid; gap: 24px; }
 .case-team__card {
   min-width: 0;
-  overflow: hidden;
-  border-radius: var(--wg-radius, 28px);
-  padding: 32px var(--card-pad-x);
+  padding: 24px 28px 36px;
+  border: 1px solid #252529;
+  border-radius: 24px;
+  background: #fff;
   color: #14161a;
+  box-shadow: 4px 6px 0 #252529;
+  text-align: center;
 }
-
-.case-team__card--lavender { background: #DDD3FB; }
-.case-team__card--yellow   { background: #FFE9A9; }
-.case-team__card--gray     { background: #D9D9DA; }
-.case-team__card--mint     { background: #C5F1CE; }
-
-/* Аватар — фиксированный квадрат 200×200 на любой ширине карточки
-   (десктопная 1/4 сетки или карусельная доля — не масштабируется вместе
-   с карточкой). max-width:100% — подстраховка на случай очень узкой
-   карточки уже 200px. Прибит вплотную к левому верхнему углу карточки —
-   отрицательный margin ровно на величину padding карточки (тот же приём
-   "выйти из паддинга родителя", что у .case-metric__art), overflow:hidden
-   у .case-team__card обрезает квадратный угол картинки по скруглению
-   карточки. Заголовки карточек оказываются на одном уровне "бесплатно":
-   аватар одного и того же размера + фиксированный отступ 16px до
-   заголовка — без переменной высоты над ним, в отличие от
-   .case-cover__metrics/.case-role, там это специально считалось через
-   flex-grow. */
 .case-team__avatar {
   display: block;
-  width: 200px;
-  aspect-ratio: 1 / 1;
-  max-width: 100%;
+  width: min(100%, 240px);
+  height: auto;
+  aspect-ratio: 1;
   object-fit: contain;
-  margin: -32px 0 0 calc(-1 * var(--card-pad-x));
+  margin: 0 auto 16px;
 }
-
-/* Заголовок карточки — H3. Перенос длинных слов защищает узкие карточки. */
-.case-team__card-title {
-  margin-top: 16px;
-  font-size: var(--font-size-lg);
-  overflow-wrap: break-word;
+.case-team__card-title { overflow-wrap: break-word; }
+.case-team__card-subtitle { margin: 8px auto 0; }
+.case-team__carousel.is-ready .case-team__cards {
+  isolation: isolate;
+  perspective: 1100px;
+  gap: 0;
+  max-width: 380px;
+  margin-inline: auto;
 }
-
-.case-team__card-subtitle {
-  margin-top: 4px;
+.case-team__carousel.is-ready .case-team__card {
+  grid-area: 1 / 1;
+  transform-origin: 50% 85%;
+  transition: transform 650ms cubic-bezier(.22,.7,.2,1), opacity 400ms ease;
+  backface-visibility: hidden;
 }
-
-/* Планшет и мобилка (≤900px, порог как у .case-cover__metrics) —
-   горизонтальная карусель, тот же приём scroll-snap + fade-градиент,
-   что у метрик/роли (см. подробные комментарии там и в
-   styles/case-blocks.js). Здесь, в отличие от .case-role, нет отдельной
-   мобильной раскладки "стопкой" — карусель работает на всём диапазоне. */
-@media (max-width: 900px) {
-  .case-team__cards {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-  }
-
-  .case-team__cards::-webkit-scrollbar {
-    display: none;
-  }
-
-  .case-team__card {
-    flex: 0 0 82%;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-  }
-
-  .case-team__cards-scroll {
-    position: relative;
-  }
-
-  .case-team__cards-scroll::before,
-  .case-team__cards-scroll::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 40px;
-    z-index: 1;
-    pointer-events: none;
-    opacity: 1;
-    transition: opacity 0.2s ease;
-  }
-
-  .case-team__cards-scroll.is-at-start::before,
-  .case-team__cards-scroll.is-at-end::after {
-    opacity: 0;
-  }
-
-  .case-team__cards-scroll::before {
-    left: 0;
-    background: linear-gradient(to right, var(--color-bg), transparent);
-  }
-
-  .case-team__cards-scroll::after {
-    right: 0;
-    background: linear-gradient(to left, var(--color-bg), transparent);
-  }
+.case-team__card[data-position="0"] { z-index: 4; transform: rotate(-3deg); }
+.case-team__card[data-position="1"] { z-index: 3; transform: translate(-8px, 7px) rotate(-6deg); }
+.case-team__card[data-position="2"] { z-index: 2; transform: translate(-16px, 14px) rotate(-9deg); }
+.case-team__card[data-position="3"] { z-index: 1; transform: translate(-24px, 21px) rotate(-12deg); }
+.case-team__carousel .case-team__card.is-leaving {
+  z-index: 5;
+  transform: translate(65%, -12%) rotate(18deg) rotateY(-24deg);
+  opacity: 0;
 }
-
-/* Планшет (641–900px) — доля карточки поменьше, чем базовые 82% (см.
-   .case-team__cards выше): та растягивала карточку почти на всю ширину
-   экрана. */
-@media (max-width: 900px) and (min-width: 641px) {
-  .case-team__card {
-    flex: 0 0 60%;
-  }
+.case-team__controls:not([hidden]) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 56px;
 }
-
-/* Мобилка — карточка ещё уже, чем на планшете: доля поменьше, чтобы
-   соседняя карточка выглядывала заметнее. */
-@media (max-width: 640px) {
-  .case-team__card {
-    flex: 0 0 68%;
-  }
+@media (max-width: 700px) {
+  .case-team { grid-template-columns: 1fr; gap: 24px; }
+  .case-team__carousel { padding-inline: 40px 16px; }
+  .case-team__card { padding: 20px 20px 28px; }
+  .case-team__avatar { width: min(100%, 200px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .case-team__carousel.is-ready .case-team__card { transition: none; }
 }
 
 /* ─── .case-about — заголовок + .case-cards-feature (case-cards.css) ─── */
