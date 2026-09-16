@@ -445,7 +445,7 @@
     } else {
       ctx.beginPath(); ctx.arc(0, 0, 162, 0, Math.PI * 2); ctx.fill();
     }
-    const count = compact ? 320 : (fine.matches ? 1900 : 1200);
+    const count = compact ? 170 : (fine.matches ? 1000 : 650);
     for (let i = 0; i < count; i++) {
       const p = particles[Math.floor(i * particles.length / count)];
       const xx = p.x * ca + p.z * sa;
@@ -468,7 +468,7 @@
       const alpha = (.2 + (zz + 1) * .28) * scene.opacity;
       ctx.globalAlpha = alpha;
       ctx.fillStyle = compact && zz < -.1 ? mood.bg : mood.ink;
-      const dot = (compact ? 2.8 : .85) + p.seed * (compact ? 2.1 : .95) + (zz + 1) * .32;
+      const dot = (compact ? 3.9 : 1.25) + p.seed * (compact ? 2.9 : 1.35) + (zz + 1) * .45;
       ctx.fillRect(x, y, dot, dot);
       if (!compact && i % 9 === 0) {
         ctx.globalAlpha = alpha * .4;
