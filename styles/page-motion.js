@@ -18,6 +18,7 @@
   function cursorTarget() {
     if (!visible) return;
     var target = document.elementFromPoint(x, y);
+    dot.classList.toggle('is-suppressed', !!(target && target.closest('[data-cursor-hidden]')));
     var action = target && target.closest('a[href], button, [role="button"], input, select, textarea, summary, [contenteditable="true"], [data-close]');
     dot.classList.toggle('is-action', !!action && !action.matches(':disabled, [aria-disabled="true"]'));
   }
@@ -112,24 +113,35 @@
   reduced.addEventListener('change', stopScroll);
   fine.addEventListener('change', stopScroll);
 
-  // Hold the bottom of the long Avito collection only after all its rows have
-  // been readable. Ozon continues in normal flow, covering it from below.
-  var avito = document.getElementById('works-gallery');
-  var ozon = document.getElementById('ozon-projects');
-  if (!avito || !ozon) return;
-  var start = 0, end = 0, overlapFrame = 0;
+  // Every filled section covers its preceding sibling, after that sibling's
+  // bottom has been readable. Short surfaces never leave the underlay exposed
+  // below them. Layout remains in normal flow, including anchor navigation.
+  var overlaps = Array.from(document.querySelectorAll('.project-slider--themed, .case-block--surface'))
+    .filter(function (surface) { return surface.previousElementSibling; })
+    .map(function (surface) {
+      return { surface: surface, underlay: surface.previousElementSibling, start: 0, end: 0 };
+    });
+  if (!overlaps.length) return;
+  var overlapFrame = 0;
   function paintOverlap() {
     overlapFrame = 0;
-    var enabled = !reduced.matches;
-    root.classList.toggle('has-project-overlap', enabled);
-    avito.style.transform = enabled ? 'translate3d(0,' + Math.max(0, Math.min(end - start, window.scrollY - start)) + 'px,0)' : '';
+    overlaps.forEach(function (pair) {
+      var enabled = !reduced.matches;
+      pair.underlay.classList.toggle('overlap-underlay', enabled);
+      pair.surface.classList.toggle('overlap-surface', enabled);
+      pair.underlay.style.transform = enabled
+        ? 'translate3d(0,' + Math.max(0, Math.min(pair.end - pair.start, window.scrollY - pair.start)) + 'px,0)'
+        : '';
+    });
     cursorTarget();
   }
   function measure() {
-    // offsetTop is unaffected by the visual translation.
-    avito.style.transform = '';
-    start = window.scrollY + avito.getBoundingClientRect().bottom - innerHeight;
-    end = window.scrollY + ozon.getBoundingClientRect().top;
+    overlaps.forEach(function (pair) { pair.underlay.style.transform = ''; });
+    overlaps.forEach(function (pair) {
+      var bounds = pair.surface.getBoundingClientRect();
+      pair.start = window.scrollY + pair.underlay.getBoundingClientRect().bottom - innerHeight;
+      pair.end = window.scrollY + Math.min(bounds.top, bounds.bottom - innerHeight);
+    });
     paintOverlap();
   }
   window.addEventListener('scroll', function () {
@@ -137,7 +149,11 @@
   }, { passive: true });
   window.addEventListener('resize', measure);
   reduced.addEventListener('change', measure);
-  new ResizeObserver(measure).observe(avito);
+  var overlapObserver = new ResizeObserver(measure);
+  overlaps.forEach(function (pair) {
+    overlapObserver.observe(pair.underlay);
+    overlapObserver.observe(pair.surface);
+  });
   document.fonts.ready.then(measure);
   measure();
 })();

@@ -14,12 +14,13 @@
   transition: width .22s ease, height .22s ease, opacity .12s ease;
 }
 .cursor-dot.is-visible { opacity: 1; }
+.cursor-dot.is-suppressed { opacity: 0; }
 .cursor-dot.is-action { width: 36px; height: 36px; }
 @media (hover: hover) and (pointer: fine) {
   html.has-dot-cursor, html.has-dot-cursor * { cursor: none !important; }
 }
-html.has-project-overlap #works-gallery { position: relative; z-index: 0; }
-html.has-project-overlap #ozon-projects { position: relative; z-index: 1; }
+.overlap-underlay { position: relative; z-index: 0; }
+.overlap-surface { position: relative; z-index: 1; }
 @media (prefers-reduced-motion: reduce) {
   .cursor-dot { transition: none; }
 }
