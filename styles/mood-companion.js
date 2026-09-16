@@ -1,4 +1,4 @@
-/* Procedural matte-clay companion with diffuse lighting and morphing shapes.
+/* Six supplied SVG silhouettes with floating motion and an interactive face.
    Canvas 2D, no downloaded character assets or animation runtime. */
 (function () {
   'use strict';
@@ -11,11 +11,8 @@
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const character = document.getElementById('mood-character');
-  const nextButton = document.getElementById('mood-next');
-  const pauseButton = document.getElementById('mood-pause');
   const heading = document.getElementById('mood-heading');
-  let paused = false;
-  const motionOff = () => reduced.matches || paused;
+  const motionOff = () => reduced.matches;
   const name = document.getElementById('mood-name');
   const description = document.getElementById('mood-description');
   const speech = document.getElementById('mood-speech');
@@ -34,53 +31,22 @@
   const mix = (a, b, t) => a + (b - a) * t;
   const ease = t => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
   const random = n => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
-  const shapes = ['wave', 'flower', 'heart', 'star'];
-  let shapeIndex = 0;
-  const sculptButton = document.getElementById('mood-sculpt');
-  const sculptSave = document.getElementById('mood-sculpt-save');
-  const sculptReset = document.getElementById('mood-sculpt-reset');
-  const sculptCancel = document.getElementById('mood-sculpt-cancel');
-  const sculptHelp = document.getElementById('mood-sculpt-help');
-  const sculptKey = 'stasyabis-clay-shape-v1';
-  let savedShape = null, clayShape = null, sculpting = false, sculptDrag = null;
-  try {
-    const value = JSON.parse(sessionStorage.getItem(sculptKey));
-    if (Array.isArray(value) && value.length === 96 && value.every(v => Number.isFinite(v) && v >= .55 && v <= 1.28)) savedShape = value;
-  } catch (_) {}
-  clayShape = savedShape && [...savedShape];
-
-  // A radial heart silhouette keeps the contour continuous during morphs.
-  const heartOutline = Array.from({ length: 360 }, (_, i) => {
-    const angle = i / 360 * Math.PI * 2;
-    let low = 0, high = 1.6;
-    for (let step = 0; step < 16; step++) {
-      const r = (low + high) / 2;
-      const x = Math.cos(angle) * r, y = -Math.sin(angle) * r;
-      if (Math.pow(x * x + y * y - 1, 3) - x * x * y * y * y <= 0) low = r;
-      else high = r;
-    }
-    return (low + high) / 2 * .93;
-  });
-  const roundedHeart = heartOutline.map((_, i) => {
-    let sum = 0, weight = 0;
-    for (let offset = -20; offset <= 20; offset++) {
-      const w = 21 - Math.abs(offset);
-      sum += heartOutline[(i + offset + 360) % 360] * w;
-      weight += w;
-    }
-    return sum / weight;
-  });
-  function silhouette(shape, angle, time) {
-    if (clayShape) {
-      const sample = ((angle / (Math.PI * 2) % 1 + 1) % 1) * clayShape.length;
-      const start = Math.floor(sample);
-      return mix(clayShape[start], clayShape[(start + 1) % clayShape.length], sample - start);
-    }
-    if (shape === 1) return 1 + .21 * Math.cos(angle * 5 + .25 * Math.sin(time));
-    if (shape === 2) return roundedHeart[Math.round((angle + Math.PI * 2) / (Math.PI * 2) * 360) % 360];
-    if (shape === 3) return .98 + .2 * Math.cos(angle * 5 + Math.PI / 2);
-    return 1 + .07 * Math.sin(angle * 3 + time * .35) + .035 * Math.sin(angle * 5 - time * .28);
-  }
+  const shapes = ['1', '2', '3', '4', '5', '6'];
+  let shapeIndex = index;
+  const formPaths = [];
+  Promise.all(shapes.map(async (id, i) => {
+    const response = await fetch(`/assets/forms/${id}.svg`);
+    if (!response.ok) throw new Error(`Cannot load form ${id}`);
+    const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml');
+    const viewBox = svg.documentElement.getAttribute('viewBox').split(/\s+/).map(Number);
+    const scale = 330 / Math.max(viewBox[2], viewBox[3]);
+    const matrix = new DOMMatrix().translate(-(viewBox[0] + viewBox[2] / 2) * scale, -(viewBox[1] + viewBox[3] / 2) * scale).scale(scale);
+    const path = new Path2D();
+    svg.querySelectorAll('path').forEach(node => {
+      if (!node.closest('defs')) path.addPath(new Path2D(node.getAttribute('d')), matrix);
+    });
+    formPaths[i] = path;
+  })).then(() => { forcePaint = true; wake(); }).catch(error => console.error(error));
   let point = { x: innerWidth / 2, y: innerHeight / 2, active: false };
   let gaze = { x: 0, y: 0 };
   let position = { x: 0, y: 0, size: 0 };
@@ -109,15 +75,15 @@
   let idlePhrase = 0;
   const idleLines = [
     ['Я пока порепетировала эффектное появление.', 'Ты читаешь, а я делаю вид, что работаю.', 'Если что, я всё ещё очень розовая.'],
-    ['Кажется, курсор ушёл за кофе без нас.', 'Я уже пересчитала все свои частицы.', 'Пс-с. А дальше тоже красиво.'],
+    ['Кажется, курсор ушёл за кофе без нас.', 'Я уже придумала себе новую форму.', 'Пс-с. А дальше тоже красиво.'],
     ['Так. Перерыв согласован?', 'Я не завис. Я задумался.', 'Ладно, пять минут можно ничего не делать.']
   ];
   function scheduleIdle(delay = 35000) {
     clearTimeout(idleTimer);
-    if (!mounted || document.hidden || paused || idleCount >= 3) return;
+    if (!mounted || document.hidden || idleCount >= 3) return;
     idleTimer = setTimeout(() => {
       if (change || document.querySelector('[role="dialog"]:not([hidden])')) { scheduleIdle(15000); return; }
-      if (document.hidden || paused || !mounted) return;
+      if (document.hidden || !mounted) return;
       say(idleLines[index][idlePhrase++ % 3], 6500);
       idleSpeech = true;
       idleCount++;
@@ -192,7 +158,6 @@
     layoutDirty = true; forcePaint = true; wake();
   }
   character.addEventListener('pointerdown', e => {
-    if (sculpting) return;
     if (e.button !== 0 || !e.isPrimary || change) return;
     const size = innerWidth < 600 ? 104 : 120;
     drag = {id: e.pointerId, startX: e.clientX, startY: e.clientY,
@@ -231,76 +196,6 @@
     layoutDirty = true; forcePaint = true; wake();
   });
 
-
-  function sculptUI(active) {
-    sculpting = active; sculptDrag = null;
-    root.classList.toggle('mood-sculpting', active);
-    sculptButton?.setAttribute('aria-pressed', String(active));
-    if (sculptButton) sculptButton.hidden = active;
-    for (const button of [sculptSave, sculptReset, sculptCancel]) if (button) button.hidden = !active;
-    if (sculptHelp) sculptHelp.hidden = !active;
-    if (nextButton) nextButton.disabled = active;
-    character.setAttribute('aria-label', active ? 'Лепка: тяни за край. Стрелки вытягивают, Shift со стрелками вдавливает.' : mood.name + '. Поменять тему');
-    hideCursor(); forcePaint = true; wake();
-  }
-  sculptButton?.addEventListener('click', () => {
-    if (change) return;
-    clayShape = clayShape || Array.from({length: 96}, (_, i) => clamp(silhouette(shapeIndex, i / 96 * Math.PI * 2, 0), .55, 1.28));
-    sculptUI(true);
-  });
-  sculptSave?.addEventListener('click', () => {
-    savedShape = [...clayShape];
-    try { sessionStorage.setItem(sculptKey, JSON.stringify(savedShape)); }
-    catch (_) { say('Форма сохранена до обновления страницы.'); sculptUI(false); return; }
-    sculptUI(false); say('Сохранила форму для этой вкладки.');
-  });
-  sculptReset?.addEventListener('click', () => {
-    clayShape = null;
-    clayShape = Array.from({length: 96}, (_, i) => clamp(silhouette(shapeIndex, i / 96 * Math.PI * 2, 0), .55, 1.28));
-    forcePaint = true; wake();
-  });
-  sculptCancel?.addEventListener('click', () => { clayShape = savedShape && [...savedShape]; sculptUI(false); });
-  function sculptPoint(e) {
-    const rect = canvas.getBoundingClientRect();
-    const scale = following ? 1 : 1.12;
-    return {x: ((e.clientX - rect.left) * 480 / rect.width - 240) / scale,
-      y: ((e.clientY - rect.top) * 480 / rect.height - 240) / scale};
-  }
-  function sculptPull(angle, amount, base) {
-    clayShape = base.map((r, i) => {
-      const distance = Math.atan2(Math.sin(i / 96 * Math.PI * 2 - angle), Math.cos(i / 96 * Math.PI * 2 - angle));
-      return clamp(r + amount * Math.exp(-distance * distance / .20), .55, 1.28);
-    });
-    forcePaint = true; wake();
-  }
-  actor.addEventListener('pointerdown', e => {
-    if (!sculpting || !e.isPrimary || e.button !== 0) return;
-    const p = sculptPoint(e);
-    if (Math.hypot(p.x, p.y) < 35) return;
-    e.preventDefault(); e.stopPropagation();
-    sculptDrag = {id: e.pointerId, angle: Math.atan2(p.y, p.x), start: p, base: [...clayShape]};
-    actor.setPointerCapture(e.pointerId);
-  }, true);
-  actor.addEventListener('pointermove', e => {
-    if (!sculptDrag || sculptDrag.id !== e.pointerId) return;
-    e.preventDefault(); e.stopPropagation();
-    const p = sculptPoint(e), d = sculptDrag;
-    sculptPull(d.angle, ((p.x - d.start.x) * Math.cos(d.angle) + (p.y - d.start.y) * Math.sin(d.angle)) / 151, d.base);
-  }, true);
-  const finishSculpt = e => {
-    if (sculptDrag?.id !== e.pointerId) return;
-    sculptDrag = null; suppressCharacterClickUntil = performance.now() + 400;
-    if (actor.hasPointerCapture(e.pointerId)) actor.releasePointerCapture(e.pointerId);
-  };
-  actor.addEventListener('pointerup', finishSculpt);
-  actor.addEventListener('pointercancel', finishSculpt);
-  actor.addEventListener('lostpointercapture', () => { sculptDrag = null; });
-  character.addEventListener('keydown', e => {
-    if (!sculpting) return;
-    const angles = {ArrowRight: 0, ArrowDown: Math.PI / 2, ArrowLeft: Math.PI, ArrowUp: -Math.PI / 2};
-    if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); clayShape = savedShape && [...savedShape]; sculptUI(false); }
-    else if (e.key in angles) { e.preventDefault(); e.stopImmediatePropagation(); sculptPull(angles[e.key], e.shiftKey ? -.06 : .06, [...clayShape]); }
-  }, true);
 
   function updateCopy() {
     if (name) name.textContent = mood.name;
@@ -346,7 +241,7 @@
     forcePaint = true;
   }
   function switchMood() {
-    if (sculpting || change) return; // One scene per activation, including rapid touch/keyboard input.
+    if (change) return; // One scene per activation, including rapid touch/keyboard input.
     hideCursor();
     activity();
     if (motionOff()) {
@@ -358,18 +253,16 @@
       return;
     }
     change = { start: performance.now(), from: index, fromShape: shapeIndex, toShape: (shapeIndex + 1) % shapes.length, applied: false };
-    nextButton?.setAttribute('aria-busy', 'true');
     character.setAttribute('aria-busy', 'true');
     say(['Сейчас будет магия.', 'А вот так умеешь?', 'Так. Меняю форму.'][index], 850);
     wake();
   }
   character.addEventListener('click', e => {
-    if (sculpting || performance.now() < suppressCharacterClickUntil) { e.preventDefault(); return; }
+    if (performance.now() < suppressCharacterClickUntil) { e.preventDefault(); return; }
     switchMood();
   });
-  nextButton?.addEventListener('click', switchMood);
   character.addEventListener('pointerenter', e => {
-    if (sculpting || !fine.matches || e.pointerType === 'touch' || change || drag?.active) return;
+    if (!fine.matches || e.pointerType === 'touch' || change || drag?.active) return;
     hovering = true;
     freezeUntil = Infinity;
     root.classList.add('mood-cursor-active');
@@ -435,24 +328,14 @@
     wake();
   };
   reduced.addEventListener('change', syncMotion);
-  if (pauseButton) pauseButton.addEventListener('click', () => {
-    paused = !paused;
-    if (paused) { clearTimeout(speechTimer); speech.classList.remove('is-visible'); }
-    scheduleIdle();
-    root.toggleAttribute('data-mood-paused', paused);
-    pauseButton.setAttribute('aria-pressed', String(paused));
-    pauseButton.setAttribute('aria-label', paused ? 'Продолжить анимацию персонажа' : 'Приостановить анимацию персонажа');
-    pauseButton.title = paused ? 'Продолжить анимацию' : 'Приостановить анимацию';
-    pauseButton.querySelector('.icon').classList.toggle('icon--pause', !paused);
-    pauseButton.querySelector('.icon').classList.toggle('icon--play', paused);
-    syncMotion();
-  });
   fine.addEventListener('change', () => { hideCursor(); freezeUntil = 0; wake(); });
   window.addEventListener('storage', e => {
     if (e.key !== 'stasyabis-mood') return;
     const next = moods.findIndex(m => m.id === e.newValue);
     if (next < 0) return;
     if (change) finishChange();
+    shapeIndex = Math.floor(shapeIndex / 3) * 3 + next;
+    actor.dataset.shape = shapes[shapeIndex];
     applyMood(next, false);
     wake();
   });
@@ -467,7 +350,6 @@
     if (change) shapeIndex = change.toShape;
     actor.dataset.shape = shapes[shapeIndex];
     change = null;
-    nextButton?.removeAttribute('aria-busy');
     character.removeAttribute('aria-busy');
     if (wave) { wave.classList.remove('is-playing'); wave.style.background = ''; }
   }
@@ -495,29 +377,19 @@
     if (resolution !== wanted) { canvas.width = canvas.height = wanted; resolution = wanted; }
     ctx.setTransform(resolution / 480, 0, 0, resolution / 480, 0, 0);
     ctx.clearRect(0, 0, 480, 480);
-    const t = motionOff() || sculpting ? 0 : now * .001;
+    const t = motionOff() ? 0 : now * .001;
     const sleepy = !motionOff() && now - idleAt > 14000;
-    const breathe = motionOff() || sculpting ? 1 : 1 + Math.sin(t * 1.65) * .024;
+    const breathe = motionOff() ? 1 : 1 + Math.sin(t * 1.65) * .024;
     const anger = scene.anger;
-    const bounce = motionOff() || sculpting ? 0 : Math.sin(t * 1.9) * 5 + Math.sin(t * 12) * Math.abs(scrollKick) * 5;
+    const bounce = motionOff() ? 0 : Math.sin(t * 1.9) * 5 + Math.sin(t * 12) * Math.abs(scrollKick) * 5;
     ctx.save();
     ctx.translate(240 + scene.x, 240 + bounce + scene.y);
-    ctx.rotate(scene.rotate + (sculpting ? 0 : gaze.x * .035));
+    ctx.rotate(scene.rotate + gaze.x * .035);
     ctx.scale(heroScale * breathe * scene.scale * (1 + anger * .08), heroScale * scene.scale * (1 - anger * .08));
     ctx.globalAlpha = scene.opacity;
-    const outlineAt = angle => change
-      ? mix(silhouette(change.fromShape, angle, t), silhouette(change.toShape, angle, t), scene.morph || 0)
-      : silhouette(shapeIndex, angle, t);
-    // Matte clay: a solid contour with broad, diffuse lighting.
-    const body = new Path2D();
-    for (let step = 0; step <= 180; step++) {
-      const angle = step / 180 * Math.PI * 2;
-      const radius = 151 * outlineAt(angle) * (1 + .009 * Math.sin(angle * 9 + .8) + .006 * Math.cos(angle * 13));
-      const x = Math.cos(angle) * radius, y = Math.sin(angle) * radius;
-      if (step === 0) body.moveTo(x, y);
-      else body.lineTo(x, y);
-    }
-    body.closePath();
+    const fallback = new Path2D();
+    fallback.arc(0, 0, 150, 0, Math.PI * 2);
+    const body = formPaths[shapeIndex] || fallback;
     ctx.save();
     const shade = ['219,74,133', '83,100,213', '218,159,27'][index];
     ctx.shadowColor = `rgba(${shade},.16)`;
@@ -548,20 +420,6 @@
     reflected.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = reflected;
     ctx.fillRect(-210, -210, 420, 420);
-    // Fixed shallow indentations stay attached to the material, never shimmer.
-    for (const [x, y, radius] of [[-92, 26, 25], [73, 76, 32], [48, -103, 22], [-37, 110, 24]]) {
-      const dent = ctx.createRadialGradient(x - 3, y - 4, 0, x, y, radius);
-      dent.addColorStop(0, `rgba(${shade},.075)`);
-      dent.addColorStop(.65, `rgba(${shade},.035)`);
-      dent.addColorStop(1, `rgba(${shade},0)`);
-      ctx.fillStyle = dent;
-      ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
-      const lip = ctx.createRadialGradient(x + 4, y + 7, 0, x + 4, y + 7, radius * .8);
-      lip.addColorStop(0, 'rgba(255,255,255,.10)');
-      lip.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.fillStyle = lip;
-      ctx.beginPath(); ctx.arc(x + 4, y + 7, radius, 0, Math.PI * 2); ctx.fill();
-    }
     ctx.restore();
     ctx.globalAlpha = scene.opacity;
     const blink = now - blinkStart;
@@ -648,7 +506,8 @@
     if (change) {
       const elapsed = now - change.start;
       const progress = clamp(elapsed / 1350, 0, 1);
-      scene.morph = progress * progress * (3 - 2 * progress);
+      // Swap at the midpoint of a gentle squash; keep the supplied contours intact.
+      if (progress >= .5) shapeIndex = change.toShape;
       const play = Math.sin(progress * Math.PI);
       scene.scatter = play * .16;
       scene.scale = 1 - play * .09;
@@ -664,7 +523,7 @@
           wave.classList.add('is-playing');
         }
         change.applied = true;
-        say(['Смотри, как я умею!', 'Сегодня я цветочек.', 'Это тебе ♥', 'Мой звёздный час!'][change.toShape], 2200);
+        say('Смотри, какая новая форма!', 2200);
       }
       if (progress >= 1) finishChange();
     }
