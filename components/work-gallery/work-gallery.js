@@ -33,7 +33,36 @@
       if (link) link.tabIndex = active ? 0 : -1;
     });
   }
+  let fitFrame = 0;
+  function fitCaptions() {
+    const widths = slides.map(slide => {
+      const image = slide.querySelector('img');
+      if (!image.naturalWidth) return null;
+      const rect = image.getBoundingClientRect();
+      return Math.min(rect.width, rect.height * image.naturalWidth / image.naturalHeight);
+    });
+    slides.forEach((slide, i) => {
+      if (widths[i] !== null) slide.style.setProperty('--cover-width', `${widths[i]}px`);
+    });
+    const areas = slides.map(slide => {
+      const link = slide.querySelector('a');
+      if (!link) return null;
+      return { link, rect: slide.getBoundingClientRect(), button: link.getBoundingClientRect() };
+    });
+    areas.forEach(area => {
+      if (!area) return;
+      const { link, rect, button } = area;
+      link.style.setProperty('--hit-left', `${rect.left - button.left}px`);
+      link.style.setProperty('--hit-top', `${rect.top - button.top}px`);
+      link.style.setProperty('--hit-width', `${rect.width}px`);
+      link.style.setProperty('--hit-height', `${rect.height}px`);
+    });
+  }
+  function scheduleFit() {
+    if (!fitFrame) fitFrame = requestAnimationFrame(() => { fitFrame = 0; fitCaptions(); });
+  }
   function measure() {
+    fitCaptions();
     track.style.setProperty('--gallery-start', `${(viewport.clientWidth - slides[0].offsetWidth) / 2}px`);
     track.style.setProperty('--gallery-end', `${(viewport.clientWidth - slides.at(-1).offsetWidth) / 2}px`);
     const left = viewport.getBoundingClientRect().left;
@@ -67,17 +96,19 @@
     const repeated = [...projects, ...projects, ...projects];
     track.innerHTML = repeated.map((p, i) => `<article class="work-gallery__work" data-format="${escape(p.format)}" data-project-id="${escape(p.id)}" aria-roledescription="слайд" aria-label="${i % projects.length + 1} из ${projects.length}: ${escape(p.title)}">
       <img class="work-gallery__image" src="${escape(p.image)}" srcset="${escape(p.srcset)}" sizes="(max-width: 999px) 80vw, 58vw" alt="${escape(p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false">
-      <div class="work-gallery__caption"><div class="work-gallery__copy">
+      <div class="work-gallery__caption"><div class="work-gallery__title-row">
         <h3 class="text-h2">${escape(p.title)}</h3>
-        <p class="text-body">${escape(p.description)}</p>
-      </div>${p.href ? `<a class="btn btn--fill-pink btn--icon-only" href="${escape(p.href)}" ${p.href.startsWith('https:') ? 'target="_blank" rel="noopener noreferrer"' : ''} aria-label="Открыть: ${escape(p.title)}"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : ''}</div>
+        ${p.href ? `<a class="btn btn--fill-pink btn--icon-only btn--size-heading btn--hit-area" href="${escape(p.href)}" ${p.href.startsWith('https:') ? 'target="_blank" rel="noopener noreferrer"' : ''} aria-label="Открыть: ${escape(p.title)}" draggable="false"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : ''}
+      </div><p class="text-body">${escape(p.description)}</p></div>
     </article>`).join('');
     slides = [...track.children];
+    slides.forEach(slide => slide.querySelector('img').addEventListener('load', scheduleFit, { once: true }));
     measure();
     viewport.scrollTo({ left: offsets[projects.length], behavior: 'instant' });
     update();
   }
   render();
+  document.fonts.ready.then(() => { fitCaptions(); measure(); });
   new ResizeObserver(() => {
     const active = index;
     measure();
@@ -92,8 +123,8 @@
   }, { passive: true });
   gallery.addEventListener('keydown', e => {
     if (e.altKey || e.ctrlKey || e.metaKey || e.target.closest('button, a')) return;
-    if (e.key === 'Escape') { window.scrollTo({ top: 0, behavior: reduced.matches ? 'instant' : 'smooth' }); return; }
-    const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1, Home: -index, End: projects.length - 1 - index };
+    if (['Escape', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); window.scrollTo({ top: 0, behavior: reduced.matches ? 'instant' : 'smooth' }); return; }
+    const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, Home: -index, End: projects.length - 1 - index };
     if (!(e.key in keys)) return;
     e.preventDefault(); goTo(keys[e.key]);
   });
@@ -107,18 +138,17 @@
   gallery.addEventListener('wheel', e => {
     if (e.ctrlKey || e.metaKey || !e.cancelable || !visible() || locked()) return;
     const horizontal = e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY);
-    // The toolbar remains a normal page-scroll surface for returning to the hero.
-    if (!horizontal && e.deltaY < 0 && e.target.closest('.work-gallery__toolbar')) return;
     const delta = (horizontal ? e.deltaX || e.deltaY : e.deltaY) * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? viewport.clientWidth : 1);
     if (!delta) return;
     e.preventDefault();
+    if (!horizontal && delta < 0) { window.scrollBy({ top: delta, behavior: 'instant' }); return; }
     // Continuous displacement: no threshold, cooldown or snap swallowing small
     // trackpad deltas, and no competing page-motion animation on this surface.
     moveBy(delta);
   }, { passive: false });
 
   // Horizontal swipes use native scrolling. Vertical swipes move the same
-  // horizontal surface directly, while the toolbar keeps native page scrolling.
+  // horizontal surface directly; a backward vertical gesture returns to the page.
   viewport.addEventListener('touchstart', e => {
     if (e.touches.length !== 1 || !visible() || locked()) { touch = null; return; }
     touch = { x: e.touches[0].clientX, y: e.touches[0].clientY, axis: null, last: e.touches[0].clientY };
@@ -130,7 +160,10 @@
     if (!touch.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 5) touch.axis = Math.abs(dy) > Math.abs(dx) ? 'y' : 'x';
     if (touch.axis === 'y' && e.cancelable) {
       e.preventDefault();
-      moveBy(touch.last - e.touches[0].clientY);
+      const delta = touch.last - e.touches[0].clientY;
+      if (touch.page === undefined) touch.page = dy < 0;
+      if (touch.page) window.scrollBy({ top: delta, behavior: 'instant' });
+      else moveBy(delta);
       touch.last = e.touches[0].clientY;
     }
   }, { passive: false });
@@ -139,20 +172,22 @@
   viewport.addEventListener('touchcancel', finishTouch);
 
   viewport.addEventListener('pointerdown', e => {
-    if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('a, button')) return;
+    if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('button, a:not(.btn--hit-area)')) return;
     drag = { x: e.clientX, y: e.clientY, last: 0, axis: null, id: e.pointerId };
     suppressClick = false;
-    viewport.setPointerCapture(e.pointerId);
   });
   viewport.addEventListener('pointermove', e => {
     if (!drag) return;
     const dx = drag.x - e.clientX, dy = drag.y - e.clientY;
     if (!drag.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 5) drag.axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
     if (!drag.axis) return;
+    if (!viewport.hasPointerCapture(drag.id)) viewport.setPointerCapture(drag.id);
     suppressClick = true;
     viewport.classList.add('is-dragging');
     const delta = drag.axis === 'x' ? dx : dy;
-    moveBy(delta - drag.last);
+    if (drag.axis === 'y' && drag.page === undefined) drag.page = dy < 0;
+    if (drag.page) window.scrollBy({ top: delta - drag.last, behavior: 'instant' });
+    else moveBy(delta - drag.last);
     drag.last = delta;
   });
   function finishDrag() {

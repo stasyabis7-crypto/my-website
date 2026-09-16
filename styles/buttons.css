@@ -478,3 +478,33 @@ html.mood-character-dragging .btn--fill-character { cursor: grabbing; }
 @media (hover: hover) and (pointer: fine) {
   .btn--fill-deck, .btn--fill-deck::before { cursor: none; }
 }
+
+/* Gallery action requested at the height of one H2 line. This explicit size
+   variant is the exception to the standard height; other buttons stay unchanged.
+   --hit-* optionally extends the actual link hit area across its whole work.
+   Use only on an actionable <a>/<button>, never a decorative badge. */
+.btn--size-heading {
+  --button-height: calc(var(--font-size-xl) * var(--line-height-heading));
+  --icon-size: calc(var(--button-height) * .55);
+  flex-shrink: 0;
+}
+.btn--hit-area { overflow: visible; }
+.btn--hit-area::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: var(--hit-left, 0px);
+  top: var(--hit-top, 0px);
+  width: var(--hit-width, 100%);
+  height: var(--hit-height, 100%);
+  background: transparent;
+  border-radius: 0;
+  transform: none;
+  pointer-events: auto;
+}
+/* Overflow must stay visible for the stretched hit area. Use the same fill
+   states without the expanding circle, which would otherwise spill outside. */
+.btn--hit-area::after { display: none; }
+.btn--hit-area:hover, .btn--hit-area:active { transform: none; scale: 1; }
+.btn--hit-area.btn--fill-pink:hover,
+.btn--hit-area.btn--fill-pink:focus-visible { background: #fff; color: #101014; }

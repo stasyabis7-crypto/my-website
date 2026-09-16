@@ -45,7 +45,7 @@
   width: var(--work-width);
   min-width: 0;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr) 170px;
   gap: 20px;
   padding-block: 24px;
 }
@@ -55,20 +55,19 @@
   height: 100%;
   min-height: 0;
   object-fit: contain;
+  object-position: center bottom;
   user-select: none;
   -webkit-user-drag: none;
 }
-.work-gallery__caption { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.work-gallery__copy { min-width: 0; }
-.work-gallery .work-gallery__copy h3 { margin: 4px 0 8px; }
-.work-gallery .work-gallery__copy p { margin: 0; }
-.work-gallery__caption .btn { flex-shrink: 0; }
+.work-gallery__caption { width: var(--cover-width, 100%); max-width: 100%; margin-inline: auto; }
+.work-gallery__title-row { display: flex; align-items: flex-start; gap: 12px; }
+.work-gallery__title-row h3 { min-width: 0; margin: 0; overflow-wrap: anywhere; }
+.work-gallery .work-gallery__caption p { margin: 10px 0 0; }
 @media (max-width: 999px) {
   .work-gallery { padding-bottom: calc(var(--footer-h, 64px) + 30px); }
   .work-gallery__track { --work-width: 76vw; gap: 8vw; }
   .work-gallery__toolbar { padding-inline: 20px; }
-  .work-gallery__work { gap: 16px; padding-block: 20px; }
-  .work-gallery__caption { gap: 12px; }
+  .work-gallery__work { gap: 16px; padding-block: 20px; grid-template-rows: minmax(0, 1fr) 180px; }
 }
 @media (max-width: 599px) {
   .work-gallery { padding-top: calc(var(--header-h, 64px) + 28px); }
@@ -80,8 +79,8 @@
   .work-gallery { padding-top: 90px; padding-bottom: 14px; }
   .work-gallery__toolbar { position: absolute; top: 100px; left: 0; flex-direction: column; align-items: flex-start; width: 24vw; padding-inline: 20px; }
   .work-gallery__track { --work-width: 48vw; }
-  .work-gallery__copy > p { display: none; }
-  .work-gallery__work { padding-block: 10px; gap: 8px; }
+  .work-gallery__caption > p { display: none; }
+  .work-gallery__work { padding-block: 10px; gap: 8px; grid-template-rows: minmax(0, 1fr) 80px; }
 }
 
 @media (min-width: 1000px) {
@@ -90,9 +89,9 @@
 }
 
 
-@media (max-width: 599px) {
-  .work-gallery__caption { position: relative; display: block; }
-  .work-gallery__caption .btn { position: absolute; right: 0; bottom: calc(100% + 16px); }
-}
-
 .work-gallery__status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@media (max-width: 599px) and (max-height: 650px) {
+  .work-gallery__work { grid-template-rows: minmax(0, 1fr) 112px; }
+  .work-gallery__caption > p { display: none; }
+}
