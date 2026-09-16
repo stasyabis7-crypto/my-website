@@ -49,7 +49,7 @@
 
   ─── .case-team — блок команды (готовый компонент) ─────────────────────
   Белая стопка: персонаж, роль, описание сотрудничества. Фон — тема
-  страницы. Автопереключение и кнопки, без горизонтального свайпа.
+  главного баннера. Автопереключение и клик по колоде, без свайпа.
 
   ─── .case-about — блок «О проекте» (готовый компонент) ────────────────
   Заголовок (H1) → 32px → .case-cards-feature (см. реестр карточек в
@@ -568,15 +568,32 @@
 
 /* ─── .case-team — белая стопка карточек на фоне темы ─── */
 .case-team {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(56px, 7vw, 100px);
+  color: var(--mood-ink);
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
   gap: 48px;
 }
-.case-team__subtitle.text-body-lg { margin-top: 8px; }
+.case-team::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: var(--mood-bg);
+  box-shadow: 0 0 0 100vmax var(--mood-bg);
+  clip-path: inset(0 -100vmax);
+}
+.case-team__subtitle.text-body-lg { margin-top: 8px; color: inherit; }
+.case-team__number { position: absolute; top: 20px; right: 24px; }
+.case-team__hit { position: absolute; top: 0; left: 0; width: 100%; z-index: 6; }
+
 .case-team__carousel { min-width: 0; padding: 24px 24px 0; }
 .case-team__cards { display: grid; gap: 24px; }
 .case-team__card {
+  position: relative;
   min-width: 0;
   padding: 24px 28px 36px;
   border: 1px solid #252529;
@@ -597,6 +614,7 @@
 .case-team__card-title { overflow-wrap: break-word; }
 .case-team__card-subtitle { margin: 8px auto 0; }
 .case-team__carousel.is-ready .case-team__cards {
+  position: relative;
   isolation: isolate;
   perspective: 1100px;
   gap: 0;
@@ -618,22 +636,20 @@
   transform: translate(65%, -12%) rotate(18deg) rotateY(-24deg);
   opacity: 0;
 }
-.case-team__controls:not([hidden]) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 56px;
+@media (hover: hover) and (pointer: fine) {
+  .case-team__cards:has(.case-team__hit:hover) .case-team__card[data-position="0"]:not(.is-leaving) {
+    transform: translateY(-12px) rotate(1deg);
+  }
 }
 @media (max-width: 700px) {
-  .case-team { grid-template-columns: 1fr; gap: 24px; }
-  .case-team__carousel { padding-inline: 40px 16px; }
+  .case-team { grid-template-columns: 1fr; gap: 24px; padding-bottom: 96px; }
+  .case-team__carousel { padding-inline: 56px 20px; }
   .case-team__card { padding: 20px 20px 28px; }
   .case-team__avatar { width: min(100%, 200px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .case-team__carousel.is-ready .case-team__card { transition: none; }
+  .case-team__cards:has(.case-team__hit:hover) .case-team__card[data-position="0"]:not(.is-leaving) { transform: rotate(-3deg); }
 }
 
 /* ─── .case-about — заголовок + .case-cards-feature (case-cards.css) ─── */

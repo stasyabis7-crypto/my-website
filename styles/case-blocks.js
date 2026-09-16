@@ -96,14 +96,13 @@
 })();
 
 
-/* Стопка команды: автоматическое перелистывание и кнопка, без свайпа. */
+/* Стопка команды: автоматическое перелистывание и клик по колоде, без свайпа. */
 (function () {
   'use strict';
   document.querySelectorAll('.case-team__carousel').forEach(function (carousel) {
     var cards = Array.from(carousel.querySelectorAll('.case-team__card'));
     if (cards.length < 2) return;
     var next = carousel.querySelector('[data-team-next]');
-    var pause = carousel.querySelector('[data-team-pause]');
     var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     var active = 0, busy = false, visible = false, paused = motion.matches;
     var timer;
@@ -113,6 +112,7 @@
         var position = (i - active + cards.length) % cards.length;
         card.dataset.position = position;
         card.setAttribute('aria-hidden', String(position !== 0));
+        if (position === 0) next.setAttribute('aria-label', card.querySelector('h3').textContent + ', ' + (i + 1) + ' из ' + cards.length + '. Следующая карточка команды');
       });
     }
     function schedule() {
@@ -136,17 +136,7 @@
         schedule();
       }, motion.matches ? 0 : 650);
     }
-    function updatePause() {
-      pause.setAttribute('aria-pressed', String(paused));
-      pause.setAttribute('aria-label', paused ? 'Включить переключение' : 'Приостановить переключение');
-      pause.firstElementChild.textContent = paused ? '▷' : 'Ⅱ';
-    }
     next.addEventListener('click', advance);
-    pause.addEventListener('click', function () {
-      paused = !paused;
-      updatePause();
-      schedule();
-    });
     carousel.addEventListener('mouseenter', schedule);
     carousel.addEventListener('mouseleave', schedule);
     carousel.addEventListener('focusin', schedule);
@@ -154,7 +144,6 @@
     document.addEventListener('visibilitychange', schedule);
     motion.addEventListener('change', function () {
       paused = motion.matches;
-      updatePause();
       schedule();
     });
     new IntersectionObserver(function (entries) {
@@ -162,8 +151,11 @@
       schedule();
     }, { threshold: 0.5 }).observe(carousel);
     render();
-    updatePause();
     carousel.classList.add('is-ready');
-    carousel.querySelector('.case-team__controls').hidden = false;
+    var deck = carousel.querySelector('.case-team__cards');
+    new ResizeObserver(function () {
+      next.style.setProperty('--control-surface-height', deck.offsetHeight + 'px');
+    }).observe(deck);
+    next.hidden = false;
   });
 })();

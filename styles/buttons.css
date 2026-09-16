@@ -444,3 +444,33 @@ html.chrome--pinned .btn--scroll-shadow {
 html.mood-character-dragging .btn--fill-character { cursor: grabbing; }
 
 @media (prefers-reduced-motion: reduce) { .btn { transition-duration: .01ms; } }
+
+/* Invisible deck action. The shared button height stays unchanged; the hit
+   surface extends across the deck, just as for the character action above.
+   Usage: .btn.btn--fill-deck; --control-surface-height follows deck height. */
+.btn--fill-deck {
+  overflow: visible;
+  background: transparent;
+  color: #14161a;
+  padding: 0;
+  border-radius: 24px;
+  touch-action: manipulation;
+}
+.btn--fill-deck[hidden] { display: none; }
+.btn--fill-deck::after { display: none; }
+.btn--fill-deck::before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--control-surface-height, 100%);
+  border-radius: 24px;
+  cursor: pointer;
+}
+.btn--fill-deck:hover,
+.btn--fill-deck:active { transform: none; scale: 1; }
+.btn--fill-deck:focus-visible { outline: none; }
+.btn--fill-deck:focus-visible::before {
+  outline: 3px solid var(--mood-ink);
+  outline-offset: 10px;
+}
