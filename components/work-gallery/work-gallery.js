@@ -176,29 +176,12 @@
     if (!dx && !dy) return;
     e.preventDefault();
     const now = performance.now();
-    const gap = wheel ? now - wheel.lastAt : Infinity;
-    if (wheel && gap > 160) wheel = null;
-    if (wheel?.kind) {
-      const delta = wheel.axis === 'x' ? dx : dy;
-      const amplitude = Math.abs(delta);
-      const other = Math.abs(wheel.axis === 'x' ? dy : dx);
-      const elapsed = now - wheel.started;
-      // Apply the same release rules after page navigation and work navigation.
-      // A page gesture used to swallow every new event until 160 ms of silence;
-      // small new strokes also failed the old 12 px / 2.2x momentum threshold.
-      const reversal = amplitude >= 4 && Math.sign(delta) !== wheel.direction;
-      const renewed = elapsed > 100 && amplitude >= 4 && wheel.trough !== null &&
-        amplitude >= wheel.trough + 2 && amplitude >= wheel.trough * 1.6;
-      const freshAfterPause = gap >= 90 && amplitude >= 4 && amplitude >= wheel.lastAmplitude * .9;
-      const newAxis = elapsed > 80 && other >= 6 && other > amplitude * 1.8;
-      if (reversal || renewed || freshAfterPause || newAxis) wheel = null;
-      else {
-        if (amplitude < wheel.peak * .65) wheel.trough = Math.min(wheel.trough ?? amplitude, amplitude);
-        wheel.lastAmplitude = amplitude;
-        wheel.peak = Math.max(wheel.peak, amplitude);
-      }
-    }
-    if (!wheel) wheel = { x: 0, y: 0, kind: null, started: now, lastAt: now, lastAmplitude: 0, peak: 0, trough: null };
+    // Wheel events have no reliable touch-start/end phase on a trackpad.
+    // Acceleration, direction noise and gaps inside inertia are not new swipes.
+    // Consume the entire burst; re-arm only after it has gone quiet. This wait
+    // is between gestures, never before reacting to the start of a new one.
+    if (wheel && now - wheel.lastAt > 160) wheel = null;
+    if (!wheel) wheel = { x: 0, y: 0, kind: null, lastAt: now };
     wheel.lastAt = now;
     if (wheel.kind) return;
     wheel.x += dx; wheel.y += dy;
@@ -207,7 +190,6 @@
     wheel.axis = Math.abs(wheel.x) >= Math.abs(wheel.y) * .8 ? 'x' : 'y';
     const delta = wheel.axis === 'x' ? wheel.x : wheel.y;
     wheel.direction = Math.sign(delta);
-    wheel.lastAmplitude = wheel.peak = Math.abs(wheel.axis === 'x' ? dx : dy);
     if (wheel.axis === 'y' && delta < 0) { wheel.kind = 'page'; showHero(); return; }
     if (!visible()) {
       if (delta > 0) { wheel.kind = 'page'; showGallery(); }
