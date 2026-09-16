@@ -51,20 +51,6 @@
   background: var(--transition-stas-bg, #D60067);
   color: var(--transition-stas-ink, #FDF07F);
 }
-.page-transition__words {
-  display: flex;
-  flex: none;
-  align-items: center;
-  gap: clamp(24px, 5vw, 100px);
-  white-space: nowrap;
-}
-.page-transition__words i {
-  flex: none;
-  width: .65em;
-  height: .65em;
-  border: .12em solid currentColor;
-  border-radius: 50%;
-}
 .is-transition-covering .page-transition__band {
   animation: transition-cover calc(var(--transition-cover-ms) * 1ms) cubic-bezier(.65, 0, .25, 1) var(--band-delay) both;
 }
