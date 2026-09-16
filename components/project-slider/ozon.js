@@ -6,13 +6,13 @@ window.projectCollections = {
     ['Раздел Цен в ЛК Селлера', 'Обновили все таблицы и настройки', 'phone'],
     ['НДС на УСН', 'Обновление выбора НДС по запросу гос–ва', 'phone'],
     ['CRM для продавцов', 'Раздел для продвижения товаров с нуля до прода', 'desktop'],
-    ['ТГ канал', 'Учила делать анимацию в Protopie', 'square'],
+    ['ТГ канал', 'Учила делать анимацию в Protopie', 'square', 'https://t.me/ozondesign/4393'],
     ['Портрет покупателя', 'Нужен для глубокого анализа своей ЦА', 'square'],
     ['Временная мин. цена', 'Сделали её временной и алёртили везде об этом', 'square'],
     ['Бустинг в ценах', 'Учим пользователей ставить акции на товары', 'square'],
     ['Редизайн таблицы цен', 'Поменяли всё от скролла до кол–ва ячеек', 'desktop']
-  ].map(([title, description, format], i) => ({
-    title, description, format, href: null,
+  ].map(([title, description, format, href], i) => ({
+    title, description, format, href: href || null,
     image: i === 3 ? `/assets/covers-ozon/4-original.webp` : `/assets/covers-ozon/${i + 1}-1280.webp${i === 2 ? "?v=2" : ""}`,
     srcset: i === 3
       ? `/assets/covers-ozon/4-original.webp 1302w`
