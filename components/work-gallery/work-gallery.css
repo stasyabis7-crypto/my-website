@@ -54,7 +54,7 @@
   -webkit-user-drag: none;
 }
 .work-gallery__caption { width: var(--cover-width, 100%); max-width: 100%; margin-inline: auto; }
-.work-gallery__title-row { display: flex; align-items: flex-start; gap: 12px; }
+.work-gallery__title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .work-gallery__title-row h3 { min-width: 0; margin: 0; overflow-wrap: anywhere; }
 .work-gallery .work-gallery__caption p { margin: 10px 0 0; }
 @media (max-width: 999px) {
