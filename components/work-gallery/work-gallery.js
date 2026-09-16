@@ -178,9 +178,23 @@
     const now = performance.now();
     // Wheel events have no reliable touch-start/end phase on a trackpad.
     // Acceleration, direction noise and gaps inside inertia are not new swipes.
-    // Consume the entire burst; re-arm only after it has gone quiet. This wait
-    // is between gestures, never before reacting to the start of a new one.
+    // Same-direction inertia stays consumed. A deliberate horizontal reversal
+    // can start immediately, but a single small opposite pulse cannot.
     if (wheel && now - wheel.lastAt > 160) wheel = null;
+    if (wheel?.kind === 'work') {
+      const reversing = Math.abs(dx) > Math.abs(dy) * 1.5 && Math.sign(dx) === -wheel.direction;
+      if (reversing) {
+        wheel.reverseDistance = (wheel.reverseDistance || 0) + Math.abs(dx);
+        wheel.reverseEvents = (wheel.reverseEvents || 0) + 1;
+        if (Math.abs(dx) >= 24 || (wheel.reverseEvents >= 2 && wheel.reverseDistance >= 10)) {
+          const reverseX = Math.sign(dx) * wheel.reverseDistance;
+          wheel = { x: reverseX - dx, y: -dy, kind: null, lastAt: now };
+        }
+      } else {
+        wheel.reverseDistance = 0;
+        wheel.reverseEvents = 0;
+      }
+    }
     if (!wheel) wheel = { x: 0, y: 0, kind: null, lastAt: now };
     wheel.lastAt = now;
     if (wheel.kind) return;
