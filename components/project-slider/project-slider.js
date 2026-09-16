@@ -8,7 +8,8 @@
       : '(max-width: 599px) 100vw, 50vw';
     const panel = variant === 'panel';
     const copy = `<div class="project-card__copy"><h3 class="project-card__text text-h2">${title}</h3><p class="project-card__text text-body">${escape(project.description)}</p></div>`;
-    const link = project.href ? `<a class="project-card__link" href="${escape(project.href)}" aria-label="Открыть проект: ${title}" tabindex="-1"></a><a class="project-card__open btn ${panel ? 'btn--fill-pink' : 'btn--fill-white'} btn--icon-only btn--icon-diagonal-motion" href="${escape(project.href)}" aria-label="Открыть проект: ${title}"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : '';
+    const linkTarget = /^https:\/\/t\.me\//i.test(project.href || '') ? ' target="_blank" rel="noopener noreferrer"' : '';
+    const link = project.href ? `<a class="project-card__link" href="${escape(project.href)}"${linkTarget} aria-label="Открыть проект: ${title}" tabindex="-1"></a><a class="project-card__open btn ${panel ? 'btn--fill-pink' : 'btn--fill-white'} btn--icon-only btn--icon-diagonal-motion" href="${escape(project.href)}"${linkTarget} aria-label="Открыть проект: ${title}"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : '';
     return `<article class="project-card project-card--${escape(project.format)}${isInterface ? ' project-card--interface' : ''}${panel ? ' project-card--panel' : ''}${project.href ? ' project-card--linked' : ''}" ${panel && project.href ? 'data-action-hover' : ''} data-index="${index}" role="listitem" aria-label="${index + 1} из ${count}: ${title}">
       ${panel ? copy : ''}
       <div class="project-card__media" ${project.href ? 'data-action-hover' : ''}>
