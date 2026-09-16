@@ -1,4 +1,4 @@
-/* Original procedural particle companion, inspired by the supplied motion reference.
+/* Procedural matte-clay companion with diffuse lighting and morphing shapes.
    Canvas 2D, no downloaded character assets or animation runtime. */
 (function () {
   'use strict';
@@ -34,15 +34,9 @@
   const mix = (a, b, t) => a + (b - a) * t;
   const ease = t => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
   const random = n => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
-  const particles = Array.from({ length: 1900 }, (_, i) => {
-    const z = 1 - 2 * (i + .5) / 1900;
-    const a = i * Math.PI * (3 - Math.sqrt(5));
-    const r = Math.sqrt(1 - z * z);
-    return { x: Math.cos(a) * r, y: z, z: Math.sin(a) * r, seed: random(i), layer: .68 + random(i + 99) * .32 };
-  });
   const shapes = ['wave', 'flower', 'heart', 'star'];
   let shapeIndex = 0;
-  // A radial heart silhouette keeps each particle's identity during morphs.
+  // A radial heart silhouette keeps the contour continuous during morphs.
   const heartOutline = Array.from({ length: 360 }, (_, i) => {
     const angle = i / 360 * Math.PI * 2;
     let low = 0, high = 1.6;
@@ -416,51 +410,52 @@
     const outlineAt = angle => change
       ? mix(silhouette(change.fromShape, angle, t), silhouette(change.toShape, angle, t), scene.morph || 0)
       : silhouette(shapeIndex, angle, t);
-    // A clean silhouette and shared contour keep the compact body cohesive.
-    if (compact) {
-      ctx.fillStyle = mood.bg;
-      ctx.globalAlpha = scene.opacity * .94;
-      ctx.beginPath();
-      for (let step = 0; step <= 120; step++) {
-        const angle = step / 120 * Math.PI * 2;
-        const radius = 149 * outlineAt(angle);
-        const x = Math.cos(angle) * radius, y = Math.sin(angle) * radius;
-        if (step === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.closePath();
-      ctx.fill();
+    // Matte clay: a solid contour with broad, diffuse lighting.
+    const body = new Path2D();
+    for (let step = 0; step <= 180; step++) {
+      const angle = step / 180 * Math.PI * 2;
+      const radius = 151 * outlineAt(angle);
+      const x = Math.cos(angle) * radius, y = Math.sin(angle) * radius;
+      if (step === 0) body.moveTo(x, y);
+      else body.lineTo(x, y);
     }
-    const count = compact ? 90 : (fine.matches ? 520 : 340);
-    const rings = compact ? 5 : 12;
-    for (let i = 0; i < count; i++) {
-      const p = particles[Math.floor(i * particles.length / count)];
-      // Concentric rows share one slow deformation, with more dots at the edge.
-      const ring = Math.min(rings, Math.floor(Math.sqrt(i / count) * rings) + 1);
-      const first = Math.ceil(count * Math.pow((ring - 1) / rings, 2));
-      const end = Math.ceil(count * Math.pow(ring / rings, 2));
-      const angle = (i - first) / (end - first) * Math.PI * 2 + ring * .19 + t * .025;
-      const depth = ring / rings;
-      const xx = Math.cos(angle), zz = Math.cos(angle - .5) * .4;
-      const outline = outlineAt(angle);
-      const radius = 151 * outline * depth;
-      const spread = scene.scatter * 12 * depth;
-      let x = xx * (radius + spread);
-      let y = Math.sin(angle) * (radius + spread);
-      if (!motionOff() && !compact && point.active) {
-        const gx = (point.x - position.x - position.size / 2) * 480 / position.size / heroScale;
-        const gy = (point.y - position.y - position.size / 2) * 480 / position.size / heroScale;
-        const dist = Math.hypot(x - gx, y - gy);
-        if (dist < 90) { const repel = (1 - dist / 90) * (hovering ? 9 : 4); x += (x - gx) / (dist || 1) * repel; y += (y - gy) / (dist || 1) * repel; }
+    body.closePath();
+    ctx.save();
+    ctx.shadowColor = 'rgba(35, 20, 45, .22)';
+    ctx.shadowBlur = compact ? 12 : 18;
+    ctx.shadowOffsetY = 9;
+    ctx.fillStyle = mood.bg;
+    ctx.fill(body);
+    ctx.restore();
+    ctx.save();
+    ctx.clip(body);
+    const lightX = -57 + gaze.x * 12, lightY = -70 + gaze.y * 8;
+    const light = ctx.createRadialGradient(lightX, lightY, 8, -20, -30, 240);
+    light.addColorStop(0, 'rgba(255,255,255,.65)');
+    light.addColorStop(.36, 'rgba(255,255,255,.26)');
+    light.addColorStop(.64, 'rgba(255,255,255,0)');
+    light.addColorStop(.88, 'rgba(51,28,66,.20)');
+    light.addColorStop(1, 'rgba(36,20,49,.38)');
+    ctx.fillStyle = light;
+    ctx.fillRect(-210, -210, 420, 420);
+    // A soft edge shade follows every shape, including the heart and flower.
+    ctx.strokeStyle = 'rgba(50,25,65,.12)';
+    ctx.lineWidth = 22;
+    ctx.filter = 'blur(10px)';
+    ctx.stroke(body);
+    ctx.filter = 'none';
+    // Fixed low-contrast grain suggests clay without animated speckle.
+    if (!compact) {
+      ctx.fillStyle = 'rgba(70,35,70,.045)';
+      for (let i = 0; i < 650; i++) {
+        const x = (random(i + 2000) - .5) * 370;
+        const y = (random(i + 4000) - .5) * 370;
+        ctx.beginPath();
+        ctx.arc(x, y, .35 + random(i + 6000) * .35, 0, Math.PI * 2);
+        ctx.fill();
       }
-      const alpha = (.48 + depth * .35) * scene.opacity;
-      ctx.globalAlpha = alpha;
-      ctx.fillStyle = mood.ink;
-      const dot = (compact ? 6 : 2.1) + p.seed * (compact ? 4.2 : 2) + (zz + 1) * .65;
-      ctx.beginPath();
-      ctx.arc(x, y, dot / 2, 0, Math.PI * 2);
-      ctx.fill();
     }
+    ctx.restore();
     ctx.globalAlpha = scene.opacity;
     const blink = now - blinkStart;
     let lid = blink >= 0 && blink < 150 ? Math.max(.05, Math.abs(blink - 75) / 75) : 1;
@@ -502,7 +497,7 @@
     frame = 0;
     if (!mounted || document.hidden) return;
     const delta = lastFrame ? Math.min(now - lastFrame, 64) : 16;
-    // Limit particle redraws to 30fps on touch devices; transforms remain time-based.
+    // Limit canvas redraws to 30fps on touch devices; transforms remain time-based.
     if (lastFrame && !fine.matches && !motionOff() && !drag?.active && delta < 30) { wake(); return; }
     lastFrame = now;
     if (drag?.active) {
