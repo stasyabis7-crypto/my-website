@@ -18,8 +18,8 @@
 .project-card__image { display: block; position: absolute; user-select: none; pointer-events: none; }
 .project-card--phone .project-card__image { width: 66%; height: auto; top: 17%; left: 17%; }
 .project-card--desktop .project-card__image { width: 88%; height: auto; top: 50%; left: 6%; transform: translateY(-50%); border-radius: 8px; }
-/* Place the CRM image midpoint at the cover's bottom edge to show its top half. */
-.project-slider[data-projects="ozon"] .project-card[data-index="2"] .project-card__image { top: 100%; }
+/* Keep the CRM image cropped below the cover with less empty space above it. */
+.project-slider[data-projects="ozon"] .project-card[data-index="2"] .project-card__image { top: 85%; }
 .project-card--square .project-card__image { width: 100%; height: 100%; object-fit: cover; top: 0; left: 0; }
 .project-card__link { position: absolute; inset: 0; z-index: 1; border-radius: 32px; }
 .project-card__link:focus-visible { outline: 3px solid var(--color-action-active); outline-offset: -5px; }
