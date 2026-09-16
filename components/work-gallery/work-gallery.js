@@ -35,6 +35,9 @@
     slides.forEach((slide, i) => {
       const active = i === physical;
       slide.setAttribute('aria-current', String(active));
+      // Every copy of a project shares its visual state, so the invisible
+      // loop handoff cannot restart the scale/opacity animation.
+      slide.dataset.focused = String(modulo(i) === index);
       // Repeated cycles are visual neighbours, not duplicate focus stops.
       slide.setAttribute('aria-hidden', String(!active));
       const link = slide.querySelector('a');

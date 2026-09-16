@@ -115,9 +115,9 @@
   transform-origin: center center;
   transition: transform .35s ease;
 }
-.work-gallery__work[aria-current="true"] .work-gallery__presentation { transform: scale(1); }
+.work-gallery__work[data-focused="true"] .work-gallery__presentation { transform: scale(1); }
 .work-gallery__work .work-gallery__caption { opacity: .32; transition: opacity .35s ease; }
-.work-gallery__work[aria-current="true"] .work-gallery__caption { opacity: 1; }
+.work-gallery__work[data-focused="true"] .work-gallery__caption { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   .work-gallery__presentation, .work-gallery__work .work-gallery__caption { transition: none; }
 }
