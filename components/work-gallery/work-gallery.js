@@ -176,7 +176,7 @@
     // the first wheel event. They still carry gesture timing and direction.
     // Re-arm only after silence, never from acceleration, reversal or axis
     // noise inside the same gesture (including its entire momentum tail).
-    if (wheel && now - wheel.lastAt > 240) wheel = null;
+    if (wheel && now - wheel.lastAt > 400) wheel = null;
     if (!wheel) wheel = { x: 0, y: 0, kind: null, lastAt: now };
     wheel.lastAt = now;
     // Returning to the hero is a separate action: an upward gesture over a
