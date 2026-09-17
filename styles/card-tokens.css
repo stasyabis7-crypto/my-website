@@ -2,3 +2,13 @@
 :root { --project-card-radius: 28px; --wg-radius: var(--project-card-radius); }
 @media (max-width: 1100px) { :root { --project-card-radius: 22px; } }
 @media (max-width: 640px) { :root { --project-card-radius: 20px; } }
+
+/* Center the cutout on the circular action, with equal clearance all around. */
+:root {
+  --project-card-action-gap: 10px;
+  --project-card-action-mask: radial-gradient(
+    circle at calc(100% - var(--button-height) / 2) calc(100% - var(--button-height) / 2),
+    transparent calc(var(--button-height) / 2 + var(--project-card-action-gap)),
+    #000 calc(var(--button-height) / 2 + var(--project-card-action-gap) + 1px)
+  );
+}

@@ -43,8 +43,16 @@
       const caption = slide.querySelector('.work-gallery__caption');
       const ratio = image.naturalWidth / image.naturalHeight;
       const gap = parseFloat(getComputedStyle(presentation).gap) || 20;
-      const availableHeight = Math.max(96, presentation.clientHeight - caption.offsetHeight - gap);
-      const width = Math.min(slide.clientWidth, availableHeight * ratio);
+      // Caption wrapping depends on the artwork width. Fit both together,
+      // starting afresh on resize so a previously narrow card can grow again.
+      let width = slide.clientWidth;
+      for (let pass = 0; pass < 12; pass++) {
+        slide.style.setProperty('--cover-width', `${width}px`);
+        const availableHeight = Math.max(96, presentation.clientHeight - caption.offsetHeight - gap);
+        const next = Math.min(width, availableHeight * ratio);
+        if (width - next < .5) break;
+        width = next;
+      }
       slide.style.setProperty('--cover-ratio', ratio);
       slide.style.setProperty('--cover-width', `${width}px`);
       slide.style.setProperty('--cover-height', `${width / ratio}px`);
