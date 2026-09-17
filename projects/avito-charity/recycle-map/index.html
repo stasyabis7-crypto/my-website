@@ -68,6 +68,9 @@ body {
   padding-inline: var(--wg-side);
   padding-block: 16px 5rem;
 }
+@media (max-width: 999px) {
+  .case { padding-bottom: calc(var(--footer-h, 64px) + 96px); }
+}
 
 /* The visible hero surface and the first metrics are exactly 16px apart. */
 .project-hero { padding-bottom: 0; }

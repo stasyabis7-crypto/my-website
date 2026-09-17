@@ -28,7 +28,7 @@
 (function () {
   var DESKTOP_MIN = 1101;
   var TOGGLE_GAP = 10; // px, зазор между плашкой хедера и кнопкой темы
-  var HEADER_EDGE_GAP = 12; // px, минимальный зазор от плашки-хедера по центру до края экрана на мобилке (см. syncLogoScale)
+  var HEADER_EDGE_GAP = 16; // px, минимальный зазор от хедера до края баннера на мобилке
   var LOGO_MIN_WIDTH = 80; // px, ниже этой ширины логотип-словомарк не сжимаем дальше, а убираем совсем (см. syncLogoScale)
   var COLLISION_GAP = 16; // px, минимальный зазор между переключателем темы и футером
   var FOOTER_COLLAPSE_SCREENS = 2; // сколько высот экрана нужно проскроллить, прежде чем футер свернётся в "Меню" + стрелку вверх
@@ -117,7 +117,8 @@
     if (logoLink) logoLink.hidden = false;
     if (window.innerWidth >= 1000) return;
 
-    var budget = window.innerWidth - 2 * HEADER_EDGE_GAP;
+    var heroEdge = parseFloat(getComputedStyle(root).getPropertyValue('--hero-edge')) || 10;
+    var budget = window.innerWidth - 2 * (heroEdge + HEADER_EDGE_GAP);
     var overflow = header.getBoundingClientRect().width - budget;
     if (overflow <= 0) return;
 

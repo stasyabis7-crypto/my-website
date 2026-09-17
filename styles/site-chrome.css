@@ -55,10 +55,19 @@ html:not(.chrome--pinned) .site-socials {
   .site-header {
     left: 50%;
     transform: translateX(-50%);
-    padding-inline: 16px;
+    padding-inline: var(--chrome-pad-block);
     /* Паддинг между «Резюме» и кнопкой соцсетей (и заодно до аватара). */
     gap: 6px;
   }
+  .site-header:has(.site-header__logo[hidden]) {
+    width: calc(100% - 2 * (var(--hero-edge, 10px) + 16px));
+  }
+  .site-header:has(.site-header__logo[hidden]) .site-header__cta {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .site-header__identity,
+  .site-header .site-socials { flex-shrink: 0; }
   html:not(.chrome--pinned) .site-header {
     top: calc(var(--hero-edge, 10px) + var(--hero-chrome-inset, 10px));
     left: 50%;

@@ -216,6 +216,13 @@ body {
   font-size: var(--font-size-2xl);
 }
 
+/* Internal-page heroes use the standard H1 scale in the mobile layout. */
+@media (max-width: 999px) {
+  .project-hero .text-display-lg {
+    font-size: var(--font-size-2xl);
+  }
+}
+
 .text-h2 {
   font-size: var(--font-size-xl);
 }

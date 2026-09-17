@@ -420,6 +420,13 @@ html.chrome--pinned .btn--scroll-shadow {
 
 /* Text may wrap within the shared height when flanked by icon-only actions. */
 .btn--label-wrap { white-space: normal; padding-inline: 16px; text-align: center; }
+@media (max-width: 360px) {
+  /* The same wrapped label treatment fits between two circular header actions. */
+  .site-header:has(.site-header__logo[hidden]) .site-header__cta {
+    white-space: normal;
+    padding-inline: 16px;
+  }
+}
 
 /* Touch devices keep their resting fill: only a brief press scale changes.
    Keyboard focus remains visible through an outline, without a touch hover latch. */

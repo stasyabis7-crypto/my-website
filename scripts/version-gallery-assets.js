@@ -6,6 +6,9 @@ const crypto = require('node:crypto');
 const root = path.resolve(process.argv[2] || path.join(__dirname, '..'));
 // Dependencies precede their importers, so a token change also versions its CSS.
 const assets = [
+  'styles/typography.css',
+  'styles/buttons.css',
+  'styles/layout-chrome.js',
   'styles/card-tokens.css',
   'styles/mood-companion.css',
   'styles/mood-companion.js',
