@@ -113,7 +113,19 @@
 .work-gallery__image { border-radius: var(--project-card-radius); mask-image: var(--project-card-action-mask); }
 .work-gallery__action { position: absolute; right: 0; bottom: 0; }
 .work-gallery__media { width: var(--cover-width, 100%); max-width: 100%; margin-inline: auto; }
-.work-gallery .work-gallery__tag { display: inline-block; padding: 4px 14px; border: 1px solid currentColor; border-radius: 999px; }
+.work-gallery .work-gallery__tag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  max-width: calc(100% - 32px);
+  margin: 0;
+  padding: 4px 14px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  pointer-events: none;
+}
 
 /* Size the actual artwork, so the corner action never sits on letterboxing. */
 .work-gallery__media { height: var(--cover-height, calc(var(--work-width) / var(--cover-ratio, 1.3333))); flex: none; }

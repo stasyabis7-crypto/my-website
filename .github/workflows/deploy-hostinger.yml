@@ -20,6 +20,9 @@ jobs:
       - name: Check design system (buttons/fonts)
         run: node scripts/check-design-system.js
 
+      - name: Version gallery assets for the hosting CDN
+        run: node scripts/version-gallery-assets.js
+
       - name: Deploy to Hostinger hosting
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
