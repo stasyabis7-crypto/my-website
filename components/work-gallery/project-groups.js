@@ -54,7 +54,7 @@ window.portfolioGroups = [
   {
     "id": "concepts",
     "title": "Концепты",
-    "description": "Красивые картинки для вдохновения",
+    "description": "Красивые макеты, которые я делаю для души и для развития UI",
     "tag": "",
     "image": "/assets/project-groups/group6-concepts.webp",
     "srcset": "",

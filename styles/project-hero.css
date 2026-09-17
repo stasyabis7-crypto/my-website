@@ -1,16 +1,30 @@
 /* The home hero supplies the layout; only the replacement artwork is scoped here. */
+.project-hero { --project-hero-bottom: 90px; }
 .project-hero__art {
   align-self: stretch;
   justify-content: flex-start;
   min-height: 0;
+  height: auto;
+  margin-bottom: calc(-1 * var(--project-hero-bottom));
 }
 .project-hero__image {
   display: block;
   width: min(100%, 540px);
   height: auto;
   flex-shrink: 0;
+  margin-top: auto;
 }
 .project-hero__works { padding-top: 64px; }
 @media (max-width: 999px) {
+  .project-hero { --project-hero-bottom: calc(var(--footer-h, 64px) + 20px); }
   .project-hero__image { width: min(100%, 380px); }
+}
+@media (max-width: 999px) and (max-height: 700px) {
+  .project-hero { --project-hero-bottom: calc(var(--footer-h, 64px) + 12px); }
+}
+@media (min-width: 600px) and (max-width: 999px) and (max-height: 550px) {
+  .project-hero { --project-hero-bottom: 80px; }
+}
+@media (max-width: 599px) {
+  .project-hero .mood-stage { row-gap: 40px; }
 }

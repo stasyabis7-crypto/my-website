@@ -44,7 +44,6 @@
     // This blocking head script hides the new document before its first paint.
     // Outgoing navigation does not use pending: it covers the current page.
     root.classList.add('is-transition-pending', incoming ? 'is-transition-boot' : 'is-transition-covering');
-    safetyTimer = setTimeout(reset, 4000);
   }
 
   function duration(name, fallback) {
@@ -89,15 +88,53 @@
     revealTimer = setTimeout(reset, duration('reveal', 850) + 2 * duration('stagger', 90) + 50);
   }
 
+  function imageReady(image) {
+    // A lazy image under the curtain still needs to start loading now.
+    image.loading = 'eager';
+    return new Promise(function (resolve) {
+      function settled() {
+        image.removeEventListener('load', settled);
+        image.removeEventListener('error', settled);
+        if (image.naturalWidth && image.decode) image.decode().catch(function () {}).then(resolve);
+        else resolve(); // A failed image must not trap the visitor behind the curtain.
+      }
+      if (image.complete) { settled(); return; }
+      image.addEventListener('load', settled);
+      image.addEventListener('error', settled);
+    });
+  }
+
+  async function viewportImagesReady(version) {
+    var checked = new WeakSet();
+    while (version === revealVersion && !reduced.matches) {
+      // Let page scripts, anchor positioning and decoded images settle layout.
+      await new Promise(function (resolve) { requestAnimationFrame(resolve); });
+      var images = Array.from(document.images).filter(function (image) {
+        if (checked.has(image)) return false;
+        var rect = image.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.right > 0 &&
+          rect.top < innerHeight && rect.left < innerWidth;
+      });
+      if (!images.length) return;
+      await Promise.all(images.map(function (image) {
+        checked.add(image);
+        return imageReady(image);
+      }));
+    }
+  }
+
   function start() {
     curtain = document.querySelector('.page-transition');
     if (!curtain) { reset(); return; }
+    // Visible images, rather than a fixed timer, decide when to reveal.
     var version = revealVersion;
     var fontBudget = new Promise(function (resolve) { setTimeout(resolve, 700); });
     var entranceTime = incoming ? 320 : duration('cover', 800) + 2 * duration('stagger', 90) + 120;
     var hold = new Promise(function (resolve) { setTimeout(resolve, entranceTime); });
     var fonts = document.fonts ? document.fonts.ready.catch(function () {}) : Promise.resolve();
     Promise.all([hold, Promise.race([fonts, fontBudget])]).then(function () {
+      return viewportImagesReady(version);
+    }).then(function () {
       if (version === revealVersion && !busy) reveal();
     });
 
