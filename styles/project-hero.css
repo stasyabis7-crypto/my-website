@@ -1,0 +1,16 @@
+/* The home hero supplies the layout; only the replacement artwork is scoped here. */
+.project-hero__art {
+  align-self: stretch;
+  justify-content: flex-start;
+  min-height: 0;
+}
+.project-hero__image {
+  display: block;
+  width: min(100%, 540px);
+  height: auto;
+  flex-shrink: 0;
+}
+.project-hero__works { padding-top: 64px; }
+@media (max-width: 999px) {
+  .project-hero__image { width: min(100%, 380px); }
+}

@@ -4,7 +4,7 @@ window.portfolioGroups = [
   {
     "id": "avito-charity",
     "title": "Благотворительность",
-    "description": "Подписки, лендинги, ESG–механики, доступность.",
+    "description": "Подписки, ESG механики, доступность",
     "tag": "Avito",
     "image": "/assets/project-groups/group1-charity.webp",
     "srcset": "",
