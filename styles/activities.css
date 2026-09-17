@@ -1,0 +1,72 @@
+/* Article navigation shares the posts' container and the site's type roles. */
+.activity-articles {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+}
+
+.activity-articles > li {
+  border-top: 1px solid currentColor;
+}
+
+.activity-articles > li:last-child {
+  border-bottom: 1px solid currentColor;
+}
+
+.activity-article {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--wg-gap);
+  padding: 24px 0;
+  color: inherit;
+  text-decoration: none;
+  transition: color .25s ease;
+}
+
+.activity-article::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-action-hover);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform .25s ease;
+}
+
+.activity-article__title,
+.activity-article__description {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.activity-article .activity-article__title,
+.activity-article .activity-article__description { margin: 0; }
+
+.activity-article:focus-visible {
+  color: var(--color-action-hover-text);
+  outline: 2px solid var(--color-action-hover);
+  outline-offset: 4px;
+}
+.activity-article:focus-visible::before { transform: scaleY(1); }
+
+@media (hover: hover) and (pointer: fine) {
+  .activity-article:hover { color: var(--color-action-hover-text); }
+  .activity-article:hover::before { transform: scaleY(1); }
+}
+
+@media (max-width: 700px) {
+  .activity-article {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding-block: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .activity-article,
+  .activity-article::before { transition: none; }
+}
