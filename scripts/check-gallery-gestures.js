@@ -25,7 +25,7 @@ function run(events, initiallyVisible = true) {
 }
 const long = Array.from({ length: 80 }, (_, i) => [100, i % 4 === 0 ? 500 : 20]);
 assert.deepEqual(run(long), [1], 'eight-second swipe');
-assert.deepEqual(run([[0, 90], [300, 15], [300, 200], [300, 1]]), [1], 'sparse momentum');
+assert.deepEqual(run([[0, 90], [300, 15], [300, 8], [300, 1]]), [1], 'sparse momentum');
 assert.deepEqual(run([[0, 100], [30, 1], [30, 400], [30, -50], [30, 20, 60, false]]), [1], 'acceleration, bounce, axis noise');
 assert.deepEqual(run([...long, [450, 100]]), [1, 1], 'new gesture after silence');
 assert.deepEqual(run([[0, 0, 100], [100, 0, 300], [100, 0, 50]], false), ['gallery'], 'hero entry consumes entire gesture');
@@ -37,4 +37,10 @@ assert.deepEqual(run(long.map(([gap, amount]) => [gap, 0, amount])), [1], 'long 
 assert.deepEqual(run([[0, 0, 100], [450, 0, 100]]), [1, 1], 'separate downward gestures');
 assert.deepEqual(run([[0, -100], [40, 0, 12], [16, 0, 18], [16, 0, 30], [16, 0, 100]]), [-1, 1], 'downward scroll after swipe back advances');
 assert.deepEqual(run([[0, 100], [40, 0, 12], [16, 0, 18], [16, 0, 30], [16, 0, 100]]), [1, 1], 'deliberate downward gesture after horizontal swipe');
+// Successive trackpad strokes are not separated by 400 ms of silence.
+assert.deepEqual(run([[0, 80], [180, 80], [180, 80], [180, 80]]), [1, 1, 1, 1], 'four quick separate strokes');
+const stroke = [[16, 60], [16, 100], [16, 40], [16, 12], [16, 5], [16, 3], [16, 2], [16, 1], [16, .5]];
+assert.deepEqual(run([...stroke, ...stroke, ...stroke]), [1, 1, 1], 'three same-direction strokes with no silent gap');
+assert.deepEqual(run([...stroke, ...stroke, ...stroke].map(([gap, amount]) => [gap, 0, amount])), [1, 1, 1], 'three downward trackpad strokes');
+assert.deepEqual(run([...stroke, [16, 50], [16, 1], [16, .5]]), [1], 'one isolated tail spike is ignored');
 console.log('Gallery: single-action wheel gesture checks passed.');

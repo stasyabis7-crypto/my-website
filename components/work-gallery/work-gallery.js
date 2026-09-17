@@ -183,37 +183,54 @@
     // A stream includes finger movement and browser-generated inertia. Keep
     // observing non-cancelable events too: some browsers only allow canceling
     // the first wheel event. They still carry gesture timing and direction.
-    // Same-direction acceleration remains part of the consumed gesture.
-    // A sustained reversal or axis change can start a new gesture before silence.
-    if (wheel && now - wheel.lastAt > 400) wheel = null;
-    if (!wheel) wheel = { x: 0, y: 0, kind: null, lastAt: now };
+    const amplitude = Math.max(Math.abs(dx), Math.abs(dy));
+    const gap = wheel ? now - wheel.lastAt : Infinity;
+    // A pause with fresh force starts a new stroke. A decreasing momentum
+    // sample after the same pause still belongs to the previous stroke.
+    const freshAfterPause = wheel && gap >= 140 && amplitude >= 6 &&
+      amplitude >= wheel.amplitude * .9;
+    if (gap > 400 || freshAfterPause) wheel = null;
+    if (!wheel) wheel = { x: 0, y: 0, kind: null, lastAt: now, amplitude,
+      tailSince: null, candidate: null };
     wheel.lastAt = now;
-    // A deliberate reverse or downward swipe must not wait for old momentum.
-    // Require sustained input, so one axis-noise pulse cannot advance a card.
-    if (wheel.kind === 'work') {
+    wheel.amplitude = amplitude;
+    if (wheel.kind) {
       const horizontal = Math.abs(dx) > Math.abs(dy) * 1.5 && Math.abs(dx) >= 2;
       const downward = dy >= 2 && dy > Math.abs(dx) * 1.5;
       const axis = horizontal ? 'x' : downward ? 'y' : null;
       const direction = horizontal ? Math.sign(dx) : 1;
-      const newIntent = axis && (axis !== wheel.axis || direction !== wheel.direction);
-      if (newIntent) {
+      const changed = axis && (axis !== wheel.axis || direction !== wheel.direction);
+      // Inertia can continue emitting events between two real trackpad strokes.
+      // Recognize a fresh forceful stroke after a quiet tail, even in the same
+      // direction. Holding/accelerating a long stroke never arms this path.
+      if (amplitude <= 6) wheel.tailSince ??= now;
+      const renewed = axis && amplitude >= 12 && wheel.tailSince !== null &&
+        now - wheel.tailSince >= 64;
+      if (changed || renewed) {
         const key = `${axis}:${direction}`;
-        if (!wheel.reverse || wheel.reverse.key !== key || now - wheel.reverse.lastAt > 160) {
-          wheel.reverse = { key, count: 0, distance: 0, startedAt: now };
+        if (!wheel.candidate || wheel.candidate.key !== key || now - wheel.candidate.lastAt > 160) {
+          wheel.candidate = { key, count: 0, distance: 0, startedAt: now };
         }
-        wheel.reverse.count++;
-        wheel.reverse.distance += axis === 'x' ? Math.abs(dx) : dy;
-        wheel.reverse.lastAt = now;
-        if (wheel.reverse.count >= 3 && wheel.reverse.distance >= 24 &&
-            now - wheel.reverse.startedAt >= 24) {
+        const candidate = wheel.candidate;
+        candidate.count++;
+        candidate.distance += axis === 'x' ? Math.abs(dx) : dy;
+        candidate.lastAt = now;
+        const enough = renewed ? candidate.count >= 2 && now - candidate.startedAt >= 12
+          : candidate.count >= 3 && now - candidate.startedAt >= 24;
+        if (enough && candidate.distance >= 24) {
           wheel.direction = direction;
           wheel.axis = axis;
-          wheel.reverse = null;
+          wheel.candidate = null;
+          wheel.tailSince = null;
           wheel.upward = 0;
-          goTo(direction);
+          if (visible()) { wheel.kind = 'work'; goTo(direction); }
+          else if (direction > 0) { wheel.kind = 'page'; showGallery(); }
           return;
         }
-      } else wheel.reverse = null;
+      } else {
+        wheel.candidate = null;
+        if (amplitude > 6) wheel.tailSince = null;
+      }
     }
     // Returning to the hero is a separate action: an upward gesture over a
     // card may interrupt the consumed project swipe without advancing again.

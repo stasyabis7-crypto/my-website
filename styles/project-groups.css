@@ -11,7 +11,7 @@
 .project-card__cover { height: 100%; border-radius: var(--wg-radius); overflow: hidden; }
 .project-card__cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
 /* The cover wraps around the action, leaving transparent breathing room. */
-.project-card--linked .project-card__cover { mask-image: var(--project-card-action-mask); }
+.project-card--linked .project-card__cover { mask-image: var(--project-card-action-mask); mask-size: var(--project-card-action-mask-size); mask-position: left top, left top, right bottom; mask-repeat: no-repeat; }
 .project-card__action { position: absolute; right: 0; bottom: 0; }
 .project-card__caption { margin-top: 20px; }
 .project-card__placeholder { height: 100%; background: var(--color-surface-alt); background-image: radial-gradient(circle at 30% 20%, var(--color-action-active), transparent 75%); opacity: .35; }

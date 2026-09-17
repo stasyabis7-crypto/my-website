@@ -110,7 +110,7 @@
 }
 
 /* Folder cover with a separate action in the lower right cutout. */
-.work-gallery__image { border-radius: var(--project-card-radius); mask-image: var(--project-card-action-mask); }
+.work-gallery__image { border-radius: var(--project-card-radius); mask-image: var(--project-card-action-mask); mask-size: var(--project-card-action-mask-size); mask-position: left top, left top, right bottom; mask-repeat: no-repeat; }
 .work-gallery__action { position: absolute; right: 0; bottom: 0; }
 .work-gallery__media { width: var(--cover-width, 100%); max-width: 100%; margin-inline: auto; }
 .work-gallery .work-gallery__tag {
