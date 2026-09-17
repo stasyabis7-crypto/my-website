@@ -8,6 +8,7 @@
   const canvas = document.getElementById('mood-canvas');
   if (!actor || !canvas) return;
   const standalone = !home;
+  const contactDock = standalone ? document.getElementById('site-socials-toggle') : null;
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const character = document.getElementById('mood-character');
@@ -337,6 +338,7 @@
   if (stage) observer.observe(stage);
   const header = document.querySelector('.site-header');
   if (header) observer.observe(header);
+  if (contactDock) observer.observe(contactDock);
   const syncMotion = () => {
     if (change) { if (!change.applied) applyMood((change.from + 1) % moods.length); finishChange(); }
     forcePaint = true;
@@ -472,10 +474,18 @@
       // change the destination while the character is flying towards it.
       const dockX = standalone ? (innerWidth - size) / 2 : innerWidth >= 1101 ? 16 : innerWidth - size - 16;
       target = { x: dockX, y: Math.max(8, dockHeight - size - 16), size };
+      // Only internal desktop pages dock beside the contact action. Home and
+      // mobile retain their existing destinations; manual placement still wins.
+      if (contactDock && innerWidth >= 1000) {
+        const contact = contactDock.getBoundingClientRect();
+        target.x = Math.max(8, contact.left - size - 12);
+        target.y = Math.max(8, contact.top + (contact.height - size) / 2);
+      }
       if (now < freezeUntil && position.size) { target.x = position.x; target.y = position.y; }
     }
     // A manual drop owns the screen position until another drag or Escape,
     // including when scrolling back to the hero.
+    if (standalone) actor.classList.toggle('is-contact-docked', !!contactDock && innerWidth >= 1000 && !placement && !drag?.active);
     const pinned = placement;
     if (pinned) target = {x: placement.x, y: placement.y, size: placement.size};
     const settledPin = pinned && Math.abs(position.size - target.size) < .1;

@@ -17,6 +17,9 @@ jobs:
       - name: Check frozen hero mood component
         run: node scripts/hero-mood-component.js
 
+      - name: Check frozen homepage gallery component
+        run: node scripts/work-gallery-component.js
+
       - name: Check design system (buttons/fonts)
         run: node scripts/check-design-system.js
 

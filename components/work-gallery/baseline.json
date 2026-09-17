@@ -1,0 +1,10 @@
+{
+  "components/work-gallery/template.html": "1508d5b52067db0807fd8913ca61abbc4dd1c70345b65577b25c3ee55e3e4ff9",
+  "components/work-gallery/work-gallery.js": "e54b94dcf06fdc35a56841de07fe3948a4eb161a7c377b607090908ef74e5ecf",
+  "components/work-gallery/work-gallery.css": "096d2524f9b143e767f78f0465f7c39ba2dd36907dc36304038d9f084c732d88",
+  "styles/card-tokens.css": "7d33f390d4647370f561ee0899f90c240d2e00afcb9773b923eb6efa4596ba8c",
+  "styles/gallery-entry.js": "46bf045cdc01ea0a5b0b6fd4801635c79df2013470f6167a464f91c9d247b54c",
+  "styles/page-motion.js": "4ecedaac610d1d1971a3fefd1300b132811d6b72c610a40447019f4529c32b68",
+  "styles/page-motion.css": "494ef9df6e7cdfc8b72067f0969de263210e837bfc2df9ec4ac60a634317fbd1",
+  "styles/layout-chrome.js": "22fe25e62a59e36d957a12d547913f645e2ef9c5972104dafb7cfe467119bc11"
+}

@@ -7,6 +7,8 @@ const root = path.resolve(process.argv[2] || path.join(__dirname, '..'));
 // Dependencies precede their importers, so a token change also versions its CSS.
 const assets = [
   'styles/card-tokens.css',
+  'styles/mood-companion.css',
+  'styles/mood-companion.js',
   'styles/gallery-entry.js',
   'styles/works-grid.css',
   'styles/project-groups.css',

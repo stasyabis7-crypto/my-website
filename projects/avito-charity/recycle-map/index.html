@@ -74,14 +74,14 @@ body {
 }
 @media (min-width: 1101px) {
   html:not(.chrome--compact) body { padding-top: 0; padding-bottom: 0; }
-  html:not(.chrome--compact) .case { padding-top: calc(var(--page-px) + var(--header-h, 3.5rem) + 2rem); }
+  html:not(.chrome--compact) .case { padding-top: calc(var(--page-px) + var(--header-h, 3.5rem) + 2rem + 32px); }
 }
 
 .case {
   max-width: var(--wg-max-width);
   margin-inline: auto;
   padding-inline: var(--wg-side);
-  padding-block: 2rem 5rem;
+  padding-block: calc(2rem + 24px) 5rem;
 }
 
 .case__blocks {

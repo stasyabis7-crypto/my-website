@@ -1,9 +1,9 @@
 /* Collection pages share the case grid and design-system type/buttons. */
 .collection-page { margin: 0; min-height: 100vh; background-color: var(--color-bg); color: var(--color-text); background-image: radial-gradient(circle, rgb(255 255 255 / .16) 1px, transparent 1.5px); background-size: 24px 24px; }
 .collection-page * { box-sizing: border-box; }
-.collection { max-width: var(--wg-max-width); margin-inline: auto; padding: calc(var(--header-h, 64px) + 48px) var(--wg-side) calc(var(--footer-h, 64px) + 96px); }
+.collection { max-width: var(--wg-max-width); margin-inline: auto; padding: calc(var(--header-h, 64px) + 80px) var(--wg-side) calc(var(--footer-h, 64px) + 96px); }
 .collection__back { margin-bottom: 32px; }
-.collection__heading { margin-bottom: 48px; }
+.collection__heading { margin-bottom: 24px; }
 .collection__heading .text-body { max-width: var(--measure-body); }
 .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px var(--wg-gap); }
 .project-card { min-width: 0; }
@@ -21,6 +21,6 @@
 .project-detail__pending { margin-top: 28px; }
 @media (max-width: 700px) {
   .project-grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
-  .collection { padding-top: calc(var(--header-h, 64px) + 32px); }
-  .collection__heading { margin-bottom: 32px; }
+  .collection { padding-top: calc(var(--header-h, 64px) + 56px); }
+  .collection__heading { margin-bottom: 16px; }
 }

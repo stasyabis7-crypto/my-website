@@ -168,3 +168,13 @@ html.mood-cursor-active .mood-cursor { opacity: 1; }
   .mood-content { text-align: left; }
   .mood-home { width: min(100%, 200px); }
 }
+
+/* The internal-page desktop dock speaks below the character, inside the viewport. */
+@media (min-width: 1000px) {
+  .mood-actor--project.is-contact-docked .mood-speech { top: 88%; bottom: auto; }
+  .mood-actor--project.is-contact-docked .mood-speech::after {
+    top: auto;
+    bottom: calc(100% - 1px);
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+}
