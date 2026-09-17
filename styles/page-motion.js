@@ -9,9 +9,11 @@
   dot.className = 'cursor-dot';
   dot.setAttribute('aria-hidden', 'true');
   document.body.appendChild(dot);
-  var x = -100, y = -100, visible = false;
+  var x = -100, y = -100, visible = false, cursorFrame = 0;
   function hideCursor() {
     visible = false;
+    cancelAnimationFrame(cursorFrame);
+    cursorFrame = 0;
     root.classList.remove('has-dot-cursor');
     dot.classList.remove('is-visible');
   }
@@ -22,6 +24,12 @@
     var action = target && target.closest('a[href], button, [role="button"], input, select, textarea, summary, [contenteditable="true"], [data-close]');
     dot.classList.toggle('is-action', !!action && !action.matches(':disabled, [aria-disabled="true"]'));
   }
+  // Content can move or be replaced beneath a stationary pointer. Hit-test
+  // while the cursor is visible, including native scroll and CSS transitions.
+  function trackCursorTarget() {
+    cursorTarget();
+    cursorFrame = requestAnimationFrame(trackCursorTarget);
+  }
   document.addEventListener('pointermove', function (event) {
     if (!fine.matches || event.pointerType === 'touch') { hideCursor(); return; }
     x = event.clientX; y = event.clientY;
@@ -30,9 +38,11 @@
     root.classList.add('has-dot-cursor');
     dot.classList.add('is-visible');
     cursorTarget();
+    if (!cursorFrame) cursorFrame = requestAnimationFrame(trackCursorTarget);
   }, { passive: true });
   document.documentElement.addEventListener('pointerleave', hideCursor);
   window.addEventListener('blur', hideCursor);
+  document.addEventListener('visibilitychange', function () { if (document.hidden) hideCursor(); });
   document.addEventListener('pointerdown', function (event) { if (event.pointerType === 'touch') hideCursor(); });
   fine.addEventListener('change', hideCursor);
   window.addEventListener('scroll', cursorTarget, { passive: true });

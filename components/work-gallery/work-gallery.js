@@ -179,48 +179,10 @@
     // A stream includes finger movement and browser-generated inertia. Keep
     // observing non-cancelable events too: some browsers only allow canceling
     // the first wheel event. They still carry gesture timing and direction.
-    if (wheel && now - wheel.lastAt > 160) wheel = null;
-    if (wheel?.kind) {
-      const axis = Math.abs(dx) > Math.abs(dy) * 1.5 ? 'x' : wheel.axis;
-      const delta = axis === 'x' ? dx : dy;
-      const amplitude = Math.abs(delta);
-      const sameAxis = axis === wheel.axis;
-      const reversal = Math.abs(dx) > Math.abs(dy) * 1.5 && Math.sign(dx) === -wheel.direction;
-      const newAxis = axis !== wheel.axis && visible();
-      const renewed = sameAxis && wheel.decayed && now - wheel.started >= 180 &&
-        Math.sign(delta) === wheel.direction && amplitude >= Math.max(4, wheel.floor * 2.5);
-      const intent = reversal ? 'reverse' : newAxis ? 'axis' : renewed ? 'renew' : null;
-      if (intent && amplitude >= 2) {
-        const candidate = wheel.candidate;
-        if (!candidate || candidate.intent !== intent || candidate.axis !== axis) {
-          wheel.candidate = { intent, axis, direction: Math.sign(delta), count: 0, distance: 0, started: now };
-        }
-        const next = wheel.candidate;
-        next.count++;
-        next.distance += amplitude;
-        // Reversal is unambiguous sooner. Same-direction renewal needs sustained
-        // input after deceleration, not a single rebound in the momentum tail.
-        const confirmed = intent === 'reverse'
-          ? amplitude >= 24 || next.count >= 2 && next.distance >= 10
-          : intent === 'axis'
-            ? next.count >= 2 && next.distance >= 12
-            : next.count >= 3 && next.distance >= 18 && now - next.started >= 30;
-        if (confirmed) {
-          wheel = { x: axis === 'x' ? next.direction * next.distance - dx : -dx,
-            y: axis === 'y' ? next.direction * next.distance - dy : -dy,
-            kind: null, lastAt: now, started: now, peak: 0, floor: Infinity, decayed: false };
-        }
-      } else wheel.candidate = null;
-      if (wheel.kind && sameAxis) {
-        wheel.peak = Math.max(wheel.peak, amplitude);
-        if (now - wheel.started >= 120 && amplitude <= wheel.peak * .4) {
-          wheel.decayed = true;
-          wheel.floor = Math.min(wheel.floor, Math.max(.5, amplitude));
-        }
-      }
-    }
-    if (!wheel) wheel = { x: 0, y: 0, kind: null, lastAt: now, started: now,
-      peak: 0, floor: Infinity, decayed: false };
+    // Re-arm only after silence, never from acceleration, reversal or axis
+    // noise inside the same gesture (including its entire momentum tail).
+    if (wheel && now - wheel.lastAt > 240) wheel = null;
+    if (!wheel) wheel = { x: 0, y: 0, kind: null, lastAt: now };
     wheel.lastAt = now;
     if (wheel.kind) return;
     wheel.x += dx; wheel.y += dy;
@@ -229,7 +191,6 @@
     wheel.axis = Math.abs(wheel.x) >= Math.abs(wheel.y) * .8 ? 'x' : 'y';
     const delta = wheel.axis === 'x' ? wheel.x : wheel.y;
     wheel.direction = Math.sign(delta);
-    wheel.peak = Math.abs(wheel.axis === 'x' ? dx : dy);
     if (wheel.axis === 'y' && delta < 0) { wheel.kind = 'page'; showHero(); return; }
     if (!visible()) {
       if (delta > 0) { wheel.kind = 'page'; showGallery(); }
