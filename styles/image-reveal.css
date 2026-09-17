@@ -1,2 +1,17 @@
 /* Preserve layout while an image loads and decodes. Applied only by JS. */
 img[data-image-pending] { visibility: hidden; }
+
+/* Paint only: media boxes keep their existing size, clipping and layout. */
+[data-image-skeleton] {
+  background-color: color-mix(in srgb, var(--color-text, currentColor) 5%, transparent);
+  animation: image-skeleton-breathe 3.2s ease-in-out infinite;
+}
+
+@keyframes image-skeleton-breathe {
+  0%, 100% { background-color: color-mix(in srgb, var(--color-text, currentColor) 5%, transparent); }
+  50% { background-color: color-mix(in srgb, var(--color-text, currentColor) 10%, transparent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-image-skeleton] { animation: none; }
+}

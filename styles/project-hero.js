@@ -17,10 +17,10 @@
     });
   }
   async function reveal() {
-    if (!reduced.matches) art.style.visibility = 'hidden';
+    // The shared image loader keeps the picture hidden while its skeleton
+    // remains visible; hiding the whole artwork would hide that placeholder.
     try { await Promise.all([image.decode(), pageVisible()]); }
-    catch (_) { art.style.visibility = ''; return; }
-    art.style.visibility = '';
+    catch (_) { return; }
     if (reduced.matches || !image.animate) return;
     animation = art.animate([
       { transform: 'translateY(100%)', opacity: 0 },
