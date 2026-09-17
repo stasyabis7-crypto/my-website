@@ -95,7 +95,13 @@
     const offset = parseFloat(getComputedStyle(items[0].section).scrollMarginTop) + 24;
     let active = items[0];
     for (const item of items) if (sectionTop(item.section) <= offset) active = item;
-    if (window.scrollY > 0 && innerHeight + scrollY >= document.documentElement.scrollHeight - 2) active = items.at(-1);
+    const last = items.at(-1);
+    const lastRect = last.section.getBoundingClientRect();
+    // A short final section can be fully readable before its heading reaches
+    // the top threshold or the page reaches its trailing padding.
+    const lastFullyVisible = lastRect.top >= offset && lastRect.bottom <= innerHeight;
+    const atPageEnd = innerHeight + scrollY >= document.documentElement.scrollHeight - 2;
+    if (window.scrollY > 0 && (lastFullyVisible || atPageEnd)) active = last;
     setActive(active);
   }
   function scheduleUpdate() { if (!frame) frame = requestAnimationFrame(update); }
