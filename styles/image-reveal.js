@@ -21,6 +21,8 @@
         try { await image.decode(); } catch (_) { /* Still release the image. */ }
       }
       image.removeAttribute('data-image-pending');
+      // Hero entrance owns its reveal; avoid a competing image fade.
+      if (image.matches('.project-hero__image')) return;
       if (!image.isConnected || !image.naturalWidth || reduced.matches || !image.animate) return;
       const rect = image.getBoundingClientRect();
       const style = getComputedStyle(image);

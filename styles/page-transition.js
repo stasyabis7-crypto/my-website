@@ -1,5 +1,8 @@
 (function () {
   'use strict';
+  // Shared page bundles must never register a second transition controller.
+  if (window.__pageTransitionInitialized) return;
+  window.__pageTransitionInitialized = true;
   var root = document.documentElement;
   var reduced = matchMedia('(prefers-reduced-motion: reduce)');
   // Resolve from this script so / and subdirectory previews work identically.
@@ -24,8 +27,10 @@
     var handoff = JSON.parse(sessionStorage.getItem(handoffKey) || 'null');
     sessionStorage.removeItem(handoffKey);
     var navigation = performance.getEntriesByType('navigation')[0];
+    // This one-use handoff was consumed above. A slow document response must
+    // not expire it and replay the cover animation on the destination page.
     incoming = !!(handoff && handoff.page === pageKey(location.href) &&
-      Date.now() - handoff.at < 15000 && (!navigation || navigation.type === 'navigate'));
+      (!navigation || navigation.type === 'navigate'));
   } catch (_) { /* Without storage, use the complete entrance/exit sequence. */ }
 
   function reset() {
@@ -57,7 +62,7 @@
     var normalize = function (path) { return path.replace(/index\.html$/, '').replace(/\/$/, ''); };
     if (normalize(url.pathname) === normalize(location.pathname)) return;
     var relative = url.pathname.slice(siteBase.pathname.length);
-    if (!url.pathname.startsWith(siteBase.pathname) || !(relative === '' || relative === 'index.html' || /^projects\/[^/]+\/(?:index\.html)?$/.test(relative))) return;
+    if (!url.pathname.startsWith(siteBase.pathname) || !(relative === '' || relative === 'index.html' || /^projects\/(?:[^/]+\/)+(?:index\.html)?$/.test(relative))) return;
     return url;
   }
 
@@ -85,7 +90,16 @@
     reset();
     if (reduced.matches) return;
     root.classList.add('is-transition-revealing');
-    revealTimer = setTimeout(reset, duration('reveal', 850) + 2 * duration('stagger', 90) + 50);
+    var version = revealVersion;
+    // Release the prepared hero on the actual last ribbon frame, without an
+    // additional timeout gap. Keep a fallback for unavailable animation APIs.
+    if (curtain.getAnimations) {
+      Promise.all(curtain.getAnimations({ subtree: true }).map(function (animation) {
+        return animation.finished.catch(function () {});
+      })).then(function () { if (version === revealVersion) reset(); });
+    } else {
+      revealTimer = setTimeout(reset, duration('reveal', 850) + 2 * duration('stagger', 90));
+    }
   }
 
   function imageReady(image) {
@@ -133,7 +147,7 @@
     var hold = new Promise(function (resolve) { setTimeout(resolve, entranceTime); });
     var fonts = document.fonts ? document.fonts.ready.catch(function () {}) : Promise.resolve();
     Promise.all([hold, Promise.race([fonts, fontBudget])]).then(function () {
-      return viewportImagesReady(version);
+      return Promise.all([window.projectHeroReady, viewportImagesReady(version)]);
     }).then(function () {
       if (version === revealVersion && !busy) reveal();
     });
