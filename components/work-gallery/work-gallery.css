@@ -114,6 +114,16 @@
 .work-gallery__work[data-action-hover] .work-gallery__image { mask-image: var(--project-card-action-mask); mask-size: var(--project-card-action-mask-size); mask-position: left top, left top, right bottom; mask-repeat: no-repeat; }
 .work-gallery__action { position: absolute; right: 0; bottom: 0; }
 .work-gallery__media { width: var(--cover-width, 100%); max-width: 100%; margin-inline: auto; }
+.work-gallery__tags {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  max-width: calc(100% - 32px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  pointer-events: none;
+}
 
 
 /* Size the actual artwork, so the corner action never sits on letterboxing. */

@@ -133,7 +133,10 @@
       <div class="work-gallery__presentation">
         <div class="work-gallery__media">
           <img class="work-gallery__image" src="${escape(p.image)}" alt="${escape(p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false">
-          ${p.tag ? `<p class="work-gallery__tag text-body">${escape(p.tag)}</p>` : ''}
+          ${p.tag || !p.href ? `<div class="work-gallery__tags">
+            ${p.tag ? `<p class="work-gallery__tag text-body">${escape(p.tag)}</p>` : ''}
+            ${!p.href ? '<p class="work-gallery__tag text-body">В работе</p>' : ''}
+          </div>` : ''}
           ${p.href ? `<a class="work-gallery__action btn btn--fill-pink btn--icon-only btn--hit-area btn--icon-diagonal-motion" href="${escape(p.href)}" aria-label="Открыть: ${escape(p.title)}" draggable="false"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : ''}
         </div>
         <div class="work-gallery__caption"><h2 class="text-h2">${escape(p.title)}</h2><p class="text-body">${escape(p.description)}</p></div>
