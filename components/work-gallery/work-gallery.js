@@ -245,7 +245,8 @@
           wheel.tailSince = null;
           wheel.decaySamples = 0;
           wheel.peak = amplitude;
-          if (visible()) { wheel.kind = 'work'; goTo(direction); }
+          if (visible() && axis === 'y' && direction < 0) { wheel.kind = 'page'; showHero(); }
+          else if (visible()) { wheel.kind = 'work'; goTo(direction); }
           else if (direction > 0) { wheel.kind = 'page'; showGallery(); }
           return;
         }
@@ -265,6 +266,11 @@
       if (delta > 0) { wheel.kind = 'page'; showGallery(); }
       return;
     }
+    if (wheel.axis === 'y' && wheel.direction < 0) {
+      wheel.kind = 'page';
+      showHero();
+      return;
+    }
     wheel.kind = 'work';
     goTo(wheel.direction);
   }, { passive: false, capture: true });
@@ -280,10 +286,11 @@
     const dx = gesture.x - x, dy = gesture.y - y;
     if (!gesture.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 5) {
       gesture.axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
-      gesture.page = false;
     }
     if (!gesture.axis) return false;
     gesture.delta = gesture.axis === 'x' ? dx : dy;
+    gesture.page = gesture.axis === 'y' && gesture.delta < 0;
+    if (gesture.page) viewport.scrollTo({ left: offsets[gesture.start], behavior: 'instant' });
     if (!gesture.page) {
       const direction = Math.sign(gesture.delta);
       const distance = Math.abs(offsets[gesture.start + direction] - offsets[gesture.start]);

@@ -47,7 +47,10 @@ const fastStroke = [[16, 60], [16, 100], [16, 40], [16, 12]];
 assert.deepEqual(run([...fastStroke, ...fastStroke, ...fastStroke]), [1, 1, 1], 'same direction renewed before tail reaches near-zero');
 assert.deepEqual(run([...fastStroke, ...fastStroke, ...fastStroke].map(([gap, amount]) => [gap, 0, amount])), [1, 1, 1], 'three quick downward swipes');
 assert.deepEqual(run([[0, 60], [16, 100], [16, 40], [16, 12], [16, 50], [16, 1]]), [1], 'falling envelope then one spike is not a swipe');
-assert.deepEqual(run([[0, 0, -60], [16, 0, -100]]), [-1], 'upward swipe selects previous card');
+assert.deepEqual(run([[0, 0, -60], [16, 0, -100]]), ['hero'], 'upward swipe returns to hero and consumes momentum');
+assert.deepEqual(run([[0, 60], [30, 0, -20], [16, 0, -100]]), [1, 'hero'], 'upward swipe after horizontal swipe returns to hero');
+assert.deepEqual(run([[0, 0, 60], [30, 0, -20], [16, 0, -100]]), [1, 'hero'], 'upward reversal returns to hero');
+assert.deepEqual(run([[0, 0, -60], [450, 0, 60]]), ['hero', 'gallery'], 'new downward gesture reopens gallery without advancing');
 assert.deepEqual(run([[0, 60], [30, 0, 20]]), [1, 1], 'short downward swipe after horizontal swipe');
 // Exercise the real navigation queue with smooth scrolling still unfinished.
 function navigation() {
@@ -80,4 +83,28 @@ const mixed = navigation();
 mixed.goTo(1); mixed.goTo(-1); mixed.goTo(1);
 mixed.finish(); mixed.finish(); mixed.finish();
 assert.deepEqual(mixed.targets, [800, 700, 800], 'opposite queued gestures are not cancelled out');
+// Touch and mouse dragging use the same preview/finish handlers.
+function gesture(points, cancelled = false) {
+  const actions = [], previews = [];
+  const context = {
+    recenter() {}, pendingTarget: null, nearest: () => 2,
+    offsets: [0, 100, 200, 300, 400],
+    viewport: { scrollTo: ({ left }) => previews.push(left) },
+    showHero: () => actions.push('hero'), centerAt: target => actions.push(target)
+  };
+  vm.createContext(context);
+  vm.runInContext(source.slice(source.indexOf('  function beginGesture'), source.indexOf("  gallery.addEventListener('touchstart'")), context);
+  const state = context.beginGesture(100, 100);
+  points.forEach(([x, y]) => context.previewGesture(state, x, y));
+  context.finishGesture(state, cancelled);
+  return { actions, previews };
+}
+const upward = gesture([[102, 160], [103, 220]]);
+assert.deepEqual(upward.actions, ['hero'], 'touch scrolling toward page top returns to hero');
+assert.ok(upward.previews.every(left => left === 200), 'return gesture does not move slider');
+assert.deepEqual(gesture([[100, 120]]).actions, [], 'short touch does not leave gallery');
+assert.deepEqual(gesture([[100, 160]], true).actions, [], 'cancelled touch does not leave gallery');
+assert.deepEqual(gesture([[100, 40]]).actions, [3], 'downward page scroll advances card');
+assert.deepEqual(gesture([[160, 102]]).actions, [1], 'horizontal reverse touch selects previous card');
+assert.deepEqual(gesture([[100, 50], [100, 160]]).actions, ['hero'], 'vertical touch reversal returns to hero');
 console.log('Gallery: gesture recognition and queued animation checks passed.');
