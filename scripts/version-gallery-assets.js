@@ -12,6 +12,7 @@ const assets = [
   'styles/gallery-entry.js',
   'styles/works-grid.css',
   'styles/project-groups.css',
+  'components/work-gallery/project-groups.js',
   'components/work-gallery/work-gallery.css',
   'components/work-gallery/work-gallery.js',
 ];
@@ -29,7 +30,13 @@ for (const asset of assets) {
   const hash = crypto.createHash('sha256').update(source).digest('hex').slice(0, 12);
   const versioned = `${path.basename(asset, ext)}.${hash}${ext}`;
   fs.writeFileSync(path.join(root, path.dirname(asset), versioned), source);
-  names.set(original, versioned);
+  // Collection behavior also has a project-groups.js filename. Only version
+  // the gallery data reference, leaving styles/project-groups.js untouched.
+  if (asset === 'components/work-gallery/project-groups.js') {
+    names.set(asset, `${path.dirname(asset)}/${versioned}`);
+  } else {
+    names.set(original, versioned);
+  }
 }
 function visit(directory) {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
