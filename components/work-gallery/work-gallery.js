@@ -129,12 +129,12 @@
     touch = null; drag = null; pendingTarget = null;
     navigationQueue.length = 0;
     const repeated = [...projects, ...projects, ...projects];
-    track.innerHTML = repeated.map((p, i) => `<article class="work-gallery__work" data-format="${escape(p.format)}" data-project-id="${escape(p.id)}" data-action-hover aria-roledescription="слайд" aria-label="${i % projects.length + 1} из ${projects.length}: ${escape(p.title)}">
+    track.innerHTML = repeated.map((p, i) => `<article class="work-gallery__work" data-format="${escape(p.format)}" data-project-id="${escape(p.id)}"${p.href ? ' data-action-hover' : ''} aria-roledescription="слайд" aria-label="${i % projects.length + 1} из ${projects.length}: ${escape(p.title)}">
       <div class="work-gallery__presentation">
         <div class="work-gallery__media">
           <img class="work-gallery__image" src="${escape(p.image)}" alt="${escape(p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false">
           ${p.tag ? `<p class="work-gallery__tag text-body">${escape(p.tag)}</p>` : ''}
-          <a class="work-gallery__action btn btn--fill-pink btn--icon-only btn--hit-area btn--icon-diagonal-motion" href="${escape(p.href)}" aria-label="Открыть: ${escape(p.title)}" draggable="false"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>
+          ${p.href ? `<a class="work-gallery__action btn btn--fill-pink btn--icon-only btn--hit-area btn--icon-diagonal-motion" href="${escape(p.href)}" aria-label="Открыть: ${escape(p.title)}" draggable="false"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : ''}
         </div>
         <div class="work-gallery__caption"><h2 class="text-h2">${escape(p.title)}</h2><p class="text-body">${escape(p.description)}</p></div>
       </div>

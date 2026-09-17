@@ -5,12 +5,28 @@
 
 /* A circular action clearance with tangent fillets into both card edges.
    The SVG covers only the corner; the other layers preserve the whole image.
-   Geometry at the shared 64px button height: 10px gap, 20px fillets. */
+   Geometry at the shared 64px button height: 10px gap, 36px fillets. */
 :root {
   --project-card-cutout-size: calc(var(--button-height) * 1.875);
   --project-card-action-mask: linear-gradient(#000 0 0), linear-gradient(#000 0 0),
-    url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cpath%20d%3D%22M0%200H120V27.17237A20%2020%200%200%201%2096.12903%2046.79419A42%2042%200%200%200%2046.79419%2096.12903A20%2020%200%200%201%2027.17237%20120H0Z%22%2F%3E%3C%2Fsvg%3E");
+    url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Cpath%20d%3D%22M0%200H120V10.10263A36%2036%200%200%201%2085.84615%2046.05526A42%2042%200%200%200%2046.05526%2085.84615A36%2036%200%200%201%2010.10263%20120H0Z%22%2F%3E%3C%2Fsvg%3E");
   --project-card-action-mask-size: calc(100% - var(--project-card-cutout-size) + 1px) 100%,
     100% calc(100% - var(--project-card-cutout-size) + 1px),
     var(--project-card-cutout-size) var(--project-card-cutout-size);
+}
+
+/* Общий бейдж обложек Главной и карточек проектов. */
+.work-gallery .work-gallery__tag,
+.project-card .project-card__tag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  max-width: calc(100% - 32px);
+  margin: 0;
+  padding: 4px 14px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  pointer-events: none;
 }

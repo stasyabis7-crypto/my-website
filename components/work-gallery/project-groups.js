@@ -1,4 +1,5 @@
-/* Главная: семь разделов портфолио. */
+/* Главная: семь разделов портфолио.
+   href задаётся для групп с опубликованными кейсами, концептами или постами. */
 window.portfolioGroups = [
   {
     "id": "avito-charity",
@@ -18,7 +19,7 @@ window.portfolioGroups = [
     "image": "/assets/project-groups/group2-crm.webp",
     "srcset": "",
     "format": "desktop",
-    "href": "/projects/ozon-crm/"
+    "href": null
   },
   {
     "id": "ozon-prices",
@@ -28,7 +29,7 @@ window.portfolioGroups = [
     "image": "/assets/project-groups/group3-prices.webp",
     "srcset": "",
     "format": "desktop",
-    "href": "/projects/ozon-prices/"
+    "href": null
   },
   {
     "id": "swtec-angel",
@@ -38,7 +39,7 @@ window.portfolioGroups = [
     "image": "/assets/project-groups/group4-angel.webp",
     "srcset": "",
     "format": "desktop",
-    "href": "/projects/swtec-angel/"
+    "href": null
   },
   {
     "id": "swtec-medical",
@@ -48,7 +49,7 @@ window.portfolioGroups = [
     "image": "/assets/project-groups/group5-med.webp",
     "srcset": "",
     "format": "desktop",
-    "href": "/projects/swtec-medical/"
+    "href": null
   },
   {
     "id": "concepts",
