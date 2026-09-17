@@ -55,6 +55,7 @@ html:not(.chrome--pinned) .site-socials {
   .site-header {
     left: 50%;
     transform: translateX(-50%);
+    padding-inline: 16px;
     /* Паддинг между «Резюме» и кнопкой соцсетей (и заодно до аватара). */
     gap: 6px;
   }
@@ -92,6 +93,10 @@ html:not(.chrome--pinned) .site-socials {
 
 @media (max-width: 480px) {
   .site-header__logo-mark { max-width: 34vw; }
+}
+
+@media (max-width: 360px) {
+  .site-header { gap: 0; }
 }
 
 

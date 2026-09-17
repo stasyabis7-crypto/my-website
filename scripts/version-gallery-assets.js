@@ -14,6 +14,7 @@ const assets = [
   'styles/project-groups.css',
   'styles/project-hero.css',
   'styles/project-hero.js',
+  'styles/site-chrome.css',
   'components/work-gallery/project-groups.js',
   'components/work-gallery/work-gallery.css',
   'components/work-gallery/work-gallery.js',
