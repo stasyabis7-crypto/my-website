@@ -1,8 +1,9 @@
-/* Preserve layout while an image loads and decodes. Applied only by JS. */
-img[data-image-pending] { visibility: hidden; }
-
-/* Paint only: media boxes keep their existing size, clipping and layout. */
-[data-image-skeleton] {
+/* Paint the image's own box: its size, radius, transforms, masks and parent
+   clipping stay identical. Displace only the replaced image content until
+   decode finishes, keeping the skeleton background visible in that box. */
+img[data-image-pending] {
+  object-position: -100000px -100000px !important;
+  color: transparent;
   background-color: color-mix(in srgb, var(--color-text, currentColor) 5%, transparent);
   animation: image-skeleton-breathe 3.2s ease-in-out infinite;
 }
@@ -13,5 +14,5 @@ img[data-image-pending] { visibility: hidden; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-image-skeleton] { animation: none; }
+  img[data-image-pending] { animation: none; }
 }

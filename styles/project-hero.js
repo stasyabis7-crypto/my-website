@@ -17,8 +17,8 @@
     });
   }
   async function reveal() {
-    // The shared image loader keeps the picture hidden while its skeleton
-    // remains visible; hiding the whole artwork would hide that placeholder.
+    // The shared loader paints a skeleton in the image's own box; hiding
+    // the whole artwork would also hide that placeholder.
     try { await Promise.all([image.decode(), pageVisible()]); }
     catch (_) { return; }
     if (reduced.matches || !image.animate) return;

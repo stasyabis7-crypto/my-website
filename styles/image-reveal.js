@@ -3,21 +3,6 @@
   const tracked = new WeakSet();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const animations = new Set();
-  const pendingSurfaces = new WeakMap();
-
-  function skeletonSurface(image) {
-    let surface = image.parentElement;
-    if (surface?.tagName === 'PICTURE') surface = surface.parentElement;
-    // Do not animate text, controls or entire sections around inline images.
-    if (!surface || !surface.matches('[class*="__media"], [class*="__cover"], .project-hero__art, .case-metric__art') &&
-        (surface.children.length !== 1 || surface.textContent.trim())) return null;
-    if (surface.matches('body, main, section, a, button')) return null;
-    const count = pendingSurfaces.get(surface) || 0;
-    pendingSurfaces.set(surface, count + 1);
-    surface.setAttribute('data-image-skeleton', '');
-    return surface;
-  }
-
   reduced.addEventListener('change', () => {
     if (reduced.matches) animations.forEach(animation => animation.cancel());
   });
@@ -28,7 +13,6 @@
     // Cached images never disappear or replay an entrance animation.
     if (image.complete) return;
     image.setAttribute('data-image-pending', '');
-    const surface = skeletonSurface(image);
 
     async function ready(event) {
       image.removeEventListener('load', ready);
@@ -37,14 +21,6 @@
         try { await image.decode(); } catch (_) { /* Still release the image. */ }
       }
       image.removeAttribute('data-image-pending');
-      if (surface) {
-        const count = pendingSurfaces.get(surface) - 1;
-        if (count > 0) pendingSurfaces.set(surface, count);
-        else {
-          pendingSurfaces.delete(surface);
-          surface.removeAttribute('data-image-skeleton');
-        }
-      }
       if (!image.isConnected || !image.naturalWidth || reduced.matches || !image.animate) return;
       const rect = image.getBoundingClientRect();
       const style = getComputedStyle(image);
