@@ -5,6 +5,9 @@
   const toggle = root.querySelector('.work-toc__toggle');
   const panel = root.querySelector('.work-toc__panel');
   const desktopScroll = panel.querySelector('nav');
+  // Keep native scrolling inside the menu: the page's wheel easing can stall
+  // before the edge when the browser rounds its fractional scroll positions.
+  desktopScroll.addEventListener('wheel', event => event.stopPropagation(), { passive: true });
   const items = [...panel.querySelectorAll('a[href^="#"]')].map(link => ({
     link, section: document.getElementById(link.hash.slice(1)),
     marker: root.querySelector(`[data-toc-marker="${link.hash.slice(1)}"]`)
@@ -38,8 +41,9 @@
     [desktopScroll, scrollBody].forEach(scroller => {
       if (!scroller.clientHeight) return;
       const remaining = scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop;
-      scroller.style.setProperty('--toc-fade-top', `${Math.min(40, Math.max(0, scroller.scrollTop))}px`);
-      scroller.style.setProperty('--toc-fade-bottom', `${Math.min(40, Math.max(0, remaining))}px`);
+      // scrollTop can be fractional while scrollHeight/clientHeight are rounded.
+      scroller.style.setProperty('--toc-fade-top', `${scroller.scrollTop <= 1 ? 0 : Math.min(40, scroller.scrollTop)}px`);
+      scroller.style.setProperty('--toc-fade-bottom', `${remaining <= 1 ? 0 : Math.min(40, remaining)}px`);
     });
   }
   scrollBody.addEventListener('scroll', updateScrollFade, { passive: true });

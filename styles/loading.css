@@ -1,10 +1,6 @@
 :root{
-  /* Тон скелетона — не сам --color-surface-alt (на нём его не видно,
-     карточки/плашки уже залиты этим цветом), а чуть светлее/темнее его
-     же, через color-mix — единый источник цвета с остальным сайтом
-     (см. --color-* в theme.css), а не свой параллельный хардкод. */
-  --skeleton-base: color-mix(in srgb, var(--color-surface-alt) 55%, var(--color-bg) 45%);
-  --skeleton-shine: color-mix(in srgb, var(--color-surface-alt) 88%, white 12%);
+  /* Полупрозрачный блик сохраняет цвет поверхности под ним. */
+  --skeleton-shine: rgb(255 255 255 / .12);
   /* Единый такт мерцания — читают оба блока ниже (карточки works и
      скелетон оболочки), чтобы шли синхронно и в одном ритме. */
   --skeleton-speed: 2.6s;
@@ -15,7 +11,7 @@
 }
 .skeleton-surface,
 .works-grid__item:not(.is-media-loaded)::after{
-  background-color:var(--skeleton-base);
+  background-color:var(--skeleton-base, inherit);
   background-image:linear-gradient(100deg,transparent 20%,var(--skeleton-shine) 50%,transparent 80%);
   background-size:220% 100%;
   animation:skeleton-shimmer var(--skeleton-speed) ease-in-out infinite;
@@ -50,30 +46,22 @@
 
 /* Скелетоны оболочки видны только на начальной загрузке страницы. */
 .is-page-loading .site-header__avatar img,
-.is-page-loading .site-header__logo-mark,
 .is-page-loading .site-header__cta>* ,
 .is-page-loading .site-footer__link>*{opacity:0!important}
-.is-page-loading .site-header__avatar,
-.is-page-loading .site-header__logo,
-.is-page-loading .site-header__cta,
-.is-page-loading .site-footer__link{
+.is-page-loading .site-header__logo-mark{opacity:.12}
+/* Заливку кнопки задаёт buttons.css: при загрузке скрываем только контент.
+   У ссылок футера также сохраняем собственный фон и активное состояние. */
+.is-page-loading .site-footer__link{color:transparent!important}
+.is-page-loading .site-header__avatar{
+  --skeleton-base: color-mix(in srgb, var(--mood-chrome) 94%, var(--mood-ink) 6%);
   color:transparent!important;
-  border-color:transparent!important;
   background-color:var(--skeleton-base)!important;
   background-image:linear-gradient(100deg,transparent 20%,var(--skeleton-shine) 50%,transparent 80%)!important;
   background-size:220% 100%!important;
   animation:skeleton-shimmer var(--skeleton-speed) ease-in-out infinite!important;
 }
-.site-header__avatar,
-.site-header__logo,
-.site-header__cta,
-.site-footer__link{transition:background-color .25s ease,color .25s ease,opacity .25s ease}
-
 @media (prefers-reduced-motion:reduce){
   .skeleton-surface,
   .works-grid__item:not(.is-media-loaded)::after,
-  .is-page-loading .site-header__avatar,
-  .is-page-loading .site-header__logo,
-  .is-page-loading .site-header__cta,
-  .is-page-loading .site-footer__link{animation:none!important}
+  .is-page-loading .site-header__avatar{animation:none!important}
 }
