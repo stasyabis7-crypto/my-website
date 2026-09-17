@@ -30,4 +30,7 @@ assert.deepEqual(run([[0, 100], [30, 1], [30, 400], [30, -50], [30, 20, 60, fals
 assert.deepEqual(run([...long, [450, 100]]), [1, 1], 'new gesture after silence');
 assert.deepEqual(run([[0, 0, 100], [100, 0, 300], [100, 0, 50]], false), ['gallery'], 'hero entry consumes entire gesture');
 assert.deepEqual(run([[0, -100], [100, -400]]), [-1], 'long reverse swipe');
+assert.deepEqual(run([[0, 100], [40, 10], [40, -12], [16, -18], [16, -30], [16, -100], [16, -20]]), [1, -1], 'immediate deliberate swipe back, then momentum');
+assert.deepEqual(run([[0, -100], [40, -10], [40, 12], [16, 18], [16, 30], [16, 100]]), [-1, 1], 'immediate deliberate swipe forward');
+assert.deepEqual(run([[0, 100], [30, -3], [16, -3], [16, -3], [16, 20]]), [1], 'small reverse bounce does not change card');
 console.log('Gallery: single-action wheel gesture checks passed.');

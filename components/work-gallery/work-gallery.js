@@ -182,11 +182,34 @@
     // A stream includes finger movement and browser-generated inertia. Keep
     // observing non-cancelable events too: some browsers only allow canceling
     // the first wheel event. They still carry gesture timing and direction.
-    // Re-arm only after silence, never from acceleration, reversal or axis
-    // noise inside the same gesture (including its entire momentum tail).
+    // Same-direction acceleration remains part of the consumed gesture.
+    // A sustained horizontal reversal can start a new gesture before silence.
     if (wheel && now - wheel.lastAt > 400) wheel = null;
     if (!wheel) wheel = { x: 0, y: 0, kind: null, lastAt: now };
     wheel.lastAt = now;
+    // A deliberate swipe back must not wait for the previous momentum tail.
+    // Require several horizontal samples: one opposite pulse is often bounce.
+    if (wheel.kind === 'work') {
+      const reverse = Math.abs(dx) > Math.abs(dy) * 1.5 &&
+        Math.abs(dx) >= 2 && Math.sign(dx) !== wheel.direction;
+      if (reverse) {
+        if (!wheel.reverse || now - wheel.reverse.lastAt > 160) {
+          wheel.reverse = { count: 0, distance: 0, startedAt: now };
+        }
+        wheel.reverse.count++;
+        wheel.reverse.distance += Math.abs(dx);
+        wheel.reverse.lastAt = now;
+        if (wheel.reverse.count >= 3 && wheel.reverse.distance >= 24 &&
+            now - wheel.reverse.startedAt >= 24) {
+          wheel.direction = Math.sign(dx);
+          wheel.axis = 'x';
+          wheel.reverse = null;
+          wheel.upward = 0;
+          goTo(wheel.direction);
+          return;
+        }
+      } else wheel.reverse = null;
+    }
     // Returning to the hero is a separate action: an upward gesture over a
     // card may interrupt the consumed project swipe without advancing again.
     if (wheel.kind === 'work' && e.target.closest('.work-gallery__work')) {
