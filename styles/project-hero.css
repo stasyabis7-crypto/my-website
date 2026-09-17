@@ -28,5 +28,12 @@
   .project-hero__image { width: min(100%, 380px); }
 }
 @media (max-width: 599px) {
-  .project-hero .mood-stage { row-gap: 40px; }
+  .project-hero { --project-hero-content-gap: 40px; }
+  .project-hero .mood-stage {
+    padding-top: calc(var(--header-h, 64px) + var(--hero-chrome-inset, 10px) + var(--project-hero-content-gap));
+    grid-template-rows: auto 1fr;
+    align-items: start;
+    row-gap: var(--project-hero-content-gap);
+  }
+  .project-hero__image { margin-top: 0; }
 }
