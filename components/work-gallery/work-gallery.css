@@ -1,3 +1,4 @@
+@import url("../../styles/card-tokens.css");
 /* Full-screen exhibition. Text and controls use the shared design system. */
 .work-gallery {
   position: relative;
@@ -87,21 +88,6 @@
 .work-gallery__status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 
-/* Positioning only: the white fill, circle, hover and elevation are DS styles. */
-.gallery-filter-dock { position: fixed; z-index: 51; left: var(--page-px, 10px); bottom: calc(var(--page-px, 10px) + env(safe-area-inset-bottom, 0px)); }
-.gallery-filter-dock[hidden] { display: none; }
-@media (min-width: 1000px) {
-  .gallery-filter-dock {
-    left: calc(var(--page-px, 10px) + var(--gallery-header-width, 500px) + 12px);
-    top: calc(var(--page-px, 10px) + (var(--header-h, 64px) - var(--button-height)) / 2);
-    bottom: auto;
-  }
-  html:not(.chrome--pinned) .gallery-filter-dock {
-    left: calc(var(--hero-edge, 16px) + var(--hero-chrome-inset, 10px) + var(--gallery-header-width, 500px) + 12px);
-    top: calc(var(--hero-edge, 16px) + var(--hero-chrome-inset, 10px) + (var(--header-h, 64px) - var(--button-height)) / 2);
-  }
-}
-
 /* Fade the sticky hero only once this full-screen surface almost covers it. */
 .work-gallery > .overlap-marker { top: 75%; }
 
@@ -122,3 +108,13 @@
 @media (prefers-reduced-motion: reduce) {
   .work-gallery__presentation, .work-gallery__work .work-gallery__caption { transition: none; }
 }
+
+/* Folder cover with a separate action in the lower right cutout. */
+.work-gallery__image { border-radius: var(--project-card-radius); mask-image: radial-gradient(circle at 100% 100%, transparent calc(var(--button-height) + 17px), #000 calc(var(--button-height) + 18px)); }
+.work-gallery__action { position: absolute; right: 0; bottom: 0; }
+.work-gallery__media { width: var(--cover-width, 100%); max-width: 100%; margin-inline: auto; }
+.work-gallery .work-gallery__tag { display: inline-block; padding: 4px 14px; border: 1px solid currentColor; border-radius: 999px; }
+
+/* Size the actual artwork, so the corner action never sits on letterboxing. */
+.work-gallery__media { height: var(--cover-height, calc(var(--work-width) / var(--cover-ratio, 1.3333))); flex: none; }
+.work-gallery__caption { width: 100%; }

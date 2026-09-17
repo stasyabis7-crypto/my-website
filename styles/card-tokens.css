@@ -1,0 +1,4 @@
+/* Единое скругление карточек Главной, разделов и проектов. */
+:root { --project-card-radius: 28px; --wg-radius: var(--project-card-radius); }
+@media (max-width: 1100px) { :root { --project-card-radius: 22px; } }
+@media (max-width: 640px) { :root { --project-card-radius: 20px; } }

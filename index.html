@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="styles/footer.css?v=49" />
 <link rel="stylesheet" href="styles/button-hover.css?v=100" />
 <link rel="stylesheet" href="styles/buttons.css?v=work-hover-3" />
-<link rel="stylesheet" href="components/work-gallery/work-gallery.css?v=wheel-stream-13" />
+<link rel="stylesheet" href="components/work-gallery/work-gallery.css?v=groups-1" />
 <link rel="preload" as="font" type="font/ttf" href="styles/Valisca%204.ttf" crossorigin />
 <link rel="stylesheet" href="styles/fonts.css?v=3" />
 <link rel="stylesheet" href="styles/content-reveal.css?v=1" />
@@ -143,11 +143,6 @@
     </button>
   </div>
 
-  <div class="gallery-filter-dock" hidden>
-    <button class="btn btn--fill-white btn--icon-only btn--scroll-shadow" id="gallery-filter" type="button" aria-label="Фильтр работ: все компании" title="Фильтр работ: все компании" aria-haspopup="dialog" aria-controls="gallery-filter-dialog" aria-expanded="false">
-      <span class="icon icon--filter" aria-hidden="true"></span>
-    </button>
-  </div>
 
   <main class="container page-works">
     <!-- Три настроения и облако частиц. Источник — template.html. -->
@@ -185,12 +180,12 @@
     </section>
     <!-- component:hero-mood:end -->
 
-    <section class="work-gallery project-slider--themed" id="works-gallery" aria-label="Галерея работ" aria-roledescription="карусель">
-      <div class="work-gallery__viewport" tabindex="0" aria-label="Работы. Влево и вправо — листать, вверх или Escape — вернуться к баннеру">
+    <section class="work-gallery project-slider--themed" id="works-gallery" aria-label="Разделы портфолио" aria-roledescription="карусель">
+      <div class="work-gallery__viewport" tabindex="0" aria-label="Разделы. Влево и вправо — листать, вверх или Escape — вернуться к баннеру">
         <div class="work-gallery__track"></div>
       </div>
       <p class="work-gallery__status" role="status" aria-live="polite" aria-atomic="true"></p>
-      <noscript><p class="text-body">Для просмотра галереи включите JavaScript. <a href="/projects/recycle-map/">Карта переработки вещей</a></p></noscript>
+      <noscript><nav aria-label="Разделы"><p><a href="/projects/avito-charity/">Благотворительность</a></p><p><a href="/projects/ozon-crm/">CRM для продавцов</a></p><p><a href="/projects/ozon-prices/">Цены в ЛК селлера</a></p><p><a href="/projects/swtec-angel/">Внутренний ЛК для сотрудника</a></p><p><a href="/projects/swtec-medical/">Медицинские проекты</a></p><p><a href="/projects/concepts/">Концепты</a></p><p><a href="/projects/activities/">Активности</a></p></nav></noscript>
     </section>
   </main>
 
@@ -291,9 +286,8 @@
   <script src="styles/mood-companion.js?v=bottom-corners-1"></script>
   <script src="styles/layout-chrome.js?v=gallery-3"></script>
   <script src="styles/loading.js?v=mood-3"></script>
-  <script src="components/project-slider/avito.js?v=5"></script>
-  <script src="components/project-slider/ozon.js?v=9"></script>
-  <script src="components/work-gallery/work-gallery.js?v=wheel-stream-13"></script>
+  <script src="components/work-gallery/project-groups.js?v=1"></script>
+  <script src="components/work-gallery/work-gallery.js?v=groups-1"></script>
   <script src="styles/typography-rules.js?v=2"></script>
   <script src="styles/haptics.js?v=1"></script>
   <script src="styles/page-motion.js?v=10"></script>

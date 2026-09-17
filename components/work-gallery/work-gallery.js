@@ -5,21 +5,11 @@
   const viewport = gallery.querySelector('.work-gallery__viewport');
   const track = gallery.querySelector('.work-gallery__track');
   const status = gallery.querySelector('.work-gallery__status');
-  const filter = document.getElementById('gallery-filter');
-  const filterDock = document.querySelector('.gallery-filter-dock');
-  const header = document.querySelector('.site-header');
-  new ResizeObserver(() => {
-    document.documentElement.style.setProperty('--gallery-header-width', `${header.getBoundingClientRect().width}px`);
-  }).observe(header);
-  new IntersectionObserver(entries => {
-    filterDock.hidden = !entries[0].isIntersecting;
-  }, { threshold: 0, rootMargin: '0px 0px -25% 0px' }).observe(gallery);
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const all = Object.entries(window.projectCollections || {}).flatMap(([company, projects]) =>
-    projects.map((project, i) => ({ ...project, company, id: `${company}-${i}` })));
-  const names = { avito: 'Avito', ozon: 'Ozon' };
+  const all = window.portfolioGroups || [];
+  if (!all.length) return;
   const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  let projects = all, index = 0, selected = 'all';
+  let projects = all, index = 0;
   let slides = [], offsets = [], physical = 0, settleTimer;
   let drag = null, touch = null, suppressClick = false, pendingTarget = null;
   const modulo = value => (value % projects.length + projects.length) % projects.length;
@@ -46,15 +36,18 @@
   }
   let fitFrame = 0;
   function fitCaptions() {
-    slides.forEach(slide => slide.style.removeProperty('--cover-width'));
-    const widths = slides.map(slide => {
+    slides.forEach(slide => {
       const image = slide.querySelector('img');
-      if (!image.naturalWidth) return null;
-      slide.style.setProperty('--cover-ratio', image.naturalWidth / image.naturalHeight);
-      return innerWidth < 1000 ? image.clientWidth : Math.min(image.clientWidth, image.clientHeight * image.naturalWidth / image.naturalHeight);
-    });
-    slides.forEach((slide, i) => {
-      if (widths[i] !== null) slide.style.setProperty('--cover-width', `${widths[i]}px`);
+      if (!image.naturalWidth) return;
+      const presentation = slide.querySelector('.work-gallery__presentation');
+      const caption = slide.querySelector('.work-gallery__caption');
+      const ratio = image.naturalWidth / image.naturalHeight;
+      const gap = parseFloat(getComputedStyle(presentation).gap) || 20;
+      const availableHeight = Math.max(96, presentation.clientHeight - caption.offsetHeight - gap);
+      const width = Math.min(slide.clientWidth, availableHeight * ratio);
+      slide.style.setProperty('--cover-ratio', ratio);
+      slide.style.setProperty('--cover-width', `${width}px`);
+      slide.style.setProperty('--cover-height', `${width / ratio}px`);
     });
     const areas = slides.map(slide => {
       const link = slide.querySelector('a');
@@ -120,12 +113,14 @@
     clearTimeout(settleTimer);
     touch = null; drag = null; pendingTarget = null;
     const repeated = [...projects, ...projects, ...projects];
-    track.innerHTML = repeated.map((p, i) => `<article class="work-gallery__work" data-format="${escape(p.format)}" data-project-id="${escape(p.id)}" ${p.href ? 'data-action-hover' : ''} aria-roledescription="слайд" aria-label="${i % projects.length + 1} из ${projects.length}: ${escape(p.title)}">
-      <div class="work-gallery__presentation"><div class="work-gallery__media"><img class="work-gallery__image" src="${escape(p.image)}" srcset="${escape(p.srcset)}" sizes="(max-width: 999px) 80vw, 58vw" alt="${escape(p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false"></div>
-      <div class="work-gallery__caption"><div class="work-gallery__title-row">
-        <h3 class="text-h2">${escape(p.title)}</h3>
-        ${p.href ? `<a class="btn btn--fill-pink btn--icon-only btn--size-heading btn--hit-area btn--icon-diagonal-motion" href="${escape(p.href)}" ${p.href.startsWith('https:') ? 'target="_blank" rel="noopener noreferrer"' : ''} aria-label="Открыть: ${escape(p.title)}" draggable="false"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>` : ''}
-      </div><p class="text-body">${escape(p.description)}</p></div></div>
+    track.innerHTML = repeated.map((p, i) => `<article class="work-gallery__work" data-format="${escape(p.format)}" data-project-id="${escape(p.id)}" data-action-hover aria-roledescription="слайд" aria-label="${i % projects.length + 1} из ${projects.length}: ${escape(p.title)}">
+      <div class="work-gallery__presentation">
+        <div class="work-gallery__media">
+          <img class="work-gallery__image" src="${escape(p.image)}" alt="${escape(p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false">
+          <a class="work-gallery__action btn btn--fill-pink btn--icon-only btn--hit-area btn--icon-diagonal-motion" href="${escape(p.href)}" aria-label="Открыть: ${escape(p.title)}" draggable="false"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>
+        </div>
+        <div class="work-gallery__caption"><h2 class="text-h2">${escape(p.title)}</h2><p class="text-body">${escape(p.description)}</p>${p.tag ? `<p class="work-gallery__tag text-body">${escape(p.tag)}</p>` : ''}</div>
+      </div>
     </article>`).join('');
     slides = [...track.children];
     slides.forEach(slide => {
@@ -184,6 +179,17 @@
     if (wheel && now - wheel.lastAt > 240) wheel = null;
     if (!wheel) wheel = { x: 0, y: 0, kind: null, lastAt: now };
     wheel.lastAt = now;
+    // Returning to the hero is a separate action: an upward gesture over a
+    // card may interrupt the consumed project swipe without advancing again.
+    if (wheel.kind === 'work' && e.target.closest('.work-gallery__work')) {
+      wheel.upward = dy < 0 && Math.abs(dy) > Math.abs(dx) * 1.5
+        ? (wheel.upward || 0) - dy : 0;
+      if (wheel.upward >= 18) {
+        wheel.kind = 'page';
+        showHero();
+        return;
+      }
+    }
     if (wheel.kind) return;
     wheel.x += dx; wheel.y += dy;
     // Establish the intended axis before reacting to tiny vertical trackpad noise.
@@ -284,75 +290,4 @@
   viewport.addEventListener('lostpointercapture', finishDrag);
   viewport.addEventListener('click', e => { if (suppressClick) { e.preventDefault(); suppressClick = false; } }, true);
 
-  // Reuse the contact surface, origin animation and design-system buttons.
-  const dialog = document.createElement('div');
-  dialog.id = 'gallery-filter-dialog';
-  dialog.className = 'contact-dialog';
-  dialog.hidden = true;
-  dialog.setAttribute('role', 'dialog');
-  dialog.setAttribute('aria-modal', 'true');
-  dialog.setAttribute('aria-labelledby', 'gallery-filter-heading');
-  dialog.innerHTML = `<div class="contact-dialog__backdrop" data-close></div>
-    <div class="contact-dialog__panel"><div class="contact-dialog__body"><div class="contact-dialog__inner">
-      <div class="contact-dialog__head"><h2 class="contact-dialog__title text-h2" id="gallery-filter-heading">Работы по компании</h2></div>
-      <div data-rows>${[['all', 'Все компании'], ...Object.entries(names)].map(([key, label], i) => `<div class="contact-dialog__item" style="--item-index:${i}"><button class="contact-row btn btn--fill-white" type="button" data-company="${key}" aria-pressed="${key === selected}">${label} · ${key === 'all' ? all.length : all.filter(p => p.company === key).length}</button></div>`).join('')}</div>
-    </div></div><div class="contact-dialog__footer"><div class="contact-dialog__close-wrap"><button class="btn btn--fill-white btn--icon-right" type="button" data-close><span>Закрыть</span><span class="icon icon--close" aria-hidden="true"></span></button></div></div></div>`;
-  document.body.append(dialog);
-  let inactive = [], closingTimer;
-  const panel = dialog.querySelector('.contact-dialog__panel');
-  function setOrigin() {
-    const r = panel.getBoundingClientRect(), t = filter.getBoundingClientRect();
-    const top = Math.max(0, Math.min(r.height, t.top - r.top));
-    const left = Math.max(0, Math.min(r.width, t.left - r.left));
-    const right = Math.max(0, Math.min(r.width - left, r.right - t.right));
-    const bottom = Math.max(0, Math.min(r.height - top, r.bottom - t.bottom));
-    panel.style.setProperty('--contact-origin', `inset(${top}px ${right}px ${bottom}px ${left}px round 32px)`);
-  }
-  function finishClose() {
-    clearTimeout(closingTimer);
-    dialog.hidden = true; dialog.classList.remove('is-closing');
-    inactive.forEach(el => { el.inert = false; }); inactive = [];
-    document.documentElement.classList.remove('contact-scroll-lock');
-    filter.setAttribute('aria-expanded', 'false'); filter.focus({ preventScroll: true });
-  }
-  function close() {
-    if (dialog.hidden || dialog.classList.contains('is-closing')) return;
-    if (reduced.matches) { finishClose(); return; }
-    dialog.classList.add('is-closing');
-    closingTimer = setTimeout(finishClose, 750);
-  }
-  panel.addEventListener('animationend', e => { if (e.target === panel && e.animationName === 'contact-surface-out') finishClose(); });
-  filter.addEventListener('click', () => {
-    dialog.hidden = false; setOrigin();
-    inactive = [...document.body.children].filter(el => el !== dialog && !el.inert);
-    inactive.forEach(el => { el.inert = true; });
-    document.documentElement.classList.add('contact-scroll-lock');
-    filter.setAttribute('aria-expanded', 'true');
-    dialog.querySelector(`[data-company="${selected}"]`).focus({ preventScroll: true });
-  });
-  dialog.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
-  dialog.querySelectorAll('[data-company]').forEach(button => button.addEventListener('click', () => {
-    selected = button.dataset.company;
-    projects = selected === 'all' ? all : all.filter(p => p.company === selected);
-    dialog.querySelectorAll('[data-company]').forEach(el => {
-      const active = el.dataset.company === selected;
-      el.setAttribute('aria-pressed', String(active));
-      el.classList.toggle('btn--fill-pink', active);
-      el.classList.toggle('btn--fill-white', !active);
-    });
-    const filterLabel = `Фильтр работ: ${names[selected] || 'все компании'}`;
-    filter.setAttribute('aria-label', filterLabel);
-    filter.title = filterLabel;
-    render(); close();
-  }));
-  dialog.querySelector('[data-company="all"]').classList.replace('btn--fill-white', 'btn--fill-pink');
-  dialog.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { e.preventDefault(); close(); }
-    if (e.key !== 'Tab') return;
-    const controls = [...dialog.querySelectorAll('button')];
-    const first = controls[0], last = controls[controls.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-  window.addEventListener('resize', () => { if (!dialog.hidden) setOrigin(); });
 })();
