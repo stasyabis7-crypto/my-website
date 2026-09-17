@@ -184,29 +184,33 @@
     // observing non-cancelable events too: some browsers only allow canceling
     // the first wheel event. They still carry gesture timing and direction.
     // Same-direction acceleration remains part of the consumed gesture.
-    // A sustained horizontal reversal can start a new gesture before silence.
+    // A sustained reversal or axis change can start a new gesture before silence.
     if (wheel && now - wheel.lastAt > 400) wheel = null;
     if (!wheel) wheel = { x: 0, y: 0, kind: null, lastAt: now };
     wheel.lastAt = now;
-    // A deliberate swipe back must not wait for the previous momentum tail.
-    // Require several horizontal samples: one opposite pulse is often bounce.
+    // A deliberate reverse or downward swipe must not wait for old momentum.
+    // Require sustained input, so one axis-noise pulse cannot advance a card.
     if (wheel.kind === 'work') {
-      const reverse = Math.abs(dx) > Math.abs(dy) * 1.5 &&
-        Math.abs(dx) >= 2 && Math.sign(dx) !== wheel.direction;
-      if (reverse) {
-        if (!wheel.reverse || now - wheel.reverse.lastAt > 160) {
-          wheel.reverse = { count: 0, distance: 0, startedAt: now };
+      const horizontal = Math.abs(dx) > Math.abs(dy) * 1.5 && Math.abs(dx) >= 2;
+      const downward = dy >= 2 && dy > Math.abs(dx) * 1.5;
+      const axis = horizontal ? 'x' : downward ? 'y' : null;
+      const direction = horizontal ? Math.sign(dx) : 1;
+      const newIntent = axis && (axis !== wheel.axis || direction !== wheel.direction);
+      if (newIntent) {
+        const key = `${axis}:${direction}`;
+        if (!wheel.reverse || wheel.reverse.key !== key || now - wheel.reverse.lastAt > 160) {
+          wheel.reverse = { key, count: 0, distance: 0, startedAt: now };
         }
         wheel.reverse.count++;
-        wheel.reverse.distance += Math.abs(dx);
+        wheel.reverse.distance += axis === 'x' ? Math.abs(dx) : dy;
         wheel.reverse.lastAt = now;
         if (wheel.reverse.count >= 3 && wheel.reverse.distance >= 24 &&
             now - wheel.reverse.startedAt >= 24) {
-          wheel.direction = Math.sign(dx);
-          wheel.axis = 'x';
+          wheel.direction = direction;
+          wheel.axis = axis;
           wheel.reverse = null;
           wheel.upward = 0;
-          goTo(wheel.direction);
+          goTo(direction);
           return;
         }
       } else wheel.reverse = null;
