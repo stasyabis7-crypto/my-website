@@ -206,6 +206,14 @@
   color: var(--color-action-hover-text, #fff);
 }
 
+/* Loading keeps the DS fill and gently pulses the whole button. */
+.is-page-loading .site-header__cta {
+  animation: skeleton-breathe var(--skeleton-speed, 3.2s) ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .is-page-loading .site-header__cta { animation: none; }
+}
+
 /* ---------- Типы расположения иконки ---------- */
 
 .btn--icon-left .icon {
