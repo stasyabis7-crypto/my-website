@@ -12,6 +12,7 @@
   let projects = all, index = 0;
   let slides = [], offsets = [], physical = 0, settleTimer;
   let drag = null, touch = null, suppressClick = false, pendingTarget = null;
+  const navigationQueue = [];
   const modulo = value => (value % projects.length + projects.length) % projects.length;
   function nearest() {
     return offsets.reduce((best, offset, i) => Math.abs(offset - viewport.scrollLeft) < Math.abs(offsets[best] - viewport.scrollLeft) ? i : best, 0);
@@ -102,15 +103,21 @@
     pendingTarget = target;
     viewport.scrollTo({ left: offsets[target], behavior: reduced.matches ? 'instant' : 'smooth' });
   }
+  function advanceQueue() {
+    if (pendingTarget !== null || drag || touch || !navigationQueue.length) return;
+    recenter();
+    centerAt(physical + navigationQueue.shift());
+  }
   function goTo(value) {
-    if (pendingTarget === null) recenter();
-    let from = pendingTarget ?? physical;
-    const middle = projects.length + modulo(from);
-    if (middle !== from) {
-      viewport.scrollTo({ left: viewport.scrollLeft + offsets[middle] - offsets[from], behavior: 'instant' });
-      from = middle;
-    }
-    centerAt(from + value);
+    if (!value) return;
+    // Preserve every accepted gesture, including opposite directions, while
+    // the current animation finishes. Input is never gated by animation state.
+    navigationQueue.push(value);
+    advanceQueue();
+  }
+  function settleNavigation() {
+    recenter();
+    advanceQueue();
   }
   // Button, wheel and touch share one navigation animation and landing.
   function showGallery() {
@@ -120,6 +127,7 @@
   function render() {
     clearTimeout(settleTimer);
     touch = null; drag = null; pendingTarget = null;
+    navigationQueue.length = 0;
     const repeated = [...projects, ...projects, ...projects];
     track.innerHTML = repeated.map((p, i) => `<article class="work-gallery__work" data-format="${escape(p.format)}" data-project-id="${escape(p.id)}" data-action-hover aria-roledescription="слайд" aria-label="${i % projects.length + 1} из ${projects.length}: ${escape(p.title)}">
       <div class="work-gallery__presentation">
@@ -148,17 +156,19 @@
     measure();
     viewport.scrollTo({ left: offsets[projects.length + active], behavior: 'instant' });
     update();
+    advanceQueue();
   }).observe(viewport);
   viewport.addEventListener('scroll', () => {
     update();
     clearTimeout(settleTimer);
     // Wait for native touch momentum / keyboard smooth scrolling to finish.
-    settleTimer = setTimeout(recenter, 180);
+    settleTimer = setTimeout(settleNavigation, 100);
   }, { passive: true });
+  viewport.addEventListener('scrollend', settleNavigation);
   gallery.addEventListener('keydown', e => {
     if (e.altKey || e.ctrlKey || e.metaKey || e.target.closest('button, a')) return;
-    if (['Escape', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); showHero(); return; }
-    const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, Home: -index, End: projects.length - 1 - index };
+    if (['Escape'].includes(e.key)) { e.preventDefault(); showHero(); return; }
+    const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1, PageUp: -1, PageDown: 1, Home: -index, End: projects.length - 1 - index };
     if (!(e.key in keys)) return;
     e.preventDefault(); goTo(keys[e.key]);
   });
@@ -191,38 +201,50 @@
       amplitude >= wheel.amplitude * .9;
     if (gap > 400 || freshAfterPause) wheel = null;
     if (!wheel) wheel = { x: 0, y: 0, kind: null, lastAt: now, amplitude,
-      tailSince: null, candidate: null };
+      tailSince: null, candidate: null, peak: amplitude, decaySamples: 0 };
+    const previousAmplitude = wheel.amplitude;
+    if (amplitude < previousAmplitude * .9) wheel.decaySamples++;
+    else if (amplitude > previousAmplitude * 1.1 && !wheel.candidate) {
+      // Keep the falling envelope until a new stroke has been classified.
+      if (wheel.decaySamples < 2) wheel.decaySamples = 0;
+    }
+    const freshImpulse = wheel.decaySamples >= 2 &&
+      previousAmplitude <= wheel.peak * .45 && amplitude >= Math.max(8, previousAmplitude * 1.6);
+    wheel.peak = Math.max(wheel.peak, amplitude);
     wheel.lastAt = now;
     wheel.amplitude = amplitude;
     if (wheel.kind) {
       const horizontal = Math.abs(dx) > Math.abs(dy) * 1.5 && Math.abs(dx) >= 2;
-      const downward = dy >= 2 && dy > Math.abs(dx) * 1.5;
-      const axis = horizontal ? 'x' : downward ? 'y' : null;
-      const direction = horizontal ? Math.sign(dx) : 1;
+      const vertical = Math.abs(dy) >= 2 && Math.abs(dy) > Math.abs(dx) * 1.5;
+      const axis = horizontal ? 'x' : vertical ? 'y' : null;
+      const direction = horizontal ? Math.sign(dx) : Math.sign(dy);
       const changed = axis && (axis !== wheel.axis || direction !== wheel.direction);
       // Inertia can continue emitting events between two real trackpad strokes.
       // Recognize a fresh forceful stroke after a quiet tail, even in the same
       // direction. Holding/accelerating a long stroke never arms this path.
       if (amplitude <= 6) wheel.tailSince ??= now;
-      const renewed = axis && amplitude >= 12 && wheel.tailSince !== null &&
-        now - wheel.tailSince >= 64;
+      const continuingImpulse = wheel.candidate?.renewed && amplitude >= 8 &&
+        now - wheel.candidate.lastAt <= 80;
+      const renewed = axis && (freshImpulse || continuingImpulse ||
+        amplitude >= 12 && wheel.tailSince !== null && now - wheel.tailSince >= 64);
       if (changed || renewed) {
         const key = `${axis}:${direction}`;
         if (!wheel.candidate || wheel.candidate.key !== key || now - wheel.candidate.lastAt > 160) {
-          wheel.candidate = { key, count: 0, distance: 0, startedAt: now };
+          wheel.candidate = { key, renewed, count: 0, distance: 0, startedAt: now };
         }
         const candidate = wheel.candidate;
         candidate.count++;
-        candidate.distance += axis === 'x' ? Math.abs(dx) : dy;
+        candidate.distance += axis === 'x' ? Math.abs(dx) : Math.abs(dy);
         candidate.lastAt = now;
-        const enough = renewed ? candidate.count >= 2 && now - candidate.startedAt >= 12
-          : candidate.count >= 3 && now - candidate.startedAt >= 24;
-        if (enough && candidate.distance >= 24) {
+        const enough = changed ? amplitude >= 8 || candidate.distance >= 12
+          : candidate.count >= 2 && candidate.distance >= 24;
+        if (enough) {
           wheel.direction = direction;
           wheel.axis = axis;
           wheel.candidate = null;
           wheel.tailSince = null;
-          wheel.upward = 0;
+          wheel.decaySamples = 0;
+          wheel.peak = amplitude;
           if (visible()) { wheel.kind = 'work'; goTo(direction); }
           else if (direction > 0) { wheel.kind = 'page'; showGallery(); }
           return;
@@ -232,17 +254,6 @@
         if (amplitude > 6) wheel.tailSince = null;
       }
     }
-    // Returning to the hero is a separate action: an upward gesture over a
-    // card may interrupt the consumed project swipe without advancing again.
-    if (wheel.kind === 'work' && e.target.closest('.work-gallery__work')) {
-      wheel.upward = dy < 0 && Math.abs(dy) > Math.abs(dx) * 1.5
-        ? (wheel.upward || 0) - dy : 0;
-      if (wheel.upward >= 18) {
-        wheel.kind = 'page';
-        showHero();
-        return;
-      }
-    }
     if (wheel.kind) return;
     wheel.x += dx; wheel.y += dy;
     // Establish the intended axis before reacting to tiny vertical trackpad noise.
@@ -250,7 +261,6 @@
     wheel.axis = Math.abs(wheel.x) >= Math.abs(wheel.y) * .8 ? 'x' : 'y';
     const delta = wheel.axis === 'x' ? wheel.x : wheel.y;
     wheel.direction = Math.sign(delta);
-    if (wheel.axis === 'y' && delta < 0) { wheel.kind = 'page'; showHero(); return; }
     if (!visible()) {
       if (delta > 0) { wheel.kind = 'page'; showGallery(); }
       return;
@@ -270,7 +280,7 @@
     const dx = gesture.x - x, dy = gesture.y - y;
     if (!gesture.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 5) {
       gesture.axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
-      gesture.page = gesture.axis === 'y' && dy < 0;
+      gesture.page = false;
     }
     if (!gesture.axis) return false;
     gesture.delta = gesture.axis === 'x' ? dx : dy;

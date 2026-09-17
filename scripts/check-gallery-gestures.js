@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const source = fs.readFileSync('components/work-gallery/work-gallery.js', 'utf8');
 const start = source.indexOf('  let wheel = null;');
 const end = source.indexOf('\n  function beginGesture', start);
-function run(events, initiallyVisible = true) {
+function run(events, initiallyVisible = true, enqueue) {
   let handler, now = 0, inGallery = initiallyVisible;
   const actions = [];
   vm.runInNewContext(source.slice(start, end), {
@@ -14,7 +14,7 @@ function run(events, initiallyVisible = true) {
     visible: () => inGallery, locked: () => false,
     showGallery: () => { actions.push('gallery'); inGallery = true; },
     showHero: () => { actions.push('hero'); inGallery = false; },
-    goTo: direction => actions.push(direction)
+    goTo: direction => { actions.push(direction); enqueue?.(direction); }
   });
   events.forEach(([gap, x, y = 0, cancelable = true]) => {
     now += gap;
@@ -26,7 +26,7 @@ function run(events, initiallyVisible = true) {
 const long = Array.from({ length: 80 }, (_, i) => [100, i % 4 === 0 ? 500 : 20]);
 assert.deepEqual(run(long), [1], 'eight-second swipe');
 assert.deepEqual(run([[0, 90], [300, 15], [300, 8], [300, 1]]), [1], 'sparse momentum');
-assert.deepEqual(run([[0, 100], [30, 1], [30, 400], [30, -50], [30, 20, 60, false]]), [1], 'acceleration, bounce, axis noise');
+assert.deepEqual(run([[0, 100], [30, 1], [30, 400], [30, -2], [30, 20, 4, false]]), [1], 'acceleration, bounce, axis noise');
 assert.deepEqual(run([...long, [450, 100]]), [1, 1], 'new gesture after silence');
 assert.deepEqual(run([[0, 0, 100], [100, 0, 300], [100, 0, 50]], false), ['gallery'], 'hero entry consumes entire gesture');
 assert.deepEqual(run([[0, -100], [100, -400]]), [-1], 'long reverse swipe');
@@ -43,4 +43,41 @@ const stroke = [[16, 60], [16, 100], [16, 40], [16, 12], [16, 5], [16, 3], [16, 
 assert.deepEqual(run([...stroke, ...stroke, ...stroke]), [1, 1, 1], 'three same-direction strokes with no silent gap');
 assert.deepEqual(run([...stroke, ...stroke, ...stroke].map(([gap, amount]) => [gap, 0, amount])), [1, 1, 1], 'three downward trackpad strokes');
 assert.deepEqual(run([...stroke, [16, 50], [16, 1], [16, .5]]), [1], 'one isolated tail spike is ignored');
-console.log('Gallery: single-action wheel gesture checks passed.');
+const fastStroke = [[16, 60], [16, 100], [16, 40], [16, 12]];
+assert.deepEqual(run([...fastStroke, ...fastStroke, ...fastStroke]), [1, 1, 1], 'same direction renewed before tail reaches near-zero');
+assert.deepEqual(run([...fastStroke, ...fastStroke, ...fastStroke].map(([gap, amount]) => [gap, 0, amount])), [1, 1, 1], 'three quick downward swipes');
+assert.deepEqual(run([[0, 60], [16, 100], [16, 40], [16, 12], [16, 50], [16, 1]]), [1], 'falling envelope then one spike is not a swipe');
+assert.deepEqual(run([[0, 0, -60], [16, 0, -100]]), [-1], 'upward swipe selects previous card');
+assert.deepEqual(run([[0, 60], [30, 0, 20]]), [1, 1], 'short downward swipe after horizontal swipe');
+// Exercise the real navigation queue with smooth scrolling still unfinished.
+function navigation() {
+  const context = {
+    pendingTarget: null, physical: 7, drag: null, touch: null, navigationQueue: [],
+    projects: Array(7), slides: Array(21), offsets: Array.from({ length: 21 }, (_, i) => i * 100),
+    reduced: { matches: false }, targets: []
+  };
+  context.viewport = { scrollLeft: 700, scrollTo({ left, behavior }) {
+    if (behavior === 'instant') this.scrollLeft = left;
+    else context.targets.push(left);
+  } };
+  context.loopPosition = left => 700 + ((left - 700) % 700 + 700) % 700;
+  context.update = () => { context.physical = Math.round(context.viewport.scrollLeft / 100); };
+  vm.createContext(context);
+  vm.runInContext(source.slice(source.indexOf('  function recenter()'), source.indexOf('  // Button, wheel')), context);
+  context.finish = () => {
+    context.viewport.scrollLeft = context.offsets[context.pendingTarget];
+    context.settleNavigation();
+  };
+  return context;
+}
+const forward = navigation();
+run([...fastStroke, ...fastStroke, ...fastStroke], true, forward.goTo);
+assert.deepEqual(forward.targets, [800], 'first animation started');
+assert.equal(forward.navigationQueue.length, 2, 'two additional gestures retained during animation');
+forward.finish(); forward.finish(); forward.finish();
+assert.deepEqual(forward.targets, [800, 900, 1000], 'three swipes produce three completed transitions');
+const mixed = navigation();
+mixed.goTo(1); mixed.goTo(-1); mixed.goTo(1);
+mixed.finish(); mixed.finish(); mixed.finish();
+assert.deepEqual(mixed.targets, [800, 700, 800], 'opposite queued gestures are not cancelled out');
+console.log('Gallery: gesture recognition and queued animation checks passed.');
