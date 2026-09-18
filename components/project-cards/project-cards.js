@@ -14,3 +14,15 @@
   cards.forEach(card => { measure(card); observer.observe(card); });
   document.fonts.ready.then(() => cards.forEach(measure));
 })();
+
+/* A card with no click-through page is never .project-card--linked — tag it automatically. */
+(() => {
+  document.querySelectorAll('.project-card:not(.project-card--linked)').forEach(card => {
+    const visual = card.querySelector('.project-card__visual');
+    if (!visual || visual.querySelector('.project-card__tag')) return;
+    const tag = document.createElement('p');
+    tag.className = 'project-card__tag text-body';
+    tag.textContent = 'В работе';
+    visual.appendChild(tag);
+  });
+})();
