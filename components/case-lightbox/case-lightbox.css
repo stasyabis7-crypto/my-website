@@ -1,0 +1,128 @@
+/*
+  Полноэкранный просмотр фото интерфейса на страницах кейсов.
+  Открывающие превью — это любые .case-cover__media img /
+  .case-card__media img / .case-card__media-overlay / .case-role__col-art img
+  с непустым alt (см. case-lightbox.js — там же критерий отбора);
+  декоративные метрики (.case-metric__art) и аватары команды
+  (.case-team__avatar) в выборку не попадают и это состояние не получают.
+*/
+
+.case-lightbox-openable {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .case-lightbox-openable:hover {
+    transform: scale(0.97);
+  }
+}
+
+.case-lightbox-openable:focus-visible {
+  outline: 2px solid var(--color-action-active, #fff);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-lightbox-openable {
+    transition-duration: 0.01ms;
+  }
+}
+
+/* Фон блокировки скролла переиспользует .contact-scroll-lock (см.
+   site-chrome.css) — тот же приём без position:fixed/сохранения scrollY,
+   уже учтён в page-motion.js/work-gallery.js. */
+
+.case-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2100000000;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+}
+
+.case-lightbox[hidden] {
+  display: none;
+}
+
+.case-lightbox__bar {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(var(--button-height, 64px) + 24px);
+  padding: 12px 20px;
+}
+
+.case-lightbox__counter {
+  margin: 0;
+  color: var(--color-text);
+}
+
+.case-lightbox__close {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.case-lightbox__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.case-lightbox__nav--prev {
+  left: 20px;
+}
+
+.case-lightbox__nav--next {
+  right: 20px;
+}
+
+@media (max-width: 767px) {
+  .case-lightbox__nav {
+    display: none;
+  }
+}
+
+.case-lightbox__viewport {
+  position: relative;
+  flex: 1 1 auto;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+}
+
+.case-lightbox__image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform;
+  cursor: zoom-in;
+  touch-action: none;
+}
+
+.case-lightbox__image.is-zoomed {
+  cursor: grab;
+}
+
+.case-lightbox__image.is-panning {
+  cursor: grabbing;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-lightbox__image {
+    transition-duration: 0.01ms !important;
+  }
+}
