@@ -3,6 +3,8 @@
 const { spawnSync } = require('child_process');
 const chokidar = require('chokidar');
 const path = require('path');
+const fs = require('fs');
+const { prepareImages } = require('./prepare-images');
 
 const repoRoot = process.cwd();
 const ignored = ['**/.git/**', '**/node_modules/**'];
@@ -62,7 +64,15 @@ function flush() {
   if (pending.size === 0) return;
   const files = Array.from(pending);
   pending.clear();
-  stageAndCommit(files);
+  try {
+    const prepared = prepareImages(repoRoot);
+    const ready = [...new Set([...files, ...prepared])].filter(file => fs.existsSync(file) ||
+      spawnSync('git', ['ls-files', '--error-unmatch', '--', path.relative(repoRoot, file)], { cwd: repoRoot, stdio: 'ignore' }).status === 0);
+    if (ready.length) stageAndCommit(ready);
+  } catch (error) {
+    files.forEach(file => pending.add(file));
+    console.error('Image preparation failed; commit skipped:', error.message);
+  }
 }
 
 console.log('Starting file watcher (auto-commit).');

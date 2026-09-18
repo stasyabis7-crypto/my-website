@@ -29,7 +29,7 @@
      + SVG-фильтр (feTurbulence+feDisplacementMap, см.
      #liquid-glass-distort в index.html), слегка "гнущий" картинку под
      стеклом вместо идеально ровного блюра. Цифры подобраны и
-     утверждены на тестовом стенде (storybook/liquid-glass-sample.html)
+     утверждены на тестовом стенде (dev/previews/liquid-glass-sample.html)
      — менять лучше там же, не на глаз в бою. Остальные стеклянные
      плашки (панель мобильного меню, кнопка "Меню") остаются на
      рецепте --glass-blur/--glass-saturate выше, здесь не трогаем.

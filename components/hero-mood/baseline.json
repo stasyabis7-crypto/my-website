@@ -1,5 +1,8 @@
 {
-  "components/hero-mood/template.html": "04b523f4450d935b5f99030639c5d42f853ab04ecb23b5af94650b1c8a3e0802",
-  "styles/mood-companion.css": "a45de224788940f585a358ec7abf7a178772d35f8287d28c4a477437c324a15f",
-  "styles/mood-companion.js": "a745b80875b31fad3d1b5b73c4e859ed9dc64e15e1854ff47f854f817f2af240"
+  "components/hero-mood/template.html": {
+    "mode": "hero-content-slots-v1",
+    "sha256": "e0782b18372cc394a5b0db6287a1134c89f6166fbb1f715201d005d5decd5ecb"
+  },
+  "components/hero-mood/mood-companion.css": "a45de224788940f585a358ec7abf7a178772d35f8287d28c4a477437c324a15f",
+  "components/hero-mood/mood-companion.js": "b1fa23d0ba2366a65b1ad006ed9cb721d84166fb76a105fbe8bd67fbc1c0efc7"
 }

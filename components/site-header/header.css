@@ -1,0 +1,159 @@
+/*
+  Хедер сайта — дефолтный skeleton-компонент (аватар + лого + кнопка
+  "Резюме PDF"), визуальный стиль ещё не финальный, стилизуем позже.
+
+  Горизонтальный отступ берётся из --page-px (см. index.html), чтобы
+  хедер, контент и футер были выровнены по одной вертикали на любой
+  ширине.
+*/
+
+:root {
+  /* --chrome-item-h — реальная высота "пункта" (кнопка "Резюме PDF" /
+     .site-footer__link — иконка+подпись в столбик), меряет
+     layout-chrome.js (см. syncChromeHeights) сرендеренной кнопки и
+     подставляет сюда — сама высота зависит от font-size/строки текста
+     (те гоняются по брейкпоинтам и fluid-скейлу scale.css), формулой
+     её не описать надёжно, поэтому меряем по факту. Число ниже —
+     запасное значение на случай, если JS ещё не отработал.
+     --chrome-h (высота ОТДЕЛЬНОЙ круглой плашки — переключатель темы,
+     кнопки футера в свёрнутом виде) — тот же пункт + внешний паддинг
+     плашки, чтобы кружки были той же высоты, что и сама плашка
+     хедера/футера. ВАЖНО: оба токена продублированы в footer.css —
+     при изменении правьте оба файла синхронно. */
+  --chrome-item-h: 3.5rem;
+  --chrome-pad-block: 0.5rem;
+  --chrome-h: calc(var(--chrome-item-h) + var(--chrome-pad-block) * 2);
+
+  /* Размер подписи компактных плашек (моб/планшет/chrome--compact и
+     сжатый десктопный вид) — тоже общий токен с footer.css (см. дубль
+     там же), вместо того чтобы одно и то же значение по отдельности
+     жить в 11px-ах, раскиданных по обоим файлам. */
+  --chrome-label-font-size-compact: clamp(10px, 2.8vw, 11px);
+  --chrome-label-font-size-desktop: 11px;
+}
+
+.site-header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  height: auto;
+  padding-block: var(--chrome-pad-block);
+  padding-inline: var(--chrome-pad-block);
+  background: var(--mood-chrome, #fff);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  border-radius: 999px;
+  /* Сплошной фон выбранной темы, без стекла и бликов. */
+}
+
+/*
+  Хедер — всегда плавающая плашка, прибитая к левому краю и сжатая по
+  контенту (аватар+имя+кнопка) — на любой ширине, моб/планшет и
+  десктоп больше не отличаются по позиции: раньше на моб/планшете
+  плашка растягивалась почти во всю ширину, теперь везде hug-content
+  (ширина не задана явно — shrink-to-fit по спецификации для
+  fixed-элемента без width/right).
+
+  html.chrome--compact — принудительный откат на моб-плашки даже на
+  широких экранах: если бы хедер, переключатель темы и футер не
+  влезли в один ряд без наезда друг на друга, layout-chrome.js
+  подставляет этот класс вместо брейкпоинта (переключатель темы и
+  футер по-прежнему разъезжаются по позиции моб/десктоп, см.
+  theme-toggle.css/footer.css — у хедера теперь разницы нет).
+*/
+.site-header {
+  position: fixed;
+  top: var(--page-px, 10px);
+  left: var(--page-px, 10px);
+  right: auto;
+  z-index: 50;
+}
+
+/* Моб/планшет — плашка по центру экрана, а не у левого края (десктоп
+   не трогаем, там остаётся left). left:50% + translateX(-50%), а не
+   right:auto с margin — ширина hug-content, точный центр только так. */
+@media (max-width: 1100px) {
+  .site-header {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.site-header__identity {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.site-header__avatar {
+  flex: 0 0 auto;
+  width: var(--chrome-item-h);
+  height: var(--chrome-item-h);
+  border-radius: 50%;
+  background: var(--color-surface-alt);
+  overflow: hidden;
+}
+
+.site-header__avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.site-header__logo {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text);
+  text-decoration: none;
+  transition:
+    scale var(--button-press-duration, 0.12s) ease-out,
+    color 0.3s ease;
+}
+
+.site-header__logo:focus-visible {
+  color: var(--color-action-hover);
+  outline: none;
+}
+
+/* layout-chrome.js прячет логотип на узких экранах, когда сжимать
+   словомарк дальше уже некуда (см. syncLogoScale). Своё правило нужно
+   потому, что display:inline-flex выше перебивает штатный [hidden]. */
+.site-header__logo[hidden] {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-header__logo:hover {
+    color: var(--color-action-hover);
+  }
+}
+
+/* Высота = --chrome-item-h (как у аватара) — ширина следует сама через
+   aspect-ratio, а не задана числом: раньше была фиксированной (5rem),
+   поэтому не росла вместе с аватаром/кнопкой. */
+.site-header__logo-mark {
+  display: block;
+  width: auto;
+  height: var(--chrome-item-h);
+  aspect-ratio: 1231 / 374;
+  background-color: currentColor;
+  -webkit-mask: url("../site-brand/logo.svg") center / contain no-repeat;
+  mask: url("../site-brand/logo.svg") center / contain no-repeat;
+}
+
+/* Отступы элементов плашки; типографика и размеры кнопки — в ДС. */
+@media (max-width: 1100px) {
+  .site-header__identity { gap: 0.5rem; }
+}
+html.chrome--compact .site-header__identity { gap: 0.5rem; }
+@media (min-width: 1101px) {
+  html:not(.chrome--compact) { --chrome-pad-block: 4px; }
+  html:not(.chrome--compact) .site-header__identity { gap: 0.5rem; }
+}
+.site-header__cta { flex: 0 0 auto; }

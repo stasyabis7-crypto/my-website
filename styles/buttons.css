@@ -33,12 +33,12 @@
   ─────────────────────────────────────────────────────────────────────
     .btn--fill-pink   розовая → по ховеру белая (текст/иконка темнеют)
                       эталон: .mood-primary «Смотреть работы»
-                      (styles/site-chrome.css)
+                      (components/site-chrome/site-chrome.css)
 
     .btn--fill-white  белая → по ховеру розовая (текст/иконка белеют)
                       эталон: .mood-next «Поменять тему» и
                       .site-socials__link (иконки соцсетей в хедере)
-                      (styles/site-chrome.css)
+                      (components/site-chrome/site-chrome.css)
 
     .btn--fill-ink    спокойная тёмная заливка → белая по наведению.
 
@@ -67,7 +67,7 @@
                       (общая фиксированная высота, как у остальных вариантов)
                       эталон: .site-header__cta «Резюме PDF» и пункты
                       футера .site-footer__link/.footer-menu-panel__link
-                      (styles/header.css, styles/footer.css — общая
+                      (components/site-header/header.css, components/site-footer/footer.css — общая
                       заготовка «иконка сверху, подпись снизу»)
 
     .btn--icon-only  только иконка, без подписи, круглая форма
@@ -77,7 +77,7 @@
                       Обязателен aria-label на самом элементе.
 
   Класс с иконкой не рисует иконку сам — внутрь кладём обычный
-  <span class="icon icon--имя"> (styles/icons.css, currentColor),
+  <span class="icon icon--имя"> (components/icons/icons.css, currentColor),
   порядок в разметке неважен: --icon-left/right/top переставляют
   иконку через order, а не полагаются на порядок тегов.
 
@@ -95,7 +95,7 @@
       <span class="icon icon--close" aria-hidden="true"></span>
     </button>
 
-  Пресс-фидбэк (scale при active) уже даёт глобально styles/scale.css
+  Пресс-фидбэк (scale при active) уже даёт глобально styles/button-hover.css
   всем a[href]/button — здесь его дублировать не нужно.
 */
 

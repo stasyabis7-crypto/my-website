@@ -1,0 +1,842 @@
+/*
+  Футер сайта — дефолтный skeleton-компонент навигации, визуальный стиль ещё не финальный, стилизуем
+  позже.
+
+  Горизонтальный отступ берётся из --page-px (см. index.html) — те же
+  правила выравнивания, что и у .site-header.
+*/
+
+:root {
+  /* Дублирует токены из header.css (см. подробный комментарий у :root
+     там же) — держите оба файла в синхроне, иначе плашка футера
+     разойдётся по высоте с плашкой хедера. --chrome-item-h меряет
+     layout-chrome.js по факту (высота кнопки "Резюме PDF"/пункта). */
+  --chrome-item-h: 3.5rem;
+  --chrome-pad-block: 0.5rem;
+  --chrome-h: calc(var(--chrome-item-h) + var(--chrome-pad-block) * 2);
+
+  /* Тоже дублирует header.css (см. комментарий у :root там же) —
+     держите оба файла в синхроне. */
+  --chrome-label-font-size-compact: clamp(10px, 2.8vw, 11px);
+  --chrome-label-font-size-desktop: 11px;
+
+  /* Общий easing для анимаций сворачивания/разворачивания футера
+     (список ссылок ⇄ кнопки, панель меню) — единая "пружинка" на все
+     переходы этого блока. */
+  --footer-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --footer-menu-gap: 8px;
+}
+
+.site-footer {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: var(--chrome-pad-block);
+  padding-inline: var(--chrome-pad-block);
+  background: var(--color-glass);
+  backdrop-filter: var(--liquid-glass-filter);
+  -webkit-backdrop-filter: var(--liquid-glass-filter);
+  box-shadow: var(--liquid-glass-glow);
+  border-radius: 999px;
+  /* Переливающаяся обводка — псевдоэлемент, см. theme.css. */
+}
+
+/*
+  Футер — ВСЕГДА плавающая плашка, как и хедер (см. header.css).
+
+  Моб/планшет (<1101, либо шире при chrome--compact) — по умолчанию
+  (страница не проскроллена) плашка обнимает список ссылок по ширине
+  и стоит по центру нижнего края (left: 50% + translateX), а не
+  растягивается от края до края — то же "hug-content", что и у
+  хедера. max-width страхует от переполнения на совсем узких экранах.
+
+  При скролле (см. .is-collapsed, ставит layout-chrome.js по
+  window.scrollY) список ссылок прячется, а плашка возвращается к
+  растянутому от края до края позиционированию — в этом состоянии
+  видимых элементов два самостоятельных кружка по краям (кнопка
+  "Меню" слева, кнопка "наверх" справа), а не одна общая плашка, им
+  нужны реальные left:0/right:0 экрана (см. .is-collapsed ниже).
+
+  Десктоп (1101+, не compact) — плашка top-right, сжата по контенту,
+  список ссылок виден всегда целиком независимо от скролла (см.
+  переопределение ниже) — сворачивать незачем, места достаточно.
+*/
+.site-footer {
+  position: fixed;
+  bottom: var(--page-px, 10px);
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  max-width: calc(100% - var(--page-px, 10px) * 2);
+  z-index: 50;
+}
+
+/* Свёрнутое состояние (проскроллили) — список ссылок прячем и
+   возвращаем плашку в растянутое от края до края позиционирование
+   (см. комментарий у .site-footer выше): кружки "Меню"/"наверх"
+   садятся на реальные левый/правый края экрана (position: absolute,
+   left: 0 / right: 0 — см. правила в самом низу секции). */
+.site-footer.is-collapsed {
+  left: var(--page-px, 10px);
+  right: var(--page-px, 10px);
+  transform: none;
+  max-width: none;
+}
+
+/* max-width (не display) — то, что реально анимирует сворачивание в
+   кнопки при скролле (см. .is-collapsed ниже): список схлопывается по
+   ширине и растворяется, а не исчезает одним кадром. Значение открытого
+   состояния — фиксированный rem, с запасом больше реальной ширины 4
+   пунктов (а не 100%): плашка теперь сама сжата по контенту (см. выше),
+   а не растянута на явную ширину, поэтому проценту не от чего было бы
+   отсчитываться во время анимации.
+   visibility с задержкой в .is-collapsed (а не здесь) — задержки
+   тут нет специально, чтобы при разворачивании список сразу становился
+   кликабельным/доступным с клавиатуры, не дожидаясь конца анимации. */
+.site-footer__nav-wrap {
+  display: flex;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 40rem;
+  overflow: hidden;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    max-width 0.45s var(--footer-ease),
+    opacity 0.3s var(--footer-ease);
+}
+
+/* Список больше не растянут на всю ширину плашки — плашка сама сжата
+   по контенту (см. .site-footer выше), поэтому и пункты, и сам список
+   сидят по своей естественной ширине (см. .site-footer__link — теперь
+   фиксированная ширина вместо flex-растяжения на всех брейкпоинтах, а
+   не только на десктопе). */
+.site-footer__nav {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* flex-basis 7.5rem — предпочитаемая (не растянутая) ширина пункта,
+   но с возможностью сжаться (flex-shrink: 1via "0 1"): на очень узких
+   экранах 4 пункта по 7.5rem с гэпами шире доступной ширины плашки
+   (см. max-width на .site-footer) — пункты пропорционально сжимаются
+   вместо того, чтобы обрезаться/вылезать за край, длинные подписи в
+   этом случае усекаются многоточием (см. text-overflow на .link). */
+.site-footer__nav li {
+  flex: 0 1 7.5rem;
+  min-width: 0;
+}
+
+/* Все пункты — одна и та же заготовка (прозрачная рамка/фон, тот же
+   размер), активный отличается только заливкой (см. .is-current
+   ниже), а не собственной шириной/высотой — поэтому у всех пунктов
+   получается одна и та же длина (ширину задаёт li, см. flex-basis
+   выше — link просто заполняет его на 100%).
+
+   Иконка над подписью, гэп 4px — одинаково на всех брейкпоинтах (моб/
+   планшет/десктоп) и одинаково с кнопкой "Резюме PDF" в хедере (см.
+   .site-header__cta в header.css — та же заготовка, поэтому плашки
+   хедера и футера одной высоты: обе auto-height, посчитанные от
+   одного и того же содержимого).
+
+   Та же заготовка (тот же класс имени нет, но те же значения —
+   размер/паддинги/гэп) переиспользуется у пунктов раскрытой панели
+   меню, см. .footer-menu-panel__link ниже — по просьбе пункты там
+   должны быть ТОГО ЖЕ размера, что и здесь. */
+.site-footer__link {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  height: auto;
+  padding-block: 0.5rem;
+  padding-inline: 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--color-text);
+  font-weight: var(--font-weight-regular);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.site-footer__link .icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+/* Активный пункт — залитая пилюля, тот же приём, что у
+   .site-header__cta (background/color var(--color-ink*)), а не
+   просто более тёмный текст. */
+.site-footer__link.is-current {
+  border-color: var(--color-action-active);
+  background: var(--color-action-active);
+  color: var(--color-action-active-text);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Мобильная и планшетная навигация используют единый компактный
+   размер. На самых узких экранах подписи могут плавно уменьшиться до
+   10px, чтобы все четыре пункта оставались в одной строке. */
+@media (max-width: 1100px) {
+  .site-footer__link {
+    gap: 3px;
+    padding-block: 6px;
+    padding-inline: 10px;
+    font-size: var(--chrome-label-font-size-compact);
+  }
+
+  .site-footer__link .icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+  }
+}
+
+html.chrome--compact .site-footer__link {
+  gap: 3px;
+  padding-block: 6px;
+  padding-inline: 10px;
+  font-size: var(--chrome-label-font-size-compact);
+}
+
+html.chrome--compact .site-footer__link .icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+/* Кнопки свёрнутого состояния ("Меню" слева, стрелка вверх справа) —
+   кружки РОВНО того же размера, что и .theme-toggle (var(--chrome-h)
+   — высота всей плашки, а не внутреннего control-size).
+
+   position: absolute ВСЕГДА (не только в .is-collapsed) — иначе даже
+   при max-width:0 их 1px-обводка (border-box не даёт сжаться ниже
+   border*2 = 2px) всё равно чуть-чуть участвует в shrink-to-fit
+   ширине .site-footer как flex-контейнера: раньше это давало ровно
+   4px разницы в ширине плашки между обычным и свёрнутым состоянием
+   на десктопе (плашка на скролле "прыгала" в сторону). Раз кружки
+   всегда вне потока, футеру они ширину не отдают ни в каком
+   состоянии — top/left/right ниже те же, что раньше были только в
+   .is-collapsed, здесь просто не под условием.
+
+   Кнопка "Меню" сама превращается в кнопку "закрыть" (крестик), пока
+   меню открыто — отдельной кнопки-крестика рядом больше нет (см.
+   .icon у .site-footer__menu-btn в .is-menu-open ниже, там же
+   подменяется и aria-label в layout-chrome.js). */
+.site-footer__menu-btn,
+.site-footer__top-btn {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--chrome-item-h, 3.5rem);
+  max-width: 0;
+  height: var(--chrome-item-h, 3.5rem);
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    max-width 0.45s var(--footer-ease),
+    opacity 0.3s var(--footer-ease),
+    visibility 0s linear 0.45s;
+}
+
+.site-footer__menu-btn {
+  left: 0;
+}
+
+.site-footer__top-btn {
+  right: 0;
+}
+
+/* Только визуальный стиль кружка — видимость (max-width/opacity) у
+   .site-footer__menu-btn уже управляется правилом выше/.is-collapsed,
+   здесь её не трогаем. */
+.site-footer__menu-btn,
+.site-footer__top-btn {
+  border: none;
+  border-radius: 50%;
+  background: var(--color-glass);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  padding: 0;
+  color: var(--color-ink);
+  cursor: pointer;
+  line-height: 1;
+  font-size: 1.125rem;
+  transition:
+    max-width 0.45s var(--footer-ease),
+    opacity 0.3s var(--footer-ease),
+    visibility 0s linear 0.45s,
+    filter 0.3s var(--footer-ease),
+    box-shadow 0.25s ease;
+}
+
+/* Приоритет 1: кнопка меню — розовый акцентный контрол. */
+.site-footer__menu-btn {
+  background: var(--color-action-active);
+  color: var(--color-action-active-text);
+}
+
+/* Непрозрачная белая кнопка «Вверх», как «Связаться». */
+.site-footer__top-btn {
+  background: #fff;
+  color: #101014;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+.site-footer__top-btn .icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+/* Кнопка "Меню" — три полоски вместо статичной SVG-иконки, сама
+   морфится в крестик, когда открыта панель (см. .is-menu-open ниже),
+   вместо мгновенной подмены mask-image. currentColor берёт тот же
+   цвет, что задан кнопке через .color выше (--color-action-active-text). */
+.site-footer__menu-btn-line {
+  position: absolute;
+  width: 1.25rem;
+  height: 0.125rem;
+  border-radius: 0.125rem;
+  background-color: currentColor;
+  transition:
+    transform 0.35s var(--footer-ease),
+    opacity 0.35s var(--footer-ease);
+}
+
+.site-footer__menu-btn-line--top {
+  transform: translateY(-0.35rem);
+}
+
+.site-footer__menu-btn-line--bottom {
+  transform: translateY(0.35rem);
+}
+
+/* Свёрнутое состояние (проскроллили) — список ссылок прячем, вместо
+   него показываем "Меню" + стрелку вверх. Класс ставит
+   layout-chrome.js по window.scrollY.
+
+   ВАЖНО: сам .site-footer в этом состоянии перестаёт быть видимой
+   плашкой (никакого фона/скругления) — это только позиционирующая
+   обёртка на всю ширину (растянутая от края до края, см.
+   .site-footer.is-collapsed выше). Кнопки — два самостоятельных
+   кружка по её краям (у каждого свой фон/бордер), а не два контрола
+   внутри одной общей плашки-бара. height здесь — то, что раньше
+   держала на всех состояниях база .site-footer: только в свёрнутом
+   виде и на десктопе (см. медиа-запрос ниже) плашка/обёртка имеет
+   фиксированную высоту var(--chrome-h), на моб/планшете в развёрнутом
+   виде высота теперь по контенту (см. .site-footer__link — иконка +
+   подпись в столбик занимают больше места, чем одна строка).
+
+   Задержка на visibility — на схлопывающемся элементе (.nav-wrap), а
+   не на появляющихся кнопках: список остаётся видимым/кликабельным
+   всё время своего схлопывания и выключается только в конце, кнопки
+   же становятся видимыми/кликабельными сразу, как только начинают
+   появляться. */
+.site-footer.is-collapsed .site-footer__nav-wrap {
+  max-width: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    max-width 0.45s var(--footer-ease),
+    opacity 0.3s var(--footer-ease),
+    visibility 0s linear 0.45s;
+}
+
+.site-footer.is-collapsed .site-footer__menu-btn,
+.site-footer.is-collapsed .site-footer__top-btn {
+  max-width: var(--chrome-item-h, 3.5rem);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.site-footer.is-collapsed {
+  height: var(--chrome-item-h);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+  padding-inline: 0;
+}
+
+/* Свёрнутый футер сам стал прозрачным (см. выше) — блик (::before, см.
+   theme.css) на всей плашке в этом состоянии рисовал линию поперёк
+   пустого места между кружками "Меню"/"наверх". Свою обводку теперь
+   даёт кнопка "наверх" (она стеклянная, .site-footer__top-btn в
+   theme.css), у "Меню" (сплошная розовая) её и не было. */
+.site-footer.is-collapsed::after {
+  display: none;
+}
+
+/* Десктоп — плашка top-right, список ссылок виден целиком ВСЕГДА,
+   .is-collapsed на десктопе не действует (места достаточно, сворачивать
+   незачем). html:not(.chrome--compact) — см. header.css.
+
+   --chrome-pad-block уменьшен здесь же — общий токен с header.css (см.
+   дубль там и комментарий у :root выше). Обе плашки (хедер/футер)
+   остаются одной высоты — она считается от одного и того же
+   содержимого (иконка+подпись в столбик, см. .site-footer__link/
+   .site-header__cta, --chrome-item-h меряет layout-chrome.js), явно
+   не фиксируем. Текст мельче — тот же приём и в header.css, держите
+   оба значения в синхроне. */
+@media (min-width: 1101px) {
+  html:not(.chrome--compact) {
+    --chrome-pad-block: 4px;
+  }
+
+  html:not(.chrome--compact) .site-footer {
+    top: var(--page-px, 10px);
+    bottom: auto;
+    left: auto;
+    right: var(--page-px, 10px);
+    transform: none;
+    width: max-content;
+    max-width: none;
+    padding-inline: var(--chrome-pad-block);
+  }
+
+  html:not(.chrome--compact) .site-footer__nav-wrap {
+    width: max-content;
+    max-width: none;
+    overflow: visible;
+  }
+
+  html:not(.chrome--compact) .site-footer__nav {
+    width: max-content;
+  }
+
+  html:not(.chrome--compact) .site-footer__link {
+    width: auto;
+    min-width: 100px;
+    gap: 3px;
+    padding-block: 6px;
+    padding-inline: 10px;
+    font-size: var(--chrome-label-font-size-desktop);
+  }
+
+  html:not(.chrome--compact) .site-footer__link .icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+  }
+
+  html:not(.chrome--compact) .site-footer__nav li {
+    flex: 0 0 auto;
+  }
+
+  /* .is-collapsed ставится по скроллу независимо от ширины экрана —
+     на десктопе это должно быть НЕ заметно: плашка остаётся обычной
+     заполненной пилюлей со списком ссылок, а не прозрачной обёрткой
+     под кружки (тех тут не видно, см. правило чуть ниже). height: auto
+     отменяет мобильное правило (.is-collapsed { height: var(--chrome-h) }
+     выше — там это высота ДВУХ КРУЖКОВ, а не двухъярусных пунктов) —
+     без этого при скролле плашка на десктопе резко сжималась в
+     мобильную высоту кружков, обрезая двухъярусные пункты. */
+  html:not(.chrome--compact) .site-footer.is-collapsed {
+    height: auto;
+    background: var(--color-glass);
+    backdrop-filter: var(--liquid-glass-filter);
+    -webkit-backdrop-filter: var(--liquid-glass-filter);
+    box-shadow: var(--liquid-glass-glow);
+    padding-inline: var(--chrome-pad-block);
+  }
+
+  /* На десктопе плашка снова целиком стеклянная (см. выше) — блик
+     возвращаем (отменяет мобильное display:none). */
+  html:not(.chrome--compact) .site-footer.is-collapsed::after {
+    display: block;
+  }
+
+  html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__nav-wrap {
+    max-width: none;
+    overflow: visible;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__menu-btn,
+  html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__top-btn {
+    max-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+}
+
+/*
+  Кнопка "наверх" на десктопе — САМОСТОЯТЕЛЬНАЯ кнопка вне <footer>
+  (см. index.html, #footer-top-btn-desktop сразу после </footer>), НЕ
+  повторно используем .site-footer__top-btn внутри плашки: та кнопка —
+  потомок .site-footer, а у него backdrop-filter (см. правило футера
+  выше), который создаёт свой containing block для position:fixed
+  потомков — "fixed" кнопка внутри такой плашки позиционируется
+  относительно САМОЙ ПЛАШКИ (та на десктопе сидит top-right), а не
+  вьюпорта, поэтому и уезжала наверх вместо низа экрана (см. чат). Вне
+  футера этой ловушки нет.
+
+  Появляется по тому же порогу скролла, что и .is-collapsed (см.
+  FOOTER_COLLAPSE_SCREENS в layout-chrome.js) — но видимость переключает
+  JS явным классом .is-visible (updateFooterCollapse), не CSS-селектор
+  по состоянию футера: кнопка не потомок и не гарантированный сосед
+  футера в разметке. Клик — тот же обработчик #footer-top-btn (см.
+  layout-chrome.js).
+*/
+#footer-top-btn-desktop {
+  display: none;
+}
+
+@media (min-width: 1101px) {
+  /* Полный набор top/left/right/bottom/max-width — .site-footer__top-btn
+     (общий класс для вида: стекло/блюр/иконка/блик) сама задаёт
+     top:0/right:0/max-width:0 под свою обычную позицию внутри плашки
+     футера — тут явно перебиваем КАЖДОЕ из них, иначе часть осталась
+     бы от него (top:0 в частности, из-за чего кнопка и уезжала наверх
+     первый раз, см. чат) — каскад берёт top/max-width у класса, если
+     это ID-правило их не задаёт, даже при более высокой специфичности
+     ID в целом. */
+  html:not(.chrome--compact) #footer-top-btn-desktop {
+    display: flex;
+    position: fixed;
+    top: auto;
+    left: auto;
+    right: var(--page-px, 10px);
+    bottom: var(--page-px, 10px);
+    z-index: 50;
+    width: var(--chrome-item-h, 3.5rem);
+    max-width: none;
+    height: var(--chrome-item-h, 3.5rem);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.3s var(--footer-ease),
+      visibility 0s linear 0.3s;
+  }
+
+  html:not(.chrome--compact) #footer-top-btn-desktop.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.3s var(--footer-ease);
+  }
+}
+
+/*
+  Плашка-меню (моб/планшет) — выезжает при клике на "Меню", когда
+  футер свёрнут. Намеренно вне <footer>, чтобы висеть отдельно над
+  ним. Сжата по контенту и центрирована, а не растянута на всю ширину
+  футера.
+  Отступ снизу (см. bottom) — 8px сверх высоты кнопки, это и есть
+  зазор между панелью и кнопкой "Меню"/"закрыть" под ней.
+*/
+.footer-menu-panel {
+  position: fixed;
+  z-index: 55;
+  bottom: calc(
+    var(--page-px, 10px) + var(--chrome-item-h, 3.5rem) + var(--footer-menu-gap)
+  );
+  left: 50%;
+  right: auto;
+  opacity: 0;
+  transform: translate(-50%, 10px) scale(0.96);
+  transform-origin: bottom center;
+  pointer-events: none;
+  transition:
+    opacity 0.28s var(--footer-ease),
+    transform 0.38s var(--footer-ease);
+}
+
+/* .is-open ставит layout-chrome.js сразу после снятия [hidden] (см.
+   openMenu) — рефлоу между ними гарантирует, что браузер успевает
+   отрисовать закрытое состояние (opacity/transform выше) перед
+   стартом перехода к открытому, иначе анимация не проиграется.
+   При закрытии [hidden] возвращается ТОЛЬКО спустя длительность этого
+   перехода (см. MENU_TRANSITION_MS в layout-chrome.js — держите оба
+   значения в синхроне), чтобы панель успела визуально закрыться,
+   прежде чем исчезнуть из DOM-раскладки. */
+.footer-menu-panel.is-open {
+  opacity: 1;
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+
+.footer-menu-panel[hidden] {
+  display: none;
+}
+
+/* Бар сжат по контенту сетки 2×2 (см. .footer-menu-panel__nav ниже),
+   а не растянут на всю ширину футера. */
+.footer-menu-panel__bar {
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 0.75rem;
+  border-radius: 28px;
+  background: var(--color-glass);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  /* Переливающаяся обводка — псевдоэлемент, см. theme.css. */
+}
+
+/* Сетка 2×2 — те же пункты, что и в развёрнутом футере (см.
+   .site-footer__link выше), той же ширины колонки (7.5rem), просто
+   в 2 столбца вместо 1 строки. */
+.footer-menu-panel__nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 7.5rem);
+  gap: 0.5rem;
+}
+
+/* Тот же размер/паддинги/гэп иконки, что и у .site-footer__link — по
+   просьбе пункты раскрытой панели должны быть того же размера, что
+   и в дефолтном (развёрнутом) состоянии футера. */
+.footer-menu-panel__link {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  height: auto;
+  padding-block: 0.5rem;
+  padding-inline: 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--color-text);
+  font-weight: var(--font-weight-regular);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.footer-menu-panel__link .icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+@media (max-width: 1100px) {
+  .footer-menu-panel__link {
+    gap: 3px;
+    padding-block: 6px;
+    padding-inline: 10px;
+    font-size: var(--chrome-label-font-size-compact);
+  }
+
+  .footer-menu-panel__link .icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+  }
+}
+
+html.chrome--compact .footer-menu-panel__link {
+  gap: 3px;
+  padding-block: 6px;
+  padding-inline: 10px;
+  font-size: var(--chrome-label-font-size-compact);
+}
+
+html.chrome--compact .footer-menu-panel__link .icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+/* Активный пункт — та же залитая пилюля, что и у .site-footer__link
+   (см. выше) и .site-header__cta — единый стиль "активного" контрола
+   по всему сайту. */
+.footer-menu-panel__link.is-current {
+  border-color: var(--color-action-active);
+  background: var(--color-action-active);
+  color: var(--color-action-active-text);
+  font-weight: var(--font-weight-semibold);
+}
+
+/*
+  Подложка при открытом вертикальном меню — блюрит и глушит всё
+  остальное (страницу, хедер, переключатель темы, кнопку "наверх" в
+  футере), пока меню открыто. Кнопка "Меню" (в этом состоянии — уже
+  визуально кнопка "закрыть", см. .is-menu-open ниже) и сама плашка
+  меню остаются НАД подложкой и не блюрятся — см. .site-footer.is-menu-open
+  ниже (поднимает футер над подложкой) и прицельный блюр на
+  .site-footer__top-btn (единственный элемент футера, который при
+  этом всё равно должен выглядеть выключенным).
+
+  Клик по подложке закрывает меню — использует тот же
+  document-click-обработчик "клик мимо панели", что и раньше (см.
+  layout-chrome.js), отдельного слушателя не требуется.
+*/
+.footer-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 54;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.3s var(--footer-ease);
+}
+
+.footer-menu-backdrop.is-open {
+  opacity: 1;
+}
+
+.footer-menu-backdrop[hidden] {
+  display: none;
+}
+
+/* Пока меню открыто, весь футер поднимается над подложкой (иначе
+   кнопка "Меню"/"закрыть" тоже оказалась бы под блюром) — кнопку
+   "наверх" рядом с ней в этом состоянии приглушаем (не до полной
+   невидимости — кружок остаётся на месте, просто выглядит
+   выключенным), она не входит в список исключений. */
+.site-footer.is-menu-open {
+  z-index: 56;
+}
+
+.site-footer.is-menu-open .site-footer__top-btn {
+  filter: blur(1.5px);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Кнопка "Меню" сама становится кнопкой "закрыть" — три полоски
+   морфятся в крестик (aria-label меняет layout-chrome.js). Никакой
+   отдельной кнопки-крестика рядом больше нет. */
+.site-footer.is-menu-open .site-footer__menu-btn-line--center {
+  opacity: 0;
+}
+
+.site-footer.is-menu-open .site-footer__menu-btn-line--top {
+  transform: translateY(0) rotate(45deg);
+}
+
+.site-footer.is-menu-open .site-footer__menu-btn-line--bottom {
+  transform: translateY(0) rotate(-45deg);
+}
+
+/* Скролл страницы блокируется, пока открыто вертикальное меню —
+   класс ставит layout-chrome.js вместе с open/closeMenu. */
+html.footer-menu-open {
+  overflow: hidden;
+}
+
+/*
+  MVP: навигация временно скрыта, но остаётся в разметке вместе со всей
+  логикой раскрытия — её можно вернуть, удалив только этот блок. Вместо
+  меню показываем прямую CTA в Telegram. На мобильных она постоянно
+  закреплена снизу, в том числе после перехода футера в is-collapsed.
+*/
+.site-footer__telegram {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 3.5rem = 56px на базовом мобильном размере: ровно как круглая
+     кнопка «Наверх» и CTA «Смотреть работы» (текст + padding + border). */
+  height: var(--chrome-item-h, 3.5rem);
+  padding: 0 1.25rem;
+  border: 1px solid var(--color-action-active);
+  border-radius: 999px;
+  background: var(--color-action-active);
+  color: var(--color-action-active-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  /* Унаследованная ширина контрола футера; новые кнопки берутся из buttons.css. */
+  .site-footer__telegram {
+    width: 13.5rem;
+  }
+}
+
+.site-footer__nav-wrap,
+.site-footer__menu-btn,
+.footer-menu-panel,
+.footer-menu-backdrop {
+  display: none !important;
+}
+
+.site-footer,
+.site-footer.is-collapsed {
+  width: auto;
+  height: auto;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.site-footer.is-collapsed {
+  left: var(--page-px, 10px);
+  right: var(--page-px, 10px);
+  width: auto;
+  height: var(--chrome-h, 4.5rem);
+  transform: none;
+}
+
+.site-footer.is-collapsed .site-footer__telegram {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: auto;
+}
+
+.site-footer::after,
+.site-footer.is-collapsed::after {
+  display: none;
+}
+
+@media (min-width: 1101px) {
+  html:not(.chrome--compact) .site-footer,
+  html:not(.chrome--compact) .site-footer.is-collapsed {
+    /* CTA ниже верхней границы на величину внутреннего padding хедера:
+       её центр совпадает с центром всей плашки .site-header. */
+    top: calc(var(--page-px, 10px) + var(--chrome-pad-block));
+    bottom: auto;
+    width: auto;
+    height: auto;
+    padding: 0;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 0;
+    box-shadow: none;
+  }
+
+  html:not(.chrome--compact) .site-footer.is-collapsed::after {
+    display: none;
+  }
+
+  html:not(.chrome--compact) .site-footer.is-collapsed .site-footer__telegram {
+    position: static;
+  }
+}
+
+/* Same scroll elevation as the shared contact action. */
+html.chrome--pinned .site-footer__top-btn { box-shadow: var(--control-scroll-shadow); }

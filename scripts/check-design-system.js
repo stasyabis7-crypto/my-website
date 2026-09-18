@@ -16,8 +16,8 @@
        с которых типы в styles/buttons.css были сняты.
     2) Любое CSS-объявление font-family вне списка исключений
        (FONT_EXEMPT_FILES — файлы, где шрифт ЗАДАЁТСЯ как токен/эталон:
-       fonts.css, typography.css, hero-garden.css, унаследованные
-       hero.css/masonry.css) должно ссылаться на var(--font-family-*),
+       fonts.css, typography.css, демонстрационный
+       masonry.css) должно ссылаться на var(--font-family-*),
        а не на литерал вроде "IBM Plex Mono".
 
   Что НЕ проверяем: <a href> без role="button" (обычная ссылка —
@@ -39,22 +39,19 @@ const EXCLUDED_DIRS = new Set([
   ".git",
   ".github",
   ".claude",
-  "storybook",
+  "dev",
   "scripts",
-  "grid-test-assets",
 ]);
 
-const EXCLUDED_FILES = new Set(["grid-test.html"]);
+const EXCLUDED_FILES = new Set(["dev/grid/index.html"]);
 
 // Уже существующие эталонные кнопки Главной/шапки/футера — типы в
 // styles/buttons.css сняты именно с них, сами они на .btn не переводятся
 // (см. комментарий в styles/buttons.css). Проверяем по префиксу класса,
-// чтобы покрыть модификаторы (garden__cta--primary и т.п.).
+// чтобы покрыть модификаторы существующих контролов.
 const BUTTON_LEGACY_PREFIXES = [
   "site-header__cta",
   "site-footer__telegram",
-  "garden__cta",
-  "garden__help",
   "site-footer__link",
   "site-footer__menu-btn",
   "site-footer__top-btn",
@@ -69,14 +66,12 @@ const BUTTON_LEGACY_PREFIXES = [
 ];
 
 // Файлы, где литеральный font-family — источник токена (fonts.css/
-// typography.css) или уже задокументированное эталонное/устаревшее
+// typography.css) или уже задокументированное эталонное/демонстрационное
 // исключение, тронутое не в этой задаче.
 const FONT_EXEMPT_FILES = new Set([
   "styles/fonts.css",
   "styles/typography.css",
-  "styles/hero-garden.css",
-  "styles/hero.css",
-  "styles/masonry.css",
+  "dev/previews/masonry.css",
 ]);
 
 function walk(dir, files) {
@@ -96,6 +91,7 @@ function walk(dir, files) {
 
 const allFiles = walk(ROOT, []);
 const htmlFiles = allFiles.filter((f) => f.endsWith(".html"));
+const jsFiles = allFiles.filter((f) => f.endsWith(".js"));
 const cssFiles = allFiles.filter((f) => f.endsWith(".css"));
 
 const violations = [];
@@ -107,7 +103,8 @@ function hasClassToken(classAttr, predicate) {
 }
 
 function checkButtonsInHtml(relFile) {
-  const src = fs.readFileSync(path.join(ROOT, relFile), "utf8");
+  const src = fs.readFileSync(path.join(ROOT, relFile), "utf8")
+    .replace(/<!--[\s\S]*?-->/g, comment => comment.replace(/[^\n]/g, " "));
   const tagRe = /<(button|a|[a-zA-Z][a-zA-Z0-9-]*)\b([^>]*)>/g;
   let m;
   let line = 1;
@@ -115,19 +112,34 @@ function checkButtonsInHtml(relFile) {
   while ((m = tagRe.exec(src))) {
     line += countNewlines(src, lastIndex, m.index);
     lastIndex = m.index;
-    const [, tag, attrs] = m;
-    const isRoleButton = /role\s*=\s*"button"/.test(attrs);
-    if (tag !== "button" && !isRoleButton) continue;
-
-    const classMatch = attrs.match(/class\s*=\s*"([^"]*)"/);
-    const classAttr = classMatch ? classMatch[1] : "";
-
-    const hasBtn = hasClassToken(classAttr, (c) => c === "btn" || c.startsWith("btn--"));
+    const tag = m[1].toLowerCase();
+    const attrs = m[2];
+    const attribute = name => {
+      const match = attrs.match(new RegExp("(?:^|\\s)" + name + "\\s*=\\s*(?:\"([^\"]*)\"|'([^']*)'|([^\\s>]+))", "i"));
+      return match ? (match[1] ?? match[2] ?? match[3]) : "";
+    };
+    const isRoleButton = attribute("role") === "button";
+    const classAttr = attribute("class");
+    const hasBtn = hasClassToken(classAttr, c => c === "btn");
+    const hasModifier = hasClassToken(classAttr, c => c.startsWith("btn--"));
+    if (tag !== "button" && !isRoleButton && !hasBtn && !hasModifier) continue;
+    if (hasBtn && tag !== "button" && !isRoleButton && !(tag === "a" && attribute("href"))) {
+      violations.push({ type: "button", file: relFile, line, detail: ".btn на некликабельном элементе" });
+    }
+    // Template expressions in JS can select the fill dynamically.
+    if (hasBtn && !classAttr.includes("${")) {
+      const fills = classAttr.split(/\s+/).filter(c => c.startsWith("btn--fill-"));
+      if (fills.length !== 1 || !knownFills.has(fills[0])) {
+        violations.push({ type: "button", file: relFile, line, detail: "Нужен ровно один существующий .btn--fill-* из buttons.css" });
+      }
+      const icons = classAttr.split(/\s+/).filter(c => /^btn--icon-(left|right|top|only)$/.test(c));
+      if (icons.length > 1) violations.push({ type: "button", file: relFile, line, detail: "Несколько компоновок иконки на одной кнопке" });
+    }
     const isLegacy = hasClassToken(classAttr, (c) =>
       BUTTON_LEGACY_PREFIXES.some((p) => c === p || c.startsWith(p + "--") || c.startsWith(p + "-"))
     );
 
-    if (!hasBtn && !isLegacy) {
+    if (!hasBtn && (hasModifier || !isLegacy)) {
       violations.push({
         type: "button",
         file: relFile,
@@ -144,11 +156,13 @@ function countNewlines(src, from, to) {
   return n;
 }
 
-for (const f of htmlFiles) checkButtonsInHtml(f);
+const knownFills = new Set(fs.readFileSync(path.join(ROOT, "styles/buttons.css"), "utf8").match(/btn--fill-[a-z-]+/g));
+for (const f of [...htmlFiles, ...jsFiles]) checkButtonsInHtml(f);
 
 // ---------- 2) Шрифты ----------
 
 function checkFontFamily(relFile, cssText) {
+  cssText = cssText.replace(/\/\*[\s\S]*?\*\//g, comment => comment.replace(/[^\n]/g, " "));
   const declRe = /font-family\s*:\s*([^;]+);/g;
   let m;
   let line = 1;
@@ -157,7 +171,7 @@ function checkFontFamily(relFile, cssText) {
     line += countNewlines(cssText, lastIndex, m.index);
     lastIndex = m.index;
     const value = m[1].trim();
-    if (value === "inherit" || value === "initial" || value === "unset" || value.startsWith("var(")) continue;
+    if (value === "inherit" || value === "initial" || value === "unset" || /^var\(--font-family-[\w-]+(?:\s*[,)]|$)/.test(value)) continue;
     violations.push({
       type: "font",
       file: relFile,

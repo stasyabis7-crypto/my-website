@@ -12,7 +12,7 @@
 // what the live site actually shows.
 //
 // embedTheme: 'dark' | 'light' — projects that already have their own
-// [data-embed-theme] CSS (see works/shared/theme-sync.js) normally get this
+// [data-embed-theme] CSS can get this
 // attribute from a postMessage handshake with the parent page. Standalone,
 // window.parent === window, so the handshake never fires and the attribute
 // is never set. Force it so the recording reflects what the site actually

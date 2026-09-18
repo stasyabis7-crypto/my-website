@@ -14,14 +14,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Check frozen hero mood component
-        run: node scripts/hero-mood-component.js
+      - name: Install WebP encoder
+        run: sudo apt-get update && sudo apt-get install -y webp
 
-      - name: Check frozen homepage gallery component
-        run: node scripts/work-gallery-component.js
+      - name: Convert uploaded PNG and update references
+        run: npm run images:prepare
 
-      - name: Check design system (buttons/fonts)
-        run: node scripts/check-design-system.js
+      - name: Check components, design system and local links
+        run: npm run check
 
       - name: Version gallery assets for the hosting CDN
         run: node scripts/version-gallery-assets.js
@@ -40,7 +40,8 @@ jobs:
             **/.git*
             **/.git*/**
             **/.github/**
-            **/storybook/**
+            dev/**
+            docs/**
             **/scripts/**
             **/node_modules/**
             **/.claude/**
@@ -49,4 +50,9 @@ jobs:
             assets/garden/flowers new/**
             _*.html
             package.json
-            README_AUTOCOMMIT.md
+            **/*.png
+            **/*.PNG
+            **/*.md
+            **/baseline.json
+            **/.DS_Store
+            **/.gitkeep

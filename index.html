@@ -8,38 +8,37 @@
   name="description"
   content="Старший продуктовый дизайнер Анастасия Вихарева"
 />
-<link rel="icon" type="image/webp" sizes="64x64" href="assets/favicon.webp" />
-<script src="styles/analytics-config.js?v=1"></script>
-<script src="styles/analytics.js?v=1" defer></script>
-<script src="styles/theme.js?v=mood-1"></script>
-<link rel="stylesheet" href="styles/page-transition.css?v=4" />
-<script src="styles/page-transition.js?v=4"></script>
+<link rel="icon" type="image/webp" sizes="64x64" href="components/site-brand/favicon.webp" />
+<script src="site/analytics-config.js?v=1"></script>
+<script src="site/analytics.js?v=1" defer></script>
+<script src="site/theme.js?v=mood-1"></script>
+<link rel="stylesheet" href="components/page-transition/page-transition.css?v=4" />
+<script src="components/page-transition/page-transition.js?v=4"></script>
 <script>document.documentElement.classList.add('is-page-loading')</script>
 <link rel="stylesheet" href="styles/scale.css?v=18" />
 <link rel="stylesheet" href="styles/typography.css?v=24" />
 <link rel="stylesheet" href="styles/spacing.css?v=1" />
 <link rel="stylesheet" href="styles/theme.css?v=mood-4" />
-<link rel="stylesheet" href="styles/icons.css?v=filter-8" />
-<link rel="stylesheet" href="styles/header.css?v=101" />
-<link rel="stylesheet" href="styles/footer.css?v=49" />
+<link rel="stylesheet" href="components/icons/icons.css?v=filter-8" />
+<link rel="stylesheet" href="components/site-header/header.css?v=101" />
+<link rel="stylesheet" href="components/site-footer/footer.css?v=49" />
 <link rel="stylesheet" href="styles/button-hover.css?v=100" />
 <link rel="stylesheet" href="styles/buttons.css?v=skeleton-pulse-1" />
 <link rel="stylesheet" href="components/work-gallery/work-gallery.css?v=status-tags-3" />
-<link rel="preload" as="font" type="font/ttf" href="styles/Valisca%204.ttf" crossorigin />
 <link rel="stylesheet" href="styles/fonts.css?v=3" />
-<link rel="stylesheet" href="styles/content-reveal.css?v=1" />
-<link rel="stylesheet" href="styles/site-chrome.css?v=2" />
-<link rel="stylesheet" href="styles/mood-companion.css?v=fullscreen-1" />
-<link rel="stylesheet" href="styles/loading.css?v=3" />
-<link rel="stylesheet" href="styles/image-reveal.css?v=1" />
-<script src="styles/image-reveal.js?v=1" defer></script>
-<link rel="stylesheet" href="styles/page-motion.css?v=8" />
+<link rel="stylesheet" href="components/content-reveal/content-reveal.css?v=1" />
+<link rel="stylesheet" href="components/site-chrome/site-chrome.css?v=2" />
+<link rel="stylesheet" href="components/hero-mood/mood-companion.css?v=fullscreen-1" />
+<link rel="stylesheet" href="components/page-loader/page-loader.css?v=3" />
+<link rel="stylesheet" href="components/image-reveal/image-reveal.css?v=1" />
+<script src="components/image-reveal/image-reveal.js?v=1" defer></script>
+<link rel="stylesheet" href="components/page-motion/page-motion.css?v=8" />
 <style>
   * { box-sizing: border-box; }
   html, body {
     margin: 0;
     min-height: 100%;
-    /* Страховка от горизонтального скролла: .hero (см. hero.css) —
+    /* Страховка от горизонтального скролла полноширинных секций —
        full-bleed через 100vw + отрицательный margin, а vw считается от
        ширины окна вместе с полосой прокрутки, тогда как % — уже без
        неё. На системах, где полоса прокрутки резервирует место (не
@@ -82,7 +81,7 @@
        "наверх" (см. --liquid-glass-filter в theme.css). Процедурный
        шум, не завязан на форму/размер конкретной плашки — один и тот
        же фильтр переиспользуют все четыре. Цифры подобраны на
-       storybook/liquid-glass-sample.html, менять лучше там же. -->
+       dev/previews/liquid-glass-sample.html, менять лучше там же. -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <filter id="liquid-glass-distort" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
       <feTurbulence type="fractalNoise" baseFrequency="0.006 0.006" numOctaves="1" seed="92" result="noise" />
@@ -122,7 +121,7 @@
   <header class="site-header">
     <div class="site-header__identity">
       <div class="site-header__avatar">
-        <img src="assets/avatar.webp" alt="Портрет автора" />
+        <img src="components/site-brand/avatar.webp" alt="Портрет автора" />
       </div>
       <a href="index.html" class="site-header__logo" aria-label="На главную — Работы">
         <span class="site-header__logo-mark" aria-hidden="true"></span>
@@ -186,7 +185,7 @@
         <div class="work-gallery__track"></div>
       </div>
       <p class="work-gallery__status" role="status" aria-live="polite" aria-atomic="true"></p>
-      <noscript><nav aria-label="Разделы"><p><a href="/projects/avito-charity/">Благотворительность</a></p><p><a href="/projects/ozon-crm/">CRM для продавцов</a></p><p><a href="/projects/ozon-prices/">Цены в ЛК селлера</a></p><p><a href="/projects/swtec-angel/">Внутренний ЛК для сотрудника</a></p><p><a href="/projects/swtec-medical/">Медицинские проекты</a></p><p><a href="/projects/concepts/">Концепты</a></p><p><a href="/projects/activities/">Активности</a></p></nav></noscript>
+      <noscript><nav aria-label="Разделы"><p><a href="/projects/avito-charity">Благотворительность</a></p><p><a href="/projects/ozon-crm">CRM для продавцов</a></p><p><a href="/projects/ozon-prices">Цены в ЛК селлера</a></p><p><a href="/projects/swtec-angel">Внутренний ЛК для сотрудника</a></p><p><a href="/projects/swtec-medical">Медицинские проекты</a></p><p><a href="/projects/concepts">Концепты</a></p><p><a href="/projects/activities">Активности</a></p></nav></noscript>
     </section>
     <!-- component:work-gallery:end -->
   </main>
@@ -283,16 +282,16 @@
     </nav>
   </div>
 
-  <script src="styles/site-chrome.js?v=3"></script>
-  <script src="styles/mood-companion.js?v=bottom-corners-1"></script>
-  <script src="styles/layout-chrome.js?v=gallery-3"></script>
-  <script src="styles/loading.js?v=mood-3"></script>
-  <script src="components/work-gallery/project-groups.js?v=available-groups-2"></script>
+  <script src="components/site-chrome/site-chrome.js?v=3"></script>
+  <script src="components/hero-mood/mood-companion.js?v=bottom-corners-1"></script>
+  <script src="components/site-chrome/layout-chrome.js?v=gallery-3"></script>
+  <script src="components/page-loader/page-loader.js?v=mood-3"></script>
+  <script src="pages/home/data/sections.js?v=available-groups-2"></script>
   <script src="components/work-gallery/work-gallery.js?v=status-tags-7"></script>
-  <script src="styles/typography-rules.js?v=2"></script>
-  <script src="styles/haptics.js?v=1"></script>
-  <script src="styles/page-motion.js?v=10"></script>
-  <script src="styles/content-reveal.js?v=1"></script>
-  <script src="styles/gallery-entry.js"></script>
+  <script src="site/typography-rules.js?v=2"></script>
+  <script src="site/haptics.js?v=1"></script>
+  <script src="components/page-motion/page-motion.js?v=10"></script>
+  <script src="components/content-reveal/content-reveal.js?v=1"></script>
+  <script src="components/work-gallery/gallery-entry.js"></script>
 </body>
 </html>

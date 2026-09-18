@@ -1,0 +1,134 @@
+/*
+  DS-иконки — общий реестр SVG-иконок проекта (components/icons/interface,
+  components/icons/arrows). Иконка — заливка currentColor, обрезанная по
+  alpha-маске SVG-файла (mask-image), поэтому одна и та же .icon сама
+  подстраивается под цвет текста в любом контроле. Общий размер
+  интерфейсных иконок — 24 × 24 px, задан токеном --icon-size.
+
+  Новый файл в components/icons/{interface,arrows} — новый модификатор
+  здесь, дальше переиспользуем везде через <span class="icon icon--x">,
+  а не копируем разметку SVG по месту использования.
+*/
+
+:root { --icon-size: 24px; }
+
+.icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  min-width: var(--icon-size);
+  min-height: var(--icon-size);
+  display: block;
+  flex: 0 0 auto;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.icon--menu {
+  -webkit-mask-image: url("./interface/menu.svg");
+  mask-image: url("./interface/menu.svg");
+}
+
+.icon--close {
+  -webkit-mask-image: url("./interface/close.svg?v=2");
+  mask-image: url("./interface/close.svg?v=2");
+}
+
+.icon--up {
+  -webkit-mask-image: url("./arrows/arrow-up.svg");
+  mask-image: url("./arrows/arrow-up.svg");
+}
+
+.icon--down {
+  -webkit-mask-image: url("./arrows/arrow-down.svg");
+  mask-image: url("./arrows/arrow-down.svg");
+}
+
+.icon--arrow-right {
+  -webkit-mask-image: url("./arrows/arrow-right.svg");
+  mask-image: url("./arrows/arrow-right.svg");
+}
+
+.icon--arrow-left {
+  -webkit-mask-image: url("./arrows/arrow-left.svg");
+  mask-image: url("./arrows/arrow-left.svg");
+}
+
+.icon--arrow-diagonal {
+  -webkit-mask-image: url("./arrows/arrow-diagonal.svg");
+  mask-image: url("./arrows/arrow-diagonal.svg");
+}
+
+.icon--works {
+  -webkit-mask-image: url("./interface/works.svg");
+  mask-image: url("./interface/works.svg");
+}
+
+.icon--activities {
+  -webkit-mask-image: url("./interface/activities.svg");
+  mask-image: url("./interface/activities.svg");
+}
+
+.icon--contacts {
+  -webkit-mask-image: url("./interface/contacts.svg");
+  mask-image: url("./interface/contacts.svg");
+}
+
+.icon--cv {
+  -webkit-mask-image: url("./interface/cv.svg");
+  mask-image: url("./interface/cv.svg");
+}
+
+
+.icon--pause {
+  -webkit-mask-image: url("./interface/pause.svg");
+  mask-image: url("./interface/pause.svg");
+}
+.icon--play {
+  -webkit-mask-image: url("./interface/play.svg");
+  mask-image: url("./interface/play.svg");
+}
+
+.icon--social-telegram {
+  -webkit-mask-image: url("./social/telegram.svg");
+  mask-image: url("./social/telegram.svg");
+}
+
+.icon--social-email {
+  -webkit-mask-image: url("./social/google.svg");
+  mask-image: url("./social/google.svg");
+}
+
+.icon--social-dribbble {
+  -webkit-mask-image: url("./social/dribbble.svg");
+  mask-image: url("./social/dribbble.svg");
+}
+
+.icon--social-figma {
+  -webkit-mask-image: url("./social/figma.svg");
+  mask-image: url("./social/figma.svg");
+}
+
+.icon--social-medium {
+  -webkit-mask-image: url("./social/medium.svg");
+  mask-image: url("./social/medium.svg");
+}
+
+.icon--social-habr {
+  -webkit-mask-image: url("./social/habr.svg");
+  mask-image: url("./social/habr.svg");
+}
+
+.icon--check {
+  -webkit-mask-image: url("./interface/check-01.svg");
+  mask-image: url("./interface/check-01.svg");
+}
+
+.icon--filter {
+  -webkit-mask-image: url("./interface/filter.svg");
+  mask-image: url("./interface/filter.svg");
+}

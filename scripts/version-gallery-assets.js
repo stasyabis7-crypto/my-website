@@ -7,24 +7,25 @@ const root = path.resolve(process.argv[2] || path.join(__dirname, '..'));
 // Dependencies precede their importers, so a token change also versions its CSS.
 const assets = [
   'styles/typography.css',
+  'site/typography-rules.js',
   'styles/buttons.css',
-  'styles/layout-chrome.js',
+  'components/site-chrome/layout-chrome.js',
   'styles/card-tokens.css',
-  'styles/mood-companion.css',
-  'styles/mood-companion.js',
-  'styles/gallery-entry.js',
-  'styles/works-grid.css',
-  'styles/project-groups.css',
-  'styles/project-hero.css',
-  'styles/project-hero.js',
-  'styles/page-transition.js',
-  'styles/page-transition.css',
-  'styles/page-motion.js',
-  'styles/site-chrome.css',
-  'styles/work-toc.js',
-  'styles/image-reveal.css',
-  'styles/image-reveal.js',
-  'components/work-gallery/project-groups.js',
+  'components/hero-mood/mood-companion.css',
+  'components/hero-mood/mood-companion.js',
+  'components/work-gallery/gallery-entry.js',
+  'styles/layout.css',
+  'components/project-cards/project-cards.css',
+  'components/page-hero/page-hero.css',
+  'components/page-hero/page-hero.js',
+  'components/page-transition/page-transition.js',
+  'components/page-transition/page-transition.css',
+  'components/page-motion/page-motion.js',
+  'components/site-chrome/site-chrome.css',
+  'components/case-toc/case-toc.js',
+  'components/image-reveal/image-reveal.css',
+  'components/image-reveal/image-reveal.js',
+  'pages/home/data/sections.js',
   'components/work-gallery/work-gallery.css',
   'components/work-gallery/work-gallery.js',
 ];
@@ -42,13 +43,7 @@ for (const asset of assets) {
   const hash = crypto.createHash('sha256').update(source).digest('hex').slice(0, 12);
   const versioned = `${path.basename(asset, ext)}.${hash}${ext}`;
   fs.writeFileSync(path.join(root, path.dirname(asset), versioned), source);
-  // Collection behavior also has a project-groups.js filename. Only version
-  // the gallery data reference, leaving styles/project-groups.js untouched.
-  if (asset === 'components/work-gallery/project-groups.js') {
-    names.set(asset, `${path.dirname(asset)}/${versioned}`);
-  } else {
-    names.set(original, versioned);
-  }
+  names.set(original, versioned);
 }
 function visit(directory) {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {

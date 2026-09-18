@@ -1,0 +1,290 @@
+/*
+  Кейсы — карточки: реестр переиспользуемых компонентов (см. общий
+  принцип в case-blocks.css). Сейчас стадия подбора вариаций — на
+  странице кейса собрана демка со ВСЕМИ комбинациями сразу (см.
+  <script>/секцию "Демо карточек" в projects/recycle-map/index.html),
+  чтобы сверить визуально, прежде чем решать, какие идут в реальный
+  конструктор блоков.
+
+  ─── .case-card — карточка ─────────────────────────────────────────────
+  Одинаковое скругление у всех (--card-radius, снято с --wg-radius сетки
+  работ). Паддинг: 30px по бокам на всех ширинах, 28px сверху, снизу —
+  переменная (--card-pad-bottom), т.к. по ТЗ может отличаться в
+  зависимости от высоты/длины конкретной карточки — переопределяется
+  инлайново (style="--card-pad-bottom: ...") или модификатором на
+  конкретный кейс использования, дефолт тот же 28px.
+
+  Заголовок — роль .text-h2, подзаголовок — обычный текст, роль
+  .text-body. Если есть оба — 4px между ними (переопределяет авто-отступ
+  typography.css таким же приёмом, что в case-blocks.css: специфичность
+  выше конкурирующего правила, побеждает всегда, а не только порядком).
+
+  ─── Сетки: .case-cards-grid(--cols-2/3/4), .case-cards-feature ────────
+  16px между карточками везде. На ≤900px любая сетка схлопывается в
+  один столбец (карточки друг под другом) — это и есть мобильный
+  вариант "друг под другом"; вариант "рядом + горизонтальный скролл" —
+  отдельный компонент ниже (.case-carousel), не автоматический авто-
+  переход одного в другое, оба варианта существуют параллельно, чтобы
+  выбрать нужный конкретной секции.
+
+  ─── Карусель: .case-carousel--x ────────────────────────────────────────
+  Горизонтальный скролл-снап, бесконечный (components/case-cards/case-cards.js клонирует
+  карточки до/после реального набора и незаметно перематывает scrollLeft
+  на границе — обычный трюк "infinite loop carousel"), поэтому по бокам
+  никогда нет пустого места. Ширина карточки — доля от 100% трека
+  (--carousel-visible штук ровно влезает в видимую область на любом
+  брейкпоинте, см. медиа-запросы ниже), поэтому обрезанных вполовину
+  карточек не бывает никогда, не только на концах. Счётчик
+  (.case-carousel__counter, "N из M") обновляет components/case-cards/case-cards.js
+  через IntersectionObserver по видимой в треке карточке (у каждой
+  карточки, включая клоны, проставлен её "настоящий" номер 1..M — при
+  зацикливании счётчик просто возвращается к 1, а не растёт бесконечно).
+
+  ─── Появление: [data-reveal] ──────────────────────────────────────────
+  Карточка с этим атрибутом появляется плавным fade+translateY при
+  входе во вьюпорт (IntersectionObserver, components/case-cards/case-cards.js).
+  prefers-reduced-motion: reduce — без анимации, сразу видна.
+
+  ─── Варианты фона: .case-card--media / .case-card--bg-custom ─────────
+  --media — фон-картинка + тёмный скрим снизу для читаемости текста
+  (обычно вместе с --align-bottom). --bg-custom — сплошной/градиентный
+  фон через переменные --card-bg/--card-fg (задаются инлайново на
+  конкретной карточке).
+
+  ─── Строка с иконкой: .case-card__icon-row / .case-card__icon ────────
+  Текст слева + иконка 48×48 справа, оба по нижнему краю (обычно вместе
+  с --align-bottom на самой .case-card, чтобы вся строка стояла у низа
+  карточки). align-items:flex-end внутри строки — если подпись в 2
+  строки, а иконка ниже, иконка остаётся на одном уровне с последней
+  строкой текста, а не по центру всего блока.
+
+  ─── Картинка поверх фона: .case-card__media-overlay ───────────────────
+  Второе изображение поверх .case-card__media (например, скрин UI поверх
+  фото-фона) — небольшой отступ и сверху, и слева (одинаковый, 16px),
+  не флеш к углу и не полный паддинг карточки (--card-pad-x), а что-то
+  среднее. Ширина — min(260px, calc(100% - 32px)): никогда не шире
+  доступного места (отступ с обеих сторон), поэтому при любом сужении
+  карточки картинка просто уменьшается пропорционально (height:auto),
+  а не обрезается. position:absolute, поэтому при ресайзе остаётся в
+  одном и том же месте угла.
+*/
+
+:root {
+  --card-radius: var(--wg-radius, 28px);
+  --card-pad-x: 30px;
+  --card-pad-top: 28px;
+  --card-pad-bottom: 28px;
+}
+
+.case-card {
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  min-height: 200px;
+  border-radius: var(--card-radius);
+  padding: var(--card-pad-top) var(--card-pad-x) var(--card-pad-bottom);
+  background: #252525;
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.case-card--align-top {
+  justify-content: flex-start;
+}
+
+.case-card--align-bottom {
+  justify-content: flex-end;
+}
+
+.case-card__title,
+.case-card__subtitle {
+  margin: 0;
+}
+
+.case-card__title.text-h2 + .case-card__subtitle.text-body {
+  margin-top: 4px;
+}
+
+/* ─── Варианты фона ─────────────────────────────────────────────────── */
+
+.case-card--media {
+  min-height: 380px;
+}
+
+.case-card__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.case-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.case-card--media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0) 60%);
+  pointer-events: none;
+}
+
+.case-card--media .case-card__title,
+.case-card--media .case-card__subtitle {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+}
+
+.case-card--bg-custom {
+  background: var(--card-bg, var(--color-action-active));
+  color: var(--card-fg, #fff);
+}
+
+/* ─── Строка с иконкой ──────────────────────────────────────────────── */
+
+.case-card__icon-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.case-card__icon {
+  display: block;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+}
+
+.case-card__media-overlay {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  display: block;
+  width: min(260px, calc(100% - 32px));
+  height: auto;
+}
+
+/* ─── Сетки ──────────────────────────────────────────────────────────── */
+
+.case-cards-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.case-cards-grid--cols-2 { grid-template-columns: repeat(2, 1fr); }
+.case-cards-grid--cols-3 { grid-template-columns: repeat(3, 1fr); }
+.case-cards-grid--cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 900px) {
+  .case-cards-grid--cols-2,
+  .case-cards-grid--cols-3,
+  .case-cards-grid--cols-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Баннер слева + N карточек друг под другом справа, поровну (1fr 1fr). */
+.case-cards-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.case-cards-feature__banner {
+  min-height: 480px;
+}
+
+.case-cards-feature__side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.case-cards-feature__side .case-card {
+  flex: 1 1 0;
+  min-height: 200px;
+}
+
+@media (max-width: 900px) {
+  .case-cards-feature {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Карусель / скролл ──────────────────────────────────────────────── */
+
+.case-carousel__track {
+  --carousel-visible: 1;
+  --carousel-gap: 16px;
+  display: flex;
+  gap: var(--carousel-gap);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+@media (min-width: 640px) {
+  .case-carousel__track { --carousel-visible: 2; }
+}
+@media (min-width: 900px) {
+  .case-carousel__track { --carousel-visible: 3; }
+}
+@media (min-width: 1441px) {
+  .case-carousel__track { --carousel-visible: 4; }
+}
+
+.case-carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ширина — ровно доля от 100% трека, поэтому --carousel-visible карточек
+   всегда заполняют видимую область целиком, без остатка: обрезанной
+   вполовину карточки не бывает ни в середине, ни на краях. */
+.case-carousel__track > * {
+  flex: 0 0 auto;
+  width: calc((100% - (var(--carousel-visible) - 1) * var(--carousel-gap)) / var(--carousel-visible));
+  scroll-snap-align: start;
+}
+
+.case-carousel__counter {
+  margin-top: 12px;
+  text-align: center;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  opacity: 0.6;
+}
+
+/* ─── Появление при скролле ──────────────────────────────────────────── */
+
+.case-card[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.case-card[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-card[data-reveal] {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
