@@ -645,7 +645,8 @@
 }
 @media (max-width: 700px) {
   .case-team { grid-template-columns: 1fr; gap: 24px; padding-bottom: 112px; }
-  .case-team__carousel { padding-inline: 56px 0; }
+  .case-team__carousel { padding-inline: 28px; }
+  .case-team__carousel.is-ready .case-team__cards { margin-inline: auto; }
   .case-team__card { padding: 20px 20px 28px; }
   .case-team__avatar { width: min(100%, 200px); }
   .case-team__card[data-position="1"] { transform: translate(-4px, 7px) rotate(-3deg); }

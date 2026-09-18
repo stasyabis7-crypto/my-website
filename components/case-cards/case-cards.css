@@ -232,7 +232,8 @@
 }
 
 .case-cards-feature__side .case-card {
-  flex: 1 1 0;
+  /* Include the text and padding in the base height; never shrink below it. */
+  flex: 1 0 auto;
   min-height: 200px;
 }
 

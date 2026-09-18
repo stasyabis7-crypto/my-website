@@ -37,8 +37,8 @@
 <link rel="stylesheet" href="../../../styles/fonts.css?v=3" />
 <link rel="stylesheet" href="../../../components/content-reveal/content-reveal.css?v=1" />
 <link rel="stylesheet" href="../../../components/page-motion/page-motion.css?v=8" />
-<link rel="stylesheet" href="../../../components/case-blocks/case-blocks.css?v=55" />
-<link rel="stylesheet" href="../../../components/case-cards/case-cards.css?v=8" />
+<link rel="stylesheet" href="../../../components/case-blocks/case-blocks.css?v=56" />
+<link rel="stylesheet" href="../../../components/case-cards/case-cards.css?v=9" />
 <link rel="stylesheet" href="../../../components/hero-mood/mood-companion.css?v=speech-tail-2" />
 
 <link rel="stylesheet" href="../../../components/case-toc/case-toc.css?v=7" />
@@ -80,6 +80,18 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--case-block-gap);
+}
+
+/* Keep About and Team in normal flow on phones and tablets. */
+@media (max-width: 1024px) {
+  .overlap-group:has(> #team) > .overlap-sticky {
+    position: relative;
+    top: auto;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: none;
+  }
 }
 
 </style>
