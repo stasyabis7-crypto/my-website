@@ -494,6 +494,48 @@ html.mood-character-dragging .btn--fill-character { cursor: grabbing; }
   .btn--fill-deck, .btn--fill-deck::before { cursor: none; }
 }
 
+/* Прозрачная кнопка-иконка без заливки и подписи — просто белая иконка
+   поверх медиа (напр. крестик закрытия полноэкранного просмотра). Рядом
+   нет остального интерфейса, чтобы якорить обычные подъём/растущий круг —
+   только смена цвета иконки на акцентный цвет темы по ховеру/фокусу.
+   Usage: .btn.btn--fill-plain.btn--icon-only, обязателен aria-label. */
+.btn--fill-plain {
+  background: transparent;
+  color: #fff;
+}
+.btn--fill-plain::after {
+  display: none;
+}
+.btn--fill-plain:hover,
+.btn--fill-plain:focus-visible {
+  transform: none;
+  background: transparent;
+  color: var(--color-action-hover, #ff0cc2);
+}
+.btn--fill-plain:active {
+  transform: scale(0.98);
+}
+
+/* Управляющие иконки-кнопки прямо поверх полноэкранного медиа (напр.
+   стрелки полноэкранного просмотра): та же заливка/цвета, что и обычно,
+   но без подъёма и растущего из точки входа круга — рядом нет остального
+   интерфейса, чтобы якорить этот переход, и он читается как дёрганье.
+   Обычная смена background-color/color уже даёт transition из базового
+   .btn. Usage: добавляется к существующему типу заливки, напр.
+   .btn.btn--fill-white.btn--icon-only.btn--media-control. */
+.btn--media-control::after {
+  display: none;
+}
+.btn--media-control:hover,
+.btn--media-control:focus-visible {
+  transform: none;
+}
+.btn--media-control.btn--fill-white:hover,
+.btn--media-control.btn--fill-white:focus-visible {
+  background: var(--color-action-hover, #ff0cc2);
+  color: var(--color-action-hover-text, #fff);
+}
+
 /* Gallery action requested at the height of one H2 line. This explicit size
    variant is the exception to the standard height; other buttons stay unchanged.
    --hit-* optionally extends the actual link hit area across its whole work.

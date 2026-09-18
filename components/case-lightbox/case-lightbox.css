@@ -41,10 +41,55 @@
   display: flex;
   flex-direction: column;
   background: var(--color-bg);
+  animation: case-lightbox-surface-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .case-lightbox[hidden] {
   display: none;
+}
+
+.case-lightbox.is-closing {
+  pointer-events: none;
+  animation: case-lightbox-surface-out 0.55s 0.12s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+/* Вырастает/сжимается из рамки кликнутого превью — тот же приём и
+   тайминги (clip-path из --origin), что у диалога «Связаться»
+   (components/site-chrome/site-chrome.css). */
+@keyframes case-lightbox-surface-in {
+  from { clip-path: var(--lightbox-origin, inset(0 round 0)); }
+  to { clip-path: inset(0 round 0); }
+}
+@keyframes case-lightbox-surface-out {
+  from { clip-path: inset(0 round 0); }
+  to { clip-path: var(--lightbox-origin, inset(0 round 0)); }
+}
+
+.case-lightbox__bar,
+.case-lightbox__nav {
+  animation: case-lightbox-item-in 0.4s 0.2s ease both;
+}
+.case-lightbox.is-closing .case-lightbox__bar,
+.case-lightbox.is-closing .case-lightbox__nav {
+  animation: case-lightbox-item-out 0.18s ease both;
+}
+@keyframes case-lightbox-item-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes case-lightbox-item-out {
+  to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-lightbox,
+  .case-lightbox.is-closing,
+  .case-lightbox__bar,
+  .case-lightbox__nav,
+  .case-lightbox.is-closing .case-lightbox__bar,
+  .case-lightbox.is-closing .case-lightbox__nav {
+    animation: none;
+  }
 }
 
 .case-lightbox__bar {
@@ -62,17 +107,21 @@
   color: var(--color-text);
 }
 
+/* top:50% + отрицательный margin вместо transform: translateY(-50%) —
+   .btn--fill-plain/.btn--media-control ставят transform:none на
+   ховере/фокусе для собственной анимации, transform здесь бы с этим
+   конфликтовал и "дёргал" кнопку при наведении. */
 .case-lightbox__close {
   position: absolute;
   right: 16px;
   top: 50%;
-  transform: translateY(-50%);
+  margin-top: calc(var(--button-height, 64px) / -2);
 }
 
 .case-lightbox__nav {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  margin-top: calc(var(--button-height, 64px) / -2);
   z-index: 1;
 }
 

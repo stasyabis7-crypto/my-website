@@ -25,9 +25,14 @@
   function init() {
     var items = Array.prototype.filter.call(document.querySelectorAll(SELECTOR), function (img) {
       var alt = img.getAttribute('alt');
-      return !!(alt && alt.trim());
+      // «О проекте» — свой отдельный, некликабельный контекст (декоративный
+      // фон + плавающий скриншот меню поверх него): в общую галерею
+      // страницы (счётчик/пролистывание по всем фото) не входит.
+      return !!(alt && alt.trim()) && !img.closest('#about, .case-about');
     });
     if (!items.length) return;
+
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     var root = document.createElement('div');
     root.className = 'case-lightbox';
@@ -38,10 +43,10 @@
     root.innerHTML =
       '<header class="case-lightbox__bar">' +
         '<p class="case-lightbox__counter text-body-sm">Фото <span data-lightbox-current>1</span> из <span data-lightbox-total>' + items.length + '</span></p>' +
-        '<button type="button" class="btn btn--fill-white btn--icon-only case-lightbox__close" aria-label="Закрыть"><span class="icon icon--close" aria-hidden="true"></span></button>' +
+        '<button type="button" class="btn btn--fill-plain btn--icon-only case-lightbox__close" aria-label="Закрыть"><span class="icon icon--close" aria-hidden="true"></span></button>' +
       '</header>' +
-      '<button type="button" class="btn btn--fill-white btn--icon-only case-lightbox__nav case-lightbox__nav--prev" aria-label="Предыдущее фото"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>' +
-      '<button type="button" class="btn btn--fill-white btn--icon-only case-lightbox__nav case-lightbox__nav--next" aria-label="Следующее фото"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>' +
+      '<button type="button" class="btn btn--fill-white btn--icon-only btn--media-control case-lightbox__nav case-lightbox__nav--prev" aria-label="Предыдущее фото"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>' +
+      '<button type="button" class="btn btn--fill-white btn--icon-only btn--media-control case-lightbox__nav case-lightbox__nav--next" aria-label="Следующее фото"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>' +
       '<div class="case-lightbox__viewport">' +
         '<img class="case-lightbox__image" alt="" draggable="false" />' +
       '</div>';
@@ -102,7 +107,9 @@
     }
 
     function setTransform(animate) {
-      image.style.transition = animate ? 'transform .25s ease' : 'none';
+      image.style.transitionProperty = animate ? 'transform' : 'none';
+      image.style.transitionDuration = '.25s';
+      image.style.transitionTimingFunction = 'ease';
       image.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
       image.classList.toggle('is-zoomed', scale > 1.001);
     }
@@ -131,10 +138,11 @@
       setTransform(animate);
     }
 
-    function show(i) {
+    var switchTimer = 0;
+
+    function applyImage(i) {
       index = i;
       var src = items[index];
-      image.removeAttribute('style');
       scale = 1; tx = 0; ty = 0;
       image.alt = src.getAttribute('alt') || '';
       image.src = src.currentSrc || src.src;
@@ -142,8 +150,30 @@
       currentEl.textContent = String(index + 1);
     }
 
+    // Плавная мягкая смена фото — краткий кроссфейд, а не мгновенная
+    // подмена src. Открытие первого фото — без фейда, только пролистывание.
+    function show(i, animate) {
+      window.clearTimeout(switchTimer);
+      if (!animate || reducedMotion.matches) {
+        image.style.opacity = '';
+        applyImage(i);
+        return;
+      }
+      image.style.transitionProperty = 'opacity';
+      image.style.transitionDuration = '.16s';
+      image.style.transitionTimingFunction = 'ease';
+      image.style.opacity = '0';
+      switchTimer = window.setTimeout(function () {
+        applyImage(i);
+        void image.offsetWidth; // reflow: committer opacity:0 перед фейдом обратно
+        image.style.transitionProperty = 'opacity';
+        image.style.transitionDuration = '.22s';
+        image.style.opacity = '1';
+      }, 160);
+    }
+
     function navigate(delta) {
-      show((index + delta + items.length) % items.length);
+      show((index + delta + items.length) % items.length, true);
     }
 
     image.addEventListener('load', computeBaseSize);
@@ -266,11 +296,47 @@
       if (e.key === 'ArrowRight') { navigate(1); }
     }
 
+    // Открытие/закрытие «вырастает»/«сжимается» из кликнутого превью —
+    // тот же приём и тайминги (clip-path из --lightbox-origin), что у
+    // диалога «Связаться» (components/site-chrome/site-chrome.css).
+    function setOrigin(triggerEl) {
+      if (!triggerEl || !triggerEl.getBoundingClientRect) {
+        root.style.removeProperty('--lightbox-origin');
+        return;
+      }
+      var r = triggerEl.getBoundingClientRect();
+      var right = window.innerWidth - r.right;
+      var bottom = window.innerHeight - r.bottom;
+      root.style.setProperty(
+        '--lightbox-origin',
+        'inset(' + r.top + 'px ' + right + 'px ' + bottom + 'px ' + r.left + 'px round var(--wg-radius, 28px))'
+      );
+    }
+
+    var closeTimer = 0;
+    function closeAnimated(done) {
+      if (root.hidden || root.classList.contains('is-closing')) { if (done) done(); return; }
+      if (reducedMotion.matches) { root.hidden = true; if (done) done(); return; }
+      root.classList.add('is-closing');
+      function finish(e) {
+        if (e && (e.target !== root || e.animationName !== 'case-lightbox-surface-out')) return;
+        root.removeEventListener('animationend', finish);
+        window.clearTimeout(closeTimer);
+        root.hidden = true;
+        root.classList.remove('is-closing');
+        if (done) done();
+      }
+      root.addEventListener('animationend', finish);
+      closeTimer = window.setTimeout(finish, 750);
+    }
+
     function open(i, triggerEl) {
       lastFocused = triggerEl || document.activeElement;
+      setOrigin(triggerEl);
       inactive = Array.prototype.filter.call(document.body.children, function (el) { return el !== root; });
       inactive.forEach(function (el) { el.inert = true; });
       document.documentElement.classList.add('contact-scroll-lock');
+      root.classList.remove('is-closing');
       root.hidden = false;
       show(i);
       document.addEventListener('keydown', onKeydown);
@@ -278,15 +344,16 @@
     }
 
     function close() {
-      root.hidden = true;
-      image.removeAttribute('src');
-      document.documentElement.classList.remove('contact-scroll-lock');
-      inactive.forEach(function (el) { el.inert = false; });
-      inactive = [];
-      document.removeEventListener('keydown', onKeydown);
-      if (lastFocused && typeof lastFocused.focus === 'function') {
-        lastFocused.focus({ preventScroll: true });
-      }
+      closeAnimated(function () {
+        image.removeAttribute('src');
+        document.documentElement.classList.remove('contact-scroll-lock');
+        inactive.forEach(function (el) { el.inert = false; });
+        inactive = [];
+        document.removeEventListener('keydown', onKeydown);
+        if (lastFocused && typeof lastFocused.focus === 'function') {
+          lastFocused.focus({ preventScroll: true });
+        }
+      });
     }
 
     closeBtn.addEventListener('click', close);
