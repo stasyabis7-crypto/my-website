@@ -6,7 +6,7 @@
   var root = document.documentElement;
   var reduced = matchMedia('(prefers-reduced-motion: reduce)');
   // Resolve from this script so / and subdirectory previews work identically.
-  var siteBase = new URL('../', document.currentScript.src);
+  var siteBase = new URL('../../', document.currentScript.src);
   var busy = false;
   var navigationTimer = 0;
   var safetyTimer = 0;

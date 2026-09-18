@@ -41,6 +41,8 @@
 
 
  <link rel="stylesheet" href="/components/project-cards/project-cards.css?v=1" />
+<link rel="stylesheet" href="/components/page-hero/page-hero.css?v=1" />
+<script src="/components/page-hero/page-hero.js?v=1" defer></script>
 </head>
 <body class="collection-page">
   <!-- Shared full-screen mood ribbons; decorative and hidden without JS. -->
@@ -75,12 +77,27 @@
     </button>
   </div>
 
-<main class="collection">
-  <header class="collection__heading">
-    <h1 class="text-h1">CRM для продавцов</h1>
-    <p class="text-body" data-subtitle>Создание рассылок и баннеров на покупателей, портрет покупателя, главная в ЛК, сегменты покупателей</p>
-  </header>
-  <div class="project-grid">
+<main>
+  <section class="mood-hero project-hero" id="hero" aria-labelledby="mood-heading">
+    <div class="mood-stage">
+      <div class="mood-wave" aria-hidden="true"></div>
+      <div class="mood-content">
+        <h1 class="mood-title text-display-lg" id="mood-heading">CRM для продавцов</h1>
+        <p class="mood-subtitle text-body" data-subtitle>Создание рассылок и баннеров на покупателей, портрет покупателя, главная в ЛК, сегменты покупателей</p>
+        <div class="mood-actions">
+          <a href="#works-gallery" class="mood-primary btn btn--fill-pink btn--icon-right">
+            <span>Смотреть работы</span>
+            <span class="icon icon--down" aria-hidden="true"></span>
+          </a>
+        </div>
+      </div>
+      <div class="mood-exhibit project-hero__art">
+        <img class="project-hero__image" src="/projects/ozon-crm/assets/hero-cover.webp" width="1264" height="741" alt="Ноутбук с формой создания рассылки или баннера в кабинете Ozon Seller" fetchpriority="high" />
+      </div>
+    </div>
+  </section>
+  <section class="collection project-hero__works" aria-label="Проекты CRM для продавцов">
+  <div class="project-grid" id="works-gallery">
     <article class="project-card">
       <div class="project-card__visual">
         <div class="project-card__cover">
@@ -148,6 +165,7 @@
       </div>
     </article>
   </div>
+  </section>
 </main>
   <footer class="site-footer">
     <nav class="site-footer__nav-wrap">
