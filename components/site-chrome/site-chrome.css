@@ -104,11 +104,6 @@ html:not(.chrome--pinned) .site-socials {
   .site-header__logo-mark { max-width: 34vw; }
 }
 
-@media (max-width: 360px) {
-  .site-header { gap: 0; }
-}
-
-
 .contact-dialog { position: fixed; inset: 0; z-index: 100; }
 .contact-dialog[hidden] { display: none; }
 .contact-dialog__backdrop { position: absolute; inset: 0; background: rgba(8,10,20,.4); animation: contact-backdrop-in .65s ease both; }
