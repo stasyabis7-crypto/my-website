@@ -14,7 +14,7 @@ window.portfolioGroups = [
   {
     "id": "ozon-crm",
     "title": "CRM для продавцов",
-    "description": "Создание рассылок и баннеров на покупателей, портрет покупателя, главная в ЛК, сегменты покупателей.",
+    "description": "Создание рассылок и баннеров на покупателей, портрет покупателя, главная в ЛК, сегменты покупателей",
     "tag": "Ozon",
     "image": "/assets/project-groups/group2-crm.webp",
     "srcset": "",
@@ -24,7 +24,7 @@ window.portfolioGroups = [
   {
     "id": "ozon-prices",
     "title": "Цены в ЛК селлера",
-    "description": "Редизайн таблицы цен, НДС, временная мин. цена, бустинг.",
+    "description": "Редизайн таблицы цен, НДС, временная мин. цена, бустинг",
     "tag": "Ozon",
     "image": "/assets/project-groups/group3-prices.webp",
     "srcset": "",
@@ -34,7 +34,7 @@ window.portfolioGroups = [
   {
     "id": "swtec-angel",
     "title": "Внутренний ЛК для сотрудника",
-    "description": "Модуль отпусков, карта офиса, праздники и настройки.",
+    "description": "Модуль отпусков, карта офиса, праздники и настройки",
     "tag": "SwtecNN",
     "image": "/assets/project-groups/group4-angel.webp",
     "srcset": "",
@@ -44,7 +44,7 @@ window.portfolioGroups = [
   {
     "id": "swtec-medical",
     "title": "Медицинские проекты",
-    "description": "Приложение, часы, дашборд для врачей.",
+    "description": "Приложение, часы, дашборд для врачей",
     "tag": "SWTecNN",
     "image": "/assets/project-groups/group5-med.webp",
     "srcset": "",
