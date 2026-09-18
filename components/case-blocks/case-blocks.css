@@ -645,8 +645,13 @@
 }
 @media (max-width: 700px) {
   .case-team { grid-template-columns: 1fr; gap: 24px; padding-bottom: 112px; }
-  .case-team__carousel { padding-inline: 28px; }
+  /* Reserve room for the rotated back cards on both sides of the deck. */
+  .case-team__carousel { padding-inline: 40px; }
   .case-team__carousel.is-ready .case-team__cards { margin-inline: auto; }
+  .case-team__carousel.is-ready .case-team__card { transform-origin: 50% 50%; }
+  .case-team__carousel .case-team__card.is-leaving {
+    transform: translateY(-12px) rotateY(-24deg);
+  }
   .case-team__card { padding: 20px 20px 28px; }
   .case-team__avatar { width: min(100%, 200px); }
   .case-team__card[data-position="1"] { transform: translate(-4px, 7px) rotate(-3deg); }
