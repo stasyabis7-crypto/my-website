@@ -95,7 +95,7 @@
     var EMAIL = 'stasyabis7@gmail.com';
     var ITEMS = [
       { label: 'Telegram', icon: 'telegram', href: 'https://t.me/stasyabis' },
-      { label: 'Написать на почту', icon: 'email', copy: EMAIL },
+      { label: 'Скопировать адрес почты', icon: 'email', copy: EMAIL },
       { label: 'Dribbble', icon: 'dribbble', href: 'https://dribbble.com/Stasyabis' },
       { label: 'Figma community', icon: 'figma', href: 'https://www.figma.com/@stasyabis' },
       { label: 'Medium', icon: 'medium', href: 'https://medium.com/@stasyabis' },
@@ -158,7 +158,7 @@
         sheet.hidden = true;
         sheet.setAttribute('role', 'dialog');
         sheet.setAttribute('aria-modal', 'true');
-        sheet.setAttribute('aria-label', 'Соцсети');
+        sheet.setAttribute('aria-label', 'Связаться');
         var head = '<div class="contact-dialog__backdrop" data-close></div>' +
           '<div class="contact-dialog__panel"><div class="contact-dialog__body"><div class="contact-dialog__inner">' +
           '<div class="contact-dialog__head"><h2 class="contact-dialog__title text-h2">Связаться</h2></div>' +

@@ -132,7 +132,7 @@
     track.innerHTML = repeated.map((p, i) => `<article class="work-gallery__work" data-format="${escape(p.format)}" data-project-id="${escape(p.id)}"${p.href ? ' data-action-hover' : ''} aria-roledescription="слайд" aria-label="${i % projects.length + 1} из ${projects.length}: ${escape(p.title)}">
       <div class="work-gallery__presentation">
         <div class="work-gallery__media">
-          <img class="work-gallery__image" src="${escape(p.image)}" alt="${escape(p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false">
+          <img class="work-gallery__image" src="${escape(p.image)}" alt="${escape(p.alt ?? p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false">
           ${p.tag || !p.href ? `<div class="work-gallery__tags">
             ${p.tag ? `<p class="work-gallery__tag text-body">${escape(p.tag)}</p>` : ''}
             ${!p.href ? '<p class="work-gallery__tag text-body">В работе</p>' : ''}
