@@ -42,7 +42,7 @@
       '</header>' +
       '<button type="button" class="btn btn--fill-white btn--icon-only case-lightbox__nav case-lightbox__nav--prev" aria-label="Предыдущее фото"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>' +
       '<button type="button" class="btn btn--fill-white btn--icon-only case-lightbox__nav case-lightbox__nav--next" aria-label="Следующее фото"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>' +
-      '<div class="case-lightbox__viewport" data-cursor-hidden>' +
+      '<div class="case-lightbox__viewport">' +
         '<img class="case-lightbox__image" alt="" draggable="false" />' +
       '</div>';
     document.body.appendChild(root);
@@ -66,18 +66,27 @@
     var dragActive = false, dragMoved = false;
     var lastTapTime = 0, lastTapX = 0, lastTapY = 0;
 
+    // Наведение/фокус должны уменьшать всю плитку-контейнер с фото
+    // (рамку, в которой лежит картинка), а не саму картинку внутри неё —
+    // иначе на кроп-рамках (object-fit: cover) уменьшается только
+    // содержимое, открывая фон рамки по краям. Плавающий скриншот поверх
+    // фонового фото (.case-card__media-overlay) — сам себе рамка, его не
+    // оборачиваем.
     items.forEach(function (img, i) {
-      img.classList.add('case-lightbox-openable');
-      img.tabIndex = 0;
-      img.setAttribute('role', 'button');
-      if (!img.hasAttribute('aria-label')) {
-        img.setAttribute('aria-label', 'Открыть фото ' + (i + 1) + ' из ' + items.length + ' на весь экран');
+      var target = img.classList.contains('case-card__media-overlay')
+        ? img
+        : (img.closest('.case-cover__media') || img.closest('.case-card--media') || img.closest('.case-role__col-art') || img.parentElement);
+      target.classList.add('case-lightbox-openable');
+      target.tabIndex = 0;
+      target.setAttribute('role', 'button');
+      if (!target.hasAttribute('aria-label')) {
+        target.setAttribute('aria-label', 'Открыть фото ' + (i + 1) + ' из ' + items.length + ' на весь экран');
       }
-      img.addEventListener('click', function () { open(i, img); });
-      img.addEventListener('keydown', function (e) {
+      target.addEventListener('click', function () { open(i, target); });
+      target.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
           e.preventDefault();
-          open(i, img);
+          open(i, target);
         }
       });
     });
