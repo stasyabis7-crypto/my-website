@@ -21,7 +21,7 @@ window.portfolioGroups = [
     "image": "/projects/ozon-crm/assets/section-cover.webp",
     "srcset": "",
     "format": "desktop",
-    "href": null
+    "href": "/projects/ozon-crm/"
   },
   {
     "id": "ozon-prices",
