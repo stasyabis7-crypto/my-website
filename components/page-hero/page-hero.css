@@ -12,6 +12,7 @@
   width: min(100%, 540px);
   height: auto;
   flex-shrink: 0;
+  /* Keep artwork flush with the stage bottom, including tall mobile screens. */
   margin-top: auto;
 }
 .project-hero__works { padding-top: 64px; }
@@ -35,5 +36,4 @@
     align-items: start;
     row-gap: var(--project-hero-content-gap);
   }
-  .project-hero__image { margin-top: 0; }
 }
