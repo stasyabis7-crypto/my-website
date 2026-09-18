@@ -148,6 +148,12 @@
   color: var(--card-fg, #fff);
 }
 
+/* Light cards keep readable text and use the mood's contrasting accent. */
+.case-card--light {
+  background: #fff;
+  color: var(--mood-ink);
+}
+
 /* ─── Строка с иконкой ──────────────────────────────────────────────── */
 
 .case-card__icon-row {
@@ -162,6 +168,21 @@
   width: 48px;
   height: 48px;
   flex: 0 0 auto;
+}
+
+/* Inline artwork keeps its original geometry; only the palette follows mood. */
+.case-card__icon--theme {
+  color: var(--mood-bg);
+  --card-icon-ink: var(--mood-ink);
+}
+
+.case-card--light .case-card__icon--theme {
+  color: var(--color-action-active);
+  --card-icon-ink: var(--color-action-active-text);
+}
+
+.case-card__icon--theme path {
+  stroke: var(--card-icon-ink);
 }
 
 .case-card__media-overlay {
