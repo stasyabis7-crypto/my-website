@@ -37,3 +37,15 @@
     row-gap: var(--project-hero-content-gap);
   }
 }
+
+/* Wide device mockups need more room than the portrait artwork variant. */
+@media (min-width: 1000px) {
+  .project-hero--landscape .project-hero__art { align-items: flex-start; }
+  .project-hero--landscape .project-hero__image {
+    width: clamp(720px, 66vw, 1200px);
+    max-width: none;
+  }
+}
+@media (min-width: 600px) and (max-width: 999px) {
+  .project-hero--landscape .project-hero__image { width: min(100%, 700px); }
+}

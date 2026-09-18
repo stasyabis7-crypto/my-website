@@ -224,10 +224,15 @@ body {
   font-size: var(--font-size-2xl);
 }
 
-/* Internal-page heroes use the standard H1 scale in the mobile layout. */
-@media (max-width: 999px) {
-  .project-hero .text-display-lg {
-    font-size: var(--font-size-2xl);
+/* Internal heroes use H1 on phones/tablets; shrink only an overflowing word.
+   page-hero.js measures the loaded heading font and supplies the fitted size. */
+.project-hero .mood-title {
+  font-size: var(--project-hero-title-size, var(--font-size-2xl));
+  overflow-wrap: normal;
+}
+@media (min-width: 1000px) {
+  .project-hero .mood-title {
+    font-size: var(--font-size-4xl);
   }
 }
 
