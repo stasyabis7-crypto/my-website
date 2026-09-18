@@ -12,6 +12,9 @@ function check(file) {
   count++;
   const markup = hero[0];
   const fail = message => errors.push(`${file}: ${message}`);
+  if (file.startsWith('projects/ozon-crm/') && !/class="[^"]*\bproject-hero--landscape\b/.test(markup)) {
+    fail('Баннеры CRM должны использовать закреплённый вариант project-hero--landscape');
+  }
   if (!/<h1\b[^>]*class="[^"]*\bmood-title\b/.test(markup)) fail('Нет заголовка баннера');
   if (!/<p\b[^>]*class="[^"]*\bmood-subtitle\b/.test(markup)) fail('Нет подзаголовка баннера');
   if (file === 'index.html') {

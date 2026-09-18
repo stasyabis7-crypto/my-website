@@ -24,7 +24,8 @@
   function entranceFrames() {
     // Follow the actual layout, including a short tablet in landscape mode.
     const columns = getComputedStyle(hero.querySelector('.mood-stage')).gridTemplateColumns;
-    const sideways = columns.trim().split(/\s+/).length > 1;
+    const sideways = hero.classList.contains('project-hero--landscape') ||
+      columns.trim().split(/\s+/).length > 1;
     return [
       { transform: sideways ? 'translateX(100%)' : 'translateY(100%)', opacity: 0 },
       { transform: 'translate(0, 0)', opacity: 1 }
