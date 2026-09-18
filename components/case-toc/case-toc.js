@@ -63,20 +63,24 @@
     row.appendChild(item.mobileLink);
     sheet.querySelector('[data-rows]').appendChild(row);
   });
-  const homeRow = document.createElement('div');
-  homeRow.className = 'contact-dialog__item';
-  homeRow.style.setProperty('--item-index', 5);
-  const homeLink = document.createElement('a');
-  homeLink.className = 'contact-row btn btn--fill-pink';
-  homeLink.href = '../../index.html';
-  homeLink.textContent = 'Вернуться на Главную';
-  homeLink.addEventListener('click', event => {
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
-    event.preventDefault();
-    closeSheet(() => window.location.assign(homeLink.href));
-  });
-  homeRow.appendChild(homeLink);
-  sheet.querySelector('[data-rows]').appendChild(homeRow);
+  function revealActive(scroller, link) {
+    if (!link || !scroller.clientHeight) return;
+    // Layout offsets ignore the opening animation's transforms and keep the
+    // document itself still: only the menu's own scroll container moves.
+    function layoutTop(element) {
+      let top = 0;
+      for (; element; element = element.offsetParent) top += element.offsetTop;
+      return top;
+    }
+    const top = layoutTop(link) - layoutTop(scroller);
+    const bottom = top + link.offsetHeight;
+    const inset = Math.min(40, Math.max(0, (scroller.clientHeight - link.offsetHeight) / 2));
+    const visibleTop = scroller.scrollTop + inset;
+    const visibleBottom = scroller.scrollTop + scroller.clientHeight - inset;
+    if (top >= visibleTop && bottom <= visibleBottom) return;
+    const target = top < visibleTop ? top - inset : bottom - scroller.clientHeight + inset;
+    scroller.scrollTo({ top: Math.max(0, target), behavior: reducedMotion.matches ? 'instant' : 'smooth' });
+  }
   function setActive(item) {
     if (current === item) return;
     current = item;
@@ -137,7 +141,8 @@
     panel.inert = !open;
     if (open) {
       panel.hidden = false;
-      if (current) desktopScroll.scrollTop = Math.max(0, current.link.offsetTop - desktopScroll.clientHeight / 2);
+      update();
+      revealActive(desktopScroll, current?.link);
       updateScrollFade();
     }
     if (reducedMotion.matches || !desktop.matches) { panel.hidden = !open; return; }
@@ -194,7 +199,8 @@
   function openSheet() {
     if (!sheet.hidden) return;
     sheet.hidden = false;
-    scrollBody.scrollTop = 0;
+    update();
+    revealActive(scrollBody, current?.mobileLink);
     updateScrollFade();
     setOrigin();
     inactive = [...document.body.children].filter(el => el !== sheet && !el.inert);

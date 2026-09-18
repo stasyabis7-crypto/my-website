@@ -5,6 +5,38 @@
   var root = document.documentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  // Keep the resume label on one line, shortening it only when space runs out.
+  var resume = document.querySelector('.site-header__cta');
+  if (resume) {
+    var textWalker = document.createTreeWalker(resume, NodeFilter.SHOW_TEXT);
+    var resumeText;
+    while (textWalker.nextNode()) {
+      if (textWalker.currentNode.textContent.trim() === 'Резюме PDF') {
+        resumeText = textWalker.currentNode;
+        break;
+      }
+    }
+    if (resumeText) {
+      var labelMeasure = document.createElement('canvas').getContext('2d');
+      function fitResumeLabel() {
+        var style = getComputedStyle(resume);
+        labelMeasure.font = style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily;
+        var labelWidth = labelMeasure.measureText('Резюме PDF').width;
+        labelWidth += (parseFloat(style.letterSpacing) || 0) * 9;
+        var icon = resume.querySelector('.icon');
+        var required = labelWidth + parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+        if (icon) required += icon.getBoundingClientRect().width + (parseFloat(style.columnGap) || 0);
+        var logo = document.querySelector('.site-header__logo');
+        var constrained = innerWidth < 1000 && logo && logo.hidden;
+        var label = constrained && required > resume.clientWidth + 1 ? 'Резюме' : 'Резюме PDF';
+        if (resumeText.textContent !== label) resumeText.textContent = label;
+      }
+      new ResizeObserver(fitResumeLabel).observe(resume);
+      document.fonts.ready.then(fitResumeLabel);
+      window.addEventListener('resize', fitResumeLabel);
+    }
+  }
+
   // Programmatic modal focus can match :focus-visible even after a tap.
   // Keep actual focus/trapping intact, but show its ring only for keyboard use.
   document.addEventListener('pointerdown', function (event) {

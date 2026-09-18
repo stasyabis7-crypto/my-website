@@ -422,9 +422,8 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only) {
 /* Text may wrap within the shared height when flanked by icon-only actions. */
 .btn--label-wrap { white-space: normal; padding-inline: 16px; text-align: center; }
 @media (max-width: 360px) {
-  /* The same wrapped label treatment fits between two circular header actions. */
+  /* The header label shortens to «Резюме» instead of wrapping. */
   .site-header:has(.site-header__logo[hidden]) .site-header__cta {
-    white-space: normal;
     padding-inline: 16px;
   }
 }

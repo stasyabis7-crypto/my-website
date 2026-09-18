@@ -22,6 +22,7 @@ const assets = [
   'components/page-transition/page-transition.css',
   'components/page-motion/page-motion.js',
   'components/site-chrome/site-chrome.css',
+  'components/site-chrome/site-chrome.js',
   'components/case-toc/case-toc.js',
   'components/image-reveal/image-reveal.css',
   'components/image-reveal/image-reveal.js',
