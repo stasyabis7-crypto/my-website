@@ -30,16 +30,24 @@
     cursorTarget();
     cursorFrame = requestAnimationFrame(trackCursorTarget);
   }
-  document.addEventListener('pointermove', function (event) {
-    if (!fine.matches || event.pointerType === 'touch') { hideCursor(); return; }
-    x = event.clientX; y = event.clientY;
+  function showCursor(clientX, clientY) {
+    x = clientX; y = clientY;
     dot.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)';
     visible = true;
     root.classList.add('has-dot-cursor');
     dot.classList.add('is-visible');
     cursorTarget();
     if (!cursorFrame) cursorFrame = requestAnimationFrame(trackCursorTarget);
+  }
+  document.addEventListener('pointermove', function (event) {
+    if (!fine.matches || event.pointerType === 'touch') { hideCursor(); return; }
+    showCursor(event.clientX, event.clientY);
   }, { passive: true });
+  var incomingCursor = window.__pageTransitionCursor;
+  if (fine.matches && incomingCursor && Number.isFinite(incomingCursor.x) && Number.isFinite(incomingCursor.y) &&
+      incomingCursor.x >= 0 && incomingCursor.x < innerWidth && incomingCursor.y >= 0 && incomingCursor.y < innerHeight) {
+    showCursor(incomingCursor.x, incomingCursor.y);
+  }
   document.documentElement.addEventListener('pointerleave', hideCursor);
   window.addEventListener('blur', hideCursor);
   document.addEventListener('visibilitychange', function () { if (document.hidden) hideCursor(); });

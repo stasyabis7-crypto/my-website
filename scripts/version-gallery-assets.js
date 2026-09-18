@@ -18,6 +18,8 @@ const assets = [
   'styles/project-hero.css',
   'styles/project-hero.js',
   'styles/page-transition.js',
+  'styles/page-transition.css',
+  'styles/page-motion.js',
   'styles/site-chrome.css',
   'styles/work-toc.js',
   'styles/image-reveal.css',

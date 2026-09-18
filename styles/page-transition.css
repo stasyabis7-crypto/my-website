@@ -1,6 +1,6 @@
 /* One curtain shared by the initial reveal and real document navigation.
    Only transforms animate; no page wrapper, layout shifts or blur passes. */
-.is-transition-pending body > :not(.page-transition) {
+.is-transition-pending body > :not(.page-transition):not(.cursor-dot) {
   opacity: 0 !important;
   pointer-events: none !important;
 }

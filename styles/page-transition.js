@@ -16,6 +16,7 @@
   var warmed = new Set();
   var handoffKey = 'mood-transition:' + siteBase.pathname;
   var incoming = false;
+  var pointer = null;
   var classes = ['is-transition-pending', 'is-transition-boot', 'is-transition-covering', 'is-transition-revealing'];
 
   function pageKey(href) {
@@ -31,7 +32,13 @@
     // not expire it and replay the cover animation on the destination page.
     incoming = !!(handoff && handoff.page === pageKey(location.href) &&
       (!navigation || navigation.type === 'navigate'));
+    // The next document must not wait for a new mouse movement to show its dot.
+    if (incoming) window.__pageTransitionCursor = handoff.cursor;
   } catch (_) { /* Without storage, use the complete entrance/exit sequence. */ }
+
+  document.addEventListener('pointermove', function (event) {
+    pointer = event.pointerType === 'touch' ? null : { x: event.clientX, y: event.clientY };
+  }, { passive: true });
 
   function reset() {
     clearTimeout(navigationTimer);
@@ -176,7 +183,10 @@
       // All three ribbons finish, then rest briefly at full coverage.
       navigationTimer = setTimeout(function () {
         try {
-          sessionStorage.setItem(handoffKey, JSON.stringify({ page: pageKey(url.href), at: Date.now() }));
+          sessionStorage.setItem(handoffKey, JSON.stringify({
+            page: pageKey(url.href), at: Date.now(),
+            cursor: root.classList.contains('has-dot-cursor') ? (pointer || window.__pageTransitionCursor) : null
+          }));
         } catch (_) { /* Navigation still works when storage is disabled. */ }
         location.assign(url.href);
       }, duration('cover', 800) + 2 * duration('stagger', 90) + 120);
