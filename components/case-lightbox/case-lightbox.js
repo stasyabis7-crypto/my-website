@@ -108,10 +108,25 @@
 
     function setTransform(animate) {
       image.style.transitionProperty = animate ? 'transform' : 'none';
-      image.style.transitionDuration = '.25s';
+      image.style.transitionDuration = animate ? '.25s' : '0s';
       image.style.transitionTimingFunction = 'ease';
       image.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
       image.classList.toggle('is-zoomed', scale > 1.001);
+    }
+
+    // Пинч/пан/колесо пишут scale/tx/ty на каждое событие (тачскрины
+    // отдают их гораздо чаще частоты кадров экрана), а в DOM — не чаще
+    // раза за кадр через rAF. Без этого частые синхронные записи стиля
+    // дают лишнюю раскладку и жест выглядит рваным. Дискретные скачки
+    // (даблтап, снэп-бэк, ресайз) по-прежнему идут напрямую, с transition.
+    var rafPending = false;
+    function scheduleRender() {
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(function () {
+        rafPending = false;
+        setTransform(false);
+      });
     }
 
     function clampPan(scaleVal, txVal, tyVal) {
@@ -135,10 +150,18 @@
       scale = newScale;
       tx = clamped.x;
       ty = clamped.y;
-      setTransform(animate);
+      if (animate) setTransform(true);
+      else scheduleRender();
     }
 
-    var switchTimer = 0;
+    var ghost = null;
+    var ghostTimer = 0;
+
+    function clearGhost() {
+      window.clearTimeout(ghostTimer);
+      if (ghost && ghost.parentNode) ghost.parentNode.removeChild(ghost);
+      ghost = null;
+    }
 
     function applyImage(i) {
       index = i;
@@ -146,34 +169,54 @@
       scale = 1; tx = 0; ty = 0;
       image.alt = src.getAttribute('alt') || '';
       image.src = src.currentSrc || src.src;
-      setTransform(false);
       currentEl.textContent = String(index + 1);
     }
 
-    // Плавная мягкая смена фото — краткий кроссфейд, а не мгновенная
-    // подмена src. Открытие первого фото — без фейда, только пролистывание.
-    function show(i, animate) {
-      window.clearTimeout(switchTimer);
-      if (!animate || reducedMotion.matches) {
-        image.style.opacity = '';
+    // Плавное мягкое пролистывание: уходящее фото уезжает в сторону,
+    // новое въезжает с противоположной — как будто стоят в ряд, а не
+    // моргают кроссфейдом. dir > 0 — вперёд (новое въезжает справа),
+    // dir < 0 — назад (въезжает слева). Открытие первого фото — без
+    // выезда, только сама смена.
+    function show(i, dir) {
+      clearGhost();
+      if (!dir || reducedMotion.matches) {
+        image.style.transitionProperty = 'none';
+        image.style.transform = '';
         applyImage(i);
+        setTransform(false);
         return;
       }
-      image.style.transitionProperty = 'opacity';
-      image.style.transitionDuration = '.16s';
-      image.style.transitionTimingFunction = 'ease';
-      image.style.opacity = '0';
-      switchTimer = window.setTimeout(function () {
-        applyImage(i);
-        void image.offsetWidth; // reflow: committer opacity:0 перед фейдом обратно
-        image.style.transitionProperty = 'opacity';
-        image.style.transitionDuration = '.22s';
-        image.style.opacity = '1';
-      }, 160);
+
+      var g = image.cloneNode(true);
+      g.classList.add('case-lightbox__image--ghost');
+      g.style.transitionProperty = 'none';
+      g.style.transform = 'translateX(0) scale(1)';
+      viewport.appendChild(g);
+      ghost = g;
+
+      applyImage(i);
+      image.style.transitionProperty = 'none';
+      image.style.transform = 'translateX(' + dir * 100 + '%) scale(1)';
+
+      void viewport.offsetWidth; // единая точка reflow — коммитим стартовые позиции обеих картинок
+
+      var duration = '.36s';
+      var easing = 'cubic-bezier(.22,1,.36,1)';
+      image.style.transitionProperty = 'transform';
+      image.style.transitionDuration = duration;
+      image.style.transitionTimingFunction = easing;
+      image.style.transform = 'translate(0,0) scale(1)';
+
+      g.style.transitionProperty = 'transform';
+      g.style.transitionDuration = duration;
+      g.style.transitionTimingFunction = easing;
+      g.style.transform = 'translateX(' + (-dir * 100) + '%) scale(1)';
+
+      ghostTimer = window.setTimeout(clearGhost, 380);
     }
 
     function navigate(delta) {
-      show((index + delta + items.length) % items.length, true);
+      show((index + delta + items.length) % items.length, delta);
     }
 
     image.addEventListener('load', computeBaseSize);
@@ -235,7 +278,7 @@
         if (scale > 1.001) {
           var clamped = clampPan(scale, panStartTx + dx, panStartTy + dy);
           tx = clamped.x; ty = clamped.y;
-          setTransform(false);
+          scheduleRender();
           image.classList.add('is-panning');
         }
       }
