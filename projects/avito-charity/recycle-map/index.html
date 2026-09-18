@@ -82,9 +82,9 @@ body {
   gap: var(--case-block-gap);
 }
 
-/* Keep About and Team in normal flow on phones and tablets. */
+/* Keep Team and Scenario with their preceding blocks in normal flow on phones and tablets. */
 @media (max-width: 1024px) {
-  .overlap-group:has(> #team) > .overlap-sticky {
+  .overlap-group:has(> :is(#team, #scenario)) > .overlap-sticky {
     position: relative;
     top: auto;
     opacity: 1;
