@@ -184,7 +184,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--lightbox-bar-h) var(--lightbox-pad-x, 0px) var(--lightbox-pad-bottom, 0px);
+  padding: var(--lightbox-bar-h) var(--lightbox-pad-right, 0px) var(--lightbox-pad-bottom, 0px) var(--lightbox-pad-left, 0px);
 }
 
 .case-lightbox__image {
@@ -209,7 +209,8 @@
 @media (min-width: 768px) {
   .case-lightbox {
     --lightbox-thumbs-w: 124px;
-    --lightbox-pad-x: 200px;
+    --lightbox-pad-left: calc(var(--lightbox-thumbs-w) + 52px);
+    --lightbox-pad-right: 96px;
     --lightbox-pad-bottom: 24px;
   }
 
