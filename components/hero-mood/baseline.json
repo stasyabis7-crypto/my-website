@@ -3,6 +3,6 @@
     "mode": "hero-content-slots-v1",
     "sha256": "e0782b18372cc394a5b0db6287a1134c89f6166fbb1f715201d005d5decd5ecb"
   },
-  "components/hero-mood/mood-companion.css": "a45de224788940f585a358ec7abf7a178772d35f8287d28c4a477437c324a15f",
-  "components/hero-mood/mood-companion.js": "b1fa23d0ba2366a65b1ad006ed9cb721d84166fb76a105fbe8bd67fbc1c0efc7"
+  "components/hero-mood/mood-companion.css": "f684fc55e2ffa7795c6e26c0abd66f98c164886d1d5b630640fd32a6311b9b66",
+  "components/hero-mood/mood-companion.js": "48348a6c165db16a454f282277edf36cd6cc066b0e2fa1e26403fd8d261ef201"
 }
