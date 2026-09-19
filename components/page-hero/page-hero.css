@@ -21,8 +21,9 @@
      clips the interface whenever the heading and actions take more room. */
   .project-hero .mood-stage {
     height: auto;
-    /* --hero-vh is frozen by mood-companion.js so in-app browser bars can't change the gap under the button. */
-    min-height: calc(var(--hero-vh, 100svh) - 2 * var(--hero-edge));
+    /* --hero-vh-full is frozen by mood-companion.js (largest viewport, incl. under in-app browser bars),
+       so the bars can't change the gap under the button and the artwork stays flush with the bottom. */
+    min-height: calc(var(--hero-vh-full, 100lvh) - 2 * var(--hero-edge));
     grid-template-rows: auto;
     padding-bottom: 0;
   }
