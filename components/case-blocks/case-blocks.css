@@ -234,6 +234,11 @@
 @media (max-width: 640px) {
   .case-cover__media {
     border-radius: 16px;
+    margin-top: 24px;
+  }
+
+  .case-schedule__grid.case-cards-grid {
+    margin-top: 24px;
   }
 }
 
