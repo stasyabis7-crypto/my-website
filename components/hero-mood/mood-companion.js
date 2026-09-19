@@ -3,6 +3,19 @@
 (function () {
   'use strict';
   const root = document.documentElement;
+  // In-app browsers (Telegram) resize the viewport as their bars show and hide, and
+  // svh/dvh follow it. Freeze the hero's viewport height; refresh only when the width
+  // changes (rotation / real resize).
+  let heroWidth = innerWidth;
+  const freezeHeroHeight = () => {
+    root.style.setProperty('--hero-vh', innerHeight + 'px');
+    root.toggleAttribute('data-hero-short', innerHeight <= 700);
+    root.toggleAttribute('data-hero-short-landscape', innerHeight <= 550);
+  };
+  freezeHeroHeight();
+  addEventListener('resize', () => {
+    if (innerWidth !== heroWidth) { heroWidth = innerWidth; freezeHeroHeight(); }
+  }, { passive: true });
   const home = document.getElementById('mood-home');
   const actor = document.getElementById('mood-actor');
   const canvas = document.getElementById('mood-canvas');
