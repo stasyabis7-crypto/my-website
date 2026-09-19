@@ -390,8 +390,25 @@
   object-position: bottom;
 }
 
-/* Картинка метрики прижата к правому нижнему углу карточки. */
-.case-metric__art--end img { object-position: right bottom; }
+/* Картинка метрики уменьшена (--art-scale — доля высоты блока) и прижата
+   к правому нижнему углу карточки. */
+.case-metric__art--end { position: relative; }
+.case-metric__art--end img {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: calc(var(--art-scale, 1) * 100%);
+  max-width: 100%;
+  object-position: right bottom;
+}
+
+/* Картинка на всю ширину карточки, но с отступом 24px слева, справа и снизу. */
+.case-metric__art--inset {
+  margin-right: calc(24px - var(--card-pad-x));
+  margin-bottom: -8px;
+  margin-left: calc(24px - var(--card-pad-x));
+}
 
 /* The favourite badge extends beyond the callout on the right. Compensate
    for that visual weight on the mobile metric card without moving its frame. */
