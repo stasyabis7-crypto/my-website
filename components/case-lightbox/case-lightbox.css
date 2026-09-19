@@ -209,8 +209,11 @@
 @media (min-width: 768px) {
   .case-lightbox {
     --lightbox-thumbs-w: 84px;
-    --lightbox-pad-left: calc(var(--lightbox-thumbs-w) + 52px);
-    --lightbox-pad-right: 96px;
+    /* Кнопки-стрелки стоят по краям, фото начинается/заканчивается вплотную
+       к ним с одинаковым зазором 16px с обеих сторон. */
+    --lightbox-nav-left: calc(var(--lightbox-thumbs-w) + 32px);
+    --lightbox-pad-left: calc(var(--lightbox-nav-left) + var(--button-height, 64px) + 16px);
+    --lightbox-pad-right: calc(20px + var(--button-height, 64px) + 16px);
     --lightbox-pad-bottom: 24px;
   }
 
@@ -239,7 +242,7 @@
     bottom: 0;
     left: 0;
     z-index: 1;
-    width: calc(var(--lightbox-thumbs-w) + 96px);
+    width: calc(var(--lightbox-nav-left) + var(--button-height, 64px));
     background: linear-gradient(to right, rgba(8, 8, 8, 0.92) 0, rgba(8, 8, 8, 0.78) 55%, rgba(8, 8, 8, 0));
     pointer-events: none;
   }
@@ -253,7 +256,7 @@
   }
 
   .case-lightbox__nav--prev {
-    left: calc(var(--lightbox-thumbs-w) + 48px);
+    left: var(--lightbox-nav-left);
   }
 }
 
