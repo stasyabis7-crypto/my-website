@@ -157,18 +157,19 @@ html.mood-cursor-active .mood-cursor { opacity: 1; }
   .mood-caption { flex-shrink: 0; }
   .mood-description { min-height: 0; }
 }
-/* Short screens: keyed off html[data-hero-short] (frozen height, set by mood-companion.js),
-   not (max-height) media queries, which flip when in-app browser bars resize the viewport. */
+/* Short screens: keyed off :where(html[data-hero-short]) (frozen height, set by mood-companion.js),
+   not (max-height) media queries, which flip when in-app browser bars resize the viewport.
+   :where() keeps the old media-query specificity, so project heroes (padding-bottom: 0) still win. */
 @media (max-width: 999px) {
-  html[data-hero-short] .mood-stage { gap: 4px; padding-top: calc(var(--header-h, 64px) + 14px); padding-bottom: calc(var(--footer-h, 64px) + 12px); }
-  html[data-hero-short] .mood-actions { margin-top: 12px; }
-  html[data-hero-short] .mood-caption { margin-top: 0; }
-  html[data-hero-short] .mood-description { margin-top: 4px; }
+  :where(html[data-hero-short]) .mood-stage { gap: 4px; padding-top: calc(var(--header-h, 64px) + 14px); padding-bottom: calc(var(--footer-h, 64px) + 12px); }
+  :where(html[data-hero-short]) .mood-actions { margin-top: 12px; }
+  :where(html[data-hero-short]) .mood-caption { margin-top: 0; }
+  :where(html[data-hero-short]) .mood-description { margin-top: 4px; }
 }
 @media (min-width: 600px) and (max-width: 999px) {
-  html[data-hero-short-landscape] .mood-stage { grid-template-columns: 1.2fr 1fr; grid-template-rows: minmax(0, 1fr); gap: 20px; padding-bottom: 80px; }
-  html[data-hero-short-landscape] .mood-content { text-align: left; }
-  html[data-hero-short-landscape] .mood-home { width: min(100%, 200px); }
+  :where(html[data-hero-short-landscape]) .mood-stage { grid-template-columns: 1.2fr 1fr; grid-template-rows: minmax(0, 1fr); gap: 20px; padding-bottom: 80px; }
+  :where(html[data-hero-short-landscape]) .mood-content { text-align: left; }
+  :where(html[data-hero-short-landscape]) .mood-home { width: min(100%, 200px); }
 }
 
 /* The internal-page desktop dock speaks below the character, inside the viewport. */
