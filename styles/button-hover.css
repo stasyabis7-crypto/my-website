@@ -243,3 +243,16 @@
     transition-duration: 0.01ms;
   }
 }
+
+/* Image tiles never shrink on touch: :active fires as a scroll begins, so a
+   press-scale on a photo/card reads as a glitch. Real buttons keep the press. */
+@media (hover: none), (pointer: coarse) {
+  :is(a[href], [role="button"]):has(:is(img, picture, video, canvas)):not(.btn):active,
+  .case-lightbox-openable:active,
+  .works-grid__item:active,
+  .work-gallery__work:active,
+  .project-card:active {
+    scale: 1;
+    transform: none;
+  }
+}
