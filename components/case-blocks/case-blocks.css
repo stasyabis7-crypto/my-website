@@ -230,6 +230,13 @@
   }
 }
 
+/* Скриншоты интерфейсов на мобилке скруглены сильнее токена карточек — 16px. */
+@media (max-width: 640px) {
+  .case-cover__media {
+    border-radius: 16px;
+  }
+}
+
 /* Обложка с исходными пропорциями — для полных скриншотов интерфейса. */
 .case-cover__media--natural {
   aspect-ratio: auto;
