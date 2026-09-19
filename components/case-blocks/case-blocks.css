@@ -390,6 +390,9 @@
   object-position: bottom;
 }
 
+/* Картинка метрики прижата к правому нижнему углу карточки. */
+.case-metric__art--end img { object-position: right bottom; }
+
 /* The favourite badge extends beyond the callout on the right. Compensate
    for that visual weight on the mobile metric card without moving its frame. */
 @media (max-width: 900px) {
@@ -473,6 +476,26 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Роль с крупными широкими картинками — блоки друг под другом на всех экранах. */
+.case-role__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  margin-top: 32px;
+}
+
+.case-role__stack .case-cover__media {
+  margin-top: 16px;
+}
+
+.case-role__stack .case-cards-grid {
+  margin-top: 16px;
+}
+
+.case-role__stack .case-cards-grid .case-cover__media {
+  margin-top: 0;
 }
 
 /* Планшет (641–900px) — карусель, тот же приём, что у .case-cover__metrics
