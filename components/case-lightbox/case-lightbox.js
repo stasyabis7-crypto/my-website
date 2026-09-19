@@ -11,9 +11,10 @@
   var MIN_SCALE = 1;
   var MAX_SCALE = 4;
   var DBLTAP_SCALE = 2.5;
-  var SWIPE_THRESHOLD = 60;
   var TAP_SLOP = 10;
   var DBLTAP_MS = 300;
+  var SLIDE_GAP = 2;
+  var SLIDE_TRANSITION = 'transform .5s cubic-bezier(.22,1,.36,1)';
 
   function ready(fn) {
     if (document.readyState !== 'loading') fn();
@@ -47,27 +48,77 @@
       '</header>' +
       '<button type="button" class="btn btn--fill-white btn--icon-only btn--media-control case-lightbox__nav case-lightbox__nav--prev" aria-label="Предыдущее фото"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>' +
       '<button type="button" class="btn btn--fill-white btn--icon-only btn--media-control case-lightbox__nav case-lightbox__nav--next" aria-label="Следующее фото"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>' +
-      '<div class="case-lightbox__viewport">' +
-        '<img class="case-lightbox__image" alt="" draggable="false" />' +
-      '</div>';
+      '<div class="case-lightbox__viewport"><div class="case-lightbox__track"></div></div>' +
+      '<div class="case-lightbox__thumbs"></div>';
     document.body.appendChild(root);
 
     var closeBtn = root.querySelector('.case-lightbox__close');
     var prevBtn = root.querySelector('.case-lightbox__nav--prev');
     var nextBtn = root.querySelector('.case-lightbox__nav--next');
     var viewport = root.querySelector('.case-lightbox__viewport');
-    var image = root.querySelector('.case-lightbox__image');
+    var track = root.querySelector('.case-lightbox__track');
+    var thumbsEl = root.querySelector('.case-lightbox__thumbs');
     var currentEl = root.querySelector('[data-lightbox-current]');
 
+    // Все фото лежат в одной ленте рядом (как в обычном слайдере) —
+    // src больше не подменяется на лету, поэтому нет мигания пустой
+    // картинки; пролистывание — это только сдвиг ленты.
+    var slides = [];
+    var thumbs = [];
+    items.forEach(function (src, i) {
+      var slide = document.createElement('div');
+      slide.className = 'case-lightbox__slide';
+      var im = document.createElement('img');
+      im.className = 'case-lightbox__image';
+      im.alt = src.getAttribute('alt') || '';
+      im.draggable = false;
+      im.decoding = 'async';
+      slide.appendChild(im);
+      track.appendChild(slide);
+      slides.push(im);
+
+      var th = document.createElement('div');
+      th.className = 'case-lightbox__thumb';
+      th.tabIndex = 0;
+      th.setAttribute('role', 'button');
+      th.setAttribute('aria-label', 'Фото ' + (i + 1) + ' из ' + items.length);
+      var ti = document.createElement('img');
+      ti.alt = '';
+      ti.draggable = false;
+      th.appendChild(ti);
+      thumbsEl.appendChild(th);
+      thumbs.push(th);
+      th.addEventListener('click', function () { goTo(i, true); });
+      th.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+          e.preventDefault();
+          goTo(i, true);
+        }
+      });
+    });
+
+    var sourcesLoaded = false;
+    function loadSources() {
+      if (sourcesLoaded) return;
+      sourcesLoaded = true;
+      items.forEach(function (src, i) {
+        var url = src.currentSrc || src.src;
+        slides[i].src = url;
+        thumbs[i].firstChild.src = url;
+      });
+    }
+
+    var image = slides[0];
+    var prevImage = null;
     var index = 0;
     var lastFocused = null;
     var inactive = [];
 
     var scale = 1, tx = 0, ty = 0;
-    var baseW = 0, baseH = 0;
     var pointers = {};
     var pinchStartDist = 0, pinchStartScale = 1;
     var panStartX = 0, panStartY = 0, panStartTx = 0, panStartTy = 0;
+    var swipeStartX = 0, swipeLastX = 0, swipeLastT = 0, swipeVx = 0, swiping = false;
     var dragActive = false, dragMoved = false;
     var lastTapTime = 0, lastTapX = 0, lastTapY = 0;
 
@@ -96,14 +147,26 @@
       });
     });
 
-    function computeBaseSize() {
-      var vw = viewport.clientWidth || 1;
-      var vh = viewport.clientHeight || 1;
-      var natW = image.naturalWidth || vw;
-      var natH = image.naturalHeight || vh;
-      var ratio = Math.min(1, vw / natW, vh / natH);
-      baseW = natW * ratio;
-      baseH = natH * ratio;
+    function step() {
+      return viewport.clientWidth + SLIDE_GAP;
+    }
+
+    // Лента: пока палец на экране — 1:1 за пальцем (без transition), при
+    // отпускании/стрелках/миниатюре — плавный доезд до нужного слайда.
+    var trackRaf = 0, trackPendingX = 0;
+    function queueTrack(x) {
+      trackPendingX = x;
+      if (trackRaf) return;
+      trackRaf = requestAnimationFrame(function () {
+        trackRaf = 0;
+        track.style.transition = 'none';
+        track.style.transform = 'translate3d(' + trackPendingX + 'px,0,0)';
+      });
+    }
+    function renderTrack(animate) {
+      if (trackRaf) { cancelAnimationFrame(trackRaf); trackRaf = 0; }
+      track.style.transition = animate && !reducedMotion.matches ? SLIDE_TRANSITION : 'none';
+      track.style.transform = 'translate3d(' + (-index * step()) + 'px,0,0)';
     }
 
     function setTransform(animate) {
@@ -116,9 +179,8 @@
 
     // Пинч/пан/колесо пишут scale/tx/ty на каждое событие (тачскрины
     // отдают их гораздо чаще частоты кадров экрана), а в DOM — не чаще
-    // раза за кадр через rAF. Без этого частые синхронные записи стиля
-    // дают лишнюю раскладку и жест выглядит рваным. Дискретные скачки
-    // (даблтап, снэп-бэк, ресайз) по-прежнему идут напрямую, с transition.
+    // раза за кадр через rAF. Дискретные скачки (даблтап, снэп-бэк,
+    // ресайз) идут напрямую, с transition.
     var rafPending = false;
     function scheduleRender() {
       if (rafPending) return;
@@ -130,8 +192,8 @@
     }
 
     function clampPan(scaleVal, txVal, tyVal) {
-      var maxX = Math.max(0, (baseW * scaleVal - viewport.clientWidth) / 2);
-      var maxY = Math.max(0, (baseH * scaleVal - viewport.clientHeight) / 2);
+      var maxX = Math.max(0, (image.offsetWidth * scaleVal - viewport.clientWidth) / 2);
+      var maxY = Math.max(0, (image.offsetHeight * scaleVal - viewport.clientHeight) / 2);
       return {
         x: Math.min(maxX, Math.max(-maxX, txVal)),
         y: Math.min(maxY, Math.max(-maxY, tyVal))
@@ -141,8 +203,8 @@
     function zoomAt(newScale, clientX, clientY, animate) {
       newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, newScale));
       var vpRect = viewport.getBoundingClientRect();
-      var px = clientX - (vpRect.left + vpRect.width / 2);
-      var py = clientY - (vpRect.top + vpRect.height / 2);
+      var px = clientX - (vpRect.left + image.offsetLeft + image.offsetWidth / 2);
+      var py = clientY - (vpRect.top + image.offsetTop + image.offsetHeight / 2);
       var ratio = newScale / scale;
       var rawTx = px - (px - tx) * ratio;
       var rawTy = py - (py - ty) * ratio;
@@ -154,72 +216,50 @@
       else scheduleRender();
     }
 
-    var ghost = null;
-    var ghostTimer = 0;
-
-    function clearGhost() {
-      window.clearTimeout(ghostTimer);
-      if (ghost && ghost.parentNode) ghost.parentNode.removeChild(ghost);
-      ghost = null;
-    }
-
-    function applyImage(i) {
-      index = i;
-      var src = items[index];
-      scale = 1; tx = 0; ty = 0;
-      image.alt = src.getAttribute('alt') || '';
-      image.src = src.currentSrc || src.src;
+    function updateChrome() {
       currentEl.textContent = String(index + 1);
+      prevBtn.hidden = index === 0;
+      nextBtn.hidden = index === items.length - 1;
+      thumbs.forEach(function (th, i) {
+        var active = i === index;
+        th.classList.toggle('is-current', active);
+        if (active) th.setAttribute('aria-current', 'true');
+        else th.removeAttribute('aria-current');
+      });
+      var th = thumbs[index];
+      if (th && thumbsEl.scrollHeight > thumbsEl.clientHeight) {
+        thumbsEl.scrollTo({
+          top: th.offsetTop - (thumbsEl.clientHeight - th.offsetHeight) / 2,
+          behavior: reducedMotion.matches ? 'auto' : 'smooth'
+        });
+      }
     }
 
-    // Плавное мягкое пролистывание: уходящее фото уезжает в сторону,
-    // новое въезжает с противоположной — как будто стоят в ряд, а не
-    // моргают кроссфейдом. dir > 0 — вперёд (новое въезжает справа),
-    // dir < 0 — назад (въезжает слева). Открытие первого фото — без
-    // выезда, только сама смена.
-    function show(i, dir) {
-      clearGhost();
-      if (!dir || reducedMotion.matches) {
-        image.style.transitionProperty = 'none';
-        image.style.transform = '';
-        applyImage(i);
-        setTransform(false);
-        return;
+    function goTo(i, animate) {
+      i = Math.max(0, Math.min(items.length - 1, i));
+      var leaving = image;
+      var changed = i !== index;
+      index = i;
+      image = slides[index];
+      scale = 1; tx = 0; ty = 0;
+      if (changed) {
+        prevImage = leaving;
+        window.setTimeout(function () {
+          if (prevImage && prevImage !== image) {
+            prevImage.style.transition = 'none';
+            prevImage.style.transform = '';
+            prevImage.classList.remove('is-zoomed');
+          }
+        }, 520);
       }
-
-      var g = image.cloneNode(true);
-      g.classList.add('case-lightbox__image--ghost');
-      g.style.transitionProperty = 'none';
-      g.style.transform = 'translateX(0) scale(1)';
-      viewport.appendChild(g);
-      ghost = g;
-
-      applyImage(i);
-      image.style.transitionProperty = 'none';
-      image.style.transform = 'translateX(' + dir * 100 + '%) scale(1)';
-
-      void viewport.offsetWidth; // единая точка reflow — коммитим стартовые позиции обеих картинок
-
-      var duration = '.36s';
-      var easing = 'cubic-bezier(.22,1,.36,1)';
-      image.style.transitionProperty = 'transform';
-      image.style.transitionDuration = duration;
-      image.style.transitionTimingFunction = easing;
-      image.style.transform = 'translate(0,0) scale(1)';
-
-      g.style.transitionProperty = 'transform';
-      g.style.transitionDuration = duration;
-      g.style.transitionTimingFunction = easing;
-      g.style.transform = 'translateX(' + (-dir * 100) + '%) scale(1)';
-
-      ghostTimer = window.setTimeout(clearGhost, 380);
+      setTransform(false);
+      renderTrack(animate);
+      updateChrome();
     }
 
     function navigate(delta) {
-      show((index + delta + items.length) % items.length, delta);
+      goTo(index + delta, true);
     }
-
-    image.addEventListener('load', computeBaseSize);
 
     function handleTap(e) {
       var now = Date.now();
@@ -252,13 +292,18 @@
         pinchStartDist = Math.hypot(p1.x - p0.x, p1.y - p0.y) || 1;
         pinchStartScale = scale;
         dragActive = false;
+        if (swiping) { swiping = false; renderTrack(true); }
       } else if (ids.length === 1) {
         dragActive = true;
         dragMoved = false;
+        swiping = false;
         panStartX = e.clientX;
         panStartY = e.clientY;
         panStartTx = tx;
         panStartTy = ty;
+        swipeStartX = swipeLastX = e.clientX;
+        swipeLastT = e.timeStamp;
+        swipeVx = 0;
       }
     });
 
@@ -280,6 +325,16 @@
           tx = clamped.x; ty = clamped.y;
           scheduleRender();
           image.classList.add('is-panning');
+        } else if (dragMoved) {
+          swiping = true;
+          var sdx = e.clientX - swipeStartX;
+          var atEdge = (index === 0 && sdx > 0) || (index === items.length - 1 && sdx < 0);
+          if (atEdge) sdx *= 0.35;
+          queueTrack(-index * step() + sdx);
+          var dt = e.timeStamp - swipeLastT;
+          if (dt > 0) swipeVx = 0.8 * swipeVx + 0.2 * ((e.clientX - swipeLastX) / dt);
+          swipeLastX = e.clientX;
+          swipeLastT = e.timeStamp;
         }
       }
     });
@@ -287,11 +342,6 @@
     function endPointer(e) {
       var hadTwo = Object.keys(pointers).length === 2;
       var wasSingleDrag = dragActive && Object.keys(pointers).length === 1;
-      var dx = 0, dy = 0;
-      if (wasSingleDrag) {
-        dx = e.clientX - panStartX;
-        dy = e.clientY - panStartY;
-      }
       delete pointers[e.pointerId];
       image.classList.remove('is-panning');
       var remaining = Object.keys(pointers).length;
@@ -302,6 +352,9 @@
         panStartY = pointers[id].y;
         panStartTx = tx;
         panStartTy = ty;
+        swipeStartX = swipeLastX = pointers[id].x;
+        swipeLastT = e.timeStamp;
+        swipeVx = 0;
         dragActive = true;
         dragMoved = false;
         return;
@@ -317,8 +370,13 @@
         handleTap(e);
         return;
       }
-      if (scale <= 1.001 && Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
-        navigate(dx < 0 ? 1 : -1);
+      if (scale <= 1.001 && swiping) {
+        swiping = false;
+        var total = e.clientX - swipeStartX;
+        var threshold = Math.min(90, viewport.clientWidth * 0.2);
+        if ((total < -threshold || swipeVx < -0.4) && index < items.length - 1) goTo(index + 1, true);
+        else if ((total > threshold || swipeVx > 0.4) && index > 0) goTo(index - 1, true);
+        else renderTrack(true);
       }
     }
 
@@ -327,7 +385,7 @@
 
     window.addEventListener('resize', function () {
       if (root.hidden) return;
-      computeBaseSize();
+      renderTrack(false);
       var clamped = clampPan(scale, tx, ty);
       tx = clamped.x; ty = clamped.y;
       setTransform(false);
@@ -381,14 +439,15 @@
       document.documentElement.classList.add('contact-scroll-lock');
       root.classList.remove('is-closing');
       root.hidden = false;
-      show(i);
+      loadSources();
+      index = -1;
+      goTo(i, false);
       document.addEventListener('keydown', onKeydown);
       closeBtn.focus({ preventScroll: true });
     }
 
     function close() {
       closeAnimated(function () {
-        image.removeAttribute('src');
         document.documentElement.classList.remove('contact-scroll-lock');
         inactive.forEach(function (el) { el.inert = false; });
         inactive = [];
