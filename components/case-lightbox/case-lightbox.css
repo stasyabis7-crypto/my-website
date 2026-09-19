@@ -38,6 +38,7 @@
   position: fixed;
   inset: 0;
   z-index: 2100000000;
+  --lightbox-bar-h: calc(var(--button-height, 64px) + 24px);
   background: var(--color-bg);
   animation: case-lightbox-surface-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -91,11 +92,9 @@
 }
 
 /* Полоса-оверлей поверх полноэкранного стейджа, а не отдельная полоса
-   разметки — при сильном зуме увеличенное фото продолжается у неё под
-   низом, а не упирается в неё краем. Полупрозрачный тёмный градиент
-   держит счётчик/крестик читаемыми на любом фоне; клики проходят сквозь
-   пустые места (pointer-events: none) — под ней можно тянуть/зумить
-   фото, кроме самих кнопок. */
+   разметки — при зуме увеличенное фото продолжается у неё под низом.
+   Клики проходят сквозь неё (pointer-events: none) — под ней можно
+   тянуть/зумить фото, кроме самих кнопок. */
 .case-lightbox__bar {
   position: absolute;
   top: 0;
@@ -105,10 +104,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(var(--button-height, 64px) + 24px);
+  min-height: var(--lightbox-bar-h);
   padding: 12px 20px;
-  background: linear-gradient(to bottom, rgba(8, 8, 8, 0.6), rgba(8, 8, 8, 0));
+  background: var(--color-bg);
+  transition: background-color 0.3s ease;
   pointer-events: none;
+}
+
+/* В покое хедер сплошной, фото занимает область под ним. Только когда
+   фото увеличено и заходит за свою область, хедер становится
+   полупрозрачным тёмным и фото видно сквозь него. */
+.case-lightbox.is-zoomed .case-lightbox__bar {
+  background: rgba(8, 8, 8, 0.55);
 }
 
 .case-lightbox__counter {
@@ -177,17 +184,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--lightbox-pad-y, 0px) var(--lightbox-pad-x, 0px);
+  padding: var(--lightbox-bar-h) var(--lightbox-pad-x, 0px) var(--lightbox-pad-bottom, 0px);
 }
 
 .case-lightbox__image {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-width: 0;
   min-height: 0;
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   user-select: none;
   -webkit-user-drag: none;
@@ -205,7 +210,7 @@
   .case-lightbox {
     --lightbox-thumbs-w: 124px;
     --lightbox-pad-x: 200px;
-    --lightbox-pad-y: 24px;
+    --lightbox-pad-bottom: 24px;
   }
 
   .case-lightbox__thumbs {

@@ -175,6 +175,7 @@
       image.style.transitionTimingFunction = 'ease';
       image.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
       image.classList.toggle('is-zoomed', scale > 1.001);
+      root.classList.toggle('is-zoomed', scale > 1.001);
     }
 
     // Пинч/пан/колесо пишут scale/tx/ty на каждое событие (тачскрины
@@ -191,9 +192,20 @@
       });
     }
 
+    // Картинка растянута на весь бокс (object-fit: contain), поэтому
+    // реальный размер содержимого считаем по натуральным пропорциям.
+    function contentSize() {
+      var w = image.offsetWidth, h = image.offsetHeight;
+      var nw = image.naturalWidth, nh = image.naturalHeight;
+      if (!nw || !nh || !w || !h) return { w: w, h: h };
+      var r = Math.min(w / nw, h / nh);
+      return { w: nw * r, h: nh * r };
+    }
+
     function clampPan(scaleVal, txVal, tyVal) {
-      var maxX = Math.max(0, (image.offsetWidth * scaleVal - viewport.clientWidth) / 2);
-      var maxY = Math.max(0, (image.offsetHeight * scaleVal - viewport.clientHeight) / 2);
+      var size = contentSize();
+      var maxX = Math.max(0, (size.w * scaleVal - viewport.clientWidth) / 2);
+      var maxY = Math.max(0, (size.h * scaleVal - viewport.clientHeight) / 2);
       return {
         x: Math.min(maxX, Math.max(-maxX, txVal)),
         y: Math.min(maxY, Math.max(-maxY, tyVal))
