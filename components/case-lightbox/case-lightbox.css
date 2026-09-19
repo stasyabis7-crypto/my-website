@@ -208,7 +208,7 @@
 
 @media (min-width: 768px) {
   .case-lightbox {
-    --lightbox-thumbs-w: 124px;
+    --lightbox-thumbs-w: 84px;
     --lightbox-pad-left: calc(var(--lightbox-thumbs-w) + 52px);
     --lightbox-pad-right: 96px;
     --lightbox-pad-bottom: 24px;
@@ -223,12 +223,25 @@
     width: var(--lightbox-thumbs-w);
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     padding: 4px;
     overflow-x: hidden;
     overflow-y: auto;
     scrollbar-width: none;
     animation: case-lightbox-item-in 0.4s 0.2s ease both;
+  }
+
+  /* Фото уезжают под миниатюры, слегка затемняясь у левого края. */
+  .case-lightbox::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: calc(var(--lightbox-thumbs-w) + 96px);
+    background: linear-gradient(to right, rgba(8, 8, 8, 0.92) 0, rgba(8, 8, 8, 0.78) 55%, rgba(8, 8, 8, 0));
+    pointer-events: none;
   }
 
   .case-lightbox__thumbs::-webkit-scrollbar {
@@ -249,7 +262,7 @@
   width: 100%;
   aspect-ratio: 1;
   box-sizing: border-box;
-  border-radius: 20px;
+  border-radius: 14px;
   overflow: hidden;
   opacity: 0.55;
   cursor: pointer;

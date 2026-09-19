@@ -14,7 +14,10 @@
   var TAP_SLOP = 10;
   var DBLTAP_MS = 300;
   var SLIDE_GAP = 2;
-  var SLIDE_TRANSITION = 'transform .5s cubic-bezier(.22,1,.36,1)';
+  // На десктопе пролистывание медленнее и мягче, чем на телефоне (там
+  // лента сначала едет за пальцем); дальние прыжки по миниатюре
+  // растягиваются по длине пути, чтобы не «телепортировать».
+  var SLIDE_EASING = 'cubic-bezier(.25,.8,.25,1)';
 
   function ready(fn) {
     if (document.readyState !== 'loading') fn();
@@ -163,9 +166,12 @@
         track.style.transform = 'translate3d(' + trackPendingX + 'px,0,0)';
       });
     }
-    function renderTrack(animate) {
+    var desktopMq = window.matchMedia('(min-width: 768px)');
+    function renderTrack(animate, distance) {
       if (trackRaf) { cancelAnimationFrame(trackRaf); trackRaf = 0; }
-      track.style.transition = animate && !reducedMotion.matches ? SLIDE_TRANSITION : 'none';
+      var base = desktopMq.matches ? 0.75 : 0.5;
+      var duration = Math.min(1.1, base + 0.07 * Math.max(0, (distance || 1) - 1));
+      track.style.transition = animate && !reducedMotion.matches ? 'transform ' + duration + 's ' + SLIDE_EASING : 'none';
       track.style.transform = 'translate3d(' + (-index * step()) + 'px,0,0)';
     }
 
@@ -251,6 +257,7 @@
       i = Math.max(0, Math.min(items.length - 1, i));
       var leaving = image;
       var changed = i !== index;
+      var distance = Math.abs(i - index);
       index = i;
       image = slides[index];
       scale = 1; tx = 0; ty = 0;
@@ -262,10 +269,10 @@
             prevImage.style.transform = '';
             prevImage.classList.remove('is-zoomed');
           }
-        }, 520);
+        }, 1200);
       }
       setTransform(false);
-      renderTrack(animate);
+      renderTrack(animate, distance);
       updateChrome();
     }
 
