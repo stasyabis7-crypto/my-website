@@ -13,10 +13,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .case-lightbox-openable:hover {
-    transform: scale(0.97);
-  }
+/* .is-hovered ставит case-lightbox.js: на самом краю плитки :hover дёргался —
+   уменьшенная плитка выпускала курсор, возвращалась и снова уменьшалась. */
+.case-lightbox-openable.is-hovered {
+  transform: scale(0.97);
 }
 
 .case-lightbox-openable:focus-visible {

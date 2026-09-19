@@ -125,6 +125,30 @@
     var dragActive = false, dragMoved = false;
     var lastTapTime = 0, lastTapX = 0, lastTapY = 0;
 
+    // Наведение мышью: плитка уменьшается, но «навели» считается по её
+    // исходным границам, запомненным до уменьшения — иначе на самом краю
+    // курсор оказывается вне уменьшенной плитки и она дёргается.
+    var mouseQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+    function bindHover(target) {
+      target.addEventListener('pointerenter', function (e) {
+        if (e.pointerType !== 'mouse' || !mouseQuery.matches || target.classList.contains('is-hovered')) return;
+        var r = target.getBoundingClientRect();
+        function off() {
+          target.classList.remove('is-hovered');
+          document.removeEventListener('pointermove', move);
+          document.removeEventListener('scroll', off, true);
+          document.documentElement.removeEventListener('mouseleave', off);
+        }
+        function move(ev) {
+          if (ev.clientX < r.left || ev.clientX > r.right || ev.clientY < r.top || ev.clientY > r.bottom) off();
+        }
+        target.classList.add('is-hovered');
+        document.addEventListener('pointermove', move);
+        document.addEventListener('scroll', off, true);
+        document.documentElement.addEventListener('mouseleave', off);
+      });
+    }
+
     // Наведение/фокус должны уменьшать всю плитку-контейнер с фото
     // (рамку, в которой лежит картинка), а не саму картинку внутри неё —
     // иначе на кроп-рамках (object-fit: cover) уменьшается только
@@ -136,6 +160,7 @@
         ? img
         : (img.closest('.case-cover__media') || img.closest('.case-card--media') || img.closest('.case-role__col-art') || img.parentElement);
       target.classList.add('case-lightbox-openable');
+      bindHover(target);
       target.tabIndex = 0;
       target.setAttribute('role', 'button');
       if (!target.hasAttribute('aria-label')) {
