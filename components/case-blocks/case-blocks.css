@@ -197,6 +197,11 @@
   max-width: 800px;
 }
 
+/* Второй абзац подряд — отступ как между абзацами. */
+.case-subtitle + .case-subtitle {
+  margin-top: 16px;
+}
+
 .case-cover__media {
   display: block;
   width: 100%;
