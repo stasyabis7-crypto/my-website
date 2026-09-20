@@ -36,9 +36,34 @@
     if (incoming) window.__pageTransitionCursor = handoff.cursor;
   } catch (_) { /* Without storage, use the complete entrance/exit sequence. */ }
 
+  // Links the curtain does not animate (e.g. a project card on a section page)
+  // still keep the custom cursor: it is handed over on its own key, so the
+  // destination shows the dot at once without replaying any transition.
+  var cursorKey = 'mood-cursor:' + siteBase.pathname;
+  try {
+    var carried = JSON.parse(sessionStorage.getItem(cursorKey) || 'null');
+    sessionStorage.removeItem(cursorKey);
+    var entry = performance.getEntriesByType('navigation')[0];
+    if (!incoming && carried && carried.cursor && carried.page === pageKey(location.href) &&
+        Date.now() - carried.at < 10000 && (!entry || entry.type === 'navigate')) {
+      window.__pageTransitionCursor = carried.cursor;
+    }
+  } catch (_) { /* Without storage the dot appears on the next mouse move. */ }
+
   document.addEventListener('pointermove', function (event) {
     pointer = event.pointerType === 'touch' ? null : { x: event.clientX, y: event.clientY };
   }, { passive: true });
+
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest && event.target.closest('a[href]');
+    if (!link || !pointer || !root.classList.contains('has-dot-cursor') ||
+        (link.target && link.target !== '_self') || link.hasAttribute('download')) return;
+    var url = new URL(link.href, location.href);
+    if (url.origin !== location.origin || !/^https?:$/.test(url.protocol)) return;
+    try {
+      sessionStorage.setItem(cursorKey, JSON.stringify({ page: pageKey(url.href), cursor: pointer, at: Date.now() }));
+    } catch (_) { /* Storage is optional. */ }
+  }, true);
 
   function reset() {
     clearTimeout(navigationTimer);
