@@ -342,7 +342,12 @@
 
     viewport.addEventListener('wheel', function (e) {
       e.preventDefault();
-      var factor = Math.exp(-e.deltaY * 0.0015);
+      // Пинч на трекпаде (ctrlKey) присылает мелкие deltaY — ему нужен
+      // больший множитель, чем колесу мыши; колесо в строках/страницах
+      // приводим к пикселям.
+      var dy = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaMode === 2 ? e.deltaY * 400 : e.deltaY;
+      dy = Math.max(-120, Math.min(120, dy));
+      var factor = Math.exp(-dy * (e.ctrlKey ? 0.012 : 0.005));
       zoomAt(scale * factor, e.clientX, e.clientY, false);
     }, { passive: false });
 
