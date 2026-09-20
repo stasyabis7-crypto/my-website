@@ -49,7 +49,7 @@
   z-index: 2100000000;
   --lightbox-bar-h: calc(var(--button-height, 64px) + 24px);
   background: var(--color-bg);
-  animation: case-lightbox-surface-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: case-lightbox-surface-in 0.25s ease both;
 }
 
 .case-lightbox[hidden] {
@@ -58,44 +58,22 @@
 
 .case-lightbox.is-closing {
   pointer-events: none;
-  animation: case-lightbox-surface-out 0.55s 0.12s cubic-bezier(0.65, 0, 0.35, 1) both;
+  animation: case-lightbox-surface-out 0.2s ease both;
 }
 
-/* Вырастает/сжимается из рамки кликнутого превью — тот же приём и
-   тайминги (clip-path из --origin), что у диалога «Связаться»
-   (components/site-chrome/site-chrome.css). */
+/* Открытие и закрытие — простое проявление/затухание всего окна. */
 @keyframes case-lightbox-surface-in {
-  from { clip-path: var(--lightbox-origin, inset(0 round 0)); }
-  to { clip-path: inset(0 round 0); }
-}
-@keyframes case-lightbox-surface-out {
-  from { clip-path: inset(0 round 0); }
-  to { clip-path: var(--lightbox-origin, inset(0 round 0)); }
-}
-
-.case-lightbox__bar,
-.case-lightbox__nav {
-  animation: case-lightbox-item-in 0.4s 0.2s ease both;
-}
-.case-lightbox.is-closing .case-lightbox__bar,
-.case-lightbox.is-closing .case-lightbox__nav {
-  animation: case-lightbox-item-out 0.18s ease both;
-}
-@keyframes case-lightbox-item-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-@keyframes case-lightbox-item-out {
+@keyframes case-lightbox-surface-out {
+  from { opacity: 1; }
   to { opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .case-lightbox,
-  .case-lightbox.is-closing,
-  .case-lightbox__bar,
-  .case-lightbox__nav,
-  .case-lightbox.is-closing .case-lightbox__bar,
-  .case-lightbox.is-closing .case-lightbox__nav {
+  .case-lightbox.is-closing {
     animation: none;
   }
 }

@@ -460,23 +460,6 @@
       if (e.key === 'ArrowRight') { navigate(1); }
     }
 
-    // Открытие/закрытие «вырастает»/«сжимается» из кликнутого превью —
-    // тот же приём и тайминги (clip-path из --lightbox-origin), что у
-    // диалога «Связаться» (components/site-chrome/site-chrome.css).
-    function setOrigin(triggerEl) {
-      if (!triggerEl || !triggerEl.getBoundingClientRect) {
-        root.style.removeProperty('--lightbox-origin');
-        return;
-      }
-      var r = triggerEl.getBoundingClientRect();
-      var right = window.innerWidth - r.right;
-      var bottom = window.innerHeight - r.bottom;
-      root.style.setProperty(
-        '--lightbox-origin',
-        'inset(' + r.top + 'px ' + right + 'px ' + bottom + 'px ' + r.left + 'px round var(--wg-radius, 28px))'
-      );
-    }
-
     var closeTimer = 0;
     function closeAnimated(done) {
       if (root.hidden || root.classList.contains('is-closing')) { if (done) done(); return; }
@@ -491,12 +474,11 @@
         if (done) done();
       }
       root.addEventListener('animationend', finish);
-      closeTimer = window.setTimeout(finish, 750);
+      closeTimer = window.setTimeout(finish, 400);
     }
 
     function open(i, triggerEl) {
       lastFocused = triggerEl || document.activeElement;
-      setOrigin(triggerEl);
       inactive = Array.prototype.filter.call(document.body.children, function (el) { return el !== root; });
       inactive.forEach(function (el) { el.inert = true; });
       document.documentElement.classList.add('contact-scroll-lock');
