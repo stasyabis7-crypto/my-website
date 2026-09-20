@@ -9,14 +9,23 @@
 
 .case-lightbox-openable {
   cursor: pointer;
-  transition: transform 0.2s ease;
+  scale: 1;
+  /* Тот же мягкий scale, что у карточек на странице концептов
+     (.works-grid__item в styles/layout.css). */
+  --wg-hover-scale: 0.985;
+  transition: scale 0.35s var(--button-hover-ease, ease-out);
   -webkit-tap-highlight-color: transparent;
 }
 
 /* .is-hovered ставит case-lightbox.js: на самом краю плитки :hover дёргался —
    уменьшенная плитка выпускала курсор, возвращалась и снова уменьшалась. */
 .case-lightbox-openable.is-hovered {
-  transform: scale(0.97);
+  scale: var(--wg-hover-scale);
+}
+
+.case-lightbox-openable:active {
+  scale: var(--wg-hover-scale);
+  transition-duration: 0.2s;
 }
 
 .case-lightbox-openable:focus-visible {
