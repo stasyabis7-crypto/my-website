@@ -19,6 +19,55 @@
 @media (hover: hover) and (pointer: fine) {
   html.has-dot-cursor, html.has-dot-cursor * { cursor: none !important; }
 }
+.overlap-surface { position: relative; z-index: 1; }
 @media (prefers-reduced-motion: reduce) {
   .cursor-dot { transition: none; }
+}
+
+/* Shared overlap: sticky positioning stays on the browser's scroll
+   path. The fade is a single compositor transition, independent of scroll pace. */
+html.has-native-overlap body { overflow-x: clip; }
+.overlap-group { display: flex; flex-direction: column; min-width: 0; }
+.overlap-sticky {
+  position: sticky;
+  top: var(--overlap-pin-top, 0px);
+  z-index: 0;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 420ms ease, visibility 0s;
+}
+.overlap-sticky.is-faded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 420ms ease, visibility 0s 420ms;
+}
+.overlap-marker { position: absolute; top: 0; left: 0; width: 1px; height: 1px; pointer-events: none; }
+.overlap-group.is-motion-disabled > .overlap-sticky { position: relative; top: auto; transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .overlap-sticky, .overlap-sticky.is-faded { transition: none; }
+}
+
+/* Long collections retain their opacity. Only a viewport-sized cover fades,
+   avoiding a huge translucent layer of images in mobile embedded browsers. */
+.overlap-sticky.overlap-sticky--screen-fade {
+  opacity: 1;
+  visibility: visible;
+  transition: none;
+}
+.overlap-sticky--screen-fade::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  inset: auto 0 0;
+  height: var(--overlap-screen-height);
+  max-height: 100%;
+  background: var(--color-bg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+.overlap-sticky--screen-fade.is-faded::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .overlap-sticky--screen-fade::after { transition: none; }
 }

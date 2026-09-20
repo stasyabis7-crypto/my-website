@@ -983,3 +983,15 @@
 .case-next__list > li + li {
   margin-top: 16px;
 }
+
+/* Страницы проектов: секции идут в обычном потоке, без наезда одной на
+   другую (закрепление и затухание из page-motion на Главной не трогаем). */
+.case__blocks .overlap-group > .overlap-sticky,
+.case__blocks .overlap-group > .overlap-sticky.is-faded {
+  position: relative;
+  top: auto;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: none;
+}
