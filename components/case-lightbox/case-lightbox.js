@@ -125,28 +125,47 @@
     var dragActive = false, dragMoved = false;
     var lastTapTime = 0, lastTapX = 0, lastTapY = 0;
 
-    // Наведение мышью: плитка уменьшается, но «навели» считается по её
-    // исходным границам, запомненным до уменьшения — иначе на самом краю
-    // курсор оказывается вне уменьшенной плитки и она дёргается.
+    // Наведение мышью: плитка уменьшается сразу под курсором, в том числе
+    // во время скролла — браузер в это время не шлёт pointerenter/hover, поэтому
+    // положение курсора запоминается и проверяется заново на каждый scroll и
+    // pointermove. У уже уменьшенной плитки границы берутся без сжатия,
+    // иначе на самом краю она дёргалась бы (курсор выпадал, плитка росла,
+    // курсор снова попадал).
     var mouseQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
-    function bindHover(target) {
-      target.addEventListener('pointerenter', function (e) {
-        if (e.pointerType !== 'mouse' || !mouseQuery.matches || target.classList.contains('is-hovered')) return;
-        var r = target.getBoundingClientRect();
-        function off() {
-          target.classList.remove('is-hovered');
-          document.removeEventListener('pointermove', move);
-          document.removeEventListener('scroll', off, true);
-          document.documentElement.removeEventListener('mouseleave', off);
+    var hoverTargets = [];
+    var mouseX = -1, mouseY = -1, hasMouse = false, hoverRaf = 0;
+    var HOVER_SCALE = 0.985;
+    function updateHover() {
+      hoverRaf = 0;
+      hoverTargets.forEach(function (t) {
+        var inside = false;
+        if (hasMouse) {
+          var r = t.getBoundingClientRect();
+          var pad = t.classList.contains('is-hovered')
+            ? (r.width / HOVER_SCALE - r.width) / 2 : 0;
+          var padY = t.classList.contains('is-hovered')
+            ? (r.height / HOVER_SCALE - r.height) / 2 : 0;
+          inside = mouseX >= r.left - pad && mouseX <= r.right + pad &&
+                   mouseY >= r.top - padY && mouseY <= r.bottom + padY;
         }
-        function move(ev) {
-          if (ev.clientX < r.left || ev.clientX > r.right || ev.clientY < r.top || ev.clientY > r.bottom) off();
-        }
-        target.classList.add('is-hovered');
-        document.addEventListener('pointermove', move);
-        document.addEventListener('scroll', off, true);
-        document.documentElement.addEventListener('mouseleave', off);
+        t.classList.toggle('is-hovered', inside);
       });
+    }
+    function queueHover() {
+      if (!hoverRaf) hoverRaf = requestAnimationFrame(updateHover);
+    }
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse' || !mouseQuery.matches) return;
+      mouseX = e.clientX; mouseY = e.clientY; hasMouse = true;
+      queueHover();
+    }, { passive: true });
+    window.addEventListener('scroll', function () { if (hasMouse) queueHover(); }, { passive: true, capture: true });
+    document.documentElement.addEventListener('mouseleave', function () {
+      hasMouse = false;
+      queueHover();
+    });
+    function bindHover(target) {
+      hoverTargets.push(target);
     }
 
     // Наведение/фокус должны уменьшать всю плитку-контейнер с фото
