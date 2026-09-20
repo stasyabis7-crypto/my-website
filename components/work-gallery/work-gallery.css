@@ -89,7 +89,6 @@
 
 
 /* Fade the sticky hero only once this full-screen surface almost covers it. */
-.work-gallery > .overlap-marker { top: 75%; }
 
 .work-gallery__presentation {
   position: absolute;
