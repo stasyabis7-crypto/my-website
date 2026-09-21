@@ -5,11 +5,14 @@
 .work-gallery .work-gallery__tag,
 .project-card .project-card__tag {
   margin: 0;
-  padding: 4px 14px;
-  border: 1px solid currentColor;
-  border-radius: var(--radius-control, 10px);
-  background: var(--color-bg);
-  color: var(--color-text);
+  padding: 3px 8px;
+  border: 0;
+  border-radius: 6px;
+  font-size: calc(var(--font-size-text) * .8);
+  background: rgb(128 128 128 / .42);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  backdrop-filter: blur(10px) saturate(160%);
+  color: #fff;
   pointer-events: none;
 }
 .project-card .project-card__tag {

@@ -292,9 +292,7 @@ html[data-mood] ::selection {
   text-shadow: none;
 }
 html[data-mood] .site-header {
-  --color-text: var(--mood-ink);
-  --color-glass: var(--mood-chrome);
-  background: var(--mood-chrome);
+  /* Transparent glass: colours follow the page theme, not the mood plate. */
   transition: background-color .55s ease, top .25s ease, left .25s ease;
 }
 @media (prefers-reduced-motion: reduce) {

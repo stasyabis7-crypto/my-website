@@ -124,7 +124,7 @@
      размер/трекинг, что у обычного текста, только полужирный), один и
      тот же на любой кнопке сайта, большой или маленькой. */
   font-family: var(--font-family-body, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: var(--font-size-text);
+  font-size: calc(var(--font-size-text) * .85);
   font-weight: var(--font-weight-semibold, 600);
   line-height: var(--line-height-default);
   letter-spacing: var(--letter-spacing-text, -0.03em);
@@ -227,6 +227,21 @@
   }
 }
 @media (prefers-reduced-motion: reduce) { .btn--fill-glass { transition-duration: .01ms; } }
+
+/* Translucent glass that follows the theme (header/chrome controls over any
+   background): tinted with the theme ink, inverts to solid ink on hover.
+   Usage: .btn.btn--fill-glass-ui with an optional .btn--icon-* layout. */
+.btn--fill-glass-ui {
+  background: color-mix(in srgb, var(--color-text) 12%, transparent);
+  color: var(--color-text);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  backdrop-filter: blur(10px) saturate(160%);
+}
+.btn--fill-glass-ui::after { background: var(--color-text); }
+.btn--fill-glass-ui:hover, .btn--fill-glass-ui:focus-visible { color: var(--color-bg); }
+@media (hover: none), (pointer: coarse) {
+  .btn.btn--fill-glass-ui { background: color-mix(in srgb, var(--color-text) 12%, transparent); color: var(--color-text); }
+}
 
 /* Loading keeps the DS fill and gently pulses the whole button. */
 .is-page-loading .site-header__cta {
