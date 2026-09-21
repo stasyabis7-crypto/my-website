@@ -32,6 +32,32 @@ const assets = [
   'pages/home/data/sections.js',
   'components/work-gallery/work-gallery.css',
   'components/work-gallery/work-gallery.js',
+  // Everything else the pages link: the CDN caches a ?v= URL forever, so a
+  // visit during a partial FTP upload would pin an old file under a new URL.
+  'styles/scale.css',
+  'styles/spacing.css',
+  'styles/theme.css',
+  'styles/button-hover.css',
+  'components/icons/icons.css',
+  'components/site-header/header.css',
+  'components/site-footer/footer.css',
+  'components/content-reveal/content-reveal.css',
+  'components/content-reveal/content-reveal.js',
+  'components/page-motion/page-motion.css',
+  'components/page-loader/page-loader.css',
+  'components/page-loader/page-loader.js',
+  'components/case-blocks/case-blocks.css',
+  'components/case-blocks/case-blocks.js',
+  'components/case-cards/case-cards.css',
+  'components/case-cards/case-cards.js',
+  'components/case-lightbox/case-lightbox.css',
+  'components/case-lightbox/case-lightbox.js',
+  'components/case-toc/case-toc.css',
+  'components/project-cards/project-cards.js',
+  'projects/activities/page.css',
+  'site/analytics-config.js',
+  'site/analytics.js',
+  'site/haptics.js',
 ];
 const names = new Map();
 function rewrite(source) {
