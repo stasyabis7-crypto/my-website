@@ -37,7 +37,7 @@
 <link rel="stylesheet" href="../../../styles/fonts.css?v=3" />
 <link rel="stylesheet" href="../../../components/content-reveal/content-reveal.css?v=1" />
 <link rel="stylesheet" href="../../../components/page-motion/page-motion.css?v=8" />
-<link rel="stylesheet" href="../../../components/case-blocks/case-blocks.css?v=64" />
+<link rel="stylesheet" href="../../../components/case-blocks/case-blocks.css?v=65" />
 <link rel="stylesheet" href="../../../components/case-cards/case-cards.css?v=9" />
 <link rel="stylesheet" href="../../../components/case-lightbox/case-lightbox.css?v=12" />
 <link rel="stylesheet" href="../../../components/hero-mood/mood-companion.css?v=speech-tail-4" />
@@ -72,10 +72,6 @@ body {
 @media (max-width: 999px) {
   .case { padding-bottom: calc(var(--footer-h, 64px) + 96px); }
 }
-
-/* The visible hero surface and the first metrics are exactly 16px apart. */
-.project-hero { padding-bottom: 0; }
-.case-summary .case-cover__metrics { margin-top: 0; }
 
 .case__blocks {
   display: flex;
@@ -156,29 +152,41 @@ body {
   </aside>
 
   <main>
-    <section class="mood-hero project-hero" id="hero" aria-labelledby="mood-heading">
-      <div class="mood-stage">
-        <div class="mood-wave" aria-hidden="true"></div>
-        <div class="mood-content">
-          <h1 class="mood-title text-h1" id="mood-heading">Карта переработки вещей</h1>
-          <p class="mood-subtitle text-body">Поиск, выбор и сохранение пунктов приёма вещей в избранное</p>
-          <div class="mood-actions">
-            <a href="https://www.avito.ru/avito-care/recyclemap" class="mood-primary btn btn--fill-pink btn--icon-right" target="_blank" rel="noopener noreferrer">
-              <span>Смотреть на проде</span>
-              <span class="icon icon--arrow-diagonal" aria-hidden="true"></span>
-            </a>
-          </div>
-        </div>
-        <div class="mood-exhibit project-hero__art">
-          <img class="project-hero__image" src="/projects/avito-charity/recycle-map/assets/hero.webp" width="1872" height="2538" alt="Карта пунктов приёма на телефоне, пины с адресами и режимом работы, снизу открыта шторка «Виды переработки»" fetchpriority="high" />
-        </div>
-      </div>
+    <section class="case-hero" id="hero" aria-label="Обложка проекта">
+      <img class="case-hero__image" src="/projects/avito-charity/recycle-map/assets/hero-mockup.webp" width="1840" height="1380" alt="Монитор с картой пунктов приёма Avito на поляне с сиреневыми цветами" fetchpriority="high" />
     </section>
     <div class="case">
 
     <div class="case__blocks">
 
-      <section class="case-block case-summary" id="summary" tabindex="-1" aria-label="Саммари проекта">
+      <section class="case-block case-cover" id="summary" tabindex="-1" aria-label="Саммари проекта">
+        <ul class="case-tags">
+          <li class="case-tag case-tag--logo">
+            <span class="text-body">Avito</span>
+          </li>
+          <li class="case-tag">Web</li>
+          <li class="case-tag">Mobile</li>
+          <li class="case-tag">2025</li>
+        </ul>
+
+        <div class="case-cover__head">
+          <div class="case-cover__head-text">
+            <h1 class="case-cover__title text-h1">Карта переработки вещей</h1>
+            <p class="case-cover__subtitle case-subtitle text-body-lg" data-subtitle>Поиск, выбор и сохранение пунктов приёма вещей в избранное</p>
+          </div>
+          <a class="btn btn--fill-pink btn--icon-right case-cover__cta" href="https://www.avito.ru/avito-care/recyclemap" target="_blank" rel="noopener noreferrer">
+            <span>Смотреть на проде</span>
+            <span class="icon icon--arrow-diagonal" aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div class="case-cover__media">
+          <picture>
+            <source media="(max-width: 640px)" srcset="media/cover-mobile.webp" />
+            <img src="media/cover-desktop.webp" alt="Карта пунктов приёма: список категорий слева, пины с адресами и режимом работы на карте" width="2560" height="1600" />
+          </picture>
+        </div>
+
         <div class="case-cover__metrics-scroll">
           <div class="case-cover__metrics">
             <div class="case-metric case-metric--theme">

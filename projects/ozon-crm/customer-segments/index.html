@@ -37,7 +37,7 @@
 <link rel="stylesheet" href="../../../styles/fonts.css?v=3" />
 <link rel="stylesheet" href="../../../components/content-reveal/content-reveal.css?v=1" />
 <link rel="stylesheet" href="../../../components/page-motion/page-motion.css?v=8" />
-<link rel="stylesheet" href="../../../components/case-blocks/case-blocks.css?v=64" />
+<link rel="stylesheet" href="../../../components/case-blocks/case-blocks.css?v=65" />
 <link rel="stylesheet" href="../../../components/case-cards/case-cards.css?v=9" />
 <link rel="stylesheet" href="../../../components/case-lightbox/case-lightbox.css?v=12" />
 <link rel="stylesheet" href="../../../components/hero-mood/mood-companion.css?v=speech-tail-4" />
@@ -72,10 +72,6 @@ body {
 @media (max-width: 999px) {
   .case { padding-bottom: calc(var(--footer-h, 64px) + 96px); }
 }
-
-/* The visible hero surface and the first metrics are exactly 16px apart. */
-.project-hero { padding-bottom: 0; }
-.case-summary .case-cover__metrics { margin-top: 0; }
 
 .case__blocks {
   display: flex;
@@ -157,29 +153,32 @@ body {
   </aside>
 
   <main>
-    <section class="mood-hero project-hero project-hero--landscape" id="hero" aria-labelledby="mood-heading">
-      <div class="mood-stage">
-        <div class="mood-wave" aria-hidden="true"></div>
-        <div class="mood-content">
-          <h1 class="mood-title text-h1" id="mood-heading">Сегменты покупателей</h1>
-          <p class="mood-subtitle text-body" data-subtitle>Аналитика покупателей и рекомендации для рассылок и рекламы в Ozon Seller</p>
-          <div class="mood-actions">
-            <a href="#summary" class="mood-primary btn btn--fill-pink btn--icon-right">
-              <span>Смотреть проект</span>
-              <span class="icon icon--down" aria-hidden="true"></span>
-            </a>
-          </div>
-        </div>
-        <div class="mood-exhibit project-hero__art">
-          <img class="project-hero__image" src="/projects/ozon-crm/customer-segments/assets/hero.webp" width="1264" height="779" alt="Ноутбук с разделом «Сегменты покупателей» в кабинете Ozon Seller: сводная таблица с постоянными, новыми и потенциальными покупателями" fetchpriority="high" />
-        </div>
-      </div>
+    <section class="case-hero" id="hero" aria-label="Обложка проекта">
+      <img class="case-hero__image" src="/projects/ozon-crm/customer-segments/assets/hero-mockup.webp" width="1820" height="1380" alt="Ноутбук на белом столе с разделом «Сегменты покупателей» кабинета Ozon Seller: карточки постоянных покупателей" fetchpriority="high" />
     </section>
     <div class="case">
 
     <div class="case__blocks">
 
-      <section class="case-block case-summary" id="summary" tabindex="-1" aria-label="Саммари проекта">
+      <section class="case-block case-cover" id="summary" tabindex="-1" aria-label="Саммари проекта">
+        <ul class="case-tags">
+          <li class="case-tag case-tag--logo">
+            <span class="text-body">Ozon</span>
+          </li>
+          <li class="case-tag">Web</li>
+        </ul>
+
+        <div class="case-cover__head">
+          <div class="case-cover__head-text">
+            <h1 class="case-cover__title text-h1">Сегменты покупателей</h1>
+            <p class="case-cover__subtitle case-subtitle text-body-lg" data-subtitle>Аналитика покупателей и рекомендации для рассылок и рекламы в Ozon Seller</p>
+          </div>
+        </div>
+
+        <div class="case-cover__media">
+          <img src="media/summary/table.webp" width="3840" height="2322" alt="Сводная таблица: постоянные, новые и потенциальные покупатели с количеством, суммой покупок, средним чеком и динамикой" />
+        </div>
+
         <div class="case-cover__metrics-scroll">
           <div class="case-cover__metrics">
             <div class="case-metric case-metric--theme">

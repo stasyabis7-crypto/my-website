@@ -995,3 +995,21 @@
   pointer-events: auto;
   transition: none;
 }
+
+/* ─── .case-hero — баннер кейса: только картинка ────────────────────────
+   Картинка растягивается на всю ширину баннера с тем же внешним отступом
+   и скруглением, что у поверхности героя (--hero-edge), высота — по
+   пропорциям файла. Ниже идёт обычный .case с .case-cover: теги,
+   заголовок, подзаголовок, интерфейс и метрики. */
+.case-hero {
+  margin: var(--hero-edge, 10px);
+  border-radius: clamp(28px, 3vw, 44px);
+  overflow: hidden;
+  background: var(--mood-bg);
+}
+.case-hero__image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.case-hero + .case .case-cover { padding-top: 32px; }
