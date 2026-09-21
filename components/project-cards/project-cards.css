@@ -18,7 +18,7 @@
 .project-detail__cover { display: block; width: 100%; height: auto; border-radius: var(--wg-radius); }
 .project-detail__pending { margin-top: 28px; }
 @media (max-width: 700px) {
-  .project-grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .project-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .collection { padding-top: calc(var(--header-h, 64px) + 56px); }
   .collection__heading { margin-bottom: 16px; }
 }
