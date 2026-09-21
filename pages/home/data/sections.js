@@ -1,5 +1,7 @@
 /* Главная: семь разделов портфолио.
-   href задаётся для групп с опубликованными кейсами, концептами или постами. */
+   href задаётся для групп с опубликованными кейсами, концептами или постами.
+   count — число проектов (материалов) внутри кликабельной группы; сверяется
+   с её страницей скриптом scripts/check-section-counts.js. */
 window.portfolioGroups = [
   {
     "id": "avito-charity",
@@ -10,7 +12,9 @@ window.portfolioGroups = [
     "image": "/projects/avito-charity/assets/section-cover.webp",
     "srcset": "",
     "format": "desktop",
-    "href": "/projects/avito-charity/"
+    "href": "/projects/avito-charity/",
+    "count": 6,
+    "countUnit": "project"
   },
   {
     "id": "ozon-crm",
@@ -21,7 +25,9 @@ window.portfolioGroups = [
     "image": "/projects/ozon-crm/assets/section-cover.webp",
     "srcset": "",
     "format": "desktop",
-    "href": "/projects/ozon-crm/"
+    "href": "/projects/ozon-crm/",
+    "count": 6,
+    "countUnit": "project"
   },
   {
     "id": "ozon-prices",
@@ -65,7 +71,9 @@ window.portfolioGroups = [
     "image": "/projects/concepts/assets/section-cover.webp",
     "srcset": "",
     "format": "desktop",
-    "href": "/projects/concepts/"
+    "href": "/projects/concepts/",
+    "count": 12,
+    "countUnit": "project"
   },
   {
     "id": "activities",
@@ -76,6 +84,8 @@ window.portfolioGroups = [
     "image": "/projects/activities/assets/section-cover.webp",
     "srcset": "",
     "format": "desktop",
-    "href": "/projects/activities/"
+    "href": "/projects/activities/",
+    "count": 20,
+    "countUnit": "material"
   }
 ];

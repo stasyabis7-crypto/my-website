@@ -5,7 +5,7 @@
   "scripts": {
     "auto-commit": "node scripts/auto-commit.js",
     "check": "npm run check:components && npm run check:ds && npm run check:links && npm run check:images && npm run check:typography",
-    "check:components": "node scripts/hero-mood-component.js && node scripts/hero-mood-component.test.js && node scripts/check-page-heroes.js && node scripts/work-gallery-component.js && node scripts/check-gallery-gestures.js",
+    "check:components": "node scripts/hero-mood-component.js && node scripts/hero-mood-component.test.js && node scripts/check-page-heroes.js && node scripts/work-gallery-component.js && node scripts/check-gallery-gestures.js && node scripts/check-section-counts.js",
     "check:ds": "node scripts/check-design-system.js && node scripts/check-design-system.test.js",
     "check:links": "node scripts/check-local-links.js",
     "dev": "node scripts/dev.js",

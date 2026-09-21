@@ -127,3 +127,4 @@
 
 /* Size the actual artwork, so the corner action never sits on letterboxing. */
 .work-gallery__media { height: var(--cover-height, calc(var(--work-width) / var(--cover-ratio, 1.3333))); flex: none; }
+.work-gallery__tags--end { left: auto; right: 16px; justify-content: flex-end; }

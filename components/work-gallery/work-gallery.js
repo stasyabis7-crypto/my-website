@@ -13,6 +13,17 @@
   let slides = [], offsets = [], physical = 0, settleTimer;
   let drag = null, touch = null, suppressClick = false, pendingTarget = null;
   const navigationQueue = [];
+  // Home covers show how many projects a clickable section holds; on a section
+  // page (no counts in the data) each cover shows its position: «Проект 2 из 6».
+  const plural = (n, forms) => forms[n % 100 > 10 && n % 100 < 15 ? 2 : [2, 0, 1, 1, 1, 2, 2, 2, 2, 2][n % 10]];
+  const counterText = (p, position) => {
+    if (all.some(item => item.count)) {
+      if (!p.href || !p.count) return '';
+      const forms = p.countUnit === 'material' ? ['материал', 'материала', 'материалов'] : ['проект', 'проекта', 'проектов'];
+      return `${p.count} ${plural(p.count, forms)}`;
+    }
+    return `Проект ${position + 1} из ${projects.length}`;
+  };
   const modulo = value => (value % projects.length + projects.length) % projects.length;
   function nearest() {
     return offsets.reduce((best, offset, i) => Math.abs(offset - viewport.scrollLeft) < Math.abs(offsets[best] - viewport.scrollLeft) ? i : best, 0);
@@ -133,6 +144,7 @@
       <div class="work-gallery__presentation">
         <div class="work-gallery__media">
           <img class="work-gallery__image" src="${escape(p.image)}" alt="${escape(p.alt ?? p.title)}" loading="${Math.abs(i - projects.length) <= 1 ? 'eager' : 'lazy'}" decoding="async" draggable="false">
+          ${counterText(p, i % projects.length) ? `<div class="work-gallery__tags work-gallery__tags--end"><p class="work-gallery__tag text-body">${escape(counterText(p, i % projects.length))}</p></div>` : ''}
           ${p.tag || !p.href ? `<div class="work-gallery__tags">
             ${p.tag ? `<p class="work-gallery__tag text-body">${escape(p.tag)}</p>` : ''}
             ${!p.href ? '<p class="work-gallery__tag text-body">В работе</p>' : ''}
