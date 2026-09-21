@@ -1015,8 +1015,13 @@
   height: 100%;
   object-fit: cover;
 }
+/* Телефон: баннер — половина экрана, иначе 4:3 в вертикальном кадре
+   обрезается почти до трети ширины. */
 @media (max-width: 640px) {
-  .case-hero { border-radius: 20px; }
+  .case-hero {
+    border-radius: 20px;
+    height: calc((var(--hero-vh, 100svh) - 2 * var(--hero-edge, 10px)) / 2);
+  }
 }
 
 .case-hero + .case .case-cover { padding-top: 32px; }
