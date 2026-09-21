@@ -38,11 +38,13 @@
 <link rel="stylesheet" href="/components/content-reveal/content-reveal.css?v=1" />
 <link rel="stylesheet" href="/components/page-motion/page-motion.css?v=8" />
 <link rel="stylesheet" href="/components/hero-mood/mood-companion.css?v=speech-tail-4" />
-
-
- <link rel="stylesheet" href="/components/project-cards/project-cards.css?v=1" />
-<link rel="stylesheet" href="/components/page-hero/page-hero.css?v=3" />
-<script src="/components/page-hero/page-hero.js?v=1" defer></script>
+<link rel="stylesheet" href="/components/work-gallery/work-gallery.css?v=status-tags-3" />
+<style>
+  /* Галерея занимает ровно экран (height: 100dvh), как на Главной, — нужен тот же box-sizing. */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; overflow-x: hidden; }
+  :root { --page-px: 10px; }
+</style>
 </head>
 <body class="collection-page">
   <!-- Shared full-screen mood ribbons; decorative and hidden without JS. -->
@@ -78,101 +80,18 @@
   </div>
 
 <main>
-  <section class="mood-hero project-hero project-hero--landscape" id="hero" aria-labelledby="mood-heading">
-    <div class="mood-stage">
-      <div class="mood-wave" aria-hidden="true"></div>
-      <div class="mood-content">
-        <h1 class="mood-title text-h1" id="mood-heading">CRM для продавцов</h1>
-        <p class="mood-subtitle text-body" data-subtitle>Создание рассылок и баннеров на покупателей, портрет покупателя, главная в ЛК, сегменты покупателей</p>
-        <div class="mood-actions">
-          <a href="#works-gallery" class="mood-primary btn btn--fill-pink btn--icon-right">
-            <span>Смотреть работы</span>
-            <span class="icon icon--down" aria-hidden="true"></span>
-          </a>
-        </div>
+    <!-- Страница раздела — та же галерея, что на Главной (components/work-gallery), но с проектами
+         раздела: без баннера. Скрипт галереи ищет .mood-hero, поэтому оставлен скрытый
+         блок-заглушка (div, не section — это не баннер страницы). -->
+    <div class="mood-hero" id="hero" hidden></div>
+    <section class="work-gallery" id="works-gallery" aria-label="Проекты CRM для продавцов" aria-roledescription="карусель">
+      <div class="work-gallery__viewport" tabindex="0" aria-label="Проекты CRM для продавцов. Влево и вправо — листать, Escape — к началу">
+        <div class="work-gallery__track"></div>
       </div>
-      <div class="mood-exhibit project-hero__art">
-        <img class="project-hero__image" src="/projects/ozon-crm/assets/hero-cover.webp" width="1264" height="741" alt="Ноутбук с формой создания рассылки или баннера в кабинете Ozon Seller" fetchpriority="high" />
-      </div>
-    </div>
-  </section>
-  <section class="collection project-hero__works" aria-label="Проекты CRM для продавцов">
-  <div class="project-grid" id="works-gallery">
-    <article class="project-card project-card--linked" data-action-hover>
-      <div class="project-card__visual">
-        <div class="project-card__cover">
-          <img src="/projects/ozon-crm/customer-segments/covers/project-crm-1.webp" alt="Ноутбук с разделом сегментов покупателей Ozon Seller на светлом фоне" width="1380" height="1380" loading="lazy" decoding="async" />
-        </div>
-        <a class="project-card__action btn btn--fill-pink btn--icon-only btn--hit-area btn--icon-diagonal-motion" href="/projects/ozon-crm/customer-segments" aria-label="Открыть: Сегменты покупателей"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>
-      </div>
-      <div class="project-card__caption">
-        <h2 class="text-h2">Сегменты покупателей</h2>
-        <p class="text-body" data-subtitle>Как понять, на какую именно аудиторию делать упор</p>
-      </div>
-    </article>
-    <article class="project-card">
-      <div class="project-card__visual">
-        <div class="project-card__cover">
-          <img src="/projects/ozon-crm/customers/covers/project-crm-2.webp" alt="Ноутбук с таблицей покупателей Ozon Seller на синем диване" width="1380" height="1380" loading="lazy" decoding="async" />
-        </div>
-        
-      </div>
-      <div class="project-card__caption">
-        <h2 class="text-h2">Список покупателей</h2>
-        <p class="text-body" data-subtitle>Рассылки на конкретных покупателей по интересам</p>
-      </div>
-    </article>
-    <article class="project-card">
-      <div class="project-card__visual">
-        <div class="project-card__cover">
-          <img src="/projects/ozon-crm/customer-portrait/covers/project-crm-3.webp" alt="Монитор с графиками портрета покупателя Ozon Seller на синем фоне" width="1380" height="1380" loading="lazy" decoding="async" />
-        </div>
-        
-      </div>
-      <div class="project-card__caption">
-        <h2 class="text-h2">Портрет покупателя</h2>
-        <p class="text-body" data-subtitle>Узнать свою ЦА поближе</p>
-      </div>
-    </article>
-    <article class="project-card">
-      <div class="project-card__visual">
-        <div class="project-card__cover">
-          <img src="/projects/ozon-crm/campaigns/covers/project-crm-4.webp" alt="Планшет в руках со списком рассылок Ozon Seller" width="1380" height="1380" loading="lazy" decoding="async" />
-        </div>
-        
-      </div>
-      <div class="project-card__caption">
-        <h2 class="text-h2">Страница рассылок</h2>
-        <p class="text-body" data-subtitle>Мониторинг коммуникаций на покупателей</p>
-      </div>
-    </article>
-    <article class="project-card">
-      <div class="project-card__visual">
-        <div class="project-card__cover">
-          <img src="/projects/ozon-crm/campaign-creation/covers/project-crm-5.webp" alt="Монитор с формой создания рассылки или баннера Ozon Seller" width="1380" height="1380" loading="lazy" decoding="async" />
-        </div>
-        
-      </div>
-      <div class="project-card__caption">
-        <h2 class="text-h2">Создание рассылки или баннера</h2>
-        <p class="text-body" data-subtitle>Пошаговый флоу с точными настройками</p>
-      </div>
-    </article>
-    <article class="project-card">
-      <div class="project-card__visual">
-        <div class="project-card__cover">
-          <img src="/projects/ozon-crm/seller-home/covers/project-crm-6.webp" alt="Планшет с главной страницей кабинета продавца Ozon Seller" width="1380" height="1380" loading="lazy" decoding="async" />
-        </div>
-        
-      </div>
-      <div class="project-card__caption">
-        <h2 class="text-h2">Главная в ЛК селлера</h2>
-        <p class="text-body" data-subtitle>Точки входа в CRM и короткие советы по активной ЦА</p>
-      </div>
-    </article>
-  </div>
-  </section>
-</main>
+      <p class="work-gallery__status" role="status" aria-live="polite" aria-atomic="true"></p>
+      <noscript><nav aria-label="Проекты CRM для продавцов"><p><a href="/projects/ozon-crm/customer-segments">Сегменты покупателей</a></p></nav></noscript>
+    </section>
+  </main>
   <footer class="site-footer">
     <nav class="site-footer__nav-wrap">
       <ul class="site-footer__nav">
@@ -248,6 +167,62 @@
   <script src="/site/haptics.js?v=1"></script>
   <script src="/components/content-reveal/content-reveal.js?v=1"></script>
   <script src="/components/page-motion/page-motion.js?v=10"></script>
-<script src="/components/project-cards/project-cards.js?v=2"></script>
+<script>window.portfolioGroups = [
+  {
+    "id": "ozon-crm-1",
+    "title": "Сегменты покупателей",
+    "alt": "Ноутбук с разделом сегментов покупателей Ozon Seller на светлом фоне",
+    "description": "Как понять, на какую именно аудиторию делать упор",
+    "image": "/projects/ozon-crm/customer-segments/covers/project-crm-1.webp",
+    "format": "square",
+    "href": "/projects/ozon-crm/customer-segments"
+  },
+  {
+    "id": "ozon-crm-2",
+    "title": "Список покупателей",
+    "alt": "Ноутбук с таблицей покупателей Ozon Seller на синем диване",
+    "description": "Рассылки на конкретных покупателей по интересам",
+    "image": "/projects/ozon-crm/customers/covers/project-crm-2.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "ozon-crm-3",
+    "title": "Портрет покупателя",
+    "alt": "Монитор с графиками портрета покупателя Ozon Seller на синем фоне",
+    "description": "Узнать свою ЦА поближе",
+    "image": "/projects/ozon-crm/customer-portrait/covers/project-crm-3.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "ozon-crm-4",
+    "title": "Страница рассылок",
+    "alt": "Планшет в руках со списком рассылок Ozon Seller",
+    "description": "Мониторинг коммуникаций на покупателей",
+    "image": "/projects/ozon-crm/campaigns/covers/project-crm-4.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "ozon-crm-5",
+    "title": "Создание рассылки или баннера",
+    "alt": "Монитор с формой создания рассылки или баннера Ozon Seller",
+    "description": "Пошаговый флоу с точными настройками",
+    "image": "/projects/ozon-crm/campaign-creation/covers/project-crm-5.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "ozon-crm-6",
+    "title": "Главная в ЛК селлера",
+    "alt": "Планшет с главной страницей кабинета продавца Ozon Seller",
+    "description": "Точки входа в CRM и короткие советы по активной ЦА",
+    "image": "/projects/ozon-crm/seller-home/covers/project-crm-6.webp",
+    "format": "square",
+    "href": null
+  }
+];</script>
+<script src="/components/work-gallery/work-gallery.js?v=status-tags-7"></script>
 </body>
 </html>

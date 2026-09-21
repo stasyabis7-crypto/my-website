@@ -38,11 +38,13 @@
 <link rel="stylesheet" href="/components/content-reveal/content-reveal.css?v=1" />
 <link rel="stylesheet" href="/components/page-motion/page-motion.css?v=8" />
 <link rel="stylesheet" href="/components/hero-mood/mood-companion.css?v=speech-tail-4" />
-
-
- <link rel="stylesheet" href="/components/project-cards/project-cards.css?v=1" />
-<link rel="stylesheet" href="/components/page-hero/page-hero.css?v=3" />
-<script src="/components/page-hero/page-hero.js?v=1" defer></script>
+<link rel="stylesheet" href="/components/work-gallery/work-gallery.css?v=status-tags-3" />
+<style>
+  /* Галерея занимает ровно экран (height: 100dvh), как на Главной, — нужен тот же box-sizing. */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; overflow-x: hidden; }
+  :root { --page-px: 10px; }
+</style>
 </head>
 <body class="collection-page">
   <!-- Shared full-screen mood ribbons; decorative and hidden without JS. -->
@@ -78,25 +80,18 @@
   </div>
 
 <main>
-    <section class="mood-hero project-hero" id="hero" aria-labelledby="mood-heading">
-      <div class="mood-stage">
-        <div class="mood-wave" aria-hidden="true"></div>
-        <div class="mood-content">
-          <h1 class="mood-title text-h1" id="mood-heading">Благо&shy;твори&shy;тельность</h1>
-          <p class="mood-subtitle text-body">Подписки, ESG механики, доступность</p>
-          <div class="mood-actions">
-            <a href="#works-gallery" class="mood-primary btn btn--fill-pink btn--icon-right">
-              <span>Смотреть работы</span>
-              <span class="icon icon--down" aria-hidden="true"></span>
-            </a>
-          </div>
-        </div>
-        <div class="mood-exhibit project-hero__art">
-          <img class="project-hero__image" src="/projects/avito-charity/assets/hero.webp" width="1701" height="2457" alt="Экран «#яПомогаю», вклад за три года, 608 кг CO₂, 23 помощи, ежемесячный платёж 100 ₽ фонду" fetchpriority="high" />
-        </div>
+    <!-- Страница раздела — та же галерея, что на Главной (components/work-gallery), но с проектами
+         раздела: без баннера. Скрипт галереи ищет .mood-hero, поэтому оставлен скрытый
+         блок-заглушка (div, не section — это не баннер страницы). -->
+    <div class="mood-hero" id="hero" hidden></div>
+    <section class="work-gallery" id="works-gallery" aria-label="Проекты благотворительности" aria-roledescription="карусель">
+      <div class="work-gallery__viewport" tabindex="0" aria-label="Проекты благотворительности. Влево и вправо — листать, Escape — к началу">
+        <div class="work-gallery__track"></div>
       </div>
+      <p class="work-gallery__status" role="status" aria-live="polite" aria-atomic="true"></p>
+      <noscript><nav aria-label="Проекты благотворительности"><p><a href="/projects/avito-charity/recycle-map">Карта переработки вещей</a></p></nav></noscript>
     </section>
-<section class="collection project-hero__works" aria-label="Проекты благотворительности"><div class="project-grid" id="works-gallery"><article class="project-card project-card--linked" data-action-hover><div class="project-card__visual"><div class="project-card__cover"><img src="/pages/home/assets/avito/1-1920.webp" alt="Ноутбук в руках на фоне неба, на экране карта пунктов приёма с пинами" loading="lazy" decoding="async" /></div><a class="project-card__action btn btn--fill-pink btn--icon-only btn--hit-area btn--icon-diagonal-motion" href="/projects/avito-charity/recycle-map" aria-label="Открыть: Карта переработки вещей"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a></div><div class="project-card__caption"><h2 class="text-h2">Карта переработки вещей</h2><p class="text-body">Поиск, выбор и сохранение пунктов приёма вещей в избранное</p></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><img src="/pages/home/assets/avito/2-1920.webp" alt="Телефон в руке, на экране раздел лендинга «У нас пять бизнес-направлений» с карточками товаров, авто, недвижимости и работы" loading="lazy" decoding="async" /></div></div><div class="project-card__caption"><h2 class="text-h2">Лендинг о компании</h2><p class="text-body">Как редизайн повлиял на посещаемость сайта без пиара</p></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><img src="/pages/home/assets/avito/6-1920.webp" alt="Телефон в руке на розовом фоне, экран выбора фонда и суммы пожертвования" loading="lazy" decoding="async" /></div></div><div class="project-card__caption"><h2 class="text-h2">Пожертвования и подписки</h2><p class="text-body">Единоразовая и ежемесячная помощь фондам</p></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><img src="/pages/home/assets/avito/5-1920.webp" alt="Телефон на фоне зелёной плитки, экран «#яПомогаю» со сводкой вклада и списком способов помочь" loading="lazy" decoding="async" /></div></div><div class="project-card__caption"><h2 class="text-h2">Разводящая в ЛК</h2><p class="text-body">Даём людям быстрый доступ к продуктам чарити</p></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><img src="/pages/home/assets/avito/7-1920.webp" alt="Телефон в руке на сиреневом фоне, экран с заданиями и начислением за добрые дела" loading="lazy" decoding="async" /></div></div><div class="project-card__caption"><h2 class="text-h2">Геймификация в ЛК</h2><p class="text-body">Баллы за хорошие дела</p></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><img src="/pages/home/assets/avito/cover-avito-rebranding.webp" alt="Ноутбук с лендингом «Делайте добро вместе с Авито» в новом визуальном стиле" loading="lazy" decoding="async" /></div></div><div class="project-card__caption"><h2 class="text-h2">Ребрендинг чарити</h2><p class="text-body">Обновление визуального языка благотворительности</p></div></article></div></section></main>  <footer class="site-footer">
+  </main>  <footer class="site-footer">
     <nav class="site-footer__nav-wrap">
       <ul class="site-footer__nav">
         <li><a href="/index.html" class="site-footer__link text-label is-current">
@@ -171,6 +166,62 @@
   <script src="/site/haptics.js?v=1"></script>
   <script src="/components/content-reveal/content-reveal.js?v=1"></script>
   <script src="/components/page-motion/page-motion.js?v=10"></script>
-<script src="/components/project-cards/project-cards.js?v=2"></script>
+<script>window.portfolioGroups = [
+  {
+    "id": "avito-charity-1",
+    "title": "Карта переработки вещей",
+    "alt": "Ноутбук в руках на фоне неба, на экране карта пунктов приёма с пинами",
+    "description": "Поиск, выбор и сохранение пунктов приёма вещей в избранное",
+    "image": "/pages/home/assets/avito/1-1920.webp",
+    "format": "square",
+    "href": "/projects/avito-charity/recycle-map"
+  },
+  {
+    "id": "avito-charity-2",
+    "title": "Лендинг о компании",
+    "alt": "Телефон в руке, на экране раздел лендинга «У нас пять бизнес-направлений» с карточками товаров, авто, недвижимости и работы",
+    "description": "Как редизайн повлиял на посещаемость сайта без пиара",
+    "image": "/pages/home/assets/avito/2-1920.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "avito-charity-3",
+    "title": "Пожертвования и подписки",
+    "alt": "Телефон в руке на розовом фоне, экран выбора фонда и суммы пожертвования",
+    "description": "Единоразовая и ежемесячная помощь фондам",
+    "image": "/pages/home/assets/avito/6-1920.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "avito-charity-4",
+    "title": "Разводящая в ЛК",
+    "alt": "Телефон на фоне зелёной плитки, экран «#яПомогаю» со сводкой вклада и списком способов помочь",
+    "description": "Даём людям быстрый доступ к продуктам чарити",
+    "image": "/pages/home/assets/avito/5-1920.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "avito-charity-5",
+    "title": "Геймификация в ЛК",
+    "alt": "Телефон в руке на сиреневом фоне, экран с заданиями и начислением за добрые дела",
+    "description": "Баллы за хорошие дела",
+    "image": "/pages/home/assets/avito/7-1920.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "avito-charity-6",
+    "title": "Ребрендинг чарити",
+    "alt": "Ноутбук с лендингом «Делайте добро вместе с Авито» в новом визуальном стиле",
+    "description": "Обновление визуального языка благотворительности",
+    "image": "/pages/home/assets/avito/cover-avito-rebranding.webp",
+    "format": "square",
+    "href": null
+  }
+];</script>
+<script src="/components/work-gallery/work-gallery.js?v=status-tags-7"></script>
 </body>
 </html>

@@ -38,9 +38,13 @@
 <link rel="stylesheet" href="/components/content-reveal/content-reveal.css?v=1" />
 <link rel="stylesheet" href="/components/page-motion/page-motion.css?v=8" />
 <link rel="stylesheet" href="/components/hero-mood/mood-companion.css?v=speech-tail-4" />
-
-
- <link rel="stylesheet" href="/components/project-cards/project-cards.css?v=1" />
+<link rel="stylesheet" href="/components/work-gallery/work-gallery.css?v=status-tags-3" />
+<style>
+  /* Галерея занимает ровно экран (height: 100dvh), как на Главной, — нужен тот же box-sizing. */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; overflow-x: hidden; }
+  :root { --page-px: 10px; }
+</style>
 </head>
 <body class="collection-page">
   <!-- Shared full-screen mood ribbons; decorative and hidden without JS. -->
@@ -75,7 +79,19 @@
     </button>
   </div>
 
-<main class="collection"><header class="collection__heading"><h1 class="text-h1">Внутренний ЛК для сотрудника</h1><p class="text-body">Модуль отпусков, карта офиса, праздники и настройки</p></header><div class="project-grid"><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><img src="/projects/swtec-angel/vacations/covers/cover.webp" alt="Раздел отпусков, список своих отпусков с датами и план отпусков команды в виде диаграммы" loading="lazy" decoding="async" /></div></div><div class="project-card__caption"><h2 class="text-h2">Модуль отпусков</h2><p class="text-body">Отпуска сотрудников</p></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><div class="project-card__placeholder" aria-hidden="true"></div></div></div><div class="project-card__caption"><h2 class="text-h2">Карта офиса</h2><p class="text-body">Навигация по офису</p></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><div class="project-card__placeholder" aria-hidden="true"></div></div></div><div class="project-card__caption"><h2 class="text-h2">3 раздел</h2></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><div class="project-card__placeholder" aria-hidden="true"></div></div></div><div class="project-card__caption"><h2 class="text-h2">4 раздел</h2></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><div class="project-card__placeholder" aria-hidden="true"></div></div></div><div class="project-card__caption"><h2 class="text-h2">5 раздел</h2></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><div class="project-card__placeholder" aria-hidden="true"></div></div></div><div class="project-card__caption"><h2 class="text-h2">6 раздел</h2></div></article></div></main>  <footer class="site-footer">
+<main>
+    <!-- Страница раздела — та же галерея, что на Главной (components/work-gallery), но с проектами
+         раздела: без баннера. Скрипт галереи ищет .mood-hero, поэтому оставлен скрытый
+         блок-заглушка (div, не section — это не баннер страницы). -->
+    <div class="mood-hero" id="hero" hidden></div>
+    <section class="work-gallery" id="works-gallery" aria-label="Проекты" aria-roledescription="карусель">
+      <div class="work-gallery__viewport" tabindex="0" aria-label="Проекты. Влево и вправо — листать, Escape — к началу">
+        <div class="work-gallery__track"></div>
+      </div>
+      <p class="work-gallery__status" role="status" aria-live="polite" aria-atomic="true"></p>
+      <noscript><nav aria-label="Проекты"></nav></noscript>
+    </section>
+  </main>  <footer class="site-footer">
     <nav class="site-footer__nav-wrap">
       <ul class="site-footer__nav">
         <li><a href="/index.html" class="site-footer__link text-label is-current">
@@ -150,6 +166,62 @@
   <script src="/site/haptics.js?v=1"></script>
   <script src="/components/content-reveal/content-reveal.js?v=1"></script>
   <script src="/components/page-motion/page-motion.js?v=10"></script>
-<script src="/components/project-cards/project-cards.js?v=2"></script>
+<script>window.portfolioGroups = [
+  {
+    "id": "swtec-angel-1",
+    "title": "Модуль отпусков",
+    "alt": "Раздел отпусков, список своих отпусков с датами и план отпусков команды в виде диаграммы",
+    "description": "Отпуска сотрудников",
+    "image": "/projects/swtec-angel/vacations/covers/cover.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "swtec-angel-2",
+    "title": "Карта офиса",
+    "alt": "Карта офиса",
+    "description": "Навигация по офису",
+    "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMzgwIiBoZWlnaHQ9IjEzODAiIHZpZXdCb3g9IjAgMCAxMzgwIDEzODAiPjxyZWN0IHdpZHRoPSIxMzgwIiBoZWlnaHQ9IjEzODAiIGZpbGw9IiMyNTI1MjUiLz48L3N2Zz4=",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "swtec-angel-3",
+    "title": "3 раздел",
+    "alt": "3 раздел",
+    "description": "",
+    "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMzgwIiBoZWlnaHQ9IjEzODAiIHZpZXdCb3g9IjAgMCAxMzgwIDEzODAiPjxyZWN0IHdpZHRoPSIxMzgwIiBoZWlnaHQ9IjEzODAiIGZpbGw9IiMyNTI1MjUiLz48L3N2Zz4=",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "swtec-angel-4",
+    "title": "4 раздел",
+    "alt": "4 раздел",
+    "description": "",
+    "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMzgwIiBoZWlnaHQ9IjEzODAiIHZpZXdCb3g9IjAgMCAxMzgwIDEzODAiPjxyZWN0IHdpZHRoPSIxMzgwIiBoZWlnaHQ9IjEzODAiIGZpbGw9IiMyNTI1MjUiLz48L3N2Zz4=",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "swtec-angel-5",
+    "title": "5 раздел",
+    "alt": "5 раздел",
+    "description": "",
+    "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMzgwIiBoZWlnaHQ9IjEzODAiIHZpZXdCb3g9IjAgMCAxMzgwIDEzODAiPjxyZWN0IHdpZHRoPSIxMzgwIiBoZWlnaHQ9IjEzODAiIGZpbGw9IiMyNTI1MjUiLz48L3N2Zz4=",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "swtec-angel-6",
+    "title": "6 раздел",
+    "alt": "6 раздел",
+    "description": "",
+    "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMzgwIiBoZWlnaHQ9IjEzODAiIHZpZXdCb3g9IjAgMCAxMzgwIDEzODAiPjxyZWN0IHdpZHRoPSIxMzgwIiBoZWlnaHQ9IjEzODAiIGZpbGw9IiMyNTI1MjUiLz48L3N2Zz4=",
+    "format": "square",
+    "href": null
+  }
+];</script>
+<script src="/components/work-gallery/work-gallery.js?v=status-tags-7"></script>
 </body>
 </html>

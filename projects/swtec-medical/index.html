@@ -38,9 +38,13 @@
 <link rel="stylesheet" href="/components/content-reveal/content-reveal.css?v=1" />
 <link rel="stylesheet" href="/components/page-motion/page-motion.css?v=8" />
 <link rel="stylesheet" href="/components/hero-mood/mood-companion.css?v=speech-tail-4" />
-
-
- <link rel="stylesheet" href="/components/project-cards/project-cards.css?v=1" />
+<link rel="stylesheet" href="/components/work-gallery/work-gallery.css?v=status-tags-3" />
+<style>
+  /* Галерея занимает ровно экран (height: 100dvh), как на Главной, — нужен тот же box-sizing. */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; overflow-x: hidden; }
+  :root { --page-px: 10px; }
+</style>
 </head>
 <body class="collection-page">
   <!-- Shared full-screen mood ribbons; decorative and hidden without JS. -->
@@ -75,7 +79,19 @@
     </button>
   </div>
 
-<main class="collection"><header class="collection__heading"><h1 class="text-h1">Медицинские проекты</h1><p class="text-body">Приложение, часы, дашборд для врачей</p></header><div class="project-grid"><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><img src="/projects/swtec-medical/patient-app/covers/cover.webp" alt="Экран приложения пациента с накопленными баллами и прогрессом до следующего уровня" loading="lazy" decoding="async" /></div></div><div class="project-card__caption"><h2 class="text-h2">Приложение для пациентов</h2><p class="text-body">Медицинское приложение</p></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><img src="/projects/swtec-medical/doctor-dashboard/covers/cover.webp" alt="Дашборд врача, список наблюдаемых пациентов с графиками показателей по дням" loading="lazy" decoding="async" /></div></div><div class="project-card__caption"><h2 class="text-h2">Дашборд для врачей</h2><p class="text-body">Данные пациентов</p></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><img src="/projects/swtec-medical/watches-patches/covers/cover.webp" alt="Смарт-часы, на циферблате пульс 100 ударов, 10 757 шагов, 2 345 ккал" loading="lazy" decoding="async" /></div></div><div class="project-card__caption"><h2 class="text-h2">Часы и патчи</h2><p class="text-body">Носимые устройства</p></div></article></div></main>  <footer class="site-footer">
+<main>
+    <!-- Страница раздела — та же галерея, что на Главной (components/work-gallery), но с проектами
+         раздела: без баннера. Скрипт галереи ищет .mood-hero, поэтому оставлен скрытый
+         блок-заглушка (div, не section — это не баннер страницы). -->
+    <div class="mood-hero" id="hero" hidden></div>
+    <section class="work-gallery" id="works-gallery" aria-label="Проекты" aria-roledescription="карусель">
+      <div class="work-gallery__viewport" tabindex="0" aria-label="Проекты. Влево и вправо — листать, Escape — к началу">
+        <div class="work-gallery__track"></div>
+      </div>
+      <p class="work-gallery__status" role="status" aria-live="polite" aria-atomic="true"></p>
+      <noscript><nav aria-label="Проекты"></nav></noscript>
+    </section>
+  </main>  <footer class="site-footer">
     <nav class="site-footer__nav-wrap">
       <ul class="site-footer__nav">
         <li><a href="/index.html" class="site-footer__link text-label is-current">
@@ -150,6 +166,35 @@
   <script src="/site/haptics.js?v=1"></script>
   <script src="/components/content-reveal/content-reveal.js?v=1"></script>
   <script src="/components/page-motion/page-motion.js?v=10"></script>
-<script src="/components/project-cards/project-cards.js?v=2"></script>
+<script>window.portfolioGroups = [
+  {
+    "id": "swtec-medical-1",
+    "title": "Приложение для пациентов",
+    "alt": "Экран приложения пациента с накопленными баллами и прогрессом до следующего уровня",
+    "description": "Медицинское приложение",
+    "image": "/projects/swtec-medical/patient-app/covers/cover.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "swtec-medical-2",
+    "title": "Дашборд для врачей",
+    "alt": "Дашборд врача, список наблюдаемых пациентов с графиками показателей по дням",
+    "description": "Данные пациентов",
+    "image": "/projects/swtec-medical/doctor-dashboard/covers/cover.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "swtec-medical-3",
+    "title": "Часы и патчи",
+    "alt": "Смарт-часы, на циферблате пульс 100 ударов, 10 757 шагов, 2 345 ккал",
+    "description": "Носимые устройства",
+    "image": "/projects/swtec-medical/watches-patches/covers/cover.webp",
+    "format": "square",
+    "href": null
+  }
+];</script>
+<script src="/components/work-gallery/work-gallery.js?v=status-tags-7"></script>
 </body>
 </html>

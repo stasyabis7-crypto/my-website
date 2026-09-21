@@ -38,9 +38,13 @@
 <link rel="stylesheet" href="/components/content-reveal/content-reveal.css?v=1" />
 <link rel="stylesheet" href="/components/page-motion/page-motion.css?v=8" />
 <link rel="stylesheet" href="/components/hero-mood/mood-companion.css?v=speech-tail-4" />
-
-
- <link rel="stylesheet" href="/components/project-cards/project-cards.css?v=1" />
+<link rel="stylesheet" href="/components/work-gallery/work-gallery.css?v=status-tags-3" />
+<style>
+  /* Галерея занимает ровно экран (height: 100dvh), как на Главной, — нужен тот же box-sizing. */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; overflow-x: hidden; }
+  :root { --page-px: 10px; }
+</style>
 </head>
 <body class="collection-page">
   <!-- Shared full-screen mood ribbons; decorative and hidden without JS. -->
@@ -75,7 +79,19 @@
     </button>
   </div>
 
-<main class="collection"><header class="collection__heading"><h1 class="text-h1">Цены в ЛК селлера</h1><p class="text-body">Редизайн таблицы цен, НДС, временная мин. цена, бустинг</p></header><div class="project-grid"><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><img src="/pages/home/assets/ozon/8-1920.webp" alt="Ноутбук на синем диване, на экране раздел «Цены» с таблицей товаров" loading="lazy" decoding="async" /></div></div><div class="project-card__caption"><h2 class="text-h2">Редизайн таблицы цен</h2><p class="text-body">Таблица и настройки цен</p></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><img src="/projects/ozon-prices/minimum-price/covers/cover.webp" alt="Экран о сроке действия минимальной цены и трёх способах её изменить" loading="lazy" decoding="async" /></div></div><div class="project-card__caption"><h2 class="text-h2">Временная мин. цена</h2><p class="text-body">Временное ограничение минимальной цены</p></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><img src="/pages/home/assets/ozon/2-1920.webp" alt="Телефон в руке на синем фоне, на экране таблица с ценами" loading="lazy" decoding="async" /></div></div><div class="project-card__caption"><h2 class="text-h2">Доработки НДС</h2><p class="text-body">Выбор и настройка НДС</p></div></article><article class="project-card"><div class="project-card__visual"><div class="project-card__cover"><img src="/projects/ozon-prices/promotion-boosting/covers/cover.webp" alt="Экран управления акциями, ползунок бустинга и поля цены со скидкой" loading="lazy" decoding="async" /></div></div><div class="project-card__caption"><h2 class="text-h2">Бустинг акций</h2><p class="text-body">Работа с акциями и ценами</p></div></article></div></main>  <footer class="site-footer">
+<main>
+    <!-- Страница раздела — та же галерея, что на Главной (components/work-gallery), но с проектами
+         раздела: без баннера. Скрипт галереи ищет .mood-hero, поэтому оставлен скрытый
+         блок-заглушка (div, не section — это не баннер страницы). -->
+    <div class="mood-hero" id="hero" hidden></div>
+    <section class="work-gallery" id="works-gallery" aria-label="Проекты" aria-roledescription="карусель">
+      <div class="work-gallery__viewport" tabindex="0" aria-label="Проекты. Влево и вправо — листать, Escape — к началу">
+        <div class="work-gallery__track"></div>
+      </div>
+      <p class="work-gallery__status" role="status" aria-live="polite" aria-atomic="true"></p>
+      <noscript><nav aria-label="Проекты"></nav></noscript>
+    </section>
+  </main>  <footer class="site-footer">
     <nav class="site-footer__nav-wrap">
       <ul class="site-footer__nav">
         <li><a href="/index.html" class="site-footer__link text-label is-current">
@@ -150,6 +166,44 @@
   <script src="/site/haptics.js?v=1"></script>
   <script src="/components/content-reveal/content-reveal.js?v=1"></script>
   <script src="/components/page-motion/page-motion.js?v=10"></script>
-<script src="/components/project-cards/project-cards.js?v=2"></script>
+<script>window.portfolioGroups = [
+  {
+    "id": "ozon-prices-1",
+    "title": "Редизайн таблицы цен",
+    "alt": "Ноутбук на синем диване, на экране раздел «Цены» с таблицей товаров",
+    "description": "Таблица и настройки цен",
+    "image": "/pages/home/assets/ozon/8-1920.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "ozon-prices-2",
+    "title": "Временная мин. цена",
+    "alt": "Экран о сроке действия минимальной цены и трёх способах её изменить",
+    "description": "Временное ограничение минимальной цены",
+    "image": "/projects/ozon-prices/minimum-price/covers/cover.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "ozon-prices-3",
+    "title": "Доработки НДС",
+    "alt": "Телефон в руке на синем фоне, на экране таблица с ценами",
+    "description": "Выбор и настройка НДС",
+    "image": "/pages/home/assets/ozon/2-1920.webp",
+    "format": "square",
+    "href": null
+  },
+  {
+    "id": "ozon-prices-4",
+    "title": "Бустинг акций",
+    "alt": "Экран управления акциями, ползунок бустинга и поля цены со скидкой",
+    "description": "Работа с акциями и ценами",
+    "image": "/projects/ozon-prices/promotion-boosting/covers/cover.webp",
+    "format": "square",
+    "href": null
+  }
+];</script>
+<script src="/components/work-gallery/work-gallery.js?v=status-tags-7"></script>
 </body>
 </html>
