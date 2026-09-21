@@ -1,4 +1,4 @@
-/* Decorative, time-based bouncing spheres. No scroll or navigation ownership. */
+/* Time-based bouncing spheres with native pointer/keyboard actions. */
 (() => {
   'use strict';
   const hero = document.querySelector('.mood-hero--spheres');
@@ -47,6 +47,34 @@
   let gravity = 0;
   // Slow the whole simulation together, preserving the arcs and soft recovery.
   const motionSpeed = .55;
+  const controls = document.createElement('div');
+  controls.className = 'hero-sphere-controls';
+  canvas.after(controls);
+  const buttons = spheres.map((_, i) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'btn btn--fill-sphere btn--icon-only hero-sphere-control';
+    button.setAttribute('aria-label', `Подбросить шарик ${i + 1}`);
+    button.addEventListener('click', event => {
+      const ball = balls[i];
+      if (!ball) return;
+      if (reduced.matches) {
+        // An immediate shape change acknowledges activation without animation.
+        ball.squash = ball.squash ? 0 : .14;
+        ball.angle = Math.PI / 2;
+        paint();
+        return;
+      }
+      const rect = canvas.getBoundingClientRect();
+      const offset = event.detail ? (ball.x - (event.clientX - rect.left)) / ball.r : 0;
+      ball.vx = Math.max(-1, Math.min(1, offset)) * width * .13;
+      ball.vy = -Math.sqrt(2 * gravity * Math.min(height * .3, 260));
+      impact(ball, height * 1.2, Math.PI / 2);
+      wake();
+    });
+    controls.appendChild(button);
+    return button;
+  });
   function resetBalls() {
     floor = height - (width < 600 ? 45 : 32);
     gravity = height * 1.25;
@@ -99,9 +127,13 @@
   }
   function paint() {
     ctx.clearRect(0, 0, width, height);
-    for (const ball of balls) {
+    for (const [i, ball] of balls.entries()) {
       const { x: cx, r: radius } = ball;
       const cy = reduced.matches ? floor - radius : ball.y;
+      buttons[i].style.left = `${cx}px`;
+      buttons[i].style.top = `${cy}px`;
+      buttons[i].style.setProperty('--sphere-hit-size', `${Math.max(44, radius * 2)}px`);
+      buttons[i].hidden = cy + radius < 0 || cy - radius > height;
       const lift = Math.max(0, floor - radius - cy);
       ctx.save(); ctx.translate(cx, floor); ctx.scale(1, .12);
       const shadow = ctx.createRadialGradient(0, 0, 0, 0, 0, radius * 1.6);
@@ -109,7 +141,7 @@
       shadow.addColorStop(1, 'rgba(255,255,255,0)');
       ctx.fillStyle = shadow; ctx.fillRect(-radius * 2, -radius * 2, radius * 4, radius * 4); ctx.restore();
       ctx.save(); ctx.translate(cx, cy); ctx.rotate(ball.angle);
-      const squash = reduced.matches ? 0 : ball.squash;
+      const squash = ball.squash;
       ctx.scale(1 - squash, 1 / (1 - squash)); ctx.rotate(-ball.angle);
       const surface = ctx.createRadialGradient(-radius * .3, -radius * .4, 0, 0, 0, radius);
       surface.addColorStop(0, '#ffffff'); surface.addColorStop(.5, '#f1f2ef'); surface.addColorStop(.85, '#ced1ce'); surface.addColorStop(1, '#a6aca8');

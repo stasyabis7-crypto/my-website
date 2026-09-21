@@ -95,6 +95,8 @@
   всем a[href]/button — здесь его дублировать не нужно.
 */
 
+
+
 /* Единая высота для всех вариаций .btn, на всех брейкпоинтах. */
 :root {
   --button-height: 44px;
@@ -564,3 +566,32 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only) {
   .btn--hit-area.btn--fill-pink:focus-visible,
   [data-action-hover]:hover .btn--hit-area.btn--fill-pink { background: #fff; color: #101014; }
 }
+
+/* Canvas sphere action: shared button height, circular hit area follows the art.
+   Usage: .btn.btn--fill-sphere.btn--icon-only, with an aria-label. */
+.btn.btn--fill-sphere {
+  background: transparent;
+  padding: 0;
+  overflow: visible;
+  pointer-events: none;
+  transition: none;
+}
+.btn--fill-sphere[hidden] { display: none; }
+.btn--fill-sphere::after { display: none; }
+.btn--fill-sphere::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 50%; top: 50%;
+  width: var(--sphere-hit-size, 44px);
+  height: var(--sphere-hit-size, 44px);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: transparent;
+  pointer-events: auto;
+}
+.btn.btn--fill-sphere:hover,
+.btn.btn--fill-sphere:active,
+.btn.btn--fill-sphere.is-touch-pressed { transform: none; scale: 1; background: transparent; }
+.btn.btn--fill-sphere:focus-visible { outline: none; }
+.btn.btn--fill-sphere:focus-visible::before { outline: 2px solid var(--color-text); outline-offset: 6px; }
