@@ -17,7 +17,7 @@
   overflow: hidden;
   padding: 8px;
   border: 1px solid color-mix(in srgb, var(--mood-ink) 12%, transparent);
-  border-radius: 24px;
+  border-radius: 14px;
   background: var(--mood-bg);
   color: var(--mood-ink);
   box-shadow: 0 12px 32px rgba(24, 24, 27, .12);
