@@ -20,8 +20,8 @@
      плашки, чтобы кружки были той же высоты, что и сама плашка
      хедера/футера. ВАЖНО: оба токена продублированы в footer.css —
      при изменении правьте оба файла синхронно. */
-  --chrome-item-h: 3.5rem;
-  --chrome-pad-block: 0.5rem;
+  --chrome-item-h: 2.5rem;
+  --chrome-pad-block: 0.25rem;
   --chrome-h: calc(var(--chrome-item-h) + var(--chrome-pad-block) * 2);
 
   /* Размер подписи компактных плашек (моб/планшет/chrome--compact и
@@ -41,11 +41,11 @@
   height: auto;
   padding-block: var(--chrome-pad-block);
   padding-inline: var(--chrome-pad-block);
-  background: var(--mood-chrome, #fff);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  background: color-mix(in srgb, var(--mood-chrome, #fff) 45%, transparent);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
   box-shadow: none;
-  border-radius: 999px;
+  border-radius: 14px;
   /* Сплошной фон выбранной темы, без стекла и бликов. */
 }
 
@@ -93,7 +93,7 @@
   flex: 0 0 auto;
   width: var(--chrome-item-h);
   height: var(--chrome-item-h);
-  border-radius: 50%;
+  border-radius: var(--radius-control, 10px);
   background: var(--color-surface-alt);
   overflow: hidden;
 }

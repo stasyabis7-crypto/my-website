@@ -11,8 +11,8 @@
      там же) — держите оба файла в синхроне, иначе плашка футера
      разойдётся по высоте с плашкой хедера. --chrome-item-h меряет
      layout-chrome.js по факту (высота кнопки "Резюме PDF"/пункта). */
-  --chrome-item-h: 3.5rem;
-  --chrome-pad-block: 0.5rem;
+  --chrome-item-h: 2.5rem;
+  --chrome-pad-block: 0.25rem;
   --chrome-h: calc(var(--chrome-item-h) + var(--chrome-pad-block) * 2);
 
   /* Тоже дублирует header.css (см. комментарий у :root там же) —
@@ -38,7 +38,7 @@
   backdrop-filter: var(--liquid-glass-filter);
   -webkit-backdrop-filter: var(--liquid-glass-filter);
   box-shadow: var(--liquid-glass-glow);
-  border-radius: 999px;
+  border-radius: 14px;
   /* Переливающаяся обводка — псевдоэлемент, см. theme.css. */
 }
 
@@ -161,7 +161,7 @@
   padding-block: 0.5rem;
   padding-inline: 0.75rem;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: var(--radius-control, 10px);
   color: var(--color-text);
   font-weight: var(--font-weight-regular);
   text-decoration: none;
@@ -268,7 +268,7 @@ html.chrome--compact .site-footer__link .icon {
 .site-footer__menu-btn,
 .site-footer__top-btn {
   border: none;
-  border-radius: 50%;
+  border-radius: var(--radius-control, 10px);
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
@@ -590,7 +590,7 @@ html.chrome--compact .site-footer__link .icon {
   box-sizing: border-box;
   display: inline-block;
   padding: 0.75rem;
-  border-radius: 28px;
+  border-radius: 14px;
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
@@ -624,7 +624,7 @@ html.chrome--compact .site-footer__link .icon {
   padding-block: 0.5rem;
   padding-inline: 0.75rem;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: var(--radius-control, 10px);
   color: var(--color-text);
   font-weight: var(--font-weight-regular);
   text-decoration: none;
@@ -759,7 +759,7 @@ html.footer-menu-open {
   height: var(--chrome-item-h, 3.5rem);
   padding: 0 1.25rem;
   border: 1px solid var(--color-action-active);
-  border-radius: 999px;
+  border-radius: var(--radius-control, 10px);
   background: var(--color-action-active);
   color: var(--color-action-active-text);
   text-decoration: none;

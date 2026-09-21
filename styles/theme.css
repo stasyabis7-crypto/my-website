@@ -8,13 +8,6 @@
 */
 
 :root {
-  /* Full-screen ribbons use the three moods' saturated action palettes. */
-  --transition-anastasia-bg: #2448FF;
-  --transition-anastasia-ink: #FEB7D7;
-  --transition-stasy-bg: #D5FF00;
-  --transition-stasy-ink: #242C65;
-  --transition-stas-bg: #D60067;
-  --transition-stas-ink: #FDF07F;
 
   /* Матовое стекло (хедер/футер/кнопки навигации) — одна и та же
      "рецептура" размытия в обеих темах, меняются только цвета-токены

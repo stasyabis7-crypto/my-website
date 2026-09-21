@@ -97,7 +97,10 @@
 
 /* Единая высота для всех вариаций .btn, на всех брейкпоинтах. */
 :root {
-  --button-height: 64px;
+  --button-height: 44px;
+  /* Compact, minimal controls: small squircle corners, small glyphs. */
+  --radius-control: 10px;
+  --button-icon-size: 20px;
   --control-scroll-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.14), 0 14px 32px -8px rgba(0, 0, 0, 0.2);
 }
 
@@ -111,9 +114,10 @@
   justify-content: center;
   gap: 0.5em;
   height: var(--button-height);
-  padding-inline: 28px;
+  --icon-size: var(--button-icon-size);
+  padding-inline: 16px;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   --hover-x: 50%;
   --hover-y: 50%;
   /* Текст кнопки — .text-button из typography.css (та же пара
@@ -202,6 +206,29 @@
   color: var(--color-action-hover-text, #fff);
 }
 
+/* Translucent glass square (cover action). Rests as a small grey-glass tile
+   with a white glyph; on hover (of the button, or of its whole cover when the
+   parent has data-action-hover) it becomes a white circle with a dark glyph.
+   Usage: .btn.btn--fill-glass.btn--icon-only[.btn--icon-diagonal-motion]. */
+.btn--fill-glass {
+  background: rgb(128 128 128 / .42);
+  color: #fff;
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  backdrop-filter: blur(10px) saturate(160%);
+  transition: transform 0.12s ease, background-color 0.25s ease, color 0.25s ease, border-radius 0.3s ease;
+}
+.btn--fill-glass::after { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .btn--fill-glass:hover,
+  .btn--fill-glass:focus-visible,
+  [data-action-hover]:hover .btn--fill-glass {
+    background: #fff;
+    color: #101014;
+    border-radius: 50%;
+  }
+}
+@media (prefers-reduced-motion: reduce) { .btn--fill-glass { transition-duration: .01ms; } }
+
 /* Loading keeps the DS fill and gently pulses the whole button. */
 .is-page-loading .site-header__cta {
   animation: skeleton-breathe var(--skeleton-speed, 3.2s) ease-in-out infinite;
@@ -223,7 +250,7 @@
 .btn--icon-top {
   flex-direction: column;
   padding-block: 0;
-  padding-inline: 20px;
+  padding-inline: 12px;
   gap: 2px;
 }
 
@@ -252,8 +279,8 @@
 }
 /* Подпись с иконкой справа: фиксированные внешние отступы. */
 .btn--icon-right {
-  padding-left: 28px;
-  padding-right: 20px;
+  padding-left: 16px;
+  padding-right: 12px;
 }
 .btn--size-chrome.btn--icon-only {
   width: var(--button-height);

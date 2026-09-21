@@ -38,25 +38,13 @@
     animation.pause();
     animation.currentTime = 0;
   }
-  // The transition waits for this preparation, not for the animation to end.
+  // The entrance starts once the image is decoded.
   window.projectHeroReady = image.decode().catch(() => {
     animation?.cancel();
     animation = null;
   });
-  // Start after the shared entrance ribbons, so the rise remains visible.
-  function pageVisible() {
-    const root = document.documentElement;
-    const transitioning = () => root.matches('.is-transition-pending, .is-transition-boot, .is-transition-covering, .is-transition-revealing');
-    if (!transitioning()) return Promise.resolve();
-    return new Promise(resolve => {
-      const observer = new MutationObserver(() => {
-        if (!transitioning()) { observer.disconnect(); resolve(); }
-      });
-      observer.observe(root, { attributes: true, attributeFilter: ['class'] });
-    });
-  }
   async function reveal() {
-    await Promise.all([window.projectHeroReady, pageVisible()]);
+    await window.projectHeroReady;
     if (!reduced.matches && animation) {
       animation.effect.setKeyframes(entranceFrames());
       animation.play();

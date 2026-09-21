@@ -54,7 +54,7 @@
 | Шапка, футер, контакты | `components/site-header/header.css`, `footer.css`, `site-chrome.css/js`, `layout-chrome.js` | Меню, закрытие по Escape/фону, фокус, навигация и hover |
 | Оглавление кейса | `components/case-toc/case-toc.css/js`, кнопки из ДС | Навигация по разделам и мобильная шторка |
 | Нахлёст секций и курсор | `components/page-motion/page-motion.css/js` | `.case-block--surface` и `.project-slider--themed`; один механизм для всех устройств |
-| Переходы между страницами | `components/page-transition/page-transition.css/js` | Общий переход, без отдельной реализации на странице |
+| Долгая загрузка | `components/page-spinner/page-spinner.css/js` | Без анимации перехода между страницами: фон сайта, спиннер и меняющиеся фразы «Загружаем…», только если страница грузится дольше ~0,5 с |
 | Появление контента/изображений | `components/content-reveal/content-reveal.css/js`, `image-reveal.css/js` | Общие состояния загрузки и появления |
 | Начальная загрузка | `components/page-loader/page-loader.css/js` | Скелетоны и готовность оболочки |
 

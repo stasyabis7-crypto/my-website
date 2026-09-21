@@ -109,10 +109,9 @@
   .work-gallery__presentation, .work-gallery__work .work-gallery__caption { transition: none; }
 }
 
-/* Folder cover with a separate action in the lower right cutout. */
+/* Folder cover with the action button laid over its lower left corner. */
 .work-gallery__image { border-radius: var(--project-card-radius); }
-.work-gallery__work[data-action-hover] .work-gallery__image { mask-image: var(--project-card-action-mask); mask-size: var(--project-card-action-mask-size); mask-position: left top, left top, right bottom; mask-repeat: no-repeat; }
-.work-gallery__action { position: absolute; right: 0; bottom: 0; }
+.work-gallery__action { position: absolute; left: 16px; bottom: 16px; }
 .work-gallery__media { width: var(--cover-width, 100%); max-width: 100%; margin-inline: auto; }
 .work-gallery__tags {
   position: absolute;

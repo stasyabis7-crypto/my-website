@@ -1,0 +1,49 @@
+/* Slow-load overlay: plain site background, small spinner, rotating phrase.
+   Injected and toggled by page-spinner.js; nothing animates between pages. */
+.page-spinner {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--color-bg, #fff);
+  color: var(--color-text, #101014);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .2s ease, visibility 0s linear .2s;
+}
+.page-spinner.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .2s ease;
+}
+.page-spinner__ring {
+  width: 28px;
+  height: 28px;
+  border: 2px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: page-spinner-turn .8s linear infinite;
+}
+.page-spinner__text {
+  margin: 0;
+  min-height: 1.4em;
+  font: 400 13px/1.4 var(--font-family-body, "IBM Plex Mono", ui-monospace, monospace);
+  letter-spacing: -.02em;
+  opacity: .7;
+  animation: page-spinner-phrase 2.2s ease-in-out infinite;
+}
+@keyframes page-spinner-turn { to { transform: rotate(360deg); } }
+@keyframes page-spinner-phrase {
+  0% { opacity: 0; transform: translateY(6px); }
+  18%, 82% { opacity: .7; transform: none; }
+  100% { opacity: 0; transform: translateY(-6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-spinner__ring { animation-duration: 2s; }
+  .page-spinner__text { animation: none; }
+}
