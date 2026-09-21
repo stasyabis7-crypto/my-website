@@ -45,6 +45,8 @@
   let balls = [];
   let floor = 0;
   let gravity = 0;
+  // Slow the whole simulation together, preserving the arcs and soft recovery.
+  const motionSpeed = .55;
   function resetBalls() {
     floor = height - (width < 600 ? 45 : 32);
     gravity = height * 1.25;
@@ -89,7 +91,7 @@
       b.x += nx * overlap * shareB; b.y += ny * overlap * shareB;
       const velocity = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
       if (velocity >= 0) continue;
-      const impulse = -1.85 * velocity;
+      const impulse = -1.65 * velocity;
       a.vx -= impulse * shareA * nx; a.vy -= impulse * shareA * ny;
       b.vx += impulse * shareB * nx; b.vy += impulse * shareB * ny;
       impact(a, -velocity, Math.atan2(ny, nx)); impact(b, -velocity, Math.atan2(ny, nx));
@@ -117,7 +119,7 @@
   function tick(now) {
     frame = 0;
     const dt = last ? Math.min((now - last) / 1000, .04) : 0;
-    for (let i = 0; i < 4; i++) step(dt / 4);
+    for (let i = 0; i < 4; i++) step(dt * motionSpeed / 4);
     last = now; paint();
     if (visible && !document.hidden && !reduced.matches) frame = requestAnimationFrame(tick);
   }
