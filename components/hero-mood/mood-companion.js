@@ -94,6 +94,9 @@
   // anchor stable until the layout width changes (rotation / real resize).
   let dockWidth = innerWidth;
   let dockHeight = innerHeight;
+  // Live visible height: the docked character sits on the bottom edge like the
+  // fixed footer buttons, so a toolbar showing/hiding moves it with them.
+  let liveHeight = innerHeight;
   let speechTimer;
   let mounted = true;
   let pixelRatio = Math.min(devicePixelRatio || 1, 2);
@@ -339,6 +342,8 @@
     if (document.activeElement !== character) freezeUntil = 0;
     wake();
   }, { passive: true });
+  // Toolbar changes on phones resize the visual viewport; keep the dock in step.
+  window.visualViewport?.addEventListener('resize', () => wake());
   window.addEventListener('resize', () => {
     if (fine.matches || innerWidth !== dockWidth) {
       dockWidth = innerWidth;
@@ -484,6 +489,12 @@
       dragPosition();
     }
     if (layoutDirty) measure();
+    if (innerHeight !== liveHeight) {
+      // Carry a docked character by the same distance the bottom edge moved,
+      // without the easing lag; the dock target below already uses liveHeight.
+      if (following && !placement && !drag?.active) position.y += innerHeight - liveHeight;
+      liveHeight = innerHeight;
+    }
     const wasFollowing = following;
     const exitThreshold = wasFollowing ? 140 : 100;
     following = !!placement || !!drag?.active || standalone || exhibitionTop < innerHeight * .8 || homeRect.bottom < exitThreshold ||
@@ -497,7 +508,7 @@
       // A fixed dock on both input types: scroll-event velocity must not
       // change the destination while the character is flying towards it.
       const dockX = standalone ? (innerWidth - size) / 2 : innerWidth >= 1101 ? 16 : innerWidth - size - 16;
-      target = { x: dockX, y: Math.max(8, dockHeight - size - 16), size };
+      target = { x: dockX, y: Math.max(8, liveHeight - size - 16), size };
       // Only internal desktop pages dock beside the contact action. Home and
       // mobile retain their existing destinations; manual placement still wins.
       if (contactDock && innerWidth >= 1000) {
