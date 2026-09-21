@@ -1,0 +1,17 @@
+# HTML pages must be revalidated on every visit; otherwise the browser keeps
+# serving an old copy that still links outdated stylesheets. CSS/JS are
+# versioned through ?v=, so only documents are affected.
+<IfModule mod_headers.c>
+  <FilesMatch "\.html?$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "^$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
+<IfModule mod_dir.c>
+  # Directory URLs (/projects/x/) resolve to index.html; keep them revalidated too.
+  <IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, must-revalidate" "expr=%{REQUEST_URI} =~ m#/$#"
+  </IfModule>
+</IfModule>
