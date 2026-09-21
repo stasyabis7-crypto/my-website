@@ -21,6 +21,7 @@
   visibility: visible;
   transition: opacity .2s ease;
 }
+.page-spinner.is-instant { transition: none; }
 .page-spinner__ring {
   width: 28px;
   height: 28px;

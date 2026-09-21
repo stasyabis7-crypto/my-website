@@ -9,11 +9,12 @@
   var pointer = null;
   var overlay;
   var text;
-  var showTimer = 0;
   var phraseTimer = 0;
   var phrases = ['Загружаем…', 'Собираем страницу…', 'Расставляем пиксели…', 'Ещё немного…', 'Почти готово…'];
   var phraseIndex = 0;
-  var SHOW_DELAY = 450;
+  var MIN_VISIBLE = 300;
+  var shownAt = 0;
+  var handoffKey = 'page-spinner:' + siteBase.pathname;
 
   function pageKey(href) {
     var url = new URL(href, location.href);
@@ -53,26 +54,52 @@
     phraseIndex++;
   }
 
-  function show() {
+  // instant: the previous page already showed the spinner, so this document
+  // continues it without a second fade-in (one loading screen per navigation).
+  function show(instant, startIndex) {
     build();
-    phraseIndex = 0;
+    phraseIndex = startIndex || 0;
     nextPhrase();
     clearInterval(phraseTimer);
     phraseTimer = setInterval(nextPhrase, 2200);
+    shownAt = Date.now();
+    overlay.classList.toggle('is-instant', !!instant);
     // Force a frame so the fade-in transition runs from the hidden state.
     void overlay.offsetWidth;
     overlay.classList.add('is-visible');
+    if (instant) requestAnimationFrame(function () { overlay.classList.remove('is-instant'); });
   }
 
   function hide() {
-    clearTimeout(showTimer);
-    clearInterval(phraseTimer);
-    if (overlay) overlay.classList.remove('is-visible');
+    if (!overlay || !overlay.classList.contains('is-visible')) return;
+    // Never blink: once shown, stay for a moment before fading out.
+    var wait = Math.max(0, MIN_VISIBLE - (Date.now() - shownAt));
+    setTimeout(function () {
+      clearInterval(phraseTimer);
+      overlay.classList.remove('is-visible');
+    }, wait);
   }
 
-  // First visit: show only if the page is still not ready after a moment.
+  // Leaving while the spinner is on screen: tell the next page to keep it.
+  window.addEventListener('pagehide', function () {
+    try {
+      if (overlay && overlay.classList.contains('is-visible')) {
+        sessionStorage.setItem(handoffKey, JSON.stringify({ at: Date.now(), index: phraseIndex }));
+      }
+    } catch (_) { /* Storage is optional. */ }
+  });
+  var handoff = null;
+  try {
+    handoff = JSON.parse(sessionStorage.getItem(handoffKey) || 'null');
+    sessionStorage.removeItem(handoffKey);
+  } catch (_) { /* Without storage each page decides on its own. */ }
+  var continued = !!(handoff && Date.now() - handoff.at < 8000);
+
+  // Any document that is still loading starts behind the spinner.
   if (document.readyState !== 'complete') {
-    showTimer = setTimeout(show, SHOW_DELAY);
+    // Shown from the very first paint (instantly, continuing the previous
+    // page's spinner when there was one), so content never flashes in first.
+    show(true, continued ? handoff.index : 0);
     window.addEventListener('load', hide, { once: true });
     // A stalled subresource must never trap the visitor behind the overlay.
     setTimeout(hide, 10000);
@@ -87,6 +114,8 @@
     return url;
   }
 
+  // Bubble phase: a page handler that cancels the navigation (drag, lightbox)
+  // has already called preventDefault by now, so no spinner is left hanging.
   document.addEventListener('click', function (event) {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     var link = event.target.closest && event.target.closest('a[href]');
@@ -97,11 +126,12 @@
         sessionStorage.setItem(cursorKey, JSON.stringify({ page: pageKey(url.href), cursor: pointer, at: Date.now() }));
       }
     } catch (_) { /* Storage is optional. */ }
-    // Navigation stays native; the spinner appears only if it drags on.
-    clearTimeout(showTimer);
-    showTimer = setTimeout(show, SHOW_DELAY);
+    // Navigation stays native; the spinner starts turning right at the click
+    // and keeps turning until the next page has loaded.
+    show(false, 0);
+    // A cancelled or stalled navigation must never leave the overlay up.
     setTimeout(hide, 10000);
-  }, true);
+  });
 
   // A restored bfcache page must not keep the overlay from the outgoing visit.
   window.addEventListener('pageshow', function (event) { if (event.persisted) hide(); });
