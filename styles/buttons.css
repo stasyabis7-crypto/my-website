@@ -208,14 +208,14 @@
 
 /* Translucent glass square (cover action). Rests as a small grey-glass tile
    with a white glyph; on hover (of the button, or of its whole cover when the
-   parent has data-action-hover) it becomes a white circle with a dark glyph.
+   parent has data-action-hover) it turns white with a dark glyph, keeping the same corner radius.
    Usage: .btn.btn--fill-glass.btn--icon-only[.btn--icon-diagonal-motion]. */
 .btn--fill-glass {
   background: rgb(128 128 128 / .42);
   color: #fff;
   -webkit-backdrop-filter: blur(10px) saturate(160%);
   backdrop-filter: blur(10px) saturate(160%);
-  transition: transform 0.12s ease, background-color 0.25s ease, color 0.25s ease, border-radius 0.3s ease;
+  transition: transform 0.12s ease, background-color 0.25s ease, color 0.25s ease;
 }
 .btn--fill-glass::after { display: none; }
 @media (hover: hover) and (pointer: fine) {
@@ -224,7 +224,6 @@
   [data-action-hover]:hover .btn--fill-glass {
     background: #fff;
     color: #101014;
-    border-radius: 50%;
   }
 }
 @media (prefers-reduced-motion: reduce) { .btn--fill-glass { transition-duration: .01ms; } }
