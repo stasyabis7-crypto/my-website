@@ -338,7 +338,7 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only) {
 .btn--fill-toc {
   justify-content: flex-start;
   padding-inline: 16px;
-  border-radius: 16px;
+  border-radius: var(--radius-control);
   white-space: normal;
   text-align: left;
   background: transparent;
@@ -465,7 +465,7 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only) {
   background: transparent;
   color: #14161a;
   padding: 0;
-  border-radius: 24px;
+  border-radius: var(--radius-control);
   touch-action: manipulation;
 }
 .btn--fill-deck[hidden] { display: none; }
@@ -476,7 +476,7 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only) {
   position: absolute;
   inset: 0 0 auto;
   height: var(--control-surface-height, 100%);
-  border-radius: 24px;
+  border-radius: var(--radius-control);
   cursor: pointer;
 }
 .btn--fill-deck:hover,
