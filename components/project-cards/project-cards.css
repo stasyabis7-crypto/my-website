@@ -5,7 +5,7 @@
 .collection__back { margin-bottom: 32px; }
 .collection__heading { margin-bottom: 24px; }
 .collection__heading .text-body { max-width: var(--measure-body); }
-.project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px var(--wg-gap); }
+.project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .project-card { min-width: 0; }
 .project-card__visual { position: relative; aspect-ratio: 1; }
 .project-card__cover { height: 100%; border-radius: var(--wg-radius); overflow: hidden; }
