@@ -1015,13 +1015,8 @@
   height: 100%;
   object-fit: cover;
 }
-/* Портретный экран: картинка 4:3 при обрезке под высоту потеряла бы
-   предмет — остаётся полная ширина и высота по пропорциям файла. */
 @media (max-width: 640px) {
   .case-hero { border-radius: 20px; }
 }
-@media (max-aspect-ratio: 1/1) {
-  .case-hero { height: auto; }
-  .case-hero__image { height: auto; }
-}
+
 .case-hero + .case .case-cover { padding-top: 32px; }
