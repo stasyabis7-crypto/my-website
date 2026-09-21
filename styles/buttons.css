@@ -36,15 +36,11 @@
                       (components/site-chrome/site-chrome.css)
 
     .btn--fill-white  белая → по ховеру розовая (текст/иконка белеют)
-                      эталон: .mood-next «Поменять тему» и
-                      .site-socials__link (иконки соцсетей в хедере)
+                      эталон: .site-socials__link (иконки соцсетей в хедере)
                       (components/site-chrome/site-chrome.css)
 
     .btn--fill-ink    спокойная тёмная заливка → белая по наведению.
 
-    .btn--fill-character прозрачная кнопка персонажа; круглая область
-                         нажатия под размер иллюстрации, высота .btn общая.
-                         Используется с .btn--icon-only, нужен aria-label.
 
   Заливка растёт кругом из точки входа курсора (--hover-x/--hover-y,
   их выставляет layout-chrome.js на pointerenter/pointermove — см. тот
@@ -56,7 +52,7 @@
   кнопка без иконки, только текст):
   ─────────────────────────────────────────────────────────────────────
     (нет класса)     только текст, без иконки
-                      эталон: .mood-next «Поменять тему»
+                      эталон: .site-socials__link
 
     .btn--icon-left  иконка слева от подписи
     .btn--icon-right иконка справа от подписи
@@ -285,44 +281,6 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only) {
   cursor: default;
 }
 
-/* Character action: the control retains the shared 64px height. Its transparent
-   circular hit halo follows the illustration; all control styling stays in DS.
-   Usage: .btn.btn--fill-character.btn--icon-only with a decorative canvas sibling. */
-.btn--fill-character {
-  overflow: visible;
-  isolation: auto;
-  background: transparent;
-  color: var(--mood-particle, #111111);
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-.btn--fill-character::before {
-  content: "";
-  display: block;
-  position: absolute;
-  width: var(--mood-hit-size, 64px);
-  height: var(--mood-hit-size, 64px);
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: transparent;
-}
-.btn--fill-character::after { display: none; }
-.btn--fill-character:hover,
-.btn--fill-character:active { transform: none; scale: 1; }
-.btn--fill-character:focus-visible { outline: none; }
-.btn--fill-character:focus-visible::before {
-  outline: 2px solid var(--color-action-active);
-  outline-offset: 8px;
-}
-@media (hover: hover) and (pointer: fine) {
-  html.mood-cursor-active .btn--fill-character { cursor: none; }
-}
-
 /* Shared contact actions use the same DS height and fills. */
 .contact-row.btn { justify-content: center; gap: 16px; }
 
@@ -441,7 +399,6 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only) {
   .btn.btn--fill-toc { background: transparent; color: var(--mood-ink); }
   .btn.btn--fill-toc[aria-current="location"] { background: var(--color-action-active); color: var(--color-action-active-text); }
   .btn:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
-  .btn.btn--fill-character:active, .btn.btn--fill-character.is-touch-pressed { scale: 1; }
 }
 /* A tap, including focus moved into/returned from a modal, has no focus ring.
    Tab/keyboard navigation restores the existing :focus-visible styles.
@@ -454,14 +411,11 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only) {
   }
 }
 
-/* The character is a draggable action; a short tap still changes the mood. */
-.btn--fill-character { touch-action: none; user-select: none; }
-html.mood-character-dragging .btn--fill-character { cursor: grabbing; }
 
 @media (prefers-reduced-motion: reduce) { .btn { transition-duration: .01ms; } }
 
 /* Invisible deck action. The shared button height stays unchanged; the hit
-   surface extends across the deck, just as for the character action above.
+   surface extends across the deck.
    Usage: .btn.btn--fill-deck; --control-surface-height follows deck height. */
 .btn--fill-deck {
   overflow: visible;

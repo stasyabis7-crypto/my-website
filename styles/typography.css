@@ -18,18 +18,17 @@
 
 :root {
   /* --- Семейства шрифтов ---
-     Alice 400 — все заголовки сайта, включая Главную и попапы.
+     Manrope 400 — все заголовки сайта, включая Главную и попапы.
      IBM Plex Mono — основной текст и кнопки.
      Начертания и unicode-range подключаются в fonts.css. */
-  --font-family-heading: "Alice", "Times New Roman", Georgia, serif;
+  --font-family-heading: "Manrope", Arial, sans-serif;
   --font-family-body: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 
   /* --- Заголовки: один и тот же шрифт на всех уровнях — отличается
      только font-size (см. --font-size-* ниже), family/вес/интерлиньяж
-     одни на всех: Display/H1/H2/H3. Вес — regular: у Alice нет
-     жирного начертания вообще (единственный вариант — 400), псевдо-
-     жирный синтез браузера сознательно не используем. Трекинг — 0. */
+     одни на всех: Display/H1/H2/H3. Вес — regular (400).
+     Спокойный гротеск с общей геометрией латиницы и кириллицы. */
   --letter-spacing-heading: 0;
   --line-height-heading: 1.04;
 

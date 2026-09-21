@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="styles/fonts.css?v=3" />
 <link rel="stylesheet" href="components/content-reveal/content-reveal.css?v=1" />
 <link rel="stylesheet" href="components/site-chrome/site-chrome.css?v=2" />
-<link rel="stylesheet" href="components/hero-mood/mood-companion.css?v=fullscreen-5" />
+<link rel="stylesheet" href="components/hero-mood/hero-layout.css?v=fullscreen-5" />
 <link rel="stylesheet" href="components/page-loader/page-loader.css?v=3" />
 <link rel="stylesheet" href="components/image-reveal/image-reveal.css?v=1" />
 <script src="components/image-reveal/image-reveal.js?v=1" defer></script>
@@ -144,35 +144,19 @@
 
 
   <main class="container page-works">
-    <!-- Три настроения и облако частиц. Источник — template.html. -->
+    <!-- Белые сферы. Источник — template.html. -->
     <!-- component:hero-mood:start -->
-    <section class="mood-hero" id="hero" aria-labelledby="mood-heading">
+    <section class="mood-hero mood-hero--spheres" id="hero" aria-labelledby="mood-heading">
       <div class="mood-stage">
-        <div class="mood-wave" aria-hidden="true"></div>
+        <canvas class="hero-spheres" aria-hidden="true"></canvas>
         <div class="mood-content">
           <h1 class="mood-title text-display-lg" id="mood-heading">Sr Product Designer</h1>
-          <p class="mood-subtitle text-body">6 лет проектирую B2B, B2C интерфейсы, лендинги.<br class="mood-br" /> Работаю с платёжными флоу, ЛК, CRM, KPI системами.</p>
+          <p class="mood-subtitle text-body" data-subtitle>6 лет проектирую B2B, B2C интерфейсы, лендинги.<br class="mood-br" /> Работаю с платёжными флоу, ЛК, CRM, KPI системами.</p>
           <div class="mood-actions">
             <a href="#works-gallery" class="mood-primary btn btn--fill-pink btn--icon-right">
               <span>Смотреть работы</span>
               <span class="icon icon--down" aria-hidden="true"></span>
             </a>
-          </div>
-        </div>
-        <div class="mood-exhibit">
-          <div class="mood-home" id="mood-home">
-            <div class="mood-actor" id="mood-actor">
-              <canvas class="mood-canvas" id="mood-canvas" width="480" height="480" aria-hidden="true"></canvas>
-              <button type="button" class="btn btn--fill-character btn--icon-only mood-character" id="mood-character" aria-label="Anastasia. Поменять тему на сиреневую" aria-describedby="mood-description">
-                <svg class="mood-fallback" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="currentColor"/><ellipse cx="23" cy="28" rx="9" ry="11" fill="white"/><ellipse cx="42" cy="28" rx="9" ry="11" fill="white"/><circle cx="25" cy="30" r="5"/><circle cx="40" cy="30" r="5"/></svg>
-              </button>
-              <div class="mood-speech text-body" id="mood-speech" aria-hidden="true"></div>
-            </div>
-          </div>
-          <div class="mood-caption">
-            <p class="mood-name text-h2" id="mood-name">Anastasia</p>
-            <p class="mood-description text-body" id="mood-description" aria-live="polite" aria-atomic="true">Цвет настроеееения розовый.<br />Нажми на меня — я умею превращаться.</p>
-
           </div>
         </div>
       </div>
@@ -283,7 +267,8 @@
   </div>
 
   <script src="components/site-chrome/site-chrome.js?v=3"></script>
-  <script src="components/hero-mood/mood-companion.js?v=dock-bottom-edge-1"></script>
+  <script src="components/hero-mood/hero-spheres.js"></script>
+  <script src="components/hero-mood/hero-viewport.js?v=dock-bottom-edge-1"></script>
   <script src="components/site-chrome/layout-chrome.js?v=gallery-3"></script>
   <script src="components/page-loader/page-loader.js?v=mood-3"></script>
   <script src="pages/home/data/sections.js?v=available-groups-2"></script>

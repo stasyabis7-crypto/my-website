@@ -1,13 +1,3 @@
-// Only the experiment opts into mood palettes; project embeds remain dark.
-(function () {
-  var root = document.documentElement;
-  if (!root.hasAttribute('data-mood')) return;
-  try {
-    var saved = localStorage.getItem('stasyabis-mood');
-    if (['anastasia', 'stasy', 'stas'].indexOf(saved) !== -1) root.dataset.mood = saved;
-  } catch (_) { /* Private browsing: use the default mood. */ }
-})();
-
 /*
   Сайт всегда тёмный (переключателя темы больше нет). Этот файл только
   рассылает тему "dark" в iframe-анимации старой сетки — они не знают тему родителя сами,

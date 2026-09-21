@@ -18,7 +18,7 @@
   if (typeof document === 'undefined') return;
 
   var SKIP = 'script, style, pre, code, textarea, input, select, option, [contenteditable]:not([contenteditable="false"])';
-  var SUBTITLES = '[data-subtitle], .text-subtitle, [class*="subtitle"], .collection__heading > .text-body, .project-card__caption > .text-body, .project-card__copy > .text-body, .project-slider__tooltip > .text-body, .work-gallery__caption > .text-body, .activity-article__description, .mood-description, .mood-project-description';
+  var SUBTITLES = '[data-subtitle], .text-subtitle, [class*="subtitle"], .collection__heading > .text-body, .project-card__caption > .text-body, .project-card__copy > .text-body, .project-slider__tooltip > .text-body, .work-gallery__caption > .text-body, .activity-article__description';
   var PREPOSITIONS = ['без', 'безо', 'в', 'во', 'для', 'до', 'за', 'из', 'изо', 'из-за', 'из-под', 'к', 'ко', 'меж', 'между', 'на', 'над', 'надо', 'о', 'об', 'обо', 'от', 'ото', 'перед', 'передо', 'по', 'под', 'подо', 'при', 'про', 'с', 'со', 'у', 'через'];
   var CONJUNCTIONS = ['а', 'и', 'но', 'да', 'или', 'либо', 'что', 'чтоб', 'чтобы', 'если', 'хотя', 'как', 'чем', 'пока', 'будто'];
   var FORWARD_PARTICLES = ['не', 'ни', 'вот', 'вон', 'ведь', 'даже', 'лишь', 'только', 'пусть', 'пускай', 'разве', 'неужели', 'уж'];

@@ -8,7 +8,7 @@ const source = path.resolve(__dirname, '..');
 try {
   const files = ['scripts/hero-mood-component.js', 'scripts/hero-mood-content.js',
     'components/hero-mood/template.html', 'components/hero-mood/baseline.json',
-    'components/hero-mood/mood-companion.css', 'components/hero-mood/mood-companion.js', 'index.html'];
+    'components/hero-mood/hero-spheres.js', 'components/hero-mood/hero-layout.css', 'components/hero-mood/hero-viewport.js', 'index.html'];
   for (const file of files) {
     fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
     fs.copyFileSync(path.join(source, file), path.join(root, file));
@@ -30,7 +30,7 @@ try {
   const template = fs.readFileSync(root + '/components/hero-mood/template.html', 'utf8');
   fs.writeFileSync(root + '/components/hero-mood/template.html', template.replace('Sr Product Designer', 'Новый текст шаблона'));
   assert.equal(run().status, 0, 'Template text is not frozen');
-  fs.appendFileSync(root + '/components/hero-mood/mood-companion.js', '\n// changed behavior source\n');
+  fs.appendFileSync(root + '/components/hero-mood/hero-viewport.js', '\n// changed behavior source\n');
   assert.equal(run().status, 1, 'Behavior source still uses exact approved hash');
   console.log('Баннер: независимость контента, сохранение при sync и защита структуры/JS проверены.');
 } finally { fs.rmSync(root, { recursive: true, force: true }); }

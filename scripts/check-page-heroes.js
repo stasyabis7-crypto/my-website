@@ -8,6 +8,7 @@ let count = 0;
 function check(file) {
   const source = fs.readFileSync(path.join(root, file), 'utf8');
   const hero = source.match(/<section\b[^>]*class="[^"]*\bmood-hero\b[^"]*"[^>]*>[\s\S]*?<\/section>/);
+  if (/id="mood-(?:actor|character)"|mood-companion\.js/.test(source)) errors.push(`${file}: устаревший персонаж удалён из концепции сайта`);
   if (!hero) return; // Older case placeholders do not have this banner yet.
   count++;
   const markup = hero[0];
@@ -18,7 +19,7 @@ function check(file) {
   if (!/<h1\b[^>]*class="[^"]*\bmood-title\b/.test(markup)) fail('Нет заголовка баннера');
   if (!/<p\b[^>]*class="[^"]*\bmood-subtitle\b/.test(markup)) fail('Нет подзаголовка баннера');
   if (file === 'index.html') {
-    if (!markup.includes('id="mood-character"') || !markup.includes('id="mood-canvas"')) fail('На Главной ожидается персонаж');
+    if (!markup.includes('class="hero-spheres"') || markup.includes('id="mood-character"')) fail('На Главной ожидаются декоративные сферы без персонажа');
   } else {
     if (!/<img\b[^>]*class="[^"]*\bproject-hero__image\b/.test(markup)) fail('Внутренний баннер должен содержать картинку');
     if (markup.includes('id="mood-character"')) fail('Персонаж не должен заменять картинку внутреннего баннера');
