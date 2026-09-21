@@ -307,7 +307,7 @@
   transition: transform 0.12s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.25s ease;
 }
 /* Compact icon-only controls sit inside the header and need no shadow. */
-html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only) {
+html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glass):not(.btn--fill-glass-ui) {
   box-shadow: var(--control-scroll-shadow);
 }
 
