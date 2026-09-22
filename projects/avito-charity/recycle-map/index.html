@@ -370,19 +370,18 @@ body {
 
       <!-- Мудборд — компонент .case-moodboard (components/case-blocks/case-blocks.css).
            Сетка .case-cards-feature переиспользована только ради двух
-           колонок (components/case-cards/case-cards.css) — без
-           .case-card/object-fit:cover: фото показываются целиком в своих
-           пропорциях (img width:100%;height:auto), обрезки нет, при
-           ресайзе всё масштабируется пропорционально. Из-за этого низ
-           баннера слева и низ стопки из 3 фото справа не обязаны совпадать
-           по высоте — align-items:start у .case-moodboard__grid вместо
-           растягивания по умолчанию. -->
+           колонок (components/case-cards/case-cards.css). Высоту строки
+           задаёт правая стопка из 3 фото — её высота считается от
+           реальных пропорций (img width:100%;height:auto), без обрезки.
+           Баннер слева растягивается на ту же высоту (align-items:stretch
+           по умолчанию) и слегка кроется по высоте (object-fit:cover),
+           чтобы низ совпадал с низом стопки на любой ширине экрана. -->
       <section class="case-block case-moodboard" id="moodboard" tabindex="-1">
         <h2 class="case-moodboard__title text-h1">Мудборд</h2>
         <p data-subtitle class="case-moodboard__subtitle case-subtitle text-body-lg">Рассматривала карты бигтехов: Яндекс, 2ГИС, Google Карты. Также накидывала красивых дриббл-шотов, чтобы найти вдохновение.</p>
 
         <div class="case-moodboard__grid case-cards-feature">
-          <div class="case-moodboard__media">
+          <div class="case-moodboard__banner">
             <img src="media/moodboard/1.webp" alt="" width="1600" height="2000" />
           </div>
           <div class="case-moodboard__side case-cards-feature__side">

@@ -934,22 +934,24 @@
   margin-top: auto;
 }
 
-/* ─── .case-moodboard — заголовок + .case-cards-feature без обрезки ────
+/* ─── .case-moodboard — заголовок + .case-cards-feature, низ вровень ───
    Та же сетка из 2 колонок, что у .case-about (case-cards.css:
-   .case-cards-feature), но карточки — не .case-card: фото показываются
-   целиком в своих пропорциях (img width:100%;height:auto), без
-   object-fit:cover и без затемнения/подписи. Значит низ баннера слева
-   и низ стопки из 3 фото справа не обязаны совпадать по высоте —
-   align-items:start вместо растягивания сеткой по умолчанию. */
+   .case-cards-feature), но карточки — не .case-card, без затемнения/
+   подписи. Высоту строки задаёт правая стопка из 3 фото — их высота
+   считается от реальных пропорций (img width:100%;height:auto), без
+   обрезки. Баннер слева — единственный элемент, который чуть кроется
+   (object-fit:cover): grid растягивает его на высоту строки
+   (align-items:stretch по умолчанию), так низ баннера всегда совпадает
+   с низом стопки, на любой ширине экрана и с любыми пропорциями фото. */
 .case-moodboard__subtitle.text-body-lg {
   margin-top: 8px;
 }
 
 .case-moodboard__grid {
   margin-top: 32px;
-  align-items: start;
 }
 
+.case-moodboard__banner,
 .case-moodboard__media {
   display: block;
   border-radius: var(--card-radius, 14px);
@@ -960,6 +962,13 @@
   display: block;
   width: 100%;
   height: auto;
+}
+
+.case-moodboard__banner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Сравнение «До / После»: общий компонент для «Навигации» и «Поиска и
