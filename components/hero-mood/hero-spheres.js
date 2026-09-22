@@ -1,4 +1,4 @@
-/* Glass image spheres: rigid silhouettes, staggered nine-second loop. */
+/* Glass image spheres: staggered drops, soft contacts, and page-entry reveal. */
 (async () => {
   'use strict';
   const hero=document.querySelector('.mood-hero--spheres');
@@ -21,7 +21,7 @@
   }));
   hero.classList.add('is-reveal-pending');
   const reveal = () => {
-    if (document.documentElement.matches('.is-page-loading, .is-transition-pending')) return;
+    if (document.hidden || document.documentElement.matches('.is-page-loading, .is-transition-pending')) return;
     const lines = [];
     title.querySelectorAll('.hero-reveal-word').forEach(word => {
       if (!lines.includes(word.offsetTop)) lines.push(word.offsetTop);
@@ -34,6 +34,19 @@
   const observer = new MutationObserver(reveal);
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   reveal();
+  // A restored page keeps completed CSS animations. Replay the copy alongside
+  // the sphere reset, rather than showing old text over a new falling scene.
+  addEventListener('pageshow',event=>{
+    if(!event.persisted)return;
+    hero.classList.remove('is-revealing');
+    hero.classList.add('is-reveal-pending');
+    void hero.offsetWidth;
+    observer.observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+    reveal();
+  });
+  document.addEventListener('visibilitychange',()=>{
+    if(hero.classList.contains('is-reveal-pending'))reveal();
+  });
   if (!ctx) return;
   const paths = [
     'components/page-hero/pictures/sphere-01.webp',

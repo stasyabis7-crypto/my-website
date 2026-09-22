@@ -7,6 +7,9 @@ const vm = require('node:vm');
 // Execute the real controller with browser APIs stubbed. In particular, deliver
 // multiple visibility changes in one callback, as cached navigation can do.
 const frames = new Map();
+const pageEvents=new Map(),documentEvents=new Map();
+const listen=(events,name,callback)=>events.set(name,[...(events.get(name)||[]),callback]);
+const heroClasses=new Set();
 let frameId = 0;
 let visibilityObserver;
 let drawn=[];
@@ -34,7 +37,7 @@ const stage = { getBoundingClientRect: () => box };
 const content = { getBoundingClientRect: () => ({ ...box, top: 160, bottom: 440 }), querySelectorAll: () => [] };
 const root = { matches: () => false };
 const hero = {
-  classList: { add() {}, remove() {} },
+  classList: { add(name) { heroClasses.add(name); }, remove(name) { heroClasses.delete(name); }, contains: name=>heroClasses.has(name) },
   querySelector: selector => ({ '.hero-spheres': canvas, '.mood-stage': stage, '.mood-content': content, '.mood-title': title })[selector]
 };
 const document = {
@@ -42,13 +45,13 @@ const document = {
   querySelector: selector => selector === '.mood-hero--spheres' ? hero : { getBoundingClientRect: () => ({ left: 0, top: 0, right: 350, bottom: 80 }) },
   createElement: tag => tag === 'canvas' ? { id:textureId++, getContext: () => context } : { style: { setProperty() {} }, setAttribute() {} },
   createTextNode: text => ({ textContent: text }),
-  addEventListener() {}
+  addEventListener: (name,callback)=>listen(documentEvents,name,callback)
 };
 const sandbox = {
   console, document, devicePixelRatio: 1,
   performance: { now: () => 1 },
   matchMedia: () => ({ matches: false, addEventListener() {} }),
-  addEventListener() {},
+  addEventListener: (name,callback)=>listen(pageEvents,name,callback),
   requestAnimationFrame: callback => { const id = ++frameId; frames.set(id, callback); return id; },
   cancelAnimationFrame: id => frames.delete(id),
   MutationObserver: class { observe() {} disconnect() {} },
@@ -93,5 +96,13 @@ const sandbox = {
   assert.ok(bounced,'Spheres rebound softly after contacting the floor or each other');
   assert.ok(drawn.every(p=>p.y-first.get(p.id).y>250),'Every sphere falls down into the banner');
   assert.ok(drawn.every(p=>p.y+p.r<=box.height+1),'The pile stays above the banner floor');
+  document.hidden=true;
+  for(const callback of pageEvents.get('pageshow'))callback({persisted:true});
+  assert.ok(heroClasses.has('is-reveal-pending')&&!heroClasses.has('is-revealing'),
+    'Restored hidden pages wait to replay the copy instead of finishing unseen');
+  document.hidden=false;
+  for(const callback of documentEvents.get('visibilitychange'))callback();
+  assert.ok(heroClasses.has('is-revealing')&&!heroClasses.has('is-reveal-pending'),
+    'Heading and button reveal starts when the restored page becomes visible');
   console.log('Hero spheres: batched visibility changes, pause and resume verified.');
 })().catch(error => { console.error(error.message); process.exitCode = 1; });
