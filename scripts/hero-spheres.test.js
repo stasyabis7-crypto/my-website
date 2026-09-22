@@ -15,7 +15,7 @@ const box = { width: 1400, height: 850, top: 0, left: 0, right: 1400, bottom: 85
 const context = new Proxy({}, {
   get(_, key) {
     if (key === 'clearRect') return () => { drawn=[]; };
-    if (key === 'drawImage') return image => { if(drawn.length)drawn[drawn.length-1].id=image.id; };
+    if (key === 'drawImage') return (image,x,y,width) => { if(drawn.length)Object.assign(drawn[drawn.length-1],{id:image.id,r:width/2}); };
     if (key === 'translate') return (x,y) => { drawn.push({x,y}); };
     if (key === 'getImageData' || key === 'createImageData') return () => ({ data: new Uint8ClampedArray(420 * 420 * 4) });
     if (key === 'createRadialGradient') return () => ({ addColorStop() {} });
@@ -70,6 +70,10 @@ const sandbox = {
   for(let tick=1;tick<=480;tick++){
     const [id,callback]=frames.entries().next().value;
     frames.delete(id);callback(1+tick*1000/60);
+    for(let a=0;a<drawn.length;a++)for(let b=a+1;b<drawn.length;b++){
+      const p=drawn[a],q=drawn[b];
+      assert.ok(Math.hypot(p.x-q.x,p.y-q.y)>=p.r+q.r-.5,'Pictures must not overlap during entry');
+    }
     for(const p of drawn){
       const samples=trajectories.get(p.id)||[];
       if(samples.length<60)samples.push({...p});
@@ -88,14 +92,24 @@ const sandbox = {
   assert.ok(drawn.filter(p=>p.x>0&&p.x<box.width&&p.y>0&&p.y<box.height).length>=30,
     'Spheres stay inside the banner instead of flying out');
   const seen=new Set();
-  const start=new Map(drawn.map(p=>[p.id,p]));
+  const previous=new Map(drawn.map(p=>[p.id,p]));
+  const travelled=new Map(drawn.map(p=>[p.id,0]));
   for(let tick=481;tick<=7800;tick++){
     const [id,callback]=frames.entries().next().value;
     frames.delete(id);callback(1+tick*1000/60);
+    for(let a=0;a<drawn.length;a++)for(let b=a+1;b<drawn.length;b++){
+      const p=drawn[a],q=drawn[b];
+      assert.ok(Math.hypot(p.x-q.x,p.y-q.y)>=p.r+q.r-.5,'Pictures must stay separate throughout circulation');
+    }
+    for(const p of drawn){
+      const before=previous.get(p.id);
+      travelled.set(p.id,travelled.get(p.id)+Math.hypot(p.x-before.x,p.y-before.y));
+      previous.set(p.id,p);
+    }
     for(const p of drawn)if(p.x>100&&p.x<box.width-100&&p.y>100&&p.y<box.height-100)seen.add(p.id);
   }
   assert.equal(seen.size,40,'Every image circulates into the visible banner area');
-  assert.ok(drawn.every(p=>Math.hypot(p.x-start.get(p.id).x,p.y-start.get(p.id).y)>30),
+  assert.ok([...travelled.values()].every(distance=>distance>60),
     'Spheres travel around the banner rather than only wobbling in place');
   console.log('Hero spheres: batched visibility changes, pause and resume verified.');
 })().catch(error => { console.error(error.message); process.exitCode = 1; });

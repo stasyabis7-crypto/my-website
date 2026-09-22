@@ -120,8 +120,8 @@
     circle();o.lineWidth=2;o.strokeStyle='#ffffff65';o.stroke();
     return out;
   }
-  let time=reduced.matches?4:0,last=0,w=0,h=0,obstacles=[];
-  let anchors=[],orbit=null,frame=0,visible=true;
+  let time=reduced.matches?4:0,last=0,w=0,h=0,headerBottom=0,obstacles=[];
+  let anchors=[],flow=new Map(),entryCenter={x:0,y:0},entryScale=1,frame=0,visible=true;
   function resize(){
     const bounds=stage.getBoundingClientRect();
     if (w===bounds.width && h===bounds.height) return;
@@ -140,6 +140,7 @@
       for(const b of rects)if(b.width>0)obstacles.push({left:b.left-bounds.left-9,right:b.right-bounds.left+9,top:b.top-bounds.top-7,bottom:b.bottom-bounds.top+7});
     }
     const header=document.querySelector('.site-header').getBoundingClientRect();
+    headerBottom=header.bottom-bounds.top;
     obstacles.push({left:header.left-bounds.left-6,right:header.right-bounds.left+6,top:header.top-bounds.top-6,bottom:header.bottom-bounds.top+6});
     const d=Math.min(devicePixelRatio,2);canvas.width=w*d;canvas.height=h*d;ctx.setTransform(d,0,0,d,0,0);
     const mobile=w<600,base=mobile?w/11.8:Math.min(w/23,64),pool=[];
@@ -165,33 +166,17 @@
       }
       anchors.forEach(protect);
     }
+    separate(anchors,true);
     const contentBounds=content.getBoundingClientRect();
-    const textBoxes=obstacles.slice(0,-1);
-    const left=textBoxes.length?Math.min(...textBoxes.map(box=>box.left)):w*.3;
-    const right=textBoxes.length?Math.max(...textBoxes.map(box=>box.right)):w*.7;
-    orbit={x:(left+right)/2,y:(contentBounds.top+contentBounds.bottom)/2-bounds.top,
-      rx:(right-left)/2+12,ry:(contentBounds.bottom-contentBounds.top)/2+12};
-    // Spread phases around the full orbit; otherwise rotating a wide layout
-    // compresses its left/right clusters together at the top and bottom.
-    const ordered=[...anchors].sort((a,b)=>Math.atan2(a.y-orbit.y,a.x-orbit.x)-Math.atan2(b.y-orbit.y,b.x-orbit.x));
-    ordered.forEach((p,index)=>{
-      p.angle=-Math.PI+index/ordered.length*Math.PI*2;
-      p.lane=mobile?1+(index%3)*.055:1+(index%2)*.42;
-    });
+    entryCenter={x:w/2,y:(contentBounds.top+contentBounds.bottom)/2-bounds.top};
+    entryScale=1;
     for(const p of anchors){
-      const radius=orbitRadius(p,p.angle);
-      p.x=orbit.x+Math.cos(p.angle)*radius*p.lane;
-      p.y=orbit.y+Math.sin(p.angle)*radius*p.lane;
-      const routes=[{x:-p.r-30,y:p.y},{x:w+p.r+30,y:p.y},
-        {x:p.x,y:-p.r-30},{x:p.x,y:h+p.r+30}];
-      // Prefer a short route that does not cross the text or button.
-      const score=from=>Math.hypot(from.x-p.x,from.y-p.y)+obstacles.reduce((sum,box)=>{
-        const crosses=Math.max(from.x,p.x)+p.r>box.left&&Math.min(from.x,p.x)-p.r<box.right&&
-          Math.max(from.y,p.y)+p.r>box.top&&Math.min(from.y,p.y)-p.r<box.bottom;
-        return sum+(crosses?100000:0);
-      },0);
-      p.from=routes.sort((a,b)=>score(a)-score(b))[0];
+      const dx=p.x-entryCenter.x,dy=p.y-entryCenter.y;
+      const sx=dx>0?(w+p.r+30-entryCenter.x)/dx:dx<0?(-p.r-30-entryCenter.x)/dx:Infinity;
+      const sy=dy>0?(h+p.r+30-entryCenter.y)/dy:dy<0?(-p.r-30-entryCenter.y)/dy:Infinity;
+      entryScale=Math.max(entryScale,Math.min(sx,sy));
     }
+    flow.clear();
     wake();
   }
 
@@ -205,40 +190,61 @@
       }
     }
   }
-  // A rounded rectangular orbit leaves the text and CTA clear at every angle.
-  // Polar parametrization stays smooth through the four cardinal directions.
-  function orbitRadius(p,angle){
-    const rx=(orbit.rx+p.r+10)*1.19,ry=(orbit.ry+p.r+10)*1.19;
-    return Math.pow(Math.pow(Math.cos(angle)/rx,4)+Math.pow(Math.sin(angle)/ry,4),-.25);
+  function separate(positions,confine){
+    for(let pass=0;pass<24;pass++){
+      let correction=0;
+      for(const p of positions){
+        const previousX=p.x,previousY=p.y;
+        if(confine){
+          p.x=Math.max(p.r*.35,Math.min(w-p.r*.35,p.x));
+          p.y=Math.max(headerBottom+p.r+8,Math.min(h-p.r-8,p.y));
+        }
+        protect(p);
+        correction=Math.max(correction,Math.abs(p.x-previousX),Math.abs(p.y-previousY));
+      }
+      for(let a=0;a<positions.length;a++)for(let b=a+1;b<positions.length;b++){
+        const p=positions[a],q=positions[b],dx=q.x-p.x,dy=q.y-p.y;
+        const distance=Math.hypot(dx,dy)||.001,gap=p.r+q.r+6;
+        if(distance<gap){const push=(gap-distance)*.5;correction=Math.max(correction,push);p.x-=dx/distance*push;p.y-=dy/distance*push;q.x+=dx/distance*push;q.y+=dy/distance*push;}
+      }
+      if(correction<.02)break;
+    }
   }
   function draw(now){
     const dt=!reduced.matches&&last?Math.max(0,Math.min((now-last)/1000,.05)):0;
     time+=dt;last=now;ctx.clearRect(0,0,w,h);
     const mobile=w<600, positions=[];
     for(const anchor of anchors){
-      const {i,r}=anchor,stagger=anchor.order*(mobile?.065:.045);
-      const elapsed=time-.25-stagger;
+      const {i,r}=anchor,elapsed=time-.25;
       if(elapsed<=0)continue;
-      const duration=1.35+(i%3)*.12;
-      const enter=Math.max(0,Math.min(1,elapsed/duration));
+      const enter=Math.min(1,elapsed/3);
       const ease=1-Math.pow(1-enter,3);
-      const p={i,r,x:anchor.from.x+(anchor.x-anchor.from.x)*ease,
-        y:anchor.from.y+(anchor.y-anchor.from.y)*ease};
-      // Everyone joins the same slow clockwise circulation after the entrance.
-      // Integrated ease-in starts with zero angular velocity, without a restart.
-      const orbitTime=Math.max(0,time-4);
-      const angle=anchor.angle+(orbitTime-3*(1-Math.exp(-orbitTime/3)))*Math.PI*2/110;
-      const radius=orbitRadius(anchor,angle)*anchor.lane;
-      if(orbitTime>0){p.x=orbit.x+Math.cos(angle)*radius;p.y=orbit.y+Math.sin(angle)*radius;}
-      // Entrance has one fixed direction. Float fades in only after arrival.
-      const settled=Math.max(0,elapsed-duration);
-      const blend=Math.min(1,settled/1.2);
-      const drift=(mobile?5:9)*blend*blend*(3-2*blend);
-      const phase=settled*.7+i*2.4;
-      p.x+=Math.sin(phase)*drift;p.y+=Math.cos(phase*.8)*drift;
-      p.rotation=(i%2?1:-1)*.35*(1-ease)+Math.sin(phase*.55)*.12*blend;
+      // A shared expansion keeps every pair separated throughout entrance.
+      // Different distances to the edges reveal the scattered spheres in turn.
+      const scale=1+(entryScale-1)*(1-ease);
+      const p={i,r,x:entryCenter.x+(anchor.x-entryCenter.x)*scale,
+        y:entryCenter.y+(anchor.y-entryCenter.y)*scale};
+      p.rotation=(i%2?1:-1)*.35*(1-ease)+Math.sin(time*.15+i)*.08*ease;
       positions.push(p);
     }
+    // Advect a scattered field instead of assigning circles to visible rings.
+    // Slow contact corrections preserve space between pictures without springs.
+    if(time>4&&!reduced.matches){
+      const center=content.getBoundingClientRect();
+      const cy=(center.top+center.bottom)/2-stage.getBoundingClientRect().top;
+      const step=Math.min(dt,.05),speed=mobile?9:16;
+      const ramp=Math.min(1,(time-4)/3);
+      for(const p of positions){
+        let state=flow.get(p.i);
+        if(!state){state={x:p.x,y:p.y};flow.set(p.i,state);}
+        const nx=(state.x-w/2)/(w/2),ny=(state.y-cy)/(h/2);
+        state.x+=(-ny+Math.sin(time*.12+p.i*2.4)*.22)*speed*step*ramp;
+        state.y+=(nx+Math.cos(time*.1+p.i*1.7)*.22)*speed*step*ramp;
+        p.x=state.x;p.y=state.y;
+      }
+    }
+    if(time>4)separate(positions,true);
+    if(time>4)for(const p of positions)flow.set(p.i,{x:p.x,y:p.y});
     for(const p of positions){
       ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rotation);
       ctx.shadowColor='#00000060';ctx.shadowBlur=9;ctx.shadowOffsetY=5;
@@ -267,8 +273,8 @@
   });
   visibilityObserver.observe(canvas);
   document.addEventListener('visibilitychange',wake);
-  addEventListener('pageshow',()=>{time=reduced.matches?4:0;wake();});
-  reduced.addEventListener('change',()=>{time=reduced.matches?4:0;wake();});
+  addEventListener('pageshow',()=>{time=reduced.matches?4:0;flow.clear();wake();});
+  reduced.addEventListener('change',()=>{time=reduced.matches?4:0;flow.clear();wake();});
   // Pointer movement updates unrelated root classes. Only an actual loading
   // transition should reset the clock; otherwise frequent pointer events starve RAF.
   const isLoading=()=>document.documentElement.matches('.is-page-loading, .is-transition-pending');
