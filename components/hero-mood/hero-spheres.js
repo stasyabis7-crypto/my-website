@@ -121,7 +121,7 @@
     return out;
   }
   let time=reduced.matches?4:0,last=0,w=0,h=0,obstacles=[];
-  let anchors=[],motion=new Map(),frame=0,visible=true;
+  let anchors=[],frame=0,visible=true;
   function resize(){
     const bounds=stage.getBoundingClientRect();
     if (w===bounds.width && h===bounds.height) return;
@@ -155,28 +155,27 @@
     anchors=Array.from({length:count},(_,i)=>{const p=pool[Math.floor(i*pool.length/count)];const sizes=[1.55,.72,1.05,.82,1.3,.68,1.08,.9];return {...p,r:p.r*sizes[i%sizes.length],i};});
     // Interleave the entry order across the field, avoiding simultaneous rows.
     anchors.forEach((p,i)=>p.order=(i*7)%count);
-    // Reserve a berth for every sphere around the entire banner perimeter.
-    // Weight spacing by diameter so large and small spheres fill the border together.
-    const edgeTop=Math.max(0,header.bottom-bounds.top+10);
-    const edgeHeight=h-edgeTop;
-    const perimeter=2*(w+edgeHeight);
-    const edgeOrder=p=>{
-      const distances=[p.y/h,(w-p.x)/w,(h-p.y)/h,p.x/w];
-      const side=distances.indexOf(Math.min(...distances));
-      return [p.x,w+p.y,w+h+w-p.x,2*w+h+h-p.y][side];
-    };
-    const waiting=[...anchors].sort((a,b)=>edgeOrder(a)-edgeOrder(b));
-    const total=waiting.reduce((sum,p)=>sum+p.r*2,0);
-    let offset=0;
-    for(const p of waiting){
-      const distance=(offset+p.r)/total*perimeter;
-      offset+=p.r*2;
-      if(distance<w)p.edge={side:'top',along:distance,top:edgeTop};
-      else if(distance<w+edgeHeight)p.edge={side:'right',along:edgeTop+distance-w};
-      else if(distance<2*w+edgeHeight)p.edge={side:'bottom',along:2*w+edgeHeight-distance};
-      else p.edge={side:'left',along:edgeTop+perimeter-distance};
+    // Resolve the resting composition once. Moving collision targets used to
+    // redirect spheres during entry and make their springs double back.
+    for(let pass=0;pass<60;pass++){
+      for(let a=0;a<anchors.length;a++)for(let b=a+1;b<anchors.length;b++){
+        const p=anchors[a],q=anchors[b],dx=q.x-p.x,dy=q.y-p.y;
+        const distance=Math.hypot(dx,dy)||1,gap=p.r+q.r+8;
+        if(distance<gap){const push=(gap-distance)*.5;p.x-=dx/distance*push;p.y-=dy/distance*push;q.x+=dx/distance*push;q.y+=dy/distance*push;}
+      }
+      anchors.forEach(protect);
     }
-    motion.clear();
+    for(const p of anchors){
+      const routes=[{x:-p.r-30,y:p.y},{x:w+p.r+30,y:p.y},
+        {x:p.x,y:-p.r-30},{x:p.x,y:h+p.r+30}];
+      // Prefer a short route that does not cross the text or button.
+      const score=from=>Math.hypot(from.x-p.x,from.y-p.y)+obstacles.reduce((sum,box)=>{
+        const crosses=Math.max(from.x,p.x)+p.r>box.left&&Math.min(from.x,p.x)-p.r<box.right&&
+          Math.max(from.y,p.y)+p.r>box.top&&Math.min(from.y,p.y)-p.r<box.bottom;
+        return sum+(crosses?100000:0);
+      },0);
+      p.from=routes.sort((a,b)=>score(a)-score(b))[0];
+    }
     wake();
   }
 
@@ -195,54 +194,22 @@
     time+=dt;last=now;ctx.clearRect(0,0,w,h);
     const mobile=w<600, positions=[];
     for(const anchor of anchors){
-      const {i,r}=anchor,stagger=anchor.order*(mobile?.06:.04);
-      const enter=Math.max(0,Math.min(1,(time-.6-stagger)/.95));
-
-      const phase=time*1.65+i*2.4;
-      const drift=mobile?10:22;
-      const p={i,r,x:anchor.x+Math.sin(phase)*drift+Math.sin(time*1.1)*drift*.7,y:anchor.y+Math.cos(phase*.8)*drift};
+      const {i,r}=anchor,stagger=anchor.order*(mobile?.065:.045);
+      const elapsed=time-.25-stagger;
+      if(elapsed<=0)continue;
+      const duration=1.35+(i%3)*.12;
+      const enter=Math.max(0,Math.min(1,elapsed/duration));
       const ease=1-Math.pow(1-enter,3);
-      // All four edges stay populated while the spheres await their turn.
-      const edgePhase=time*Math.PI*4/9+i*1.7;
-      const inset=r*(.42+Math.sin(edgePhase)*.06);
-      const along=anchor.edge.along+Math.cos(edgePhase)*r*.12;
-      let fromX,fromY;
-      switch(anchor.edge.side){
-        case 'top':fromX=along;fromY=anchor.edge.top+inset;break;
-        case 'right':fromY=along;fromX=w-inset;break;
-        case 'bottom':fromX=along;fromY=h-inset;break;
-        default:fromY=along;fromX=inset;
-      }
-      p.x=fromX+(p.x-fromX)*ease;
-      p.y=fromY+(p.y-fromY)*ease;
-      // Small circular overshoot conveys inertia without deforming the sphere.
-      p.y+=Math.sin(enter*Math.PI*2)*r*.25*(1-enter);
-      const edgeRotation=(i%2?1:-1)*.8+Math.sin(edgePhase)*.10;
-      p.rotation=Math.sin(phase*.55)*.22*ease+edgeRotation*(1-ease);
+      const p={i,r,x:anchor.from.x+(anchor.x-anchor.from.x)*ease,
+        y:anchor.from.y+(anchor.y-anchor.from.y)*ease};
+      // Entrance has one fixed direction. Float fades in only after arrival.
+      const settled=Math.max(0,elapsed-duration);
+      const blend=Math.min(1,settled/1.2);
+      const drift=(mobile?5:9)*blend*blend*(3-2*blend);
+      const phase=settled*.7+i*2.4;
+      p.x+=Math.sin(phase)*drift;p.y+=Math.cos(phase*.8)*drift;
+      p.rotation=(i%2?1:-1)*.35*(1-ease)+Math.sin(phase*.55)*.12*blend;
       positions.push(p);
-    }
-    // Rigid contacts keep the dense moving field outside the text and CTA.
-    for(let pass=0;pass<7;pass++){
-      for(let a=0;a<positions.length;a++)for(let b=a+1;b<positions.length;b++){
-        const p=positions[a],q=positions[b],dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy)||1,min=p.r+q.r+2;
-        if(d<min){const push=(min-d)*.5;p.x-=dx/d*push;p.y-=dy/d*push;q.x+=dx/d*push;q.y+=dy/d*push;}
-      }
-      positions.forEach(protect);
-    }
-    // Preserve position and velocity between frames. Collision targets can change
-    // abruptly, but a visible sphere accelerates toward them instead of teleporting.
-    for(const p of positions){
-      let state=motion.get(p.i);
-      if(!state){state={x:p.x,y:p.y,vx:0,vy:0};motion.set(p.i,state);}
-      const steps=Math.max(1,Math.ceil(dt*120)),step=dt/steps;
-      for(let n=0;n<steps;n++){
-        let ax=(p.x-state.x)*324-state.vx*36,ay=(p.y-state.y)*324-state.vy*36;
-        const acceleration=Math.hypot(ax,ay),limit=2800;
-        if(acceleration>limit){ax*=limit/acceleration;ay*=limit/acceleration;}
-        state.vx+=ax*step;state.vy+=ay*step;
-        state.x+=state.vx*step;state.y+=state.vy*step;
-      }
-      p.x=state.x;p.y=state.y;
     }
     for(const p of positions){
       ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rotation);
@@ -272,8 +239,8 @@
   });
   visibilityObserver.observe(canvas);
   document.addEventListener('visibilitychange',wake);
-  addEventListener('pageshow',()=>{time=reduced.matches?4:0;motion.clear();wake();});
-  reduced.addEventListener('change',()=>{time=reduced.matches?4:0;motion.clear();wake();});
+  addEventListener('pageshow',()=>{time=reduced.matches?4:0;wake();});
+  reduced.addEventListener('change',()=>{time=reduced.matches?4:0;wake();});
   // Pointer movement updates unrelated root classes. Only an actual loading
   // transition should reset the clock; otherwise frequent pointer events starve RAF.
   const isLoading=()=>document.documentElement.matches('.is-page-loading, .is-transition-pending');
