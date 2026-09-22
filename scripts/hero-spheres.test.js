@@ -16,6 +16,7 @@ const context = new Proxy({}, {
   get(_, key) {
     if (key === 'clearRect') return () => { drawn=[]; };
     if (key === 'drawImage') return (image,x,y,width) => { if(drawn.length)Object.assign(drawn[drawn.length-1],{id:image.id,r:width/2}); };
+    if (key === 'rotate') return angle => { if(drawn.length)drawn[drawn.length-1].angle=angle; };
     if (key === 'translate') return (x,y) => { drawn.push({x,y}); };
     if (key === 'getImageData' || key === 'createImageData') return () => ({ data: new Uint8ClampedArray(420 * 420 * 4) });
     if (key === 'createRadialGradient') return () => ({ addColorStop() {} });
@@ -91,25 +92,22 @@ const sandbox = {
   assert.equal(drawn.length,40,'All spheres remain after the former exit time');
   assert.ok(drawn.filter(p=>p.x>0&&p.x<box.width&&p.y>0&&p.y<box.height).length>=30,
     'Spheres stay inside the banner instead of flying out');
-  const seen=new Set();
-  const previous=new Map(drawn.map(p=>[p.id,p]));
-  const travelled=new Map(drawn.map(p=>[p.id,0]));
-  for(let tick=481;tick<=7800;tick++){
+  const settled=new Map(drawn.map(p=>[p.id,p]));
+  const rocked=new Set();
+  for(let tick=1;tick<=2400;tick++){
     const [id,callback]=frames.entries().next().value;
-    frames.delete(id);callback(1+tick*1000/60);
+    frames.delete(id);callback(8001+tick*50);
     for(let a=0;a<drawn.length;a++)for(let b=a+1;b<drawn.length;b++){
       const p=drawn[a],q=drawn[b];
-      assert.ok(Math.hypot(p.x-q.x,p.y-q.y)>=p.r+q.r-.5,'Pictures must stay separate throughout circulation');
+      assert.ok(Math.hypot(p.x-q.x,p.y-q.y)>=p.r+q.r-.5,'Pictures must stay separate while rocking');
     }
     for(const p of drawn){
-      const before=previous.get(p.id);
-      travelled.set(p.id,travelled.get(p.id)+Math.hypot(p.x-before.x,p.y-before.y));
-      previous.set(p.id,p);
+      const before=settled.get(p.id);
+      assert.ok(Math.hypot(p.x-before.x,p.y-before.y)<.001,'Settled spheres must not travel across the banner');
+      assert.ok(Math.abs(p.angle)<=.081,'Rocking stays subtle');
+      if(Math.abs(p.angle-before.angle)>.02)rocked.add(p.id);
     }
-    for(const p of drawn)if(p.x>100&&p.x<box.width-100&&p.y>100&&p.y<box.height-100)seen.add(p.id);
   }
-  assert.equal(seen.size,40,'Every image circulates into the visible banner area');
-  assert.ok([...travelled.values()].every(distance=>distance>60),
-    'Spheres travel around the banner rather than only wobbling in place');
+  assert.equal(rocked.size,40,'Every sphere keeps gently rocking around its own center');
   console.log('Hero spheres: batched visibility changes, pause and resume verified.');
 })().catch(error => { console.error(error.message); process.exitCode = 1; });

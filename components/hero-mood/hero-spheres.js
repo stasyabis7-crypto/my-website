@@ -121,7 +121,7 @@
     return out;
   }
   let time=reduced.matches?4:0,last=0,w=0,h=0,headerBottom=0,obstacles=[];
-  let anchors=[],flow=new Map(),entryCenter={x:0,y:0},entryScale=1,frame=0,visible=true;
+  let anchors=[],entryCenter={x:0,y:0},entryScale=1,frame=0,visible=true;
   function resize(){
     const bounds=stage.getBoundingClientRect();
     if (w===bounds.width && h===bounds.height) return;
@@ -176,7 +176,6 @@
       const sy=dy>0?(h+p.r+30-entryCenter.y)/dy:dy<0?(-p.r-30-entryCenter.y)/dy:Infinity;
       entryScale=Math.max(entryScale,Math.min(sx,sy));
     }
-    flow.clear();
     wake();
   }
 
@@ -213,7 +212,7 @@
   function draw(now){
     const dt=!reduced.matches&&last?Math.max(0,Math.min((now-last)/1000,.05)):0;
     time+=dt;last=now;ctx.clearRect(0,0,w,h);
-    const mobile=w<600, positions=[];
+    const positions=[];
     for(const anchor of anchors){
       const {i,r}=anchor,elapsed=time-.25;
       if(elapsed<=0)continue;
@@ -227,24 +226,7 @@
       p.rotation=(i%2?1:-1)*.35*(1-ease)+Math.sin(time*.15+i)*.08*ease;
       positions.push(p);
     }
-    // Advect a scattered field instead of assigning circles to visible rings.
-    // Slow contact corrections preserve space between pictures without springs.
-    if(time>4&&!reduced.matches){
-      const center=content.getBoundingClientRect();
-      const cy=(center.top+center.bottom)/2-stage.getBoundingClientRect().top;
-      const step=Math.min(dt,.05),speed=mobile?9:16;
-      const ramp=Math.min(1,(time-4)/3);
-      for(const p of positions){
-        let state=flow.get(p.i);
-        if(!state){state={x:p.x,y:p.y};flow.set(p.i,state);}
-        const nx=(state.x-w/2)/(w/2),ny=(state.y-cy)/(h/2);
-        state.x+=(-ny+Math.sin(time*.12+p.i*2.4)*.22)*speed*step*ramp;
-        state.y+=(nx+Math.cos(time*.1+p.i*1.7)*.22)*speed*step*ramp;
-        p.x=state.x;p.y=state.y;
-      }
-    }
-    if(time>4)separate(positions,true);
-    if(time>4)for(const p of positions)flow.set(p.i,{x:p.x,y:p.y});
+    // Keep the settled centers fixed; only the gentle rotation above continues.
     for(const p of positions){
       ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rotation);
       ctx.shadowColor='#00000060';ctx.shadowBlur=9;ctx.shadowOffsetY=5;
@@ -273,8 +255,8 @@
   });
   visibilityObserver.observe(canvas);
   document.addEventListener('visibilitychange',wake);
-  addEventListener('pageshow',()=>{time=reduced.matches?4:0;flow.clear();wake();});
-  reduced.addEventListener('change',()=>{time=reduced.matches?4:0;flow.clear();wake();});
+  addEventListener('pageshow',()=>{time=reduced.matches?4:0;wake();});
+  reduced.addEventListener('change',()=>{time=reduced.matches?4:0;wake();});
   // Pointer movement updates unrelated root classes. Only an actual loading
   // transition should reset the clock; otherwise frequent pointer events starve RAF.
   const isLoading=()=>document.documentElement.matches('.is-page-loading, .is-transition-pending');
