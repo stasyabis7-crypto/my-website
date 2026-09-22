@@ -691,6 +691,7 @@
 .case-team__card[data-position="1"] { z-index: 3; transform: translate(-8px, 7px) rotate(-6deg); }
 .case-team__card[data-position="2"] { z-index: 2; transform: translate(-16px, 14px) rotate(-9deg); }
 .case-team__card[data-position="3"] { z-index: 1; transform: translate(-24px, 21px) rotate(-12deg); }
+.case-team__card[data-position="4"] { z-index: 0; transform: translate(-32px, 28px) rotate(-15deg); }
 .case-team__carousel .case-team__card.is-leaving {
   z-index: 5;
   transform: translate(65%, -12%) rotate(18deg) rotateY(-24deg);
@@ -715,6 +716,7 @@
   .case-team__card[data-position="1"] { transform: translate(-4px, 7px) rotate(-3deg); }
   .case-team__card[data-position="2"] { transform: translate(-8px, 14px) rotate(-6deg); }
   .case-team__card[data-position="3"] { transform: translate(-12px, 21px) rotate(-9deg); }
+  .case-team__card[data-position="4"] { transform: translate(-16px, 28px) rotate(-12deg); }
 }
 @media (prefers-reduced-motion: reduce) {
   .case-team__carousel.is-ready .case-team__card { transition: none; }
