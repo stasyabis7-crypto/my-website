@@ -87,5 +87,15 @@ const sandbox = {
   assert.equal(drawn.length,40,'All spheres remain after the former exit time');
   assert.ok(drawn.filter(p=>p.x>0&&p.x<box.width&&p.y>0&&p.y<box.height).length>=30,
     'Spheres stay inside the banner instead of flying out');
+  const seen=new Set();
+  const start=new Map(drawn.map(p=>[p.id,p]));
+  for(let tick=481;tick<=7800;tick++){
+    const [id,callback]=frames.entries().next().value;
+    frames.delete(id);callback(1+tick*1000/60);
+    for(const p of drawn)if(p.x>100&&p.x<box.width-100&&p.y>100&&p.y<box.height-100)seen.add(p.id);
+  }
+  assert.equal(seen.size,40,'Every image circulates into the visible banner area');
+  assert.ok(drawn.every(p=>Math.hypot(p.x-start.get(p.id).x,p.y-start.get(p.id).y)>30),
+    'Spheres travel around the banner rather than only wobbling in place');
   console.log('Hero spheres: batched visibility changes, pause and resume verified.');
 })().catch(error => { console.error(error.message); process.exitCode = 1; });

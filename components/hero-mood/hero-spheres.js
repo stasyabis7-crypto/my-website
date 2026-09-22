@@ -121,7 +121,7 @@
     return out;
   }
   let time=reduced.matches?4:0,last=0,w=0,h=0,obstacles=[];
-  let anchors=[],frame=0,visible=true;
+  let anchors=[],orbit=null,frame=0,visible=true;
   function resize(){
     const bounds=stage.getBoundingClientRect();
     if (w===bounds.width && h===bounds.height) return;
@@ -165,7 +165,23 @@
       }
       anchors.forEach(protect);
     }
+    const contentBounds=content.getBoundingClientRect();
+    const textBoxes=obstacles.slice(0,-1);
+    const left=textBoxes.length?Math.min(...textBoxes.map(box=>box.left)):w*.3;
+    const right=textBoxes.length?Math.max(...textBoxes.map(box=>box.right)):w*.7;
+    orbit={x:(left+right)/2,y:(contentBounds.top+contentBounds.bottom)/2-bounds.top,
+      rx:(right-left)/2+12,ry:(contentBounds.bottom-contentBounds.top)/2+12};
+    // Spread phases around the full orbit; otherwise rotating a wide layout
+    // compresses its left/right clusters together at the top and bottom.
+    const ordered=[...anchors].sort((a,b)=>Math.atan2(a.y-orbit.y,a.x-orbit.x)-Math.atan2(b.y-orbit.y,b.x-orbit.x));
+    ordered.forEach((p,index)=>{
+      p.angle=-Math.PI+index/ordered.length*Math.PI*2;
+      p.lane=mobile?1+(index%3)*.055:1+(index%2)*.42;
+    });
     for(const p of anchors){
+      const radius=orbitRadius(p,p.angle);
+      p.x=orbit.x+Math.cos(p.angle)*radius*p.lane;
+      p.y=orbit.y+Math.sin(p.angle)*radius*p.lane;
       const routes=[{x:-p.r-30,y:p.y},{x:w+p.r+30,y:p.y},
         {x:p.x,y:-p.r-30},{x:p.x,y:h+p.r+30}];
       // Prefer a short route that does not cross the text or button.
@@ -189,6 +205,12 @@
       }
     }
   }
+  // A rounded rectangular orbit leaves the text and CTA clear at every angle.
+  // Polar parametrization stays smooth through the four cardinal directions.
+  function orbitRadius(p,angle){
+    const rx=(orbit.rx+p.r+10)*1.19,ry=(orbit.ry+p.r+10)*1.19;
+    return Math.pow(Math.pow(Math.cos(angle)/rx,4)+Math.pow(Math.sin(angle)/ry,4),-.25);
+  }
   function draw(now){
     const dt=!reduced.matches&&last?Math.max(0,Math.min((now-last)/1000,.05)):0;
     time+=dt;last=now;ctx.clearRect(0,0,w,h);
@@ -202,6 +224,12 @@
       const ease=1-Math.pow(1-enter,3);
       const p={i,r,x:anchor.from.x+(anchor.x-anchor.from.x)*ease,
         y:anchor.from.y+(anchor.y-anchor.from.y)*ease};
+      // Everyone joins the same slow clockwise circulation after the entrance.
+      // Integrated ease-in starts with zero angular velocity, without a restart.
+      const orbitTime=Math.max(0,time-4);
+      const angle=anchor.angle+(orbitTime-3*(1-Math.exp(-orbitTime/3)))*Math.PI*2/110;
+      const radius=orbitRadius(anchor,angle)*anchor.lane;
+      if(orbitTime>0){p.x=orbit.x+Math.cos(angle)*radius;p.y=orbit.y+Math.sin(angle)*radius;}
       // Entrance has one fixed direction. Float fades in only after arrival.
       const settled=Math.max(0,elapsed-duration);
       const blend=Math.min(1,settled/1.2);
