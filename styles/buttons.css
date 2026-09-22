@@ -599,35 +599,3 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
 .btn.btn--fill-sphere.is-touch-pressed { transform: none; scale: 1; background: transparent; }
 .btn.btn--fill-sphere:focus-visible { outline: none; }
 .btn.btn--fill-sphere:focus-visible::before { outline: 2px solid var(--color-text); outline-offset: 6px; }
-
-/* Canvas keycap controls: artwork-sized hit target, standard button height. */
-.btn.btn--fill-keycap {
-  background: transparent;
-  padding: 0;
-  overflow: visible;
-  pointer-events: none;
-  touch-action: none;
-  transition: none;
-}
-.btn--fill-keycap[hidden] { display: none; }
-.btn--fill-keycap::after { display: none; }
-.btn--fill-keycap::before {
-  display: block;
-  content: '';
-  position: absolute;
-  left: 50%; top: 50%;
-  width: var(--keycap-hit-size, 44px);
-  height: var(--keycap-hit-size, 44px);
-  transform: translate(-50%, -50%);
-  border-radius: 18%;
-  background: transparent;
-  pointer-events: auto;
-  cursor: grab;
-  touch-action: none;
-}
-.btn.btn--fill-keycap:hover,
-.btn.btn--fill-keycap:active,
-.btn.btn--fill-keycap.is-touch-pressed { transform: none; scale: 1; background: transparent; }
-.btn--fill-keycap.is-dragging::before { cursor: grabbing; }
-.btn.btn--fill-keycap:focus-visible { outline: none; }
-.btn.btn--fill-keycap:focus-visible::before { outline: none; }
