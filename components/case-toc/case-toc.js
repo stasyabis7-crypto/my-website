@@ -14,7 +14,6 @@
   })).filter(item => item.section);
   if (!items.length) return;
   const desktop = matchMedia('(min-width: 1101px)');
-  const hover = matchMedia('(hover: hover)');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let frame = 0, manualUntil = 0, scrollAnimation = 0, current;
   let inactive = [], closeTimer, afterClose;
@@ -217,13 +216,11 @@
     if (desktop.matches) toggle.removeAttribute('aria-haspopup');
     else toggle.setAttribute('aria-haspopup', 'dialog');
   }
+  // Click-only: opening/closing on hover made the popover feel jumpy
+  // whenever the cursor merely crossed the trigger. It now stays open
+  // until an item, the trigger, an empty area of the page, or Escape
+  // closes it (handlers below).
   toggle.addEventListener('click', () => desktop.matches ? setPopover(!popoverOpen) : openSheet());
-  root.addEventListener('pointerenter', event => {
-    if (desktop.matches && hover.matches && event.pointerType === 'mouse') setPopover(true);
-  });
-  root.addEventListener('pointerleave', () => {
-    if (desktop.matches && !root.contains(document.activeElement)) setPopover(false);
-  });
   root.addEventListener('focusout', event => {
     if (desktop.matches && !root.contains(event.relatedTarget)) setPopover(false);
   });

@@ -110,7 +110,9 @@ html:not(.chrome--pinned) .site-socials {
 .contact-dialog__panel {
   position: absolute; inset: 10px; display: flex; flex-direction: column;
   padding: clamp(20px, 3vw, 40px); border-radius: 14px;
-  background: var(--mood-bg); color: var(--mood-ink);
+  /* Calm chrome tint, not the saturated page-mood colour: a dialog
+     this size in the vivid --mood-bg read as loud/anxious. */
+  background: var(--mood-chrome); color: var(--mood-ink);
   overflow: hidden; isolation: isolate;
   animation: contact-surface-in .8s cubic-bezier(.22,1,.36,1) both;
 }
