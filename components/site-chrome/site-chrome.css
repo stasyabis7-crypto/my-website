@@ -25,6 +25,45 @@ html.contact-scroll-lock, html.contact-scroll-lock body { overflow: hidden; over
   pointer-events: auto;
 }
 
+/* Desktop-only anchored dropdown for "Связаться" — a calm, non-modal
+   popover (no backdrop/scroll-lock/focus-trap), same dark-glass recipe
+   as .work-toc__panel. The full-screen .contact-dialog sheet stays the
+   mobile/tablet variant (see site-chrome.js). */
+.site-socials__panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: min(260px, calc(100vw - 32px));
+  padding: 8px;
+  border-radius: 14px;
+  background: var(--color-glass);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .28);
+  display: grid;
+  gap: 2px;
+  opacity: 0;
+  transform: translateY(-6px) scale(.98);
+  transform-origin: top right;
+  transition: opacity .2s ease, transform .2s ease;
+  pointer-events: none;
+  --mood-bg: var(--color-surface-alt);
+  --mood-ink: var(--color-text);
+}
+.site-socials__panel nav { display: grid; gap: 2px; }
+.site-socials__panel .btn { width: 100%; }
+.site-socials__panel.is-open {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+@media (width < 1000px) {
+  .site-socials__panel { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-socials__panel { transition: none; }
+}
+
 /* Пока не проскроллено — хедер и соцсети визуально внутри баннера,
    в 10px от его кромки (кромка = --hero-edge от вьюпорта). При скролле
    site-chrome.js ставит html.chrome--pinned → уезжают в углы. */
@@ -110,9 +149,12 @@ html:not(.chrome--pinned) .site-socials {
 .contact-dialog__panel {
   position: absolute; inset: 10px; display: flex; flex-direction: column;
   padding: clamp(20px, 3vw, 40px); border-radius: 14px;
-  /* Calm chrome tint, not the saturated page-mood colour: a dialog
-     this size in the vivid --mood-bg read as loud/anxious. */
-  background: var(--mood-chrome); color: var(--mood-ink);
+  /* Calm dark chrome close to the page's own background, not the
+     saturated mood colour — a dialog this size in vivid --mood-bg
+     read as loud/anxious. */
+  --mood-bg: var(--color-surface-alt);
+  --mood-ink: var(--color-text);
+  background: var(--mood-bg); color: var(--mood-ink);
   overflow: hidden; isolation: isolate;
   animation: contact-surface-in .8s cubic-bezier(.22,1,.36,1) both;
 }

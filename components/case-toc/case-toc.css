@@ -16,14 +16,17 @@
   max-height: calc(100dvh - var(--header-h, 80px) - 200px);
   overflow: hidden;
   padding: 8px;
-  border: 1px solid color-mix(in srgb, var(--mood-ink) 12%, transparent);
   border-radius: 14px;
-  /* Calm chrome tint, not the saturated page-mood colour: see
-     .contact-dialog__panel in site-chrome.css for the same call. */
-  background: var(--mood-chrome);
+  /* Calm dark chrome close to the page's own background, not the
+     saturated mood colour — same recipe as .site-socials__panel and
+     the footer's own nav dropdown (--color-glass). */
+  --mood-bg: var(--color-surface-alt);
+  --mood-ink: var(--color-text);
+  background: var(--color-glass);
   color: var(--mood-ink);
-  box-shadow: 0 12px 32px rgba(24, 24, 27, .12);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .28);
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 .work-toc__panel nav { position: relative; display: grid; gap: 2px; overflow-y: auto; overscroll-behavior: contain; }
 .work-toc__panel .btn { width: 100%; }

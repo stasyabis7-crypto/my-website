@@ -152,7 +152,34 @@
       }
     }
 
-    // Общий список: десктопный попап или мобильная шторка.
+    // Мобилка/планшет (<1000px): полноэкранная шторка, как раньше — нет
+    // места для анкора. Десктоп: маленький попап у кнопки, без модального
+    // затемнения/лока скролла (см. .site-socials__panel в site-chrome.css).
+    function isDesktop() { return !socialsMq.matches; }
+    function makeRow(it, onActivate) {
+      var el;
+      if (it.copy) {
+        el = document.createElement('button');
+        el.type = 'button';
+        el.addEventListener('click', function () {
+          copyText(it.copy, function () {
+            el.lastChild.textContent = 'Почта скопирована';
+            clearTimeout(el._t);
+            el._t = setTimeout(function () { el.lastChild.textContent = it.label; }, 1800);
+          });
+        });
+      } else {
+        el = document.createElement('a');
+        el.href = it.href;
+        el.target = '_blank';
+        el.rel = 'noopener noreferrer';
+        if (onActivate) el.addEventListener('click', function () { setTimeout(onActivate, 60); });
+      }
+      el.innerHTML = '<span class="icon icon--social-' + it.icon + '" aria-hidden="true"></span>';
+      el.appendChild(document.createTextNode(it.label));
+      return el;
+    }
+
     var sheet;
     var inactive = [];
     function setBackgroundInert() {
@@ -200,27 +227,8 @@
         sheet.innerHTML = head;
         var rows = sheet.querySelector('[data-rows]');
         ITEMS.forEach(function (it, index) {
-          var el;
-          if (it.copy) {
-            el = document.createElement('button');
-            el.type = 'button';
-            el.addEventListener('click', function () {
-              copyText(it.copy, function () {
-                el.lastChild.textContent = 'Почта скопирована';
-                clearTimeout(el._t);
-                el._t = setTimeout(function () { el.lastChild.textContent = it.label; }, 1800);
-              });
-            });
-          } else {
-            el = document.createElement('a');
-            el.href = it.href;
-            el.target = '_blank';
-            el.rel = 'noopener noreferrer';
-            el.addEventListener('click', function () { setTimeout(closeSheet, 60); });
-          }
+          var el = makeRow(it, closeSheet);
           el.className = 'contact-row btn btn--fill-white btn--icon-left';
-          el.innerHTML = '<span class="icon icon--social-' + it.icon + '" aria-hidden="true"></span>';
-          el.appendChild(document.createTextNode(it.label));
           var item = document.createElement('div');
           item.className = 'contact-dialog__item';
           item.style.setProperty('--item-index', index);
@@ -253,8 +261,79 @@
       var c = sheet.querySelector('.contact-dialog__close');
       if (c) c.focus({ preventScroll: true });
     }
+
+    var popover, popoverOpen = false;
+    function ensurePopover() {
+      if (popover) return;
+      popover = document.createElement('div');
+      popover.className = 'site-socials__panel';
+      popover.id = 'site-socials-panel';
+      popover.inert = true;
+      var nav = document.createElement('nav');
+      nav.setAttribute('aria-label', 'Связаться');
+      ITEMS.forEach(function (it) {
+        var el = makeRow(it, closePopover);
+        el.className = 'btn btn--fill-toc btn--icon-left';
+        nav.appendChild(el);
+      });
+      popover.appendChild(nav);
+      wrap.appendChild(popover);
+    }
+    function closePopover(focusToggle) {
+      if (!popoverOpen) return;
+      popoverOpen = false;
+      popover.classList.remove('is-open');
+      popover.inert = true;
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      if (focusToggle) toggle.focus({ preventScroll: true });
+    }
+    function openPopover() {
+      ensurePopover();
+      if (popoverOpen) return;
+      popoverOpen = true;
+      popover.inert = false;
+      popover.classList.add('is-open');
+      if (toggle) toggle.setAttribute('aria-expanded', 'true');
+    }
+    // Click-only, stays open until an item, an empty area of the page,
+    // Escape, or the trigger itself closes it — no hover/pointerleave.
+    document.addEventListener('pointerdown', function (e) {
+      if (popoverOpen && !wrap.contains(e.target)) closePopover();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (popoverOpen && e.key === 'Escape') { e.preventDefault(); closePopover(true); }
+    });
+    wrap.addEventListener('focusout', function (e) {
+      if (popoverOpen && !wrap.contains(e.relatedTarget)) closePopover();
+    });
+
+    function syncSocialsMode() {
+      if (isDesktop()) {
+        if (sheet && !sheet.hidden) closeSheet();
+        if (toggle) {
+          toggle.setAttribute('aria-haspopup', 'true');
+          toggle.setAttribute('aria-controls', 'site-socials-panel');
+          toggle.setAttribute('aria-expanded', String(popoverOpen));
+        }
+      } else {
+        closePopover();
+        if (toggle) {
+          toggle.setAttribute('aria-haspopup', 'dialog');
+          toggle.setAttribute('aria-controls', 'site-socials-dialog');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      }
+    }
     ensureSheet();
-    if (toggle) toggle.addEventListener('click', function (e) { e.stopPropagation(); openSheet(); });
+    ensurePopover();
+    syncSocialsMode();
+    (socialsMq.addEventListener
+      ? socialsMq.addEventListener('change', syncSocialsMode)
+      : socialsMq.addListener(syncSocialsMode));
+    if (toggle) toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (isDesktop()) { popoverOpen ? closePopover() : openPopover(); } else { openSheet(); }
+    });
   })();
 
   function measureSocialsOffset() {
