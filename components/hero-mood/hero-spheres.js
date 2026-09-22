@@ -175,7 +175,10 @@
     const dt=!reduced.matches&&last?Math.min((now-last)/1000,.05):0;
     time+=dt;last=now;ctx.clearRect(0,0,w,h);
     const cycle=time%9, mobile=w<600, positions=[];
-    if(cycle<previousCycle)motion.clear();
+    if(cycle<previousCycle){
+      // Edge spheres keep their velocity through the loop boundary.
+      for(const anchor of anchors)if(anchor.order%5!==0)motion.delete(anchor.i);
+    }
     previousCycle=cycle;
     for(const anchor of anchors){
       const {i,r}=anchor,stagger=anchor.order*(mobile?.06:.04);
@@ -190,7 +193,8 @@
       // A few spheres wait half-hidden at the edge before their staggered entry.
       // After the exit they gently return to that same position for a seamless loop.
       let fromX=anchor.x,fromY=anchor.y,endX=anchor.x,endY=anchor.y;
-      const edge=peeking?-r*.45:-r-70;
+      const edgePhase=time*Math.PI*4/9+i*1.7;
+      const edge=peeking?-r*.12+Math.sin(edgePhase)*r*.10:-r-70;
       if(mobile&&peeking&&anchor.y<contentTop-20){
         fromX=anchor.x<w/2?edge:w-edge;endX=anchor.x<w/2?-r-70:w+r+70;
         fromY=endY=Math.max(130,anchor.y);
@@ -199,6 +203,13 @@
       else if(anchor.y>top){fromY=h-edge;endY=h+r+70;}
       else if(anchor.x<w/2){fromX=edge;endX=-r-70;}
       else {fromX=w-edge;endX=w+r+70;}
+      if(peeking){
+        const sideways=(mobile&&anchor.y<contentTop-20)||
+          (anchor.y>=contentTop-20&&anchor.y<=top);
+        const driftAlongEdge=Math.cos(edgePhase)*r*.24;
+        if(sideways)fromY+=driftAlongEdge;
+        else fromX+=driftAlongEdge;
+      }
       p.x=fromX+(p.x-fromX)*ease;
       p.y=fromY+(p.y-fromY)*ease;
       p.x+=(endX-p.x)*leave*leave;
@@ -208,7 +219,7 @@
       if(peeking){p.x+=(fromX-p.x)*returnEase;p.y+=(fromY-p.y)*returnEase;}
       // Small circular overshoot conveys inertia without deforming the sphere.
       p.y+=Math.sin(enter*Math.PI*2)*r*.25*(1-enter);
-      const edgeRotation=(i%2?1:-1)*.8;
+      const edgeRotation=(i%2?1:-1)*.8+(peeking?Math.sin(edgePhase)*.10:0);
       p.rotation=Math.sin(phase*.55)*.22*ease*(1-leave)+edgeRotation*(1-ease+leave);
       positions.push(p);
     }
