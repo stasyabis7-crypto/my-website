@@ -136,7 +136,7 @@
     return out;
   }
   let time=reduced.matches?4:0,last=0,w=0,h=0,headerBottom=0,obstacles=[];
-  let anchors=[],bodies=[],copyGuard=null,frame=0,visible=true;
+  let anchors=[],bodies=[],frame=0,visible=true;
   function resize(){
     const bounds=stage.getBoundingClientRect();
     if (w===bounds.width && h===bounds.height) return;
@@ -169,15 +169,11 @@
     }
     const count=Math.min(mobile?24:40,pool.length);
     anchors=Array.from({length:count},(_,i)=>{const p=pool[Math.floor(i*pool.length/count)];const sizes=[1.55,.72,1.05,.82,1.3,.68,1.08,.9];return {...p,r:p.r*sizes[i%sizes.length],i};});
-    const textBoxes=obstacles.slice(0,-1);
-    copyGuard={left:Math.min(...textBoxes.map(box=>box.left)),right:Math.max(...textBoxes.map(box=>box.right)),
-      top:Math.min(...textBoxes.map(box=>box.top)),bottom:Math.max(...textBoxes.map(box=>box.bottom))};
-    const textLeft=obstacles.length>1?Math.min(...obstacles.slice(0,-1).map(box=>box.left)):w*.3;
     for(const p of anchors){
-      const spread=((p.i*17+3)%23)/22;
-      const left=p.r*.25+spread*Math.max(0,textLeft-p.r*1.25-24);
+      // Stagger release points across the entire banner, including behind the copy.
+      const spread=(((p.i*17)%count)+.5)/count;
       p.side=(Math.floor(p.i/4)+p.i)%2;
-      p.x=p.side?w-left:left;
+      p.x=p.r*.45+spread*(w-p.r*.9);
       p.y=-p.r-30-(p.i%3)*22;
       p.delay=.15+((p.i*7)%count)*.095+(p.i%3)*.035;
     }
@@ -195,17 +191,7 @@
     const left=-p.r*.30,right=w+p.r*.30;
     if(p.x<left){p.x=left;if(p.vx<0)p.vx*=-.15;}
     if(p.x>right){p.x=right;if(p.vx>0)p.vx*=-.15;}
-    // A smooth side corridor guides falling spheres around the whole copy block.
-    // There are no per-line shelves and no sideways jumps at a new text line.
-    const smooth=value=>{const t=Math.max(0,Math.min(1,value));return t*t*(3-2*t);};
-    const clearance=smooth((p.y+p.r-copyGuard.top+100)/100)*
-      (1-smooth((p.y-p.r-copyGuard.bottom)/100));
-    if(clearance>0){
-      const wall=p.side?w*.54+(copyGuard.right+p.r+8-w*.54)*clearance:
-        w*.46+(copyGuard.left-p.r-8-w*.46)*clearance;
-      if(p.side&&p.x<wall){p.x=wall;p.vx=Math.max(0,p.vx);}
-      if(!p.side&&p.x>wall){p.x=wall;p.vx=Math.min(0,p.vx);}
-    }
+    // Text is a foreground layer, not a physical obstacle for the spheres.
   }
   function advance(dt){
     time+=dt;
@@ -221,9 +207,6 @@
       p.previousX=p.x;p.previousY=p.y;
       if(p.sleeping)continue;
       p.supported=false;
-      if(!p.cleared&&p.y-p.r>copyGuard.bottom+100){
-        p.cleared=true;p.vx+=(p.side?-1:1)*30;
-      }
       p.vy+=(w<600?520:650)*dt;
       p.vx*=Math.exp(-1.1*dt);
       p.x+=p.vx*dt;p.y+=p.vy*dt;

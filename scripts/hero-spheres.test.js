@@ -75,6 +75,7 @@ const sandbox = {
   assert.equal(drawn.length,0,'Spheres stay invisible before their entrance');
   const first=new Map(),previous=new Map(),arrivals=new Set();
   let bounced=false;
+  const behindText=new Set();
   for(let tick=1;tick<=1200;tick++){
     const [id,callback]=frames.entries().next().value;
     frames.delete(id);callback(1+tick*1000/60);
@@ -87,6 +88,7 @@ const sandbox = {
         first.set(p.id,p);arrivals.add(tick);
         assert.ok(p.y<0,'Each sphere enters from above the banner');
       }
+      if(p.x>480&&p.x<920&&p.y>250&&p.y<450)behindText.add(p.id);
       const before=previous.get(p.id);
       if(before)assert.ok(Math.hypot(p.x-before.x,p.y-before.y)<35,'No sudden sideways relocation during a fall');
       if(before&&p.y<before.y-.1&&before.y>box.height*.5)bounced=true;
@@ -95,6 +97,7 @@ const sandbox = {
     }
   }
   assert.equal(drawn.length,40,'Every picture joins the pile');
+  assert.ok(behindText.size>=4,'Spheres must fall through the middle behind the copy as well as at the sides');
   assert.ok(arrivals.size>=20,'Drops are staggered instead of appearing together');
   assert.ok(bounced,'Spheres rebound softly after contacting the floor or each other');
   assert.ok(drawn.every(p=>p.y-first.get(p.id).y>250),'Every sphere falls down into the banner');
