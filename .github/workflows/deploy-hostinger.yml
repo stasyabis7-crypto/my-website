@@ -56,3 +56,6 @@ jobs:
             **/baseline.json
             **/.DS_Store
             **/.gitkeep
+
+      - name: Verify published HTML cache policy
+        run: node scripts/check-html-cache.js

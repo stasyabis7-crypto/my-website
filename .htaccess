@@ -1,0 +1,10 @@
+# Revalidate page entry points so normal navigation sees the latest hashed assets.
+# Long-lived caching for content-addressed JS, CSS and images is unaffected.
+<IfModule mod_headers.c>
+  <FilesMatch "\.html?$">
+    Header always set Cache-Control "no-cache, must-revalidate"
+    Header always unset Expires
+  </FilesMatch>
+  # Also cover directory entry points, including the homepage at /.
+  Header always set Cache-Control "no-cache, must-revalidate" "expr=%{REQUEST_URI} =~ m#/$#"
+</IfModule>
