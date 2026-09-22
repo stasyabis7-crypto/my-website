@@ -6,6 +6,8 @@ const crypto = require('node:crypto');
 const root = path.resolve(process.argv[2] || path.join(__dirname, '..'));
 // Dependencies precede their importers, so a token change also versions its CSS.
 const assets = [
+  ...Array.from({ length: 40 }, (_, i) =>
+    `components/page-hero/pictures/sphere-${String(i + 1).padStart(2, '0')}.webp`),
   'styles/fonts.css',
   'styles/typography.css',
   'site/typography-rules.js',
@@ -67,7 +69,9 @@ function rewrite(source) {
   return source;
 }
 for (const asset of assets) {
-  const source = rewrite(fs.readFileSync(path.join(root, asset), 'utf8'));
+  const binary = asset.endsWith('.webp');
+  const source = binary ? fs.readFileSync(path.join(root, asset)) :
+    rewrite(fs.readFileSync(path.join(root, asset), 'utf8'));
   const ext = path.extname(asset);
   const original = path.basename(asset);
   const hash = crypto.createHash('sha256').update(source).digest('hex').slice(0, 12);

@@ -44,7 +44,7 @@
 
 | Компонент | Источник / настройка контента | Что переиспользуется |
 | --- | --- | --- |
-| Баннер Главной | [hero-mood](../components/hero-mood/README.md), `template.html`; `components/hero-mood/hero-layout.css`, `hero-viewport.js`, `hero-spheres.js` | Белые сферы, мягкие столкновения, циклические прыжки, появление текста, reduced motion. Закреплён |
+| Баннер Главной | [hero-mood](../components/hero-mood/README.md), `template.html`; `components/hero-mood/hero-layout.css`, `hero-viewport.js`, `hero-spheres.js` | Стеклянные сферы с картинками, последовательный влёт и вылет, плавное движение, появление текста, reduced motion. Закреплён |
 | Галерея Главной | [work-gallery](../components/work-gallery/README.md); контент — `pages/home/data/sections.js` | Жесты, очередь переходов, цикл, курсор, вход по якорю. Закреплена |
 | Коллекции Avito/Ozon на Главной | [project-grid](../components/project-grid/README.md); `pages/home/data/avito.js`, `pages/home/data/ozon.js` | Рендер сетки, варианты карточек, тултипы |
 | Статические карточки разделов | `components/project-cards/project-cards.css/js`, HTML в `projects/` | Область ссылки на всю карточку и единая точка фокуса |

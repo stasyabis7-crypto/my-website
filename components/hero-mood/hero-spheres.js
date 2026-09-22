@@ -1,11 +1,12 @@
-/* Time-based bouncing spheres with native pointer/keyboard actions. */
-(() => {
+/* Glass image spheres: rigid silhouettes, staggered nine-second loop. */
+(async () => {
   'use strict';
-  const hero = document.querySelector('.mood-hero--spheres');
+  const hero=document.querySelector('.mood-hero--spheres');
   if (!hero) return;
-  const canvas = hero.querySelector('.hero-spheres');
-  const ctx = canvas.getContext('2d');
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const canvas=hero.querySelector('.hero-spheres');
+  const ctx=canvas?.getContext('2d');
+  const stage=hero.querySelector('.mood-stage'), content=hero.querySelector('.mood-content');
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const title = hero.querySelector('.mood-title');
   // Preserve the heading's accessible name and spaces, including Cyrillic copy.
   const words = title.textContent.trim().split(/\s+/);
@@ -34,142 +35,215 @@
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   reveal();
   if (!ctx) return;
-  let width = 0, height = 0, frame = 0, last = 0, visible = true;
-  const spheres = [
-    [.36, .108, .25, 3.8, 0], [.56, .055, .42, 3.1, .3],
-    [.76, .028, .32, 2.7, .6], [.92, .012, .65, 2.4, .1],
-    [.64, .009, .72, 2.9, .8], [.84, .007, .88, 3.6, .4],
-    [.26, .005, .70, 3.3, .7], [.46, .006, .53, 2.6, .2],
-    [.96, .019, .20, 2.8, .9]
+  const paths = [
+    'components/page-hero/pictures/sphere-01.webp',
+    'components/page-hero/pictures/sphere-02.webp',
+    'components/page-hero/pictures/sphere-03.webp',
+    'components/page-hero/pictures/sphere-04.webp',
+    'components/page-hero/pictures/sphere-05.webp',
+    'components/page-hero/pictures/sphere-06.webp',
+    'components/page-hero/pictures/sphere-07.webp',
+    'components/page-hero/pictures/sphere-08.webp',
+    'components/page-hero/pictures/sphere-09.webp',
+    'components/page-hero/pictures/sphere-10.webp',
+    'components/page-hero/pictures/sphere-11.webp',
+    'components/page-hero/pictures/sphere-12.webp',
+    'components/page-hero/pictures/sphere-13.webp',
+    'components/page-hero/pictures/sphere-14.webp',
+    'components/page-hero/pictures/sphere-15.webp',
+    'components/page-hero/pictures/sphere-16.webp',
+    'components/page-hero/pictures/sphere-17.webp',
+    'components/page-hero/pictures/sphere-18.webp',
+    'components/page-hero/pictures/sphere-19.webp',
+    'components/page-hero/pictures/sphere-20.webp',
+    'components/page-hero/pictures/sphere-21.webp',
+    'components/page-hero/pictures/sphere-22.webp',
+    'components/page-hero/pictures/sphere-23.webp',
+    'components/page-hero/pictures/sphere-24.webp',
+    'components/page-hero/pictures/sphere-25.webp',
+    'components/page-hero/pictures/sphere-26.webp',
+    'components/page-hero/pictures/sphere-27.webp',
+    'components/page-hero/pictures/sphere-28.webp',
+    'components/page-hero/pictures/sphere-29.webp',
+    'components/page-hero/pictures/sphere-30.webp',
+    'components/page-hero/pictures/sphere-31.webp',
+    'components/page-hero/pictures/sphere-32.webp',
+    'components/page-hero/pictures/sphere-33.webp',
+    'components/page-hero/pictures/sphere-34.webp',
+    'components/page-hero/pictures/sphere-35.webp',
+    'components/page-hero/pictures/sphere-36.webp',
+    'components/page-hero/pictures/sphere-37.webp',
+    'components/page-hero/pictures/sphere-38.webp',
+    'components/page-hero/pictures/sphere-39.webp',
+    'components/page-hero/pictures/sphere-40.webp'
   ];
-  let balls = [];
-  let floor = 0;
-  let gravity = 0;
-  // Slow the whole simulation together, preserving the arcs and soft recovery.
-  const motionSpeed = .55;
-  const controls = document.createElement('div');
-  controls.className = 'hero-sphere-controls';
-  canvas.after(controls);
-  const buttons = spheres.map((_, i) => {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'btn btn--fill-sphere btn--icon-only hero-sphere-control';
-    button.setAttribute('aria-label', `Подбросить шарик ${i + 1}`);
-    button.addEventListener('click', event => {
-      const ball = balls[i];
-      if (!ball) return;
-      if (reduced.matches) {
-        // An immediate shape change acknowledges activation without animation.
-        ball.squash = ball.squash ? 0 : .14;
-        ball.angle = Math.PI / 2;
-        paint();
-        return;
-      }
-      const rect = canvas.getBoundingClientRect();
-      const offset = event.detail ? (ball.x - (event.clientX - rect.left)) / ball.r : 0;
-      ball.vx = Math.max(-1, Math.min(1, offset)) * width * .13;
-      ball.vy = -Math.sqrt(2 * gravity * Math.min(height * .3, 260));
-      impact(ball, height * 1.2, Math.PI / 2);
-      wake();
-    });
-    controls.appendChild(button);
-    return button;
-  });
-  function resetBalls() {
-    floor = height - (width < 600 ? 45 : 32);
-    gravity = height * 1.25;
-    balls = spheres.map(([x, size, amplitude, period, phase], i) => {
-      const r = Math.max(2, Math.min(width, height) * size);
-      return { x: width * x, y: floor - r - height * amplitude * .3, r,
-        vx: (i % 2 ? -1 : 1) * width * (.025 + phase * .02), vy: 0,
-        amplitude, jumps: i % 4, squash: 0, angle: Math.PI / 2 };
-    });
+  const textures = await Promise.all(paths.map(path => new Promise(resolve => {
+    const image = new Image();
+    image.onload = () => {
+      try { resolve(makeGlass(image)); }
+      catch (error) { console.warn('Sphere texture unavailable:', path, error); resolve(makeGlass(null)); }
+    };
+    image.onerror = () => resolve(makeGlass(null));
+    image.src = path;
+  })));
+  function makeGlass(image) {
+    const size=420, source=document.createElement('canvas'), out=document.createElement('canvas');
+    source.width=source.height=out.width=out.height=size;
+    const s=source.getContext('2d'), o=out.getContext('2d');
+    if (image) {
+      const crop=Math.min(image.width,image.height);
+      s.drawImage(image,(image.width-crop)/2,(image.height-crop)/2,crop,crop,0,0,size,size);
+    } else {
+      s.fillStyle='#333b48';s.fillRect(0,0,size,size);
+    }
+    const pixels=s.getImageData(0,0,size,size).data, result=o.createImageData(size,size);
+    for(let y=0;y<size;y++) for(let x=0;x<size;x++) {
+      const nx=(x+.5-size/2)/(size/2), ny=(y+.5-size/2)/(size/2), r=Math.hypot(nx,ny);
+      if(r>1) continue;
+      // Convex lens: enlarged centre, steep compression at the circular rim.
+      const lens=.72+.28*r*r*r*r, ripple=.0025*Math.sin(nx*75+Math.sin(ny*40));
+      const sx=Math.max(0,Math.min(size-1,Math.round((nx*lens+ripple+1)*.5*(size-1))));
+      const sy=Math.max(0,Math.min(size-1,Math.round((ny*lens+ripple+1)*.5*(size-1))));
+      const a=(y*size+x)*4,b=(sy*size+sx)*4;
+      const shade=.94-.30*Math.pow(r,5), grain=Math.sin(x*12.9898+y*78.233)*1.2;
+      for(let c=0;c<3;c++) result.data[a+c]=pixels[b+c]*shade+grain;
+      result.data[a+3]=Math.min(255,(1-r)*size*128);
+    }
+    o.putImageData(result,0,0);
+    const circle=()=>{o.beginPath();o.arc(210,210,208,0,Math.PI*2);};
+    circle();o.save();o.clip();
+    let g=o.createRadialGradient(150,110,10,210,210,210);
+    g.addColorStop(0,'#ffffff32');g.addColorStop(.48,'#ffffff00');g.addColorStop(.83,'#d0e9ff08');g.addColorStop(.94,'#d9f4ff88');g.addColorStop(1,'#ffffff18');o.fillStyle=g;o.fillRect(0,0,size,size);
+    o.translate(210,210);o.rotate(-.5);
+    o.beginPath();o.ellipse(-35,-149,86,15,0,0,Math.PI*2);o.fillStyle='#ffffffb0';o.filter='blur(6px)';o.fill();
+    o.filter='blur(2px)';o.beginPath();o.ellipse(25,177,58,5,0,0,Math.PI*2);o.fillStyle='#d8eaffae';o.fill();o.restore();
+    circle();o.lineWidth=2;o.strokeStyle='#ffffff65';o.stroke();
+    return out;
   }
-  function impact(ball, speed, angle) {
-    ball.squash = Math.min(.24, .04 + speed / Math.max(height, 1) * .1);
-    ball.angle = angle;
-  }
-  function step(dt) {
-    for (const ball of balls) {
-      ball.squash *= Math.exp(-dt * 9);
-      ball.vy += gravity * dt;
-      ball.x += ball.vx * dt; ball.y += ball.vy * dt;
-      if (ball.x < ball.r || ball.x > width - ball.r) {
-        ball.x = Math.max(ball.r, Math.min(width - ball.r, ball.x));
-        impact(ball, Math.abs(ball.vx), 0); ball.vx *= -1;
+  let time=reduced.matches?4:0,last=0,w=0,h=0,top=0,contentTop=0,obstacles=[];
+  let anchors=[],motion=new Map(),previousCycle=0,frame=0,visible=true;
+  function resize(){
+    const bounds=stage.getBoundingClientRect();
+    if (w===bounds.width && h===bounds.height) return;
+    w=bounds.width;h=bounds.height;
+    top=content.getBoundingClientRect().bottom-bounds.top+16;
+    contentTop=content.getBoundingClientRect().top-bounds.top;
+    obstacles=[];
+    for(const el of content.querySelectorAll('h1,p,a')){
+      const rects=[];
+      if(el.matches('a'))rects.push(el.getBoundingClientRect());
+      else {
+        const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
+        while(walker.nextNode()){
+          const range=document.createRange();range.selectNodeContents(walker.currentNode);
+          rects.push(...range.getClientRects());
+        }
       }
-      if (ball.y + ball.r >= floor && ball.vy > 0) {
-        ball.y = floor - ball.r;
-        impact(ball, ball.vy, Math.PI / 2);
-        ball.jumps++;
-        const available = width < 600 ? Math.max(70, height - hero.querySelector('.mood-content').offsetHeight - 220) : height * .7;
-        const leap = ball.jumps % 4 === 0 ? height * 1.4 + ball.r * 2 : available * ball.amplitude;
-        ball.vy = -Math.sqrt(2 * gravity * leap);
+      for(const b of rects)if(b.width>0)obstacles.push({left:b.left-bounds.left-9,right:b.right-bounds.left+9,top:b.top-bounds.top-7,bottom:b.bottom-bounds.top+7});
+    }
+    const header=document.querySelector('.site-header').getBoundingClientRect();
+    obstacles.push({left:header.left-bounds.left-6,right:header.right-bounds.left+6,top:header.top-bounds.top-6,bottom:header.bottom-bounds.top+6});
+    const d=Math.min(devicePixelRatio,2);canvas.width=w*d;canvas.height=h*d;ctx.setTransform(d,0,0,d,0,0);
+    const mobile=w<600,base=mobile?w/11.8:Math.min(w/23,64),pool=[];
+    let row=0;
+    for(let y=106+base*.5;y<h-65;y+=base*1.78,row++){
+      for(let x=base*.45+(row%2)*base;x<w+base*.2;x+=base*2.05){
+        const r=base*(.87+.24*(.5+.5*Math.sin(row*13+x)));
+        const candidate={x,y,r};
+        if(!obstacles.some(box=>Math.hypot(x-Math.max(box.left,Math.min(box.right,x)),y-Math.max(box.top,Math.min(box.bottom,y)))<r+5))pool.push(candidate);
       }
     }
-    for (let i = 0; i < balls.length; i++) for (let j = i + 1; j < balls.length; j++) {
-      const a = balls[i], b = balls[j];
-      const dx = b.x - a.x, dy = b.y - a.y, distance = Math.hypot(dx, dy);
-      if (!distance || distance >= a.r + b.r) continue;
-      const nx = dx / distance, ny = dy / distance;
-      const ma = a.r * a.r, mb = b.r * b.r;
-      const shareA = mb / (ma + mb), shareB = ma / (ma + mb);
-      const overlap = a.r + b.r - distance;
-      a.x -= nx * overlap * shareA; a.y -= ny * overlap * shareA;
-      b.x += nx * overlap * shareB; b.y += ny * overlap * shareB;
-      const velocity = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
-      if (velocity >= 0) continue;
-      const impulse = -1.65 * velocity;
-      a.vx -= impulse * shareA * nx; a.vy -= impulse * shareA * ny;
-      b.vx += impulse * shareB * nx; b.vy += impulse * shareB * ny;
-      impact(a, -velocity, Math.atan2(ny, nx)); impact(b, -velocity, Math.atan2(ny, nx));
+    const count=Math.min(mobile?24:40,pool.length);
+    anchors=Array.from({length:count},(_,i)=>{const p=pool[Math.floor(i*pool.length/count)];const sizes=[1.55,.72,1.05,.82,1.3,.68,1.08,.9];return {...p,r:p.r*sizes[i%sizes.length],i};});
+    // Interleave the entry order across the field, avoiding simultaneous rows.
+    anchors.forEach((p,i)=>p.order=(i*7)%count);
+    motion.clear();
+    wake();
+  }
+
+  function protect(p){
+    for(const box of obstacles){
+      const nx=Math.max(box.left,Math.min(box.right,p.x)),ny=Math.max(box.top,Math.min(box.bottom,p.y));
+      let dx=p.x-nx,dy=p.y-ny,dist=Math.hypot(dx,dy);
+      if(dist<p.r+3){
+        if(dist<.01){dx=p.x<w/2?-1:1;dy=0;dist=1;}
+        const push=p.r+3-dist;p.x+=dx/dist*push;p.y+=dy/dist*push;
+      }
     }
   }
-  function paint() {
-    ctx.clearRect(0, 0, width, height);
-    for (const [i, ball] of balls.entries()) {
-      const { x: cx, r: radius } = ball;
-      const cy = reduced.matches ? floor - radius : ball.y;
-      buttons[i].style.left = `${cx}px`;
-      buttons[i].style.top = `${cy}px`;
-      buttons[i].style.setProperty('--sphere-hit-size', `${Math.max(44, radius * 2)}px`);
-      buttons[i].hidden = cy + radius < 0 || cy - radius > height;
-      const lift = Math.max(0, floor - radius - cy);
-      ctx.save(); ctx.translate(cx, floor); ctx.scale(1, .12);
-      const shadow = ctx.createRadialGradient(0, 0, 0, 0, 0, radius * 1.6);
-      shadow.addColorStop(0, `rgba(255,255,255,${.12 * Math.max(0, 1 - lift / height)})`);
-      shadow.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.fillStyle = shadow; ctx.fillRect(-radius * 2, -radius * 2, radius * 4, radius * 4); ctx.restore();
-      ctx.save(); ctx.translate(cx, cy); ctx.rotate(ball.angle);
-      const squash = ball.squash;
-      ctx.scale(1 - squash, 1 / (1 - squash)); ctx.rotate(-ball.angle);
-      const surface = ctx.createRadialGradient(-radius * .3, -radius * .4, 0, 0, 0, radius);
-      surface.addColorStop(0, '#ffffff'); surface.addColorStop(.5, '#f1f2ef'); surface.addColorStop(.85, '#ced1ce'); surface.addColorStop(1, '#a6aca8');
-      ctx.fillStyle = surface; ctx.beginPath(); ctx.arc(0, 0, radius, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+  function draw(now){
+    const dt=!reduced.matches&&last?Math.min((now-last)/1000,.05):0;
+    time+=dt;last=now;ctx.clearRect(0,0,w,h);
+    const cycle=time%9, mobile=w<600, positions=[];
+    if(cycle<previousCycle)motion.clear();
+    previousCycle=cycle;
+    for(const anchor of anchors){
+      const {i,r}=anchor,stagger=anchor.order*(mobile?.06:.04);
+      const enter=Math.max(0,Math.min(1,(cycle-.15-stagger)/.95));
+      const leave=Math.max(0,Math.min(1,(cycle-5.6-stagger*.65)/.85));
+      if(enter===0)continue;
+      const phase=time*1.65+i*2.4;
+      const drift=mobile?10:22;
+      const p={i,r,x:anchor.x+Math.sin(phase)*drift+Math.sin(time*1.1)*drift*.7,y:anchor.y+Math.cos(phase*.8)*drift};
+      const ease=1-Math.pow(1-enter,3);
+      let fromX=p.x,fromY=p.y;
+      if(anchor.y<contentTop-20)fromY=-r-70;
+      else if(anchor.y>top)fromY=h+r+70;
+      else fromX=anchor.x<w/2?-r-70:w+r+70;
+      p.x=fromX+(p.x-fromX)*ease+(fromX-anchor.x)*leave*leave;
+      p.y=fromY+(p.y-fromY)*ease+(fromY-anchor.y)*leave*leave;
+      // Small circular overshoot conveys inertia without deforming the sphere.
+      p.y+=Math.sin(enter*Math.PI*2)*r*.25*(1-enter);
+      p.rotation=Math.sin(phase*.55)*.22+(1-ease)*(i%2?1:-1)*.8+leave*.7;
+      positions.push(p);
     }
+    // Rigid contacts keep the dense moving field outside the text and CTA.
+    for(let pass=0;pass<7;pass++){
+      for(let a=0;a<positions.length;a++)for(let b=a+1;b<positions.length;b++){
+        const p=positions[a],q=positions[b],dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy)||1,min=p.r+q.r+2;
+        if(d<min){const push=(min-d)*.5;p.x-=dx/d*push;p.y-=dy/d*push;q.x+=dx/d*push;q.y+=dy/d*push;}
+      }
+      positions.forEach(protect);
+    }
+    // Preserve position and velocity between frames. Collision targets can change
+    // abruptly, but a visible sphere accelerates toward them instead of teleporting.
+    for(const p of positions){
+      let state=motion.get(p.i);
+      if(!state){state={x:p.x,y:p.y,vx:0,vy:0};motion.set(p.i,state);}
+      const steps=Math.max(1,Math.ceil(dt*120)),step=dt/steps;
+      for(let n=0;n<steps;n++){
+        let ax=(p.x-state.x)*324-state.vx*36,ay=(p.y-state.y)*324-state.vy*36;
+        const acceleration=Math.hypot(ax,ay),limit=2800;
+        if(acceleration>limit){ax*=limit/acceleration;ay*=limit/acceleration;}
+        state.vx+=ax*step;state.vy+=ay*step;
+        state.x+=state.vx*step;state.y+=state.vy*step;
+      }
+      p.x=state.x;p.y=state.y;
+    }
+    for(const p of positions){
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rotation);
+      ctx.shadowColor='#00000060';ctx.shadowBlur=9;ctx.shadowOffsetY=5;
+      ctx.drawImage(textures[p.i],-p.r,-p.r,p.r*2,p.r*2);ctx.restore();
+    }
+    canvas.dataset.sphereCount=String(anchors.length);
+    frame=0;
+    if (canAnimate()) frame=requestAnimationFrame(draw);
   }
-  function tick(now) {
-    frame = 0;
-    const dt = last ? Math.min((now - last) / 1000, .04) : 0;
-    for (let i = 0; i < 4; i++) step(dt * motionSpeed / 4);
-    last = now; paint();
-    if (visible && !document.hidden && !reduced.matches) frame = requestAnimationFrame(tick);
+  function canAnimate() {
+    return visible && !document.hidden && !reduced.matches &&
+      !document.documentElement.matches('.is-page-loading, .is-transition-pending');
   }
   function wake() {
-    cancelAnimationFrame(frame); frame = 0; last = 0;
-    paint();
-    if (visible && !document.hidden && !reduced.matches) frame = requestAnimationFrame(tick);
+    cancelAnimationFrame(frame);frame=0;last=0;
+    if (w && h) draw(performance.now());
   }
-  new ResizeObserver(() => {
-    width = canvas.clientWidth; height = canvas.clientHeight;
-    const dpr = Math.min(devicePixelRatio || 1, 2);
-    canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); resetBalls(); wake();
-  }).observe(canvas);
-  const visibilityObserver = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; wake(); });
+  await document.fonts.ready;
+  new ResizeObserver(resize).observe(stage);
+  const visibilityObserver=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;wake();});
   visibilityObserver.observe(canvas);
-  // Reconnect after the initial layout/transition has settled.
-  addEventListener('pageshow', () => { visibilityObserver.unobserve(canvas); visibilityObserver.observe(canvas); });
-  document.addEventListener('visibilitychange', wake);
-  reduced.addEventListener('change', wake);
+  document.addEventListener('visibilitychange',wake);
+  addEventListener('pageshow',wake);
+  reduced.addEventListener('change',()=>{time=reduced.matches?4:0;motion.clear();wake();});
+  new MutationObserver(wake).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+  resize();
 })();

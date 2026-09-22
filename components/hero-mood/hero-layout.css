@@ -99,8 +99,12 @@
 from { opacity: 0; }
 to { opacity: 1; } }
 @media (max-width: 599px) {
-.mood-hero--spheres .mood-stage { padding-top: 132px; padding-inline: 22px; min-height: 700px; }
+.mood-hero--spheres .mood-stage { padding-top: 220px; padding-inline: 22px; min-height: 800px; }
 }
 @media (prefers-reduced-motion: reduce) {
 .mood-hero--spheres .hero-reveal-word, .mood-hero--spheres .mood-subtitle, .mood-hero--spheres .mood-actions { animation: none !important; opacity: 1 !important; }
+}
+
+@media (max-width: 599px) {
+  .mood-hero--spheres .mood-content { width: calc(100% - 28px); }
 }
