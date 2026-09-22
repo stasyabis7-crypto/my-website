@@ -182,7 +182,7 @@
     previousCycle=cycle;
     for(const anchor of anchors){
       const {i,r}=anchor,stagger=anchor.order*(mobile?.06:.04);
-      const enter=Math.max(0,Math.min(1,(cycle-.15-stagger)/.95));
+      const enter=Math.max(0,Math.min(1,(cycle-.6-stagger)/.95));
       const leave=Math.max(0,Math.min(1,(cycle-5.6-stagger*.65)/.85));
       const peeking=anchor.order%5===0;
       if(enter===0&&!peeking)continue;
@@ -194,7 +194,7 @@
       // After the exit they gently return to that same position for a seamless loop.
       let fromX=anchor.x,fromY=anchor.y,endX=anchor.x,endY=anchor.y;
       const edgePhase=time*Math.PI*4/9+i*1.7;
-      const edge=peeking?-r*.12+Math.sin(edgePhase)*r*.10:-r-70;
+      const edge=peeking?r*.30+Math.sin(edgePhase)*r*.07:-r-70;
       if(mobile&&peeking&&anchor.y<contentTop-20){
         fromX=anchor.x<w/2?edge:w-edge;endX=anchor.x<w/2?-r-70:w+r+70;
         fromY=endY=Math.max(130,anchor.y);
