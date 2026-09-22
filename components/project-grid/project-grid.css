@@ -14,14 +14,14 @@
 .project-slider__track { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 16px; }
 .project-card { min-width: 0; width: 100%; }
 .project-card__media { position: relative; aspect-ratio: 1; }
-.project-card__cover { position: absolute; inset: 0; overflow: hidden; border-radius: 32px; background: var(--cover-color); }
+.project-card__cover { position: absolute; inset: 0; overflow: hidden; border-radius: var(--wg-radius); background: var(--cover-color); }
 .project-card__image { display: block; position: absolute; user-select: none; pointer-events: none; }
 .project-card--phone .project-card__image { width: 66%; height: auto; top: 17%; left: 17%; }
 .project-card--desktop .project-card__image { width: 88%; height: auto; top: 50%; left: 6%; transform: translateY(-50%); border-radius: 8px; }
 /* Keep the CRM image cropped below the cover with less empty space above it. */
 .project-slider[data-projects="ozon"] .project-card[data-index="2"] .project-card__image { top: 70%; }
 .project-card--square .project-card__image { width: 100%; height: 100%; object-fit: cover; top: 0; left: 0; }
-.project-card__link { position: absolute; inset: 0; z-index: 1; border-radius: 32px; }
+.project-card__link { position: absolute; inset: 0; z-index: 1; border-radius: var(--wg-radius); }
 .project-card__link:focus-visible { outline: 3px solid var(--color-action-active); outline-offset: -5px; }
 .project-card__open { position: absolute; right: 0; bottom: 0; z-index: 2; }
 .project-card__badge { position: absolute; left: 16px; top: 16px; padding: 8px 14px; border-radius: 999px; background: #fff; color: #111; }
@@ -34,7 +34,6 @@
 @media (max-width: 599px) {
   .project-slider { padding-top: 16px; }
   .project-slider__track { grid-template-columns: minmax(0, 1fr); }
-  .project-card__cover { border-radius: 24px; }
 }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .project-card--interface.project-card--linked .project-card__image {
@@ -63,7 +62,7 @@
 }
 .project-card--panel {
   position: relative; display: flex; flex-direction: column;
-  overflow: hidden; border-radius: 32px; background: #fff; color: #111;
+  overflow: hidden; border-radius: var(--wg-radius); background: #fff; color: #111;
 }
 .project-card--panel .project-card__copy {
   margin: 0; padding: 32px;
@@ -75,7 +74,6 @@
 .project-card--panel .project-card__text { position: relative; z-index: 2; }
 .project-card--panel.project-card--linked .project-card__text:not([data-truncated]) { pointer-events: none; }
 @media (max-width: 599px) {
-  .project-card--panel { border-radius: 24px; }
   .project-card--panel .project-card__copy { padding: 24px; min-height: 0; }
   .project-card--panel.project-card--linked .project-card__copy { padding-right: calc(var(--button-height) + 24px); }
 }
