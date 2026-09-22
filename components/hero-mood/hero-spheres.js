@@ -19,9 +19,10 @@
     span.textContent = word;
     return i ? [document.createTextNode(' '), span] : [span];
   }));
+  let sceneReady=!ctx;
   hero.classList.add('is-reveal-pending');
   const reveal = () => {
-    if (document.hidden || document.documentElement.matches('.is-page-loading, .is-transition-pending')) return;
+    if (!sceneReady || document.hidden || document.documentElement.matches('.is-page-loading, .is-transition-pending')) return;
     const lines = [];
     title.querySelectorAll('.hero-reveal-word').forEach(word => {
       if (!lines.includes(word.offsetTop)) lines.push(word.offsetTop);
@@ -30,20 +31,21 @@
     hero.classList.remove('is-reveal-pending');
     hero.classList.add('is-revealing');
     observer.disconnect();
+    if(ctx)wake();
   };
   const observer = new MutationObserver(reveal);
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   reveal();
   // A restored page keeps completed CSS animations. Replay the copy alongside
   // the sphere reset, rather than showing old text over a new falling scene.
-  addEventListener('pageshow',event=>{
-    if(!event.persisted)return;
+  const restartReveal=()=>{
     hero.classList.remove('is-revealing');
     hero.classList.add('is-reveal-pending');
     void hero.offsetWidth;
     observer.observe(document.documentElement,{attributes:true,attributeFilter:['class']});
     reveal();
-  });
+  };
+  addEventListener('pageshow',event=>{if(event.persisted)restartReveal();});
   document.addEventListener('visibilitychange',()=>{
     if(hero.classList.contains('is-reveal-pending'))reveal();
   });
@@ -134,7 +136,7 @@
     return out;
   }
   let time=reduced.matches?4:0,last=0,w=0,h=0,headerBottom=0,obstacles=[];
-  let anchors=[],bodies=[],frame=0,visible=true;
+  let anchors=[],bodies=[],copyGuard=null,frame=0,visible=true;
   function resize(){
     const bounds=stage.getBoundingClientRect();
     if (w===bounds.width && h===bounds.height) return;
@@ -167,6 +169,9 @@
     }
     const count=Math.min(mobile?24:40,pool.length);
     anchors=Array.from({length:count},(_,i)=>{const p=pool[Math.floor(i*pool.length/count)];const sizes=[1.55,.72,1.05,.82,1.3,.68,1.08,.9];return {...p,r:p.r*sizes[i%sizes.length],i};});
+    const textBoxes=obstacles.slice(0,-1);
+    copyGuard={left:Math.min(...textBoxes.map(box=>box.left)),right:Math.max(...textBoxes.map(box=>box.right)),
+      top:Math.min(...textBoxes.map(box=>box.top)),bottom:Math.max(...textBoxes.map(box=>box.bottom))};
     const textLeft=obstacles.length>1?Math.min(...obstacles.slice(0,-1).map(box=>box.left)):w*.3;
     for(const p of anchors){
       const spread=((p.i*17+3)%23)/22;
@@ -181,49 +186,63 @@
   }
   function resetBodies(){
     time=0;last=0;
-    bodies=anchors.map(p=>({...p,vx:(p.side?-1:1)*(8+(p.i%5)*5),vy:15+(p.i%4)*22}));
+    bodies=anchors.map(p=>({...p,vx:(p.side?-1:1)*(8+(p.i%5)*5),vy:15+(p.i%4)*22,quiet:0,sleeping:false,supported:false,spawned:false}));
     if(reduced.matches)for(let i=0;i<1800;i++)advance(1/120);
   }
   function constrain(p){
     const floor=h-p.r-10;
-    if(p.y>floor){p.y=floor;if(p.vy>0)p.vy=p.vy>25?-p.vy*.18:0;p.vx*=.96;}
+    if(p.y>=floor){p.supported=true;p.y=floor;if(p.vy>0)p.vy=p.vy>25?-p.vy*.18:0;p.vx*=.96;}
     const left=-p.r*.30,right=w+p.r*.30;
     if(p.x<left){p.x=left;if(p.vx<0)p.vx*=-.15;}
     if(p.x>right){p.x=right;if(p.vx>0)p.vx*=-.15;}
-    // Let the rain pass beside the copy rather than piling onto invisible text shelves.
-    for(const box of obstacles.slice(0,-1)){
-      const nx=Math.max(box.left,Math.min(box.right,p.x)),ny=Math.max(box.top,Math.min(box.bottom,p.y));
-      if(Math.hypot(p.x-nx,p.y-ny)<p.r+5){
-        p.x=p.x<w/2?box.left-p.r-5:box.right+p.r+5;
-        p.vx*=.4;
-      }
+    // A smooth side corridor guides falling spheres around the whole copy block.
+    // There are no per-line shelves and no sideways jumps at a new text line.
+    const smooth=value=>{const t=Math.max(0,Math.min(1,value));return t*t*(3-2*t);};
+    const clearance=smooth((p.y+p.r-copyGuard.top+100)/100)*
+      (1-smooth((p.y-p.r-copyGuard.bottom)/100));
+    if(clearance>0){
+      const wall=p.side?w*.54+(copyGuard.right+p.r+8-w*.54)*clearance:
+        w*.46+(copyGuard.left-p.r-8-w*.46)*clearance;
+      if(p.side&&p.x<wall){p.x=wall;p.vx=Math.max(0,p.vx);}
+      if(!p.side&&p.x>wall){p.x=wall;p.vx=Math.min(0,p.vx);}
     }
   }
   function advance(dt){
     time+=dt;
-    const active=bodies.filter(p=>time>p.delay);
-    const copyBottom=obstacles.length>1?Math.max(...obstacles.slice(0,-1).map(box=>box.bottom)):h*.55;
+    // Wait for a free release point: overlapping newborn bodies used to eject
+    // their neighbours sideways before the first visible falling frame.
+    for(const p of bodies){
+      if(p.spawned||time<=p.delay)continue;
+      if(bodies.some(q=>q.spawned&&Math.hypot(p.x-q.x,p.y-q.y)<p.r+q.r+10))continue;
+      p.spawned=true;
+    }
+    const active=bodies.filter(p=>p.spawned);
     for(const p of active){
-      p.vy+= (w<600?520:650)*dt;
-      // A mild inward pull lets the lower corner piles spread onto the banner floor.
-      if(p.y-p.r>copyBottom){
-        const target=w*(p.side?.77:.23);
-        p.vx+=(target-p.x)*.35*dt;
+      p.previousX=p.x;p.previousY=p.y;
+      if(p.sleeping)continue;
+      p.supported=false;
+      if(!p.cleared&&p.y-p.r>copyGuard.bottom+100){
+        p.cleared=true;p.vx+=(p.side?-1:1)*30;
       }
-      p.vx*=Math.exp(-.8*dt);
+      p.vy+=(w<600?520:650)*dt;
+      p.vx*=Math.exp(-1.1*dt);
       p.x+=p.vx*dt;p.y+=p.vy*dt;
     }
     for(let pass=0;pass<20;pass++){
-      active.forEach(constrain);
+      active.filter(p=>!p.sleeping).forEach(constrain);
       for(let a=0;a<active.length;a++)for(let b=a+1;b<active.length;b++){
         const p=active[a],q=active[b],dx=q.x-p.x,dy=q.y-p.y;
         const distance=Math.hypot(dx,dy)||.001,gap=p.r+q.r+2;
         if(distance>=gap)continue;
         const nx=dx/distance,ny=dy/distance,penetration=gap-distance;
-        const ip=1/(p.r*p.r),iq=1/(q.r*q.r),sum=ip+iq;
+        const approach=(q.vx-p.vx)*nx+(q.vy-p.vy)*ny;
+        if(approach<-35){p.sleeping=false;q.sleeping=false;p.quiet=0;q.quiet=0;}
+        const ip=p.sleeping?0:1/(p.r*p.r),iq=q.sleeping?0:1/(q.r*q.r),sum=ip+iq;
+        if(!sum)continue;
+        if(ny>.35)p.supported=true;
+        if(ny<-.35)q.supported=true;
         p.x-=nx*penetration*ip/sum;p.y-=ny*penetration*ip/sum;
         q.x+=nx*penetration*iq/sum;q.y+=ny*penetration*iq/sum;
-        const approach=(q.vx-p.vx)*nx+(q.vy-p.vy)*ny;
         if(approach<0){
           const restitution=pass===0&&approach<-30?.20:0;
           const impulse=-(1+restitution)*approach/sum;
@@ -232,13 +251,19 @@
         }
       }
     }
+    for(const p of active){
+      if(p.sleeping)continue;
+      const displacement=Math.hypot(p.x-p.previousX,p.y-p.previousY);
+      p.quiet=p.supported&&displacement<.12&&Math.hypot(p.vx,p.vy)<12?p.quiet+dt:0;
+      if(p.quiet>.45){p.sleeping=true;p.vx=0;p.vy=0;}
+    }
   }
   function draw(now){
     const dt=!reduced.matches&&last?Math.max(0,Math.min((now-last)/1000,.05)):0;
     last=now;ctx.clearRect(0,0,w,h);
     const steps=Math.max(1,Math.ceil(dt*120));
     for(let step=0;step<steps;step++)if(dt)advance(dt/steps);
-    const positions=bodies.filter(p=>time>p.delay);
+    const positions=bodies.filter(p=>p.spawned);
     // Small soft contact shadows strengthen as a sphere approaches the floor.
     for(const p of positions){
       const proximity=Math.max(0,1-(h-p.y-p.r)/(p.r*2));
@@ -260,7 +285,7 @@
     if(canAnimate())frame=requestAnimationFrame(draw);
   }
   function canAnimate() {
-    return visible && !document.hidden && !reduced.matches &&
+    return visible && !document.hidden && !reduced.matches && !hero.classList.contains('is-reveal-pending') &&
       !document.documentElement.matches('.is-page-loading, .is-transition-pending');
   }
   function wake() {
@@ -274,7 +299,9 @@
     // [offscreen, onscreen] together. The final entry is the current state.
     const entry=entries[entries.length-1];
     if(!entry||visible===entry.isIntersecting)return;
-    visible=entry.isIntersecting;wake();
+    visible=entry.isIntersecting;
+    if(visible&&time>2){resetBodies();restartReveal();}
+    wake();
   });
   visibilityObserver.observe(canvas);
   document.addEventListener('visibilitychange',wake);
@@ -289,5 +316,7 @@
     if(next===loading)return;
     loading=next;wake();
   }).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+  sceneReady=true;
   resize();
+  reveal();
 })();

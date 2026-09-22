@@ -10,6 +10,7 @@ const frames = new Map();
 const pageEvents=new Map(),documentEvents=new Map();
 const listen=(events,name,callback)=>events.set(name,[...(events.get(name)||[]),callback]);
 const heroClasses=new Set();
+const revealSceneStates=[];
 let frameId = 0;
 let visibilityObserver;
 let drawn=[];
@@ -34,10 +35,10 @@ const title = {
   querySelectorAll: () => []
 };
 const stage = { getBoundingClientRect: () => box };
-const content = { getBoundingClientRect: () => ({ ...box, top: 160, bottom: 440 }), querySelectorAll: () => [] };
+const content = { getBoundingClientRect: () => ({ ...box, top: 160, bottom: 440 }), querySelectorAll: () => [{ matches:()=>true, getBoundingClientRect:()=>({left:480,right:920,top:250,bottom:450,width:440,height:200}) }] };
 const root = { matches: () => false };
 const hero = {
-  classList: { add(name) { heroClasses.add(name); }, remove(name) { heroClasses.delete(name); }, contains: name=>heroClasses.has(name) },
+  classList: { add(name) { heroClasses.add(name); if(name==='is-revealing')revealSceneStates.push(!!canvas.dataset.sphereCount); }, remove(name) { heroClasses.delete(name); }, contains: name=>heroClasses.has(name) },
   querySelector: selector => ({ '.hero-spheres': canvas, '.mood-stage': stage, '.mood-content': content, '.mood-title': title })[selector]
 };
 const document = {
@@ -64,6 +65,7 @@ const sandbox = {
   const source = fs.readFileSync(path.join(__dirname, '../components/hero-mood/hero-spheres.js'), 'utf8');
   await vm.runInNewContext(source, sandbox);
   assert.equal(frames.size, 1, 'Visible hero starts an animation frame');
+  assert.ok(revealSceneStates.length&&revealSceneStates.every(Boolean),'Copy reveal waits for the sphere scene instead of finishing while assets load');
   visibilityObserver.deliver([{ target: canvas, isIntersecting: false }, { target: canvas, isIntersecting: true }]);
   assert.equal(frames.size, 1, 'A cached-load batch ending visible must keep the animation running');
   visibilityObserver.deliver([{ target: canvas, isIntersecting: true }, { target: canvas, isIntersecting: false }]);
@@ -86,6 +88,7 @@ const sandbox = {
         assert.ok(p.y<0,'Each sphere enters from above the banner');
       }
       const before=previous.get(p.id);
+      if(before)assert.ok(Math.hypot(p.x-before.x,p.y-before.y)<35,'No sudden sideways relocation during a fall');
       if(before&&p.y<before.y-.1&&before.y>box.height*.5)bounced=true;
       assert.equal(p.angle,0,'Pictures stay upright while falling');
       previous.set(p.id,p);
