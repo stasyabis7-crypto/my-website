@@ -278,6 +278,22 @@
       });
       popover.appendChild(nav);
       wrap.appendChild(popover);
+      // Freeze the copy row's width to its initial label — swapping to
+      // the shorter "Почта скопирована" confirmation would otherwise
+      // shrink the whole panel (sized to content) and jump the layout.
+      // Re-measured once the webfont loads, since the fallback-font
+      // width measured at build time can be a few px off.
+      var copyButton = nav.querySelector('button');
+      function freezeCopyWidth() {
+        if (!copyButton) return;
+        // offsetWidth, not getBoundingClientRect — the closed panel is
+        // scale(.98)'d (see .site-socials__panel), which would otherwise
+        // bake in a slightly-too-small frozen width.
+        copyButton.style.minWidth = '';
+        copyButton.style.minWidth = copyButton.offsetWidth + 'px';
+      }
+      freezeCopyWidth();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(freezeCopyWidth);
     }
     function closePopover(focusToggle) {
       if (!popoverOpen) return;
