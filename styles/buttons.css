@@ -630,4 +630,4 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
 .btn.btn--fill-keycap.is-touch-pressed { transform: none; scale: 1; background: transparent; }
 .btn--fill-keycap.is-dragging::before { cursor: grabbing; }
 .btn.btn--fill-keycap:focus-visible { outline: none; }
-.btn.btn--fill-keycap:focus-visible::before { outline: 2px solid #6aa8ff; outline-offset: 5px; }
+.btn.btn--fill-keycap:focus-visible::before { outline: none; }

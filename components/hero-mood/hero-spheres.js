@@ -1,4 +1,4 @@
-/* Falling keycaps with pointer dragging, keyboard actions and a protected copy area. */
+/* Falling keycaps with pointer dragging, keyboard actions and staggered entry behind the copy. */
 (() => {
   'use strict';
   const hero = document.querySelector('.mood-hero--spheres');
@@ -35,8 +35,9 @@
   reveal();
   if (!ctx) return;
   let width = 0, height = 0, frame = 0, last = 0, visible = true;
-  let keys = [], safe, floor, dragged = null;
-  const labels = ['Esc', '⌘', 'A', 'S', 'D', 'F', '↵', '⌥', 'Z', 'X', 'C', 'V', '⇧', '←', '↓', '↑', '→', '⌘', 'B', 'Tab'];
+  let keys = [], floor, dragged = null;
+  let elapsed = 0;
+  const labels = ['Esc', '⌘', 'A', 'S', 'D', 'F', '↵', '⌥', 'Z', 'X', 'C', 'V', '⇧', '←', '↓', '↑', '→', '⌘', 'B', 'Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'H', 'J', 'K', 'L', 'N', 'M'];
   const controls = document.createElement('div');
   controls.className = 'hero-sphere-controls';
   canvas.after(controls);
@@ -44,6 +45,10 @@
   const buttons = labels.map((label, i) => {
     const button = document.createElement('button');
     button.type = 'button';
+    // A keycap owns its touch gesture; do not feed the hero-to-gallery swipe.
+    ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(type => {
+      button.addEventListener(type, event => event.stopPropagation(), { passive: true });
+    });
     button.className = 'btn btn--fill-keycap btn--icon-only hero-sphere-control';
     button.setAttribute('aria-label', `Клавиша ${label}: перетащите или используйте стрелки`);
     button.addEventListener('pointerenter', () => { if (keys[i]) { keys[i].hover = true; paint(); } });
@@ -105,21 +110,19 @@
   function resetKeys() {
     dragged = null;
     buttons.forEach(button => button.classList.remove('is-dragging'));
-    const bounds = canvas.getBoundingClientRect();
-    const content = hero.querySelector('.mood-content').getBoundingClientRect();
-    safe = { left: content.left - bounds.left - 20, right: content.right - bounds.left + 20,
-      top: content.top - bounds.top - 24, bottom: content.bottom - bounds.top + 24 };
+    elapsed = 0;
     floor = height - 20;
     const size = clamp(width * .062, 54, 86);
-    const count = width < 600 ? 12 : labels.length;
+    const count = width < 600 ? 24 : labels.length;
     keys = labels.slice(0, count).map((label, i) => {
       const r = size * .7;
-      let x = r + (width - 2 * r) * ((i * .61803398875) % 1);
-      let y = -r - (i % 5) * size * 1.65;
-      // Narrow screens have no side passage: drop into the space below the copy.
-      if (safe.left < r * 2 && safe.right > width - r * 2) y = safe.bottom + r + (i % 2) * size;
-      else if (x > safe.left - r && x < safe.right + r) x = i % 2 ? width - r * 1.2 : r * 1.2;
-      return { label, x, y, r, size, vx: (i % 2 ? -1 : 1) * 22, vy: 0,
+      const x = r + (width - 2 * r) * ((i * .61803398875 + .18) % 1);
+      const y = -r - 12;
+      // Alternating solo / paired releases, timed in simulation seconds.
+      const batch = Math.floor(i / 3);
+      const delay = .25 + batch * .85 + (i % 3 === 0 ? 0 : .5);
+      return { label, x, y, r, size, delay, active: reduced.matches,
+        vx: (i % 2 ? -1 : 1) * 22, vy: 0,
         angle: (i % 5 - 2) * .12, spin: (i % 3 - 1) * .3, bounce: 0 };
     });
     if (reduced.matches) for (let i = 0; i < 360; i++) step(1 / 60);
@@ -129,17 +132,13 @@
     key.x = clamp(key.x, r, width - r);
     key.y = Math.min(key.y, floor - r);
     if (dragged?.key === key) key.y = Math.max(r, key.y);
-    if (key.x > safe.left - r && key.x < safe.right + r && key.y > safe.top - r && key.y < safe.bottom + r) {
-      const exits = [
-        { distance: key.x - safe.left + r, x: safe.left - r, y: key.y, ok: safe.left >= r * 2 },
-        { distance: safe.right + r - key.x, x: safe.right + r, y: key.y, ok: safe.right <= width - r * 2 },
-        { distance: safe.bottom + r - key.y, x: key.x, y: safe.bottom + r, ok: true }
-      ].filter(exit => exit.ok).sort((a, b) => a.distance - b.distance);
-      key.x = exits[0].x; key.y = exits[0].y;
-    }
   }
+
   function step(dt) {
+    elapsed += dt;
     for (const key of keys) {
+      if (!key.active && elapsed >= key.delay) key.active = true;
+      if (!key.active) continue;
       if (dragged?.key === key) continue;
       key.vy += 850 * dt;
       key.x += key.vx * dt; key.y += key.vy * dt;
@@ -157,6 +156,7 @@
     for (let pass = 0; pass < 4; pass++) {
       for (let i = 0; i < keys.length; i++) for (let j = i + 1; j < keys.length; j++) {
         const a = keys[i], b = keys[j], dx = b.x - a.x, dy = b.y - a.y;
+        if (!a.active || !b.active) continue;
         const distance = Math.hypot(dx, dy), gap = a.r + b.r;
         if (distance >= gap) continue;
         const nx = distance ? dx / distance : 1, ny = distance ? dy / distance : 0;
@@ -171,7 +171,7 @@
           b.vx -= speed * nx * weightB * 1.2; b.vy -= speed * ny * weightB * 1.2;
         }
       }
-      keys.forEach(constrain);
+      keys.filter(key => key.active).forEach(constrain);
     }
   }
   function paint() {
@@ -179,6 +179,7 @@
     const typography = getComputedStyle(hero);
     buttons.forEach((button, i) => { button.hidden = !keys[i]; });
     for (const [i, key] of keys.entries()) {
+      if (!key.active) { buttons[i].hidden = true; continue; }
       const { x, y, size, angle } = key;
       const active = key.hover || key.focus || dragged?.key === key;
       const button = buttons[i];
@@ -190,15 +191,15 @@
       ctx.scale(1 + key.bounce, 1 - key.bounce);
       ctx.shadowColor = 'rgba(0,0,0,.45)'; ctx.shadowBlur = 18; ctx.shadowOffsetY = 10;
       const base = ctx.createLinearGradient(0, -size / 2, 0, size / 2);
-      base.addColorStop(0, active ? '#83b8ff' : '#ffffff');
-      base.addColorStop(1, active ? '#1856cf' : '#9299a5');
+      base.addColorStop(0, active ? '#b3dcff' : '#ffffff');
+      base.addColorStop(1, active ? '#539fe3' : '#9299a5');
       ctx.fillStyle = base; ctx.beginPath(); ctx.roundRect(-size / 2, -size / 2, size, size, size * .19); ctx.fill();
       ctx.shadowColor = 'transparent';
       const top = ctx.createLinearGradient(0, -size / 2, 0, size / 2);
-      top.addColorStop(0, active ? '#6aa8ff' : '#ffffff');
-      top.addColorStop(1, active ? '#2873ed' : '#e4e7ec');
+      top.addColorStop(0, active ? '#a6d8ff' : '#ffffff');
+      top.addColorStop(1, active ? '#71bafa' : '#e4e7ec');
       ctx.fillStyle = top; ctx.beginPath(); ctx.roundRect(-size * .41, -size * .44, size * .82, size * .75, size * .13); ctx.fill();
-      ctx.strokeStyle = active ? '#a5caff' : '#ffffff'; ctx.lineWidth = 1; ctx.stroke();
+      if (!active) { ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1; ctx.stroke(); }
       ctx.fillStyle = active ? '#ffffff' : '#535b69';
       ctx.font = `${typography.getPropertyValue('--font-size-text').trim()} ${typography.getPropertyValue('--font-family-body').trim()}`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -207,7 +208,8 @@
   }
   function tick(now) {
     frame = 0;
-    const dt = last ? Math.min((now - last) / 1000, .032) : 0;
+    const entering = hero.classList.contains('is-reveal-pending');
+    const dt = !entering && last ? Math.min((now - last) / 1000, .032) : 0;
     for (let i = 0; i < 3; i++) step(dt / 3);
     last = now; paint();
     if (visible && !document.hidden && !reduced.matches) frame = requestAnimationFrame(tick);
