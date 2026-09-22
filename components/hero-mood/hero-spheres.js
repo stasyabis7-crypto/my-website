@@ -172,7 +172,7 @@
     }
   }
   function draw(now){
-    const dt=!reduced.matches&&last?Math.min((now-last)/1000,.05):0;
+    const dt=!reduced.matches&&last?Math.max(0,Math.min((now-last)/1000,.05)):0;
     time+=dt;last=now;ctx.clearRect(0,0,w,h);
     const cycle=time%9, mobile=w<600, positions=[];
     if(cycle<previousCycle){
@@ -265,7 +265,13 @@
   }
   await document.fonts.ready;
   new ResizeObserver(resize).observe(stage);
-  const visibilityObserver=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;wake();});
+  const visibilityObserver=new IntersectionObserver(entries=>{
+    // A cached reload can detach/reinsert the hero during layout and deliver
+    // [offscreen, onscreen] together. The final entry is the current state.
+    const entry=entries[entries.length-1];
+    if(!entry||visible===entry.isIntersecting)return;
+    visible=entry.isIntersecting;wake();
+  });
   visibilityObserver.observe(canvas);
   document.addEventListener('visibilitychange',wake);
   addEventListener('pageshow',wake);
