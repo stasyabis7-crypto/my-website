@@ -343,7 +343,7 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   justify-content: flex-start;
   padding-inline: 16px;
   border-radius: var(--radius-control);
-  white-space: normal;
+  white-space: nowrap;
   text-align: left;
   background: transparent;
   color: var(--mood-ink);

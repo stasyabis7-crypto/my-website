@@ -12,7 +12,10 @@
   position: absolute;
   right: 0;
   bottom: calc(100% + 12px);
-  width: min(360px, calc(100vw - 32px));
+  /* Shrink to the longest item instead of a fixed width with empty
+     space next to short labels. */
+  width: max-content;
+  max-width: calc(100vw - 32px);
   max-height: calc(100dvh - var(--header-h, 80px) - 200px);
   overflow: hidden;
   padding: 8px;
@@ -42,7 +45,6 @@
     bottom: auto;
     top: -20vh;
     right: 100%;
-    width: 420px;
     padding: 16px;
     max-height: 80dvh;
     transform-origin: right 25%;

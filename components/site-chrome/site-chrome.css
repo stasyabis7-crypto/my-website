@@ -33,7 +33,10 @@ html.contact-scroll-lock, html.contact-scroll-lock body { overflow: hidden; over
   position: absolute;
   top: calc(100% + 12px);
   right: 0;
-  width: min(260px, calc(100vw - 32px));
+  /* Shrink to the longest item instead of a fixed width with empty
+     space next to short labels. */
+  width: max-content;
+  max-width: calc(100vw - 32px);
   padding: 8px;
   border-radius: 14px;
   background: var(--color-glass);
@@ -151,10 +154,13 @@ html:not(.chrome--pinned) .site-socials {
   padding: clamp(20px, 3vw, 40px); border-radius: 14px;
   /* Calm dark chrome close to the page's own background, not the
      saturated mood colour — a dialog this size in vivid --mood-bg
-     read as loud/anxious. */
-  --mood-bg: var(--color-surface-alt);
+     read as loud/anxious. Background/text set directly, and only
+     --mood-ink (not --mood-bg) redefined: .btn--fill-ink (the
+     "Закрыть" button below) reads the real --mood-bg for its
+     light-on-dark contrast and would go invisible if this panel
+     redefined that one too. */
   --mood-ink: var(--color-text);
-  background: var(--mood-bg); color: var(--mood-ink);
+  background: var(--color-surface-alt); color: var(--mood-ink);
   overflow: hidden; isolation: isolate;
   animation: contact-surface-in .8s cubic-bezier(.22,1,.36,1) both;
 }
