@@ -120,14 +120,12 @@
     circle();o.lineWidth=2;o.strokeStyle='#ffffff65';o.stroke();
     return out;
   }
-  let time=reduced.matches?4:0,last=0,w=0,h=0,top=0,contentTop=0,obstacles=[];
-  let anchors=[],motion=new Map(),previousCycle=0,frame=0,visible=true;
+  let time=reduced.matches?4:0,last=0,w=0,h=0,obstacles=[];
+  let anchors=[],motion=new Map(),frame=0,visible=true;
   function resize(){
     const bounds=stage.getBoundingClientRect();
     if (w===bounds.width && h===bounds.height) return;
     w=bounds.width;h=bounds.height;
-    top=content.getBoundingClientRect().bottom-bounds.top+16;
-    contentTop=content.getBoundingClientRect().top-bounds.top;
     obstacles=[];
     for(const el of content.querySelectorAll('h1,p,a')){
       const rects=[];
@@ -157,6 +155,27 @@
     anchors=Array.from({length:count},(_,i)=>{const p=pool[Math.floor(i*pool.length/count)];const sizes=[1.55,.72,1.05,.82,1.3,.68,1.08,.9];return {...p,r:p.r*sizes[i%sizes.length],i};});
     // Interleave the entry order across the field, avoiding simultaneous rows.
     anchors.forEach((p,i)=>p.order=(i*7)%count);
+    // Reserve a berth for every sphere around the entire banner perimeter.
+    // Weight spacing by diameter so large and small spheres fill the border together.
+    const edgeTop=Math.max(0,header.bottom-bounds.top+10);
+    const edgeHeight=h-edgeTop;
+    const perimeter=2*(w+edgeHeight);
+    const edgeOrder=p=>{
+      const distances=[p.y/h,(w-p.x)/w,(h-p.y)/h,p.x/w];
+      const side=distances.indexOf(Math.min(...distances));
+      return [p.x,w+p.y,w+h+w-p.x,2*w+h+h-p.y][side];
+    };
+    const waiting=[...anchors].sort((a,b)=>edgeOrder(a)-edgeOrder(b));
+    const total=waiting.reduce((sum,p)=>sum+p.r*2,0);
+    let offset=0;
+    for(const p of waiting){
+      const distance=(offset+p.r)/total*perimeter;
+      offset+=p.r*2;
+      if(distance<w)p.edge={side:'top',along:distance,top:edgeTop};
+      else if(distance<w+edgeHeight)p.edge={side:'right',along:edgeTop+distance-w};
+      else if(distance<2*w+edgeHeight)p.edge={side:'bottom',along:2*w+edgeHeight-distance};
+      else p.edge={side:'left',along:edgeTop+perimeter-distance};
+    }
     motion.clear();
     wake();
   }
@@ -174,53 +193,32 @@
   function draw(now){
     const dt=!reduced.matches&&last?Math.max(0,Math.min((now-last)/1000,.05)):0;
     time+=dt;last=now;ctx.clearRect(0,0,w,h);
-    const cycle=time%9, mobile=w<600, positions=[];
-    if(cycle<previousCycle){
-      // Edge spheres keep their velocity through the loop boundary.
-      for(const anchor of anchors)if(anchor.order%5!==0)motion.delete(anchor.i);
-    }
-    previousCycle=cycle;
+    const mobile=w<600, positions=[];
     for(const anchor of anchors){
       const {i,r}=anchor,stagger=anchor.order*(mobile?.06:.04);
-      const enter=Math.max(0,Math.min(1,(cycle-.6-stagger)/.95));
-      const leave=Math.max(0,Math.min(1,(cycle-5.6-stagger*.65)/.85));
-      const peeking=anchor.order%5===0;
-      if(enter===0&&!peeking)continue;
+      const enter=Math.max(0,Math.min(1,(time-.6-stagger)/.95));
+
       const phase=time*1.65+i*2.4;
       const drift=mobile?10:22;
       const p={i,r,x:anchor.x+Math.sin(phase)*drift+Math.sin(time*1.1)*drift*.7,y:anchor.y+Math.cos(phase*.8)*drift};
       const ease=1-Math.pow(1-enter,3);
-      // A few spheres wait half-hidden at the edge before their staggered entry.
-      // After the exit they gently return to that same position for a seamless loop.
-      let fromX=anchor.x,fromY=anchor.y,endX=anchor.x,endY=anchor.y;
+      // All four edges stay populated while the spheres await their turn.
       const edgePhase=time*Math.PI*4/9+i*1.7;
-      const edge=peeking?r*.30+Math.sin(edgePhase)*r*.07:-r-70;
-      if(mobile&&peeking&&anchor.y<contentTop-20){
-        fromX=anchor.x<w/2?edge:w-edge;endX=anchor.x<w/2?-r-70:w+r+70;
-        fromY=endY=Math.max(130,anchor.y);
-      }
-      else if(anchor.y<contentTop-20){fromY=edge;endY=-r-70;}
-      else if(anchor.y>top){fromY=h-edge;endY=h+r+70;}
-      else if(anchor.x<w/2){fromX=edge;endX=-r-70;}
-      else {fromX=w-edge;endX=w+r+70;}
-      if(peeking){
-        const sideways=(mobile&&anchor.y<contentTop-20)||
-          (anchor.y>=contentTop-20&&anchor.y<=top);
-        const driftAlongEdge=Math.cos(edgePhase)*r*.24;
-        if(sideways)fromY+=driftAlongEdge;
-        else fromX+=driftAlongEdge;
+      const inset=r*(.42+Math.sin(edgePhase)*.06);
+      const along=anchor.edge.along+Math.cos(edgePhase)*r*.12;
+      let fromX,fromY;
+      switch(anchor.edge.side){
+        case 'top':fromX=along;fromY=anchor.edge.top+inset;break;
+        case 'right':fromY=along;fromX=w-inset;break;
+        case 'bottom':fromX=along;fromY=h-inset;break;
+        default:fromY=along;fromX=inset;
       }
       p.x=fromX+(p.x-fromX)*ease;
       p.y=fromY+(p.y-fromY)*ease;
-      p.x+=(endX-p.x)*leave*leave;
-      p.y+=(endY-p.y)*leave*leave;
-      const reset=Math.max(0,Math.min(1,(cycle-7.85)/.8));
-      const returnEase=reset*reset*(3-2*reset);
-      if(peeking){p.x+=(fromX-p.x)*returnEase;p.y+=(fromY-p.y)*returnEase;}
       // Small circular overshoot conveys inertia without deforming the sphere.
       p.y+=Math.sin(enter*Math.PI*2)*r*.25*(1-enter);
-      const edgeRotation=(i%2?1:-1)*.8+(peeking?Math.sin(edgePhase)*.10:0);
-      p.rotation=Math.sin(phase*.55)*.22*ease*(1-leave)+edgeRotation*(1-ease+leave);
+      const edgeRotation=(i%2?1:-1)*.8+Math.sin(edgePhase)*.10;
+      p.rotation=Math.sin(phase*.55)*.22*ease+edgeRotation*(1-ease);
       positions.push(p);
     }
     // Rigid contacts keep the dense moving field outside the text and CTA.
@@ -274,7 +272,7 @@
   });
   visibilityObserver.observe(canvas);
   document.addEventListener('visibilitychange',wake);
-  addEventListener('pageshow',wake);
+  addEventListener('pageshow',()=>{time=reduced.matches?4:0;motion.clear();wake();});
   reduced.addEventListener('change',()=>{time=reduced.matches?4:0;motion.clear();wake();});
   // Pointer movement updates unrelated root classes. Only an actual loading
   // transition should reset the clock; otherwise frequent pointer events starve RAF.
