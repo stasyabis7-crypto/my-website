@@ -80,7 +80,7 @@
   background: var(--color-bg);
   color: var(--color-text);
   border-radius: 0;
-  min-height: 620px;
+  min-height: 0;
 }
 .mood-hero--spheres .mood-stage { justify-content: center; }
 .mood-hero--spheres .mood-content { width: min(100%, 720px); margin-inline: auto; text-align: center; }
@@ -112,7 +112,7 @@
 from { opacity: 0; transform: translateY(18px); }
 to { opacity: 1; transform: translateY(0); } }
 @media (max-width: 599px) {
-.mood-hero--spheres .mood-stage { padding-top: 220px; padding-inline: 22px; min-height: 800px; }
+.mood-hero--spheres .mood-stage { padding-top: min(220px, 24svh); padding-inline: 22px; min-height: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
 .mood-hero--spheres .hero-reveal-word, .mood-hero--spheres .mood-subtitle, .mood-hero--spheres .mood-actions { animation: none !important; opacity: 1 !important; }

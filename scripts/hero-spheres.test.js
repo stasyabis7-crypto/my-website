@@ -76,7 +76,7 @@ const sandbox = {
   const first=new Map(),previous=new Map(),arrivals=new Set();
   let bounced=false;
   const behindText=new Set();
-  for(let tick=1;tick<=1200;tick++){
+  for(let tick=1;tick<=1200&&frames.size;tick++){
     const [id,callback]=frames.entries().next().value;
     frames.delete(id);callback(1+tick*1000/60);
     for(let a=0;a<drawn.length;a++)for(let b=a+1;b<drawn.length;b++){
@@ -96,6 +96,7 @@ const sandbox = {
       previous.set(p.id,p);
     }
   }
+  assert.equal(frames.size,0,'Settled spheres must stop scheduling expensive canvas frames during scrolling');
   assert.equal(drawn.length,40,'Every picture joins the pile');
   assert.ok(behindText.size>=4,'Spheres must fall through the middle behind the copy as well as at the sides');
   assert.ok(arrivals.size>=20,'Drops are staggered instead of appearing together');

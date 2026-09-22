@@ -237,7 +237,8 @@
     for(const p of active){
       if(p.sleeping)continue;
       const displacement=Math.hypot(p.x-p.previousX,p.y-p.previousY);
-      p.quiet=p.supported&&displacement<.12&&Math.hypot(p.vx,p.vy)<12?p.quiet+dt:0;
+      // A sphere can rest between side contacts without a single contact below it.
+      p.quiet=displacement<.12&&Math.hypot(p.vx,p.vy)<12?p.quiet+dt:0;
       if(p.quiet>.45){p.sleeping=true;p.vx=0;p.vy=0;}
     }
   }
@@ -265,7 +266,7 @@
     }
     canvas.dataset.sphereCount=String(anchors.length);
     frame=0;
-    if(canAnimate())frame=requestAnimationFrame(draw);
+    if(canAnimate()&&bodies.some(p=>!p.spawned||!p.sleeping))frame=requestAnimationFrame(draw);
   }
   function canAnimate() {
     return visible && !document.hidden && !reduced.matches && !hero.classList.contains('is-reveal-pending') &&

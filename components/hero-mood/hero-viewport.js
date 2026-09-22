@@ -4,9 +4,10 @@
   const root = document.documentElement;
   // In-app browsers (Telegram) resize the viewport as their bars show and hide, and
   // svh/dvh follow it. Freeze the hero's viewport height; refresh only when the width
-  // changes (rotation / real resize). --hero-vh is the visible height (home hero);
+  // changes on touch devices. Desktop also follows height-only resizes. --hero-vh is the visible height (home hero);
   // --hero-vh-full also counts the area under the bars (flush-bottom project heroes).
   let heroWidth = innerWidth;
+  const desktop = matchMedia('(hover: hover) and (pointer: fine)');
   const unitHeight = unit => {
     const probe = document.createElement('div');
     probe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100' + unit + ';visibility:hidden;pointer-events:none';
@@ -24,6 +25,6 @@
   };
   freezeHeroHeight();
   addEventListener('resize', () => {
-    if (innerWidth !== heroWidth) { heroWidth = innerWidth; freezeHeroHeight(); }
+    if (desktop.matches || innerWidth !== heroWidth) { heroWidth = innerWidth; freezeHeroHeight(); }
   }, { passive: true });
 })();
