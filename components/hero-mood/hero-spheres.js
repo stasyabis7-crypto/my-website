@@ -243,7 +243,9 @@
       const point=entryPosition(anchor,reduced.matches?Infinity:time);
       const {ease}=point;
       const p={i,r,x:point.x,y:point.y};
-      p.rotation=(i%2?1:-1)*.35*(1-ease)+Math.sin(time*.15+i)*.08*ease;
+      const rhythm=.85+(i%7)*.045;
+      const rocking=Math.sin(time*rhythm+i*2.4)*.16+Math.sin(time*rhythm*1.7+i)*.025;
+      p.rotation=(i%2?1:-1)*.35*(1-ease)+rocking*ease;
       positions.push(p);
     }
     // Keep the settled centers fixed; only the gentle rotation above continues.

@@ -102,6 +102,7 @@ const sandbox = {
     'Spheres stay inside the banner instead of flying out');
   const settled=new Map(drawn.map(p=>[p.id,p]));
   const rocked=new Set();
+  const lively=new Set();
   for(let tick=1;tick<=2400;tick++){
     const [id,callback]=frames.entries().next().value;
     frames.delete(id);callback(8001+tick*50);
@@ -112,10 +113,12 @@ const sandbox = {
     for(const p of drawn){
       const before=settled.get(p.id);
       assert.ok(Math.hypot(p.x-before.x,p.y-before.y)<.001,'Settled spheres must not travel across the banner');
-      assert.ok(Math.abs(p.angle)<=.081,'Rocking stays subtle');
+      assert.ok(Math.abs(p.angle)<=.186,'Rocking stays bounded so pictures remain readable');
       if(Math.abs(p.angle-before.angle)>.02)rocked.add(p.id);
+      if(tick<=60&&Math.abs(p.angle-before.angle)>.09)lively.add(p.id);
     }
   }
+  assert.equal(lively.size,40,'Every sphere rocks visibly within three seconds');
   assert.equal(rocked.size,40,'Every sphere keeps gently rocking around its own center');
   console.log('Hero spheres: batched visibility changes, pause and resume verified.');
 })().catch(error => { console.error(error.message); process.exitCode = 1; });
