@@ -121,7 +121,7 @@
     return out;
   }
   let time=reduced.matches?4:0,last=0,w=0,h=0,headerBottom=0,obstacles=[];
-  let anchors=[],entryCenter={x:0,y:0},floatStart=0,frame=0,visible=true;
+  let anchors=[],entryCenter={x:0,y:0},frame=0,visible=true;
   function resize(){
     const bounds=stage.getBoundingClientRect();
     if (w===bounds.width && h===bounds.height) return;
@@ -197,7 +197,9 @@
         for(let t=p.delay;t<=end+1/60;t+=1/60){
           if(t<q.delay)continue;
           const a=entryPosition(p,t),b=entryPosition(q,t);
-          if(Math.hypot(a.x-b.x,a.y-b.y)<p.r+q.r+2)return true;
+          const floatingRoom=(t>=p.delay+p.duration?p.floatRoom*p.floatScale:0)+
+            (t>=q.delay+q.duration?q.floatRoom*q.floatScale:0);
+          if(Math.hypot(a.x-b.x,a.y-b.y)<p.r+q.r+2+floatingRoom)return true;
         }
         return false;
       });
@@ -205,7 +207,6 @@
       while(p.delay<latest&&conflicts())p.delay=Math.min(latest,p.delay+.08);
       planned.push(p);
     }
-    floatStart=Math.max(...anchors.map(p=>p.delay+p.duration))+.15;
     wake();
   }
 
@@ -255,8 +256,8 @@
       if(time<=anchor.delay&&!reduced.matches)continue;
       const point=entryPosition(anchor,reduced.matches?Infinity:time);
       const p={i,r,x:point.x,y:point.y};
-      const floatTime=reduced.matches?0:Math.max(0,time-floatStart);
-      const fade=Math.min(1,floatTime/1.2);
+      const floatTime=reduced.matches?0:Math.max(0,time-anchor.delay-anchor.duration);
+      const fade=Math.min(1,floatTime/.35);
       const blend=fade*fade*(3-2*fade)*anchor.floatScale;
       const rhythm=.7+(i%7)*.045;
       p.x+=Math.sin(floatTime*rhythm+i*2.4)*(w<600?4:7)*blend;

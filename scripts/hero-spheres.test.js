@@ -95,6 +95,9 @@ const sandbox = {
   const durations=[...trajectories.values()].map(samples=>{
     const still=samples.find((p,i)=>i>30&&Math.hypot(p.x-samples[i-1].x,p.y-samples[i-1].y)<.02);
     assert.ok(still,'Each entrance eases to a stop before floating');
+    const next=samples.find(p=>p.time>=still.time+.65);
+    assert.ok(next&&Math.hypot(next.x-still.x,next.y-still.y)>.15,
+      'Each sphere must float immediately after arrival without waiting for the others');
     return still.time-samples[0].time;
   });
   assert.ok(Math.max(...durations)-Math.min(...durations)>.5,'Entrances have visibly different durations');
