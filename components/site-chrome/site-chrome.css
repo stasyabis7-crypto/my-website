@@ -5,7 +5,9 @@ html { scrollbar-gutter: stable; }
 html.contact-scroll-lock, html.contact-scroll-lock body { overflow: hidden; overscroll-behavior: none; }
 .site-socials {
   position: fixed;
-  z-index: 51;
+  /* Above .work-toc's rail (z-index 60, case-toc.css) so the open
+     "Связаться" dropdown never sits under the TOC rungs. */
+  z-index: 65;
   top: var(--page-px, 10px);
   right: calc(var(--page-px, 10px) + var(--chrome-socials-offset, 0px));
   /* Ряд соцсетей центрируется по вертикали в полосе высотой с плашку
