@@ -17,7 +17,7 @@ const context = new Proxy({}, {
     if (key === 'clearRect') return () => { drawn=[]; };
     if (key === 'drawImage') return (image,x,y,width) => { if(drawn.length)Object.assign(drawn[drawn.length-1],{id:image.id,r:width/2}); };
     if (key === 'rotate') return angle => { if(drawn.length)drawn[drawn.length-1].angle=angle; };
-    if (key === 'translate') return (x,y) => { drawn.push({x,y}); };
+    if (key === 'translate') return (x,y) => { drawn.push({x,y,angle:0}); };
     if (key === 'getImageData' || key === 'createImageData') return () => ({ data: new Uint8ClampedArray(420 * 420 * 4) });
     if (key === 'createRadialGradient') return () => ({ addColorStop() {} });
     return () => {};
@@ -83,7 +83,7 @@ const sandbox = {
   }
   for(const samples of trajectories.values()){
     const start=samples[0],end=samples[samples.length-1];
-    for(let i=1;i<samples.length;i++){
+    for(let i=1;i<Math.min(samples.length,60);i++){
       const previous=samples[i-1],current=samples[i];
       assert.ok((current.x-previous.x)*(end.x-start.x)+(current.y-previous.y)*(end.y-start.y)>=-.001,
         'A sphere must not reverse direction during its entrance');
@@ -93,8 +93,9 @@ const sandbox = {
   assert.ok(new Set(starts).size>=12&&Math.max(...starts)-Math.min(...starts)>.8,
     'Spheres start at varied times instead of entering as one wave');
   const durations=[...trajectories.values()].map(samples=>{
-    const end=samples[samples.length-1];
-    return samples.find(p=>Math.hypot(p.x-end.x,p.y-end.y)<.1).time-samples[0].time;
+    const still=samples.find((p,i)=>i>30&&Math.hypot(p.x-samples[i-1].x,p.y-samples[i-1].y)<.02);
+    assert.ok(still,'Each entrance eases to a stop before floating');
+    return still.time-samples[0].time;
   });
   assert.ok(Math.max(...durations)-Math.min(...durations)>.5,'Entrances have visibly different durations');
   assert.equal(drawn.length,40,'All spheres remain after the former exit time');
@@ -112,10 +113,10 @@ const sandbox = {
     }
     for(const p of drawn){
       const before=settled.get(p.id);
-      assert.ok(Math.hypot(p.x-before.x,p.y-before.y)<.001,'Settled spheres must not travel across the banner');
-      assert.ok(Math.abs(p.angle)<=.186,'Rocking stays bounded so pictures remain readable');
-      if(Math.abs(p.angle-before.angle)>.02)rocked.add(p.id);
-      if(tick<=60&&Math.abs(p.angle-before.angle)>.09)lively.add(p.id);
+      assert.ok(Math.hypot(p.x-before.x,p.y-before.y)<=24,'Spheres float near their own places without drifting away');
+      assert.ok(p.angle===0,'Pictures must stay upright without rotation');
+      if(Math.hypot(p.x-before.x,p.y-before.y)>3)rocked.add(p.id);
+      if(tick<=60&&Math.hypot(p.x-before.x,p.y-before.y)>3)lively.add(p.id);
     }
   }
   assert.equal(lively.size,40,'Every sphere rocks visibly within three seconds');

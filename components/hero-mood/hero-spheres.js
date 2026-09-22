@@ -121,7 +121,7 @@
     return out;
   }
   let time=reduced.matches?4:0,last=0,w=0,h=0,headerBottom=0,obstacles=[];
-  let anchors=[],entryCenter={x:0,y:0},frame=0,visible=true;
+  let anchors=[],entryCenter={x:0,y:0},floatStart=0,frame=0,visible=true;
   function resize(){
     const bounds=stage.getBoundingClientRect();
     if (w===bounds.width && h===bounds.height) return;
@@ -154,6 +154,8 @@
     }
     const count=Math.min(mobile?24:40,pool.length);
     anchors=Array.from({length:count},(_,i)=>{const p=pool[Math.floor(i*pool.length/count)];const sizes=[1.55,.72,1.05,.82,1.3,.68,1.08,.9];return {...p,r:p.r*sizes[i%sizes.length],i};});
+    // Reserve room for translation before laying out the stationary composition.
+    for(const p of anchors){p.floatRoom=mobile?7:12;p.r+=p.floatRoom;}
     // Interleave the entry order across the field, avoiding simultaneous rows.
     anchors.forEach((p,i)=>p.order=(i*7)%count);
     // Resolve the resting composition once. Moving collision targets used to
@@ -167,6 +169,16 @@
       anchors.forEach(protect);
     }
     separate(anchors,true);
+    for(const p of anchors)p.r-=p.floatRoom;
+    for(const p of anchors){
+      let clearance=p.floatRoom;
+      for(const q of anchors)if(q!==p)clearance=Math.min(clearance,(Math.hypot(p.x-q.x,p.y-q.y)-p.r-q.r-2)/2);
+      for(const box of obstacles){
+        const distance=Math.hypot(p.x-Math.max(box.left,Math.min(box.right,p.x)),p.y-Math.max(box.top,Math.min(box.bottom,p.y)));
+        clearance=Math.min(clearance,distance-p.r-1);
+      }
+      p.floatScale=Math.max(0,clearance/p.floatRoom);
+    }
     const contentBounds=content.getBoundingClientRect();
     entryCenter={x:w/2,y:(contentBounds.top+contentBounds.bottom)/2-bounds.top};
     const planned=[];
@@ -193,6 +205,7 @@
       while(p.delay<latest&&conflicts())p.delay=Math.min(latest,p.delay+.08);
       planned.push(p);
     }
+    floatStart=Math.max(...anchors.map(p=>p.delay+p.duration))+.15;
     wake();
   }
 
@@ -241,16 +254,18 @@
       const {i,r}=anchor;
       if(time<=anchor.delay&&!reduced.matches)continue;
       const point=entryPosition(anchor,reduced.matches?Infinity:time);
-      const {ease}=point;
       const p={i,r,x:point.x,y:point.y};
-      const rhythm=.85+(i%7)*.045;
-      const rocking=Math.sin(time*rhythm+i*2.4)*.16+Math.sin(time*rhythm*1.7+i)*.025;
-      p.rotation=(i%2?1:-1)*.35*(1-ease)+rocking*ease;
+      const floatTime=reduced.matches?0:Math.max(0,time-floatStart);
+      const fade=Math.min(1,floatTime/1.2);
+      const blend=fade*fade*(3-2*fade)*anchor.floatScale;
+      const rhythm=.7+(i%7)*.045;
+      p.x+=Math.sin(floatTime*rhythm+i*2.4)*(w<600?4:7)*blend;
+      p.y+=Math.cos(floatTime*rhythm*.83+i*1.7)*(w<600?5:9)*blend;
       positions.push(p);
     }
-    // Keep the settled centers fixed; only the gentle rotation above continues.
+    // Each sphere floats locally inside its reserved space; pictures stay upright.
     for(const p of positions){
-      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rotation);
+      ctx.save();ctx.translate(p.x,p.y);
       ctx.shadowColor='#00000060';ctx.shadowBlur=9;ctx.shadowOffsetY=5;
       ctx.drawImage(textures[p.i],-p.r,-p.r,p.r*2,p.r*2);ctx.restore();
     }
