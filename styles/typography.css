@@ -18,10 +18,10 @@
 
 :root {
   /* --- Семейства шрифтов ---
-     Manrope 400 — все заголовки сайта, включая Главную и попапы.
+     Golos Text 400 — все заголовки сайта, включая Главную и попапы.
      IBM Plex Mono — основной текст и кнопки.
      Начертания и unicode-range подключаются в fonts.css. */
-  --font-family-heading: "Manrope", Arial, sans-serif;
+  --font-family-heading: "Golos Text", Arial, sans-serif;
   --font-family-body: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 
