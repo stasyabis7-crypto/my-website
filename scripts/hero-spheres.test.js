@@ -77,7 +77,7 @@ const sandbox = {
     }
     for(const p of drawn){
       const samples=trajectories.get(p.id)||[];
-      if(samples.length<60)samples.push({...p});
+      samples.push({...p,time:tick/60});
       trajectories.set(p.id,samples);
     }
   }
@@ -89,6 +89,14 @@ const sandbox = {
         'A sphere must not reverse direction during its entrance');
     }
   }
+  const starts=[...trajectories.values()].map(samples=>samples[0].time);
+  assert.ok(new Set(starts).size>=12&&Math.max(...starts)-Math.min(...starts)>.8,
+    'Spheres start at varied times instead of entering as one wave');
+  const durations=[...trajectories.values()].map(samples=>{
+    const end=samples[samples.length-1];
+    return samples.find(p=>Math.hypot(p.x-end.x,p.y-end.y)<.1).time-samples[0].time;
+  });
+  assert.ok(Math.max(...durations)-Math.min(...durations)>.5,'Entrances have visibly different durations');
   assert.equal(drawn.length,40,'All spheres remain after the former exit time');
   assert.ok(drawn.filter(p=>p.x>0&&p.x<box.width&&p.y>0&&p.y<box.height).length>=30,
     'Spheres stay inside the banner instead of flying out');

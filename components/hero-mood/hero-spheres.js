@@ -121,7 +121,7 @@
     return out;
   }
   let time=reduced.matches?4:0,last=0,w=0,h=0,headerBottom=0,obstacles=[];
-  let anchors=[],entryCenter={x:0,y:0},entryScale=1,frame=0,visible=true;
+  let anchors=[],entryCenter={x:0,y:0},frame=0,visible=true;
   function resize(){
     const bounds=stage.getBoundingClientRect();
     if (w===bounds.width && h===bounds.height) return;
@@ -169,12 +169,29 @@
     separate(anchors,true);
     const contentBounds=content.getBoundingClientRect();
     entryCenter={x:w/2,y:(contentBounds.top+contentBounds.bottom)/2-bounds.top};
-    entryScale=1;
-    for(const p of anchors){
+    const planned=[];
+    const radialOrder=[...anchors].sort((a,b)=>Math.hypot(a.x-entryCenter.x,a.y-entryCenter.y)-Math.hypot(b.x-entryCenter.x,b.y-entryCenter.y));
+    for(const p of radialOrder){
       const dx=p.x-entryCenter.x,dy=p.y-entryCenter.y;
       const sx=dx>0?(w+p.r+30-entryCenter.x)/dx:dx<0?(-p.r-30-entryCenter.x)/dx:Infinity;
       const sy=dy>0?(h+p.r+30-entryCenter.y)/dy:dy<0?(-p.r-30-entryCenter.y)/dy:Infinity;
-      entryScale=Math.max(entryScale,Math.min(sx,sy));
+      p.entryScale=Math.max(1,Math.min(sx,sy));
+      p.duration=1.05+((p.i*17+3)%19)/18*1.05;
+      p.delay=.18+((p.i*13+5)%23)/22*1.45;
+      // Inner spheres enter first wherever paths share space. Schedule once,
+      // so independent speeds never require mid-flight pushes or reversals.
+      const conflicts=()=>planned.some(q=>{
+        const end=Math.max(p.delay+p.duration,q.delay+q.duration);
+        for(let t=p.delay;t<=end+1/60;t+=1/60){
+          if(t<q.delay)continue;
+          const a=entryPosition(p,t),b=entryPosition(q,t);
+          if(Math.hypot(a.x-b.x,a.y-b.y)<p.r+q.r+2)return true;
+        }
+        return false;
+      });
+      const latest=planned.reduce((end,q)=>Math.max(end,q.delay+q.duration),p.delay);
+      while(p.delay<latest&&conflicts())p.delay=Math.min(latest,p.delay+.08);
+      planned.push(p);
     }
     wake();
   }
@@ -209,20 +226,23 @@
       if(correction<.02)break;
     }
   }
+  function entryPosition(anchor,now){
+    const enter=Math.max(0,Math.min(1,(now-anchor.delay)/anchor.duration));
+    const ease=1-Math.pow(1-enter,3);
+    const scale=1+(anchor.entryScale-1)*(1-ease);
+    return {x:entryCenter.x+(anchor.x-entryCenter.x)*scale,
+      y:entryCenter.y+(anchor.y-entryCenter.y)*scale,ease};
+  }
   function draw(now){
     const dt=!reduced.matches&&last?Math.max(0,Math.min((now-last)/1000,.05)):0;
     time+=dt;last=now;ctx.clearRect(0,0,w,h);
     const positions=[];
     for(const anchor of anchors){
-      const {i,r}=anchor,elapsed=time-.25;
-      if(elapsed<=0)continue;
-      const enter=Math.min(1,elapsed/3);
-      const ease=1-Math.pow(1-enter,3);
-      // A shared expansion keeps every pair separated throughout entrance.
-      // Different distances to the edges reveal the scattered spheres in turn.
-      const scale=1+(entryScale-1)*(1-ease);
-      const p={i,r,x:entryCenter.x+(anchor.x-entryCenter.x)*scale,
-        y:entryCenter.y+(anchor.y-entryCenter.y)*scale};
+      const {i,r}=anchor;
+      if(time<=anchor.delay&&!reduced.matches)continue;
+      const point=entryPosition(anchor,reduced.matches?Infinity:time);
+      const {ease}=point;
+      const p={i,r,x:point.x,y:point.y};
       p.rotation=(i%2?1:-1)*.35*(1-ease)+Math.sin(time*.15+i)*.08*ease;
       positions.push(p);
     }
