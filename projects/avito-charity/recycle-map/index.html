@@ -121,7 +121,7 @@ body {
   <aside class="work-toc" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="navigation"></span><span data-toc-marker="filters"></span><span data-toc-marker="favorites"></span><span data-toc-marker="favorites-decision"></span><span data-toc-marker="results"></span><span data-toc-marker="next"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="navigation"></span><span data-toc-marker="filters"></span><span data-toc-marker="favorites"></span><span data-toc-marker="favorites-decision"></span><span data-toc-marker="results"></span><span data-toc-marker="next"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -133,6 +133,7 @@ body {
         <a class="btn btn--fill-toc" href="#role"><span>Роль</span></a>
         <a class="btn btn--fill-toc" href="#scenario"><span>Сценарий</span></a>
         <a class="btn btn--fill-toc" href="#problems"><span>Проблемы</span></a>
+        <a class="btn btn--fill-toc" href="#moodboard"><span>Мудборд</span></a>
         <a class="btn btn--fill-toc" href="#navigation"><span>Навигация</span></a>
         <a class="btn btn--fill-toc" href="#filters"><span>Поиск и фильтры</span></a>
         <a class="btn btn--fill-toc" href="#favorites"><span>Карточка и избранное</span></a>
@@ -363,6 +364,31 @@ body {
           <div class="case-card case-problems__card">
             <span class="case-problems__icon" style="--problems-icon: url('/projects/avito-charity/recycle-map/media/problems/gestalt.svg')" aria-hidden="true"></span>
             <p class="case-card__subtitle text-body">Сохранить найденный пункт было нельзя. Между визитами проходят недели, и человек искал заново</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Мудборд — компонент .case-moodboard (components/case-blocks/case-blocks.css).
+           Сетка .case-cards-feature переиспользована только ради двух
+           колонок (components/case-cards/case-cards.css) — без
+           .case-card/object-fit:cover: фото показываются целиком в своих
+           пропорциях (img width:100%;height:auto), обрезки нет, при
+           ресайзе всё масштабируется пропорционально. Из-за этого низ
+           баннера слева и низ стопки из 3 фото справа не обязаны совпадать
+           по высоте — align-items:start у .case-moodboard__grid вместо
+           растягивания по умолчанию. -->
+      <section class="case-block case-moodboard" id="moodboard" tabindex="-1">
+        <h2 class="case-moodboard__title text-h1">Мудборд</h2>
+        <p data-subtitle class="case-moodboard__subtitle case-subtitle text-body-lg">Рассматривала карты бигтехов: Яндекс, 2ГИС, Google Карты. Также накидывала красивых дриббл-шотов, чтобы найти вдохновение.</p>
+
+        <div class="case-moodboard__grid case-cards-feature">
+          <div class="case-moodboard__media">
+            <img src="media/moodboard/1.webp" alt="" width="1600" height="2000" />
+          </div>
+          <div class="case-moodboard__side case-cards-feature__side">
+            <div class="case-moodboard__media"><img src="media/moodboard/2.webp" alt="" width="1600" height="650" /></div>
+            <div class="case-moodboard__media"><img src="media/moodboard/3.webp" alt="" width="1600" height="650" /></div>
+            <div class="case-moodboard__media"><img src="media/moodboard/4.webp" alt="" width="1600" height="650" /></div>
           </div>
         </div>
       </section>

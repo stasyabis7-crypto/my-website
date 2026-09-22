@@ -934,6 +934,34 @@
   margin-top: auto;
 }
 
+/* ─── .case-moodboard — заголовок + .case-cards-feature без обрезки ────
+   Та же сетка из 2 колонок, что у .case-about (case-cards.css:
+   .case-cards-feature), но карточки — не .case-card: фото показываются
+   целиком в своих пропорциях (img width:100%;height:auto), без
+   object-fit:cover и без затемнения/подписи. Значит низ баннера слева
+   и низ стопки из 3 фото справа не обязаны совпадать по высоте —
+   align-items:start вместо растягивания сеткой по умолчанию. */
+.case-moodboard__subtitle.text-body-lg {
+  margin-top: 8px;
+}
+
+.case-moodboard__grid {
+  margin-top: 32px;
+  align-items: start;
+}
+
+.case-moodboard__media {
+  display: block;
+  border-radius: var(--card-radius, 14px);
+  overflow: hidden;
+}
+
+.case-moodboard__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 /* Сравнение «До / После»: общий компонент для «Навигации» и «Поиска и
    фильтров». Ритм «Проблем», сетка и оформление из case-cards.css. */
 .case-comparison__subtitle.text-body-lg,
