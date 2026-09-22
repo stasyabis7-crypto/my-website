@@ -223,16 +223,16 @@ body {
   font-size: var(--font-size-2xl);
 }
 
-/* Internal heroes use H1 on phones/tablets; shrink only an overflowing word.
-   page-hero.js measures the loaded heading font and supplies the fitted size. */
-.project-hero .mood-title {
-  font-size: var(--project-hero-title-size, var(--font-size-2xl));
-  overflow-wrap: normal;
+/* Banner headings keep fixed DS sizes between breakpoints.
+   The semantic heading remains h1; phones use the H2 visual size. */
+.mood-title,
+.case-cover__title {
+  font-size: var(--font-size-2xl);
+  overflow-wrap: anywhere;
 }
-@media (min-width: 1000px) {
-  .project-hero .mood-title {
-    font-size: var(--font-size-4xl);
-  }
+@media (max-width: 599px) {
+  .mood-title,
+  .case-cover__title { font-size: var(--font-size-xl); }
 }
 
 .text-h2 {
