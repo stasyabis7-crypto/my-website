@@ -52,6 +52,9 @@ assert.deepEqual(run([[0, 60], [30, 0, -20], [16, 0, -100]]), [1, 'hero'], 'upwa
 assert.deepEqual(run([[0, 0, 60], [30, 0, -20], [16, 0, -100]]), [1, 'hero'], 'upward reversal returns to hero');
 assert.deepEqual(run([[0, 0, -60], [450, 0, 60]]), ['hero', 'gallery'], 'new downward gesture reopens gallery without advancing');
 assert.deepEqual(run([[0, 60], [30, 0, 20]]), [1, 1], 'short downward swipe after horizontal swipe');
+// A real trackpad swipe wobbles diagonally; one noisy sample must not pivot the
+// established axis and fire a second advance for what is one continuous swipe.
+assert.deepEqual(run([[0, 100], [16, 20, 5], [16, 30, 50], [16, 20, 5], [16, 5, 1]]), [1], 'diagonal wobble mid-swipe does not double-advance');
 // Exercise the real navigation queue with smooth scrolling still unfinished.
 function navigation() {
   const context = {

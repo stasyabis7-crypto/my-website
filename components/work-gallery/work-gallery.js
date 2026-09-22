@@ -231,8 +231,12 @@
     if (wheel.kind) {
       const horizontal = Math.abs(dx) > Math.abs(dy) * 1.5 && Math.abs(dx) >= 2;
       const vertical = Math.abs(dy) >= 2 && Math.abs(dy) > Math.abs(dx) * 1.5;
-      const axis = horizontal ? 'x' : vertical ? 'y' : null;
-      const direction = horizontal ? Math.sign(dx) : Math.sign(dy);
+      let axis = horizontal ? 'x' : vertical ? 'y' : null;
+      // A single diagonal sample within an otherwise consistent stroke must not
+      // pivot the gesture onto a new axis: real fingers wobble. Only a clean
+      // sample (near-zero on the established axis) may switch axis.
+      if (axis && axis !== wheel.axis && Math.abs(wheel.axis === 'x' ? dx : dy) > 6) axis = wheel.axis;
+      const direction = axis === 'y' ? Math.sign(dy) : Math.sign(dx);
       const changed = axis && (axis !== wheel.axis || direction !== wheel.direction);
       // Inertia can continue emitting events between two real trackpad strokes.
       // Recognize a fresh forceful stroke after a quiet tail, even in the same
