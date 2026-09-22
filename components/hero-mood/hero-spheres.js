@@ -121,7 +121,7 @@
     return out;
   }
   let time=reduced.matches?4:0,last=0,w=0,h=0,headerBottom=0,obstacles=[];
-  let anchors=[],entryCenter={x:0,y:0},frame=0,visible=true;
+  let anchors=[],bodies=[],frame=0,visible=true;
   function resize(){
     const bounds=stage.getBoundingClientRect();
     if (w===bounds.width && h===bounds.height) return;
@@ -154,125 +154,97 @@
     }
     const count=Math.min(mobile?24:40,pool.length);
     anchors=Array.from({length:count},(_,i)=>{const p=pool[Math.floor(i*pool.length/count)];const sizes=[1.55,.72,1.05,.82,1.3,.68,1.08,.9];return {...p,r:p.r*sizes[i%sizes.length],i};});
-    // Reserve room for translation before laying out the stationary composition.
-    for(const p of anchors){p.floatRoom=mobile?7:12;p.r+=p.floatRoom;}
-    // Interleave the entry order across the field, avoiding simultaneous rows.
-    anchors.forEach((p,i)=>p.order=(i*7)%count);
-    // Resolve the resting composition once. Moving collision targets used to
-    // redirect spheres during entry and make their springs double back.
-    for(let pass=0;pass<60;pass++){
-      for(let a=0;a<anchors.length;a++)for(let b=a+1;b<anchors.length;b++){
-        const p=anchors[a],q=anchors[b],dx=q.x-p.x,dy=q.y-p.y;
-        const distance=Math.hypot(dx,dy)||1,gap=p.r+q.r+8;
-        if(distance<gap){const push=(gap-distance)*.5;p.x-=dx/distance*push;p.y-=dy/distance*push;q.x+=dx/distance*push;q.y+=dy/distance*push;}
-      }
-      anchors.forEach(protect);
-    }
-    separate(anchors,true);
-    for(const p of anchors)p.r-=p.floatRoom;
+    const textLeft=obstacles.length>1?Math.min(...obstacles.slice(0,-1).map(box=>box.left)):w*.3;
     for(const p of anchors){
-      let clearance=p.floatRoom;
-      for(const q of anchors)if(q!==p)clearance=Math.min(clearance,(Math.hypot(p.x-q.x,p.y-q.y)-p.r-q.r-2)/2);
-      for(const box of obstacles){
-        const distance=Math.hypot(p.x-Math.max(box.left,Math.min(box.right,p.x)),p.y-Math.max(box.top,Math.min(box.bottom,p.y)));
-        clearance=Math.min(clearance,distance-p.r-1);
-      }
-      p.floatScale=Math.max(0,clearance/p.floatRoom);
+      const spread=((p.i*17+3)%23)/22;
+      const left=p.r*.25+spread*Math.max(0,textLeft-p.r*1.25-24);
+      p.side=(Math.floor(p.i/4)+p.i)%2;
+      p.x=p.side?w-left:left;
+      p.y=-p.r-30-(p.i%3)*22;
+      p.delay=.15+((p.i*7)%count)*.095+(p.i%3)*.035;
     }
-    const contentBounds=content.getBoundingClientRect();
-    entryCenter={x:w/2,y:(contentBounds.top+contentBounds.bottom)/2-bounds.top};
-    const planned=[];
-    const radialOrder=[...anchors].sort((a,b)=>Math.hypot(a.x-entryCenter.x,a.y-entryCenter.y)-Math.hypot(b.x-entryCenter.x,b.y-entryCenter.y));
-    for(const p of radialOrder){
-      const dx=p.x-entryCenter.x,dy=p.y-entryCenter.y;
-      const sx=dx>0?(w+p.r+30-entryCenter.x)/dx:dx<0?(-p.r-30-entryCenter.x)/dx:Infinity;
-      const sy=dy>0?(h+p.r+30-entryCenter.y)/dy:dy<0?(-p.r-30-entryCenter.y)/dy:Infinity;
-      p.entryScale=Math.max(1,Math.min(sx,sy));
-      p.duration=1.05+((p.i*17+3)%19)/18*1.05;
-      p.delay=.18+((p.i*13+5)%23)/22*1.45;
-      // Inner spheres enter first wherever paths share space. Schedule once,
-      // so independent speeds never require mid-flight pushes or reversals.
-      const conflicts=()=>planned.some(q=>{
-        const end=Math.max(p.delay+p.duration,q.delay+q.duration);
-        for(let t=p.delay;t<=end+1/60;t+=1/60){
-          if(t<q.delay)continue;
-          const a=entryPosition(p,t),b=entryPosition(q,t);
-          const floatingRoom=(t>=p.delay+p.duration?p.floatRoom*p.floatScale:0)+
-            (t>=q.delay+q.duration?q.floatRoom*q.floatScale:0);
-          if(Math.hypot(a.x-b.x,a.y-b.y)<p.r+q.r+2+floatingRoom)return true;
-        }
-        return false;
-      });
-      const latest=planned.reduce((end,q)=>Math.max(end,q.delay+q.duration),p.delay);
-      while(p.delay<latest&&conflicts())p.delay=Math.min(latest,p.delay+.08);
-      planned.push(p);
-    }
+    resetBodies();
     wake();
   }
-
-  function protect(p){
-    for(const box of obstacles){
+  function resetBodies(){
+    time=0;last=0;
+    bodies=anchors.map(p=>({...p,vx:(p.side?-1:1)*(8+(p.i%5)*5),vy:15+(p.i%4)*22}));
+    if(reduced.matches)for(let i=0;i<1800;i++)advance(1/120);
+  }
+  function constrain(p){
+    const floor=h-p.r-10;
+    if(p.y>floor){p.y=floor;if(p.vy>0)p.vy=p.vy>25?-p.vy*.18:0;p.vx*=.96;}
+    const left=-p.r*.30,right=w+p.r*.30;
+    if(p.x<left){p.x=left;if(p.vx<0)p.vx*=-.15;}
+    if(p.x>right){p.x=right;if(p.vx>0)p.vx*=-.15;}
+    // Let the rain pass beside the copy rather than piling onto invisible text shelves.
+    for(const box of obstacles.slice(0,-1)){
       const nx=Math.max(box.left,Math.min(box.right,p.x)),ny=Math.max(box.top,Math.min(box.bottom,p.y));
-      let dx=p.x-nx,dy=p.y-ny,dist=Math.hypot(dx,dy);
-      if(dist<p.r+3){
-        if(dist<.01){dx=p.x<w/2?-1:1;dy=0;dist=1;}
-        const push=p.r+3-dist;p.x+=dx/dist*push;p.y+=dy/dist*push;
+      if(Math.hypot(p.x-nx,p.y-ny)<p.r+5){
+        p.x=p.x<w/2?box.left-p.r-5:box.right+p.r+5;
+        p.vx*=.4;
       }
     }
   }
-  function separate(positions,confine){
-    for(let pass=0;pass<24;pass++){
-      let correction=0;
-      for(const p of positions){
-        const previousX=p.x,previousY=p.y;
-        if(confine){
-          p.x=Math.max(p.r*.35,Math.min(w-p.r*.35,p.x));
-          p.y=Math.max(headerBottom+p.r+8,Math.min(h-p.r-8,p.y));
+  function advance(dt){
+    time+=dt;
+    const active=bodies.filter(p=>time>p.delay);
+    const copyBottom=obstacles.length>1?Math.max(...obstacles.slice(0,-1).map(box=>box.bottom)):h*.55;
+    for(const p of active){
+      p.vy+= (w<600?520:650)*dt;
+      // A mild inward pull lets the lower corner piles spread onto the banner floor.
+      if(p.y-p.r>copyBottom){
+        const target=w*(p.side?.77:.23);
+        p.vx+=(target-p.x)*.35*dt;
+      }
+      p.vx*=Math.exp(-.8*dt);
+      p.x+=p.vx*dt;p.y+=p.vy*dt;
+    }
+    for(let pass=0;pass<20;pass++){
+      active.forEach(constrain);
+      for(let a=0;a<active.length;a++)for(let b=a+1;b<active.length;b++){
+        const p=active[a],q=active[b],dx=q.x-p.x,dy=q.y-p.y;
+        const distance=Math.hypot(dx,dy)||.001,gap=p.r+q.r+2;
+        if(distance>=gap)continue;
+        const nx=dx/distance,ny=dy/distance,penetration=gap-distance;
+        const ip=1/(p.r*p.r),iq=1/(q.r*q.r),sum=ip+iq;
+        p.x-=nx*penetration*ip/sum;p.y-=ny*penetration*ip/sum;
+        q.x+=nx*penetration*iq/sum;q.y+=ny*penetration*iq/sum;
+        const approach=(q.vx-p.vx)*nx+(q.vy-p.vy)*ny;
+        if(approach<0){
+          const restitution=pass===0&&approach<-30?.20:0;
+          const impulse=-(1+restitution)*approach/sum;
+          p.vx-=impulse*nx*ip;p.vy-=impulse*ny*ip;
+          q.vx+=impulse*nx*iq;q.vy+=impulse*ny*iq;
         }
-        protect(p);
-        correction=Math.max(correction,Math.abs(p.x-previousX),Math.abs(p.y-previousY));
       }
-      for(let a=0;a<positions.length;a++)for(let b=a+1;b<positions.length;b++){
-        const p=positions[a],q=positions[b],dx=q.x-p.x,dy=q.y-p.y;
-        const distance=Math.hypot(dx,dy)||.001,gap=p.r+q.r+6;
-        if(distance<gap){const push=(gap-distance)*.5;correction=Math.max(correction,push);p.x-=dx/distance*push;p.y-=dy/distance*push;q.x+=dx/distance*push;q.y+=dy/distance*push;}
-      }
-      if(correction<.02)break;
     }
-  }
-  function entryPosition(anchor,now){
-    const enter=Math.max(0,Math.min(1,(now-anchor.delay)/anchor.duration));
-    const ease=1-Math.pow(1-enter,3);
-    const scale=1+(anchor.entryScale-1)*(1-ease);
-    return {x:entryCenter.x+(anchor.x-entryCenter.x)*scale,
-      y:entryCenter.y+(anchor.y-entryCenter.y)*scale,ease};
   }
   function draw(now){
     const dt=!reduced.matches&&last?Math.max(0,Math.min((now-last)/1000,.05)):0;
-    time+=dt;last=now;ctx.clearRect(0,0,w,h);
-    const positions=[];
-    for(const anchor of anchors){
-      const {i,r}=anchor;
-      if(time<=anchor.delay&&!reduced.matches)continue;
-      const point=entryPosition(anchor,reduced.matches?Infinity:time);
-      const p={i,r,x:point.x,y:point.y};
-      const floatTime=reduced.matches?0:Math.max(0,time-anchor.delay-anchor.duration);
-      const fade=Math.min(1,floatTime/.35);
-      const blend=fade*fade*(3-2*fade)*anchor.floatScale;
-      const rhythm=.7+(i%7)*.045;
-      p.x+=Math.sin(floatTime*rhythm+i*2.4)*(w<600?4:7)*blend;
-      p.y+=Math.cos(floatTime*rhythm*.83+i*1.7)*(w<600?5:9)*blend;
-      positions.push(p);
+    last=now;ctx.clearRect(0,0,w,h);
+    const steps=Math.max(1,Math.ceil(dt*120));
+    for(let step=0;step<steps;step++)if(dt)advance(dt/steps);
+    const positions=bodies.filter(p=>time>p.delay);
+    // Small soft contact shadows strengthen as a sphere approaches the floor.
+    for(const p of positions){
+      const proximity=Math.max(0,1-(h-p.y-p.r)/(p.r*2));
+      if(!proximity)continue;
+      ctx.save();ctx.translate(p.x,h-7);ctx.scale(p.r*.9,p.r*.12);
+      const shadow=ctx.createRadialGradient(0,0,0,0,0,1);
+      shadow.addColorStop(0,`rgba(155,175,195,${proximity*.18})`);
+      shadow.addColorStop(.5,`rgba(70,85,105,${proximity*.12})`);
+      shadow.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=shadow;ctx.beginPath();ctx.arc(0,0,1,0,Math.PI*2);ctx.fill();ctx.restore();
     }
-    // Each sphere floats locally inside its reserved space; pictures stay upright.
     for(const p of positions){
       ctx.save();ctx.translate(p.x,p.y);
-      ctx.shadowColor='#00000060';ctx.shadowBlur=9;ctx.shadowOffsetY=5;
+      ctx.shadowColor='#00000090';ctx.shadowBlur=12;ctx.shadowOffsetY=7;
       ctx.drawImage(textures[p.i],-p.r,-p.r,p.r*2,p.r*2);ctx.restore();
     }
     canvas.dataset.sphereCount=String(anchors.length);
     frame=0;
-    if (canAnimate()) frame=requestAnimationFrame(draw);
+    if(canAnimate())frame=requestAnimationFrame(draw);
   }
   function canAnimate() {
     return visible && !document.hidden && !reduced.matches &&
@@ -293,8 +265,8 @@
   });
   visibilityObserver.observe(canvas);
   document.addEventListener('visibilitychange',wake);
-  addEventListener('pageshow',()=>{time=reduced.matches?4:0;wake();});
-  reduced.addEventListener('change',()=>{time=reduced.matches?4:0;wake();});
+  addEventListener('pageshow',()=>{resetBodies();wake();});
+  reduced.addEventListener('change',()=>{resetBodies();wake();});
   // Pointer movement updates unrelated root classes. Only an actual loading
   // transition should reset the clock; otherwise frequent pointer events starve RAF.
   const isLoading=()=>document.documentElement.matches('.is-page-loading, .is-transition-pending');
