@@ -164,6 +164,10 @@ html:not(.chrome--pinned) .site-socials {
   overflow: hidden; isolation: isolate;
   animation: contact-surface-in .8s cubic-bezier(.22,1,.36,1) both;
 }
+/* .btn--fill-ink's colour is normally the page's own light mood tint
+   (pink/periwinkle/cream, per --mood-bg) for contrast against its dark
+   fill — here that read as pink instead of the plain white asked for. */
+.contact-dialog__panel .btn--fill-ink { color: #fff; }
 .contact-dialog__body { flex: 1; min-height: 0; display: flex; overflow-y: auto; overscroll-behavior: contain; }
 .contact-dialog__inner { width: min(420px, 100%); margin: auto; padding-block: 12px; }
 .contact-dialog__head { margin-bottom: 24px; text-align: center; animation: contact-item-in .5s .18s ease both; }

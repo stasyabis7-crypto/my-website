@@ -409,7 +409,7 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   .work-toc__toggle:focus-visible { color: var(--color-action-active-text, #fff); }
   .work-toc-sheet .btn--fill-white:not([aria-current]) { color: #101014; }
   .work-toc-sheet .btn--fill-pink { color: var(--color-action-active-text); }
-  .work-toc-sheet .btn--fill-ink { color: var(--mood-bg); }
+  .work-toc-sheet .btn--fill-ink { color: #fff; }
   .work-toc__toggle:focus-visible,
   .work-toc-sheet .btn:focus-visible { outline: 2px solid var(--mood-ink); outline-offset: 3px; }
 }
