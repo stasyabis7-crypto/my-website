@@ -181,20 +181,35 @@
       const {i,r}=anchor,stagger=anchor.order*(mobile?.06:.04);
       const enter=Math.max(0,Math.min(1,(cycle-.15-stagger)/.95));
       const leave=Math.max(0,Math.min(1,(cycle-5.6-stagger*.65)/.85));
-      if(enter===0)continue;
+      const peeking=anchor.order%5===0;
+      if(enter===0&&!peeking)continue;
       const phase=time*1.65+i*2.4;
       const drift=mobile?10:22;
       const p={i,r,x:anchor.x+Math.sin(phase)*drift+Math.sin(time*1.1)*drift*.7,y:anchor.y+Math.cos(phase*.8)*drift};
       const ease=1-Math.pow(1-enter,3);
-      let fromX=p.x,fromY=p.y;
-      if(anchor.y<contentTop-20)fromY=-r-70;
-      else if(anchor.y>top)fromY=h+r+70;
-      else fromX=anchor.x<w/2?-r-70:w+r+70;
-      p.x=fromX+(p.x-fromX)*ease+(fromX-anchor.x)*leave*leave;
-      p.y=fromY+(p.y-fromY)*ease+(fromY-anchor.y)*leave*leave;
+      // A few spheres wait half-hidden at the edge before their staggered entry.
+      // After the exit they gently return to that same position for a seamless loop.
+      let fromX=anchor.x,fromY=anchor.y,endX=anchor.x,endY=anchor.y;
+      const edge=peeking?-r*.45:-r-70;
+      if(mobile&&peeking&&anchor.y<contentTop-20){
+        fromX=anchor.x<w/2?edge:w-edge;endX=anchor.x<w/2?-r-70:w+r+70;
+        fromY=endY=Math.max(130,anchor.y);
+      }
+      else if(anchor.y<contentTop-20){fromY=edge;endY=-r-70;}
+      else if(anchor.y>top){fromY=h-edge;endY=h+r+70;}
+      else if(anchor.x<w/2){fromX=edge;endX=-r-70;}
+      else {fromX=w-edge;endX=w+r+70;}
+      p.x=fromX+(p.x-fromX)*ease;
+      p.y=fromY+(p.y-fromY)*ease;
+      p.x+=(endX-p.x)*leave*leave;
+      p.y+=(endY-p.y)*leave*leave;
+      const reset=Math.max(0,Math.min(1,(cycle-7.85)/.8));
+      const returnEase=reset*reset*(3-2*reset);
+      if(peeking){p.x+=(fromX-p.x)*returnEase;p.y+=(fromY-p.y)*returnEase;}
       // Small circular overshoot conveys inertia without deforming the sphere.
       p.y+=Math.sin(enter*Math.PI*2)*r*.25*(1-enter);
-      p.rotation=Math.sin(phase*.55)*.22+(1-ease)*(i%2?1:-1)*.8+leave*.7;
+      const edgeRotation=(i%2?1:-1)*.8;
+      p.rotation=Math.sin(phase*.55)*.22*ease*(1-leave)+edgeRotation*(1-ease+leave);
       positions.push(p);
     }
     // Rigid contacts keep the dense moving field outside the text and CTA.
@@ -244,6 +259,14 @@
   document.addEventListener('visibilitychange',wake);
   addEventListener('pageshow',wake);
   reduced.addEventListener('change',()=>{time=reduced.matches?4:0;motion.clear();wake();});
-  new MutationObserver(wake).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+  // Pointer movement updates unrelated root classes. Only an actual loading
+  // transition should reset the clock; otherwise frequent pointer events starve RAF.
+  const isLoading=()=>document.documentElement.matches('.is-page-loading, .is-transition-pending');
+  let loading=isLoading();
+  new MutationObserver(()=>{
+    const next=isLoading();
+    if(next===loading)return;
+    loading=next;wake();
+  }).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
   resize();
 })();
