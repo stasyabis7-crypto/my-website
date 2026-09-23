@@ -48,7 +48,7 @@
   prefers-reduced-motion: reduce — без анимации, сразу видна.
 
   ─── Варианты фона: .case-card--media / .case-card--bg-custom ─────────
-  --media — фон-картинка, текст в тёмной полупрозрачной плашке с блюром
+  --media — фон-картинка, текст в светлой полупрозрачной плашке с блюром
   поверх неё (обычно вместе с --align-bottom). --bg-custom — сплошной/градиентный
   фон через переменные --card-bg/--card-fg (задаются инлайново на
   конкретной карточке).
@@ -131,11 +131,19 @@
 
 .case-card--media { border: var(--media-border); }
 
-/* Текст поверх картинки — не затемнение всей области, а тёмная
-   полупрозрачная плашка с блюром в 16px от краёв. Короткий текст плашка
-   обнимает и прижимается к левому краю; длинный растягивает её до
-   ширины карточки. */
-.case-card.case-card--media { padding: 16px; }
+/* Текст поверх картинки — не затемнение всей области, а светлая
+   полупрозрачная плашка с блюром и тёмным текстом. Сам текст стоит там
+   же, где у соседних карточек: 30px (--card-pad-x) слева и
+   --card-pad-bottom снизу, поэтому плашка отстоит от краёв на эти отступы
+   минус свои поля. Короткий текст плашка обнимает и прижимается к левому
+   краю; длинный растягивает её до ширины карточки. */
+.case-card.case-card--media {
+  --media-plate-pad: 14px;
+  /* − 1px: у этой карточки настоящая обводка (--media-border). */
+  padding: 16px
+    calc(var(--card-pad-x) - var(--media-plate-pad) - 1px)
+    calc(var(--card-pad-bottom) - var(--media-plate-pad) - 1px);
+}
 
 .case-card--media .case-card__title,
 .case-card--media .case-card__subtitle {
@@ -145,12 +153,12 @@
   box-sizing: border-box;
   width: fit-content;
   max-width: 100%;
-  padding: 10px 14px;
+  padding: var(--media-plate-pad);
   border-radius: 10px;
-  background: rgb(17 17 17 / .72);
+  background: rgb(255 255 255 / .72);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
   backdrop-filter: blur(16px) saturate(160%);
-  color: #fff;
+  color: var(--color-text);
 }
 
 .case-card--bg-custom {
