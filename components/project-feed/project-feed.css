@@ -17,18 +17,12 @@
   }
 }
 
-/* Заголовок слева, переключатель ровно по центру страницы. */
+/* Заголовок и под ним переключатель — оба по центру страницы. */
 .project-feed__head {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: center;
-  gap: 16px;
-}
-.project-feed__platforms { grid-column: 2; }
-@media (max-width: 767px) {
-  .project-feed__head { grid-template-columns: minmax(0, 1fr); justify-items: center; }
-  .project-feed__title { justify-self: start; }
-  .project-feed__platforms { grid-column: 1; }
+  justify-items: center;
+  gap: 20px;
+  text-align: center;
 }
 
 .project-feed__grid {
@@ -90,7 +84,9 @@
   white-space: nowrap;
 }
 
-.feed-card__text { display: grid; gap: 4px; }
+/* Группировка: название и описание — одна группа (плотно), отделена от
+   тегов заметно большим отступом. */
+.feed-card__text { display: grid; gap: 4px; margin-top: 12px; }
 .feed-card__description { color: var(--color-text-muted); }
 
 .project-feed__status {
