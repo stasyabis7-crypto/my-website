@@ -110,7 +110,7 @@ Claude, другой ИИ-ассистент или человек. Не спе�
 
 ## Баннер Главной — закреплённый компонент
 
-`components/hero-mood/` — утверждённый тёмный баннер с белыми объёмными сферами.
+`components/hero-mood/` — утверждённый светлый баннер с объёмными сферами.
 Источник: `template.html`; в `index.html` копия между `component:hero-mood`.
 Стили и поведение: `components/hero-mood/hero-layout.css`, `components/hero-mood/hero-viewport.js`, `components/hero-mood/hero-spheres.js`.
 

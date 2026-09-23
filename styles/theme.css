@@ -1,5 +1,5 @@
 /*
-  Цветовые токены темы. Сайт всегда тёмный (см. :root ниже) —
+  Цветовые токены темы. Сайт всегда светлый (см. :root ниже) —
   переключателя темы нет.
 
   Единственное место, где заданы конкретные HEX/rgba-значения — все
@@ -91,28 +91,28 @@ html.no-liquid-glass-distort .footer-menu-panel__bar {
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  --color-bg: #080808;
-  --color-surface: #1c1f26;
-  --color-surface-alt: #262a33;
-  --color-text: #f4f5f7;
-  --color-text-muted: #9aa1ae;
-  --color-border: #2c303a;
+  --color-bg: #ffffff;
+  --color-surface: #f3f4f6;
+  --color-surface-alt: #eceef2;
+  --color-text: #14161a;
+  --color-text-muted: #5f6673;
+  --color-border: #dde0e6;
 
   /* "Ink" — цвет обводки/заливки монохромных контролов (кнопки,
      иконки), инвертируется относительно surface в каждой теме. */
-  --color-ink: #f4f5f7;
-  --color-ink-contrast: #14161a;
+  --color-ink: #14161a;
+  --color-ink-contrast: #ffffff;
 
   /* Полупрозрачные версии surface/surface-alt под backdrop-filter —
      сама заливка почти не видна без blur, весь эффект стекла даёт
-     именно смазанный фон под ней. Едва заметная светлая обводка
-     (не color-border — он тут слишком тёмный/непрозрачный) — типичный
-     блик стекла по краю панели. */
-  --color-glass: rgba(28, 31, 38, 0.55);
-  --color-glass-alt: rgba(38, 42, 51, 0.55);
-  --color-glass-border: rgba(244, 245, 247, 0.1);
+     именно смазанный фон под ней. Едва заметная тёмная обводка
+     (не color-border — он тут слишком плотный/непрозрачный) — типичная
+     кромка стекла по краю панели. */
+  --color-glass: rgba(255, 255, 255, 0.6);
+  --color-glass-alt: rgba(243, 244, 246, 0.6);
+  --color-glass-border: rgba(20, 22, 26, 0.08);
 }
 
 /*

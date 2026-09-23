@@ -100,9 +100,9 @@
 
 /* В покое хедер сплошной, фото занимает область под ним. Только когда
    фото увеличено и заходит за свою область, хедер становится
-   полупрозрачным тёмным и фото видно сквозь него. */
+   полупрозрачным и фото видно сквозь него. */
 .case-lightbox.is-zoomed .case-lightbox__bar {
-  background: rgba(8, 8, 8, 0.55);
+  background: color-mix(in srgb, var(--color-bg) 55%, transparent);
 }
 
 .case-lightbox__counter {
@@ -230,7 +230,7 @@
     left: 0;
     z-index: 1;
     width: calc(var(--lightbox-nav-left) + var(--button-height, 64px));
-    background: linear-gradient(to right, rgba(8, 8, 8, 0.92) 0, rgba(8, 8, 8, 0.78) 55%, rgba(8, 8, 8, 0));
+    background: linear-gradient(to right, color-mix(in srgb, var(--color-bg) 92%, transparent) 0, color-mix(in srgb, var(--color-bg) 78%, transparent) 55%, transparent);
     pointer-events: none;
   }
 

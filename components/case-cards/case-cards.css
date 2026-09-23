@@ -86,7 +86,7 @@
   min-height: 200px;
   border-radius: var(--card-radius);
   padding: var(--card-pad-top) var(--card-pad-x) var(--card-pad-bottom);
-  background: #252525;
+  background: var(--color-surface);
   color: var(--color-text);
   display: flex;
   flex-direction: column;
@@ -153,6 +153,7 @@
 /* Light cards keep readable text and use the mood's contrasting accent. */
 .case-card--light {
   background: #fff;
+  box-shadow: inset 0 0 0 1px var(--color-border);
   color: var(--mood-ink);
 }
 

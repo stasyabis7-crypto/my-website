@@ -9,7 +9,7 @@
 | Контейнер | `.mood-hero` | `.mood-hero.project-hero` |
 | Заголовок | `.mood-title.text-h1`, свой текст; H2 до 600 px | `.mood-title.text-h1`: H2 до 600 px, далее H1 |
 | Подзаголовок | `.mood-subtitle.text-body`, свой текст | Та же роль, свой текст |
-| Визуальная часть | Белые сферы `.hero-spheres` на тёмном фоне | `.mood-exhibit.project-hero__art` с `.project-hero__image` |
+| Визуальная часть | Белые сферы `.hero-spheres` на светлом фоне | `.mood-exhibit.project-hero__art` с `.project-hero__image` |
 | Основное действие | Ссылка на прод, если он есть; иначе якорь содержимого | То же правило |
 
 Картинка (`src`, `srcset`, размеры и альтернативный текст), заголовок,

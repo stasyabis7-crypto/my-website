@@ -261,7 +261,7 @@
     }
     for(const p of positions){
       ctx.save();ctx.translate(p.x,p.y);
-      ctx.shadowColor='#00000090';ctx.shadowBlur=12;ctx.shadowOffsetY=7;
+      ctx.shadowColor='rgba(20,24,40,.3)';ctx.shadowBlur=12;ctx.shadowOffsetY=7;
       ctx.drawImage(textures[p.i],-p.r,-p.r,p.r*2,p.r*2);ctx.restore();
     }
     canvas.dataset.sphereCount=String(anchors.length);

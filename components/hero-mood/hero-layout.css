@@ -91,7 +91,7 @@
   z-index: -1;
   inset: -36px -28px;
   pointer-events: none;
-  background: rgb(8 8 8 / 32%);
+  background: color-mix(in srgb, var(--color-bg) 50%, transparent);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   -webkit-mask-image: radial-gradient(ellipse, #000 45%, transparent 72%);

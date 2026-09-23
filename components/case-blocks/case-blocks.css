@@ -362,8 +362,8 @@
   flex-direction: column;
   overflow: hidden;
   border-radius: var(--case-content-radius, 14px);
-  background: #252525;
-  color: #fff;
+  background: var(--color-surface);
+  color: var(--color-text);
   padding: 32px var(--card-pad-x);
 }
 
