@@ -48,8 +48,8 @@
   prefers-reduced-motion: reduce — без анимации, сразу видна.
 
   ─── Варианты фона: .case-card--media / .case-card--bg-custom ─────────
-  --media — фон-картинка + тёмный скрим снизу для читаемости текста
-  (обычно вместе с --align-bottom). --bg-custom — сплошной/градиентный
+  --media — фон-картинка, текст в тёмной полупрозрачной плашке с блюром
+  поверх неё (обычно вместе с --align-bottom). --bg-custom — сплошной/градиентный
   фон через переменные --card-bg/--card-fg (задаются инлайново на
   конкретной карточке).
 
@@ -131,19 +131,25 @@
 
 .case-card--media { border: var(--media-border); }
 
-.case-card--media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0) 60%);
-  pointer-events: none;
-}
+/* Текст поверх картинки — не затемнение всей области, а тёмная
+   полупрозрачная плашка с блюром в 16px от краёв. Короткий текст плашка
+   обнимает и прижимается к левому краю; длинный растягивает её до
+   ширины карточки. */
+.case-card.case-card--media { padding: 16px; }
 
 .case-card--media .case-card__title,
 .case-card--media .case-card__subtitle {
   position: relative;
   z-index: 2;
+  align-self: flex-start;
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgb(17 17 17 / .72);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
   color: #fff;
 }
 
