@@ -33,7 +33,9 @@ html.contact-scroll-lock, html.contact-scroll-lock body { overflow: hidden; over
    mobile/tablet variant (see site-chrome.js). */
 .site-socials__panel {
   position: absolute;
-  top: calc(100% + 12px);
+  /* 6px от нижнего края кнопки «Связаться»: она центрирована в полосе
+     высотой с хедер, поэтому считаем от центра, а не от низа обёртки. */
+  top: calc(50% + var(--button-height) / 2 + 6px);
   right: 0;
   /* Shrink to the longest item instead of a fixed width with empty
      space next to short labels. */
@@ -156,20 +158,12 @@ html:not(.chrome--pinned) .site-socials {
   padding: clamp(20px, 3vw, 40px); border-radius: 14px;
   /* Calm dark chrome close to the page's own background, not the
      saturated mood colour — a dialog this size in vivid --mood-bg
-     read as loud/anxious. Background/text set directly, and only
-     --mood-ink (not --mood-bg) redefined: .btn--fill-ink (the
-     "Закрыть" button below) reads the real --mood-bg for its
-     light-on-dark contrast and would go invisible if this panel
-     redefined that one too. */
+     read as loud/anxious. Background/text set directly. */
   --mood-ink: var(--color-text);
   background: var(--color-surface-alt); color: var(--mood-ink);
   overflow: hidden; isolation: isolate;
   animation: contact-surface-in .8s cubic-bezier(.22,1,.36,1) both;
 }
-/* .btn--fill-ink's colour is normally the page's own light mood tint
-   (pink/periwinkle/cream, per --mood-bg) for contrast against its dark
-   fill — here that read as pink instead of the plain white asked for. */
-.contact-dialog__panel .btn--fill-ink { color: #fff; }
 .contact-dialog__body { flex: 1; min-height: 0; display: flex; overflow-y: auto; overscroll-behavior: contain; }
 .contact-dialog__inner { width: min(420px, 100%); margin: auto; padding-block: 12px; }
 .contact-dialog__head { margin-bottom: 24px; text-align: center; animation: contact-item-in .5s .18s ease both; }

@@ -296,7 +296,7 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
 
 /* Quiet dark fill for dismiss actions. Same shared height and icon dimensions.
    Usage: .btn.btn--fill-ink with an optional .btn--icon-* layout. */
-.btn--fill-ink { background: #111111; color: var(--mood-bg, #fff); }
+.btn--fill-ink { background: var(--btn-accent); color: var(--btn-accent-text); }
 
 /* Table-of-contents rows: theme-aware fill, current section highlighted.
    Usage: .btn.btn--fill-toc; retains the shared height and typography. */
@@ -358,7 +358,6 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   .work-toc__toggle:focus-visible { color: var(--btn-accent-text); }
   .work-toc-sheet .btn--fill-white:not([aria-current]) { color: #101014; }
   .work-toc-sheet .btn--fill-pink { color: var(--btn-accent-text); }
-  .work-toc-sheet .btn--fill-ink { color: #fff; }
   .work-toc__toggle:focus-visible,
   .work-toc-sheet .btn:focus-visible { outline: 2px solid var(--mood-ink); outline-offset: 3px; }
 }
@@ -385,19 +384,18 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   .btn { transition: scale .16s ease-out; -webkit-tap-highlight-color: transparent; }
   .btn.btn--fill-pink { background: var(--btn-accent); color: var(--btn-accent-text); }
   .btn.btn--fill-white { background: #fff; color: #101014; }
-  .btn.btn--fill-ink { background: #111; color: var(--mood-bg, #fff); }
+  .btn.btn--fill-ink { background: var(--btn-accent); color: var(--btn-accent-text); }
   .btn.btn--fill-toc { background: transparent; color: var(--mood-ink); }
   .btn.btn--fill-toc[aria-current="location"] { background: var(--btn-accent); color: var(--btn-accent-text); }
   .btn:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 }
-/* A tap, including focus moved into/returned from a modal, has no focus ring.
-   Tab/keyboard navigation restores the existing :focus-visible styles.
-   Text fields keep their native focus feedback. */
-@media (hover: none), (pointer: coarse) {
-  html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[href]):focus,
-  html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[href]):focus::before {
-    outline: none;
-  }
+/* A tap or mouse click, including focus moved into/returned from a popover
+   or modal by script, has no focus ring. Tab/keyboard navigation restores
+   the existing :focus-visible styles. Text fields keep their native focus
+   feedback. data-focus-input is set by site-chrome.js. */
+html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[href]):focus,
+html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[href]):focus::before {
+  outline: none;
 }
 
 
