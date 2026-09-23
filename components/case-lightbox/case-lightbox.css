@@ -48,6 +48,14 @@
   inset: 0;
   z-index: 2100000000;
   --lightbox-bar-h: calc(var(--button-height, 64px) + 24px);
+  /* Полноэкранный просмотр — тёмный, всё активное в нём светлое. Токены
+     темы переопределены только внутри просмотра, поэтому фон, полоса
+     сверху, счётчик, крестик (.btn--fill-plain) и рамка миниатюры
+     перекрашиваются сами. */
+  --color-bg: #0E0F11;
+  --color-text: #FFFFFF;
+  color-scheme: dark;
+  color: var(--color-text);
   background: var(--color-bg);
   animation: case-lightbox-surface-in 0.25s ease both;
 }
@@ -275,6 +283,7 @@
 
 .case-lightbox__thumb.is-current {
   opacity: 1;
+  border-radius: 6px;
   outline: 2px solid var(--color-text);
   outline-offset: 2px;
 }

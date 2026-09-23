@@ -430,8 +430,8 @@ html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[hre
   outline-offset: 10px;
 }
 
-/* Прозрачная кнопка-иконка без заливки и подписи — просто чёрная иконка
-   на светлом фоне (напр. крестик закрытия полноэкранного просмотра).
+/* Прозрачная кнопка-иконка без заливки и подписи — иконка цвета текста
+   (напр. крестик закрытия полноэкранного просмотра: там текст светлый).
    Usage: .btn.btn--fill-plain.btn--icon-only, обязателен aria-label. */
 .btn--fill-plain {
   background: transparent;
