@@ -1,7 +1,7 @@
 /*
-  Лента проектов Главной: заголовок (стиль H2), переключатель
-  платформы по центру и сетка обложек на всю ширину экрана (две колонки,
-  на телефоне — одна). Кнопки — только типы из styles/buttons.css.
+  Лента проектов Главной: сразу после баннера сетка обложек на всю ширину
+  экрана (две колонки, на телефоне — одна). Кнопки — только типы из
+  styles/buttons.css.
 */
 .project-feed {
   --feed-gutter: 32px;
@@ -19,28 +19,16 @@
   }
 }
 
-/* Заголовок и под ним переключатель — оба по центру страницы. */
-.project-feed__head {
-  display: grid;
-  justify-items: center;
-  gap: 32px;
-  text-align: center;
-}
-@media (max-width: 767px) {
-  .project-feed__head { gap: 24px; }
-}
-
 .project-feed__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 80px 24px;
-  /* Вместе с gap ленты (24px) — 56px воздуха от переключателя до проектов. */
-  margin: 32px 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 @media (max-width: 767px) {
-  .project-feed__grid { grid-template-columns: minmax(0, 1fr); gap: 64px; margin-top: 16px; }
+  .project-feed__grid { grid-template-columns: minmax(0, 1fr); gap: 64px; }
 }
 
 /* Текст, обложка и теги соседних карточек стоят на общих линиях сетки
@@ -111,11 +99,3 @@
 /* Перебивает общий отступ .text-h3 + .text-body из typography.css. */
 .feed-card__text > .feed-card__description { margin-top: 4px; }
 
-.project-feed__status {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}

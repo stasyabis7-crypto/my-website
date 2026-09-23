@@ -1,8 +1,6 @@
 /*
-  Лента проектов Главной: переключатель платформы Все/Mobile/Web и сетка
-  обложек. Теги под обложкой пока только подписи (не фильтр).
-  Выбор платформы живёт в адресе — ?platform=web — поэтому подборкой можно
-  поделиться, а «назад» в браузере возвращает прошлый выбор.
+  Лента проектов Главной: сетка обложек сразу после баннера, без заголовка
+  и фильтров. Теги под обложкой — только подписи (не фильтр).
   Данные — pages/home/data/projects.js.
 */
 (function () {
@@ -11,34 +9,16 @@
   if (!feed || !window.portfolioProjects) return;
 
   var projects = window.portfolioProjects;
-  var platforms = window.portfolioPlatforms || [];
   var tagById = {};
   (window.portfolioTags || []).forEach(function (tag) { tagById[tag.id] = tag; });
-  var platformById = {};
-  platforms.forEach(function (platform) { platformById[platform.id] = platform; });
 
-  var segments = feed.querySelector('[data-feed-platforms]');
   var grid = feed.querySelector('.project-feed__grid');
-  var status = feed.querySelector('.project-feed__status');
   var reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  var platform = read();
 
   function escape(value) {
     return String(value).replace(/[&<>"']/g, function (char) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
     });
-  }
-
-  function read() {
-    var value = new URLSearchParams(location.search).get('platform');
-    return platformById[value] ? value : 'all';
-  }
-
-  function plural(count) {
-    var mod10 = count % 10, mod100 = count % 100;
-    if (mod10 === 1 && mod100 !== 11) return 'проект';
-    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'проекта';
-    return 'проектов';
   }
 
   // Video covers loop silently; the poster covers loading, unsupported codecs
@@ -71,35 +51,6 @@
       '</div></article></li>';
   }
 
-  function update() {
-    segments.querySelectorAll('[data-platform]').forEach(function (button) {
-      button.setAttribute('aria-pressed', String(button.dataset.platform === platform));
-    });
-    var list = projects.filter(function (project) {
-      return platform === 'all' || project.platforms.indexOf(platform) !== -1;
-    });
-    grid.innerHTML = list.map(card).join('');
-    status.textContent = 'Показано ' + list.length + ' ' + plural(list.length);
-    if (window.chipScroller) window.chipScroller.init(feed);
-  }
-
-  segments.innerHTML = [{ id: 'all', label: 'Все' }].concat(platforms).map(function (item) {
-    return '<button type="button" class="btn btn--fill-segment" data-platform="' + item.id + '" aria-pressed="false">' +
-      escape(item.label) + '</button>';
-  }).join('');
-
-  segments.addEventListener('click', function (event) {
-    var button = event.target.closest('[data-platform]');
-    if (!button || button.dataset.platform === platform) return;
-    platform = button.dataset.platform;
-    history.pushState(null, '', location.pathname + (platform === 'all' ? '' : '?platform=' + platform) + '#works-gallery');
-    update();
-  });
-
-  window.addEventListener('popstate', function () {
-    platform = read();
-    update();
-  });
-
-  update();
+  grid.innerHTML = projects.map(card).join('');
+  if (window.chipScroller) window.chipScroller.init(feed);
 })();
