@@ -182,7 +182,7 @@
   border-color: var(--btn-accent);
   background: var(--btn-accent);
   color: var(--btn-accent-text);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-regular);
 }
 
 /* Мобильная и планшетная навигация используют единый компактный
@@ -671,7 +671,7 @@ html.chrome--compact .footer-menu-panel__link .icon {
   border-color: var(--btn-accent);
   background: var(--btn-accent);
   color: var(--btn-accent-text);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-regular);
 }
 
 /*

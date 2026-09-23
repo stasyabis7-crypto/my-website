@@ -18,17 +18,17 @@
 
 :root {
   /* --- Семейства шрифтов ---
-     Fira Sans 400 — все заголовки сайта, включая Главную и попапы.
+     Playfair Display 400 — все заголовки сайта, включая Главную и попапы.
      IBM Plex Mono — основной текст и кнопки.
      Начертания и unicode-range подключаются в fonts.css. */
-  --font-family-heading: "Fira Sans", Arial, sans-serif;
+  --font-family-heading: "Playfair Display", Georgia, "Times New Roman", serif;
   --font-family-body: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 
   /* --- Заголовки: один и тот же шрифт на всех уровнях — отличается
      только font-size (см. --font-size-* ниже), family/вес/интерлиньяж
      одни на всех: Display/H1/H2/H3. Вес — regular (400).
-     Спокойный гротеск с общей геометрией латиницы и кириллицы. */
+     Контрастная антиква с засечками, латиница и кириллица. */
   --letter-spacing-heading: 0;
   --line-height-heading: 1.04;
 
@@ -288,12 +288,12 @@ body {
 
 /* Текст кнопок — один и тот же на любой кнопке сайта (большой или
    маленькой), снят с кнопок Главной (.mood-primary): та же пара
-   размер/трекинг, что и у обычного текста, только полужирный. */
+   размер/трекинг и начертание, что и у обычного текста (regular). */
 .text-button {
   font-family: var(--font-family-body);
   font-size: var(--font-size-text);
   line-height: var(--line-height-default);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-regular);
   letter-spacing: var(--letter-spacing-text);
 }
 

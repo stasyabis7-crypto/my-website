@@ -21,7 +21,7 @@
 
 ## Текущая типографика
 
-- Fira Sans 400 (Google Fonts, локальное подключение, латиница и кириллица) — все заголовки, включая Главную и попапы; роли ДС: `.text-display-lg`, `.text-display`, `.text-h1`–`.text-h3`.
+- Playfair Display 400 (Google Fonts, локальное подключение, латиница и кириллица, лицензия `styles/fonts/playfairdisplay-license.txt`) — все заголовки, включая Главную и попапы; роли ДС: `.text-display-lg`, `.text-display`, `.text-h1`–`.text-h3`.
 - IBM Plex Mono 400 — основной текст; 600 — кнопки и лейблы.
 - Системный моноширинный стек — токен `--font-family-mono`.
 

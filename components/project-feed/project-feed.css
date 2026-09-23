@@ -1,5 +1,5 @@
 /*
-  Лента проектов Главной: заголовок «Проекты» (стиль H1), переключатель
+  Лента проектов Главной: заголовок (стиль H2), переключатель
   платформы по центру и сетка обложек на всю ширину экрана (две колонки,
   на телефоне — одна). Кнопки — только типы из styles/buttons.css.
 */
@@ -7,12 +7,14 @@
   --feed-gutter: 32px;
   display: grid;
   gap: 24px;
-  padding: 32px var(--feed-gutter) 120px;
+  /* Заметная пауза после баннера. */
+  padding: 120px var(--feed-gutter) 120px;
   scroll-margin-top: calc(var(--header-h, 80px) + 12px);
 }
 @media (max-width: 999px) {
   .project-feed {
     --feed-gutter: 16px;
+    padding-top: 72px;
     padding-bottom: calc(var(--footer-h, 64px) + 96px);
   }
 }

@@ -108,8 +108,8 @@
 /* Единая высота для всех вариаций .btn, на всех брейкпоинтах. */
 :root {
   --button-height: 44px;
-  /* Compact, minimal controls: small squircle corners, small glyphs. */
-  --radius-control: 10px;
+  /* Кнопки — полностью скруглённые «таблетки», как переключатель на Главной. */
+  --radius-control: 999px;
   --button-icon-size: 20px;
   --control-scroll-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.14), 0 14px 32px -8px rgba(0, 0, 0, 0.2);
   /* Основной цвет кнопок сайта. */
@@ -137,11 +137,11 @@
   --hover-x: 50%;
   --hover-y: 50%;
   /* Текст кнопки — .text-button из typography.css (та же пара
-     размер/трекинг, что у обычного текста, только полужирный), один и
-     тот же на любой кнопке сайта, большой или маленькой. */
+     размер/трекинг и то же обычное начертание, что у основного текста),
+     один и тот же на любой кнопке сайта, большой или маленькой. */
   font-family: var(--font-family-body, "IBM Plex Mono", ui-monospace, monospace);
   font-size: calc(var(--font-size-text) * .85);
-  font-weight: var(--font-weight-semibold, 600);
+  font-weight: var(--font-weight-regular, 400);
   line-height: var(--line-height-default);
   letter-spacing: var(--letter-spacing-text, -0.03em);
   white-space: nowrap;
@@ -532,7 +532,6 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   padding-inline: 14px;
   background: var(--color-surface-alt);
   color: var(--color-text);
-  font-weight: var(--font-weight-regular, 400);
 }
 .btn--fill-chip[aria-pressed="true"] {
   background: var(--btn-accent);

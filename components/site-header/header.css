@@ -94,7 +94,8 @@
   flex: 0 0 auto;
   width: var(--chrome-item-h);
   height: var(--chrome-item-h);
-  border-radius: var(--radius-control, 10px);
+  /* Аватар — не кнопка: своё скругление, не --radius-control. */
+  border-radius: 10px;
   background: var(--color-surface-alt);
   overflow: hidden;
 }
