@@ -209,6 +209,8 @@
   width: 100%;
   aspect-ratio: 1852 / 1158;
   overflow: hidden;
+  /* Скриншоты интерфейсов — с той же лёгкой обводкой, что обложки Главной. */
+  border: var(--media-border);
   border-radius: var(--case-content-radius, 14px);
   background: var(--color-surface-alt);
   margin-top: 32px;
@@ -502,6 +504,7 @@
   aspect-ratio: 596 / 1290;
   margin-top: 16px;
   overflow: hidden;
+  border: var(--media-border);
   border-radius: var(--case-content-radius, 14px);
   background: var(--color-surface-alt);
 }

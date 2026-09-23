@@ -5,7 +5,7 @@
    скругление на всех разрешениях, не завязано на плоские --wg-radius. */
 :root {
   --project-card-radius: 8px;
-  --project-cover-border: 1px solid var(--color-glass-border);
+  --project-cover-border: var(--media-border);
   --wg-radius: var(--project-card-radius);
   --case-content-radius: 14px;
 }

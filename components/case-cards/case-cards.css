@@ -129,6 +129,8 @@
   object-fit: cover;
 }
 
+.case-card--media { border: var(--media-border); }
+
 .case-card--media::after {
   content: "";
   position: absolute;

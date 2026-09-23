@@ -114,6 +114,10 @@ html.no-liquid-glass-distort .footer-menu-panel__bar {
   --color-glass: rgba(255, 255, 255, 0.6);
   --color-glass-alt: rgba(243, 244, 246, 0.6);
   --color-glass-border: rgba(20, 22, 26, 0.08);
+
+  /* Лёгкая обводка картинок: обложки Главной и скриншоты интерфейсов в
+     кейсах — та же кромка, что у дропдаунов. */
+  --media-border: 1px solid var(--color-glass-border);
 }
 
 /*

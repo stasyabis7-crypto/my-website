@@ -432,12 +432,12 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   outline-offset: 10px;
 }
 
-/* Прозрачная кнопка-иконка без заливки и подписи — просто иконка
-   поверх медиа (напр. крестик закрытия полноэкранного просмотра).
+/* Прозрачная кнопка-иконка без заливки и подписи — просто чёрная иконка
+   на светлом фоне (напр. крестик закрытия полноэкранного просмотра).
    Usage: .btn.btn--fill-plain.btn--icon-only, обязателен aria-label. */
 .btn--fill-plain {
   background: transparent;
-  color: #fff;
+  color: var(--color-text);
 }
 
 /* Управляющие иконки-кнопки прямо поверх полноэкранного медиа (напр.
