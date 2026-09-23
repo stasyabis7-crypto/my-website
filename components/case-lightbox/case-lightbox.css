@@ -260,7 +260,8 @@
   width: 100%;
   aspect-ratio: 1;
   box-sizing: border-box;
-  border-radius: 0;
+  /* Все миниатюры с тем же скруглением, что у выбранной. */
+  border-radius: 6px;
   overflow: hidden;
   opacity: 0.55;
   cursor: pointer;
@@ -283,7 +284,6 @@
 
 .case-lightbox__thumb.is-current {
   opacity: 1;
-  border-radius: 6px;
   outline: 2px solid var(--color-text);
   outline-offset: 2px;
 }
