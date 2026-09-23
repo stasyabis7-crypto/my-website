@@ -55,7 +55,12 @@
     var tags = project.tags.map(function (id) { return tagById[id]; }).filter(Boolean).map(function (tag) {
       return '<li class="feed-card__tag">' + escape(tag.label) + '</li>';
     }).join('');
+    // Order: title and subtitle, then the cover, then the tags.
     return '<li class="project-feed__item"><article class="feed-card">' +
+      '<div class="feed-card__text">' +
+      '<h3 class="feed-card__title text-h3">' + escape(project.title) + '</h3>' +
+      '<p class="feed-card__description text-body" data-subtitle>' + escape(project.description) + '</p>' +
+      '</div>' +
       '<div class="feed-card__media">' +
       '<a class="feed-card__cover" href="' + escape(project.href) + '" aria-label="Открыть кейс «' + escape(project.title) + '»">' +
       media(project) + '</a></div>' +
@@ -63,10 +68,6 @@
       '<button type="button" class="btn btn--fill-bare btn--icon-only chip-scroller__arrow chip-scroller__arrow--prev" aria-label="Прокрутить теги назад" hidden><span class="icon icon--arrow-left" aria-hidden="true"></span></button>' +
       '<ul class="chip-scroller__track feed-card__tags" aria-label="Теги">' + tags + '</ul>' +
       '<button type="button" class="btn btn--fill-bare btn--icon-only chip-scroller__arrow chip-scroller__arrow--next" aria-label="Прокрутить теги вперёд" hidden><span class="icon icon--arrow-right" aria-hidden="true"></span></button>' +
-      '</div>' +
-      '<div class="feed-card__text">' +
-      '<h3 class="feed-card__title text-h3">' + escape(project.title) + '</h3>' +
-      '<p class="feed-card__description text-body" data-subtitle>' + escape(project.description) + '</p>' +
       '</div></article></li>';
   }
 

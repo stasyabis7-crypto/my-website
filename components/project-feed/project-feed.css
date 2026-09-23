@@ -33,17 +33,31 @@
 .project-feed__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 40px 24px;
+  gap: 80px 24px;
   /* Вместе с gap ленты (24px) — 56px воздуха от переключателя до проектов. */
   margin: 32px 0 0;
   padding: 0;
   list-style: none;
 }
 @media (max-width: 767px) {
-  .project-feed__grid { grid-template-columns: minmax(0, 1fr); gap: 32px; margin-top: 16px; }
+  .project-feed__grid { grid-template-columns: minmax(0, 1fr); gap: 64px; margin-top: 16px; }
 }
 
-.feed-card { display: grid; gap: 12px; min-width: 0; }
+/* Текст, обложка и теги соседних карточек стоят на общих линиях сетки
+   (subgrid): разная длина подзаголовка не сдвигает обложки. Свой row-gap
+   subgrid-а перекрывает 80px между рядами проектов. */
+.project-feed__item,
+.feed-card {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  row-gap: 12px;
+  min-width: 0;
+}
+.feed-card { grid-column: 1 / -1; }
+@supports not (grid-template-rows: subgrid) {
+  .project-feed__item, .feed-card { grid-row: auto; grid-template-rows: none; }
+}
 
 /* Обложка — единственная ссылка карточки. Наведение уменьшает рамку, как
    кликабельные картинки на страницах кейсов (case-lightbox.css). Hover
@@ -91,9 +105,8 @@
   white-space: nowrap;
 }
 
-/* Группировка: название и описание — одна группа (плотно), отделена от
-   тегов заметно большим отступом. */
-.feed-card__text { display: grid; margin-top: 12px; }
+/* Порядок: название и описание (плотная группа) → обложка → теги. */
+.feed-card__text { display: grid; align-content: start; margin-bottom: 8px; }
 /* Перебивает общий отступ .text-h3 + .text-body из typography.css. */
 .feed-card__text > .feed-card__description { margin-top: 4px; }
 
