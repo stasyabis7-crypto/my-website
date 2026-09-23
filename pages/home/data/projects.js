@@ -3,7 +3,9 @@
    Платформа выбирается переключателем, остальные теги — чипами;
    у проекта не больше четырёх тегов, по одному из каждой группы.
    video — необязательная обложка-видео (webm, 16:10); image тогда служит
-   заглушкой, пока видео грузится или если его нельзя воспроизвести. */
+   заглушкой, пока видео грузится или если его нельзя воспроизвести.
+   Обложка живёт в covers/ кейса и она же — первый кадр страницы кейса
+   (проверяет scripts/check-case-covers.js). */
 window.portfolioPlatforms = [
   { id: 'mobile', label: 'Mobile' },
   { id: 'web', label: 'Web' }
@@ -26,10 +28,10 @@ window.portfolioProjects = [
     title: 'Сегменты покупателей',
     description: 'Аналитика покупателей и рекомендации для рассылок и рекламы в Ozon Seller',
     href: '/projects/ozon-crm/customer-segments/',
-    image: '/projects/ozon-crm/customer-segments/covers/project-crm-1.webp',
-    width: 1380,
-    height: 1380,
-    alt: 'Ноутбук на белом столе с разделом «Сегменты покупателей» кабинета Ozon Seller',
+    image: '/projects/ozon-crm/customer-segments/covers/cover.webp',
+    width: 2880,
+    height: 1800,
+    alt: 'Раздел CRM в кабинете Ozon Seller: постоянные покупатели и рекомендации по сегментам',
     platforms: ['web'],
     tags: ['ozon', 'b2b', 'ecommerce', 'crm']
   },

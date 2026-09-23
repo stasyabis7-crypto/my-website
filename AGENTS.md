@@ -150,6 +150,11 @@ Claude, другой ИИ-ассистент или человек. Не спе�
 `components/case-blocks/case-blocks.css`). Без них кейс остаётся в нейтральной
 гамме сайта. Кнопки палитру кейса не берут — они всегда из `styles/buttons.css`.
 
+Обложка кейса одна на Главную и на страницу: файл в `projects/<…>/<кейс>/covers/`,
+подключён в `pages/home/data/projects.js` и тем же файлом — первым кадром
+`.case-cover__media` в `#summary` кейса (для видео — тот же `poster`).
+Проверяет `node scripts/check-case-covers.js` (входит в `npm run check`).
+
 ## Лента проектов Главной и теги
 
 `components/project-feed/` — лента опубликованных кейсов на Главной (без
