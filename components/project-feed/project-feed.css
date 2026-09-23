@@ -86,7 +86,9 @@
 
 /* Группировка: название и описание — одна группа (плотно), отделена от
    тегов заметно большим отступом. */
-.feed-card__text { display: grid; gap: 4px; margin-top: 12px; }
+.feed-card__text { display: grid; margin-top: 12px; }
+/* Перебивает общий отступ .text-h3 + .text-body из typography.css. */
+.feed-card__text > .feed-card__description { margin-top: 4px; }
 
 .project-feed__status {
   position: absolute;
