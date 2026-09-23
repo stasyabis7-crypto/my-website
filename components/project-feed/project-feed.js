@@ -20,6 +20,7 @@
   var segments = feed.querySelector('[data-feed-platforms]');
   var grid = feed.querySelector('.project-feed__grid');
   var status = feed.querySelector('.project-feed__status');
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)');
   var platform = read();
 
   function escape(value) {
@@ -40,6 +41,16 @@
     return 'проектов';
   }
 
+  // Video covers loop silently; the poster covers loading, unsupported codecs
+  // and reduced motion (then the video never starts).
+  function media(project) {
+    var poster = '<img src="' + escape(project.image) + '" width="' + project.width + '" height="' + project.height +
+      '" alt="' + escape(project.alt) + '" loading="lazy" decoding="async" />';
+    if (!project.video || reduced.matches) return poster;
+    return '<video src="' + escape(project.video) + '" poster="' + escape(project.image) + '" width="' + project.width +
+      '" height="' + project.height + '" muted loop playsinline autoplay preload="auto" aria-label="' + escape(project.alt) + '"></video>';
+  }
+
   function card(project) {
     var tags = project.tags.map(function (id) { return tagById[id]; }).filter(Boolean).map(function (tag) {
       return '<li class="feed-card__tag">' + escape(tag.label) + '</li>';
@@ -47,8 +58,7 @@
     return '<li class="project-feed__item"><article class="feed-card">' +
       '<div class="feed-card__media">' +
       '<a class="feed-card__cover" href="' + escape(project.href) + '" aria-label="Открыть кейс «' + escape(project.title) + '»">' +
-      '<img src="' + escape(project.image) + '" width="' + project.width + '" height="' + project.height +
-      '" alt="' + escape(project.alt) + '" loading="lazy" decoding="async" /></a></div>' +
+      media(project) + '</a></div>' +
       '<div class="chip-scroller" data-chip-scroller>' +
       '<button type="button" class="btn btn--fill-bare btn--icon-only chip-scroller__arrow chip-scroller__arrow--prev" aria-label="Прокрутить теги назад" hidden><span class="icon icon--arrow-left" aria-hidden="true"></span></button>' +
       '<ul class="chip-scroller__track feed-card__tags" aria-label="Теги">' + tags + '</ul>' +

@@ -60,7 +60,8 @@
   scale: 1;
   transition: scale 0.35s var(--button-hover-ease, ease-out);
 }
-.feed-card__cover img {
+.feed-card__cover img,
+.feed-card__cover video {
   display: block;
   width: 100%;
   height: 100%;
