@@ -184,3 +184,15 @@
   document.addEventListener('visibilitychange', syncAll);
   reduced.addEventListener('change', syncAll);
 })();
+
+/* Видео-обложка кейса не запускается при prefers-reduced-motion:
+   load() возвращает к заглушке (poster) вместо первого кадра. */
+(function () {
+  'use strict';
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.case-cover__media video[autoplay]').forEach(function (video) {
+    video.removeAttribute('autoplay');
+    video.pause();
+    video.load();
+  });
+})();
