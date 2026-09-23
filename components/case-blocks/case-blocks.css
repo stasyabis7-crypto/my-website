@@ -737,6 +737,10 @@
 .case-scenario {
   padding-block: clamp(80px, 10vw, 148px);
   color: var(--mood-ink);
+  /* Акценты сценария (рамка активного шага, точки, галочка, пунктир) —
+     основной чёрный цвет кнопок, а не синий цвет темы. */
+  --color-action-active: var(--btn-accent);
+  --color-action-active-text: var(--btn-accent-text);
 }
 .case-scenario__flow {
   list-style: none;
