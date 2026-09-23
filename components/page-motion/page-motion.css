@@ -1,28 +1,5 @@
 /* Shared page motion: no transformed page wrapper, so fixed chrome stays fixed. */
-.cursor-dot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #fff;
-  mix-blend-mode: difference;
-  pointer-events: none;
-  z-index: 2147483647;
-  opacity: 0;
-  transition: width .22s ease, height .22s ease, opacity .12s ease;
-}
-.cursor-dot.is-visible { opacity: 1; }
-.cursor-dot.is-suppressed { opacity: 0; }
-.cursor-dot.is-action { width: 36px; height: 36px; }
-@media (hover: hover) and (pointer: fine) {
-  html.has-dot-cursor, html.has-dot-cursor * { cursor: none !important; }
-}
 .overlap-surface { position: relative; z-index: 1; }
-@media (prefers-reduced-motion: reduce) {
-  .cursor-dot { transition: none; }
-}
 
 /* Shared overlap: sticky positioning stays on the browser's scroll
    path. The fade is a single compositor transition, independent of scroll pace. */

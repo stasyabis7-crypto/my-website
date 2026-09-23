@@ -179,9 +179,9 @@
    .site-header__cta (background/color var(--color-ink*)), а не
    просто более тёмный текст. */
 .site-footer__link.is-current {
-  border-color: var(--color-action-active);
-  background: var(--color-action-active);
-  color: var(--color-action-active-text);
+  border-color: var(--btn-accent);
+  background: var(--btn-accent);
+  color: var(--btn-accent-text);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -285,10 +285,10 @@ html.chrome--compact .site-footer__link .icon {
     box-shadow 0.25s ease;
 }
 
-/* Приоритет 1: кнопка меню — розовый акцентный контрол. */
+/* Приоритет 1: кнопка меню — основной (чёрный) контрол. */
 .site-footer__menu-btn {
-  background: var(--color-action-active);
-  color: var(--color-action-active-text);
+  background: var(--btn-accent);
+  color: var(--btn-accent-text);
 }
 
 /* Прозрачное стекло, как у «Связаться». */
@@ -299,11 +299,6 @@ html.chrome--compact .site-footer__link .icon {
   -webkit-backdrop-filter: blur(10px) saturate(160%);
   box-shadow: none;
 }
-.site-footer__top-btn:hover,
-.site-footer__top-btn:focus-visible {
-  background: var(--color-text);
-  color: var(--color-bg);
-}
 
 .site-footer__top-btn .icon {
   width: var(--icon-size);
@@ -313,7 +308,7 @@ html.chrome--compact .site-footer__link .icon {
 /* Кнопка "Меню" — три полоски вместо статичной SVG-иконки, сама
    морфится в крестик, когда открыта панель (см. .is-menu-open ниже),
    вместо мгновенной подмены mask-image. currentColor берёт тот же
-   цвет, что задан кнопке через .color выше (--color-action-active-text). */
+   цвет, что задан кнопке через .color выше (--btn-accent-text). */
 .site-footer__menu-btn-line {
   position: absolute;
   width: 1.25rem;
@@ -673,9 +668,9 @@ html.chrome--compact .footer-menu-panel__link .icon {
    (см. выше) и .site-header__cta — единый стиль "активного" контрола
    по всему сайту. */
 .footer-menu-panel__link.is-current {
-  border-color: var(--color-action-active);
-  background: var(--color-action-active);
-  color: var(--color-action-active-text);
+  border-color: var(--btn-accent);
+  background: var(--btn-accent);
+  color: var(--btn-accent-text);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -763,10 +758,10 @@ html.footer-menu-open {
      кнопка «Наверх» и CTA «Смотреть работы» (текст + padding + border). */
   height: var(--chrome-item-h, 3.5rem);
   padding: 0 1.25rem;
-  border: 1px solid var(--color-action-active);
+  border: 1px solid var(--btn-accent);
   border-radius: var(--radius-control, 10px);
-  background: var(--color-action-active);
-  color: var(--color-action-active-text);
+  background: var(--btn-accent);
+  color: var(--btn-accent-text);
   text-decoration: none;
   white-space: nowrap;
 }

@@ -73,7 +73,10 @@
 :where(html[data-hero-short-landscape]) .mood-content { text-align: left; }
 }
 
+/* Home banner is full-bleed: no outer margin around its background. */
+.mood-hero--spheres { padding: 0; }
 .mood-hero--spheres .mood-stage {
+  height: var(--hero-vh, 100svh);
   display: flex;
   align-items: flex-start;
   padding: clamp(132px, 19vh, 210px) clamp(24px, 6vw, 110px) 100px;

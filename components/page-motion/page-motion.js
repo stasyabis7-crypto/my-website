@@ -4,57 +4,6 @@
   var fine = matchMedia('(hover: hover) and (pointer: fine)');
   var reduced = matchMedia('(prefers-reduced-motion: reduce)');
 
-  // A white difference layer inverts the actual pixels beneath the dot.
-  var dot = document.createElement('div');
-  dot.className = 'cursor-dot';
-  dot.setAttribute('aria-hidden', 'true');
-  document.body.appendChild(dot);
-  var x = -100, y = -100, visible = false, cursorFrame = 0;
-  function hideCursor() {
-    visible = false;
-    cancelAnimationFrame(cursorFrame);
-    cursorFrame = 0;
-    root.classList.remove('has-dot-cursor');
-    dot.classList.remove('is-visible');
-  }
-  function cursorTarget() {
-    if (!visible) return;
-    var target = document.elementFromPoint(x, y);
-    dot.classList.toggle('is-suppressed', !!(target && target.closest('[data-cursor-hidden]')));
-    var action = target && target.closest('a[href], button, [role="button"], input, select, textarea, summary, [contenteditable="true"], [data-close]');
-    dot.classList.toggle('is-action', !!action && !action.matches(':disabled, [aria-disabled="true"]'));
-  }
-  // Content can move or be replaced beneath a stationary pointer. Hit-test
-  // while the cursor is visible, including native scroll and CSS transitions.
-  function trackCursorTarget() {
-    cursorTarget();
-    cursorFrame = requestAnimationFrame(trackCursorTarget);
-  }
-  function showCursor(clientX, clientY) {
-    x = clientX; y = clientY;
-    dot.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)';
-    visible = true;
-    root.classList.add('has-dot-cursor');
-    dot.classList.add('is-visible');
-    cursorTarget();
-    if (!cursorFrame) cursorFrame = requestAnimationFrame(trackCursorTarget);
-  }
-  document.addEventListener('pointermove', function (event) {
-    if (!fine.matches || event.pointerType === 'touch') { hideCursor(); return; }
-    showCursor(event.clientX, event.clientY);
-  }, { passive: true });
-  var incomingCursor = window.__pageTransitionCursor;
-  if (fine.matches && incomingCursor && Number.isFinite(incomingCursor.x) && Number.isFinite(incomingCursor.y) &&
-      incomingCursor.x >= 0 && incomingCursor.x < innerWidth && incomingCursor.y >= 0 && incomingCursor.y < innerHeight) {
-    showCursor(incomingCursor.x, incomingCursor.y);
-  }
-  document.documentElement.addEventListener('pointerleave', hideCursor);
-  window.addEventListener('blur', hideCursor);
-  document.addEventListener('visibilitychange', function () { if (document.hidden) hideCursor(); });
-  document.addEventListener('pointerdown', function (event) { if (event.pointerType === 'touch') hideCursor(); });
-  fine.addEventListener('change', hideCursor);
-  window.addEventListener('scroll', cursorTarget, { passive: true });
-
   // Ease the nearest scrollable surface, including menus and horizontal tracks.
   // Native positions keep scrollbars, focus, anchors and observers in sync.
   var frame = 0, destination = 0, previousTime = 0, written = 0;
@@ -81,7 +30,6 @@
     options[axis === 'y' ? 'top' : 'left'] = next;
     surface.scrollTo(options);
     written = position();
-    cursorTarget();
     if (next !== destination) frame = requestAnimationFrame(step);
     else frame = 0;
   }

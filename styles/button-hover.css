@@ -1,6 +1,6 @@
 /*
-  Общая hover-анимация интерактивных контролов. Координаты точки
-  входа курсора записывает layout-chrome.js в --hover-x/--hover-y.
+  Общие состояния интерактивных контролов: press-feedback и ховер
+  контролов футера.
 */
 :root {
   --color-action-hover: #ff0cc2;
@@ -49,6 +49,10 @@
   transition-duration: 0.06s;
 }
 
+/*
+  Контролы футера/меню: ховер — лёгкое снижение opacity, как у .btn
+  (--btn-hover-opacity из buttons.css), без заливок и свечения.
+*/
 :is(
   .site-footer__telegram,
   .site-footer__link,
@@ -56,101 +60,9 @@
   .site-footer__top-btn,
   .footer-menu-panel__link
 ) {
-  --hover-x: 50%;
-  --hover-y: 50%;
-  isolation: isolate;
-  overflow: hidden;
   transition:
     scale var(--button-press-duration) ease-out,
-    color 0.3s ease,
-    border-color 0.3s ease,
-    opacity 0.3s ease;
-}
-
-/* .site-footer__menu-btn/.site-footer__top-btn нет в списке — оба уже
-   position: absolute сами по себе (см. footer.css), этого достаточно,
-   чтобы служить containing block для ::before-заливки ниже; лишний
-   position: relative здесь раньше держал .menu-btn в потоке flex (его
-   1px-обводка на border-box не даёт сжаться до 0 даже при max-width:0
-   — то держало +4px ширины плашки футера в этом состоянии, оттуда и
-   был "прыжок" футера на скролле). */
-:is(
-  .site-footer__telegram,
-  .site-footer__link,
-  .footer-menu-panel__link
-) {
-  position: relative;
-}
-
-:is(
-  .site-footer__telegram,
-  .site-footer__link,
-  .site-footer__menu-btn,
-  .site-footer__top-btn,
-  .footer-menu-panel__link
-)::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: var(--hover-x);
-  top: var(--hover-y);
-  width: 300%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--color-action-hover);
-  box-shadow:
-    0 0 18px rgba(255, 12, 194, 0.72),
-    0 0 36px rgba(255, 12, 194, 0.42);
-  filter: blur(var(--button-hover-blur));
-  opacity: 0.88;
-  transform: translate(-50%, -50%) scale(0);
-  transition:
-    transform var(--button-hover-duration) var(--button-hover-ease),
-    filter var(--button-hover-duration) ease,
-    opacity 0.3s ease;
-  pointer-events: none;
-}
-
-/* Активные контролы используют hover-анимацию в обратную сторону:
-   из розового состояния в нейтральный ink темы (белый в dark,
-   чёрный в light). */
-:is(
-  .site-footer__telegram,
-  .site-footer__menu-btn,
-  .site-footer__link.is-current,
-  .footer-menu-panel__link.is-current
-)::before {
-  background: var(--color-ink);
-  box-shadow: none;
-}
-
-:is(
-  .site-footer__telegram,
-  .site-footer__link,
-  .site-footer__menu-btn,
-  .site-footer__top-btn,
-  .footer-menu-panel__link
-):focus-visible {
-  border-color: var(--color-action-hover);
-  color: var(--color-action-hover-text);
-  opacity: 1;
-}
-
-.site-footer__link.is-current:focus-visible,
-.footer-menu-panel__link.is-current:focus-visible {
-  opacity: 1;
-}
-
-:is(
-  .site-footer__telegram,
-  .site-footer__link,
-  .site-footer__menu-btn,
-  .site-footer__top-btn,
-  .footer-menu-panel__link
-):focus-visible::before {
-  filter: blur(0);
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1.08);
+    opacity var(--btn-hover-duration, 0.15s) ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -161,55 +73,19 @@
     .site-footer__top-btn,
     .footer-menu-panel__link
   ):hover {
-    border-color: var(--color-action-hover);
-    color: var(--color-action-hover-text);
-    opacity: 1;
-  }
-
-  .site-footer__link.is-current:hover,
-  .footer-menu-panel__link.is-current:hover {
-    opacity: 1;
-  }
-
-  :is(
-    .site-footer__telegram,
-    .site-footer__menu-btn,
-    .site-footer__link.is-current,
-    .footer-menu-panel__link.is-current
-  ):hover {
-    border-color: var(--color-ink);
-    color: var(--color-ink-contrast);
-  }
-
-  :is(
-    .site-footer__telegram,
-    .site-footer__link,
-    .site-footer__menu-btn,
-    .site-footer__top-btn,
-    .footer-menu-panel__link
-  ):hover::before {
-    filter: blur(0);
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.08);
+    opacity: var(--btn-hover-opacity, 0.72);
   }
 }
 
 :is(
   .site-footer__telegram,
+  .site-footer__link,
   .site-footer__menu-btn,
-  .site-footer__link.is-current,
-  .footer-menu-panel__link.is-current
+  .site-footer__top-btn,
+  .footer-menu-panel__link
 ):focus-visible {
-  border-color: var(--color-ink);
-  color: var(--color-ink-contrast);
-}
-
-@media (hover: none), (pointer: coarse) {
-  .site-footer__telegram:hover,
-  .site-footer__link:hover,
-  .footer-menu-panel__link:hover {
-    opacity: 1;
-  }
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -222,16 +98,6 @@
     input[type="reset"],
     [role="button"],
     [role="link"]
-  ) {
-    transition-duration: 0.01ms;
-  }
-
-  :is(
-    .site-footer__telegram,
-    .site-footer__link,
-    .site-footer__menu-btn,
-    .site-footer__top-btn,
-    .footer-menu-panel__link
   ),
   :is(
     .site-footer__telegram,
@@ -239,7 +105,7 @@
     .site-footer__menu-btn,
     .site-footer__top-btn,
     .footer-menu-panel__link
-  )::before {
+  ) {
     transition-duration: 0.01ms;
   }
 }

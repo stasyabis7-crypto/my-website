@@ -6,7 +6,6 @@
   var root = document.documentElement;
   // Resolve from this script so / and subdirectory previews work identically.
   var siteBase = new URL('../../', document.currentScript.src);
-  var pointer = null;
   var overlay;
   var text;
   var phraseTimer = 0;
@@ -15,28 +14,6 @@
   var MIN_VISIBLE = 300;
   var shownAt = 0;
   var handoffKey = 'page-spinner:' + siteBase.pathname;
-
-  function pageKey(href) {
-    var url = new URL(href, location.href);
-    return url.origin + url.pathname.replace(/index\.html$/, '').replace(/\/$/, '') + url.search;
-  }
-
-  // The custom cursor dot keeps its position across a real navigation: it is
-  // handed over through sessionStorage so the next page shows it at once.
-  var cursorKey = 'mood-cursor:' + siteBase.pathname;
-  try {
-    var carried = JSON.parse(sessionStorage.getItem(cursorKey) || 'null');
-    sessionStorage.removeItem(cursorKey);
-    var entry = performance.getEntriesByType('navigation')[0];
-    if (carried && carried.cursor && carried.page === pageKey(location.href) &&
-        Date.now() - carried.at < 10000 && (!entry || entry.type === 'navigate')) {
-      window.__pageTransitionCursor = carried.cursor;
-    }
-  } catch (_) { /* Without storage the dot appears on the next mouse move. */ }
-
-  document.addEventListener('pointermove', function (event) {
-    pointer = event.pointerType === 'touch' ? null : { x: event.clientX, y: event.clientY };
-  }, { passive: true });
 
   function build() {
     if (overlay) return overlay;
@@ -121,11 +98,6 @@
     var link = event.target.closest && event.target.closest('a[href]');
     var url = destination(link);
     if (!url) return;
-    try {
-      if (pointer && root.classList.contains('has-dot-cursor')) {
-        sessionStorage.setItem(cursorKey, JSON.stringify({ page: pageKey(url.href), cursor: pointer, at: Date.now() }));
-      }
-    } catch (_) { /* Storage is optional. */ }
     // Navigation stays native; the spinner starts turning right at the click
     // and keeps turning until the next page has loaded.
     show(false, 0);

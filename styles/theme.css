@@ -157,31 +157,18 @@ html.no-liquid-glass-distort .footer-menu-panel__bar {
 }
 
 .site-header {
-  /* Розовая кнопка "Резюме PDF" — крайняя справа (justify-content:
-     space-between в header.css). При наведении сама кнопка становится
-     ink-цвета (см. "активные" контролы в button-hover.css) — блик
-     повторяет это же превращение, а не застревает розовым. */
-  --glass-accent: color-mix(in srgb, var(--color-action-active) 70%, transparent);
+  /* Кнопка "Резюме PDF" (--btn-accent) — крайняя справа
+     (justify-content: space-between в header.css). */
+  --glass-accent: color-mix(in srgb, var(--btn-accent) 70%, transparent);
   --glass-accent-pos: calc(100% - 2.5rem) 50%;
-}
-
-.site-header:has(.site-header__cta:hover) {
-  --glass-accent: color-mix(in srgb, var(--color-ink) 55%, transparent);
 }
 
 .site-footer,
 .footer-menu-panel__bar {
   /* Активный пункт "Работы" — всегда первый/крайний слева в списке
-     (см. .site-footer__nav / .footer-menu-panel__nav). Та же логика
-     про hover, что у хедера выше — .is-current тоже красится в ink
-     при наведении. */
-  --glass-accent: color-mix(in srgb, var(--color-action-active) 70%, transparent);
+     (см. .site-footer__nav / .footer-menu-panel__nav). */
+  --glass-accent: color-mix(in srgb, var(--btn-accent) 70%, transparent);
   --glass-accent-pos: 2.25rem 50%;
-}
-
-.site-footer:has(.site-footer__link.is-current:hover),
-.footer-menu-panel__bar:has(.footer-menu-panel__link.is-current:hover) {
-  --glass-accent: color-mix(in srgb, var(--color-ink) 55%, transparent);
 }
 
 :is(

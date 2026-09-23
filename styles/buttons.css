@@ -31,21 +31,19 @@
   ─────────────────────────────────────────────────────────────────────
   ТИПЫ ЗАЛИВКИ (--fill, выбрать один) — реестр состояний с Главной:
   ─────────────────────────────────────────────────────────────────────
-    .btn--fill-pink   розовая → по ховеру белая (текст/иконка темнеют)
+    .btn--fill-pink   основная чёрная (--btn-accent) с белым текстом
                       эталон: .mood-primary «Смотреть работы»
                       (components/site-chrome/site-chrome.css)
 
-    .btn--fill-white  белая → по ховеру розовая (текст/иконка белеют)
+    .btn--fill-white  белая с тёмным текстом
                       эталон: .site-socials__link (иконки соцсетей в хедере)
                       (components/site-chrome/site-chrome.css)
 
-    .btn--fill-ink    спокойная тёмная заливка → белая по наведению.
+    .btn--fill-ink    спокойная тёмная заливка.
 
-
-  Заливка растёт кругом из точки входа курсора (--hover-x/--hover-y,
-  их выставляет layout-chrome.js на pointerenter/pointermove — см. тот
-  же приём у .mood-primary). Без JS-хука круг просто растёт из центра —
-  деградирует не ломая кнопку.
+  Ховер у всех типов один: кнопка чуть снижает opacity
+  (--btn-hover-opacity), без смены заливки/цвета, подъёма и прочих
+  анимаций.
 
   ─────────────────────────────────────────────────────────────────────
   ТИПЫ РАСПОЛОЖЕНИЯ (--icon, выбрать один; можно не выбирать — тогда
@@ -104,6 +102,12 @@
   --radius-control: 10px;
   --button-icon-size: 20px;
   --control-scroll-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.14), 0 14px 32px -8px rgba(0, 0, 0, 0.2);
+  /* Основной цвет кнопок сайта. */
+  --btn-accent: #111111;
+  --btn-accent-text: #ffffff;
+  /* Единственный ховер всех кнопок — лёгкое снижение прозрачности. */
+  --btn-hover-opacity: 0.72;
+  --btn-hover-duration: 0.15s;
 }
 
 .btn {
@@ -133,7 +137,7 @@
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.12s ease, background-color 0.2s ease, color 0.2s ease;
+  transition: transform 0.12s ease, opacity var(--btn-hover-duration) ease;
 }
 
 .btn .icon {
@@ -141,57 +145,34 @@
   height: var(--icon-size);
 }
 
-/* Глушим общий ::before-глоу из button-hover.css — у крупных кнопок он
-   мгновенно накрывает всё и заливка «телепортируется» (тот же вывод,
-   что и в комментарии у .mood-primary::before). Рисуем свой ::after,
-   растущий из --hover-x/--hover-y. */
+/* Общий ::before-глоу из button-hover.css кнопкам не нужен. ::before у
+   отдельных типов занят под зону клика (--hit-area, --fill-deck,
+   --fill-sphere), заливок-псевдоэлементов больше нет. */
 .btn::before {
   display: none;
 }
 
-.btn::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: var(--hover-x, 50%);
-  top: var(--hover-y, 50%);
-  width: 240%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform var(--button-hover-duration, 0.5s) var(--button-hover-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
-  pointer-events: none;
-}
-
-.btn:hover::after,
-.btn:focus-visible::after {
-  transform: translate(-50%, -50%) scale(1);
-}
-
 @media (hover: hover) and (pointer: fine) {
-  .btn:hover {
-    transform: translateY(-1px);
+  .btn:hover,
+  [data-action-hover]:hover .btn {
+    opacity: var(--btn-hover-opacity);
   }
 }
 
+.btn:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
 .btn:active {
-  transform: translateY(0) scale(0.98);
+  transform: scale(0.98);
 }
 
 /* ---------- Типы заливки ---------- */
 
 .btn--fill-pink {
-  background: var(--color-action-active, #ff0cc2);
-  color: var(--color-action-active-text, #fff);
-}
-
-.btn--fill-pink::after {
-  background: #fff;
-}
-
-.btn--fill-pink:hover,
-.btn--fill-pink:focus-visible {
-  color: #101014;
+  background: var(--btn-accent);
+  color: var(--btn-accent-text);
 }
 
 .btn--fill-white {
@@ -199,52 +180,25 @@
   color: #101014;
 }
 
-.btn--fill-white::after {
-  background: var(--color-action-hover, #ff0cc2);
-}
-
-.btn--fill-white:hover,
-.btn--fill-white:focus-visible {
-  color: var(--color-action-hover-text, #fff);
-}
-
-/* Translucent glass square (cover action). Rests as a small grey-glass tile
-   with a white glyph; on hover (of the button, or of its whole cover when the
-   parent has data-action-hover) it turns white with a dark glyph, keeping the same corner radius.
+/* Translucent glass square (cover action): a small grey-glass tile with a
+   white glyph.
    Usage: .btn.btn--fill-glass.btn--icon-only[.btn--icon-diagonal-motion]. */
 .btn--fill-glass {
   background: rgb(128 128 128 / .42);
   color: #fff;
   -webkit-backdrop-filter: blur(10px) saturate(160%);
   backdrop-filter: blur(10px) saturate(160%);
-  transition: transform 0.12s ease, background-color 0.25s ease, color 0.25s ease;
 }
-.btn--fill-glass::after { display: none; }
-@media (hover: hover) and (pointer: fine) {
-  .btn--fill-glass:hover,
-  .btn--fill-glass:focus-visible,
-  [data-action-hover]:hover .btn--fill-glass {
-    background: #fff;
-    color: #101014;
-  }
-}
-@media (prefers-reduced-motion: reduce) { .btn--fill-glass { transition-duration: .01ms; } }
 
-/* Translucent glass for header/chrome controls over the light page: ink
-   content, hover fills ink (growing from the cursor) and the content turns
-   white. Usage: .btn.btn--fill-glass-ui with an optional .btn--icon-* layout.
-   Add .btn--hover-accent for a theme-accent hover fill with white content. */
+/* Translucent glass for header/chrome controls over the light page with ink
+   content. Usage: .btn.btn--fill-glass-ui with an optional .btn--icon-* layout.
+   .btn--hover-accent is kept as a no-op hook on existing markup. */
 .btn--fill-glass-ui {
   background: color-mix(in srgb, #fff 60%, transparent);
   color: var(--color-ink);
   -webkit-backdrop-filter: blur(10px) saturate(160%);
   backdrop-filter: blur(10px) saturate(160%);
 }
-.btn--fill-glass-ui::after { background: var(--color-ink); }
-.btn--fill-glass-ui:hover, .btn--fill-glass-ui:focus-visible { color: var(--color-ink-contrast); }
-.btn--fill-glass-ui.btn--hover-accent::after { background: var(--color-action-active, #2448ff); }
-.btn--fill-glass-ui.btn--hover-accent:hover,
-.btn--fill-glass-ui.btn--hover-accent:focus-visible { color: var(--color-action-active-text, #fff); }
 @media (hover: none), (pointer: coarse) {
   .btn.btn--fill-glass-ui { background: color-mix(in srgb, #fff 60%, transparent); color: var(--color-ink); }
 }
@@ -308,7 +262,7 @@
 
 /* Мягкая объёмная тень плавающего действия после начала скролла. */
 .btn--scroll-shadow {
-  transition: transform 0.12s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.25s ease;
+  transition: transform 0.12s ease, opacity var(--btn-hover-duration) ease, box-shadow 0.25s ease;
 }
 /* Compact icon-only controls sit inside the header and need no shadow. */
 html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glass):not(.btn--fill-glass-ui) {
@@ -316,8 +270,7 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn,
-  .btn::after {
+  .btn {
     transition-duration: 0.01ms;
   }
 }
@@ -334,8 +287,6 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
 /* Quiet dark fill for dismiss actions. Same shared height and icon dimensions.
    Usage: .btn.btn--fill-ink with an optional .btn--icon-* layout. */
 .btn--fill-ink { background: #111111; color: var(--mood-bg, #fff); }
-.btn--fill-ink::after { background: #fff; }
-.btn--fill-ink:hover, .btn--fill-ink:focus-visible { color: #111111; }
 
 /* Table-of-contents rows: theme-aware fill, current section highlighted.
    Usage: .btn.btn--fill-toc; retains the shared height and typography. */
@@ -348,15 +299,10 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   background: transparent;
   color: var(--mood-ink);
 }
-.btn--fill-toc::after { background: color-mix(in srgb, var(--mood-ink) 12%, var(--mood-bg)); }
-.btn--fill-toc:hover, .btn--fill-toc:focus-visible { color: var(--mood-ink); background: color-mix(in srgb, var(--mood-ink) 12%, var(--mood-bg)); }
 
 /* .btn--fill-toc-trigger: primary mobile action; transparent desktop marker
    control, including hover/expanded states. Retains the shared hit height. */
-.btn--fill-toc-trigger { background: var(--color-action-active, #ff0cc2); color: var(--color-action-active-text, #fff); }
-.btn--fill-toc-trigger::after { background: var(--color-action-active, #ff0cc2); }
-.btn--fill-toc-trigger:hover,
-.btn--fill-toc-trigger:focus-visible { color: var(--color-action-active-text, #fff); }
+.btn--fill-toc-trigger { background: var(--btn-accent); color: var(--btn-accent-text); }
 
 /* Responsive contents trigger: list on mobile, section markers on desktop. */
 .work-toc__bars, .work-toc__toggle .work-toc__close-icon { display: none; }
@@ -372,27 +318,22 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
     box-shadow: none;
     transform: none;
   }
-  .btn--fill-toc-trigger::after { display: none; }
   .btn--fill-toc-trigger:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
   .work-toc__toggle .work-toc__list-icon,
   .work-toc__toggle[aria-expanded="true"] .work-toc__close-icon { display: none; }
   .work-toc__toggle { overflow: visible; width: 80px; }
   .work-toc__bars { display: flex; flex: none; flex-direction: column; align-items: flex-end; gap: 8px; padding-block: 10px; }
   .work-toc__bars span { flex-shrink: 0; transition: width .3s ease, height .3s ease, background-color .3s ease; }
-  .work-toc__bars span { width: 36px; height: 3px; border-radius: 3px; background: #fff; }
-  .work-toc__bars span.is-current { width: 48px; height: 5px; background: var(--color-action-active); }
+  .work-toc__bars span { width: 36px; height: 3px; border-radius: 3px; background: color-mix(in srgb, var(--color-ink) 22%, transparent); }
+  .work-toc__bars span.is-current { width: 48px; height: 5px; background: var(--btn-accent); }
   .work-toc__toggle:hover .work-toc__bars span { width: 48px; }
 }
 
-/* Current section uses the theme's main action colour on both surfaces. */
+/* Current section uses the main button colour on both surfaces. */
 .btn--fill-toc[aria-current="location"],
 .work-toc-sheet .contact-row[aria-current="location"] {
-  background: var(--color-action-active);
-  color: var(--color-action-active-text);
-}
-.btn--fill-toc[aria-current="location"]::after,
-.work-toc-sheet .contact-row[aria-current="location"]::after {
-  background: var(--color-action-active);
+  background: var(--btn-accent);
+  color: var(--btn-accent-text);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -401,28 +342,21 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
 
 /* Mobile contents: press feedback only, without persistent touch hover fills. */
 @media (max-width: 1100px) {
-  .work-toc__toggle::after,
-  .work-toc-sheet .btn::after { display: none; }
   .work-toc__toggle:hover:not(:active),
   .work-toc-sheet .btn:hover:not(:active) { transform: none; }
   .work-toc__toggle:hover,
-  .work-toc__toggle:focus-visible { color: var(--color-action-active-text, #fff); }
+  .work-toc__toggle:focus-visible { color: var(--btn-accent-text); }
   .work-toc-sheet .btn--fill-white:not([aria-current]) { color: #101014; }
-  .work-toc-sheet .btn--fill-pink { color: var(--color-action-active-text); }
+  .work-toc-sheet .btn--fill-pink { color: var(--btn-accent-text); }
   .work-toc-sheet .btn--fill-ink { color: #fff; }
   .work-toc__toggle:focus-visible,
   .work-toc-sheet .btn:focus-visible { outline: 2px solid var(--mood-ink); outline-offset: 3px; }
 }
 
-/* White cover action, without shadow. Diagonal arrow settles horizontally.
+/* White cover action, without shadow.
    Usage: .btn.btn--fill-white.btn--icon-only.btn--icon-diagonal-motion.
    The parent data-action-hover may coordinate the cover and button hover. */
 .btn--icon-diagonal-motion { box-shadow: none; }
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .btn--icon-diagonal-motion .icon { transition: transform .35s ease; }
-  .btn--icon-diagonal-motion:hover .icon,
-  [data-action-hover]:hover .btn--icon-diagonal-motion .icon { transform: rotate(45deg); }
-}
 
 /* Text may wrap within the shared height when flanked by icon-only actions. */
 .btn--label-wrap { white-space: normal; padding-inline: 16px; text-align: center; }
@@ -436,15 +370,14 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
 /* Touch devices keep their resting fill: only a brief press scale changes.
    Keyboard focus remains visible through an outline, without a touch hover latch. */
 @media (hover: none), (pointer: coarse) {
-  .btn::after { display: none; }
-  .btn:hover { transform: none; }
+  .btn:hover { transform: none; opacity: 1; }
   .btn:active, .btn.is-touch-pressed { transform: none; scale: .97; }
   .btn { transition: scale .16s ease-out; -webkit-tap-highlight-color: transparent; }
-  .btn.btn--fill-pink { background: var(--color-action-active, #ff0cc2); color: var(--color-action-active-text, #fff); }
+  .btn.btn--fill-pink { background: var(--btn-accent); color: var(--btn-accent-text); }
   .btn.btn--fill-white { background: #fff; color: #101014; }
   .btn.btn--fill-ink { background: #111; color: var(--mood-bg, #fff); }
   .btn.btn--fill-toc { background: transparent; color: var(--mood-ink); }
-  .btn.btn--fill-toc[aria-current="location"] { background: var(--color-action-active); color: var(--color-action-active-text); }
+  .btn.btn--fill-toc[aria-current="location"] { background: var(--btn-accent); color: var(--btn-accent-text); }
   .btn:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 }
 /* A tap, including focus moved into/returned from a modal, has no focus ring.
@@ -452,8 +385,7 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
    Text fields keep their native focus feedback. */
 @media (hover: none), (pointer: coarse) {
   html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[href]):focus,
-  html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[href]):focus::before,
-  html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[href]):focus::after {
+  html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[href]):focus::before {
     outline: none;
   }
 }
@@ -473,7 +405,6 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   touch-action: manipulation;
 }
 .btn--fill-deck[hidden] { display: none; }
-.btn--fill-deck::after { display: none; }
 .btn--fill-deck::before {
   content: "";
   display: block;
@@ -491,50 +422,21 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   outline-offset: 10px;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .btn--fill-deck, .btn--fill-deck::before { cursor: none; }
-}
-
-/* Прозрачная кнопка-иконка без заливки и подписи — просто белая иконка
-   поверх медиа (напр. крестик закрытия полноэкранного просмотра). Рядом
-   нет остального интерфейса, чтобы якорить обычные подъём/растущий круг —
-   только смена цвета иконки на акцентный цвет темы по ховеру/фокусу.
+/* Прозрачная кнопка-иконка без заливки и подписи — просто иконка
+   поверх медиа (напр. крестик закрытия полноэкранного просмотра).
    Usage: .btn.btn--fill-plain.btn--icon-only, обязателен aria-label. */
 .btn--fill-plain {
   background: transparent;
   color: #fff;
 }
-.btn--fill-plain::after {
-  display: none;
-}
-.btn--fill-plain:hover,
-.btn--fill-plain:focus-visible {
-  transform: none;
-  background: transparent;
-  color: var(--color-action-hover, #ff0cc2);
-}
-.btn--fill-plain:active {
-  transform: scale(0.98);
-}
 
 /* Управляющие иконки-кнопки прямо поверх полноэкранного медиа (напр.
-   стрелки полноэкранного просмотра): та же заливка/цвета, что и обычно,
-   но без подъёма и растущего из точки входа круга — рядом нет остального
-   интерфейса, чтобы якорить этот переход, и он читается как дёрганье.
-   Обычная смена background-color/color уже даёт transition из базового
-   .btn. Usage: добавляется к существующему типу заливки, напр.
+   стрелки полноэкранного просмотра): та же заливка, что и обычно.
+   Usage: добавляется к существующему типу заливки, напр.
    .btn.btn--fill-white.btn--icon-only.btn--media-control. */
-.btn--media-control::after {
-  display: none;
-}
 .btn--media-control:hover,
 .btn--media-control:focus-visible {
   transform: none;
-}
-.btn--media-control.btn--fill-white:hover,
-.btn--media-control.btn--fill-white:focus-visible {
-  background: var(--color-action-hover, #ff0cc2);
-  color: var(--color-action-hover-text, #fff);
 }
 
 /* Gallery action requested at the height of one H2 line. This explicit size
@@ -560,16 +462,8 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   transform: none;
   pointer-events: auto;
 }
-/* Overflow must stay visible for the stretched hit area. Use the same fill
-   states without the expanding circle, which would otherwise spill outside. */
-.btn--hit-area::after { display: none; }
+/* Overflow must stay visible for the stretched hit area. */
 .btn--hit-area:hover, .btn--hit-area:active { transform: none; scale: 1; }
-/* Touch swipes must keep the theme's primary fill, even with latched hover. */
-@media (hover: hover) and (pointer: fine) {
-  .btn--hit-area.btn--fill-pink:hover,
-  .btn--hit-area.btn--fill-pink:focus-visible,
-  [data-action-hover]:hover .btn--hit-area.btn--fill-pink { background: #fff; color: #101014; }
-}
 
 /* Canvas sphere action: shared button height, circular hit area follows the art.
    Usage: .btn.btn--fill-sphere.btn--icon-only, with an aria-label. */
@@ -581,7 +475,6 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   transition: none;
 }
 .btn--fill-sphere[hidden] { display: none; }
-.btn--fill-sphere::after { display: none; }
 .btn--fill-sphere::before {
   content: '';
   display: block;

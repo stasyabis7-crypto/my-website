@@ -114,12 +114,12 @@
   text-decoration: none;
   transition:
     scale var(--button-press-duration, 0.12s) ease-out,
-    color 0.3s ease;
+    opacity var(--btn-hover-duration, 0.15s) ease;
 }
 
 .site-header__logo:focus-visible {
-  color: var(--color-action-hover);
-  outline: none;
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
 }
 
 /* layout-chrome.js прячет логотип на узких экранах, когда сжимать
@@ -131,7 +131,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .site-header__logo:hover {
-    color: var(--color-action-hover);
+    opacity: var(--btn-hover-opacity, 0.72);
   }
 }
 

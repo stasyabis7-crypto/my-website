@@ -4,7 +4,7 @@
   "components/work-gallery/work-gallery.css": "8931f271f8acb7b0f38ba50a1c38b82b408d174343c7d832b8d74bac4a8613f9",
   "styles/card-tokens.css": "2433f42adbd7414fdd3d709a2f488ef8151e988936f962ee1ed627ad18598de8",
   "components/work-gallery/gallery-entry.js": "46bf045cdc01ea0a5b0b6fd4801635c79df2013470f6167a464f91c9d247b54c",
-  "components/page-motion/page-motion.js": "af70f5c9068ab8f00569e5b91e5907367378885fa123afd3383a1ce9a16211e0",
-  "components/page-motion/page-motion.css": "494ef9df6e7cdfc8b72067f0969de263210e837bfc2df9ec4ac60a634317fbd1",
+  "components/page-motion/page-motion.js": "ddd4abe95d7436be4df367464f3fec0432540db52fcd4c25ef41699ec4d09d16",
+  "components/page-motion/page-motion.css": "2f22277ffa1d072b8987048d3625a97b154e498324ce02d4d435c07f85639839",
   "components/site-chrome/layout-chrome.js": "b6e65f37e405d957c688d31960e44f6f50df825b9c9dcb5b575aecbb9d537dce"
 }
