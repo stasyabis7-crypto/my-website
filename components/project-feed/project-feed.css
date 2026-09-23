@@ -23,20 +23,24 @@
 .project-feed__head {
   display: grid;
   justify-items: center;
-  gap: 20px;
+  gap: 32px;
   text-align: center;
+}
+@media (max-width: 767px) {
+  .project-feed__head { gap: 24px; }
 }
 
 .project-feed__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 40px 24px;
-  margin: 8px 0 0;
+  /* Вместе с gap ленты (24px) — 56px воздуха от переключателя до проектов. */
+  margin: 32px 0 0;
   padding: 0;
   list-style: none;
 }
 @media (max-width: 767px) {
-  .project-feed__grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .project-feed__grid { grid-template-columns: minmax(0, 1fr); gap: 32px; margin-top: 16px; }
 }
 
 .feed-card { display: grid; gap: 12px; min-width: 0; }
