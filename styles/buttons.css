@@ -41,6 +41,16 @@
 
     .btn--fill-ink    спокойная тёмная заливка.
 
+    .btn--fill-segment пункт переключателя (Все/Mobile/Web) внутри
+                      .btn-segmented: прозрачный, выбранный
+                      [aria-pressed="true"] — белая «таблетка».
+
+    .btn--fill-chip   тег-фильтр: серая плашка, выбранный
+                      [aria-pressed="true"] — чёрный (--btn-accent).
+
+    .btn--fill-bare   без заливки, цвет текста — стрелки прокрутки
+                      строки тегов (components/chip-scroller).
+
   Ховер у всех типов один: кнопка чуть снижает opacity
   (--btn-hover-opacity), без смены заливки/цвета, подъёма и прочих
   анимаций.
@@ -492,3 +502,47 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
 .btn.btn--fill-sphere.is-touch-pressed { transform: none; scale: 1; background: transparent; }
 .btn.btn--fill-sphere:focus-visible { outline: none; }
 .btn.btn--fill-sphere:focus-visible::before { outline: 2px solid var(--color-text); outline-offset: 6px; }
+
+/* Segmented switch (Mobbin-style platform filter). The grey track is part of
+   the control, so it lives here; its position on the page does not.
+   Usage: <div class="btn-segmented" role="group" aria-label="…">
+            <button class="btn btn--fill-segment" aria-pressed="true">Все</button>…
+          </div> */
+.btn-segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--color-surface-alt);
+}
+.btn--fill-segment {
+  border-radius: 999px;
+  padding-inline: 18px;
+  background: transparent;
+  color: var(--color-text-muted);
+}
+.btn--fill-segment[aria-pressed="true"] {
+  background: #fff;
+  color: var(--color-text);
+}
+
+/* Tag chip: toggles a filter. Usage: .btn.btn--fill-chip[aria-pressed]. */
+.btn--fill-chip {
+  flex: 0 0 auto;
+  padding-inline: 14px;
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  font-weight: var(--font-weight-regular, 400);
+}
+.btn--fill-chip[aria-pressed="true"] {
+  background: var(--btn-accent);
+  color: var(--btn-accent-text);
+}
+.btn--fill-chip:disabled { opacity: 0.35; }
+
+/* Bare icon action on the page background (tag-row scroll arrows).
+   Usage: .btn.btn--fill-bare.btn--icon-only, with an aria-label. */
+.btn--fill-bare {
+  background: transparent;
+  color: var(--color-text);
+}

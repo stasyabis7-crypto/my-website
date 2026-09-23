@@ -1,0 +1,53 @@
+/*
+  Хлебные крошки — на всех разрешениях. Последний пункт — текущая
+  страница/подборка (aria-current), остальные — ссылки. Если цепочка
+  не помещается, она прокручивается по горизонтали, а не переносится.
+
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <ol class="breadcrumbs__list">
+      <li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/#works-gallery">Проекты</a></li>
+      <li class="breadcrumbs__item"><span class="breadcrumbs__current" aria-current="page">…</span></li>
+    </ol>
+  </nav>
+*/
+.breadcrumbs {
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.breadcrumbs::-webkit-scrollbar { display: none; }
+.breadcrumbs__list {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-text);
+  line-height: var(--line-height-text);
+  letter-spacing: var(--letter-spacing-text);
+  white-space: nowrap;
+}
+.breadcrumbs__item { display: inline-flex; align-items: center; }
+.breadcrumbs__item + .breadcrumbs__item::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  margin-inline: 6px;
+  background-color: var(--color-text-muted);
+  -webkit-mask: var(--breadcrumbs-chevron) center / contain no-repeat;
+  mask: var(--breadcrumbs-chevron) center / contain no-repeat;
+}
+.breadcrumbs {
+  --breadcrumbs-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6 3.5 10.5 8 6 12.5' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.breadcrumbs__link {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: scale var(--button-press-duration, 0.12s) ease-out, opacity var(--btn-hover-duration, 0.15s) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .breadcrumbs__link:hover { opacity: var(--btn-hover-opacity, 0.72); }
+}
+.breadcrumbs__link:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; border-radius: 4px; }
+.breadcrumbs__current { color: var(--color-text); }

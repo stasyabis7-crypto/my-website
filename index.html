@@ -24,7 +24,10 @@
 <link rel="stylesheet" href="components/site-footer/footer.css?v=49-s9" />
 <link rel="stylesheet" href="styles/button-hover.css?v=101" />
 <link rel="stylesheet" href="styles/buttons.css?v=skeleton-pulse-1-s11" />
-<link rel="stylesheet" href="components/work-gallery/work-gallery.css?v=status-tags-3-s13" />
+<link rel="stylesheet" href="styles/card-tokens.css?v=2" />
+<link rel="stylesheet" href="components/breadcrumbs/breadcrumbs.css?v=1" />
+<link rel="stylesheet" href="components/chip-scroller/chip-scroller.css?v=1" />
+<link rel="stylesheet" href="components/project-feed/project-feed.css?v=1" />
 <link rel="stylesheet" href="styles/fonts.css?v=3" />
 <link rel="stylesheet" href="components/content-reveal/content-reveal.css?v=1" />
 <link rel="stylesheet" href="components/site-chrome/site-chrome.css?v=2-s1" />
@@ -155,15 +158,25 @@
     </section>
     <!-- component:hero-mood:end -->
 
-    <!-- component:work-gallery:start -->
-    <section class="work-gallery project-slider--themed" id="works-gallery" aria-label="Разделы портфолио" aria-roledescription="карусель">
-      <div class="work-gallery__viewport" tabindex="0" aria-label="Разделы. Влево и вправо — листать, вверх или Escape — вернуться к баннеру">
-        <div class="work-gallery__track"></div>
+    <!-- Лента проектов: components/project-feed, данные — pages/home/data/projects.js. -->
+    <section class="project-feed" id="works-gallery" aria-label="Проекты" data-project-feed>
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <ol class="breadcrumbs__list">
+          <li class="breadcrumbs__item"><span class="breadcrumbs__current" aria-current="page">Проекты</span></li>
+        </ol>
+      </nav>
+      <div class="project-feed__filters">
+        <div class="btn-segmented" role="group" aria-label="Платформа" data-feed-platforms></div>
+        <div class="project-feed__tags" data-feed-tags></div>
       </div>
-      <p class="work-gallery__status" role="status" aria-live="polite" aria-atomic="true"></p>
-      <noscript><nav aria-label="Разделы"><p><a href="/projects/avito-charity">Благотворительность</a></p><p><a href="/projects/ozon-crm">CRM для продавцов</a></p><p><a href="/projects/ozon-prices">Цены в ЛК селлера</a></p><p><a href="/projects/swtec-angel">Внутренний ЛК для сотрудника</a></p><p><a href="/projects/swtec-medical">Медицинские проекты</a></p><p><a href="/projects/concepts">Концепты</a></p><p><a href="/projects/activities">Активности</a></p></nav></noscript>
+      <p class="project-feed__status" role="status" aria-live="polite" aria-atomic="true"></p>
+      <ul class="project-feed__grid"></ul>
+      <div class="project-feed__empty" hidden>
+        <p class="text-body">Нет проектов с такими фильтрами</p>
+        <button type="button" class="btn btn--fill-pink" data-feed-reset>Сбросить фильтры</button>
+      </div>
+      <noscript><ul><li><a href="/projects/ozon-crm/customer-segments/">Сегменты покупателей</a></li><li><a href="/projects/avito-charity/recycle-map/">Карта переработки вещей</a></li></ul></noscript>
     </section>
-    <!-- component:work-gallery:end -->
   </main>
 
   <footer class="site-footer">
@@ -263,12 +276,13 @@
   <script src="components/hero-mood/hero-viewport.js?v=dock-bottom-edge-1"></script>
   <script src="components/site-chrome/layout-chrome.js?v=gallery-3"></script>
   <script src="components/page-loader/page-loader.js?v=mood-3"></script>
-  <script src="pages/home/data/sections.js?v=available-groups-2-s13"></script>
-  <script src="components/work-gallery/work-gallery.js?v=status-tags-7-s13"></script>
+  <script src="pages/home/data/projects.js?v=1"></script>
+  <script src="components/chip-scroller/chip-scroller.js?v=1"></script>
+  <script src="components/project-feed/project-feed.js?v=1"></script>
   <script src="site/typography-rules.js?v=2"></script>
   <script src="site/haptics.js?v=1"></script>
   <script src="components/page-motion/page-motion.js?v=10"></script>
   <script src="components/content-reveal/content-reveal.js?v=1"></script>
-  <script src="components/work-gallery/gallery-entry.js"></script>
+  <script src="components/project-feed/feed-entry.js"></script>
 </body>
 </html>

@@ -1,0 +1,86 @@
+/*
+  Лента проектов Главной: хлебные крошки, переключатель платформы,
+  строка тегов и сетка обложек на всю ширину экрана (две колонки,
+  на телефоне — одна). Кнопки — только типы из styles/buttons.css.
+*/
+.project-feed {
+  --feed-gutter: 32px;
+  display: grid;
+  gap: 20px;
+  padding: 32px var(--feed-gutter) 120px;
+  scroll-margin-top: calc(var(--header-h, 80px) + 12px);
+}
+@media (max-width: 999px) {
+  .project-feed {
+    --feed-gutter: 16px;
+    padding-bottom: calc(var(--footer-h, 64px) + 96px);
+  }
+}
+
+.project-feed__filters {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+.project-feed__filters > .btn-segmented { flex: 0 0 auto; }
+.project-feed__tags { flex: 1 1 auto; min-width: 0; }
+@media (max-width: 767px) {
+  .project-feed__filters { flex-direction: column; align-items: stretch; gap: 12px; }
+  .project-feed__filters > .btn-segmented { align-self: flex-start; }
+}
+
+.project-feed__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px 24px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (max-width: 767px) {
+  .project-feed__grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+}
+
+.feed-card { display: grid; gap: 12px; min-width: 0; }
+.feed-card__cover {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border: var(--project-cover-border);
+  border-radius: var(--project-card-radius);
+  background: var(--color-surface);
+  transition: scale var(--button-press-duration, 0.12s) ease-out, opacity var(--btn-hover-duration, 0.15s) ease;
+}
+.feed-card__cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (hover: hover) and (pointer: fine) {
+  .feed-card__cover:hover { opacity: var(--btn-hover-opacity, 0.72); }
+}
+.feed-card__cover:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
+
+.feed-card__text { display: grid; gap: 4px; }
+.feed-card__title-link {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: opacity var(--btn-hover-duration, 0.15s) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .feed-card__title-link:hover { opacity: var(--btn-hover-opacity, 0.72); }
+}
+.feed-card__description { color: var(--color-text-muted); }
+
+.project-feed__empty { display: grid; justify-items: start; gap: 16px; margin-top: 12px; }
+.project-feed__empty[hidden] { display: none; }
+.project-feed__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

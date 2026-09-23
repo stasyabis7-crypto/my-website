@@ -45,7 +45,10 @@
 | Компонент | Источник / настройка контента | Что переиспользуется |
 | --- | --- | --- |
 | Баннер Главной | [hero-mood](../components/hero-mood/README.md), `template.html`; `components/hero-mood/hero-layout.css`, `hero-viewport.js`, `hero-spheres.js` | Стеклянные сферы с картинками, последовательный влёт и вылет, плавное движение, появление текста, reduced motion. Закреплён |
-| Галерея Главной | [work-gallery](../components/work-gallery/README.md); контент — `pages/home/data/sections.js` | Жесты, очередь переходов, цикл, курсор, вход по якорю. Закреплена |
+| Лента проектов Главной | `components/project-feed/`, данные и теги — `pages/home/data/projects.js` | Фильтр Все/Mobile/Web и по тегам, адрес с фильтром, сетка обложек, вход по якорю |
+| Строка тегов | `components/chip-scroller/chip-scroller.css/js`, чипы `.btn--fill-chip` | Горизонтальная прокрутка, растворение края, стрелки `.btn--fill-bare` |
+| Хлебные крошки | `components/breadcrumbs/breadcrumbs.css` | Цепочка на всех разрешениях, текущий пункт `aria-current` |
+| Галерея скрытых разделов | [work-gallery](../components/work-gallery/README.md) | Только страницы `projects/<раздел>/`, сейчас скрытые редиректом |
 | Коллекции Avito/Ozon на Главной | [project-grid](../components/project-grid/README.md); `pages/home/data/avito.js`, `pages/home/data/ozon.js` | Рендер сетки, варианты карточек, тултипы |
 | Статические карточки разделов | `components/project-cards/project-cards.css/js`, HTML в `projects/` | Область ссылки на всю карточку и единая точка фокуса |
 | Первый экран раздела/кейса | `components/page-hero/page-hero.css/js`, `.project-hero` | Общая раскладка и поведение иллюстрации |
@@ -58,7 +61,7 @@
 | Появление контента/изображений | `components/content-reveal/content-reveal.css/js`, `image-reveal.css/js` | Общие состояния загрузки и появления |
 | Начальная загрузка | `components/page-loader/page-loader.css/js` | Скелетоны и готовность оболочки |
 
-Данные галереи `pages/home/data/sections.js` и поведение статических
+Данные ленты `pages/home/data/projects.js` и поведение статических
 карточек `components/project-cards/project-cards.js` — разные модули, не дубликаты.
 Аналогично, `project-grid` и `project-cards` обслуживают разные варианты сетки.
 

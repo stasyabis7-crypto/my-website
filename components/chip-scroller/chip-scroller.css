@@ -1,0 +1,47 @@
+/*
+  Горизонтальная строка чипов (теги) как у Mobbin: если не помещается —
+  прокручивается, край растворяется в фон, на устройствах с мышью
+  появляются стрелки. Стрелки — .btn.btn--fill-bare из ДС.
+
+  <div class="chip-scroller" data-chip-scroller>
+    <button class="btn btn--fill-bare btn--icon-only chip-scroller__arrow chip-scroller__arrow--prev" …>
+    <div class="chip-scroller__track">…чипы…</div>
+    <button class="btn btn--fill-bare btn--icon-only chip-scroller__arrow chip-scroller__arrow--next" …>
+  </div>
+*/
+.chip-scroller {
+  --chip-fade: 56px;
+  position: relative;
+  min-width: 0;
+}
+.chip-scroller__track {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  -webkit-mask-image: linear-gradient(to right, var(--chip-mask-start, #000) 0, #000 var(--chip-fade), #000 calc(100% - var(--chip-fade)), var(--chip-mask-end, #000) 100%);
+  mask-image: linear-gradient(to right, var(--chip-mask-start, #000) 0, #000 var(--chip-fade), #000 calc(100% - var(--chip-fade)), var(--chip-mask-end, #000) 100%);
+}
+.chip-scroller__track::-webkit-scrollbar { display: none; }
+.chip-scroller.has-before .chip-scroller__track { --chip-mask-start: transparent; }
+.chip-scroller.has-after .chip-scroller__track { --chip-mask-end: transparent; }
+
+.chip-scroller__arrow {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+}
+.chip-scroller__arrow--prev { left: 0; }
+.chip-scroller__arrow--next { right: 0; }
+.chip-scroller__arrow[hidden] { display: none; }
+
+/* На тач-устройствах строку листают пальцем: стрелки не нужны,
+   растворение края остаётся подсказкой, что дальше есть ещё. */
+@media (hover: none), (pointer: coarse) {
+  .chip-scroller__arrow { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chip-scroller__track { scroll-behavior: auto; }
+}
