@@ -11,12 +11,11 @@
 
 # На сайте опубликованы только описанные кейсы (pages/home/data/projects.js).
 # Страницы разделов и незаполненные заготовки временно (302) ведут на
-# ленту Главной — разделы сразу с фильтром по компании. Файлы остаются
+# ленту Главной. Файлы остаются
 # в репозитории; чтобы вернуть страницу, достаточно убрать её из правил.
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteRule ^projects/avito-charity/?(?:index\.html)?$ /?tags=avito#works-gallery [R=302,NE,L]
-  RewriteRule ^projects/ozon-crm/?(?:index\.html)?$ /?tags=ozon#works-gallery [R=302,NE,L]
+  RewriteRule ^projects/(?:avito-charity|ozon-crm)/?(?:index\.html)?$ /#works-gallery [R=302,NE,L]
   RewriteRule ^projects/avito-charity/(?:about-company|charity-profile|donation-subscription|gamification|rebranding)(?:/.*)?$ /#works-gallery [R=302,NE,L]
   RewriteRule ^projects/ozon-crm/(?:campaign-creation|campaigns|customer-portrait|customers|seller-home)(?:/.*)?$ /#works-gallery [R=302,NE,L]
   RewriteRule ^projects/(?:ozon-prices|swtec-angel|swtec-medical|concepts|activities)(?:/.*)?$ /#works-gallery [R=302,NE,L]

@@ -1,12 +1,12 @@
 /*
-  Лента проектов Главной: хлебные крошки, переключатель платформы,
-  строка тегов и сетка обложек на всю ширину экрана (две колонки,
+  Лента проектов Главной: заголовок «Проекты» (стиль H1), переключатель
+  платформы по центру и сетка обложек на всю ширину экрана (две колонки,
   на телефоне — одна). Кнопки — только типы из styles/buttons.css.
 */
 .project-feed {
   --feed-gutter: 32px;
   display: grid;
-  gap: 20px;
+  gap: 24px;
   padding: 32px var(--feed-gutter) 120px;
   scroll-margin-top: calc(var(--header-h, 80px) + 12px);
 }
@@ -17,24 +17,25 @@
   }
 }
 
-.project-feed__filters {
-  display: flex;
+/* Заголовок слева, переключатель ровно по центру страницы. */
+.project-feed__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 16px;
-  min-width: 0;
 }
-.project-feed__filters > .btn-segmented { flex: 0 0 auto; }
-.project-feed__tags { flex: 1 1 auto; min-width: 0; }
+.project-feed__platforms { grid-column: 2; }
 @media (max-width: 767px) {
-  .project-feed__filters { flex-direction: column; align-items: stretch; gap: 12px; }
-  .project-feed__filters > .btn-segmented { align-self: flex-start; }
+  .project-feed__head { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .project-feed__title { justify-self: start; }
+  .project-feed__platforms { grid-column: 1; }
 }
 
 .project-feed__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 40px 24px;
-  margin: 12px 0 0;
+  margin: 8px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -43,6 +44,12 @@
 }
 
 .feed-card { display: grid; gap: 12px; min-width: 0; }
+
+/* Обложка — единственная ссылка карточки. Наведение уменьшает рамку, как
+   кликабельные картинки на страницах кейсов (case-lightbox.css). Hover
+   ловит неподвижная обёртка, а уменьшается сама ссылка — иначе на краю
+   уменьшенная обложка выпускала бы курсор и дёргалась. */
+.feed-card__media { --wg-hover-scale: 0.985; }
 .feed-card__cover {
   display: block;
   overflow: hidden;
@@ -50,7 +57,8 @@
   border: var(--project-cover-border);
   border-radius: var(--project-card-radius);
   background: var(--color-surface);
-  transition: scale var(--button-press-duration, 0.12s) ease-out, opacity var(--btn-hover-duration, 0.15s) ease;
+  scale: 1;
+  transition: scale 0.35s var(--button-hover-ease, ease-out);
 }
 .feed-card__cover img {
   display: block;
@@ -59,23 +67,32 @@
   object-fit: cover;
 }
 @media (hover: hover) and (pointer: fine) {
-  .feed-card__cover:hover { opacity: var(--btn-hover-opacity, 0.72); }
+  .feed-card__media:hover .feed-card__cover { scale: var(--wg-hover-scale); }
 }
+.feed-card__cover:active { scale: var(--wg-hover-scale); transition-duration: 0.2s; }
 .feed-card__cover:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .feed-card__cover { transition-duration: 0.01ms; }
+}
+
+/* Теги — подписи, не кнопки: мелкие плашки без интерактива. */
+.feed-card__tags { margin: 0; padding: 0; list-style: none; gap: 6px; }
+.feed-card__tag {
+  flex: 0 0 auto;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  font-family: var(--font-family-body);
+  font-size: calc(var(--font-size-text) * .8);
+  line-height: var(--line-height-default);
+  letter-spacing: var(--letter-spacing-text);
+  white-space: nowrap;
+}
 
 .feed-card__text { display: grid; gap: 4px; }
-.feed-card__title-link {
-  color: var(--color-text);
-  text-decoration: none;
-  transition: opacity var(--btn-hover-duration, 0.15s) ease;
-}
-@media (hover: hover) and (pointer: fine) {
-  .feed-card__title-link:hover { opacity: var(--btn-hover-opacity, 0.72); }
-}
 .feed-card__description { color: var(--color-text-muted); }
 
-.project-feed__empty { display: grid; justify-items: start; gap: 16px; margin-top: 12px; }
-.project-feed__empty[hidden] { display: none; }
 .project-feed__status {
   position: absolute;
   width: 1px;

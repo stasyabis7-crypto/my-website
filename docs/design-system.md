@@ -45,9 +45,9 @@
 | Компонент | Источник / настройка контента | Что переиспользуется |
 | --- | --- | --- |
 | Баннер Главной | [hero-mood](../components/hero-mood/README.md), `template.html`; `components/hero-mood/hero-layout.css`, `hero-viewport.js`, `hero-spheres.js` | Стеклянные сферы с картинками, последовательный влёт и вылет, плавное движение, появление текста, reduced motion. Закреплён |
-| Лента проектов Главной | `components/project-feed/`, данные и теги — `pages/home/data/projects.js` | Фильтр Все/Mobile/Web и по тегам, адрес с фильтром, сетка обложек, вход по якорю |
-| Строка тегов | `components/chip-scroller/chip-scroller.css/js`, чипы `.btn--fill-chip` | Горизонтальная прокрутка, растворение края, стрелки `.btn--fill-bare` |
-| Хлебные крошки | `components/breadcrumbs/breadcrumbs.css` | Цепочка на всех разрешениях, текущий пункт `aria-current` |
+| Лента проектов Главной | `components/project-feed/`, данные и теги — `pages/home/data/projects.js` | Переключатель Все/Mobile/Web, адрес с выбором, сетка обложек, теги-подписи, вход по якорю |
+| Строка тегов | `components/chip-scroller/chip-scroller.css/js` | Горизонтальная прокрутка, растворение края, стрелки `.btn--fill-bare` |
+| Хлебные крошки | `components/breadcrumbs/breadcrumbs.css` | На кейсах, на всех разрешениях; текущий пункт `aria-current` |
 | Галерея скрытых разделов | [work-gallery](../components/work-gallery/README.md) | Только страницы `projects/<раздел>/`, сейчас скрытые редиректом |
 | Коллекции Avito/Ozon на Главной | [project-grid](../components/project-grid/README.md); `pages/home/data/avito.js`, `pages/home/data/ozon.js` | Рендер сетки, варианты карточек, тултипы |
 | Статические карточки разделов | `components/project-cards/project-cards.css/js`, HTML в `projects/` | Область ссылки на всю карточку и единая точка фокуса |

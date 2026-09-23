@@ -25,7 +25,6 @@
 <link rel="stylesheet" href="styles/button-hover.css?v=101" />
 <link rel="stylesheet" href="styles/buttons.css?v=skeleton-pulse-1-s11" />
 <link rel="stylesheet" href="styles/card-tokens.css?v=2" />
-<link rel="stylesheet" href="components/breadcrumbs/breadcrumbs.css?v=1" />
 <link rel="stylesheet" href="components/chip-scroller/chip-scroller.css?v=1" />
 <link rel="stylesheet" href="components/project-feed/project-feed.css?v=1" />
 <link rel="stylesheet" href="styles/fonts.css?v=3" />
@@ -159,22 +158,13 @@
     <!-- component:hero-mood:end -->
 
     <!-- Лента проектов: components/project-feed, данные — pages/home/data/projects.js. -->
-    <section class="project-feed" id="works-gallery" aria-label="Проекты" data-project-feed>
-      <nav class="breadcrumbs" aria-label="Хлебные крошки">
-        <ol class="breadcrumbs__list">
-          <li class="breadcrumbs__item"><span class="breadcrumbs__current" aria-current="page">Проекты</span></li>
-        </ol>
-      </nav>
-      <div class="project-feed__filters">
-        <div class="btn-segmented" role="group" aria-label="Платформа" data-feed-platforms></div>
-        <div class="project-feed__tags" data-feed-tags></div>
+    <section class="project-feed" id="works-gallery" aria-labelledby="project-feed-title" data-project-feed>
+      <div class="project-feed__head">
+        <h2 class="project-feed__title text-h1" id="project-feed-title">Проекты</h2>
+        <div class="btn-segmented project-feed__platforms" role="group" aria-label="Платформа" data-feed-platforms></div>
       </div>
       <p class="project-feed__status" role="status" aria-live="polite" aria-atomic="true"></p>
       <ul class="project-feed__grid"></ul>
-      <div class="project-feed__empty" hidden>
-        <p class="text-body">Нет проектов с такими фильтрами</p>
-        <button type="button" class="btn btn--fill-pink" data-feed-reset>Сбросить фильтры</button>
-      </div>
       <noscript><ul><li><a href="/projects/ozon-crm/customer-segments/">Сегменты покупателей</a></li><li><a href="/projects/avito-charity/recycle-map/">Карта переработки вещей</a></li></ul></noscript>
     </section>
   </main>

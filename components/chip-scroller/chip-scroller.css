@@ -10,7 +10,7 @@
   </div>
 */
 .chip-scroller {
-  --chip-fade: 56px;
+  --chip-fade: 48px;
   position: relative;
   min-width: 0;
 }
@@ -31,7 +31,8 @@
 .chip-scroller__arrow {
   position: absolute;
   z-index: 1;
-  top: 0;
+  /* По центру строки любой высоты (чипы-кнопки или мелкие теги). */
+  top: calc(50% - var(--button-height) / 2);
 }
 .chip-scroller__arrow--prev { left: 0; }
 .chip-scroller__arrow--next { right: 0; }
