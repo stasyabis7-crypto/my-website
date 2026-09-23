@@ -76,7 +76,7 @@
   padding: 3px 8px;
   border-radius: 6px;
   background: var(--color-surface-alt);
-  color: var(--color-text-muted);
+  color: var(--color-text);
   font-family: var(--font-family-body);
   font-size: calc(var(--font-size-text) * .8);
   line-height: var(--line-height-default);
@@ -87,7 +87,6 @@
 /* Группировка: название и описание — одна группа (плотно), отделена от
    тегов заметно большим отступом. */
 .feed-card__text { display: grid; gap: 4px; margin-top: 12px; }
-.feed-card__description { color: var(--color-text-muted); }
 
 .project-feed__status {
   position: absolute;
