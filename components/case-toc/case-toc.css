@@ -20,14 +20,14 @@
   overflow: hidden;
   padding: 8px;
   border-radius: 14px;
-  /* Calm dark chrome close to the page's own background, not the
+  /* Calm chrome close to the page's own background, not the
      saturated mood colour — same recipe as .site-socials__panel and
      the footer's own nav dropdown (--color-glass). */
   --mood-bg: var(--color-surface-alt);
   --mood-ink: var(--color-text);
   background: var(--color-glass);
   color: var(--mood-ink);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, .28);
+  border: 1px solid var(--color-glass-border);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }

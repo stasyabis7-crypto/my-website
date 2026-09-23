@@ -44,7 +44,7 @@ html.contact-scroll-lock, html.contact-scroll-lock body { overflow: hidden; over
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  box-shadow: 0 12px 32px rgba(0, 0, 0, .28);
+  border: 1px solid var(--color-glass-border);
   display: grid;
   gap: 2px;
   opacity: 0;

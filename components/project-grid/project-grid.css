@@ -29,7 +29,7 @@
 .project-card__copy > .text-body { margin-top: 8px; }
 .project-card__text { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
 .project-card__text[data-truncated] { cursor: help; }
-.project-slider__tooltip { position: fixed; z-index: 1000; max-width: min(420px, calc(100vw - 32px)); padding: 16px; border-radius: 16px; color: var(--color-text); background: var(--color-bg); border: 1px solid color-mix(in srgb, var(--color-text) 25%, transparent); box-shadow: 0 8px 30px #0003; pointer-events: none; }
+.project-slider__tooltip { position: fixed; z-index: 1000; max-width: min(420px, calc(100vw - 32px)); padding: 16px; border-radius: 16px; color: var(--color-text); background: var(--color-bg); border: 1px solid var(--color-glass-border); pointer-events: none; }
 .project-slider__tooltip .text-body { margin-top: 8px; }
 @media (max-width: 599px) {
   .project-slider { padding-top: 16px; }
