@@ -369,9 +369,11 @@
   padding: 32px var(--card-pad-x);
 }
 
+/* Первая метрика раньше была в цвете темы; теперь все метрики одинаково
+   серые. Модификатор оставлен как хук в разметке. */
 .case-metric--theme {
-  background: var(--mood-bg);
-  color: var(--mood-ink);
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 
 /* Картинка карточки (.case-metric__art — обёртка, img внутри) — идёт в
@@ -644,10 +646,10 @@
   top: 0;
   bottom: 0;
   left: 50%;
-  width: calc(100vw - 2 * var(--hero-edge, 10px));
+  /* Серый фон на всю ширину экрана, без боковых полей и скруглений. */
+  width: 100vw;
   transform: translateX(-50%);
-  border-radius: 14px;
-  background: var(--mood-bg);
+  background: var(--color-surface);
 }
 .case-team__subtitle.text-body-lg { margin-top: 8px; color: inherit; }
 .case-team__number { position: absolute; top: 20px; right: 24px; }
@@ -735,9 +737,6 @@
 .case-scenario {
   padding-block: clamp(80px, 10vw, 148px);
   color: var(--mood-ink);
-}
-.case-scenario::before {
-  background: var(--mood-chrome);
 }
 .case-scenario__flow {
   list-style: none;
