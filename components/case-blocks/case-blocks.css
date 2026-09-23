@@ -982,6 +982,8 @@
 .case-moodboard__banner,
 .case-moodboard__media {
   display: block;
+  /* Та же лёгкая обводка, что у остальных картинок кейса. */
+  border: var(--media-border);
   border-radius: var(--card-radius, 14px);
   overflow: hidden;
 }
