@@ -2,7 +2,7 @@
 
 Сетка опубликованных кейсов с переключателем платформы, как у Mobbin.
 
-- Разметка-каркас — в `index.html` (`[data-project-feed]`): заголовок «Интерфейсы, созданные с душой»
+- Разметка-каркас — в `index.html` (`[data-project-feed]`): заголовок «Интерфейсы со смыслом»
   (`.text-h2`) и переключатель по центру; карточки рендерит `project-feed.js`
   из `pages/home/data/projects.js`.
 - Переключатель — `.btn-segmented` + `.btn--fill-segment` из `styles/buttons.css`;
