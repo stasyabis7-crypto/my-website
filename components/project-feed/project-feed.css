@@ -84,7 +84,7 @@
 .feed-card__tag {
   flex: 0 0 auto;
   padding: 3px 8px;
-  border-radius: 6px;
+  border-radius: var(--radius-tag);
   background: var(--color-surface-alt);
   color: var(--color-text);
   font-family: var(--font-family-body);

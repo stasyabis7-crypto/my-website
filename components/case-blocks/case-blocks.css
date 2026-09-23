@@ -127,7 +127,7 @@
   justify-content: center;
   height: 24px;
   padding-inline: 8px;
-  border-radius: 6px;
+  border-radius: var(--radius-tag);
   background: rgb(128 128 128 / .42);
   -webkit-backdrop-filter: blur(10px) saturate(160%);
   backdrop-filter: blur(10px) saturate(160%);
@@ -231,7 +231,7 @@
   overflow: hidden;
   /* Скриншоты интерфейсов — с той же лёгкой обводкой, что обложки Главной. */
   border: var(--media-border);
-  border-radius: var(--case-content-radius, 14px);
+  border-radius: var(--case-content-radius, var(--radius-surface));
   /* Пока картинка грузится — общий серый скелетон. */
   background: var(--skeleton-color);
   margin-top: 32px;
@@ -386,7 +386,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: var(--case-content-radius, 14px);
+  border-radius: var(--case-content-radius, var(--radius-surface));
   background: var(--color-surface);
   color: var(--color-text);
   padding: 32px var(--card-pad-x);
@@ -530,7 +530,7 @@
   margin-top: 16px;
   overflow: hidden;
   border: var(--media-border);
-  border-radius: var(--case-content-radius, 14px);
+  border-radius: var(--case-content-radius, var(--radius-surface));
   /* Пока картинка грузится — общий серый скелетон. */
   background: var(--skeleton-color);
 }
@@ -686,7 +686,7 @@
   min-width: 0;
   padding: 24px 28px 36px;
   border: 1px solid #252529;
-  border-radius: 14px;
+  border-radius: var(--radius-surface);
   background: #fff;
   color: #14161a;
   box-shadow: 4px 6px 0 #252529;
@@ -791,7 +791,7 @@
   row-gap: 12px;
   padding: 24px 20px;
   border: 1px solid #dedee3;
-  border-radius: 14px;
+  border-radius: var(--radius-surface);
   background: #fff;
   color: #14161a;
   box-shadow: 0 12px 24px rgb(17 17 17 / .08);
@@ -986,7 +986,7 @@
   display: block;
   /* Та же лёгкая обводка, что у остальных картинок кейса. */
   border: var(--media-border);
-  border-radius: var(--card-radius, 14px);
+  border-radius: var(--card-radius, var(--radius-surface));
   overflow: hidden;
 }
 

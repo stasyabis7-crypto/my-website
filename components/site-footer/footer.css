@@ -38,7 +38,7 @@
   backdrop-filter: var(--liquid-glass-filter);
   -webkit-backdrop-filter: var(--liquid-glass-filter);
   box-shadow: var(--liquid-glass-glow);
-  border-radius: 14px;
+  border-radius: var(--radius-surface);
   /* Переливающаяся обводка — псевдоэлемент, см. theme.css. */
 }
 
@@ -590,7 +590,7 @@ html.chrome--compact .site-footer__link .icon {
   box-sizing: border-box;
   display: inline-block;
   padding: 0.75rem;
-  border-radius: 14px;
+  border-radius: var(--radius-surface);
   background: var(--color-glass);
   backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));

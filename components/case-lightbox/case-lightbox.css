@@ -261,7 +261,7 @@
   aspect-ratio: 1;
   box-sizing: border-box;
   /* Все миниатюры с тем же скруглением, что у выбранной. */
-  border-radius: 6px;
+  border-radius: var(--radius-tag);
   overflow: hidden;
   opacity: 0.55;
   cursor: pointer;

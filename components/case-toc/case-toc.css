@@ -19,7 +19,7 @@
   max-height: calc(100dvh - var(--header-h, 80px) - 200px);
   overflow: hidden;
   padding: 8px;
-  border-radius: 14px;
+  border-radius: var(--radius-surface);
   /* Calm chrome close to the page's own background, not the
      saturated mood colour — same recipe as .site-socials__panel and
      the footer's own nav dropdown (--color-glass). */

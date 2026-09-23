@@ -14,7 +14,7 @@
   height: calc(var(--hero-vh, 100svh) - 2 * var(--hero-edge));
   min-height: 0;
   padding: 142px clamp(32px, 6vw, 110px) 72px;
-  border-radius: clamp(28px, 3vw, 44px);
+  border-radius: var(--radius-hero);
   background: var(--mood-bg);
   color: var(--mood-ink);
   overflow: hidden;

@@ -7,7 +7,11 @@
   --project-card-radius: 8px;
   --project-cover-border: var(--media-border);
   --wg-radius: var(--project-card-radius);
-  --case-content-radius: 14px;
+  --case-content-radius: var(--radius-surface);
+}
+/* На телефоне обложки скруглены меньше, как и всё остальное (theme.css). */
+@media (max-width: 767px) {
+  :root { --project-card-radius: 6px; }
 }
 
 /* Общий бейдж обложек Главной и карточек проектов. */
@@ -16,7 +20,7 @@
   margin: 0;
   padding: 3px 8px;
   border: 0;
-  border-radius: 6px;
+  border-radius: var(--radius-tag);
   font-size: calc(var(--font-size-text) * .8);
   background: rgb(128 128 128 / .42);
   -webkit-backdrop-filter: blur(10px) saturate(160%);
