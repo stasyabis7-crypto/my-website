@@ -141,6 +141,7 @@
     const bounds=stage.getBoundingClientRect();
     if (w===bounds.width && h===bounds.height) return;
     w=bounds.width;h=bounds.height;
+    const played=time>2;
     obstacles=[];
     for(const el of content.querySelectorAll('h1,p,a')){
       const rects=[];
@@ -177,13 +178,14 @@
       p.y=-p.r-30-(p.i%3)*22;
       p.delay=.15+((p.i*7)%count)*.095+(p.i%3)*.035;
     }
-    resetBodies();
+    // After the first drop the pile stays: a resize re-lays it out already settled.
+    resetBodies(played);
     wake();
   }
-  function resetBodies(){
+  function resetBodies(settled){
     time=0;last=0;
     bodies=anchors.map(p=>({...p,vx:(p.side?-1:1)*(8+(p.i%5)*5),vy:15+(p.i%4)*22,quiet:0,sleeping:false,supported:false,spawned:false}));
-    if(reduced.matches)for(let i=0;i<1800;i++)advance(1/120);
+    if(reduced.matches||settled)for(let i=0;i<1800;i++)advance(1/120);
   }
   function constrain(p){
     const floor=h-p.r-10;
@@ -284,7 +286,8 @@
     const entry=entries[entries.length-1];
     if(!entry||visible===entry.isIntersecting)return;
     visible=entry.isIntersecting;
-    if(visible&&time>2){resetBodies();restartReveal();}
+    // Scrolling back to the banner shows the settled pile; the drop plays
+    // once per page visit (a reload or return from history replays it).
     wake();
   });
   visibilityObserver.observe(canvas);

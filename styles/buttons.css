@@ -509,12 +509,17 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
             <button class="btn btn--fill-segment" aria-pressed="true">Все</button>…
           </div> */
 .btn-segmented {
+  /* Весь переключатель — той же высоты, что любая кнопка сайта;
+     пункты вписаны внутрь подложки. */
+  box-sizing: border-box;
   display: inline-flex;
   gap: 2px;
+  height: var(--button-height);
   padding: 4px;
   border-radius: 999px;
   background: var(--color-surface-alt);
 }
+.btn-segmented > .btn--fill-segment { height: 100%; }
 .btn--fill-segment {
   border-radius: 999px;
   padding-inline: 18px;
