@@ -191,13 +191,13 @@
 
 /* Inline artwork keeps its original geometry; only the palette follows mood. */
 .case-card__icon--theme {
-  color: var(--mood-bg);
-  --card-icon-ink: var(--mood-ink);
+  color: var(--case-icon-2, var(--mood-bg));
+  --card-icon-ink: var(--case-icon-2-ink, var(--mood-ink));
 }
 
 .case-card--light .case-card__icon--theme {
-  color: var(--color-action-active);
-  --card-icon-ink: var(--color-action-active-text);
+  color: var(--case-icon, var(--color-action-active));
+  --card-icon-ink: var(--case-icon-ink, var(--color-action-active-text));
 }
 
 .case-card__icon--theme path {

@@ -100,6 +100,26 @@
   в общем файле компонентов.
 */
 
+/*
+  Палитра кейса — подбирается под вайб проекта в <style> его страницы
+  (:root { --case-surface: …; }). Без переопределения кейс остаётся в
+  нейтральной гамме сайта.
+    --case-surface        светлый фон: первая метрика, «Команда», «Сценарий»
+    --case-accent(-text)  акценты сценария (рамка шага, точки, галочка, пунктир)
+    --case-icon(-ink)     главная иконка в «О проекте» (светлая карточка)
+    --case-icon-2(-ink)   остальные иконки в «О проекте»
+*/
+:root {
+  --case-surface: var(--color-surface);
+  --case-accent: var(--btn-accent);
+  --case-accent-text: var(--btn-accent-text);
+  --case-icon: var(--color-action-active);
+  --case-icon-ink: var(--color-action-active-text);
+  --case-icon-2: var(--mood-bg);
+  --case-icon-2-ink: var(--mood-ink);
+}
+
+
 .case-tag {
   box-sizing: border-box;
   display: inline-flex;
@@ -369,10 +389,10 @@
   padding: 32px var(--card-pad-x);
 }
 
-/* Первая метрика раньше была в цвете темы; теперь все метрики одинаково
-   серые. Модификатор оставлен как хук в разметке. */
+/* Первая метрика — светлый фон палитры кейса (по умолчанию серый, как
+   остальные метрики). */
 .case-metric--theme {
-  background: var(--color-surface);
+  background: var(--case-surface);
   color: var(--color-text);
 }
 
@@ -649,7 +669,7 @@
   /* Серый фон на всю ширину экрана, без боковых полей и скруглений. */
   width: 100vw;
   transform: translateX(-50%);
-  background: var(--color-surface);
+  background: var(--case-surface);
 }
 .case-team__subtitle.text-body-lg { margin-top: 8px; color: inherit; }
 .case-team__number { position: absolute; top: 20px; right: 24px; }
@@ -738,9 +758,9 @@
   padding-block: clamp(80px, 10vw, 148px);
   color: var(--mood-ink);
   /* Акценты сценария (рамка активного шага, точки, галочка, пунктир) —
-     основной чёрный цвет кнопок, а не синий цвет темы. */
-  --color-action-active: var(--btn-accent);
-  --color-action-active-text: var(--btn-accent-text);
+     цвет палитры кейса (по умолчанию чёрный цвет кнопок). */
+  --color-action-active: var(--case-accent);
+  --color-action-active-text: var(--case-accent-text);
 }
 .case-scenario__flow {
   list-style: none;
