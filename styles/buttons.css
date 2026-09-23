@@ -203,14 +203,15 @@
 /* Translucent glass for header/chrome controls over the light page with ink
    content. Usage: .btn.btn--fill-glass-ui with an optional .btn--icon-* layout.
    .btn--hover-accent is kept as a no-op hook on existing markup. */
+:root { --btn-glass-ui-bg: color-mix(in srgb, #fff 60%, transparent); }
 .btn--fill-glass-ui {
-  background: color-mix(in srgb, #fff 60%, transparent);
+  background: var(--btn-glass-ui-bg);
   color: var(--color-ink);
   -webkit-backdrop-filter: blur(10px) saturate(160%);
   backdrop-filter: blur(10px) saturate(160%);
 }
 @media (hover: none), (pointer: coarse) {
-  .btn.btn--fill-glass-ui { background: color-mix(in srgb, #fff 60%, transparent); color: var(--color-ink); }
+  .btn.btn--fill-glass-ui { background: var(--btn-glass-ui-bg); color: var(--color-ink); }
 }
 
 /* While the page loads the button is a plain skeleton: the sitewide grey

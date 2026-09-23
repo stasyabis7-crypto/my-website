@@ -291,10 +291,10 @@ html.chrome--compact .site-footer__link .icon {
   color: var(--btn-accent-text);
 }
 
-/* Прозрачное стекло, как у «Связаться». */
+/* То же стекло, что у «Связаться» (.btn--fill-glass-ui в buttons.css). */
 .site-footer__top-btn {
-  background: color-mix(in srgb, var(--color-text) 12%, transparent);
-  color: var(--color-text);
+  background: var(--btn-glass-ui-bg, color-mix(in srgb, #fff 60%, transparent));
+  color: var(--color-ink);
   backdrop-filter: blur(10px) saturate(160%);
   -webkit-backdrop-filter: blur(10px) saturate(160%);
   box-shadow: none;
