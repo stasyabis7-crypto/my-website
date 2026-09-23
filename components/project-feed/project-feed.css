@@ -70,7 +70,8 @@
   aspect-ratio: 16 / 10;
   border: var(--project-cover-border);
   border-radius: var(--project-card-radius);
-  background: var(--color-surface);
+  /* Скелетон, пока обложка грузится. */
+  background: var(--skeleton-color);
   scale: 1;
   transition: scale 0.35s var(--button-hover-ease, ease-out);
 }

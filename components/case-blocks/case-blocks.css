@@ -232,7 +232,8 @@
   /* Скриншоты интерфейсов — с той же лёгкой обводкой, что обложки Главной. */
   border: var(--media-border);
   border-radius: var(--case-content-radius, 14px);
-  background: var(--color-surface-alt);
+  /* Пока картинка грузится — общий серый скелетон. */
+  background: var(--skeleton-color);
   margin-top: 32px;
 }
 
@@ -530,7 +531,8 @@
   overflow: hidden;
   border: var(--media-border);
   border-radius: var(--case-content-radius, 14px);
-  background: var(--color-surface-alt);
+  /* Пока картинка грузится — общий серый скелетон. */
+  background: var(--skeleton-color);
 }
 
 .case-role__col-art img {

@@ -1,18 +1,9 @@
 /* Paint the image's own box: its size, radius, transforms, masks and parent
    clipping stay identical. Displace only the replaced image content until
-   decode finishes, keeping the skeleton background visible in that box. */
+   decode finishes, keeping the skeleton fill visible in that box. The fill is
+   the sitewide static --skeleton-color. */
 img[data-image-pending] {
   object-position: -100000px -100000px !important;
   color: transparent;
-  background-color: color-mix(in srgb, var(--color-text, currentColor) 5%, transparent);
-  animation: image-skeleton-breathe 3.2s ease-in-out infinite;
-}
-
-@keyframes image-skeleton-breathe {
-  0%, 100% { background-color: color-mix(in srgb, var(--color-text, currentColor) 5%, transparent); }
-  50% { background-color: color-mix(in srgb, var(--color-text, currentColor) 10%, transparent); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  img[data-image-pending] { animation: none; }
+  background-color: var(--skeleton-color, #F3F4F6);
 }

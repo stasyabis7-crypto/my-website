@@ -213,12 +213,10 @@
   .btn.btn--fill-glass-ui { background: color-mix(in srgb, #fff 60%, transparent); color: var(--color-ink); }
 }
 
-/* Loading keeps the DS fill and gently pulses the whole button. */
+/* While the page loads the button is a plain skeleton: the sitewide grey
+   fill, content hidden by page-loader.css. */
 .is-page-loading .site-header__cta {
-  animation: skeleton-breathe var(--skeleton-speed, 3.2s) ease-in-out infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .is-page-loading .site-header__cta { animation: none; }
+  background: var(--skeleton-color, #F3F4F6);
 }
 
 /* ---------- Типы расположения иконки ---------- */

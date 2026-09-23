@@ -26,7 +26,7 @@ window.portfolioProjects = [
   {
     id: 'customer-segments',
     title: 'Сегменты покупателей',
-    description: 'Аналитика покупателей и рекомендации для рассылок и рекламы в Ozon Seller',
+    description: 'Аналитика покупателей и рекомендации для рекламы',
     href: '/projects/ozon-crm/customer-segments/',
     image: '/projects/ozon-crm/customer-segments/covers/cover.webp',
     width: 2880,

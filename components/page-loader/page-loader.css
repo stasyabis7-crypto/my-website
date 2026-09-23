@@ -1,23 +1,9 @@
-:root{
-  /* Ровное дыхание всей формы, без движущейся полосы света. */
-  --skeleton-speed: 3.2s;
-}
-@keyframes skeleton-breathe{
-  0%,100%{opacity:.65}
-  50%{opacity:1}
-}
-@keyframes skeleton-logo-breathe{
-  0%,100%{opacity:.12}
-  50%{opacity:.24}
-}
+/* Цвет скелетонов — --skeleton-color (theme.css): одна статичная
+   светло-серая заливка на всём сайте. */
 .skeleton-surface,
 .works-grid__item:not(.is-media-loaded)::after{
-  background-color:var(--skeleton-base, inherit);
-  /* Равномерный тон поверх собственного фона компонента. */
-  box-shadow:inset 0 0 0 100vmax color-mix(in srgb, var(--color-text) 8%, transparent);
-  animation:skeleton-breathe var(--skeleton-speed) ease-in-out infinite;
+  background-color:var(--skeleton-color);
 }
-
 /* Каждый слот загружается независимо: медленный iframe продолжает
    показывать скелетон, даже когда остальная страница уже готова. */
 .works-grid__item::after{
@@ -45,30 +31,15 @@
   .works-grid__item>.works-grid__embed{transform:none;transition:opacity .32s ease}
 }
 
-/* Скелетоны оболочки видны только на начальной загрузке страницы. */
+/* Скелетоны оболочки видны только на начальной загрузке страницы:
+   контент скрыт, на его месте — та же серая заливка. */
 .is-page-loading .site-header__avatar img,
 .is-page-loading .site-header__cta>* ,
 .is-page-loading .site-footer__link>*{opacity:0!important}
-.is-page-loading .site-header__logo-mark{
-  opacity:.12;
-  animation:skeleton-logo-breathe var(--skeleton-speed) ease-in-out infinite;
-}
-/* Заливку кнопки задаёт buttons.css: при загрузке скрываем только контент.
-   У ссылок футера также сохраняем собственный фон и активное состояние. */
-.is-page-loading .site-footer__link{
-  color:transparent!important;
-  animation:skeleton-breathe var(--skeleton-speed) ease-in-out infinite;
-}
+.is-page-loading .site-header__logo-mark{background-color:var(--skeleton-color)}
+.is-page-loading .site-footer__link,
 .is-page-loading .site-header__avatar{
-  --skeleton-base: color-mix(in srgb, var(--mood-chrome) 94%, var(--mood-ink) 6%);
   color:transparent!important;
-  background-color:var(--skeleton-base)!important;
-  animation:skeleton-breathe var(--skeleton-speed) ease-in-out infinite;
-}
-@media (prefers-reduced-motion:reduce){
-  .skeleton-surface,
-  .works-grid__item:not(.is-media-loaded)::after,
-  .is-page-loading .site-header__logo-mark,
-  .is-page-loading .site-footer__link,
-  .is-page-loading .site-header__avatar{animation:none!important}
+  border-color:transparent!important;
+  background-color:var(--skeleton-color)!important;
 }
