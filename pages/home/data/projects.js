@@ -39,7 +39,7 @@ window.portfolioProjects = [
     description: 'Поиск, выбор и сохранение пунктов приёма вещей в избранное',
     href: '/projects/avito-charity/recycle-map/',
     image: '/projects/avito-charity/recycle-map/covers/cover-poster.webp',
-    video: '/projects/avito-charity/recycle-map/covers/cover.webm',
+    video: '/projects/avito-charity/recycle-map/covers/cover.webm?v=2',
     width: 2880,
     height: 1800,
     alt: 'Карта Avito с пунктами приёма вещей и панелью категорий: одежда, пластик, бумага, стекло',
