@@ -1023,6 +1023,12 @@
   min-height: 0;
 }
 
+/* «Концепты»: каждая пара «картинка + текст» отделена от следующей
+   тем же расстоянием, что и блоки кейса. */
+.case-concepts__next.case-cover__media {
+  margin-top: var(--case-block-gap);
+}
+
 .case-favorites__description .text-body-lg + .text-body-lg {
   margin-top: 8px;
 }
