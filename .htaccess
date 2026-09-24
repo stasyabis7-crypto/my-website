@@ -9,6 +9,21 @@
   Header always set Cache-Control "no-cache, must-revalidate" "expr=%{REQUEST_URI} =~ m#/$#"
 </IfModule>
 
+# Хостинг не знает .webm и отдаёт видео как text/plain, да ещё сжатым
+# (gzip/br). Браузер при первом заходе не может его воспроизвести, и
+# видео-обложки остаются на заглушке до перезагрузки. Правильный тип
+# и отказ от сжатия возвращают обычную потоковую отдачу с Range.
+AddType video/webm .webm
+AddType video/mp4 .mp4
+<IfModule mod_deflate.c>
+  SetEnvIfNoCase Request_URI "\.(?:webm|mp4)$" no-gzip dont-vary
+</IfModule>
+<IfModule mod_headers.c>
+  <FilesMatch "\.(?:webm|mp4)$">
+    Header set Accept-Ranges bytes
+  </FilesMatch>
+</IfModule>
+
 # На сайте опубликованы только описанные кейсы (pages/home/data/projects.js).
 # Страницы разделов и незаполненные заготовки временно (302) ведут на
 # ленту Главной. Файлы остаются
