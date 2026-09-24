@@ -378,18 +378,57 @@ body {
       <section class="case-block case-favorites" id="concepts" tabindex="-1">
         <h2 class="text-h1">Концепты</h2>
 
-        <p class="case-favorites__subtitle case-subtitle text-body-lg">Сначала на сводной был блок с активностями покупателей, чтобы следить за тем, кто что покупает в реальном времени. CPO он понравился, но в MVP не поместился, и сводную запустили без него.</p>
+        <p class="case-favorites__subtitle case-subtitle text-body-lg">Страница собралась не сразу. Сначала мы составили список данных о покупателях, которые у нас есть: RFM-сегменты, поведение (корзина, избранное, просмотры), средний чек, демография, регионы, популярные категории. Потом для каждого вида данных решили, что из него нужно продавцу здесь, а что он и так смотрит в других разделах кабинета.</p>
 
         <div class="case-cover__media case-cover__media--natural">
-            <img src="media/concepts/activities.webp" width="2880" height="1788" alt="Концепт сводной страницы с лентой активностей покупателей справа от таблицы сегментов" loading="lazy" />
-          </div>
+          <img src="media/concepts/concept-1.webp" width="2592" height="1000" alt="Концепт сегмента «Топ покупатели»: таблица метрик с динамикой и карточки рекомендаций" loading="lazy" />
+        </div>
       </section>
 
       <div class="case-block case-schedule">
-        <p class="case-subtitle text-body-lg">А ниже ключевого сегмента мы изначально ставили статистику, графики. Но после исследований поняли, что пользователям это особо и не нужно, и много кто хотел бы сразу переходить к действиям, вместо того, чтобы тыкать графики. Это касается как новых, так и опытных селлеров. Поэтому, по крайней мере для MVP, убрали этот функционал совсем.</p>
+        <h3 class="text-h2">Всё на одной странице</h3>
+        <p class="case-subtitle text-body-lg">В первой версии мы собрали на одной странице всё, что знаем: сегменты, динамику, портрет покупателя, регионы, категории. Я настояла на том, чтобы оставить портрет покупателя и аналитику по продажам в существующих разделах кабинета. Я понимала, что в таком объёме информации пользователи запутаются и не поймут, что с этим всем делать (как оказалось на UX–ах пользователям даже графики были не особо нужны).</p>
         <div class="case-cover__media case-cover__media--natural">
-            <img src="media/concepts/charts.webp" width="2560" height="1026" alt="Концепт блока статистики с графиками под ключевым сегментом" loading="lazy" />
+          <img src="media/concepts/concept-2.webp" width="2592" height="2324" alt="Первая версия страницы: сегменты, динамика, портрет покупателя, регионы и категории на одном экране" loading="lazy" />
+        </div>
+        <div class="case-favorites__description">
+          <p class="case-subtitle text-body-lg">Вывод: мы разделили информацию по вкладкам и сценариям. На странице сегмента остались его ключевые метрики и действия.</p>
+        </div>
+      </div>
+
+      <div class="case-block case-schedule">
+        <h3 class="text-h2">Круговая диаграмма</h3>
+        <p class="case-subtitle text-body-lg">Распределение по сегментам сначала показали круговой диаграммой. Близкие доли трудно сравнить на глаз, маленькие сегменты теряются, а количества и динамики на диаграмме нет.</p>
+        <div class="case-schedule__grid case-cards-grid case-cards-grid--cols-3">
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/concepts/concept-3.webp" width="1776" height="2214" alt="Круговая диаграмма распределения покупателей по сегментам" loading="lazy" />
           </div>
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/concepts/concept-4.webp" width="1776" height="2214" alt="Вариант круговой диаграммы сегментов" loading="lazy" />
+          </div>
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/concepts/concept-5.webp" width="1776" height="2214" alt="Ещё один вариант круговой диаграммы сегментов" loading="lazy" />
+          </div>
+        </div>
+        <div class="case-favorites__description">
+          <p class="case-subtitle text-body-lg">Вывод: продавцу нужны точные числа и изменения. Мы заменили диаграмму таблицей.</p>
+        </div>
+      </div>
+
+      <div class="case-block case-schedule">
+        <h3 class="text-h2">Графики трендов</h3>
+        <p class="case-subtitle text-body-lg">Мы добавили графики динамики по сегментам, но продавцы спрашивали: «А зачем это здесь? Мы это смотрим в "Аналитике"». Графики казались пустыми и дублировали другие разделы.</p>
+        <div class="case-schedule__grid case-cards-grid case-cards-grid--cols-2">
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/concepts/concept-6.webp" width="2432" height="1072" alt="Концепт графика трендов по сегменту «Топ клиенты»: покупатели и продажи по периодам" loading="lazy" />
+          </div>
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/concepts/concept-7.webp" width="2432" height="1072" alt="Второй вариант графика трендов по сегменту" loading="lazy" />
+          </div>
+        </div>
+        <div class="case-favorites__description">
+          <p class="case-subtitle text-body-lg">Вывод: CRM не повторяет аналитику. Её задача — понять, кто покупатели, и что-то с ними сделать.</p>
+        </div>
       </div>
 
       <section class="case-block case-favorites" id="dashboard" tabindex="-1">
