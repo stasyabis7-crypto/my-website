@@ -96,6 +96,28 @@ html:not(.chrome--pinned) .site-socials {
   html.chrome--pinned .site-header {
     left: var(--page-px, 10px);
   }
+
+  /* Лого — по центру экрана, на одной линии с плашкой хедера (аватар и
+     «Резюме PDF» остаются слева). top повторяет top хедера (баннер /
+     закреплённый) + половину его высоты. В моб-плашке (<1000px) лого
+     остаётся в ряду, как было. */
+  .site-header__logo {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition:
+      top 0.25s ease,
+      scale var(--button-press-duration, 0.12s) ease-out,
+      opacity var(--btn-hover-duration, 0.15s) ease;
+  }
+
+  html:not(.chrome--pinned) .site-header__logo {
+    top: calc(var(--hero-edge, 10px) + var(--hero-chrome-inset, 10px) + var(--header-h, var(--chrome-h)) / 2);
+  }
+
+  html.chrome--pinned .site-header__logo {
+    top: calc(var(--page-px, 10px) + var(--header-h, var(--chrome-h)) / 2);
+  }
 }
 @media (width < 1000px) {
   .site-header {
