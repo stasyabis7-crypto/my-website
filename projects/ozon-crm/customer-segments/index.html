@@ -132,7 +132,7 @@ body {
   <aside class="work-toc" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="dashboard"></span><span data-toc-marker="segments"></span><span data-toc-marker="recommendations"></span><span data-toc-marker="communication"></span><span data-toc-marker="states"></span><span data-toc-marker="results"></span><span data-toc-marker="next"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="dashboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="segments"></span><span data-toc-marker="recommendations"></span><span data-toc-marker="communication"></span><span data-toc-marker="states"></span><span data-toc-marker="results"></span><span data-toc-marker="next"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -145,6 +145,7 @@ body {
         <a class="btn btn--fill-toc" href="#scenario"><span>Сценарий</span></a>
         <a class="btn btn--fill-toc" href="#problems"><span>Проблемы</span></a>
         <a class="btn btn--fill-toc" href="#dashboard"><span>Сводная страница</span></a>
+        <a class="btn btn--fill-toc" href="#concepts"><span>Концепты</span></a>
         <a class="btn btn--fill-toc" href="#segments"><span>Сегменты покупателей</span></a>
         <a class="btn btn--fill-toc" href="#recommendations"><span>Рекомендации</span></a>
         <a class="btn btn--fill-toc" href="#communication"><span>Переход к коммуникации</span></a>
@@ -395,10 +396,20 @@ body {
         </div>
       </div>
 
-      <div class="case-block case-schedule">
-        <p class="case-subtitle text-body-lg">Сначала на сводной был блок с активностями покупателей, чтобы следить за тем, кто что покупает в реальном времени. CPO он понравился, но в MVP не поместился, и сводную запустили без него.</p>
+      <section class="case-block case-favorites" id="concepts" tabindex="-1">
+        <h2 class="text-h1">Концепты</h2>
+
+        <p class="case-favorites__subtitle case-subtitle text-body-lg">Сначала на сводной был блок с активностями покупателей, чтобы следить за тем, кто что покупает в реальном времени. CPO он понравился, но в MVP не поместился, и сводную запустили без него.</p>
+
         <div class="case-cover__media case-cover__media--natural">
-            <img src="media/activities/activities.webp" width="2560" height="1660" alt="Блок активностей покупателей на сводной странице: кто что покупает в реальном времени" loading="lazy" />
+            <img src="media/concepts/activities.webp" width="2880" height="1788" alt="Концепт сводной страницы с лентой активностей покупателей справа от таблицы сегментов" loading="lazy" />
+          </div>
+      </section>
+
+      <div class="case-block case-schedule">
+        <p class="case-subtitle text-body-lg">А ниже ключевого сегмента мы изначально ставили статистику, графики. Но после исследований поняли, что пользователям это особо и не нужно, и много кто хотел бы сразу переходить к действиям, вместо того, чтобы тыкать графики. Это касается как новых, так и опытных селлеров. Поэтому, по крайней мере для MVP, убрали этот функционал совсем.</p>
+        <div class="case-cover__media case-cover__media--natural">
+            <img src="media/concepts/charts.webp" width="2560" height="1026" alt="Концепт блока статистики с графиками под ключевым сегментом" loading="lazy" />
           </div>
       </div>
 
