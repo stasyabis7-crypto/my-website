@@ -310,3 +310,92 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Видео-слайд: ролик сверху, под ним строка плеера — кнопка
+   плей/пауза (.btn из styles/buttons.css), дорожка и время. Зума у
+   видео нет, тап по ролику ставит на паузу / продолжает. */
+.case-lightbox__slide--video {
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: max(16px, var(--lightbox-pad-bottom, 0px));
+}
+
+.case-lightbox__video {
+  cursor: pointer;
+}
+
+.case-lightbox__player {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 880px;
+  box-sizing: border-box;
+  padding: 0 16px;
+  touch-action: auto;
+}
+
+.case-lightbox__play {
+  flex: 0 0 auto;
+}
+
+.case-lightbox__time {
+  flex: 0 0 auto;
+  margin: 0;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Дорожка: пройденная часть — сплошной цвет текста, остаток —
+   приглушённый; --seek-progress выставляет case-lightbox.js. */
+.case-lightbox__seek {
+  --seek-track: color-mix(in srgb, var(--color-text) 25%, transparent);
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 24px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.case-lightbox__seek::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--color-text) var(--seek-progress, 0%), var(--seek-track) var(--seek-progress, 0%));
+}
+
+.case-lightbox__seek::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--color-text) var(--seek-progress, 0%), var(--seek-track) var(--seek-progress, 0%));
+}
+
+.case-lightbox__seek::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-text);
+}
+
+.case-lightbox__seek::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-text);
+}
+
+.case-lightbox__seek:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 4px;
+  border-radius: 999px;
+}

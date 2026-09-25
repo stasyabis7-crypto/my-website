@@ -6,7 +6,10 @@
   // аватар команды). Подключается один раз на страницу проекта и сама
   // находит все подходящие фото — переписывать поведение на новой
   // странице кейса не нужно.
-  var SELECTOR = '.case-cover__media img, .case-card__media img, .case-card__media-overlay, .case-role__col-art img';
+  // Видео (обложка кейса) входят в ту же галерею: в полноэкранном слайде
+  // у них свои контролы — плей/пауза, дорожка и время. Подпись у видео —
+  // aria-label вместо alt.
+  var SELECTOR = '.case-cover__media img, .case-cover__media video, .case-card__media img, .case-card__media video, .case-card__media-overlay, .case-role__col-art img';
 
   var MIN_SCALE = 1;
   var MAX_SCALE = 4;
@@ -27,8 +30,13 @@
   ready(init);
 
   function init() {
+    function isVideo(el) { return el.tagName === 'VIDEO'; }
+    function labelOf(el) {
+      return el.getAttribute('alt') || (isVideo(el) ? el.getAttribute('aria-label') : '') || '';
+    }
+
     var items = Array.prototype.filter.call(document.querySelectorAll(SELECTOR), function (img) {
-      var alt = img.getAttribute('alt');
+      var alt = labelOf(img);
       // «О проекте» — свой отдельный, некликабельный контекст (декоративный
       // фон + плавающий скриншот меню поверх него): в общую галерею
       // страницы (счётчик/пролистывание по всем фото) не входит.
@@ -46,7 +54,7 @@
     root.setAttribute('aria-label', 'Просмотр фото интерфейса');
     root.innerHTML =
       '<header class="case-lightbox__bar">' +
-        '<p class="case-lightbox__counter text-body-sm">Фото <span data-lightbox-current>1</span> из <span data-lightbox-total>' + items.length + '</span></p>' +
+        '<p class="case-lightbox__counter text-body-sm"><span data-lightbox-kind>Фото</span> <span data-lightbox-current>1</span> из <span data-lightbox-total>' + items.length + '</span></p>' +
         '<button type="button" class="btn btn--fill-plain btn--icon-only case-lightbox__close" aria-label="Закрыть"><span class="icon icon--close" aria-hidden="true"></span></button>' +
       '</header>' +
       '<button type="button" class="btn btn--fill-white btn--icon-only btn--media-control case-lightbox__nav case-lightbox__nav--prev" aria-label="Предыдущее фото"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>' +
@@ -62,21 +70,37 @@
     var track = root.querySelector('.case-lightbox__track');
     var thumbsEl = root.querySelector('.case-lightbox__thumbs');
     var currentEl = root.querySelector('[data-lightbox-current]');
+    var kindEl = root.querySelector('[data-lightbox-kind]');
 
     // Все фото лежат в одной ленте рядом (как в обычном слайдере) —
     // src больше не подменяется на лету, поэтому нет мигания пустой
     // картинки; пролистывание — это только сдвиг ленты.
     var slides = [];
     var thumbs = [];
+    var players = [];
     items.forEach(function (src, i) {
       var slide = document.createElement('div');
       slide.className = 'case-lightbox__slide';
-      var im = document.createElement('img');
-      im.className = 'case-lightbox__image';
-      im.alt = src.getAttribute('alt') || '';
-      im.draggable = false;
-      im.decoding = 'async';
-      slide.appendChild(im);
+      var im;
+      if (isVideo(src)) {
+        slide.classList.add('case-lightbox__slide--video');
+        im = document.createElement('video');
+        im.className = 'case-lightbox__image case-lightbox__video';
+        im.setAttribute('aria-label', labelOf(src));
+        im.muted = true;
+        im.loop = true;
+        im.playsInline = true;
+        im.preload = 'none';
+        slide.appendChild(im);
+        players[i] = createPlayer(im, slide);
+      } else {
+        im = document.createElement('img');
+        im.className = 'case-lightbox__image';
+        im.alt = labelOf(src);
+        im.draggable = false;
+        im.decoding = 'async';
+        slide.appendChild(im);
+      }
       track.appendChild(slide);
       slides.push(im);
 
@@ -107,8 +131,118 @@
       items.forEach(function (src, i) {
         var url = src.currentSrc || src.src;
         slides[i].src = url;
-        thumbs[i].firstChild.src = url;
+        if (isVideo(src)) {
+          slides[i].poster = src.poster;
+          slides[i].preload = 'auto';
+          thumbs[i].firstChild.src = src.poster;
+        } else {
+          thumbs[i].firstChild.src = url;
+        }
       });
+    }
+
+    // Плеер видео-слайда: кнопка плей/пауза (тип из styles/buttons.css),
+    // дорожка-перемотка и время. Прогресс дорожки обновляется каждый кадр,
+    // пока видео играет — timeupdate слишком редкий для коротких роликов.
+    function formatTime(t) {
+      t = Math.max(0, Math.floor(t || 0));
+      return Math.floor(t / 60) + ':' + ('0' + (t % 60)).slice(-2);
+    }
+
+    function createPlayer(video, slide) {
+      var bar = document.createElement('div');
+      bar.className = 'case-lightbox__player';
+      bar.innerHTML =
+        '<button type="button" class="btn btn--fill-white btn--icon-only btn--media-control case-lightbox__play" aria-label="Пауза"><span class="icon icon--pause" aria-hidden="true"></span></button>' +
+        '<input type="range" class="case-lightbox__seek" min="0" max="1000" step="1" value="0" aria-label="Перемотка видео" />' +
+        '<p class="case-lightbox__time text-body-sm"><span data-time-current>0:00</span> / <span data-time-total>0:00</span></p>';
+      slide.appendChild(bar);
+
+      var btn = bar.querySelector('.case-lightbox__play');
+      var icon = btn.firstChild;
+      var seek = bar.querySelector('.case-lightbox__seek');
+      var curEl = bar.querySelector('[data-time-current]');
+      var totalEl = bar.querySelector('[data-time-total]');
+      var raf = 0, scrubbing = false, resumeAfterScrub = false;
+
+      function paint() {
+        var d = video.duration || 0;
+        var p = d ? video.currentTime / d : 0;
+        if (!scrubbing) seek.value = String(Math.round(p * 1000));
+        seek.style.setProperty('--seek-progress', (Number(seek.value) / 10) + '%');
+        curEl.textContent = formatTime(video.currentTime);
+        totalEl.textContent = formatTime(d);
+      }
+      function loop() {
+        paint();
+        raf = video.paused ? 0 : requestAnimationFrame(loop);
+      }
+      function syncButton() {
+        var playing = !video.paused;
+        icon.className = 'icon ' + (playing ? 'icon--pause' : 'icon--play');
+        btn.setAttribute('aria-label', playing ? 'Пауза' : 'Смотреть');
+      }
+
+      video.addEventListener('play', function () {
+        syncButton();
+        if (!raf) raf = requestAnimationFrame(loop);
+      });
+      video.addEventListener('pause', function () { syncButton(); paint(); });
+      video.addEventListener('loadedmetadata', paint);
+      video.addEventListener('seeked', paint);
+
+      function toggle() {
+        if (video.paused) play(); else video.pause();
+      }
+      function play() {
+        var pr = video.play();
+        if (pr && pr.catch) pr.catch(function () {});
+      }
+
+      btn.addEventListener('click', toggle);
+
+      seek.addEventListener('input', function () {
+        if (!scrubbing) {
+          scrubbing = true;
+          resumeAfterScrub = !video.paused;
+          video.pause();
+        }
+        if (video.duration) video.currentTime = Number(seek.value) / 1000 * video.duration;
+        paint();
+      });
+      seek.addEventListener('change', function () {
+        scrubbing = false;
+        if (resumeAfterScrub) play();
+        resumeAfterScrub = false;
+      });
+
+      return { video: video, toggle: toggle, play: play, paint: paint };
+    }
+
+    function syncPlayback() {
+      players.forEach(function (p, i) {
+        if (!p) return;
+        if (i === index && !root.hidden) {
+          p.play();
+        } else {
+          p.video.pause();
+        }
+      });
+    }
+
+    // Пока открыт полноэкранный просмотр, превью-видео на странице
+    // останавливаются, после закрытия продолжают играть.
+    var pausedInline = [];
+    function pauseInline() {
+      pausedInline = items.filter(function (el) { return isVideo(el) && !el.paused; });
+      pausedInline.forEach(function (el) { el.pause(); });
+    }
+    function resumeInline() {
+      pausedInline.forEach(function (el) {
+        var pr = el.play();
+        if (pr && pr.catch) pr.catch(function () {});
+      });
+      pausedInline = [];
     }
 
     var image = slides[0];
@@ -183,7 +317,7 @@
       target.tabIndex = 0;
       target.setAttribute('role', 'button');
       if (!target.hasAttribute('aria-label')) {
-        target.setAttribute('aria-label', 'Открыть фото ' + (i + 1) + ' из ' + items.length + ' на весь экран');
+        target.setAttribute('aria-label', 'Открыть ' + (isVideo(img) ? 'видео ' : 'фото ') + (i + 1) + ' из ' + items.length + ' на весь экран');
       }
       target.addEventListener('click', function () { open(i, target); });
       target.addEventListener('keydown', function (e) {
@@ -280,6 +414,7 @@
 
     function updateChrome() {
       currentEl.textContent = String(index + 1);
+      kindEl.textContent = players[index] ? 'Видео' : 'Фото';
       prevBtn.hidden = index === 0;
       nextBtn.hidden = index === items.length - 1;
       thumbs.forEach(function (th, i) {
@@ -318,6 +453,7 @@
       setTransform(false);
       renderTrack(animate, distance);
       updateChrome();
+      syncPlayback();
     }
 
     function navigate(delta) {
@@ -325,6 +461,10 @@
     }
 
     function handleTap(e) {
+      if (players[index]) {
+        players[index].toggle();
+        return;
+      }
       var now = Date.now();
       var dx = e.clientX - lastTapX, dy = e.clientY - lastTapY;
       if (now - lastTapTime < DBLTAP_MS && Math.hypot(dx, dy) < 30) {
@@ -342,6 +482,7 @@
 
     viewport.addEventListener('wheel', function (e) {
       e.preventDefault();
+      if (players[index]) return;
       // Пинч на трекпаде (ctrlKey) присылает мелкие deltaY — ему нужен
       // больший множитель, чем колесу мыши; колесо в строках/страницах
       // приводим к пикселям.
@@ -352,6 +493,9 @@
     }, { passive: false });
 
     viewport.addEventListener('pointerdown', function (e) {
+      // Кнопка и дорожка плеера работают сами по себе — не перехватываем
+      // их в свайп/пан ленты.
+      if (e.target.closest('.case-lightbox__player')) return;
       viewport.setPointerCapture(e.pointerId);
       pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
       var ids = Object.keys(pointers);
@@ -383,7 +527,7 @@
         var p0 = pointers[ids[0]], p1 = pointers[ids[1]];
         var dist = Math.hypot(p1.x - p0.x, p1.y - p0.y) || 1;
         var mid = { x: (p0.x + p1.x) / 2, y: (p0.y + p1.y) / 2 };
-        zoomAt(pinchStartScale * (dist / pinchStartDist), mid.x, mid.y, false);
+        if (!players[index]) zoomAt(pinchStartScale * (dist / pinchStartDist), mid.x, mid.y, false);
       } else if (ids.length === 1 && dragActive) {
         var dx = e.clientX - panStartX;
         var dy = e.clientY - panStartY;
@@ -461,6 +605,13 @@
 
     function onKeydown(e) {
       if (e.key === 'Escape') { close(); return; }
+      if ((e.key === ' ' || e.key === 'Spacebar') && players[index] &&
+          !(e.target.closest && e.target.closest('button, input, [role="button"]'))) {
+        e.preventDefault();
+        players[index].toggle();
+        return;
+      }
+      if (e.target.classList && e.target.classList.contains('case-lightbox__seek')) return;
       if (e.key === 'ArrowLeft') { navigate(-1); return; }
       if (e.key === 'ArrowRight') { navigate(1); }
     }
@@ -489,6 +640,7 @@
       document.documentElement.classList.add('contact-scroll-lock');
       root.classList.remove('is-closing');
       root.hidden = false;
+      pauseInline();
       loadSources();
       index = -1;
       goTo(i, false);
@@ -497,7 +649,9 @@
     }
 
     function close() {
+      players.forEach(function (p) { if (p) p.video.pause(); });
       closeAnimated(function () {
+        resumeInline();
         document.documentElement.classList.remove('contact-scroll-lock');
         inactive.forEach(function (el) { el.inert = false; });
         inactive = [];
