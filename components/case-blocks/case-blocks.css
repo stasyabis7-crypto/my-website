@@ -511,6 +511,11 @@
   margin-top: 32px;
 }
 
+/* Текст под колонками (например, «Точки входа»). */
+.case-role__description.text-body-lg {
+  margin-top: 32px;
+}
+
 .case-role__cols {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

@@ -132,7 +132,7 @@ body {
   <aside class="work-toc" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -147,6 +147,7 @@ body {
         <a class="btn btn--fill-toc" href="#before"><span>Прежний флоу</span></a>
         <a class="btn btn--fill-toc" href="#moodboard"><span>Мудборд</span></a>
         <a class="btn btn--fill-toc" href="#concepts"><span>Концепты</span></a>
+        <a class="btn btn--fill-toc" href="#entry-points"><span>Точки входа</span></a>
       </nav>
     </div>
   </aside>
@@ -420,6 +421,31 @@ body {
           <div class="case-moodboard__media"><img src="media/concepts/1.webp" alt="" width="1600" height="2000" loading="lazy" /></div>
           <div class="case-moodboard__media"><img src="media/concepts/2.webp" alt="" width="1600" height="2000" loading="lazy" /></div>
         </div>
+      </section>
+
+      <!-- Точки входа — структура .case-role (components/case-blocks/case-blocks.css). -->
+      <section class="case-block case-role case-entry-points" id="entry-points" tabindex="-1">
+        <h2 class="case-role__title text-h1">Точки входа</h2>
+        <p class="case-role__subtitle case-subtitle text-body-lg">Я предусмотрела три точки входа в подписку</p>
+
+        <div class="case-role__cols-scroll">
+          <div class="case-role__cols">
+            <div class="case-role__col">
+              <h3 class="case-role__col-title text-h2">После подачи объявления</h3>
+              <div class="case-role__col-art"><img src="media/entry-points/1.webp" alt="Предложение подписки после подачи объявления" width="1500" height="3240" loading="lazy" /></div>
+            </div>
+            <div class="case-role__col">
+              <h3 class="case-role__col-title text-h2">В выдаче объявлений</h3>
+              <div class="case-role__col-art"><img src="media/entry-points/2.webp" alt="Компактный баннер подписки в выдаче объявлений" width="1500" height="3248" loading="lazy" /></div>
+            </div>
+            <div class="case-role__col">
+              <h3 class="case-role__col-title text-h2">На чарити лендингах</h3>
+              <div class="case-role__col-art"><img src="media/entry-points/3.webp" alt="Подробные условия подписки на charity-лендинге" width="1500" height="3240" loading="lazy" /></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="case-role__description case-subtitle text-body-lg">После подачи предлагаем помощь, когда основная задача уже завершена; в выдаче знакомим с подпиской через компактный баннер, сохраняя фокус на поиске; на charity-лендинге раскрываем условия подробнее для тех, кто уже интересуется благотворительностью.</p>
       </section>
 
     </div>
