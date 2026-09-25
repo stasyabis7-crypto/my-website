@@ -132,7 +132,7 @@ body {
   <aside class="work-toc" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -144,6 +144,7 @@ body {
         <a class="btn btn--fill-toc" href="#role"><span>Роль</span></a>
         <a class="btn btn--fill-toc" href="#scenario"><span>Сценарий</span></a>
         <a class="btn btn--fill-toc" href="#problems"><span>Проблемы</span></a>
+        <a class="btn btn--fill-toc" href="#before"><span>Прежний флоу</span></a>
       </nav>
     </div>
   </aside>
@@ -366,6 +367,29 @@ body {
             <p class="case-card__subtitle text-body">Оплата и завершение сценария нуждались в согласованном представлении. Экран оплаты требовалось реализовать в рамках дизайн-системы, а success-экраны разных charity-проектов использовали разные решения</p>
           </div>
         </div>
+      </section>
+
+      <!-- Прежний флоу — компонент сравнения .case-comparison (как в карте раздельного сбора). -->
+      <section class="case-block case-comparison case-before" id="before" tabindex="-1">
+        <h2 class="text-h1">Как был устроен прежний флоу</h2>
+        <p class="case-comparison__subtitle case-subtitle text-body-lg">Выбор фонда и суммы были разнесены на два экрана, а возможности подключить регулярную помощь не было</p>
+
+        <div class="case-comparison__grid case-cards-grid case-cards-grid--cols-2">
+          <div class="case-comparison__card case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
+            <div class="case-card__media">
+              <img src="media/before/before.webp" alt="Прежний флоу: выбор фонда и выбор суммы на двух отдельных экранах" loading="lazy" />
+            </div>
+            <p class="case-card__subtitle text-body">До</p>
+          </div>
+          <div class="case-comparison__card case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
+            <div class="case-card__media">
+              <img src="media/before/after.webp" alt="Новый флоу: фонд, сумма и переключатель «Разово / Ежемесячно» на одном экране" loading="lazy" />
+            </div>
+            <p class="case-card__subtitle text-body">После</p>
+          </div>
+        </div>
+
+        <p class="case-comparison__description case-subtitle text-body-lg">Каждое пожертвование требовало отдельных переходов, и для постоянной поддержки фонда приходилось заново проходить весь сценарий.</p>
       </section>
 
     </div>
