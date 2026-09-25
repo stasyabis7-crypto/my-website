@@ -447,16 +447,13 @@
   object-position: right bottom;
 }
 
-/* Как --end, но с отступом справа (как у текста): картинка уменьшена
-   (--art-scale — доля высоты блока) и стоит на нижнем крае карточки. */
-.case-metric__art--end-inset {
-  position: relative;
-  margin-right: 0;
-}
+/* Как --end, но с отступом 24px от правого и нижнего края карточки:
+   картинка уменьшена (--art-scale — доля высоты блока). */
+.case-metric__art--end-inset { position: relative; }
 .case-metric__art--end-inset img {
   position: absolute;
-  right: 0;
-  bottom: 0;
+  right: 24px;
+  bottom: 24px;
   width: auto;
   height: calc(var(--art-scale, 1) * 100%);
   max-width: 100%;
