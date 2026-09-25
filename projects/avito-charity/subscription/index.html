@@ -132,7 +132,7 @@ body {
   <aside class="work-toc" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -146,6 +146,7 @@ body {
         <a class="btn btn--fill-toc" href="#problems"><span>Проблемы</span></a>
         <a class="btn btn--fill-toc" href="#before"><span>Прежний флоу</span></a>
         <a class="btn btn--fill-toc" href="#moodboard"><span>Мудборд</span></a>
+        <a class="btn btn--fill-toc" href="#concepts"><span>Концепты</span></a>
       </nav>
     </div>
   </aside>
@@ -407,6 +408,17 @@ body {
             <div class="case-moodboard__media"><img src="media/moodboard/3.webp" alt="" width="1600" height="650" /></div>
             <div class="case-moodboard__media"><img src="media/moodboard/4.webp" alt="" width="1600" height="650" /></div>
           </div>
+        </div>
+      </section>
+
+      <!-- Концепты — компонент .case-moodboard, два больших баннера рядом. -->
+      <section class="case-block case-moodboard case-concepts" id="concepts" tabindex="-1">
+        <h2 class="case-moodboard__title text-h1">Концепты</h2>
+        <p data-subtitle class="case-moodboard__subtitle case-subtitle text-body-lg">Прорабатывала разные визуальные идеи. Пыталась уходить во что-то более эмоциональное, побольше визуала добавляла. Но остановилась на более консервативном стиле, чтобы главная информация вмещалась в 1 скролл.</p>
+
+        <div class="case-moodboard__grid case-cards-feature">
+          <div class="case-moodboard__media"><img src="media/concepts/1.webp" alt="" width="1600" height="2000" loading="lazy" /></div>
+          <div class="case-moodboard__media"><img src="media/concepts/2.webp" alt="" width="1600" height="2000" loading="lazy" /></div>
         </div>
       </section>
 
