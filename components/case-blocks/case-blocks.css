@@ -447,21 +447,21 @@
   object-position: right bottom;
 }
 
-/* Зеркало --end: картинка уменьшена (--art-scale — доля высоты блока) и
-   стоит в левом нижнем углу с отступом от краёв карточки, как у текста. */
-.case-metric__art--start {
+/* Как --end, но с отступом от краёв карточки (как у текста): картинка
+   уменьшена (--art-scale — доля высоты блока) и стоит в правом нижнем углу. */
+.case-metric__art--end-inset {
   position: relative;
+  margin-right: 0;
   margin-bottom: 0;
-  margin-left: 0;
 }
-.case-metric__art--start img {
+.case-metric__art--end-inset img {
   position: absolute;
-  left: 0;
+  right: 0;
   bottom: 0;
   width: auto;
   height: calc(var(--art-scale, 1) * 100%);
   max-width: 100%;
-  object-position: left bottom;
+  object-position: right bottom;
 }
 
 /* Подпись под метриками (например, период данных). */
