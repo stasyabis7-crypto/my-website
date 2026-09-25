@@ -47,5 +47,18 @@ window.portfolioProjects = [
     alt: 'Карта Avito с пунктами приёма вещей и панелью категорий: одежда, пластик, бумага, стекло',
     platforms: ['mobile', 'web'],
     tags: ['avito', 'b2c', 'charity', 'maps']
+  },
+  {
+    id: 'kind-subscription',
+    title: 'Как устроена регулярная помощь в Авито',
+    description: 'Подключение и управление «Доброй подпиской»',
+    href: '/projects/avito-charity/subscription/',
+    image: '/projects/avito-charity/subscription/covers/cover-poster.webp',
+    video: '/projects/avito-charity/subscription/covers/cover.mp4',
+    width: 2880,
+    height: 1800,
+    alt: '«Добрая подписка» в приложении Авито',
+    platforms: ['mobile', 'web'],
+    tags: ['avito', 'b2c', 'charity']
   }
 ];
