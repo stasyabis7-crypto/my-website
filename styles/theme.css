@@ -296,13 +296,6 @@ html[data-mood="stas"] {
   --color-action-active-text: #FFFFFF;
   --color-action-hover-text: #FFFFFF;
 }
-/* Text selection follows the active mood, using its contrasting action pair. */
-html[data-mood]::selection,
-html[data-mood] ::selection {
-  background-color: var(--color-action-active);
-  color: var(--color-action-active-text);
-  text-shadow: none;
-}
 html[data-mood] .site-header {
   /* Transparent glass: colours follow the page theme, not the mood plate. */
   transition: background-color .55s ease, top .25s ease, left .25s ease;
