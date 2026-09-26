@@ -202,3 +202,52 @@
     video.load();
   });
 })();
+
+/*
+  Подписи колонок .case-role__col-subtitle обрезаются в 1 строку с
+  многоточием. На десктопе (мышь) при наведении на обрезанную подпись —
+  подсказка .case-tooltip с полным текстом (как у описаний карточек на
+  Главной). Если текст помещается — подсказки нет. Нативный title
+  снимаем, чтобы не было двух подсказок; на тач-устройствах всё как было.
+*/
+(function () {
+  'use strict';
+  var mq = window.matchMedia('(hover: hover) and (pointer: fine)');
+  var els = document.querySelectorAll('.case-role__col-subtitle');
+  if (!els.length || !mq.matches) return;
+
+  var tooltip = document.createElement('div');
+  tooltip.className = 'case-tooltip text-body';
+  tooltip.setAttribute('role', 'tooltip');
+  tooltip.id = 'case-tooltip';
+  tooltip.hidden = true;
+  document.body.appendChild(tooltip);
+  var owner = null;
+
+  function hide() {
+    tooltip.hidden = true;
+    if (owner) owner.removeAttribute('aria-describedby');
+    owner = null;
+  }
+
+  function show(el) {
+    if (el.scrollWidth <= el.clientWidth + 0.5) { hide(); return; }
+    owner = el;
+    el.setAttribute('aria-describedby', tooltip.id);
+    tooltip.textContent = el.dataset.fullText || el.textContent;
+    tooltip.hidden = false;
+    var r = el.getBoundingClientRect();
+    tooltip.style.left = Math.max(16, Math.min(r.left, innerWidth - tooltip.offsetWidth - 16)) + 'px';
+    tooltip.style.top = Math.max(16, Math.min(r.bottom + 8, innerHeight - tooltip.offsetHeight - 16)) + 'px';
+  }
+
+  els.forEach(function (el) {
+    var t = el.getAttribute('title');
+    if (t) { el.dataset.fullText = t; el.removeAttribute('title'); }
+    el.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') show(el); });
+    el.addEventListener('pointerleave', hide);
+  });
+  window.addEventListener('scroll', hide, { passive: true });
+  window.addEventListener('resize', hide);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+})();

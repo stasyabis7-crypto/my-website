@@ -546,13 +546,29 @@
 
 /* Если подпись не помещается в ширину колонки — обрезаем в 1 строку с
    многоточием (не переносим на 2-ю строку, иначе картинки в соседних
-   колонках разъедутся по высоте), полный текст — во всплывающей
-   подсказке браузера через атрибут title в разметке. */
+   колонках разъедутся по высоте). На десктопе полный текст — в подсказке
+   .case-tooltip при наведении (case-blocks.js берёт его из title). */
 .case-role__col-subtitle {
   margin-top: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Подсказка с полным текстом — тот же вид, что у описаний карточек
+   Главной (.project-slider__tooltip). */
+.case-tooltip.text-body {
+  position: fixed;
+  z-index: 1000;
+  width: max-content;
+  max-width: min(520px, calc(100vw - 32px));
+  margin: 0;
+  padding: 16px;
+  border-radius: var(--radius-surface);
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-glass-border);
+  pointer-events: none;
 }
 
 /* Картинка колонки — та же пропорция (596:1290), что у вертикальных
