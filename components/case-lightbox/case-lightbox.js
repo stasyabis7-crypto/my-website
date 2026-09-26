@@ -9,7 +9,7 @@
   // Видео (обложка кейса) входят в ту же галерею: в полноэкранном слайде
   // у них свои контролы — плей/пауза, дорожка и время. Подпись у видео —
   // aria-label вместо alt.
-  var SELECTOR = '.case-cover__media img, .case-cover__media video, .case-card__media img, .case-card__media video, .case-card__media-overlay, .case-role__col-art img';
+  var SELECTOR = '.case-cover__media img, .case-cover__media video, .case-card__media img, .case-card__media video, .case-card__media-overlay, .case-role__col-art img, .case-moodboard__media img, .case-moodboard__media video';
 
   var MIN_SCALE = 1;
   var MAX_SCALE = 4;

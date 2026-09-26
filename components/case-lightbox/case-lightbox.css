@@ -1,7 +1,8 @@
 /*
   Полноэкранный просмотр фото интерфейса на страницах кейсов.
   Открывающие превью — это любые .case-cover__media img /
-  .case-card__media img / .case-card__media-overlay / .case-role__col-art img
+  .case-card__media img / .case-card__media-overlay / .case-role__col-art img /
+  .case-moodboard__media img|video
   с непустым alt (см. case-lightbox.js — там же критерий отбора);
   декоративные метрики (.case-metric__art) и аватары команды
   (.case-team__avatar) в выборку не попадают и это состояние не получают.
