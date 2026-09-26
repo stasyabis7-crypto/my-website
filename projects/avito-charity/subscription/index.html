@@ -132,7 +132,7 @@ body {
   <aside class="work-toc" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="fund-info"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -149,6 +149,7 @@ body {
         <a class="btn btn--fill-toc" href="#concepts"><span>Концепты</span></a>
         <a class="btn btn--fill-toc" href="#entry-points"><span>Точки входа</span></a>
         <a class="btn btn--fill-toc" href="#choose-fund"><span>Выбор фонда</span></a>
+        <a class="btn btn--fill-toc" href="#fund-info"><span>Информация о фонде</span></a>
       </nav>
     </div>
   </aside>
@@ -457,6 +458,17 @@ body {
         <div class="case-moodboard__grid case-cards-feature">
           <div class="case-moodboard__media"><video src="media/choose-fund/subscription-fund-flow-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор фонда при оформлении подписки"></video></div>
           <div class="case-moodboard__media"><video src="media/choose-fund/one-time-donation-flow-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор фонда при разовом пожертвовании"></video></div>
+        </div>
+      </section>
+
+      <!-- Информация о фонде — компонент .case-moodboard, две картинки рядом (как «Концепты»). -->
+      <section class="case-block case-moodboard case-fund-info" id="fund-info" tabindex="-1">
+        <h2 class="case-moodboard__title text-h1">Информация о фонде</h2>
+        <p data-subtitle class="case-moodboard__subtitle case-subtitle text-body-lg">Решение добавить «Добрые дела фонда» опиралось на ранее проведённые В исследованиях участникам не хватало информации о работе фондов, чтобы решиться на пожертвование. Я разделила карточку на две вкладки: «О фонде» — знакомство с организацией и ссылка на сайт, «Добрые дела фонда» — результаты работы с текстом, фото и видео за выбранный период.</p>
+
+        <div class="case-moodboard__grid case-cards-feature">
+          <div class="case-moodboard__media"><img src="media/info-fund/1.webp" alt="Вкладка «О фонде» в карточке фонда" width="1600" height="2000" loading="lazy" /></div>
+          <div class="case-moodboard__media"><img src="media/info-fund/2.webp" alt="Вкладка «Добрые дела фонда» с результатами работы" width="1600" height="2000" loading="lazy" /></div>
         </div>
       </section>
 
