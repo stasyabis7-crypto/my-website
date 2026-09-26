@@ -132,7 +132,7 @@ body {
   <aside class="work-toc" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="fund-info"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="fund-info"></span><span data-toc-marker="settings"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -150,6 +150,7 @@ body {
         <a class="btn btn--fill-toc" href="#entry-points"><span>Точки входа</span></a>
         <a class="btn btn--fill-toc" href="#choose-fund"><span>Выбор фонда</span></a>
         <a class="btn btn--fill-toc" href="#fund-info"><span>Информация о фонде</span></a>
+        <a class="btn btn--fill-toc" href="#settings"><span>Настроить подписку</span></a>
       </nav>
     </div>
   </aside>
@@ -485,6 +486,19 @@ body {
             </div>
           </div>
         </div>
+      </section>
+
+      <!-- Настроить подписку — компонент .case-moodboard, два видео рядом + текст ниже. -->
+      <section class="case-block case-moodboard case-settings" id="settings" tabindex="-1">
+        <h2 class="case-moodboard__title text-h1">Настроить подписку</h2>
+        <p data-subtitle class="case-moodboard__subtitle case-subtitle text-body-lg">На экране подключения я собрала основные условия подписки: фонд, сумму и ежемесячность списаний. Человек может выбрать 100, 300 или 500 ₽ либо указать свою сумму. Пояснение о повторении платежа находится рядом с суммой, до кнопки подключения.</p>
+
+        <div class="case-moodboard__grid case-cards-feature">
+          <div class="case-moodboard__media"><video src="media/settings/subscription-payment-flow-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Подключение подписки: выбор суммы и оплата"></video></div>
+          <div class="case-moodboard__media"><video src="media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Шторка «Как это работает» с условиями подписки"></video></div>
+        </div>
+
+        <p class="case-comparison__description case-subtitle text-body-lg">Дополнительные условия вынесены в «Как это работает»: отсутствие комиссии, перечисление денег фондам напрямую, ежемесячный «Знак добра», возможность изменения и отключения подписки. Это позволяет сохранить основной экран компактным и дать подробности тем, кому они нужны.</p>
       </section>
 
     </div>

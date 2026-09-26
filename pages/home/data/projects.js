@@ -19,7 +19,8 @@ window.portfolioTags = [
   { id: 'charity', label: 'Благотворительность', group: 'industry' },
   { id: 'ecommerce', label: 'E-commerce', group: 'industry' },
   { id: 'maps', label: 'Карты', group: 'product' },
-  { id: 'crm', label: 'CRM', group: 'product' }
+  { id: 'crm', label: 'CRM', group: 'product' },
+  { id: 'payments', label: 'Платежи', group: 'product' }
 ];
 
 window.portfolioProjects = [
@@ -59,6 +60,6 @@ window.portfolioProjects = [
     height: 1800,
     alt: '«Добрая подписка» в приложении Авито',
     platforms: ['mobile', 'web'],
-    tags: ['avito', 'b2c', 'charity']
+    tags: ['avito', 'b2c', 'charity', 'payments']
   }
 ];
