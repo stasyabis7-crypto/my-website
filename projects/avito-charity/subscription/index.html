@@ -138,7 +138,7 @@ body {
   <aside class="work-toc" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="fund-info"></span><span data-toc-marker="settings"></span><span data-toc-marker="manage"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="fund-info"></span><span data-toc-marker="settings"></span><span data-toc-marker="manage"></span><span data-toc-marker="payment"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -158,6 +158,7 @@ body {
         <a class="btn btn--fill-toc" href="#fund-info"><span>Информация о фонде</span></a>
         <a class="btn btn--fill-toc" href="#settings"><span>Настроить подписку</span></a>
         <a class="btn btn--fill-toc" href="#manage"><span>Управление подпиской</span></a>
+        <a class="btn btn--fill-toc" href="#payment"><span>Экран оплаты</span></a>
       </nav>
     </div>
   </aside>
@@ -541,6 +542,18 @@ body {
             </div>
           </div>
         </div>
+      </section>
+
+      <!-- Экран оплаты — компонент .case-moodboard, одна картинка на всю ширину + текст ниже. -->
+      <section class="case-block case-moodboard case-payment" id="payment" tabindex="-1">
+        <h2 class="case-moodboard__title text-h1">Экран оплаты</h2>
+        <p data-subtitle class="case-moodboard__subtitle case-subtitle text-body-lg">Согласовала с командой оплаты единое представление способов оплаты в приложении и вебе. Добавила пояснения, какое приложение понадобится и где продолжится платёж.</p>
+
+        <div class="case-moodboard__grid">
+          <div class="case-moodboard__media"><img src="media/payment/1.webp" alt="Выбор способа оплаты в вебе и в приложении: СБП, SberPay, T-Pay, новая карта" width="2880" height="1800" loading="lazy" /></div>
+        </div>
+
+        <p class="case-comparison__description case-subtitle text-body-lg">Оплата по-прежнему проходит через ЮKassa: переход во внешний интерфейс удлиняет путь, а статус ошибки может приходить с задержкой. Следующий шаг — переход на платёжный флоу Авито.</p>
       </section>
 
     </div>
