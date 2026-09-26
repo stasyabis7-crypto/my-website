@@ -66,6 +66,7 @@ body {
   /* Палитра кейса (см. components/case-blocks/case-blocks.css): «Добрая
      подписка» — фиолетовый и голубой. */
   --case-surface: #EFEAFF;
+  --case-surface-2: #E4F3FE;
   --case-accent: #7A4DF5;
   --case-accent-text: #FFFFFF;
   --case-icon: #7A4DF5;
@@ -82,6 +83,11 @@ body {
 }
 @media (max-width: 999px) {
   .case { padding-bottom: calc(var(--footer-h, 64px) + 96px); }
+}
+
+/* Метрика «Знака добра» — голубой фон палитры вместо фиолетового. */
+#fund-info .case-metric--theme {
+  background: var(--case-surface-2);
 }
 
 .case__blocks {
