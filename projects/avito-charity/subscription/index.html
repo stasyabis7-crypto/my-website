@@ -138,7 +138,7 @@ body {
   <aside class="work-toc" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="fund-info"></span><span data-toc-marker="settings"></span><span data-toc-marker="manage"></span><span data-toc-marker="payment"></span><span data-toc-marker="success"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="fund-info"></span><span data-toc-marker="settings"></span><span data-toc-marker="manage"></span><span data-toc-marker="payment"></span><span data-toc-marker="success"></span><span data-toc-marker="summary-end"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -160,6 +160,7 @@ body {
         <a class="btn btn--fill-toc" href="#manage"><span>Управление подпиской</span></a>
         <a class="btn btn--fill-toc" href="#payment"><span>Экран оплаты</span></a>
         <a class="btn btn--fill-toc" href="#success"><span>Саксесс экран</span></a>
+        <a class="btn btn--fill-toc" href="#summary-end"><span>Итог</span></a>
       </nav>
     </div>
   </aside>
@@ -580,6 +581,37 @@ body {
 
         <p class="case-comparison__description case-subtitle text-body-lg">В подписке экран подтверждает подключение ежемесячной помощи и её условия. Добавила анимацию сердечек, чтобы сделать благодарность теплее; дополнительные действия — поделиться и добавить «Знак добра» на объявление.</p>
         <p class="case-subtitle text-body-lg">Масштаб использования: около 2 000 показов экранов благодарности в день во всех charity-сценариях.</p>
+      </section>
+
+      <!-- Итог — текст, та же обложка и метрики, что в первом блоке кейса. -->
+      <section class="case-block case-summary-end" id="summary-end" tabindex="-1">
+        <h2 class="text-h1">Итог</h2>
+        <p class="case-cover__subtitle case-subtitle text-body-lg">Запустили регулярную помощь с подключением и управлением подпиской, дополнили выбор фонда информацией о его работе. Дальше важно оценить повторные списания, отмены подписок и конверсию каждой точки входа в подключение.</p>
+
+        <div class="case-cover__media case-cover__media--natural">
+          <video src="/projects/avito-charity/subscription/covers/cover.mp4" poster="/projects/avito-charity/subscription/covers/cover-poster.webp" width="2880" height="1800" muted loop playsinline autoplay preload="metadata" aria-label="«Добрая подписка» в приложении Авито"></video>
+        </div>
+
+        <div class="case-cover__metrics-scroll">
+          <div class="case-cover__metrics">
+            <div class="case-metric case-metric--theme">
+              <p class="case-metric__value">4 956</p>
+              <p class="case-metric__label text-body-sm">Подписок</p>
+              <div class="case-metric__art"><img src="media/metric-1.webp?v=2" alt="" aria-hidden="true" /></div>
+            </div>
+            <div class="case-metric">
+              <p class="case-metric__value">4 341</p>
+              <p class="case-metric__label text-body-sm">Уникальных пользователей</p>
+              <div class="case-metric__art case-metric__art--end-inset" style="--art-scale: .5"><img src="media/metric-2.webp?v=3" alt="" aria-hidden="true" /></div>
+            </div>
+            <div class="case-metric">
+              <p class="case-metric__value">1,24 млн ₽</p>
+              <p class="case-metric__label text-body-sm">Автоплатежей</p>
+              <div class="case-metric__art case-metric__art--end-inset" style="--art-scale: .5"><img src="media/metric-3.webp?v=2" alt="" aria-hidden="true" /></div>
+            </div>
+          </div>
+        </div>
+        <p class="case-cover__metrics-note text-body-sm">Данные за квартал</p>
       </section>
 
     </div>
