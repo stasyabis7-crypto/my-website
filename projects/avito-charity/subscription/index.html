@@ -138,7 +138,7 @@ body {
   <aside class="work-toc" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="fund-info"></span><span data-toc-marker="settings"></span><span data-toc-marker="manage"></span><span data-toc-marker="payment"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="fund-info"></span><span data-toc-marker="settings"></span><span data-toc-marker="manage"></span><span data-toc-marker="payment"></span><span data-toc-marker="success"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -159,6 +159,7 @@ body {
         <a class="btn btn--fill-toc" href="#settings"><span>Настроить подписку</span></a>
         <a class="btn btn--fill-toc" href="#manage"><span>Управление подпиской</span></a>
         <a class="btn btn--fill-toc" href="#payment"><span>Экран оплаты</span></a>
+        <a class="btn btn--fill-toc" href="#success"><span>Саксесс экран</span></a>
       </nav>
     </div>
   </aside>
@@ -555,6 +556,27 @@ body {
 
         <p class="case-comparison__description case-subtitle text-body-lg">Оплата по-прежнему проходит через ЮKassa: переход во внешний интерфейс удлиняет путь, а статус ошибки может приходить с задержкой. Следующий шаг — переход на платёжный флоу Авито.</p>
         <p class="case-subtitle text-body-lg">За квартал зафиксировано 14 840 успешных оплат, около 51% по данным проекта.</p>
+      </section>
+
+      <!-- Саксесс экран — компонент сравнения .case-comparison (как «Прежний флоу»). -->
+      <section class="case-block case-comparison case-success" id="success" tabindex="-1">
+        <h2 class="text-h1">Саксесс экран</h2>
+        <p class="case-comparison__subtitle case-subtitle text-body-lg">Экраны благодарности в charity-сценариях выглядели по-разному, а прежнюю анимацию заменили статичным изображением. Я разработала общий подход для полноэкранного формата, шторки и модального окна: понятное подтверждение действия, вклад пользователя и благодарность.</p>
+
+        <div class="case-comparison__grid case-cards-grid case-cards-grid--cols-2">
+          <div class="case-comparison__card case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
+            <div class="case-card__media">
+              <img src="media/success/before.webp" alt="Прежний экран благодарности со статичным изображением" width="1600" height="2000" loading="lazy" />
+            </div>
+            <p class="case-card__subtitle text-body">До</p>
+          </div>
+          <div class="case-comparison__card case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
+            <div class="case-card__media">
+              <img src="media/success/after.webp" alt="Новый экран благодарности: подтверждение, вклад пользователя и благодарность" width="1600" height="2000" loading="lazy" />
+            </div>
+            <p class="case-card__subtitle text-body">После</p>
+          </div>
+        </div>
       </section>
 
     </div>
