@@ -571,6 +571,11 @@
   background: var(--skeleton-color);
 }
 
+/* Колонка без подписи — картинка сразу сверху. */
+.case-role__col-art:first-child {
+  margin-top: 0;
+}
+
 .case-role__col-art img {
   display: block;
   width: 100%;
