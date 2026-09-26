@@ -1014,7 +1014,8 @@
   overflow: hidden;
 }
 
-.case-moodboard__media img {
+.case-moodboard__media img,
+.case-moodboard__media video {
   display: block;
   width: 100%;
   height: auto;

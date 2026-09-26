@@ -132,7 +132,7 @@ body {
   <aside class="work-toc" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -148,6 +148,7 @@ body {
         <a class="btn btn--fill-toc" href="#moodboard"><span>Мудборд</span></a>
         <a class="btn btn--fill-toc" href="#concepts"><span>Концепты</span></a>
         <a class="btn btn--fill-toc" href="#entry-points"><span>Точки входа</span></a>
+        <a class="btn btn--fill-toc" href="#choose-fund"><span>Выбор фонда</span></a>
       </nav>
     </div>
   </aside>
@@ -446,6 +447,17 @@ body {
         </div>
 
         <p class="case-role__description case-subtitle text-body-lg">После подачи предлагаем помощь, когда основная задача уже завершена; в выдаче знакомим с подпиской через компактный баннер, сохраняя фокус на поиске; на charity-лендинге раскрываем условия подробнее для тех, кто уже интересуется благотворительностью.</p>
+      </section>
+
+      <!-- Выбор фонда — компонент .case-moodboard, два видео рядом (как «Концепты»). -->
+      <section class="case-block case-moodboard case-choose-fund" id="choose-fund" tabindex="-1">
+        <h2 class="case-moodboard__title text-h1">Выбор фонда</h2>
+        <p data-subtitle class="case-moodboard__subtitle case-subtitle text-body-lg">Я перенесла выбор фонда на первый экран: до выбора суммы можно узнать о подставленном фонде, а при смене фонда открыть подробности о другом двойным нажатием. При разовом пожертвовании подставляем фонды из случайных категорий, чтобы помощь получали и менее популярные направления, помимо детей и животных.</p>
+
+        <div class="case-moodboard__grid case-cards-feature">
+          <div class="case-moodboard__media"><video src="media/choose-fund/subscription-fund-flow-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор фонда при оформлении подписки"></video></div>
+          <div class="case-moodboard__media"><video src="media/choose-fund/one-time-donation-flow-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор фонда при разовом пожертвовании"></video></div>
+        </div>
       </section>
 
     </div>
