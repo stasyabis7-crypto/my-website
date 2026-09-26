@@ -192,7 +192,6 @@
   object-fit: contain;
   user-select: none;
   -webkit-user-drag: none;
-  will-change: transform;
   cursor: zoom-in;
   touch-action: none;
 }
@@ -300,6 +299,10 @@
 
 .case-lightbox__image.is-zoomed {
   cursor: grab;
+  /* Слой только пока картинка увеличена: постоянный will-change на
+     каждом фото держал в памяти телефона десятки больших слоёв и
+     подтормаживал пролистывание. */
+  will-change: transform;
 }
 
 .case-lightbox__image.is-panning {
@@ -312,13 +315,19 @@
   }
 }
 
-/* Видео-слайд: ролик сверху, под ним строка плеера — кнопка
-   плей/пауза (.btn из styles/buttons.css), дорожка и время. Зума у
-   видео нет, тап по ролику ставит на паузу / продолжает. */
-.case-lightbox__slide--video {
-  flex-direction: column;
-  gap: 16px;
-  padding-bottom: max(16px, var(--lightbox-pad-bottom, 0px));
+/* Видео-слайд: ролик в том же боксе, что и фото (одна вертикаль при
+   пролистывании), строка плеера — кнопка плей/пауза (.btn из
+   styles/buttons.css), дорожка и время — поверх нижнего поля слайда.
+   Если в галерее есть видео (.has-video ставит case-lightbox.js), это
+   поле резервируется у ВСЕХ слайдов, чтобы фото и ролики стояли на одной
+   линии, а плеер не наезжал на ролик. Зума у видео нет, тап по ролику
+   ставит на паузу / продолжает. */
+.case-lightbox.has-video {
+  --lightbox-player-h: calc(var(--button-height, 64px) + 32px);
+}
+
+.case-lightbox.has-video .case-lightbox__slide {
+  padding-bottom: max(var(--lightbox-player-h), var(--lightbox-pad-bottom, 0px));
 }
 
 .case-lightbox__video {
@@ -326,11 +335,14 @@
 }
 
 .case-lightbox__player {
-  flex: 0 0 auto;
+  position: absolute;
+  left: var(--lightbox-pad-left, 0px);
+  right: var(--lightbox-pad-right, 0px);
+  bottom: 16px;
+  margin-inline: auto;
   display: flex;
   align-items: center;
   gap: 16px;
-  width: 100%;
   max-width: 880px;
   box-sizing: border-box;
   padding: 0 16px;

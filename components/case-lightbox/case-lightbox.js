@@ -21,6 +21,9 @@
   // лента сначала едет за пальцем); дальние прыжки по миниатюре
   // растягиваются по длине пути, чтобы не «телепортировать».
   var SLIDE_EASING = 'cubic-bezier(.25,.8,.25,1)';
+  // Доезд после свайпа пальцем: тот же характер, скорость — от пальца
+  // (см. renderTrack).
+  var SWIPE_EASING = 'cubic-bezier(.25,.8,.25,1)';
 
   function ready(fn) {
     if (document.readyState !== 'loading') fn();
@@ -49,7 +52,7 @@
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     var root = document.createElement('div');
-    root.className = 'case-lightbox';
+    root.className = 'case-lightbox' + (items.some(isVideo) ? ' has-video' : '');
     root.hidden = true;
     root.setAttribute('role', 'dialog');
     root.setAttribute('aria-modal', 'true');
@@ -135,7 +138,7 @@
         slides[i].src = url;
         if (isVideo(src)) {
           slides[i].poster = src.poster;
-          slides[i].preload = 'auto';
+          slides[i].preload = 'metadata';
           thumbs[i].firstChild.src = src.poster;
         } else {
           thumbs[i].firstChild.src = url;
@@ -334,25 +337,36 @@
       return viewport.clientWidth + SLIDE_GAP;
     }
 
-    // Лента: пока палец на экране — 1:1 за пальцем (без transition), при
+    // Лента: пока палец на экране — 1:1 за пальцем (без transition и без
+    // лишнего кадра задержки: pointermove и так приходит раз в кадр), при
     // отпускании/стрелках/миниатюре — плавный доезд до нужного слайда.
-    var trackRaf = 0, trackPendingX = 0;
-    function queueTrack(x) {
-      trackPendingX = x;
-      if (trackRaf) return;
-      trackRaf = requestAnimationFrame(function () {
-        trackRaf = 0;
-        track.style.transition = 'none';
-        track.style.transform = 'translate3d(' + trackPendingX + 'px,0,0)';
-      });
+    var trackX = 0;
+    function moveTrack(x) {
+      trackX = x;
+      track.style.transition = 'none';
+      track.style.transform = 'translate3d(' + x + 'px,0,0)';
     }
     var desktopMq = window.matchMedia('(min-width: 768px)');
-    function renderTrack(animate, distance) {
-      if (trackRaf) { cancelAnimationFrame(trackRaf); trackRaf = 0; }
-      var base = desktopMq.matches ? 0.75 : 0.5;
-      var duration = Math.min(1.1, base + 0.07 * Math.max(0, (distance || 1) - 1));
-      track.style.transition = animate && !reducedMotion.matches ? 'transform ' + duration + 's ' + SLIDE_EASING : 'none';
-      track.style.transform = 'translate3d(' + (-index * step()) + 'px,0,0)';
+    // Возвращает длительность доезда в мс. После свайпа (velocity, px/мс)
+    // длительность подбирается так, чтобы начальная скорость анимации
+    // совпала со скоростью пальца — без рывка/торможения на стыке.
+    function renderTrack(animate, distance, velocity) {
+      var target = -index * step();
+      var duration;
+      if (velocity !== undefined) {
+        var remaining = Math.abs(target - trackX);
+        var v = Math.max(Math.abs(velocity), 0.5);
+        // У SWIPE_EASING начальный наклон ≈ 0.8/0.25 = 3.2.
+        duration = Math.max(0.22, Math.min(0.45, 3.2 * remaining / v / 1000));
+      } else {
+        var base = desktopMq.matches ? 0.75 : 0.5;
+        duration = Math.min(1.1, base + 0.07 * Math.max(0, (distance || 1) - 1));
+      }
+      var on = animate && !reducedMotion.matches;
+      track.style.transition = on ? 'transform ' + duration + 's ' + (velocity !== undefined ? SWIPE_EASING : SLIDE_EASING) : 'none';
+      track.style.transform = 'translate3d(' + target + 'px,0,0)';
+      trackX = target;
+      return on ? duration * 1000 : 0;
     }
 
     function setTransform(animate) {
@@ -434,7 +448,8 @@
       }
     }
 
-    function goTo(i, animate) {
+    var playTimer = 0;
+    function goTo(i, animate, velocity) {
       i = Math.max(0, Math.min(items.length - 1, i));
       var leaving = image;
       var changed = i !== index;
@@ -453,9 +468,29 @@
         }, 1200);
       }
       setTransform(false);
-      renderTrack(animate, distance);
+      var ms = renderTrack(animate, distance, velocity);
       updateChrome();
-      syncPlayback();
+      preloadAround();
+      // Старое видео — на паузу сразу, новое стартует, когда слайд
+      // доехал: запуск декодера посреди анимации даёт рывок.
+      window.clearTimeout(playTimer);
+      if (ms) {
+        players.forEach(function (p) { if (p) p.video.pause(); });
+        playTimer = window.setTimeout(syncPlayback, ms);
+      } else {
+        syncPlayback();
+      }
+    }
+
+    // Соседние слайды готовим заранее: видео — полная подгрузка,
+    // картинки — декодирование до того, как они въедут в кадр.
+    function preloadAround() {
+      [index - 1, index, index + 1].forEach(function (i) {
+        var el = slides[i];
+        if (!el || !el.getAttribute('src')) return;
+        if (el.tagName === 'VIDEO') el.preload = 'auto';
+        else if (el.decode) el.decode().catch(function () {});
+      });
     }
 
     function navigate(delta) {
@@ -540,11 +575,16 @@
           scheduleRender();
           image.classList.add('is-panning');
         } else if (dragMoved) {
-          swiping = true;
+          if (!swiping) {
+            // Порог тапа пройден — лента стартует отсюда, без скачка на
+            // величину порога.
+            swiping = true;
+            swipeStartX = e.clientX;
+          }
           var sdx = e.clientX - swipeStartX;
           var atEdge = (index === 0 && sdx > 0) || (index === items.length - 1 && sdx < 0);
           if (atEdge) sdx *= 0.35;
-          queueTrack(-index * step() + sdx);
+          moveTrack(-index * step() + sdx);
           var dt = e.timeStamp - swipeLastT;
           if (dt > 0) swipeVx = 0.8 * swipeVx + 0.2 * ((e.clientX - swipeLastX) / dt);
           swipeLastX = e.clientX;
@@ -588,9 +628,11 @@
         swiping = false;
         var total = e.clientX - swipeStartX;
         var threshold = Math.min(90, viewport.clientWidth * 0.2);
-        if ((total < -threshold || swipeVx < -0.4) && index < items.length - 1) goTo(index + 1, true);
-        else if ((total > threshold || swipeVx > 0.4) && index > 0) goTo(index - 1, true);
-        else renderTrack(true);
+        // Палец остановился перед отпусканием — инерции нет.
+        if (e.timeStamp - swipeLastT > 80) swipeVx = 0;
+        if ((total < -threshold || swipeVx < -0.4) && index < items.length - 1) goTo(index + 1, true, swipeVx);
+        else if ((total > threshold || swipeVx > 0.4) && index > 0) goTo(index - 1, true, swipeVx);
+        else renderTrack(true, 1, swipeVx);
       }
     }
 
