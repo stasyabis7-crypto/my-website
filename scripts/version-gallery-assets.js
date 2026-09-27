@@ -61,8 +61,8 @@ const assets = [
   'components/case-lightbox/case-lightbox.js',
   'components/case-toc/case-toc.css',
   'components/project-cards/project-cards.js',
-  'projects/articles/page.css',
-  'projects/posts/page.css',
+  'projects/articles/articles.css',
+  'projects/posts/posts.css',
   'site/analytics-config.js',
   'site/analytics.js',
   'site/haptics.js',
@@ -80,6 +80,9 @@ for (const asset of assets) {
     rewrite(fs.readFileSync(path.join(root, asset), 'utf8'));
   const ext = path.extname(asset);
   const original = path.basename(asset);
+  // HTML-ссылки переписываются по имени файла, поэтому имена в списке
+  // обязаны быть уникальными: два page.css получили бы один хеш.
+  if (names.has(original)) throw new Error(`Duplicate asset name ${original}: rename ${asset}`);
   const hash = crypto.createHash('sha256').update(source).digest('hex').slice(0, 12);
   const versioned = `${path.basename(asset, ext)}.${hash}${ext}`;
   fs.writeFileSync(path.join(root, path.dirname(asset), versioned), source);

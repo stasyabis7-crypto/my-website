@@ -52,7 +52,7 @@
                       строки тегов (components/chip-scroller).
 
     .btn--fill-nav    пункт меню сайта (Статьи/Посты) в хедере:
-                      стеклянная таблетка, как «Связаться».
+                      без заливки, только текст.
 
   Ховер у всех типов один: кнопка чуть снижает opacity
   (--btn-hover-opacity), без смены заливки/цвета, подъёма и прочих
@@ -366,7 +366,7 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   .work-toc-sheet .btn:focus-visible { outline: 2px solid var(--mood-ink); outline-offset: 3px; }
 }
 
-/* Site menu item (Статьи/Посты): header glass pill on desktop, white row in
+/* Site menu item (Статьи/Посты): unfilled text item on desktop, white row in
    the mobile menu sheet (.btn--fill-white next to it). The one type with its
    own hover by request: an underline slides in under the label instead of the
    opacity drop. The open section ([aria-current="page"], on any .btn) gets a
@@ -374,10 +374,8 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
    Usage: <a class="btn btn--fill-nav" href="…" aria-current="page">Статьи</a> */
 :root { --btn-nav-live: #22c55e; }
 .btn--fill-nav {
-  background: var(--btn-glass-ui-bg);
+  background: transparent;
   color: var(--color-ink);
-  -webkit-backdrop-filter: blur(10px) saturate(160%);
-  backdrop-filter: blur(10px) saturate(160%);
 }
 .btn--fill-nav > span { position: relative; }
 .btn--fill-nav > span::after {
@@ -416,7 +414,7 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   70%, 100% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--btn-nav-live) 0%, transparent); }
 }
 @media (hover: none), (pointer: coarse) {
-  .btn.btn--fill-nav { background: var(--btn-glass-ui-bg); color: var(--color-ink); }
+  .btn.btn--fill-nav { background: transparent; color: var(--color-ink); }
 }
 @media (prefers-reduced-motion: reduce) {
   .btn[aria-current="page"]::before { animation: none; }
