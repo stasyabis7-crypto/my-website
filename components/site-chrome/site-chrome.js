@@ -119,7 +119,7 @@
     function ensure() {
       if (sheet) return;
       sheet = document.createElement('div');
-      sheet.className = 'contact-dialog contact-sheet';
+      sheet.className = 'contact-dialog contact-sheet site-sheet';
       sheet.id = opts.id;
       sheet.hidden = true;
       sheet.setAttribute('role', 'dialog');
