@@ -92,6 +92,27 @@
     'components/page-hero/pictures/sphere-39.webp',
     'components/page-hero/pictures/sphere-40.webp'
   ];
+  // Shared, static lighting: reflect the view vector about each sphere normal.
+  // A softbox in reflection space naturally bows and narrows over the surface.
+  const textureSize=420, lighting=new Float32Array(textureSize*textureSize);
+  const softbox=(rx,ry,rz,lx,ly,lz,width,height)=>{
+    const horizontal=Math.hypot(lx,lz), ux=lz/horizontal, uz=-lx/horizontal;
+    const facing=rx*lx+ry*ly+rz*lz;
+    if(facing<=0)return 0;
+    const u=(rx*ux+rz*uz)/facing;
+    const v=(rx*ly*uz+ry*horizontal-rz*ly*ux)/facing;
+    return Math.exp(-Math.pow(u/width,4)-Math.pow(v/height,4));
+  };
+  for(let y=0;y<textureSize;y++)for(let x=0;x<textureSize;x++){
+    const nx=(x+.5-textureSize/2)/(textureSize/2), ny=(y+.5-textureSize/2)/(textureSize/2);
+    const radius2=nx*nx+ny*ny;
+    if(radius2>1)continue;
+    const nz=Math.sqrt(1-radius2), rx=2*nx*nz, ry=2*ny*nz, rz=2*nz*nz-1;
+    const key=softbox(rx,ry,rz,-.48,-.64,.6,.65,.24);
+    const fill=softbox(rx,ry,rz,.36,.8,.48,.5,.16);
+    const fresnel=Math.pow(1-nz,5);
+    lighting[y*textureSize+x]=Math.min(.85,key*.66+fill*.16+fresnel*.28);
+  }
   const textures = await Promise.all(paths.map(path => new Promise(resolve => {
     const image = new Image();
     image.onload = () => {
@@ -102,7 +123,7 @@
     image.src = path;
   })));
   function makeGlass(image) {
-    const size=420, source=document.createElement('canvas'), out=document.createElement('canvas');
+    const size=textureSize, source=document.createElement('canvas'), out=document.createElement('canvas');
     source.width=source.height=out.width=out.height=size;
     const s=source.getContext('2d'), o=out.getContext('2d');
     if (image) {
@@ -121,18 +142,14 @@
       const sy=Math.max(0,Math.min(size-1,Math.round((ny*lens+ripple+1)*.5*(size-1))));
       const a=(y*size+x)*4,b=(sy*size+sx)*4;
       const shade=.94-.30*Math.pow(r,5), grain=Math.sin(x*12.9898+y*78.233)*1.2;
-      for(let c=0;c<3;c++) result.data[a+c]=pixels[b+c]*shade+grain;
+      const reflection=lighting[y*size+x];
+      for(let c=0;c<3;c++) {
+        const base=pixels[b+c]*shade+grain;
+        result.data[a+c]=base+(255-base)*reflection;
+      }
       result.data[a+3]=Math.min(255,(1-r)*size*128);
     }
     o.putImageData(result,0,0);
-    const circle=()=>{o.beginPath();o.arc(210,210,208,0,Math.PI*2);};
-    circle();o.save();o.clip();
-    let g=o.createRadialGradient(150,110,10,210,210,210);
-    g.addColorStop(0,'#ffffff32');g.addColorStop(.48,'#ffffff00');g.addColorStop(.83,'#d0e9ff08');g.addColorStop(.94,'#d9f4ff88');g.addColorStop(1,'#ffffff18');o.fillStyle=g;o.fillRect(0,0,size,size);
-    o.translate(210,210);o.rotate(-.5);
-    o.beginPath();o.ellipse(-35,-149,86,15,0,0,Math.PI*2);o.fillStyle='#ffffffb0';o.filter='blur(6px)';o.fill();
-    o.filter='blur(2px)';o.beginPath();o.ellipse(25,177,58,5,0,0,Math.PI*2);o.fillStyle='#d8eaffae';o.fill();o.restore();
-    circle();o.lineWidth=2;o.strokeStyle='#ffffff65';o.stroke();
     return out;
   }
   let time=reduced.matches?4:0,last=0,w=0,h=0,headerBottom=0,obstacles=[];
