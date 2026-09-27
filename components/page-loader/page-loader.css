@@ -34,6 +34,7 @@
 /* Скелетоны оболочки видны только на начальной загрузке страницы:
    контент скрыт, на его месте — та же серая заливка. */
 .is-page-loading .site-header__avatar img,
+.is-page-loading .site-header__avatar::after,
 .is-page-loading .site-header__cta>* ,
 .is-page-loading .site-footer__link>*{opacity:0!important}
 .is-page-loading .site-header__logo-mark{background-color:var(--skeleton-color)}
