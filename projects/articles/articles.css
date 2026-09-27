@@ -31,7 +31,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--color-action-hover);
+  background: var(--btn-accent);
   transform: scaleY(0);
   transform-origin: top;
   transition: transform .25s ease;
@@ -47,14 +47,14 @@
 .activity-article .activity-article__description { margin: 0; }
 
 .activity-article:focus-visible {
-  color: var(--color-action-hover-text);
-  outline: 2px solid var(--color-action-hover);
+  color: var(--btn-accent-text);
+  outline: 2px solid var(--btn-accent);
   outline-offset: 4px;
 }
 .activity-article:focus-visible::before { transform: scaleY(1); }
 
 @media (hover: hover) and (pointer: fine) {
-  .activity-article:hover { color: var(--color-action-hover-text); }
+  .activity-article:hover { color: var(--btn-accent-text); }
   .activity-article:hover::before { transform: scaleY(1); }
 }
 

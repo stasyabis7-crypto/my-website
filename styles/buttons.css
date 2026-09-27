@@ -199,6 +199,8 @@
    white glyph.
    Usage: .btn.btn--fill-glass.btn--icon-only[.btn--icon-diagonal-motion]. */
 .btn--fill-glass {
+  /* Square tile with softly rounded corners, not a pill. */
+  border-radius: var(--radius-inner);
   background: rgb(128 128 128 / .42);
   color: #fff;
   -webkit-backdrop-filter: blur(10px) saturate(160%);
