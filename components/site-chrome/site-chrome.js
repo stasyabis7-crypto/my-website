@@ -417,7 +417,7 @@
     menuBtn.setAttribute('aria-haspopup', 'dialog');
     menuBtn.setAttribute('aria-controls', 'site-menu-dialog');
     menuBtn.setAttribute('aria-expanded', 'false');
-    menuBtn.innerHTML = '<span class="icon icon--menu" aria-hidden="true"></span>';
+    menuBtn.innerHTML = '<span class="icon icon--hamburger" aria-hidden="true"></span>';
     wrap.insertBefore(menuBtn, toggle.nextSibling);
 
     var resume = document.querySelector('.site-header__cta');

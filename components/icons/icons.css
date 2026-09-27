@@ -33,6 +33,12 @@
   mask-image: url("./interface/menu.svg");
 }
 
+/* Site menu (hamburger) — separate from .icon--menu, the case contents icon. */
+.icon--hamburger {
+  -webkit-mask-image: url("./interface/menu-01.svg");
+  mask-image: url("./interface/menu-01.svg");
+}
+
 .icon--close {
   -webkit-mask-image: url("./interface/close.svg?v=2");
   mask-image: url("./interface/close.svg?v=2");
