@@ -13,15 +13,15 @@ const heroClasses=new Set();
 const revealSceneStates=[];
 let frameId = 0;
 let visibilityObserver;
-let drawn=[];
+let drawn=[],reflections=[];
 let transform={x:0,y:0,angle:0};
 let textureId=0;
 const box = { width: 1400, height: 850, top: 0, left: 0, right: 1400, bottom: 850 };
 const context = new Proxy({}, {
   get(_, key) {
-    if (key === 'clearRect') return () => { drawn=[]; };
+    if (key === 'clearRect') return () => { drawn=[];reflections=[]; };
     if (key === 'drawImage') return (image,x,y,width) => { if(typeof image.id==='number')drawn.push({...transform,id:image.id,r:width/2}); };
-    if (key === 'rotate') return angle => { transform.angle=angle; };
+    if (key === 'rotate') return angle => { reflections.push({...transform,angle});transform.angle=angle; };
     if (key === 'translate') return (x,y) => { transform={x,y,angle:0}; };
     if (key === 'getImageData' || key === 'createImageData') return () => ({ data: new Uint8ClampedArray(420 * 420 * 4) });
     if (key === 'createRadialGradient') return () => ({ addColorStop() {} });
@@ -82,6 +82,11 @@ const sandbox = {
     for(let a=0;a<drawn.length;a++)for(let b=a+1;b<drawn.length;b++){
       const p=drawn[a],q=drawn[b];
       assert.ok(Math.hypot(p.x-q.x,p.y-q.y)>=p.r+q.r-.5,'Falling spheres must not overlap');
+    }
+    assert.equal(reflections.length,drawn.length,'Each sphere has one independently oriented rim reflection');
+    for(const reflection of reflections){
+      assert.ok(Math.abs(reflection.angle-Math.atan2(300-reflection.y,700-reflection.x))<1e-9,
+        'Rim highlights face the centre of the text block as spheres move');
     }
     for(const p of drawn){
       if(!first.has(p.id)){

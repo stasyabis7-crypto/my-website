@@ -92,27 +92,25 @@
     'components/page-hero/pictures/sphere-39.webp',
     'components/page-hero/pictures/sphere-40.webp'
   ];
-  // Shared, static lighting: reflect the view vector about each sphere normal.
-  // A softbox in reflection space naturally bows and narrows over the surface.
-  const textureSize=420, lighting=new Float32Array(textureSize*textureSize);
-  const softbox=(rx,ry,rz,lx,ly,lz,width,height)=>{
-    const horizontal=Math.hypot(lx,lz), ux=lz/horizontal, uz=-lx/horizontal;
-    const facing=rx*lx+ry*ly+rz*lz;
-    if(facing<=0)return 0;
-    const u=(rx*ux+rz*uz)/facing;
-    const v=(rx*ly*uz+ry*horizontal-rz*ly*ux)/facing;
-    return Math.exp(-Math.pow(u/width,4)-Math.pow(v/height,4));
-  };
+  // A tapered crescent hugs the circular rim. Cache it once, then orient it
+  // toward the copy independently of the upright picture inside each sphere.
+  const textureSize=420, reflectionCanvas=document.createElement('canvas');
+  reflectionCanvas.width=reflectionCanvas.height=textureSize;
+  const reflectionContext=reflectionCanvas.getContext('2d');
+  const reflectionPixels=reflectionContext.createImageData(textureSize,textureSize);
   for(let y=0;y<textureSize;y++)for(let x=0;x<textureSize;x++){
     const nx=(x+.5-textureSize/2)/(textureSize/2), ny=(y+.5-textureSize/2)/(textureSize/2);
-    const radius2=nx*nx+ny*ny;
-    if(radius2>1)continue;
-    const nz=Math.sqrt(1-radius2), rx=2*nx*nz, ry=2*ny*nz, rz=2*nz*nz-1;
-    const key=softbox(rx,ry,rz,-.48,-.64,.6,.65,.24);
-    const fill=softbox(rx,ry,rz,.36,.8,.48,.5,.16);
-    const fresnel=Math.pow(1-nz,5);
-    lighting[y*textureSize+x]=Math.min(.85,key*.66+fill*.16+fresnel*.28);
+    const r=Math.hypot(nx,ny);
+    if(r>1)continue;
+    const angle=Math.atan2(ny,nx), taper=Math.exp(-Math.pow(angle/.72,4));
+    const core=Math.exp(-Math.pow((r-.958)/.019,2));
+    const glow=Math.exp(-Math.pow((r-.935)/.055,2));
+    const a=(y*textureSize+x)*4;
+    reflectionPixels.data[a]=reflectionPixels.data[a+1]=reflectionPixels.data[a+2]=255;
+    reflectionPixels.data[a+3]=255*taper*(core*.62+glow*.17)*Math.min(1,(1-r)*textureSize/2);
   }
+  reflectionContext.putImageData(reflectionPixels,0,0);
+  const reflectionPattern=ctx.createPattern(reflectionCanvas,'no-repeat');
   const textures = await Promise.all(paths.map(path => new Promise(resolve => {
     const image = new Image();
     image.onload = () => {
@@ -142,7 +140,7 @@
       const sy=Math.max(0,Math.min(size-1,Math.round((ny*lens+ripple+1)*.5*(size-1))));
       const a=(y*size+x)*4,b=(sy*size+sx)*4;
       const shade=.94-.30*Math.pow(r,5), grain=Math.sin(x*12.9898+y*78.233)*1.2;
-      const reflection=lighting[y*size+x];
+      const reflection=.12*Math.pow(1-Math.sqrt(1-r*r),5);
       for(let c=0;c<3;c++) {
         const base=pixels[b+c]*shade+grain;
         result.data[a+c]=base+(255-base)*reflection;
@@ -153,11 +151,14 @@
     return out;
   }
   let time=reduced.matches?4:0,last=0,w=0,h=0,headerBottom=0,obstacles=[];
-  let anchors=[],bodies=[],frame=0,visible=true;
+  let anchors=[],bodies=[],frame=0,visible=true,lightX=0,lightY=0;
   function resize(){
     const bounds=stage.getBoundingClientRect();
     if (w===bounds.width && h===bounds.height) return;
     w=bounds.width;h=bounds.height;
+    const copyBounds=content.getBoundingClientRect();
+    lightX=(copyBounds.left+copyBounds.right)/2-bounds.left;
+    lightY=(copyBounds.top+copyBounds.bottom)/2-bounds.top;
     const played=time>2;
     obstacles=[];
     for(const el of content.querySelectorAll('h1,p,a')){
@@ -281,7 +282,13 @@
     for(const p of positions){
       ctx.save();ctx.translate(p.x,p.y);
       ctx.shadowColor='rgba(20,24,40,.3)';ctx.shadowBlur=12;ctx.shadowOffsetY=7;
-      ctx.drawImage(textures[p.i],-p.r,-p.r,p.r*2,p.r*2);ctx.restore();
+      ctx.drawImage(textures[p.i],-p.r,-p.r,p.r*2,p.r*2);
+      ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+      ctx.rotate(Math.atan2(lightY-p.y,lightX-p.x));
+      ctx.scale(p.r*2/textureSize,p.r*2/textureSize);
+      ctx.translate(-textureSize/2,-textureSize/2);
+      ctx.fillStyle=reflectionPattern;ctx.fillRect(0,0,textureSize,textureSize);
+      ctx.restore();
     }
     canvas.dataset.sphereCount=String(anchors.length);
     frame=0;
