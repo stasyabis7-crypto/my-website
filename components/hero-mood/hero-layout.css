@@ -102,7 +102,8 @@
   z-index: -1;
   inset: -36px -28px;
   pointer-events: none;
-  background: color-mix(in srgb, var(--color-bg) 50%, transparent);
+  /* No tint: only the blur, so the sky gradient shows through without a glow. */
+  background: transparent;
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   -webkit-mask-image: radial-gradient(ellipse, #000 45%, transparent 72%);
