@@ -54,9 +54,11 @@
     .btn--fill-nav    пункт меню сайта (Статьи/Посты) в хедере:
                       без заливки, только текст.
 
-  Ховер у всех типов один: кнопка чуть снижает opacity
-  (--btn-hover-opacity), без смены заливки/цвета, подъёма и прочих
-  анимаций. Исключение — .btn--fill-nav: под подписью выезжает линия.
+  Ховер (только десктоп): у залитых типов (pink/white/ink/chip/glass/
+  glass-ui) слева направо выезжает зелёно-жёлтый градиент
+  (--btn-hover-gradient), текст становится тёмным. Остальные типы чуть
+  снижают opacity (--btn-hover-opacity). .btn--fill-nav: под подписью
+  выезжает линия.
   Открытый раздел (.btn[aria-current="page"]) — пульсирующая зелёная
   точка перед подписью, на любом типе заливки.
 
@@ -172,6 +174,43 @@
   [data-action-hover]:hover .btn {
     opacity: var(--btn-hover-opacity);
   }
+}
+
+/* Desktop hover of filled buttons: a green→yellow gradient sweeps in from the
+   left under the label (instead of the opacity drop). Resting styles stay as
+   they are; touch devices never see it. ::after, since ::before is taken by
+   the current-page dot and hit areas. */
+:root {
+  --btn-hover-gradient: linear-gradient(to right, #0fd850 0%, #f9f047 100%);
+  --btn-hover-gradient-text: #111111;
+}
+@media (hover: hover) and (pointer: fine) {
+  :is(.btn--fill-pink, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui)::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    border-radius: inherit;
+    background-image: var(--btn-hover-gradient);
+    transition: width .5s ease;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .btn:is(.btn--fill-pink, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui) {
+    transition: transform 0.12s ease, color .3s ease;
+  }
+  .btn:is(.btn--fill-pink, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui):hover,
+  [data-action-hover]:hover .btn:is(.btn--fill-pink, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui) {
+    opacity: 1;
+    color: var(--btn-hover-gradient-text);
+  }
+  :is(.btn--fill-pink, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui):hover::after,
+  [data-action-hover]:hover :is(.btn--fill-pink, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui)::after {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn::after { transition: none; }
 }
 
 .btn:focus-visible {
