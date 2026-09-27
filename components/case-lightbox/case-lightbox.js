@@ -114,8 +114,17 @@
       th.tabIndex = 0;
       th.setAttribute('role', 'button');
       th.setAttribute('aria-label', 'Фото ' + (i + 1) + ' из ' + items.length);
-      var ti = document.createElement('img');
-      ti.alt = '';
+      // Видео без постера: миниатюра — само видео, остановленное на
+      // первом кадре (#t=0.1 — иначе Safari не рисует кадр до play).
+      var ti = document.createElement(isVideo(src) ? 'video' : 'img');
+      if (isVideo(src)) {
+        ti.muted = true;
+        ti.playsInline = true;
+        ti.preload = 'metadata';
+        ti.setAttribute('aria-hidden', 'true');
+      } else {
+        ti.alt = '';
+      }
       ti.draggable = false;
       th.appendChild(ti);
       thumbsEl.appendChild(th);
@@ -139,7 +148,8 @@
         if (isVideo(src)) {
           slides[i].poster = src.poster;
           slides[i].preload = 'metadata';
-          thumbs[i].firstChild.src = src.poster;
+          if (src.poster) thumbs[i].firstChild.poster = src.poster;
+          thumbs[i].firstChild.src = url + (url.indexOf('#') < 0 ? '#t=0.1' : '');
         } else {
           thumbs[i].firstChild.src = url;
         }
