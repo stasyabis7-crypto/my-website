@@ -51,9 +51,14 @@
     .btn--fill-bare   без заливки, цвет текста — стрелки прокрутки
                       строки тегов (components/chip-scroller).
 
+    .btn--fill-nav    пункт меню сайта (Статьи/Посты) в хедере:
+                      стеклянная таблетка, как «Связаться».
+
   Ховер у всех типов один: кнопка чуть снижает opacity
   (--btn-hover-opacity), без смены заливки/цвета, подъёма и прочих
-  анимаций.
+  анимаций. Исключение — .btn--fill-nav: под подписью выезжает линия.
+  Открытый раздел (.btn[aria-current="page"]) — пульсирующая зелёная
+  точка перед подписью, на любом типе заливки.
 
   ─────────────────────────────────────────────────────────────────────
   ТИПЫ РАСПОЛОЖЕНИЯ (--icon, выбрать один; можно не выбирать — тогда
@@ -359,6 +364,63 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   .work-toc-sheet .btn--fill-pink { color: var(--btn-accent-text); }
   .work-toc__toggle:focus-visible,
   .work-toc-sheet .btn:focus-visible { outline: 2px solid var(--mood-ink); outline-offset: 3px; }
+}
+
+/* Site menu item (Статьи/Посты): header glass pill on desktop, white row in
+   the mobile menu sheet (.btn--fill-white next to it). The one type with its
+   own hover by request: an underline slides in under the label instead of the
+   opacity drop. The open section ([aria-current="page"], on any .btn) gets a
+   small softly pulsing green dot before the label.
+   Usage: <a class="btn btn--fill-nav" href="…" aria-current="page">Статьи</a> */
+:root { --btn-nav-live: #22c55e; }
+.btn--fill-nav {
+  background: var(--btn-glass-ui-bg);
+  color: var(--color-ink);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  backdrop-filter: blur(10px) saturate(160%);
+}
+.btn--fill-nav > span { position: relative; }
+.btn--fill-nav > span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .3s cubic-bezier(.22, 1, .36, 1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn.btn--fill-nav:hover { opacity: 1; }
+  .btn--fill-nav:hover > span::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+.btn--fill-nav:focus-visible > span::after { transform: scaleX(1); }
+.btn[aria-current="page"]::before {
+  content: "";
+  display: block;
+  position: static;
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--btn-nav-live);
+  animation: btn-nav-live 2.4s ease-out infinite;
+}
+@keyframes btn-nav-live {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--btn-nav-live) 55%, transparent); }
+  70%, 100% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--btn-nav-live) 0%, transparent); }
+}
+@media (hover: none), (pointer: coarse) {
+  .btn.btn--fill-nav { background: var(--btn-glass-ui-bg); color: var(--color-ink); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn[aria-current="page"]::before { animation: none; }
+  .btn--fill-nav > span::after { transition: none; }
 }
 
 /* White cover action, without shadow.

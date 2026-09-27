@@ -1,0 +1,10 @@
+/* Telegram posts: three per row on desktop, two on tablet, one on phone. */
+.posts-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+@media (max-width: 999px) {
+  .posts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 700px) {
+  .posts-grid { grid-template-columns: minmax(0, 1fr); }
+}

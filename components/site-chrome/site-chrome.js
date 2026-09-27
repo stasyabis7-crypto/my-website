@@ -82,6 +82,96 @@
     t = setTimeout(finish, 750);
   }
 
+  /* Полноэкранная шторка моб/планшета (Связаться, Меню): раскрывается из
+     кнопки-триггера, блокирует фон и держит фокус внутри. build(add, close)
+     наполняет список пунктов. */
+  function createSheet(opts) {
+    var sheet;
+    var inactive = [];
+    function setBackgroundInert() {
+      inactive = Array.from(document.body.children).filter(function (el) { return el !== sheet && !el.inert; });
+      inactive.forEach(function (el) { el.inert = true; });
+    }
+    function restoreBackground() {
+      inactive.forEach(function (el) { el.inert = false; });
+      inactive = [];
+    }
+    function setOrigin() {
+      var panel = sheet.querySelector('.contact-dialog__panel');
+      var r = panel.getBoundingClientRect();
+      var t = opts.trigger.getBoundingClientRect();
+      var clamp = function (v, max) { return Math.max(0, Math.min(max, v)); };
+      var top = clamp(t.top - r.top, r.height);
+      var left = clamp(t.left - r.left, r.width);
+      var right = clamp(r.right - t.right, r.width - left);
+      var bottom = clamp(r.bottom - t.bottom, r.height - top);
+      panel.style.setProperty('--contact-origin', 'inset(' + top + 'px ' + right + 'px ' + bottom + 'px ' + left + 'px round 32px)');
+    }
+    window.addEventListener('resize', function () { if (sheet && !sheet.hidden) setOrigin(); });
+    function close() {
+      closeModal(sheet, function () {
+        restoreBackground();
+        unlockScroll();
+        opts.trigger.setAttribute('aria-expanded', 'false');
+        opts.trigger.focus();
+      });
+    }
+    function ensure() {
+      if (sheet) return;
+      sheet = document.createElement('div');
+      sheet.className = 'contact-dialog contact-sheet';
+      sheet.id = opts.id;
+      sheet.hidden = true;
+      sheet.setAttribute('role', 'dialog');
+      sheet.setAttribute('aria-modal', 'true');
+      sheet.setAttribute('aria-label', opts.title);
+      sheet.innerHTML = '<div class="contact-dialog__backdrop" data-close></div>' +
+        '<div class="contact-dialog__panel"><div class="contact-dialog__body"><div class="contact-dialog__inner">' +
+        '<div class="contact-dialog__head"><h2 class="contact-dialog__title text-h2"></h2></div>' +
+        '<div data-rows></div></div></div><div class="contact-dialog__footer"><div class="contact-dialog__close-wrap">' +
+        '<button type="button" class="contact-dialog__close btn btn--fill-ink btn--icon-right" data-close>' +
+        '<span>Закрыть</span><span class="icon icon--close" aria-hidden="true"></span></button></div></div></div>';
+      sheet.querySelector('.contact-dialog__title').textContent = opts.title;
+      sheet.querySelector('.contact-dialog__close').setAttribute('aria-label', opts.closeLabel);
+      var rows = sheet.querySelector('[data-rows]');
+      opts.build(function (el) {
+        var item = document.createElement('div');
+        item.className = 'contact-dialog__item';
+        item.style.setProperty('--item-index', rows.children.length);
+        item.appendChild(el);
+        rows.appendChild(item);
+      }, close);
+      sheet.querySelectorAll('[data-close]').forEach(function (x) { x.addEventListener('click', close); });
+      document.addEventListener('keydown', function (e) {
+        if (sheet.hidden) return;
+        if (e.key === 'Escape') { e.preventDefault(); close(); }
+        if (e.key === 'Tab') {
+          var controls = sheet.querySelectorAll('button, a[href]');
+          var first = controls[0], last = controls[controls.length - 1];
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      });
+      document.body.appendChild(sheet);
+    }
+    function open() {
+      ensure();
+      if (!sheet.hidden) return;
+      sheet.hidden = false;
+      sheet.querySelector('.contact-dialog__body').scrollTop = 0;
+      setOrigin();
+      setBackgroundInert();
+      lockScroll();
+      opts.trigger.setAttribute('aria-expanded', 'true');
+      sheet.querySelector('.contact-dialog__close').focus({ preventScroll: true });
+    }
+    return {
+      open: open,
+      close: function () { if (sheet && !sheet.hidden) close(); },
+      ensure: ensure
+    };
+  }
+
   /* ---------- chrome: pinned-on-scroll ---------- */
   function updatePinned() {
     root.classList.toggle('chrome--pinned', window.scrollY > 20);
@@ -180,87 +270,19 @@
       return el;
     }
 
-    var sheet;
-    var inactive = [];
-    function setBackgroundInert() {
-      inactive = Array.from(document.body.children).filter(function (el) { return el !== sheet && !el.inert; });
-      inactive.forEach(function (el) { el.inert = true; });
-    }
-    function restoreBackground() {
-      inactive.forEach(function (el) { el.inert = false; });
-      inactive = [];
-    }
-    function setOrigin() {
-      var panel = sheet.querySelector('.contact-dialog__panel');
-      var r = panel.getBoundingClientRect();
-      var t = toggle.getBoundingClientRect();
-      var clamp = function (v, max) { return Math.max(0, Math.min(max, v)); };
-      var top = clamp(t.top - r.top, r.height);
-      var left = clamp(t.left - r.left, r.width);
-      var right = clamp(r.right - t.right, r.width - left);
-      var bottom = clamp(r.bottom - t.bottom, r.height - top);
-      panel.style.setProperty('--contact-origin', 'inset(' + top + 'px ' + right + 'px ' + bottom + 'px ' + left + 'px round 32px)');
-    }
-    window.addEventListener('resize', function () { if (sheet && !sheet.hidden) setOrigin(); });
-    function closeSheet() {
-      closeModal(sheet, function () {
-        restoreBackground();
-        unlockScroll();
-        if (toggle) { toggle.setAttribute('aria-expanded', 'false'); toggle.focus(); }
-      });
-    }
-    function ensureSheet() {
-      if (!sheet) {
-        sheet = document.createElement('div');
-        sheet.className = 'contact-dialog contact-sheet';
-        sheet.id = 'site-socials-dialog';
-        sheet.hidden = true;
-        sheet.setAttribute('role', 'dialog');
-        sheet.setAttribute('aria-modal', 'true');
-        sheet.setAttribute('aria-label', 'Связаться');
-        var head = '<div class="contact-dialog__backdrop" data-close></div>' +
-          '<div class="contact-dialog__panel"><div class="contact-dialog__body"><div class="contact-dialog__inner">' +
-          '<div class="contact-dialog__head"><h2 class="contact-dialog__title text-h2">Связаться</h2></div>' +
-          '<div data-rows></div></div></div><div class="contact-dialog__footer"><div class="contact-dialog__close-wrap">' +
-          '<button type="button" class="contact-dialog__close btn btn--fill-ink btn--icon-right" data-close aria-label="Закрыть контакты">' +
-          '<span>Закрыть</span><span class="icon icon--close" aria-hidden="true"></span></button></div></div></div>';
-        sheet.innerHTML = head;
-        var rows = sheet.querySelector('[data-rows]');
-        ITEMS.forEach(function (it, index) {
-          var el = makeRow(it, closeSheet);
+    var contactSheet = toggle && createSheet({
+      id: 'site-socials-dialog',
+      title: 'Связаться',
+      closeLabel: 'Закрыть контакты',
+      trigger: toggle,
+      build: function (add, close) {
+        ITEMS.forEach(function (it) {
+          var el = makeRow(it, close);
           el.className = 'contact-row btn btn--fill-white btn--icon-left';
-          var item = document.createElement('div');
-          item.className = 'contact-dialog__item';
-          item.style.setProperty('--item-index', index);
-          item.appendChild(el);
-          rows.appendChild(item);
+          add(el);
         });
-        sheet.querySelectorAll('[data-close]').forEach(function (x) { x.addEventListener('click', closeSheet); });
-        document.addEventListener('keydown', function (e) {
-          if (!sheet || sheet.hidden) return;
-          if (e.key === 'Escape') { e.preventDefault(); closeSheet(); }
-          if (e.key === 'Tab') {
-            var controls = sheet.querySelectorAll('button, a[href]');
-            var first = controls[0], last = controls[controls.length - 1];
-            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-          }
-        });
-        document.body.appendChild(sheet);
       }
-    }
-    function openSheet() {
-      ensureSheet();
-      if (!sheet.hidden) return;
-      sheet.hidden = false;
-      sheet.querySelector('.contact-dialog__body').scrollTop = 0;
-      setOrigin();
-      setBackgroundInert();
-      lockScroll();
-      if (toggle) toggle.setAttribute('aria-expanded', 'true');
-      var c = sheet.querySelector('.contact-dialog__close');
-      if (c) c.focus({ preventScroll: true });
-    }
+    });
 
     var popover, popoverOpen = false;
     function ensurePopover() {
@@ -325,7 +347,7 @@
 
     function syncSocialsMode() {
       if (isDesktop()) {
-        if (sheet && !sheet.hidden) closeSheet();
+        if (contactSheet) contactSheet.close();
         if (toggle) {
           toggle.setAttribute('aria-haspopup', 'true');
           toggle.setAttribute('aria-controls', 'site-socials-panel');
@@ -340,7 +362,7 @@
         }
       }
     }
-    ensureSheet();
+    if (contactSheet) contactSheet.ensure();
     ensurePopover();
     syncSocialsMode();
     (socialsMq.addEventListener
@@ -348,8 +370,84 @@
       : socialsMq.addListener(syncSocialsMode));
     if (toggle) toggle.addEventListener('click', function (e) {
       e.stopPropagation();
-      if (isDesktop()) { popoverOpen ? closePopover() : openPopover(); } else { openSheet(); }
+      if (isDesktop()) { popoverOpen ? closePopover() : openPopover(); } else { contactSheet.open(); }
     });
+  })();
+
+  /* ---------- меню разделов ----------
+     Десктоп (≥1000px): пункты «Статьи»/«Посты» слева от «Связаться».
+     Моб/планшет: кнопка-гамбургер рядом со «Связаться» открывает такую же
+     полноэкранную шторку, в ней пункты меню и «Резюме PDF» (в самом хедере
+     резюме на этих ширинах скрыто, см. site-chrome.css). Открытый раздел
+     помечен aria-current — зелёная точка из styles/buttons.css. */
+  (function siteMenu() {
+    var wrap = document.getElementById('site-socials');
+    var toggle = document.getElementById('site-socials-toggle');
+    if (!wrap || !toggle) return;
+
+    var SECTIONS = [
+      { label: 'Статьи', href: '/projects/articles/' },
+      { label: 'Посты', href: '/projects/posts/' }
+    ];
+    var path = location.pathname.replace(/index\.html$/, '');
+    function link(it, className) {
+      var a = document.createElement('a');
+      a.className = className;
+      a.href = it.href;
+      if (path === it.href) a.setAttribute('aria-current', 'page');
+      var label = document.createElement('span');
+      label.textContent = it.label;
+      a.appendChild(label);
+      return a;
+    }
+
+    var nav = document.createElement('nav');
+    nav.className = 'site-nav';
+    nav.setAttribute('aria-label', 'Разделы сайта');
+    SECTIONS.forEach(function (it) {
+      nav.appendChild(link(it, 'btn btn--fill-nav btn--size-chrome'));
+    });
+    wrap.insertBefore(nav, toggle);
+
+    var menuBtn = document.createElement('button');
+    menuBtn.type = 'button';
+    menuBtn.className = 'site-menu-trigger btn btn--fill-glass-ui btn--icon-only btn--size-chrome';
+    menuBtn.id = 'site-menu-toggle';
+    menuBtn.setAttribute('aria-label', 'Меню');
+    menuBtn.setAttribute('aria-haspopup', 'dialog');
+    menuBtn.setAttribute('aria-controls', 'site-menu-dialog');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.innerHTML = '<span class="icon icon--menu" aria-hidden="true"></span>';
+    wrap.insertBefore(menuBtn, toggle.nextSibling);
+
+    var resume = document.querySelector('.site-header__cta');
+    var menuSheet = createSheet({
+      id: 'site-menu-dialog',
+      title: 'Меню',
+      closeLabel: 'Закрыть меню',
+      trigger: menuBtn,
+      build: function (add) {
+        SECTIONS.forEach(function (it) {
+          add(link(it, 'contact-row btn btn--fill-white'));
+        });
+        if (resume) {
+          var cv = document.createElement('a');
+          cv.className = 'contact-row btn btn--fill-pink btn--icon-left';
+          cv.href = resume.href;
+          cv.target = '_blank';
+          cv.rel = 'noopener noreferrer';
+          cv.innerHTML = '<span class="icon icon--cv" aria-hidden="true"></span><span>Резюме PDF</span>';
+          add(cv);
+        }
+      }
+    });
+    menuBtn.addEventListener('click', menuSheet.open);
+
+    var desktopMq = window.matchMedia('(width >= 1000px)');
+    function onModeChange() { if (desktopMq.matches) menuSheet.close(); }
+    (desktopMq.addEventListener
+      ? desktopMq.addEventListener('change', onModeChange)
+      : desktopMq.addListener(onModeChange));
   })();
 
   function measureSocialsOffset() {

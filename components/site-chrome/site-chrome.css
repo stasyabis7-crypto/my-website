@@ -27,6 +27,22 @@ html.contact-scroll-lock, html.contact-scroll-lock body { overflow: hidden; over
   pointer-events: auto;
 }
 
+/* Меню разделов (site-chrome.js): на десктопе пункты слева от «Связаться»;
+   ниже 1000px вместо них гамбургер, а «Резюме PDF» уходит в его шторку. */
+.site-socials { gap: 6px; }
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto;
+}
+.site-socials .site-menu-trigger { display: none; pointer-events: auto; }
+@media (width < 1000px) {
+  .site-nav,
+  .site-header .site-header__cta { display: none; }
+  .site-socials .site-menu-trigger { display: inline-flex; }
+}
+
 /* Desktop-only anchored dropdown for "Связаться" — a calm, non-modal
    popover (no backdrop/scroll-lock/focus-trap), same dark-glass recipe
    as .work-toc__panel. The full-screen .contact-dialog sheet stays the

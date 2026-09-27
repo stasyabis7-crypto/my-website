@@ -87,8 +87,11 @@
     // посчитать надёжно (зависит от font-size, тот — от брейкпоинта и
     // fluid-скейла scale.css), поэтому меряем по факту отрисованной
     // кнопки, а не считаем формулой.
-    if (headerCta) {
-      root.style.setProperty('--chrome-item-h', headerCta.offsetHeight + 'px');
+    // На мобилке «Резюме PDF» спрятано в меню — тогда берём соседнюю
+    // кнопку «Связаться» той же высоты.
+    var itemRef = headerCta && headerCta.offsetHeight ? headerCta : document.getElementById('site-socials-toggle');
+    if (itemRef && itemRef.offsetHeight) {
+      root.style.setProperty('--chrome-item-h', itemRef.offsetHeight + 'px');
     }
   }
 

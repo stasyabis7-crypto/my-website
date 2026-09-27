@@ -33,5 +33,7 @@ AddType video/mp4 .mp4
   RewriteRule ^projects/(?:avito-charity|ozon-crm)/?(?:index\.html)?$ /#works-gallery [R=302,NE,L]
   RewriteRule ^projects/avito-charity/(?:about-company|charity-profile|donation-subscription|gamification|rebranding)(?:/.*)?$ /#works-gallery [R=302,NE,L]
   RewriteRule ^projects/ozon-crm/(?:campaign-creation|campaigns|customer-portrait|customers|seller-home)(?:/.*)?$ /#works-gallery [R=302,NE,L]
-  RewriteRule ^projects/(?:ozon-prices|swtec-angel|swtec-medical|concepts|activities)(?:/.*)?$ /#works-gallery [R=302,NE,L]
+  RewriteRule ^projects/(?:ozon-prices|swtec-angel|swtec-medical|concepts)(?:/.*)?$ /#works-gallery [R=302,NE,L]
+  # Бывшая страница «Активности» разделена на «Статьи» и «Посты».
+  RewriteRule ^projects/activities/?(?:index\.html)?$ /projects/articles/ [R=301,L]
 </IfModule>
