@@ -80,7 +80,15 @@
   display: flex;
   align-items: flex-start;
   padding: clamp(132px, 19vh, 210px) clamp(24px, 6vw, 110px) 100px;
-  background: var(--color-bg);
+  /* Soft sky: blue at the top melting into the page colour at the bottom,
+     with eased stops so there is no visible band. */
+  background: linear-gradient(to bottom,
+    #72acff 0%,
+    #86bafe 18%,
+    #a9d3fd 38%,
+    #cdeafd 58%,
+    #e9f8fe 76%,
+    var(--color-bg) 94%);
   color: var(--color-text);
   border-radius: 0;
   min-height: 0;
