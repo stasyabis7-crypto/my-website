@@ -300,13 +300,12 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
 /* Shared contact actions use the same DS height and fills. */
 .contact-row.btn { justify-content: center; gap: 16px; }
 /* Header sheets (Связаться, Меню): rows align left so icons form one column
-   and every label starts on the same line. A row without an icon keeps an
-   empty icon slot; the current-section dot sits centred in that slot. */
+   and every label starts on the same line; the current-section dot sits at
+   the right edge of the row. */
 .site-sheet .contact-row.btn { justify-content: flex-start; padding-inline: 24px; }
-.site-sheet .contact-row.btn:not(:has(.icon)) { padding-left: calc(24px + var(--icon-size) + 16px); }
 .site-sheet .contact-row.btn[aria-current="page"]::before {
   position: absolute;
-  left: calc(24px + (var(--icon-size) - 6px) / 2);
+  right: 24px;
   top: calc(50% - 3px);
 }
 

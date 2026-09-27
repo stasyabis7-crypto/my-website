@@ -33,6 +33,16 @@
   mask-image: url("./interface/menu.svg");
 }
 
+/* Site menu sections (mobile menu sheet). */
+.icon--articles {
+  -webkit-mask-image: url("./interface/edit-01.svg");
+  mask-image: url("./interface/edit-01.svg");
+}
+.icon--posts {
+  -webkit-mask-image: url("./interface/folder-open-02.svg");
+  mask-image: url("./interface/folder-open-02.svg");
+}
+
 /* Site menu (hamburger) — separate from .icon--menu, the case contents icon. */
 .icon--hamburger {
   -webkit-mask-image: url("./interface/menu-01.svg");

@@ -386,8 +386,8 @@
     if (!wrap || !toggle) return;
 
     var SECTIONS = [
-      { label: 'Статьи', href: '/projects/articles/' },
-      { label: 'Посты', href: '/projects/posts/' }
+      { label: 'Статьи', href: '/projects/articles/', icon: 'articles' },
+      { label: 'Посты', href: '/projects/posts/', icon: 'posts' }
     ];
     var path = location.pathname.replace(/index\.html$/, '');
     function link(it, className) {
@@ -428,7 +428,9 @@
       trigger: menuBtn,
       build: function (add) {
         SECTIONS.forEach(function (it) {
-          add(link(it, 'contact-row btn btn--fill-white'));
+          var row = link(it, 'contact-row btn btn--fill-white btn--icon-left');
+          row.insertAdjacentHTML('afterbegin', '<span class="icon icon--' + it.icon + '" aria-hidden="true"></span>');
+          add(row);
         });
         if (resume) {
           var cv = document.createElement('a');
