@@ -160,9 +160,10 @@
     carousel.classList.add('is-ready');
     var deck = carousel.querySelector('.case-team__cards');
     new ResizeObserver(function () {
-      next.style.setProperty('--control-surface-height', deck.offsetHeight + 'px');
+      next.style.setProperty('--deck-width', deck.offsetWidth + 'px');
+      next.style.setProperty('--deck-height', deck.offsetHeight + 'px');
     }).observe(deck);
-    next.hidden = false;
+    next.parentElement.hidden = false;
   });
 })();
 
