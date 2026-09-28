@@ -728,13 +728,21 @@
   content: "";
   position: absolute;
   z-index: -1;
-  top: 0;
-  bottom: 0;
+  /* Плавный вход и выход: цвет сайта → серый → цвет сайта. Переход
+     наполовину в зазоре между блоками, наполовину в собственном паддинге. */
+  --surface-fade: var(--space-section);
+  top: calc(var(--surface-fade) / -2);
+  bottom: calc(var(--surface-fade) / -2);
   left: 50%;
   /* Серый фон на всю ширину экрана, без боковых полей и скруглений. */
   width: 100vw;
   transform: translateX(-50%);
-  background: var(--case-surface);
+  background: linear-gradient(to bottom,
+    transparent,
+    var(--case-surface) var(--surface-fade),
+    var(--case-surface) calc(100% - var(--surface-fade)),
+    transparent);
+  pointer-events: none;
 }
 .case-team__subtitle.text-body-lg { margin-top: var(--space-title-subtitle); color: inherit; }
 /* Номер стоит на одной линии со стрелкой «дальше» в левом верхнем углу. */
