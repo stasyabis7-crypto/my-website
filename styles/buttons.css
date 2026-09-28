@@ -35,6 +35,10 @@
                       эталон: .mood-primary «Смотреть работы»
                       (components/site-chrome/site-chrome.css)
 
+    .btn--fill-tile   та же чёрная праймари-заливка, но квадратная
+                      плашка (форма .btn--fill-glass с постов), для
+                      иконок-действий на карточках
+                      эталон: стрелка колоды команды .case-team__hit
     .btn--fill-white  белая с тёмным текстом
                       эталон: .site-socials__link (иконки соцсетей в хедере)
                       (components/site-chrome/site-chrome.css)
@@ -54,7 +58,7 @@
     .btn--fill-nav    пункт меню сайта (Статьи/Посты) в хедере:
                       без заливки, только текст.
 
-  Ховер (только десктоп): у залитых типов (pink/white/ink/chip/glass/
+  Ховер (только десктоп): у залитых типов (pink/tile/white/ink/chip/glass/
   glass-ui) слева направо выезжает зелёно-жёлтый градиент
   (--btn-hover-gradient), текст становится тёмным. Остальные типы чуть
   снижают opacity (--btn-hover-opacity). .btn--fill-nav: под подписью
@@ -186,15 +190,15 @@
   --btn-hover-gradient-text: #111111;
 }
 @media (hover: hover) and (pointer: fine) {
-  .btn:is(.btn--fill-pink, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui) {
+  .btn:is(.btn--fill-pink, .btn--fill-tile, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui) {
     background-image: var(--btn-hover-gradient);
     background-repeat: no-repeat;
     background-position: left center;
     background-size: 0% 100%;
     transition: transform 0.12s ease, color .3s ease, background-size .5s ease;
   }
-  .btn:is(.btn--fill-pink, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui):hover,
-  [data-action-hover]:hover .btn:is(.btn--fill-pink, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui) {
+  .btn:is(.btn--fill-pink, .btn--fill-tile, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui):hover,
+  [data-action-hover]:hover .btn:is(.btn--fill-pink, .btn--fill-tile, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui) {
     opacity: 1;
     color: var(--btn-hover-gradient-text);
     background-size: 100% 100%;
@@ -232,6 +236,14 @@
   color: #fff;
   -webkit-backdrop-filter: blur(10px) saturate(160%);
   backdrop-filter: blur(10px) saturate(160%);
+}
+
+/* Primary tile: the black primary fill in the square shape of the cover
+   glass tile. Usage: .btn.btn--fill-tile.btn--icon-only. */
+.btn--fill-tile {
+  border-radius: var(--radius-inner);
+  background: var(--btn-accent);
+  color: var(--btn-accent-text);
 }
 
 /* Translucent glass for header/chrome controls over the light page with ink
@@ -480,6 +492,7 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   .btn:active, .btn.is-touch-pressed { transform: none; scale: .97; }
   .btn { transition: scale .16s ease-out; -webkit-tap-highlight-color: transparent; }
   .btn.btn--fill-pink { background: var(--btn-accent); color: var(--btn-accent-text); }
+  .btn.btn--fill-tile { background: var(--btn-accent); color: var(--btn-accent-text); }
   .btn.btn--fill-white { background: #fff; color: #101014; }
   .btn.btn--fill-ink { background: var(--btn-accent); color: var(--btn-accent-text); }
   .btn.btn--fill-toc { background: transparent; color: var(--mood-ink); }
