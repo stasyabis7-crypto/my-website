@@ -32,7 +32,6 @@ const assets = [
   'components/image-reveal/image-reveal.css',
   'components/image-reveal/image-reveal.js',
   'pages/home/data/projects.js',
-  'components/breadcrumbs/breadcrumbs.css',
   'components/chip-scroller/chip-scroller.css',
   'components/chip-scroller/chip-scroller.js',
   'components/project-feed/project-feed.css',

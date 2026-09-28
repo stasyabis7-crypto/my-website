@@ -7,5 +7,5 @@
 - `assets/avito/`, `assets/ozon/` — изображения этих подборок и размеры для `srcset`.
 
 Механика и оформление находятся в общих компонентах `components/hero-mood/`,
-`components/project-feed/`, `components/chip-scroller/`, `components/breadcrumbs/`. Иллюстрации отдельных
+`components/project-feed/`, `components/chip-scroller/`. Иллюстрации отдельных
 страниц и обложки разделов лежат рядом с ними в `projects/<раздел>/assets/`.
