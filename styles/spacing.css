@@ -5,23 +5,23 @@
    --space-heading-media   подпись внутри блока → её картинка
    --case-block-gap сохранён как совместимый псевдоним для страниц проектов. */
 :root {
-  --space-section: 72px;
+  --space-section: 88px;
   --space-title-subtitle: 12px;
-  --space-intro-media: 32px;
-  --space-heading-media: 20px;
+  --space-intro-media: 24px;
+  --space-heading-media: 16px;
   --case-block-gap: var(--space-section);
 }
 @media (min-width: 900px) {
   :root {
-    --space-section: 96px;
+    --space-section: 120px;
     --space-title-subtitle: 16px;
-    --space-intro-media: 48px;
-    --space-heading-media: 24px;
+    --space-intro-media: 36px;
+    --space-heading-media: 20px;
   }
 }
 @media (min-width: 1101px) {
   :root {
-    --space-section: 128px;
-    --space-intro-media: 56px;
+    --space-section: 160px;
+    --space-intro-media: 44px;
   }
 }
