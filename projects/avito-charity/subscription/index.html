@@ -91,26 +91,18 @@ body {
   gap: var(--case-block-gap);
 }
 
-/* Точки входа — три экрана рядом на одном светлом фрейме, по центру. */
+/* Точки входа — три экрана на светлом фоне одной картинкой (так же
+   открывается и в полноэкранном просмотре). */
 .case-entry-points__frame {
-  container-type: inline-size;
   margin-top: var(--space-intro-media);
   overflow: hidden;
   border-radius: var(--case-content-radius, var(--radius-surface));
   background: #F4F3F5;
 }
-.case-entry-points__row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4cqi;
-  padding: 6cqi 4cqi;
-}
-.case-entry-points__row img {
+.case-entry-points__frame img {
   display: block;
-  width: 24cqi;
+  width: 100%;
   height: auto;
-  border-radius: 3cqi;
 }
 
 /* Keep Team and Scenario with their preceding blocks in normal flow on phones and tablets. */
@@ -447,11 +439,7 @@ body {
         <p class="case-role__subtitle case-subtitle text-body-lg">Я предусмотрела три точки входа в подписку: после подачи объявления, в выдаче объявлений, на чарити лендингах</p>
 
         <div class="case-entry-points__frame">
-          <div class="case-entry-points__row">
-            <img src="media/entry-points/1.webp?v=2" alt="Предложение подписки после подачи объявления" width="1500" height="3248" loading="lazy" />
-            <img src="media/entry-points/2.webp?v=2" alt="Компактный баннер подписки в выдаче объявлений" width="1500" height="3248" loading="lazy" />
-            <img src="media/entry-points/3.webp?v=2" alt="Подробные условия подписки на charity-лендинге" width="1500" height="3248" loading="lazy" />
-          </div>
+          <img src="media/entry-points/frame.webp" alt="Три точки входа в подписку: после подачи объявления, в выдаче объявлений, на чарити лендингах" width="2400" height="1536" loading="lazy" />
         </div>
 
         <p class="case-role__description case-subtitle text-body-lg">После подачи предлагаем помощь, когда основная задача уже завершена; в выдаче знакомим с подпиской через компактный баннер, сохраняя фокус на поиске; на charity-лендинге раскрываем условия подробнее для тех, кто уже интересуется благотворительностью.</p>
