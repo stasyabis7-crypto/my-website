@@ -123,6 +123,14 @@ body {
   border: 0;
 }
 
+/* Видео в карточке «До/После» — как картинка: на всю карточку. */
+.case-card__media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* Метрики в обложке — графики вместо картинок (.case-metric__art.sub-chart).
    Столбики вырастают, линия прорисовывается, когда карточка попадает во
    вьюпорт (.is-drawn навешивает скрипт внизу страницы); без JS или при
@@ -684,7 +692,7 @@ body {
           </div>
           <div class="case-comparison__card case-comparison__card--portrait case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
             <div class="case-card__media">
-              <img src="media/success/after.webp" alt="Новый экран благодарности: подтверждение, вклад пользователя и благодарность" width="1600" height="2000" loading="lazy" />
+              <video src="media/success/after-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Новый экран благодарности: подтверждение, вклад пользователя и благодарность"></video>
             </div>
             <p class="case-card__subtitle text-body">После</p>
           </div>
