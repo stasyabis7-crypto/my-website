@@ -107,7 +107,7 @@
 }
 
 .case-card__title.text-h2 + .case-card__subtitle.text-body {
-  margin-top: 4px;
+  margin-top: var(--space-title-subtitle);
 }
 
 /* ─── Варианты фона ─────────────────────────────────────────────────── */

@@ -553,7 +553,7 @@
    колонках разъедутся по высоте). На десктопе полный текст — в подсказке
    .case-tooltip при наведении (case-blocks.js берёт его из title). */
 .case-role__col-subtitle {
-  margin-top: 4px;
+  margin-top: var(--space-title-subtitle);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -786,7 +786,7 @@
   margin: 0 auto 16px;
 }
 .case-team__card-title { overflow-wrap: break-word; }
-.case-team__card-subtitle { margin: 8px auto 0; }
+.case-team__card-subtitle { margin: var(--space-title-subtitle) auto 0; }
 .case-team__carousel.is-ready .case-team__cards {
   position: relative;
   isolation: isolate;
