@@ -6,7 +6,7 @@
 .project-feed {
   --feed-gutter: 32px;
   display: grid;
-  gap: var(--space-intro-media);
+  gap: 24px;
   /* Заметная пауза после баннера. */
   padding: 120px var(--feed-gutter) 120px;
   scroll-margin-top: calc(var(--header-h, 80px) + 12px);
@@ -22,24 +22,24 @@
 .project-feed__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-section) 24px;
+  gap: 80px 24px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 @media (max-width: 767px) {
-  .project-feed__grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-section); }
+  .project-feed__grid { grid-template-columns: minmax(0, 1fr); gap: 64px; }
 }
 
 /* Текст, обложка и теги соседних карточек стоят на общих линиях сетки
    (subgrid): разная длина подзаголовка не сдвигает обложки. Свой row-gap
-   subgrid-а перекрывает --space-section между рядами проектов. */
+   subgrid-а перекрывает 80px между рядами проектов. */
 .project-feed__item,
 .feed-card {
   display: grid;
   grid-row: span 3;
   grid-template-rows: subgrid;
-  row-gap: 16px;
+  row-gap: 12px;
   min-width: 0;
 }
 .feed-card { grid-column: 1 / -1; }
@@ -95,7 +95,7 @@
 }
 
 /* Порядок: название и описание (плотная группа) → обложка → теги. */
-.feed-card__text { display: grid; align-content: start; margin-bottom: 4px; }
+.feed-card__text { display: grid; align-content: start; margin-bottom: 8px; }
 /* Перебивает общий отступ .text-h3 + .text-body из typography.css. */
-.feed-card__text > .feed-card__description { margin-top: var(--space-title-subtitle); }
+.feed-card__text > .feed-card__description { margin-top: 4px; }
 
