@@ -282,36 +282,38 @@ body {
         </div>
       </section>
 
-      <section class="case-block case-role" id="role" tabindex="-1">
-        <h2 class="case-role__title text-h1">Роль</h2>
-        <p class="case-role__subtitle case-subtitle text-body-lg">Отвечала за раздел с нуля до запуска. Предложила ключевой сегмент и два входа в создание коммуникации.</p>
+      <!-- Роль — тот же паттерн, что в «Доброй подписке»: .case-cards-feature (components/case-cards/case-cards.css),
+           фото то же, что там. -->
+      <section class="case-block case-about case-role-summary" id="role" tabindex="-1">
+        <h2 class="case-about__title text-h1">Роль</h2>
 
-        <div class="case-role__stack">
-          <div class="case-role__col">
-            <h3 class="case-role__col-title text-h2">Сделала</h3>
-            <p class="case-role__col-subtitle text-body-sm" title="сводную таблицу">сводную таблицу</p>
-            <div class="case-cover__media case-cover__media--natural">
-            <img src="media/role/summary.webp" width="3840" height="1416" alt="Сводная страница сегментов: таблица с покупателями, суммой покупок, средним чеком и динамикой" loading="lazy" />
+        <div class="case-about__grid case-cards-feature">
+          <div class="case-card case-card--media case-card--align-bottom case-cards-feature__banner" style="--card-pad-bottom: 40px">
+            <div class="case-card__media">
+              <img src="/projects/avito-charity/subscription/media/role/banner.webp" width="1440" height="1922" alt="" loading="lazy" />
+            </div>
+            <p data-subtitle class="case-card__subtitle case-subtitle text-body-lg">Отстояла сокращение объёма страницы и предложила два решения, которые вошли в MVP</p>
           </div>
-          </div>
-          <div class="case-role__col">
-            <h3 class="case-role__col-title text-h2">Проработала</h3>
-            <p class="case-role__col-subtitle text-body-sm" title="страницы сегментов">страницы сегментов</p>
-            <div class="case-cover__media case-cover__media--natural">
-            <img src="media/role/segments-regular.webp" width="2880" height="1576" alt="Вкладка «Постоянные» в сегментах покупателей: подсегмент «Топ покупатели» с описанием, кнопкой рассылки и показателями" loading="lazy" />
-          </div>
-          </div>
-          <div class="case-role__col">
-            <h3 class="case-role__col-title text-h2">Подобрала</h3>
-            <p class="case-role__col-subtitle text-body-sm" title="карточки рекомендаций">карточки рекомендаций</p>
-            <div class="case-cards-grid case-cards-grid--cols-2">
-            <div class="case-cover__media case-cover__media--natural">
-            <img src="media/role/recs-1.webp" width="1552" height="944" alt="Карточка рекомендации с предложением для сегмента" loading="lazy" />
-          </div>
-            <div class="case-cover__media case-cover__media--natural">
-            <img src="media/role/recs-2.webp" width="1552" height="944" alt="Карточка рекомендации с объяснением и переходом к рассылке" loading="lazy" />
-          </div>
-          </div>
+
+          <div class="case-cards-feature__side">
+            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
+              <div class="case-card__icon-row">
+                <p data-subtitle class="case-card__subtitle text-body">Настояла, чтобы портрет покупателя и аналитика продаж остались в существующих разделах, а в CRM попали только данные для действий</p>
+                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt-2.svg')" aria-hidden="true"></span>
+              </div>
+            </div>
+            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
+              <div class="case-card__icon-row">
+                <p data-subtitle class="case-card__subtitle text-body">Блок на сводной подстраивается под базу продавца и показывает аудиторию, которой нужно внимание в первую очередь</p>
+                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt-1.svg')" aria-hidden="true"></span>
+              </div>
+            </div>
+            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
+              <div class="case-card__icon-row">
+                <p data-subtitle class="case-card__subtitle text-body">Рекомендации под каждый сегмент и два входа в создание рассылки: через сегмент или сразу к последнему шагу</p>
+                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt.svg')" aria-hidden="true"></span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
