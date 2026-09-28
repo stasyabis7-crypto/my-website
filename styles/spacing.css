@@ -1,7 +1,27 @@
-/* ДС — вертикальные отступы между самостоятельными секциями.
-   Шкала взята со страницы проекта: 48px / 60px (от 900) / 80px (от 1101).
-   Использование: gap или margin-block-start: var(--space-section).
+/* ДС — вертикальные отступы. Все три уровня растут вместе с экраном.
+   --space-section         между самостоятельными блоками/секциями
+   --space-title-subtitle  заголовок блока → подзаголовок под ним
+   --space-intro-media     подзаголовок (шапка блока) → картинки/сетка/карточки
+   --space-heading-media   подпись внутри блока → её картинка
    --case-block-gap сохранён как совместимый псевдоним для страниц проектов. */
-:root { --space-section: 48px; --case-block-gap: var(--space-section); }
-@media (min-width: 900px) { :root { --space-section: 60px; } }
-@media (min-width: 1101px) { :root { --space-section: 80px; } }
+:root {
+  --space-section: 72px;
+  --space-title-subtitle: 12px;
+  --space-intro-media: 32px;
+  --space-heading-media: 20px;
+  --case-block-gap: var(--space-section);
+}
+@media (min-width: 900px) {
+  :root {
+    --space-section: 96px;
+    --space-title-subtitle: 16px;
+    --space-intro-media: 48px;
+    --space-heading-media: 24px;
+  }
+}
+@media (min-width: 1101px) {
+  :root {
+    --space-section: 128px;
+    --space-intro-media: 56px;
+  }
+}
