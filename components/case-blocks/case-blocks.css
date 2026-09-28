@@ -201,6 +201,10 @@
 .case-cover__subtitle.text-body-lg {
   margin-top: var(--space-title-subtitle);
 }
+/* Подзаголовок из нескольких абзацев — обычный ритм абзацев между ними. */
+.case-cover__subtitle + .case-cover__subtitle {
+  margin-top: var(--space-stack-paragraph);
+}
 
 @media (max-width: 640px) {
   .case-cover__head {
