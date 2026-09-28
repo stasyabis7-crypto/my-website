@@ -300,27 +300,37 @@ body {
         </div>
       </section>
 
-      <!-- Роль — компонент .case-role (components/case-blocks/case-blocks.css). -->
-      <section class="case-block case-role" id="role" tabindex="-1">
-        <h2 class="case-role__title text-h1">Роль</h2>
-        <p class="case-role__subtitle case-subtitle text-body-lg">Выступала в роли продуктового дизайнера. Отвечала за весь сценарий.</p>
+      <!-- Роль — тот же паттерн, что в «Доброй подписке»: .case-cards-feature (components/case-cards/case-cards.css),
+           фото то же, что там. -->
+      <section class="case-block case-about case-role-summary" id="role" tabindex="-1">
+        <h2 class="case-about__title text-h1">Роль</h2>
 
-        <div class="case-role__cols-scroll">
-          <div class="case-role__cols">
-            <div class="case-role__col">
-              <h3 class="case-role__col-title text-h2">Сделала</h3>
-              <p class="case-role__col-subtitle text-body-sm" title="навигацию, поиск, фильтры">навигацию, поиск, фильтры</p>
-              <div class="case-role__col-art"><img src="media/role/done.webp" alt="Экран поиска, поле ввода по городу или адресу, ниже блоки «Уже искали» и «Другие адреса»" /></div>
+        <div class="case-about__grid case-cards-feature">
+          <div class="case-card case-card--media case-card--align-bottom case-cards-feature__banner" style="--card-pad-bottom: 40px">
+            <div class="case-card__media">
+              <img src="/projects/avito-charity/subscription/media/role/banner.webp" width="1440" height="1922" alt="" loading="lazy" />
             </div>
-            <div class="case-role__col">
-              <h3 class="case-role__col-title text-h2">Добавила</h3>
-              <p class="case-role__col-subtitle text-body-sm" title="избранное">избранное</p>
-              <div class="case-role__col-art"><img src="media/role/add.webp" alt="Список избранного поверх карты, сохранённые пункты с категорией, адресом и режимом работы" /></div>
+            <p data-subtitle class="case-card__subtitle case-subtitle text-body-lg">Вела ключевой сценарий карты целиком</p>
+          </div>
+
+          <div class="case-cards-feature__side">
+            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
+              <div class="case-card__icon-row">
+                <p data-subtitle class="case-card__subtitle text-body">Пересобрала поиск и навигацию. Ближайший пункт находится по адресу или городу, а фильтры помогают выбрать тип отходов</p>
+                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/avito-charity/recycle-map/media/problems/gestalt-2.svg')" aria-hidden="true"></span>
+              </div>
             </div>
-            <div class="case-role__col">
-              <h3 class="case-role__col-title text-h2">Обновила</h3>
-              <p class="case-role__col-subtitle text-body-sm" title="карточку пункта">карточку пункта</p>
-              <div class="case-role__col-art"><img src="media/role/update.webp" alt="Карточка пункта «Контейнеры-сетки для вторсырья «Эколайн»» с фотографиями и раскрытым графиком работы" /></div>
+            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
+              <div class="case-card__icon-row">
+                <p data-subtitle class="case-card__subtitle text-body">Добавила избранное. Свои пункты можно сохранить и не искать заново</p>
+                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/avito-charity/recycle-map/media/problems/gestalt-1.svg')" aria-hidden="true"></span>
+              </div>
+            </div>
+            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
+              <div class="case-card__icon-row">
+                <p data-subtitle class="case-card__subtitle text-body">Обновила карточку пункта. Что принимают, адрес, часы работы и фото собраны на одном экране</p>
+                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/avito-charity/recycle-map/media/problems/gestalt.svg')" aria-hidden="true"></span>
+              </div>
             </div>
           </div>
         </div>
