@@ -121,10 +121,6 @@ body {
    Столбики вырастают, линия прорисовывается, когда карточка попадает во
    вьюпорт (.is-drawn навешивает скрипт внизу страницы); без JS или при
    prefers-reduced-motion графики сразу в финальном состоянии. */
-.case-metric__goal {
-  margin: 12px 0 0;
-  color: var(--color-text-muted);
-}
 /* График одного размера во всех карточках (ширина карточки → высота по
    viewBox), прижат к низу; свободное место, если подпись короче, — над ним. */
 .sub-chart {
@@ -263,8 +259,7 @@ body {
           <div class="case-cover__metrics">
             <div class="case-metric case-metric--theme">
               <p class="case-metric__value">~55</p>
-              <p class="case-metric__label text-body-sm">Новых подписок в день</p>
-              <p class="case-metric__goal text-body-sm">Цель: стабильный поток подписок</p>
+              <p class="case-metric__label text-body-sm">Новых подписок в день — стабильный поток, как и ставили целью</p>
               <div class="case-metric__art sub-chart" aria-hidden="true">
                 <svg viewBox="0 0 360 180">
                   <defs>
@@ -294,8 +289,7 @@ body {
             </div>
             <div class="case-metric">
               <p class="case-metric__value">+64%</p>
-              <p class="case-metric__label text-body-sm">Средний платёж выше минимальной суммы</p>
-              <p class="case-metric__goal text-body-sm">Цель: люди выбирают сумму выше минимальной</p>
+              <p class="case-metric__label text-body-sm">Средний платёж выше минимальной суммы — люди выбирают больше, чем минимум</p>
               <div class="case-metric__art sub-chart" aria-hidden="true">
                 <svg viewBox="0 0 360 180">
                   <g class="sub-chart__bars">
@@ -309,8 +303,7 @@ body {
             </div>
             <div class="case-metric">
               <p class="case-metric__value">~1 300</p>
-              <p class="case-metric__label text-body-sm">Открытий отчётов фондов в день</p>
-              <p class="case-metric__goal text-body-sm">Гипотеза: людям не хватает информации о фонде</p>
+              <p class="case-metric__label text-body-sm">Открытий отчётов фондов в день — гипотеза подтвердилась: людям не хватало информации о фонде</p>
               <div class="case-metric__art sub-chart sub-chart--line" aria-hidden="true">
                 <svg viewBox="0 0 360 180">
                   <defs>
