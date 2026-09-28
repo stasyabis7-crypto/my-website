@@ -101,6 +101,20 @@ body {
   }
 }
 
+/* Три экрана на светлом фоне одной картинкой (так же открывается и в
+   полноэкранном просмотре) — как «Точки входа» в «Доброй подписке». */
+.case-screens-frame {
+  margin-top: var(--space-intro-media);
+  overflow: hidden;
+  border-radius: var(--case-content-radius, var(--radius-surface));
+  background: #F4F3F5;
+}
+.case-screens-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 </style>
 </head>
 <body>
@@ -529,16 +543,8 @@ body {
         <h2 class="text-h1">Почему избранное отдельным списком</h2>
         <p class="case-favorites__subtitle case-subtitle text-body-lg">Рассматривала флаг «сохранено» внутри карточки: дешевле и не добавляет новой сущности. Выбрала отдельный список.</p>
 
-        <div class="case-schedule__grid case-cards-grid case-cards-grid--cols-3">
-          <div class="case-cover__media case-cover__media--natural">
-            <img src="media/favorites-list/favs-1.webp?v=2" alt="Сохранение пункта в избранное" loading="lazy" />
-          </div>
-          <div class="case-cover__media case-cover__media--natural">
-            <img src="media/favorites-list/favs-2.webp?v=2" alt="Список избранного и отмена удаления пункта" loading="lazy" />
-          </div>
-          <div class="case-cover__media case-cover__media--natural">
-            <img src="media/favorites-list/favs-3.webp?v=2" alt="Пустой список избранного" loading="lazy" />
-          </div>
+        <div class="case-screens-frame">
+          <img src="media/favorites-list/frame.webp?v=1" alt="Сохранение пункта в избранное, список избранного с отменой удаления и пустой список" width="6250" height="3994" loading="lazy" />
         </div>
 
         <div class="case-favorites__description">
