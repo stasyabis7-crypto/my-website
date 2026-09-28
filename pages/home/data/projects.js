@@ -55,7 +55,7 @@ window.portfolioProjects = [
     description: 'Подключение и управление «Доброй подпиской»',
     href: '/projects/avito-charity/subscription/',
     image: '/projects/avito-charity/subscription/covers/subscription-cover-poster-2880x1800.webp',
-    video: '/projects/avito-charity/subscription/covers/subscription-cover-flow-1440x900-60fps.mp4',
+    video: '/projects/avito-charity/subscription/covers/subscription-cover-loop-1440x900-60fps.mp4',
     width: 2880,
     height: 1800,
     alt: '«Добрая подписка» в приложении Авито',
