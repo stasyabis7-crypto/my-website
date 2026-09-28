@@ -168,7 +168,7 @@ body {
       <section class="case-block case-cover" id="summary" tabindex="-1" aria-label="Саммари проекта">
         <div class="case-cover__head">
           <div class="case-cover__head-text">
-            <h1 class="case-cover__title text-h1">Как устроена регулярная помощь в Авито</h1>
+            <h1 class="case-cover__title text-h1">Добрая подписка</h1>
             <p class="case-cover__subtitle case-subtitle text-body-lg" data-subtitle>Спроектировала подключение и управление «Доброй подпиской» и обновила связанные благотворительные сценарии: выбор фонда, просмотр отчётов, оплату и саксесс после пожертвования.</p>
           </div>
         </div>
@@ -197,7 +197,7 @@ body {
           <div class="case-cards-feature__side">
             <div class="case-card case-card--light case-card--align-bottom" style="--card-pad-bottom: 40px">
               <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Чтобы поддерживать фонд постоянно, человеку приходилось повторять действие, а у фонда не было регулярных поступлений от этого сценария.</p>
+                <p data-subtitle class="case-card__subtitle text-body">Чтобы поддерживать фонд постоянно, человеку приходилось повторять сценарий</p>
                 <svg class="case-card__icon case-card__icon--theme" aria-hidden="true" focusable="false" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="48" height="48" rx="11" fill="currentColor"/>
 <path d="M35.1332 18.0208C33.0483 14.4216 29.1514 12 24.6882 12C19.6277 12 15.2953 15.113 13.5065 19.526M31.4709 19.526H37.5V13.5052M14.3668 30.0625C16.4517 33.6618 20.3486 36.0833 24.8118 36.0833C29.8723 36.0833 34.2047 32.9703 35.9935 28.5573M18.0291 28.5573H12V34.5781" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -215,7 +215,7 @@ body {
             </div>
             <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
               <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Моей задачей было сделать условия регулярной помощи понятными до подключения подписки и дать человеку возможность управлять своим решением после него.</p>
+                <p data-subtitle class="case-card__subtitle text-body">Я спроектировала ежемесячную подписку и управление ею</p>
                 <svg class="case-card__icon case-card__icon--theme" aria-hidden="true" focusable="false" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="48" height="48" rx="11" fill="currentColor"/>
 <path d="M20.4 22.7811L23.1 25.4811L28.5 20.0811M13.2 14.6811L21.585 10.4886C23.1053 9.72843 24.8947 9.72843 26.415 10.4885L34.8 14.6811C34.8 14.6811 34.8 22.5651 34.8 26.7231C34.8 30.8811 30.9564 33.6879 24 38.0811C17.0436 33.6879 13.2 29.9811 13.2 26.7231V14.6811Z" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -269,27 +269,37 @@ body {
         </div>
       </section>
 
-      <!-- Роль — компонент .case-role (components/case-blocks/case-blocks.css). -->
-      <section class="case-block case-role" id="role" tabindex="-1">
-        <h2 class="case-role__title text-h1">Роль</h2>
-        <p class="case-role__subtitle case-subtitle text-body-lg">Я отвечала за сценарий подключения и настройки подписки, обновление выбора фонда и доступа к отчётам, экран выбора оплаты и подход к success-экранам. Изучала конкурентов и существующие поверхности Авито, чтобы определить точки входа в разовые и регулярные пожертвования.</p>
+      <!-- Роль — тот же паттерн, что «О проекте»: .case-cards-feature (components/case-cards/case-cards.css),
+           иконки — из блока «Проблемы». -->
+      <section class="case-block case-about case-role-summary" id="role" tabindex="-1">
+        <h2 class="case-about__title text-h1">Роль</h2>
 
-        <div class="case-role__cols-scroll">
-          <div class="case-role__cols">
-            <div class="case-role__col">
-              <h3 class="case-role__col-title text-h2">Спроектировала</h3>
-              <p class="case-role__col-subtitle text-body-sm" title="подключение и управление подпиской">подключение и управление подпиской</p>
-              <div class="case-role__col-art"><img src="media/role/settings.webp" alt="Настройки «Доброй подписки»: сумма ежемесячной помощи, фонд и способ оплаты" width="1500" height="3240" loading="lazy" /></div>
+        <div class="case-about__grid case-cards-feature">
+          <div class="case-card case-card--media case-card--align-bottom case-cards-feature__banner" style="--card-pad-bottom: 40px">
+            <div class="case-card__media">
+              <img src="media/role/banner.webp" width="1440" height="1922" alt="" loading="lazy" />
             </div>
-            <div class="case-role__col">
-              <h3 class="case-role__col-title text-h2">Обновила</h3>
-              <p class="case-role__col-subtitle text-body-sm" title="выбор фонда">выбор фонда</p>
-              <div class="case-role__col-art"><img src="media/role/fund.webp" alt="Попап фонда с описанием его работы и доступом к отчётам" width="1500" height="3240" loading="lazy" /></div>
+            <p data-subtitle class="case-card__subtitle case-subtitle text-body-lg">Вела сценарий регулярной помощи целиком</p>
+          </div>
+
+          <div class="case-cards-feature__side">
+            <div class="case-card case-card--light case-card--align-bottom" style="--card-pad-bottom: 40px">
+              <div class="case-card__icon-row">
+                <p data-subtitle class="case-card__subtitle text-body">Спроектировала подписку и теперь условия понятны до подключения, а сумму можно изменить прямо в профиле</p>
+                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/avito-charity/subscription/media/problems/gestalt-2.svg')" aria-hidden="true"></span>
+              </div>
             </div>
-            <div class="case-role__col">
-              <h3 class="case-role__col-title text-h2">Объединила</h3>
-              <p class="case-role__col-subtitle text-body-sm" title="саксесс экраны общим подходом">саксесс экраны общим подходом</p>
-              <div class="case-role__col-art"><img src="media/role/success.webp" alt="Экран успешного пожертвования" width="1500" height="3240" loading="lazy" /></div>
+            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
+              <div class="case-card__icon-row">
+                <p data-subtitle class="case-card__subtitle text-body">Добавила отчёты фондов, чтобы видеть, на что фонд тратит деньги, до того как решиться помочь</p>
+                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/avito-charity/subscription/media/problems/gestalt-1.svg')" aria-hidden="true"></span>
+              </div>
+            </div>
+            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
+              <div class="case-card__icon-row">
+                <p data-subtitle class="case-card__subtitle text-body">Объединила экраны оплаты и благодарности во всём сценарии</p>
+                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/avito-charity/subscription/media/problems/gestalt.svg')" aria-hidden="true"></span>
+              </div>
             </div>
           </div>
         </div>

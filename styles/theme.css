@@ -12,7 +12,8 @@
   /* Шкала скруглений. На телефоне (≤767px) все ступени меньше — см. блок
      @media ниже. Пилюли кнопок (--radius-control) и круги не трогаем. */
   --radius-hero: clamp(28px, 3vw, 44px); /* баннер, цветные подложки */
-  --radius-surface: 14px; /* панели, меню, карточки, контент кейсов */
+  --radius-surface: 14px; /* панели, меню */
+  --case-content-radius: 24px; /* обложка, баннеры, картинки и карточки кейсов */
   --radius-inner: 10px;   /* аватар, мелкие карточки, картинки в карточках */
   --radius-tag: 6px;      /* бейджи и теги */
 
@@ -49,6 +50,7 @@
   :root {
     --radius-hero: 20px;
     --radius-surface: 10px;
+    --case-content-radius: 16px;
     --radius-inner: 6px;
     --radius-tag: 4px;
   }

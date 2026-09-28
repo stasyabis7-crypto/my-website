@@ -329,3 +329,9 @@
     transform: none;
   }
 }
+
+/* Иконка-маска из блока «Проблемы» (.case-problems__icon) в строке с
+   текстом: в строке свой отступ, нижний margin иконки не нужен. */
+.case-card__icon-row .case-problems__icon {
+  margin-bottom: 0;
+}

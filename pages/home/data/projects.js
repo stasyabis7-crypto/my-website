@@ -51,7 +51,7 @@ window.portfolioProjects = [
   },
   {
     id: 'kind-subscription',
-    title: 'Как устроена регулярная помощь в Авито',
+    title: 'Добрая подписка',
     description: 'Подключение и управление «Доброй подпиской»',
     href: '/projects/avito-charity/subscription/',
     image: '/projects/avito-charity/subscription/covers/subscription-cover-poster-2880x1800.webp',
