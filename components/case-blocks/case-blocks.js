@@ -108,7 +108,6 @@
   document.querySelectorAll('.case-team__carousel').forEach(function (carousel) {
     var cards = Array.from(carousel.querySelectorAll('.case-team__card'));
     if (cards.length < 2) return;
-    var next = carousel.querySelector('[data-team-next]');
     var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     var active = 0, busy = false, visible = false, paused = motion.matches;
     var timer;
@@ -118,7 +117,7 @@
         var position = (i - active + cards.length) % cards.length;
         card.dataset.position = position;
         card.setAttribute('aria-hidden', String(position !== 0));
-        if (position === 0) next.setAttribute('aria-label', card.querySelector('h3').textContent + ', ' + (i + 1) + ' из ' + cards.length + '. Следующая карточка команды');
+        card.inert = position !== 0;
       });
     }
     function schedule() {
@@ -142,7 +141,12 @@
         schedule();
       }, motion.matches ? 0 : 650);
     }
-    next.addEventListener('click', advance);
+    cards.forEach(function (card, i) {
+      var next = card.querySelector('[data-team-next]');
+      next.setAttribute('aria-label', card.querySelector('h3').textContent + ', ' + (i + 1) + ' из ' + cards.length + '. Следующая карточка команды');
+      next.addEventListener('click', advance);
+      next.hidden = false;
+    });
     carousel.addEventListener('mouseenter', schedule);
     carousel.addEventListener('mouseleave', schedule);
     carousel.addEventListener('focusin', schedule);
@@ -160,10 +164,9 @@
     carousel.classList.add('is-ready');
     var deck = carousel.querySelector('.case-team__cards');
     new ResizeObserver(function () {
-      next.style.setProperty('--deck-width', deck.offsetWidth + 'px');
-      next.style.setProperty('--deck-height', deck.offsetHeight + 'px');
+      carousel.style.setProperty('--deck-width', deck.offsetWidth + 'px');
+      carousel.style.setProperty('--deck-height', deck.offsetHeight + 'px');
     }).observe(deck);
-    next.parentElement.hidden = false;
   });
 })();
 

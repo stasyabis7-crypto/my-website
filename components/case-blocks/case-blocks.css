@@ -746,23 +746,22 @@
   align-items: center;
   height: var(--button-height);
 }
-/* Стрелка «следующая карточка» — праймари-кнопка в углу верхней карточки.
-   Её зона клика (--hit-*) растянута на всю колоду: клик в любом месте
-   листает. Обёртка поднимается вместе с карточкой при наведении. */
-.case-team__next {
+/* Стрелка «следующая карточка» — праймари-плашка в углу каждой карточки,
+   уезжает вместе с ней. Зона клика (--hit-*) растянута на всю карточку;
+   кликается только верхняя (у остальных inert, см. case-blocks.js). */
+.case-team__hit {
   position: absolute;
   top: 16px;
   left: 16px;
-  z-index: 6;
-  transition: transform 650ms cubic-bezier(.22,.7,.2,1);
-}
-.case-team__next[hidden] { display: none; }
-.case-team__hit {
+  z-index: 1;
   --hit-left: -16px;
   --hit-top: -16px;
   --hit-width: var(--deck-width, 100%);
   --hit-height: var(--deck-height, 100%);
 }
+.case-team__hit[hidden] { display: none; }
+/* У карточек под верхней стрелки не видны — не торчат из-под стопки. */
+.case-team__card:not([data-position="0"]):not(.is-leaving) .case-team__hit { visibility: hidden; }
 
 .case-team__carousel { min-width: 0; padding: 24px 0 0 24px; }
 .case-team__cards { display: grid; gap: 24px; }
@@ -812,11 +811,8 @@
   opacity: 0;
 }
 @media (hover: hover) and (pointer: fine) {
-  .case-team__cards:has(.case-team__hit:hover) .case-team__card[data-position="0"]:not(.is-leaving) {
+  .case-team__card[data-position="0"]:not(.is-leaving):has(.case-team__hit:hover) {
     transform: translateY(-12px) rotate(1deg);
-  }
-  .case-team__cards:has(.case-team__hit:hover) .case-team__next {
-    transform: translateY(-12px);
   }
 }
 @media (max-width: 700px) {
@@ -836,8 +832,7 @@
   .case-team__card[data-position="4"] { transform: translate(-16px, 28px) rotate(-12deg); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .case-team__carousel.is-ready .case-team__card,
-  .case-team__next { transition: none; }
+  .case-team__carousel.is-ready .case-team__card { transition: none; }
   .case-team__cards:has(.case-team__hit:hover) .case-team__card[data-position="0"]:not(.is-leaving) { transform: rotate(0deg); }
 }
 
