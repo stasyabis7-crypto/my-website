@@ -206,10 +206,11 @@ body {
   gap: 16px;
   margin-top: var(--space-intro-media);
 }
-.crm-bento .crm-stub { margin-top: 0; }
+.crm-bento > * { margin-top: 0; }
+.crm-bento .case-cover__media img { height: 100%; }
 /* Метрики под бенто — с тем же зазором, что между ячейками. */
 .crm-bento + .case-cover__metrics-scroll .case-cover__metrics { margin-top: 16px; }
-.crm-bento__big { grid-column: span 2; grid-row: span 2; }
+.crm-bento__big { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
 .crm-bento__wide { grid-column: span 2; aspect-ratio: 2 / 1; }
 .crm-bento__square { aspect-ratio: 1; }
 @media (max-width: 900px) {
@@ -552,12 +553,11 @@ body {
 
         <p class="case-favorites__subtitle case-subtitle text-body-lg">Страница собралась не сразу. Сначала мы составили список данных о покупателях, которые у нас есть: RFM-сегменты, поведение (корзина, избранное, просмотры), средний чек, демография, регионы, популярные категории. Потом для каждого вида данных решили, что из него нужно продавцу здесь, а что он и так смотрит в других разделах кабинета.</p>
 
-        <!-- TODO: бенто-сетка концептов, заглушки до готовых картинок -->
         <div class="crm-bento">
-          <div class="crm-stub crm-bento__big"><span class="crm-stub__label text-body-sm">Картинка · 1424×1424</span></div>
-          <div class="crm-stub crm-bento__wide"><span class="crm-stub__label text-body-sm">Картинка · 1424×696</span></div>
-          <div class="crm-stub crm-bento__square"><span class="crm-stub__label text-body-sm">Картинка · 696×696</span></div>
-          <div class="crm-stub crm-bento__square"><span class="crm-stub__label text-body-sm">Картинка · 696×696</span></div>
+          <div class="case-cover__media crm-bento__big"><img src="media/concepts/bento-1.webp" width="1424" height="1424" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
+          <div class="case-cover__media crm-bento__wide"><img src="media/concepts/bento-2.webp" width="1500" height="736" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
+          <div class="case-cover__media crm-bento__square"><img src="media/concepts/bento-3.webp" width="1732" height="1732" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
+          <div class="case-cover__media crm-bento__square"><img src="media/concepts/bento-4.webp" width="696" height="696" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
         </div>
       </section>
 
