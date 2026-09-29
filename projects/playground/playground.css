@@ -4,3 +4,14 @@
 
 /* Та же лёгкая кромка, что у обложек и скриншотов в кейсах. */
 .playground-grid .works-grid__item { border: var(--media-border); }
+
+/* Вертикальные скрины — в квадратных плашках на стандартном сером фоне,
+   целиком и по центру. */
+.playground-grid__row--framed .works-grid__item { background: var(--color-surface); }
+.playground-grid__row--framed .works-grid__item img {
+  position: absolute;
+  inset: 8%;
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+}
