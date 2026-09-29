@@ -1060,9 +1060,19 @@
   margin-top: auto;
 }
 
-/* С заголовком к низу едет он, текст идёт сразу под ним. */
-.case-problems__card .case-card__title {
-  margin-top: auto;
+/* С заголовком ряды иконка/заголовок/текст общие для карточек (subgrid):
+   заголовки и подзаголовки соседних карточек стоят на одной линии,
+   даже если какой-то заголовок переносится. */
+@media (min-width: 901px) {
+  .case-problems__grid:has(.case-card__title) {
+    row-gap: 0;
+  }
+  .case-problems__grid:has(.case-card__title) > .case-problems__card {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    align-content: start;
+  }
 }
 
 /* ─── .case-moodboard — заголовок + .case-cards-feature, низ вровень ───
