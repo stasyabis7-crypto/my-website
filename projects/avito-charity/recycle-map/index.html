@@ -101,8 +101,7 @@ body {
   }
 }
 
-/* Три экрана на светлом фоне одной картинкой (так же открывается и в
-   полноэкранном просмотре) — как «Точки входа» в «Доброй подписке». */
+/* Серый фрейм под скрины (так же открывается и в полноэкранном просмотре). */
 .case-screens-frame {
   margin-top: var(--space-intro-media);
   overflow: hidden;
@@ -113,6 +112,35 @@ body {
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* «Почему отдельный список»: два вытянутых фрейма рядом, в каждом телефон
+   по центру. Углы экрана скруглены здесь (~14% ширины, по вертикали
+   отдельно, чтобы угол был круглым, а не эллипсом). */
+.fav-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: var(--space-intro-media);
+}
+.fav-pair .case-screens-frame {
+  position: relative;
+  margin-top: 0;
+  aspect-ratio: 4 / 5;
+}
+.fav-pair .case-screens-frame img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: auto;
+  height: auto;
+  max-width: 84%;
+  max-height: 84%;
+  border-radius: 14% / 6.5%;
+}
+@media (max-width: 640px) {
+  .fav-pair { grid-template-columns: 1fr; }
 }
 
 </style>
@@ -518,8 +546,9 @@ body {
         <h2 class="text-h1">Почему избранное отдельным списком</h2>
         <p class="case-favorites__subtitle case-subtitle text-body-lg">Рассматривала флаг «сохранено» внутри карточки: дешевле и не добавляет новой сущности. Выбрала отдельный список.</p>
 
-        <div class="case-screens-frame">
-          <img src="media/favorites-list/frame.webp?v=1" alt="Сохранение пункта в избранное, список избранного с отменой удаления и пустой список" width="6250" height="3994" loading="lazy" />
+        <div class="fav-pair">
+          <div class="case-screens-frame"><img src="media/favorites-list/favorites-removed.webp" alt="Пункт удалён из избранного, в уведомлении кнопка «Вернуть», ниже список избранного" width="1500" height="3244" loading="lazy" /></div>
+          <div class="case-screens-frame"><img src="media/favorites-list/favorites-empty.webp" alt="Пустой список избранного «Пока что тут тихо» с кнопкой «Найти пункт переработки»" width="1500" height="3244" loading="lazy" /></div>
         </div>
 
         <div class="case-favorites__description">
