@@ -74,8 +74,8 @@
   height: 100%;
   object-fit: cover;
 }
-/* Кнопка-стрелка в левом нижнем углу, как на обложках Постов (project-cards.css). */
-.feed-card__action { position: absolute; left: 16px; bottom: 16px; }
+/* Кнопка-стрелка в правом нижнем углу, как на обложках Постов (project-cards.css). */
+.feed-card__action { position: absolute; right: 16px; bottom: 16px; }
 @media (hover: hover) and (pointer: fine) {
   .feed-card__media:hover .feed-card__frame { scale: var(--wg-hover-scale); }
 }
