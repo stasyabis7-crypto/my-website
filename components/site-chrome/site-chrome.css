@@ -43,9 +43,13 @@ html.contact-scroll-lock, html.contact-scroll-lock body { overflow: hidden; over
   .site-socials .site-menu-trigger { display: inline-flex; }
 }
 /* На десктопе «Статьи»/«Посты» видны в хедере (активная — с точкой),
-   поэтому стрелка «назад» на этих страницах не нужна — хедер как на главной. */
+   поэтому стрелка «назад» на этих страницах не нужна — хедер как на главной
+   (аватар + лого). Ниже 1000px наоборот: стрелка вместо аватара. */
 @media (min-width: 1000px) {
   .collection-page .site-header__back { display: none; }
+}
+@media (width < 1000px) {
+  .collection-page .site-header__avatar { display: none; }
 }
 
 /* Desktop-only anchored dropdown for "Связаться" — a calm, non-modal
