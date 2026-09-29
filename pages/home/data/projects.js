@@ -26,7 +26,7 @@ window.portfolioTags = [
 window.portfolioProjects = [
   {
     id: 'customer-segments',
-    title: 'Сегменты покупателей',
+    title: 'CRM для продавцов Ozon',
     description: 'Аналитика покупателей и рекомендации для рекламы',
     href: '/projects/ozon-crm/customer-segments/',
     image: '/projects/ozon-crm/customer-segments/covers/cover.webp',
