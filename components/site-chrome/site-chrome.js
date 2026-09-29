@@ -375,7 +375,7 @@
   })();
 
   /* ---------- меню разделов ----------
-     Десктоп (≥1000px): пункты «Статьи»/«Посты» слева от «Связаться».
+     Десктоп (≥1200px, уже — наезжают на лого): пункты «Статьи»/«Посты»/«Playground» слева от «Связаться».
      Моб/планшет: кнопка-гамбургер рядом со «Связаться» открывает такую же
      полноэкранную шторку, в ней пункты меню и «Резюме PDF» (в самом хедере
      резюме на этих ширинах скрыто, см. site-chrome.css). Открытый раздел
@@ -387,7 +387,8 @@
 
     var SECTIONS = [
       { label: 'Статьи', href: '/projects/articles/', icon: 'articles' },
-      { label: 'Посты', href: '/projects/posts/', icon: 'posts' }
+      { label: 'Посты', href: '/projects/posts/', icon: 'posts' },
+      { label: 'Playground', href: '/projects/playground/', icon: 'activities' }
     ];
     var path = location.pathname.replace(/index\.html$/, '');
     function link(it, className) {
@@ -445,7 +446,7 @@
     });
     menuBtn.addEventListener('click', menuSheet.open);
 
-    var desktopMq = window.matchMedia('(width >= 1000px)');
+    var desktopMq = window.matchMedia('(width >= 1200px)');
     function onModeChange() { if (desktopMq.matches) menuSheet.close(); }
     (desktopMq.addEventListener
       ? desktopMq.addEventListener('change', onModeChange)

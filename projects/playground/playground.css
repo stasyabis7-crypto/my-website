@@ -1,0 +1,3 @@
+/* Playground: концепты сеткой .works-grid (styles/layout.css), клик по
+   карточке открывает фото на весь экран (components/case-lightbox). */
+.collection__section > .playground-grid { margin-top: 28px; }

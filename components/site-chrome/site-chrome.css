@@ -42,6 +42,12 @@ html.contact-scroll-lock, html.contact-scroll-lock body { overflow: hidden; over
   .site-header .site-header__cta { display: none; }
   .site-socials .site-menu-trigger { display: inline-flex; }
 }
+/* Три пункта меню до 1200px наезжают на лого по центру — там тоже
+   гамбургер, «Резюме PDF» при этом остаётся в хедере. */
+@media (1000px <= width < 1200px) {
+  .site-nav { display: none; }
+  .site-socials .site-menu-trigger { display: inline-flex; }
+}
 /* На десктопе «Статьи»/«Посты» видны в хедере (активная — с точкой),
    поэтому стрелка «назад» на этих страницах не нужна — хедер как на главной
    (аватар + лого). Ниже 1000px наоборот: стрелка вместо аватара. */

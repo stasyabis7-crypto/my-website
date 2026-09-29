@@ -60,6 +60,7 @@ const assets = [
   'components/project-cards/project-cards.js',
   'projects/articles/articles.css',
   'projects/posts/posts.css',
+  'projects/playground/playground.css',
   'site/analytics-config.js',
   'site/analytics.js',
   'site/haptics.js',
