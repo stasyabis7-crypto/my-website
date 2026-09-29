@@ -226,6 +226,18 @@ body {
   .sub-entry-grid { grid-template-columns: 1fr; }
   .sub-entry-grid .sub-entry-grid__tall { grid-column: auto; grid-row: auto; aspect-ratio: 1; }
 }
+/* Управление подпиской: два квадрата рядом. */
+.sub-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: var(--space-intro-media);
+}
+.sub-pair > * { margin-top: 0; }
+.sub-pair .case-cover__media { border: 0; aspect-ratio: 1; }
+@media (max-width: 900px) {
+  .sub-pair { grid-template-columns: 1fr; }
+}
 /* Бенто «Итога» (как в CRM): большой квадрат 2×2, широкая 2×1 и два квадрата 1×1. */
 .sub-bento {
   display: grid;
@@ -700,14 +712,15 @@ body {
         <p class="case-subtitle text-body-lg">Масштаб использования: около 2 000 показов экранов благодарности в день во всех charity-сценариях.</p>
       </section>
 
-      <!-- Управление подпиской — три экрана одной картинкой на фрейме (как «Точки входа»). -->
+      <!-- Управление подпиской — два квадрата рядом (.sub-pair). -->
       <section class="case-block case-role case-manage" id="manage" tabindex="-1">
         <h2 class="case-role__title text-h1">Управление подпиской</h2>
         <p class="case-role__subtitle case-subtitle text-body-lg">Управление подпиской доступно из профиля и со страниц «Знака добра» в charity. В профиле видны фонд, сумма и дата ближайшего платежа — сумму можно быстро изменить прямо в карточке.</p>
         <p class="case-role__subtitle case-subtitle text-body-lg">В настройках можно указать другую сумму или отключить подписку. Чтобы сменить фонд, нужно отключить текущую подписку и оформить новую.</p>
 
-        <div class="case-screens-frame">
-          <img src="media/manage/frame.webp" alt="Управление подпиской: баннер на charity-странице, карточка подписки в профиле, настройки суммы и отключение" width="6250" height="4000" loading="lazy" />
+        <div class="sub-pair">
+          <div class="case-cover__media"><img src="media/manage/manage-1.webp" width="1424" height="1424" alt="Карточка «Доброй подписки» в профиле: сумма, настройки и дата ближайшего платежа" loading="lazy" /></div>
+          <div class="case-cover__media"><img src="media/manage/manage-2.webp" width="1424" height="1424" alt="Баннер «Доброй подписки» на странице «Знака добра»" loading="lazy" /></div>
         </div>
 
       </section>
