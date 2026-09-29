@@ -98,31 +98,41 @@
   /* Аватар — не кнопка: круглый, не --radius-control. Обрезает сама
      картинка, чтобы индикатор статуса не срезался по кругу. */
   border-radius: 50%;
-  background: var(--color-surface-alt);
+  /* Диаметр точки статуса и зазор-вырез вокруг неё (см. ::after). */
+  --avatar-dot: max(calc(var(--chrome-item-h) * 0.25), 8px);
+  --avatar-dot-gap: 2px;
 }
 
+/* Серая подложка — на самой картинке, а не на обёртке: её вырезает та же
+   маска, что и фото. */
 .site-header__avatar img {
   display: block;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  background: var(--color-surface-alt);
+  --avatar-cut: radial-gradient(
+    circle at calc(100% - var(--avatar-dot) / 2) calc(100% - var(--avatar-dot) / 2),
+    transparent calc(var(--avatar-dot) / 2 + var(--avatar-dot-gap)),
+    #000 calc(var(--avatar-dot) / 2 + var(--avatar-dot-gap) + 0.5px)
+  );
+  -webkit-mask-image: var(--avatar-cut);
+  mask-image: var(--avatar-cut);
 }
 
 /* Статус «не в сети» — красная точка в правом нижнем углу, пока нет
-   страницы «Обо мне». Обводка цветом фона отделяет её от фото. */
+   страницы «Обо мне». Вокруг неё фото вырезано маской (без обводки
+   цветом фона), так что в зазоре виден тот фон, что под шапкой. */
 .site-header__avatar::after {
   content: "";
   position: absolute;
   right: 0;
   bottom: 0;
-  width: 25%;
-  height: 25%;
-  min-width: 8px;
-  min-height: 8px;
+  width: var(--avatar-dot);
+  height: var(--avatar-dot);
   border-radius: 50%;
   background: #ef4444;
-  box-shadow: 0 0 0 2px var(--color-bg, #fff);
 }
 
 .site-header__logo {
