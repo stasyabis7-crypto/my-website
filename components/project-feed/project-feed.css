@@ -47,11 +47,17 @@
   .project-feed__item, .feed-card { grid-row: auto; grid-template-rows: none; }
 }
 
-/* Обложка — единственная ссылка карточки. Наведение уменьшает рамку, как
-   кликабельные картинки на страницах кейсов (case-lightbox.css). Hover
-   ловит неподвижная обёртка, а уменьшается сама ссылка — иначе на краю
+/* Обложка — ссылка карточки (стрелка дублирует её для мыши). Наведение
+   уменьшает рамку, как кликабельные картинки на страницах кейсов
+   (case-lightbox.css). Hover ловит неподвижная обёртка, а уменьшается
+   рамка внутри — иначе на краю
    уменьшенная обложка выпускала бы курсор и дёргалась. */
 .feed-card__media { --wg-hover-scale: 0.985; }
+.feed-card__frame {
+  position: relative;
+  scale: 1;
+  transition: scale 0.35s var(--button-hover-ease, ease-out);
+}
 .feed-card__cover {
   display: block;
   overflow: hidden;
@@ -60,8 +66,6 @@
   border-radius: var(--project-card-radius);
   /* Скелетон, пока обложка грузится. */
   background: var(--skeleton-color);
-  scale: 1;
-  transition: scale 0.35s var(--button-hover-ease, ease-out);
 }
 .feed-card__cover img,
 .feed-card__cover video {
@@ -70,13 +74,15 @@
   height: 100%;
   object-fit: cover;
 }
+/* Кнопка-стрелка в левом нижнем углу, как на обложках Постов (project-cards.css). */
+.feed-card__action { position: absolute; left: 16px; bottom: 16px; }
 @media (hover: hover) and (pointer: fine) {
-  .feed-card__media:hover .feed-card__cover { scale: var(--wg-hover-scale); }
+  .feed-card__media:hover .feed-card__frame { scale: var(--wg-hover-scale); }
 }
-.feed-card__cover:active { scale: var(--wg-hover-scale); transition-duration: 0.2s; }
+.feed-card__frame:active { scale: var(--wg-hover-scale); transition-duration: 0.2s; }
 .feed-card__cover:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
-  .feed-card__cover { transition-duration: 0.01ms; }
+  .feed-card__frame { transition-duration: 0.01ms; }
 }
 
 /* Теги — подписи, не кнопки: мелкие плашки без интерактива. */

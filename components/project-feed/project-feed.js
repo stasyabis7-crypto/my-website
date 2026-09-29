@@ -41,9 +41,14 @@
       '<h3 class="feed-card__title text-h3">' + escape(project.title) + '</h3>' +
       '<p class="feed-card__description text-body" data-subtitle>' + escape(project.description) + '</p>' +
       '</div>' +
-      '<div class="feed-card__media">' +
+      '<div class="feed-card__media" data-action-hover><div class="feed-card__frame">' +
       '<a class="feed-card__cover" href="' + escape(project.href) + '" aria-label="Открыть кейс «' + escape(project.title) + '»">' +
-      media(project) + '</a></div>' +
+      media(project) + '</a>' +
+      // Та же стрелка, что на обложках Постов; ведёт туда же, что и обложка,
+      // поэтому скрыта от клавиатуры и скринридера (фокус — на обложке).
+      '<a class="feed-card__action btn btn--fill-glass btn--icon-only btn--icon-diagonal-motion" href="' + escape(project.href) +
+      '" tabindex="-1" aria-hidden="true"><span class="icon icon--arrow-diagonal"></span></a>' +
+      '</div></div>' +
       '<div class="chip-scroller" data-chip-scroller>' +
       '<button type="button" class="btn btn--fill-bare btn--icon-only chip-scroller__arrow chip-scroller__arrow--prev" aria-label="Прокрутить теги назад" hidden><span class="icon icon--arrow-left" aria-hidden="true"></span></button>' +
       '<ul class="chip-scroller__track feed-card__tags" aria-label="Теги">' + tags + '</ul>' +
