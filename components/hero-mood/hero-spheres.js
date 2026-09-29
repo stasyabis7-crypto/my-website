@@ -139,7 +139,7 @@
       const sx=Math.max(0,Math.min(size-1,Math.round((nx*lens+1)*.5*(size-1))));
       const sy=Math.max(0,Math.min(size-1,Math.round((ny*lens+1)*.5*(size-1))));
       const a=(y*size+x)*4,b=(sy*size+sx)*4;
-      const shade=.94-.30*Math.pow(r,5);
+      const shade=.98-.12*Math.pow(r,5);
       const reflection=.12*Math.pow(1-Math.sqrt(1-r*r),5);
       for(let c=0;c<3;c++) {
         const base=pixels[b+c]*shade;
@@ -274,14 +274,14 @@
       if(!proximity)continue;
       ctx.save();ctx.translate(p.x,h-7);ctx.scale(p.r*.9,p.r*.12);
       const shadow=ctx.createRadialGradient(0,0,0,0,0,1);
-      shadow.addColorStop(0,`rgba(155,175,195,${proximity*.18})`);
-      shadow.addColorStop(.5,`rgba(70,85,105,${proximity*.12})`);
+      shadow.addColorStop(0,`rgba(155,175,195,${proximity*.12})`);
+      shadow.addColorStop(.5,`rgba(130,155,180,${proximity*.06})`);
       shadow.addColorStop(1,'rgba(0,0,0,0)');
       ctx.fillStyle=shadow;ctx.beginPath();ctx.arc(0,0,1,0,Math.PI*2);ctx.fill();ctx.restore();
     }
     for(const p of positions){
       ctx.save();ctx.translate(p.x,p.y);
-      ctx.shadowColor='rgba(20,24,40,.3)';ctx.shadowBlur=12;ctx.shadowOffsetY=7;
+      ctx.shadowColor='rgba(110,140,170,.14)';ctx.shadowBlur=12;ctx.shadowOffsetY=7;
       ctx.drawImage(textures[p.i],-p.r,-p.r,p.r*2,p.r*2);
       ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
       ctx.rotate(Math.atan2(lightY-p.y,lightX-p.x));
