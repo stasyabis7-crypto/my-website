@@ -134,15 +134,15 @@
     for(let y=0;y<size;y++) for(let x=0;x<size;x++) {
       const nx=(x+.5-size/2)/(size/2), ny=(y+.5-size/2)/(size/2), r=Math.hypot(nx,ny);
       if(r>1) continue;
-      // Convex lens: enlarged centre, steep compression at the circular rim.
-      const lens=.72+.28*r*r*r*r, ripple=.0025*Math.sin(nx*75+Math.sin(ny*40));
-      const sx=Math.max(0,Math.min(size-1,Math.round((nx*lens+ripple+1)*.5*(size-1))));
-      const sy=Math.max(0,Math.min(size-1,Math.round((ny*lens+ripple+1)*.5*(size-1))));
+      // Smooth convex glass: no surface ripples or artificial grain.
+      const lens=.72+.28*r*r*r*r;
+      const sx=Math.max(0,Math.min(size-1,Math.round((nx*lens+1)*.5*(size-1))));
+      const sy=Math.max(0,Math.min(size-1,Math.round((ny*lens+1)*.5*(size-1))));
       const a=(y*size+x)*4,b=(sy*size+sx)*4;
-      const shade=.94-.30*Math.pow(r,5), grain=Math.sin(x*12.9898+y*78.233)*1.2;
+      const shade=.94-.30*Math.pow(r,5);
       const reflection=.12*Math.pow(1-Math.sqrt(1-r*r),5);
       for(let c=0;c<3;c++) {
-        const base=pixels[b+c]*shade+grain;
+        const base=pixels[b+c]*shade;
         result.data[a+c]=base+(255-base)*reflection;
       }
       result.data[a+3]=Math.min(255,(1-r)*size*128);
