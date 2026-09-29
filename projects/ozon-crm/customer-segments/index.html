@@ -208,8 +208,8 @@ body {
 }
 .crm-bento > * { margin-top: 0; }
 .crm-bento .case-cover__media img { height: 100%; }
-/* Картинки концептов — без обводки. */
-.crm-bento .case-cover__media { border: 0; }
+/* Картинки концептов — без обводки, кроме белых (crm-bento__framed). */
+.crm-bento .case-cover__media:not(.crm-bento__framed) { border: 0; }
 /* Метрики под бенто — с тем же зазором, что между ячейками. */
 .crm-bento + .case-cover__metrics-scroll .case-cover__metrics { margin-top: 16px; }
 .crm-bento__big { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
@@ -559,7 +559,7 @@ body {
           <div class="case-cover__media crm-bento__big"><img src="media/concepts/bento-1.webp" width="1424" height="1424" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
           <div class="case-cover__media crm-bento__wide"><img src="media/concepts/bento-2.webp?v=2" width="1500" height="736" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
           <div class="case-cover__media crm-bento__square"><img src="media/concepts/bento-4.webp" width="696" height="696" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
-          <div class="case-cover__media crm-bento__square"><img src="media/concepts/bento-3.webp" width="1732" height="1732" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
+          <div class="case-cover__media crm-bento__square crm-bento__framed"><img src="media/concepts/bento-3.webp" width="1732" height="1732" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
         </div>
       </section>
 
