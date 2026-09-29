@@ -215,6 +215,8 @@ body {
 .crm-bento__big { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
 .crm-bento__wide { grid-column: span 2; aspect-ratio: 2 / 1; }
 .crm-bento__square { aspect-ratio: 1; }
+/* Видео трёх шагов — вплотную под карточками, отступ как между ними. */
+.case-schedule .crm-steps-video { margin-top: 16px; }
 @media (max-width: 900px) {
   .crm-bento { grid-template-columns: repeat(2, 1fr); }
   .crm-bento__big { grid-row: auto; aspect-ratio: 1; }
@@ -608,6 +610,9 @@ body {
             <h3 class="case-card__title text-h2">Как показать</h3>
             <p class="case-card__subtitle text-body">Настроить подходящий формат и целевую страницу</p>
           </div>
+        </div>
+        <div class="case-cover__media case-cover__media--natural crm-steps-video">
+          <video src="media/steps/steps-1440x900-60fps.mp4" width="2880" height="1800" muted loop playsinline autoplay preload="metadata" aria-label="Три шага создания рассылки: кому отправить, что предложить, как показать"></video>
         </div>
       </div>
 
