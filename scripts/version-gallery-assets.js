@@ -36,8 +36,6 @@ const assets = [
   'components/chip-scroller/chip-scroller.js',
   'components/project-feed/project-feed.css',
   'components/project-feed/project-feed.js',
-  'components/work-gallery/work-gallery.css',
-  'components/work-gallery/work-gallery.js',
   // Everything else the pages link: the CDN caches a ?v= URL forever, so a
   // visit during a partial FTP upload would pin an old file under a new URL.
   'styles/scale.css',

@@ -42,7 +42,7 @@
 
 /* Фон блокировки скролла переиспользует .contact-scroll-lock (см.
    site-chrome.css) — тот же приём без position:fixed/сохранения scrollY,
-   уже учтён в page-motion.js/work-gallery.js. */
+   уже учтён в page-motion.js. */
 
 .case-lightbox {
   position: fixed;

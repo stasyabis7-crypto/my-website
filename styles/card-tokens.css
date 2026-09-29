@@ -10,8 +10,7 @@
   :root { --project-card-radius: 12px; }
 }
 
-/* Общий бейдж обложек Главной и карточек проектов. */
-.work-gallery .work-gallery__tag,
+/* Бейдж карточек проектов. */
 .project-card .project-card__tag {
   margin: 0;
   padding: 3px 8px;

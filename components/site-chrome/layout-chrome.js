@@ -269,7 +269,7 @@
       var gallery = document.getElementById('works-gallery');
       if (!gallery) return;
       event.preventDefault();
-      var inset = gallery.classList.contains('work-gallery') ? 0 : header ? header.getBoundingClientRect().height + 26 : 20;
+      var inset = header ? header.getBoundingClientRect().height + 26 : 20;
       var destination = function () { return window.scrollY + gallery.getBoundingClientRect().top - inset; };
       if (location.hash !== '#works-gallery') history.pushState(null, '', '#works-gallery');
       navigateScroll(destination);

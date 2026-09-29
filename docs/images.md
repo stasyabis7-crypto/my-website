@@ -1,13 +1,9 @@
 # Ресурсы сайта
 
-Обложки коллекций Главной находятся в `pages/home/assets/avito/` и
-`pages/home/assets/ozon/`, в формате WebP. Баннер и обложка раздела — в
-`projects/<раздел>/assets/`. Общие иконки находятся в `components/icons/`,
-аватар, логотип и favicon — в `components/site-brand/`. Корневого `assets/` нет.
-Варианты `640`, `1280`, `1920` используются через `srcset` и прямые ссылки;
-`original` нужен отдельным карточкам. Это рабочие размеры, не случайные копии.
-Подключения и выбор вариантов: `pages/home/data/avito.js`, `ozon.js`
-и HTML разделов в `projects/`.
+Обложки кейсов лежат в `projects/<раздел>/<кейс>/covers/`, медиа — в `media/`.
+Общие иконки находятся в `components/icons/`, аватар, логотип и favicon — в
+`components/site-brand/`. Корневого `assets/` нет. В `pages/home/assets/` остался
+только `ozon/4-original.webp` — обложка поста на странице «Посты».
 
 Неподключённые PNG-папки `covers avito/` и `covers ozon/` убраны из проекта.
 Исходники сохранены отдельным проверенным ZIP-архивом в локальном каталоге

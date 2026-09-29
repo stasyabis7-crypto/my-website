@@ -116,7 +116,6 @@
   :is(a[href], [role="button"]):has(:is(img, picture, video, canvas)):not(.btn):active,
   .case-lightbox-openable:active,
   .works-grid__item:active,
-  .work-gallery__work:active,
   .project-card:active {
     scale: 1;
     transform: none;
