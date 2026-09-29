@@ -227,16 +227,15 @@
 }
 
 /* Frosted-glass square (cover action): the cover shows through heavily
-   blurred and slightly dimmed, a light hairline edges the tile, white glyph.
+   blurred under a light milky tint, no outline, dark glyph.
    Usage: .btn.btn--fill-glass.btn--icon-only[.btn--icon-diagonal-motion]. */
 .btn--fill-glass {
   /* Square tile with softly rounded corners, not a pill. */
   border-radius: var(--radius-inner);
-  border: 1px solid rgb(255 255 255 / .28);
-  background-color: rgb(20 20 20 / .3);
-  color: #fff;
-  -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(.85);
-  backdrop-filter: blur(18px) saturate(180%) brightness(.85);
+  background-color: rgb(255 255 255 / .62);
+  color: #111111;
+  -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.1);
+  backdrop-filter: blur(18px) saturate(180%) brightness(1.1);
 }
 
 /* Primary tile: the black primary fill in the square shape of the cover
