@@ -1060,6 +1060,11 @@
   margin-top: auto;
 }
 
+/* С заголовком к низу едет он, текст идёт сразу под ним. */
+.case-problems__card .case-card__title {
+  margin-top: auto;
+}
+
 /* ─── .case-moodboard — заголовок + .case-cards-feature, низ вровень ───
    Та же сетка из 2 колонок, что у .case-about (case-cards.css:
    .case-cards-feature), но карточки — не .case-card, без затемнения/

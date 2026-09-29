@@ -207,6 +207,8 @@ body {
   margin-top: var(--space-intro-media);
 }
 .crm-bento .crm-stub { margin-top: 0; }
+/* Метрики под бенто — с тем же зазором, что между ячейками. */
+.crm-bento + .case-cover__metrics-scroll .case-cover__metrics { margin-top: 16px; }
 .crm-bento__big { grid-column: span 2; grid-row: span 2; }
 .crm-bento__wide { grid-column: span 2; aspect-ratio: 2 / 1; }
 .crm-bento__square { aspect-ratio: 1; }
@@ -621,15 +623,18 @@ body {
         <div class="case-problems__grid case-cards-grid case-cards-grid--cols-3">
           <div class="case-card case-problems__card">
             <span class="case-problems__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt-2.svg')" aria-hidden="true"></span>
-            <p class="case-card__subtitle text-body">1. Кому отправить. Выбрать аудиторию</p>
+            <h3 class="case-card__title text-h2">Кому отправить</h3>
+            <p class="case-card__subtitle text-body">Выбрать аудиторию</p>
           </div>
           <div class="case-card case-problems__card">
             <span class="case-problems__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt-1.svg')" aria-hidden="true"></span>
-            <p class="case-card__subtitle text-body">2. Что предложить. Использовать акцию, бонусы или рассказать о товарах</p>
+            <h3 class="case-card__title text-h2">Что предложить</h3>
+            <p class="case-card__subtitle text-body">Использовать акцию, бонусы или рассказать о товарах</p>
           </div>
           <div class="case-card case-problems__card">
             <span class="case-problems__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt.svg')" aria-hidden="true"></span>
-            <p class="case-card__subtitle text-body">3. Как показать. Настроить подходящий формат и целевую страницу</p>
+            <h3 class="case-card__title text-h2">Как показать</h3>
+            <p class="case-card__subtitle text-body">Настроить подходящий формат и целевую страницу</p>
           </div>
         </div>
       </div>
