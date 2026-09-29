@@ -220,22 +220,12 @@ body {
   margin-top: var(--space-intro-media);
 }
 .sub-entry-grid > * { margin-top: 0; }
-.sub-entry-grid__tall { grid-column: 2; grid-row: 1 / span 2; }
+.sub-entry-grid .case-cover__media { border: 0; aspect-ratio: 1424 / 696; }
+.sub-entry-grid .sub-entry-grid__tall { grid-column: 2; grid-row: 1 / span 2; aspect-ratio: auto; }
 @media (max-width: 900px) {
   .sub-entry-grid { grid-template-columns: 1fr; }
-  .sub-entry-grid__tall { grid-column: auto; grid-row: auto; aspect-ratio: 1; }
+  .sub-entry-grid .sub-entry-grid__tall { grid-column: auto; grid-row: auto; aspect-ratio: 1; }
 }
-/* Заглушки медиа до готовых картинок: размер экспорта подписан. */
-.sub-stub {
-  display: grid;
-  place-items: center;
-  aspect-ratio: var(--stub-ratio, auto);
-  border: 1px dashed var(--color-text-muted);
-  border-radius: var(--case-content-radius, var(--radius-surface));
-  background: var(--case-surface);
-  color: var(--case-accent);
-}
-
 /* Бенто «Итога» (как в CRM): большой квадрат 2×2, широкая 2×1 и два квадрата 1×1. */
 .sub-bento {
   display: grid;
@@ -653,11 +643,10 @@ body {
         <h2 class="case-role__title text-h1">Точки входа</h2>
         <p class="case-role__subtitle case-subtitle text-body-lg">Я предусмотрела три точки входа в подписку: после подачи объявления, в выдаче объявлений, на чарити лендингах</p>
 
-        <!-- Заглушки: левые 1424×696 (2:1), правая 1424×1424 (1:1) — высота правой = две левые + зазор. -->
         <div class="sub-entry-grid">
-          <div class="sub-stub text-body" style="--stub-ratio: 2 / 1">1 · 1424 × 696</div>
-          <div class="sub-stub text-body" style="--stub-ratio: 2 / 1">2 · 1424 × 696</div>
-          <div class="sub-stub sub-entry-grid__tall text-body">3 · 1424 × 1424</div>
+          <div class="case-cover__media"><img src="media/entry-points/entry-1.webp" width="1424" height="696" alt="Баннер «Умножайте добро» в выдаче объявлений" loading="lazy" /></div>
+          <div class="case-cover__media"><img src="media/entry-points/entry-2.webp" width="1424" height="696" alt="Блок подписки на charity-лендинге" loading="lazy" /></div>
+          <div class="case-cover__media sub-entry-grid__tall"><img src="media/entry-points/entry-3.webp" width="1424" height="1424" alt="Шторка «Умножайте добро» после подачи объявления" loading="lazy" /></div>
         </div>
 
         <p class="case-role__description case-subtitle text-body-lg">После подачи предлагаем помощь, когда основная задача уже завершена; в выдаче знакомим с подпиской через компактный баннер, сохраняя фокус на поиске; на charity-лендинге раскрываем условия подробнее для тех, кто уже интересуется благотворительностью.</p>
