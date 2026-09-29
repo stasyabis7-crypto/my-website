@@ -42,6 +42,11 @@ html.contact-scroll-lock, html.contact-scroll-lock body { overflow: hidden; over
   .site-header .site-header__cta { display: none; }
   .site-socials .site-menu-trigger { display: inline-flex; }
 }
+/* На десктопе «Статьи»/«Посты» видны в хедере (активная — с точкой),
+   поэтому стрелка «назад» на этих страницах не нужна — хедер как на главной. */
+@media (min-width: 1000px) {
+  .collection-page .site-header__back { display: none; }
+}
 
 /* Desktop-only anchored dropdown for "Связаться" — a calm, non-modal
    popover (no backdrop/scroll-lock/focus-trap), same dark-glass recipe
