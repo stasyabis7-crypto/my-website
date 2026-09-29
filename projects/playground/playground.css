@@ -2,6 +2,9 @@
    карточке открывает фото на весь экран (components/case-lightbox). */
 .collection__section > .playground-grid { margin-top: 28px; }
 
+/* Между картинками везде 16px — и на десктопе, и на телефоне. */
+.playground-grid { --wg-gap: 16px; }
+
 /* Та же лёгкая кромка, что у обложек и скриншотов в кейсах. */
 .playground-grid .works-grid__item { border: var(--media-border); }
 
@@ -10,8 +13,14 @@
 .playground-grid__row--framed .works-grid__item { background: var(--color-surface); }
 .playground-grid__row--framed .works-grid__item img {
   position: absolute;
-  inset: 8%;
-  width: 84%;
-  height: 84%;
-  object-fit: contain;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: auto;
+  height: auto;
+  max-width: 84%;
+  max-height: 84%;
+  /* Скругление как у экрана телефона (~14% ширины); вертикаль задана
+     отдельно, чтобы угол оставался круглым, а не эллипсом. */
+  border-radius: 14% / 6.5%;
 }
