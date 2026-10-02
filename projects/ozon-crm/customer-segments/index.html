@@ -217,6 +217,8 @@ body {
 .crm-bento__square { aspect-ratio: 1; }
 /* Видео трёх шагов — вплотную под карточками, отступ как между ними. */
 .case-schedule .crm-steps-video { margin-top: 16px; }
+/* Текст после видео — с тем же зазором, что между вступлением и медиа. */
+.case-schedule .case-cover__media + .case-subtitle { margin-top: var(--space-intro-media); }
 @media (max-width: 900px) {
   .crm-bento { grid-template-columns: repeat(2, 1fr); }
   .crm-bento__big { grid-row: auto; aspect-ratio: 1; }
@@ -581,6 +583,8 @@ body {
         <div class="case-cover__media case-cover__media--natural">
             <video src="media/summary/key-segment-tooltip-1440x900-60fps.mp4" width="2880" height="1800" muted loop playsinline autoplay preload="metadata" aria-label="Блок «Ключевой сегмент» под таблицей с рекомендациями для выбранной группы"></video>
           </div>
+        <p class="case-subtitle text-body-lg">Плюс: у продавца есть точка старта. Минус: остальные сегменты получают меньше внимания.</p>
+        <p class="case-subtitle text-body-lg">Почему так: большинство продавцов не знает, с чего начать.</p>
       </div>
 
       <section class="case-block case-favorites" id="setup" tabindex="-1">
