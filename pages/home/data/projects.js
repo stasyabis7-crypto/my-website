@@ -40,7 +40,7 @@ window.portfolioProjects = [
   {
     id: 'recycle-map',
     title: 'Карта переработки вещей',
-    description: 'Поиск, выбор и сохранение пунктов приёма вещей в избранное',
+    description: 'Поиск пункта приёма, фильтры и избранное',
     href: '/projects/avito-charity/recycle-map/',
     image: '/projects/avito-charity/recycle-map/covers/cover-poster.webp',
     video: '/projects/avito-charity/recycle-map/covers/cover.webm?v=3',
@@ -53,7 +53,7 @@ window.portfolioProjects = [
   {
     id: 'kind-subscription',
     title: 'Добрая подписка',
-    description: 'Подключение и управление «Доброй подпиской»',
+    description: 'Ежемесячная помощь фондам в приложении',
     href: '/projects/avito-charity/subscription/',
     image: '/projects/avito-charity/subscription/covers/subscription-cover-poster-2880x1800.webp',
     video: '/projects/avito-charity/subscription/covers/subscription-cover-loop-1440x900-60fps.mp4',
