@@ -183,7 +183,10 @@
         if(!obstacles.some(box=>Math.hypot(x-Math.max(box.left,Math.min(box.right,x)),y-Math.max(box.top,Math.min(box.bottom,y)))<r+5))pool.push(candidate);
       }
     }
-    const count=Math.min(mobile?24:40,pool.length);
+    // A short phone banner leaves few free grid cells; the pile still needs a crowd,
+    // so its size follows the banner height and reuses the available radii.
+    if(mobile&&!pool.length)pool.push({x:0,y:0,r:base});
+    const count=mobile?Math.min(24,Math.max(pool.length,Math.round(h/28))):Math.min(40,pool.length);
     anchors=Array.from({length:count},(_,i)=>{const p=pool[Math.floor(i*pool.length/count)];const sizes=[1.55,.72,1.05,.82,1.3,.68,1.08,.9];return {...p,r:p.r*sizes[i%sizes.length],i};});
     for(const p of anchors){
       // Stagger release points across the entire banner, including behind the copy.
