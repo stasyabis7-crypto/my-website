@@ -670,14 +670,24 @@ body {
         </div>
       </section>
 
-      <!-- Настроить подписку — компонент .case-moodboard, два видео рядом + текст ниже. -->
+      <!-- Настроить подписку — два видео рядом в карточках с плашками-подписями (как «До/После») + текст ниже. -->
       <section class="case-block case-moodboard case-settings" id="settings" tabindex="-1">
         <h2 class="case-moodboard__title text-h1">Настроить подписку</h2>
         <p data-subtitle class="case-moodboard__subtitle case-subtitle text-body-lg">На экране подключения я собрала основные условия подписки: фонд, сумму и ежемесячность списаний. Человек может выбрать 100, 300 или 500 ₽ либо указать свою сумму. Пояснение о повторении платежа находится рядом с суммой, до кнопки подключения.</p>
 
-        <div class="case-moodboard__grid case-cards-feature">
-          <div class="case-moodboard__media"><video src="media/settings/subscription-payment-flow-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Подключение подписки: выбор суммы и оплата"></video></div>
-          <div class="case-moodboard__media"><video src="media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Шторка «Как это работает» с условиями подписки"></video></div>
+        <div class="case-comparison__grid case-cards-grid case-cards-grid--cols-2">
+          <div class="case-comparison__card case-comparison__card--portrait case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
+            <div class="case-card__media">
+              <video src="media/settings/subscription-payment-flow-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Подключение подписки: выбор суммы и оплата"></video>
+            </div>
+            <p class="case-card__subtitle text-body">Оплата</p>
+          </div>
+          <div class="case-comparison__card case-comparison__card--portrait case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
+            <div class="case-card__media">
+              <video src="media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Шторка «Как это работает» с условиями подписки"></video>
+            </div>
+            <p class="case-card__subtitle text-body">Как это работает</p>
+          </div>
         </div>
 
         <p class="case-comparison__description case-subtitle text-body-lg">Дополнительные условия вынесены в «Как это работает»: отсутствие комиссии, перечисление денег фондам напрямую, ежемесячный «Знак добра», возможность изменения и отключения подписки. Это позволяет сохранить основной экран компактным и дать подробности тем, кому они нужны.</p>
