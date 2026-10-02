@@ -1158,10 +1158,37 @@ a.case-scenario__card:focus-visible { outline: 2px solid var(--color-action-acti
   aspect-ratio: 1600 / 2000;
 }
 
-/* «Концепты»: каждая пара «картинка + текст» отделена от следующей
-   тем же расстоянием, что и блоки кейса. */
-.case-concepts__next.case-cover__media {
-  margin-top: var(--case-block-gap);
+/* Скриншот веба 2880×1600 на всю ширину — карточка в его пропорциях. */
+.case-comparison__card--wide.case-card {
+  aspect-ratio: 2880 / 1600;
+}
+/* На узком экране плашка закрыла бы заметную часть скриншота — подпись
+   уходит под картинку обычным текстом. */
+@media (max-width: 900px) {
+  .case-comparison__card--wide.case-card.case-card--media {
+    aspect-ratio: auto;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    overflow: visible;
+  }
+  .case-comparison__card--wide.case-card--media .case-card__media {
+    position: relative;
+    aspect-ratio: 2880 / 1600;
+    overflow: hidden;
+    border: var(--media-border);
+    border-radius: var(--card-radius, var(--radius-surface));
+  }
+  .case-comparison__card--wide.case-card--media .case-card__subtitle {
+    margin-top: 8px;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 .case-favorites__description .text-body-lg + .text-body-lg {

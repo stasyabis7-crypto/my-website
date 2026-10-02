@@ -439,23 +439,24 @@ body {
         </div>
       </section>
 
-      <!-- Концепты — скриншот на всю ширину + пояснение под ним, ритм «Карточки и избранного». -->
+      <!-- Концепты — два скриншота на всю ширину в карточках с плашками-подписями (как «До/После»). -->
       <section class="case-block case-concepts" id="concepts" tabindex="-1">
         <h2 class="text-h1">Концепты</h2>
-        <p class="case-favorites__subtitle case-subtitle text-body-lg">Крутила–вертела разные варианты, чтобы понять, что мы хотим реализовать, обсудить с продактом несколько решений, а также тестировала вариативность компонентов ДС 😝.</p>
+        <p class="case-favorites__subtitle case-subtitle text-body-lg">Сравнила две компоновки. В первой большая шапка заменена мини-панелью, а фильтры остаются в ней на виду. Во второй фильтры спрятаны в одну кнопку, а слева больше места под список. Выбрала первую: фильтр по типу отходов нужен почти каждому, и лишний клик бил бы по основному сценарию. Заодно проверила, как компоненты дизайн-системы ведут себя в разных вариантах.</p>
 
-        <div class="case-cover__media case-cover__media--natural">
-          <img src="media/concepts/var-1.webp?v=2" alt="Концепт карты с миниатюрной панелью вместо большой шапки и фильтрами внутри панели" width="2880" height="1600" loading="lazy" />
-        </div>
-        <div class="case-favorites__description">
-          <p class="case-subtitle text-body-lg">Большую шапку заменили на миниатюрную панель, чтобы не занимать место карты. Из-за этого же решили оставить фильтры в панели, а не под шапкой. В концептах также удалось подкрасться к плавающим плашкам)</p>
-        </div>
-
-        <div class="case-cover__media case-cover__media--natural case-concepts__next">
-          <img src="media/concepts/var-2.webp?v=2" alt="Концепт карты с фильтрами, скрытыми в одну кнопку, и расширенной левой панелью" width="2880" height="1600" loading="lazy" />
-        </div>
-        <div class="case-favorites__description">
-          <p class="case-subtitle text-body-lg">Фильтры не стали скрывать в одну кнопку, так как не хотели прерывать обычный флоу пользователя по использованию фильтров. Хотя выделить больше места слева было хорошей идеей.</p>
+        <div class="case-comparison__grid case-cards-grid">
+          <div class="case-comparison__card case-comparison__card--wide case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
+            <div class="case-card__media">
+              <img src="media/concepts/var-1.webp?v=2" alt="Концепт карты с миниатюрной панелью вместо большой шапки и фильтрами внутри панели" width="2880" height="1600" loading="lazy" />
+            </div>
+            <p class="case-card__subtitle text-body">Вариант 1: мини-панель, выбрали</p>
+          </div>
+          <div class="case-comparison__card case-comparison__card--wide case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
+            <div class="case-card__media">
+              <img src="media/concepts/var-2.webp?v=2" alt="Концепт карты с фильтрами, скрытыми в одну кнопку, и расширенной левой панелью" width="2880" height="1600" loading="lazy" />
+            </div>
+            <p class="case-card__subtitle text-body">Вариант 2: фильтры в одной кнопке</p>
+          </div>
         </div>
       </section>
 
