@@ -903,6 +903,12 @@
   opacity: 0;
   pointer-events: none;
 }
+/* A step may be a link to its section further down the case. */
+a.case-scenario__card { text-decoration: none; }
+a.case-scenario__card:focus-visible { outline: 2px solid var(--color-action-active); outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) {
+  a.case-scenario__card:hover { border-color: var(--color-action-active); }
+}
 .case-scenario__dot {
   width: 8px;
   height: 8px;

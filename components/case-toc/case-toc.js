@@ -282,6 +282,16 @@
     if (!sheet.hidden) closeSheet(() => navigate(item));
     else { setPopover(false); navigate(item); }
   })));
+  // In-page links elsewhere in the case (e.g. scenario steps) scroll like the contents.
+  document.addEventListener('click', event => {
+    if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    const link = event.target.closest('a[href^="#"]');
+    if (!link || root.contains(link) || sheet.contains(link)) return;
+    const item = items.find(entry => entry.link.hash === link.hash);
+    if (!item) return;
+    event.preventDefault();
+    navigate(item);
+  });
   function cancelManual() {
     cancelAnimationFrame(scrollAnimation);
     scrollAnimation = 0;
