@@ -649,14 +649,24 @@ body {
         <p class="case-role__description case-subtitle text-body-lg">После подачи предлагаем помощь, когда основная задача уже завершена; в выдаче знакомим с подпиской через компактный баннер, сохраняя фокус на поиске; на charity-лендинге раскрываем условия подробнее для тех, кто уже интересуется благотворительностью.</p>
       </section>
 
-      <!-- Выбор фонда — компонент .case-moodboard, два видео рядом (как «Концепты»). -->
+      <!-- Выбор фонда — два видео рядом в карточках с плашками-подписями (как «До/После»). -->
       <section class="case-block case-moodboard case-choose-fund" id="choose-fund" tabindex="-1">
         <h2 class="case-moodboard__title text-h1">Выбор фонда</h2>
-        <p data-subtitle class="case-moodboard__subtitle case-subtitle text-body-lg">Я перенесла выбор фонда на первый экран: до выбора суммы можно узнать о подставленном фонде, а при смене фонда открыть подробности о другом двойным нажатием. При разовом пожертвовании подставляем фонды из случайных категорий, чтобы помощь получали и менее популярные направления, помимо детей и животных.</p>
+        <p data-subtitle class="case-moodboard__subtitle case-subtitle text-body-lg">Я перенесла выбор фонда на первый экран: до выбора суммы можно узнать о подставленном фонде. При смене фонда открывается список, а из него можно перейти на страницу фонда с отчётами «Добрые дела фонда». При разовом пожертвовании подставляем фонды из случайных категорий, чтобы помощь получали и менее популярные направления, помимо детей и животных.</p>
 
-        <div class="case-moodboard__grid case-cards-feature">
-          <div class="case-moodboard__media"><video src="media/choose-fund/subscription-fund-flow-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор фонда при оформлении подписки"></video></div>
-          <div class="case-moodboard__media"><video src="media/choose-fund/one-time-donation-flow-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор фонда при разовом пожертвовании"></video></div>
+        <div class="case-comparison__grid case-cards-grid case-cards-grid--cols-2">
+          <div class="case-comparison__card case-comparison__card--portrait case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
+            <div class="case-card__media">
+              <video src="media/choose-fund/subscription-fund-flow-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор фонда при оформлении подписки"></video>
+            </div>
+            <p class="case-card__subtitle text-body">Подписка</p>
+          </div>
+          <div class="case-comparison__card case-comparison__card--portrait case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
+            <div class="case-card__media">
+              <video src="media/choose-fund/one-time-donation-flow-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор фонда при разовом пожертвовании"></video>
+            </div>
+            <p class="case-card__subtitle text-body">Разовое пожертвование</p>
+          </div>
         </div>
       </section>
 
