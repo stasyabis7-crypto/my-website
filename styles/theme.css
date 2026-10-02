@@ -50,7 +50,7 @@
   :root {
     --radius-hero: 20px;
     --radius-surface: 10px;
-    --case-content-radius: 16px;
+    --case-content-radius: 8px;
     --radius-inner: 6px;
     --radius-tag: 4px;
   }
