@@ -27,7 +27,7 @@ window.portfolioProjects = [
   {
     id: 'customer-segments',
     title: 'CRM для продавцов Ozon',
-    description: 'Аналитика покупателей и рекомендации для рекламы',
+    description: 'Сегменты покупателей и рассылки для продавцов',
     href: '/projects/ozon-crm/customer-segments/',
     image: '/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-poster-1440x900.webp',
     video: '/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-1440x900-60fps.mp4',
