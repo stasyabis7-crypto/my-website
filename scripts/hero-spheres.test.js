@@ -65,7 +65,7 @@ const sandbox = {
   const source = fs.readFileSync(path.join(__dirname, '../components/hero-mood/hero-spheres.js'), 'utf8');
   await vm.runInNewContext(source, sandbox);
   assert.equal(frames.size, 1, 'Visible hero starts an animation frame');
-  assert.ok(revealSceneStates.length&&revealSceneStates.every(Boolean),'Copy reveal waits for the sphere scene instead of finishing while assets load');
+  assert.equal(revealSceneStates[0],false,'Copy reveals at once, without waiting for the sphere scene');
   visibilityObserver.deliver([{ target: canvas, isIntersecting: false }, { target: canvas, isIntersecting: true }]);
   assert.equal(frames.size, 1, 'A cached-load batch ending visible must keep the animation running');
   visibilityObserver.deliver([{ target: canvas, isIntersecting: true }, { target: canvas, isIntersecting: false }]);

@@ -22,19 +22,17 @@
   let sceneReady=!ctx;
   hero.classList.add('is-reveal-pending');
   const reveal = () => {
-    if (!sceneReady || document.hidden || document.documentElement.matches('.is-page-loading, .is-transition-pending')) return;
+    // The copy never waits for sphere textures, fonts or the page loader.
+    if (document.hidden) return;
     const lines = [];
     title.querySelectorAll('.hero-reveal-word').forEach(word => {
       if (!lines.includes(word.offsetTop)) lines.push(word.offsetTop);
-      word.style.setProperty('--reveal-delay', `${lines.indexOf(word.offsetTop) * .18}s`);
+      word.style.setProperty('--reveal-delay', `${lines.indexOf(word.offsetTop) * .08}s`);
     });
     hero.classList.remove('is-reveal-pending');
     hero.classList.add('is-revealing');
-    observer.disconnect();
-    if(ctx)wake();
+    if(sceneReady&&ctx)wake();
   };
-  const observer = new MutationObserver(reveal);
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   reveal();
   // A restored page keeps completed CSS animations. Replay the copy alongside
   // the sphere reset, rather than showing old text over a new falling scene.
@@ -42,7 +40,6 @@
     hero.classList.remove('is-revealing');
     hero.classList.add('is-reveal-pending');
     void hero.offsetWidth;
-    observer.observe(document.documentElement,{attributes:true,attributeFilter:['class']});
     reveal();
   };
   addEventListener('pageshow',event=>{if(event.persisted)restartReveal();});
@@ -329,5 +326,5 @@
   }).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
   sceneReady=true;
   resize();
-  reveal();
+  if(hero.classList.contains('is-reveal-pending'))reveal();
 })();

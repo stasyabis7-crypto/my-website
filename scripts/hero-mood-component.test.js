@@ -28,7 +28,7 @@ try {
   assert.equal(run().status, 1, 'Layout changes remain protected');
   fs.writeFileSync(root + '/index.html', changed);
   const template = fs.readFileSync(root + '/components/hero-mood/template.html', 'utf8');
-  fs.writeFileSync(root + '/components/hero-mood/template.html', template.replace('Sr Product Designer', 'Новый текст шаблона'));
+  fs.writeFileSync(root + '/components/hero-mood/template.html', template.replace('Анастасия Вихарева', 'Новый текст шаблона'));
   assert.equal(run().status, 0, 'Template text is not frozen');
   fs.appendFileSync(root + '/components/hero-mood/hero-viewport.js', '\n// changed behavior source\n');
   assert.equal(run().status, 1, 'Behavior source still uses exact approved hash');
