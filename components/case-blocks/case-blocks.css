@@ -1081,6 +1081,18 @@ a.case-scenario__card:focus-visible { outline: 2px solid var(--color-action-acti
   }
 }
 
+/* Заголовок уровня h3: заголовки соседних карточек начинаются на одной
+   линии, подзаголовок идёт в 8px под своим заголовком, а текст самой
+   длинной карточки упирается в нижний отступ. */
+.case-problems__card .case-card__title.text-h3 + .case-card__subtitle.text-body {
+  margin-top: 8px;
+}
+@media (min-width: 901px) {
+  .case-problems__grid:has(.case-card__title.text-h3) > .case-problems__card {
+    display: flex;
+  }
+}
+
 /* ─── .case-moodboard — заголовок + .case-cards-feature, низ вровень ───
    Та же сетка из 2 колонок, что у .case-about (case-cards.css:
    .case-cards-feature), но карточки — не .case-card, без затемнения/
