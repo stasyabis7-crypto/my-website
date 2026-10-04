@@ -185,7 +185,8 @@ to { opacity: 1; transform: translateY(0); } }
    and the copy moves to the bottom of the banner. */
 @media (max-aspect-ratio: 4/5) {
 .mood-hero--video .mood-stage { height: auto; aspect-ratio: 1080 / 1442; align-items: flex-end; padding: 0 22px 30px; }
-.mood-hero--video .mood-content { width: 100%; text-align: center; }
+/* The copy lies on the yellow sweater here, so it is dark, not white. */
+.mood-hero--video .mood-content { width: 100%; text-align: center; color: #111; }
 .mood-hero--video .mood-title { margin-inline: auto; }
 .mood-hero--video .mood-subtitle { margin-inline: auto !important; }
 .mood-hero--video .mood-actions { justify-content: center; }
