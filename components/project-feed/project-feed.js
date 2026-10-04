@@ -24,30 +24,32 @@
 
   // Video tiles loop silently; the poster covers loading, unsupported codecs
   // and reduced motion (then the video never starts).
-  function media(tile, width, height) {
+  function media(tile, width, height, eager) {
     if (!tile.image) {
       // Заглушка: размер, в котором готовить картинку (2x от эталона).
       return '<span class="bento__placeholder text-body">' + width * 2 + ' × ' + height * 2 + '</span>';
     }
     var alt = escape(tile.alt || '');
     var poster = '<img src="' + escape(tile.image) + '" width="' + width * 2 + '" height="' + height * 2 +
-      '" alt="' + alt + '" loading="lazy" decoding="async" />';
+      '" alt="' + alt + '" loading="' + (eager ? 'eager' : 'lazy') + '" decoding="async" />';
     if (!tile.video || reduced.matches) return poster;
     return '<video src="' + escape(tile.video) + '" poster="' + escape(tile.image) + '" width="' + width * 2 +
       '" height="' + height * 2 + '" muted loop playsinline autoplay preload="auto" aria-label="' + alt + '"></video>';
   }
 
   // Плитки — только картинки; на кейс ведёт кнопка.
-  function tile(item) {
+  function tile(item, eager) {
     var width = span(item.col[1]);
     var height = span(item.row[1]);
     return '<div class="bento__tile' + (item.mobile === 'half' ? ' bento__tile--half' : '') +
       '" style="--col:' + item.col[0] + ' / span ' + item.col[1] +
       ';--row:' + item.row[0] + ' / span ' + item.row[1] + ';--ratio:' + width + ' / ' + height + '">' +
-      '<span class="bento__frame">' + media(item, width, height) + '</span></div>';
+      '<span class="bento__frame">' + media(item, width, height, eager) + '</span></div>';
   }
 
-  function card(project) {
+  // The first project sits right under the banner, so its tiles load at once;
+  // the rest wait until they approach the viewport.
+  function card(project, index) {
     var bento = project.bento;
     // Order in the markup follows the phone: text, bento, then the button.
     return '<li class="project-feed__item"><article class="feed-card">' +
@@ -56,7 +58,7 @@
       '<p class="feed-card__description text-body" data-subtitle>' + escape(project.description) + '</p>' +
       '</div>' +
       '<div class="bento" style="--bento-rows:' + bento.rows + ';--bento-ratio:' + span(12) + ' / ' + span(bento.rows) + '">' +
-      bento.tiles.map(tile).join('') +
+      bento.tiles.map(function (item) { return tile(item, index === 0); }).join('') +
       '</div>' +
       '<a class="feed-card__action btn btn--fill-pink btn--icon-right" href="' + escape(project.href) +
       '" aria-label="Смотреть кейс «' + escape(project.title) + '»">Смотреть кейс' +
