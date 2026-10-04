@@ -39,10 +39,18 @@ window.portfolioProjects = [
     bento: {
       rows: 6,
       tiles: [
-        { col: [1, 4], row: [1, 6], mobile: 'full' },
-        { col: [5, 8], row: [1, 4], mobile: 'full' },
-        { col: [5, 4], row: [5, 2], mobile: 'half' },
-        { col: [9, 4], row: [5, 2], mobile: 'half' }
+        { col: [1, 4], row: [1, 6], mobile: 'full',
+          image: '/pages/home/assets/recycle-map/map-categories.webp',
+          alt: 'Карта с пунктами приёма в приложении и панель «Виды переработки»: одежда, пластик, бумага, стекло' },
+        { col: [5, 8], row: [1, 4], mobile: 'full',
+          image: '/pages/home/assets/recycle-map/point-card-web.webp',
+          alt: 'Карточка пункта переработки рядом с веб-версией карты' },
+        { col: [5, 4], row: [5, 2], mobile: 'half',
+          image: '/pages/home/assets/recycle-map/map-pin.webp',
+          alt: 'Метка пункта на карте: «Переработка вещей», часы работы' },
+        { col: [9, 4], row: [5, 2], mobile: 'half',
+          image: '/pages/home/assets/recycle-map/map-icons.webp',
+          alt: 'Иконки интерфейса карты: поиск, поделиться, меню, избранное, закрыть, назад' }
       ]
     }
   },
