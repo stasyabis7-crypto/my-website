@@ -20,7 +20,7 @@
   }
 }
 @media (max-width: 767px) {
-  .project-feed { --bento-gap: 20px; }
+  .project-feed { --bento-gap: 10px; }
 }
 
 .project-feed__grid {
