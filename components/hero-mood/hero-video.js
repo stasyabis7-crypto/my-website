@@ -35,6 +35,29 @@
     reveal();
   });
 
+  // Header controls are white while they sit on the footage and return to the
+  // regular dark fills once the banner has scrolled out from under them.
+  const header = document.querySelector('.site-header');
+  let chromeTicking = false;
+  const syncChrome = () => {
+    chromeTicking = false;
+    const box = header?.getBoundingClientRect();
+    const line = box ? box.top + box.height / 2 : 40;
+    // The banner may stay pinned while the next section slides over it, so ask
+    // what is actually painted under the header rather than where the banner is.
+    const under = document.elementsFromPoint(innerWidth / 2, line)
+      .find(el => !el.closest('.site-header, .site-socials, .contact-dialog'));
+    document.documentElement.classList.toggle('chrome--on-hero', !!under && hero.contains(under));
+  };
+  const queueChrome = () => {
+    if (chromeTicking) return;
+    chromeTicking = true;
+    requestAnimationFrame(syncChrome);
+  };
+  addEventListener('scroll', queueChrome, { passive: true });
+  addEventListener('resize', queueChrome, { passive: true });
+  syncChrome();
+
   const media = hero.querySelector('.hero-video');
   const clip = hero.querySelector('.hero-video__clip');
   if (!media || !clip) return;

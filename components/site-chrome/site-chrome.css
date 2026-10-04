@@ -255,3 +255,8 @@ html:not(.chrome--pinned) .site-socials {
   .contact-dialog__item, .contact-dialog__close-wrap { animation: none !important; }
   .site-header, .site-socials { transition: none; }
 }
+
+/* Над видео-баннером Главной лого белое; за его пределами — обычное тёмное.
+   Класс ставит components/hero-mood/hero-video.js. */
+.site-header__logo { transition-property: top, scale, opacity, color; }
+html.chrome--on-hero .site-header__logo { color: #fff; }

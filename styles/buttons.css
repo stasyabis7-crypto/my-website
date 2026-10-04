@@ -629,3 +629,13 @@ html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[hre
   background: transparent;
   color: var(--color-text);
 }
+
+/* Chrome over the home video banner (html.chrome--on-hero, set by
+   components/hero-mood/hero-video.js while the header overlaps the footage):
+   the primary header action turns white and menu items get white labels.
+   Past the banner the class is removed and the regular dark fills return. */
+.btn--size-chrome:is(.btn--fill-pink, .btn--fill-nav) {
+  transition: transform 0.12s ease, opacity var(--btn-hover-duration) ease, box-shadow 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+}
+html.chrome--on-hero .btn.btn--size-chrome.btn--fill-pink { background-color: #fff; color: #101014; }
+html.chrome--on-hero .btn.btn--size-chrome.btn--fill-nav { color: #fff; }
