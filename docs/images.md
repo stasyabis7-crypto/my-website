@@ -3,8 +3,7 @@
 Обложки кейсов лежат в `projects/<раздел>/<кейс>/covers/`, медиа — в `media/`.
 Общие иконки находятся в `components/icons/`, аватар, логотип и favicon — в
 `components/site-brand/`. Корневого `assets/` нет. В `pages/home/assets/` остался
-`ozon/4-original.webp` — обложка поста на странице «Посты» — и папки
-картинок бенто Главной по `id` проекта (`customer-segments/`, `recycle-map/`, `kind-subscription/`).
+только `ozon/4-original.webp` — обложка поста на странице «Посты».
 
 Неподключённые PNG-папки `covers avito/` и `covers ozon/` убраны из проекта.
 Исходники сохранены отдельным проверенным ZIP-архивом в локальном каталоге

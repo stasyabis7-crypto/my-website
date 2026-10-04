@@ -45,7 +45,8 @@
 | Компонент | Источник / настройка контента | Что переиспользуется |
 | --- | --- | --- |
 | Баннер Главной | [hero-mood](../components/hero-mood/README.md), `template.html`; `components/hero-mood/hero-layout.css`, `hero-viewport.js`, `hero-video.js` | Видео на всю ширину с картинкой-заглушкой, отдельный вертикальный ролик для узких экранов, размытая подложка под текстом, появление текста, reduced motion. Закреплён |
-| Лента проектов Главной | `components/project-feed/`, данные — `pages/home/data/projects.js` | Проект в ряд: текст, кнопка кейса и своя бенто-сетка картинок; вход по якорю |
+| Лента проектов Главной | `components/project-feed/`, данные и теги — `pages/home/data/projects.js` | Переключатель Все/Mobile/Web, адрес с выбором, сетка обложек, теги-подписи, вход по якорю |
+| Строка тегов | `components/chip-scroller/chip-scroller.css/js` | Горизонтальная прокрутка, растворение края, стрелки `.btn--fill-bare` |
 | Статические карточки разделов | `components/project-cards/project-cards.css/js`, HTML в `projects/` | Область ссылки на всю карточку и единая точка фокуса |
 | Первый экран раздела/кейса | `components/page-hero/page-hero.css/js`, `.project-hero` | Общая раскладка и поведение иллюстрации |
 | Блоки кейса | `components/case-blocks/case-blocks.css/js`, `.case-block` | Секции, медиа и карусель команды |

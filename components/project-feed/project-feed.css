@@ -1,12 +1,10 @@
 /*
-  Лента проектов Главной: сразу после баннера проекты идут один под другим.
-  У каждого — название с описанием, кнопка кейса и своя бенто-сетка картинок.
-  На кейс ведёт только кнопка.
-  Кнопки — только типы из styles/buttons.css.
+  Лента проектов Главной: сразу после баннера сетка обложек на всю ширину
+  экрана (две колонки, на телефоне — одна). Кнопки — только типы из
+  styles/buttons.css.
 */
 .project-feed {
   --feed-gutter: 32px;
-  --bento-gap: 16px;
   display: grid;
   gap: 24px;
   /* Заметная пауза после баннера. */
@@ -20,94 +18,90 @@
     padding-bottom: calc(var(--footer-h, 64px) + 96px);
   }
 }
-@media (max-width: 767px) {
-  .project-feed { --bento-gap: 10px; }
-}
 
 .project-feed__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 120px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 80px 24px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 @media (max-width: 767px) {
-  .project-feed__grid { gap: 80px; }
+  .project-feed__grid { grid-template-columns: minmax(0, 1fr); gap: 64px; }
 }
 
-/* Десктоп: текст слева, кнопка справа от него, ниже — бенто. На телефоне
-   кнопка уходит под последнюю плитку (порядок разметки). */
+/* Текст, обложка и теги соседних карточек стоят на общих линиях сетки
+   (subgrid): разная длина подзаголовка не сдвигает обложки. Свой row-gap
+   subgrid-а перекрывает 80px между рядами проектов. */
+.project-feed__item,
 .feed-card {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas:
-    "text action"
-    "bento bento";
-  align-items: end;
-  gap: 24px;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  row-gap: 12px;
   min-width: 0;
 }
-.feed-card__text { grid-area: text; display: grid; align-content: start; }
-/* Перебивает общий отступ .text-h3 + .text-body из typography.css. */
-.feed-card__text > .feed-card__description { margin-top: 4px; }
-.feed-card__action { grid-area: action; }
-@media (max-width: 767px) {
-  .feed-card {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "text" "bento" "action";
-    gap: 20px;
-  }
+.feed-card { grid-column: 1 / -1; }
+@supports not (grid-template-rows: subgrid) {
+  .project-feed__item, .feed-card { grid-row: auto; grid-template-rows: none; }
 }
 
-/* Бенто: 12 колонок и --bento-rows рядов; плитка занимает --col / --row.
-   Пропорция всей сетки задана (--bento-ratio), поэтому плитки сохраняют
-   форму на любой ширине. */
-.bento {
-  grid-area: bento;
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-template-rows: repeat(var(--bento-rows), minmax(0, 1fr));
-  gap: var(--bento-gap);
-  aspect-ratio: var(--bento-ratio);
-  min-width: 0;
+/* Обложка — ссылка карточки (стрелка дублирует её для мыши). Наведение
+   уменьшает рамку, как кликабельные картинки на страницах кейсов
+   (case-lightbox.css). Hover ловит неподвижная обёртка, а уменьшается
+   рамка внутри — иначе на краю
+   уменьшенная обложка выпускала бы курсор и дёргалась. */
+.feed-card__media { --wg-hover-scale: 0.985; }
+.feed-card__frame {
+  position: relative;
+  scale: 1;
+  transition: scale 0.35s var(--button-hover-ease, ease-out);
 }
-/* Плитка — просто картинка: без ссылки и без реакции на наведение. */
-.bento__tile {
+.feed-card__cover {
   display: block;
-  grid-column: var(--col);
-  grid-row: var(--row);
-  min-width: 0;
-  min-height: 0;
-}
-.bento__frame {
-  display: grid;
-  place-items: center;
   overflow: hidden;
-  width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 10;
+  border: var(--project-cover-border);
   border-radius: var(--project-card-radius);
-  /* Скелетон, пока картинка грузится, и фон заглушки. */
+  /* Скелетон, пока обложка грузится. */
   background: var(--skeleton-color);
 }
-.bento__frame img,
-.bento__frame video {
+.feed-card__cover img,
+.feed-card__cover video {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-/* Заглушка: размер картинки для этой плитки. */
-.bento__placeholder { padding: 8px; color: var(--color-text-muted); text-align: center; }
-
-/* Телефон: две колонки. Крупная плитка — на всю ширину, мелкие
-   (.bento__tile--half) встают по две в строку; форма плитки — как на десктопе. */
-@media (max-width: 767px) {
-  .bento {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: none;
-    aspect-ratio: auto;
-  }
-  .bento__tile { grid-column: 1 / -1; grid-row: auto; aspect-ratio: var(--ratio); }
-  .bento__tile--half { grid-column: auto; }
+/* Кнопка-стрелка в правом нижнем углу, как на обложках Постов (project-cards.css). */
+.feed-card__action { position: absolute; right: 16px; bottom: 16px; }
+@media (hover: hover) and (pointer: fine) {
+  .feed-card__media:hover .feed-card__frame { scale: var(--wg-hover-scale); }
 }
+.feed-card__frame:active { scale: var(--wg-hover-scale); transition-duration: 0.2s; }
+.feed-card__cover:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .feed-card__frame { transition-duration: 0.01ms; }
+}
+
+/* Теги — подписи, не кнопки: мелкие плашки без интерактива. */
+.feed-card__tags { margin: 0; padding: 0; list-style: none; gap: 6px; }
+.feed-card__tag {
+  flex: 0 0 auto;
+  padding: 3px 8px;
+  border-radius: var(--radius-tag);
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  font-family: var(--font-family-body);
+  font-size: calc(var(--font-size-text) * .8);
+  line-height: var(--line-height-default);
+  letter-spacing: var(--letter-spacing-text);
+  white-space: nowrap;
+}
+
+/* Порядок: название и описание (плотная группа) → обложка → теги. */
+.feed-card__text { display: grid; align-content: start; margin-bottom: 8px; }
+/* Перебивает общий отступ .text-h3 + .text-body из typography.css. */
+.feed-card__text > .feed-card__description { margin-top: 4px; }
+
