@@ -19,9 +19,15 @@ window.portfolioProjects = [
     bento: {
       rows: 6,
       tiles: [
-        { col: [1, 8], row: [1, 6], mobile: 'full' },
-        { col: [9, 4], row: [1, 3], mobile: 'half' },
-        { col: [9, 4], row: [4, 3], mobile: 'half' }
+        { col: [1, 8], row: [1, 6], mobile: 'full',
+          image: '/pages/home/assets/customer-segments/segments-table.webp',
+          alt: 'Раздел «Сегменты покупателей» в кабинете Ozon Seller: таблица сегментов с рекомендациями' },
+        { col: [9, 4], row: [1, 3], mobile: 'half',
+          image: '/pages/home/assets/customer-segments/activity-feed.webp',
+          alt: 'Лента активностей покупателей — фича на будущее' },
+        { col: [9, 4], row: [4, 3], mobile: 'half',
+          image: '/pages/home/assets/customer-segments/customer-cards.webp',
+          alt: 'Карточка покупателя, подсказка о рассылке постоянным клиентам и календарь периода' }
       ]
     }
   },
