@@ -33,8 +33,6 @@ const assets = [
   'components/image-reveal/image-reveal.css',
   'components/image-reveal/image-reveal.js',
   'pages/home/data/projects.js',
-  'components/chip-scroller/chip-scroller.css',
-  'components/chip-scroller/chip-scroller.js',
   'components/project-feed/project-feed.css',
   'components/project-feed/project-feed.js',
   // Everything else the pages link: the CDN caches a ?v= URL forever, so a

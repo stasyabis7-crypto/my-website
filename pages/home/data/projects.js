@@ -1,66 +1,58 @@
-/* Главная: опубликованные кейсы и система тегов для фильтра
-   (components/project-feed). На Главную попадают только описанные кейсы.
-   Платформа выбирается переключателем, остальные теги — чипами;
-   у проекта не больше четырёх тегов, по одному из каждой группы.
-   video — необязательная обложка-видео (webm, 16:10); image тогда служит
-   заглушкой, пока видео грузится или если его нельзя воспроизвести.
-   Обложка живёт в covers/ кейса и она же — первый кадр страницы кейса
-   (проверяет scripts/check-case-covers.js). */
-window.portfolioPlatforms = [
-  { id: 'mobile', label: 'Mobile' },
-  { id: 'web', label: 'Web' }
-];
+/* Главная: опубликованные кейсы (components/project-feed). На Главную
+   попадают только описанные кейсы; у каждого своя бенто-сетка.
+   Картинки бенто — отдельные файлы Главной, с обложкой на странице кейса
+   они не связаны.
 
-window.portfolioTags = [
-  { id: 'avito', label: 'Avito', group: 'company' },
-  { id: 'ozon', label: 'Ozon', group: 'company' },
-  { id: 'b2c', label: 'B2C', group: 'audience' },
-  { id: 'b2b', label: 'B2B', group: 'audience' },
-  { id: 'charity', label: 'Благотворительность', group: 'industry' },
-  { id: 'ecommerce', label: 'E-commerce', group: 'industry' },
-  { id: 'maps', label: 'Карты', group: 'product' },
-  { id: 'crm', label: 'CRM', group: 'product' },
-  { id: 'payments', label: 'Платежи', group: 'product' }
-];
-
+   bento.rows — число рядов сетки на десктопе (12 колонок, клетка 100px и
+   зазор 16px при ширине сетки 1376px).
+   bento.tiles — плитки по порядку показа на телефоне:
+     col, row — [начало, размах] на десктопе;
+     mobile   — 'full' (на всю ширину) или 'half' (две мелкие в строку);
+     image, video, alt — медиа плитки; пока их нет, плитка показывает
+                         заглушку с размером, в котором готовить картинку. */
 window.portfolioProjects = [
   {
     id: 'customer-segments',
     title: 'CRM для продавцов Ozon',
     description: 'Сегменты покупателей и рассылки для продавцов',
     href: '/projects/ozon-crm/customer-segments/',
-    image: '/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-poster-1440x900.webp',
-    video: '/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-1440x900-60fps.mp4',
-    width: 2880,
-    height: 1800,
-    alt: 'Раздел CRM в кабинете Ozon Seller: постоянные покупатели и рекомендации по сегментам',
-    platforms: ['web'],
-    tags: ['ozon', 'b2b', 'ecommerce', 'crm']
+    bento: {
+      rows: 6,
+      tiles: [
+        { col: [1, 8], row: [1, 6], mobile: 'full' },
+        { col: [9, 4], row: [1, 3], mobile: 'half' },
+        { col: [9, 4], row: [4, 3], mobile: 'half' }
+      ]
+    }
   },
   {
     id: 'recycle-map',
     title: 'Карта переработки вещей',
     description: 'Поиск пункта приёма, фильтры и избранное',
     href: '/projects/avito-charity/recycle-map/',
-    image: '/projects/avito-charity/recycle-map/covers/cover-poster.webp',
-    video: '/projects/avito-charity/recycle-map/covers/cover.webm?v=3',
-    width: 2880,
-    height: 1800,
-    alt: 'Карта Avito с пунктами приёма вещей и панелью категорий: одежда, пластик, бумага, стекло',
-    platforms: ['mobile', 'web'],
-    tags: ['avito', 'b2c', 'charity', 'maps']
+    bento: {
+      rows: 6,
+      tiles: [
+        { col: [1, 4], row: [1, 6], mobile: 'full' },
+        { col: [5, 8], row: [1, 4], mobile: 'full' },
+        { col: [5, 4], row: [5, 2], mobile: 'half' },
+        { col: [9, 4], row: [5, 2], mobile: 'half' }
+      ]
+    }
   },
   {
     id: 'kind-subscription',
     title: 'Добрая подписка',
     description: 'Ежемесячная помощь фондам в приложении',
     href: '/projects/avito-charity/subscription/',
-    image: '/projects/avito-charity/subscription/covers/subscription-cover-poster-2880x1800.webp',
-    video: '/projects/avito-charity/subscription/covers/subscription-cover-loop-1440x900-60fps.mp4',
-    width: 2880,
-    height: 1800,
-    alt: '«Добрая подписка» в приложении Авито',
-    platforms: ['mobile', 'web'],
-    tags: ['avito', 'b2c', 'charity', 'payments']
+    bento: {
+      rows: 6,
+      tiles: [
+        { col: [1, 3], row: [1, 6], mobile: 'half' },
+        { col: [4, 3], row: [1, 6], mobile: 'half' },
+        { col: [7, 6], row: [1, 3], mobile: 'full' },
+        { col: [7, 6], row: [4, 3], mobile: 'full' }
+      ]
+    }
   }
 ];

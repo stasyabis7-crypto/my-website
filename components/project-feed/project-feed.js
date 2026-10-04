@@ -1,6 +1,6 @@
 /*
-  Лента проектов Главной: сетка обложек сразу после баннера, без заголовка
-  и фильтров. Теги под обложкой — только подписи (не фильтр).
+  Лента проектов Главной: один проект — один ряд. Название и описание,
+  кнопка кейса и своя бенто-сетка картинок; любая плитка ведёт на кейс.
   Данные — pages/home/data/projects.js.
 */
 (function () {
@@ -8,12 +8,11 @@
   var feed = document.querySelector('[data-project-feed]');
   if (!feed || !window.portfolioProjects) return;
 
-  var projects = window.portfolioProjects;
-  var tagById = {};
-  (window.portfolioTags || []).forEach(function (tag) { tagById[tag.id] = tag; });
-
   var grid = feed.querySelector('.project-feed__grid');
   var reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  // Клетка и зазор бенто при эталонной ширине сетки 1376px (12 колонок).
+  var CELL = 100;
+  var GAP = 16;
 
   function escape(value) {
     return String(value).replace(/[&<>"']/g, function (char) {
@@ -21,41 +20,50 @@
     });
   }
 
-  // Video covers loop silently; the poster covers loading, unsupported codecs
+  function span(count) { return count * CELL + (count - 1) * GAP; }
+
+  // Video tiles loop silently; the poster covers loading, unsupported codecs
   // and reduced motion (then the video never starts).
-  function media(project) {
-    var poster = '<img src="' + escape(project.image) + '" width="' + project.width + '" height="' + project.height +
-      '" alt="' + escape(project.alt) + '" loading="lazy" decoding="async" />';
-    if (!project.video || reduced.matches) return poster;
-    return '<video src="' + escape(project.video) + '" poster="' + escape(project.image) + '" width="' + project.width +
-      '" height="' + project.height + '" muted loop playsinline autoplay preload="auto" aria-label="' + escape(project.alt) + '"></video>';
+  function media(tile, width, height) {
+    if (!tile.image) {
+      // Заглушка: размер, в котором готовить картинку (2x от эталона).
+      return '<span class="bento__placeholder text-body">' + width * 2 + ' × ' + height * 2 + '</span>';
+    }
+    var alt = escape(tile.alt || '');
+    var poster = '<img src="' + escape(tile.image) + '" width="' + width * 2 + '" height="' + height * 2 +
+      '" alt="' + alt + '" loading="lazy" decoding="async" />';
+    if (!tile.video || reduced.matches) return poster;
+    return '<video src="' + escape(tile.video) + '" poster="' + escape(tile.image) + '" width="' + width * 2 +
+      '" height="' + height * 2 + '" muted loop playsinline autoplay preload="auto" aria-label="' + alt + '"></video>';
+  }
+
+  // Плитки дублируют ссылку кнопки, поэтому скрыты от клавиатуры и
+  // скринридера (фокус — на кнопке).
+  function tile(project, item) {
+    var width = span(item.col[1]);
+    var height = span(item.row[1]);
+    return '<a class="bento__tile' + (item.mobile === 'half' ? ' bento__tile--half' : '') + '" href="' + escape(project.href) +
+      '" tabindex="-1" aria-hidden="true" style="--col:' + item.col[0] + ' / span ' + item.col[1] +
+      ';--row:' + item.row[0] + ' / span ' + item.row[1] + ';--ratio:' + width + ' / ' + height + '">' +
+      '<span class="bento__frame">' + media(item, width, height) + '</span></a>';
   }
 
   function card(project) {
-    var tags = project.tags.map(function (id) { return tagById[id]; }).filter(Boolean).map(function (tag) {
-      return '<li class="feed-card__tag">' + escape(tag.label) + '</li>';
-    }).join('');
-    // Order: title and subtitle, then the cover, then the tags.
-    return '<li class="project-feed__item"><article class="feed-card">' +
+    var bento = project.bento;
+    // Order in the markup follows the phone: text, bento, then the button.
+    return '<li class="project-feed__item"><article class="feed-card" data-action-hover>' +
       '<div class="feed-card__text">' +
       '<h3 class="feed-card__title text-h3">' + escape(project.title) + '</h3>' +
       '<p class="feed-card__description text-body" data-subtitle>' + escape(project.description) + '</p>' +
       '</div>' +
-      '<div class="feed-card__media" data-action-hover><div class="feed-card__frame">' +
-      '<a class="feed-card__cover" href="' + escape(project.href) + '" aria-label="Открыть кейс «' + escape(project.title) + '»">' +
-      media(project) + '</a>' +
-      // Та же стрелка, что на обложках Постов; ведёт туда же, что и обложка,
-      // поэтому скрыта от клавиатуры и скринридера (фокус — на обложке).
-      '<a class="feed-card__action btn btn--fill-glass btn--icon-only btn--icon-diagonal-motion" href="' + escape(project.href) +
-      '" tabindex="-1" aria-hidden="true"><span class="icon icon--arrow-diagonal"></span></a>' +
-      '</div></div>' +
-      '<div class="chip-scroller" data-chip-scroller>' +
-      '<button type="button" class="btn btn--fill-bare btn--icon-only chip-scroller__arrow chip-scroller__arrow--prev" aria-label="Прокрутить теги назад" hidden><span class="icon icon--arrow-left" aria-hidden="true"></span></button>' +
-      '<ul class="chip-scroller__track feed-card__tags" aria-label="Теги">' + tags + '</ul>' +
-      '<button type="button" class="btn btn--fill-bare btn--icon-only chip-scroller__arrow chip-scroller__arrow--next" aria-label="Прокрутить теги вперёд" hidden><span class="icon icon--arrow-right" aria-hidden="true"></span></button>' +
-      '</div></article></li>';
+      '<div class="bento" style="--bento-rows:' + bento.rows + ';--bento-ratio:' + span(12) + ' / ' + span(bento.rows) + '">' +
+      bento.tiles.map(function (item) { return tile(project, item); }).join('') +
+      '</div>' +
+      '<a class="feed-card__action btn btn--fill-pink btn--icon-right" href="' + escape(project.href) +
+      '" aria-label="Смотреть кейс «' + escape(project.title) + '»">Смотреть кейс' +
+      '<span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>' +
+      '</article></li>';
   }
 
-  grid.innerHTML = projects.map(card).join('');
-  if (window.chipScroller) window.chipScroller.init(feed);
+  grid.innerHTML = window.portfolioProjects.map(card).join('');
 })();
