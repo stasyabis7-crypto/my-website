@@ -144,9 +144,9 @@ to { opacity: 1; transform: translateY(0); } }
   height: var(--hero-vh, 100svh);
   min-height: 0;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: calc(var(--header-h, 64px) + clamp(28px, 8vh, 96px)) clamp(24px, 5vw, 88px) 48px;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: calc(var(--header-h, 64px) + 20px) clamp(24px, 4vw, 72px) clamp(32px, 8vh, 88px);
   border-radius: 0;
   background: #2b63c9;
   color: #fff;
@@ -155,7 +155,8 @@ to { opacity: 1; transform: translateY(0); } }
 .hero-video__poster, .hero-video__clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .hero-video__clip { opacity: 0; transition: opacity .5s ease; }
 .hero-video__clip.is-playing { opacity: 1; }
-.mood-hero--video .mood-content { width: min(100%, 640px); margin: 0; text-align: left; }
+/* Landscape: the copy sits bottom right, in the open sky beside the figure. */
+.mood-hero--video .mood-content { width: clamp(320px, 35vw, 640px); max-width: 100%; margin: 0; text-align: left; }
 /* Feathered blur keeps the copy readable wherever it lands on the footage. */
 .mood-hero--video .mood-content::before {
   content: "";

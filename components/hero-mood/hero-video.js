@@ -41,28 +41,51 @@
   const portrait = matchMedia('(max-aspect-ratio: 4/5)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let visible = true;
+  let wanted = '';
+  const clips = new Map();
   // The poster stays underneath, so a slow or failed clip never leaves a hole.
   clip.addEventListener('playing', () => clip.classList.add('is-playing'));
+  // The whole clip is downloaded into memory before it starts: streaming it
+  // made playback stall mid-way and at every loop on a slow connection.
+  const download = source => {
+    if (!clips.has(source)) {
+      clips.set(source, fetch(source).then(response => {
+        if (!response.ok) throw new Error(response.status);
+        return response.blob();
+      }).then(blob => URL.createObjectURL(blob)));
+    }
+    return clips.get(source);
+  };
+  const playback = () => {
+    if (!clip.getAttribute('src')) return;
+    if (visible && !document.hidden && !reduced.matches) clip.play().catch(() => {});
+    else clip.pause();
+  };
   const update = () => {
-    if (reduced.matches) { clip.pause(); return; }
+    if (reduced.matches || navigator.connection?.saveData) { clip.pause(); return; }
     const source = portrait.matches ? media.dataset.videoPortrait : media.dataset.videoLandscape;
-    if (clip.getAttribute('src') !== source) {
+    if (source === wanted) { playback(); return; }
+    wanted = source;
+    download(source).then(url => {
+      if (wanted !== source) return;
       clip.classList.remove('is-playing');
       clip.muted = true;
-      clip.src = source;
-    }
-    if (visible && !document.hidden) clip.play().catch(() => {});
-    else clip.pause();
+      clip.src = url;
+      playback();
+    }).catch(() => {});
   };
   new IntersectionObserver(entries => {
     visible = entries[entries.length - 1].isIntersecting;
-    update();
+    playback();
   }).observe(hero);
   document.addEventListener('visibilitychange', () => {
     if (hero.classList.contains('is-reveal-pending')) reveal();
-    update();
+    playback();
   });
   portrait.addEventListener('change', update);
   reduced.addEventListener('change', update);
-  update();
+  // The clip is decoration: it starts downloading only after the page itself
+  // has loaded, so it never competes with styles, fonts and project covers.
+  if (document.readyState === 'complete') update();
+  else addEventListener('load', update, { once: true });
 })();
