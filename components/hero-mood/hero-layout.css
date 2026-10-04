@@ -185,14 +185,15 @@ to { opacity: 1; transform: translateY(0); } }
    and the copy moves to the bottom of the banner. */
 @media (max-aspect-ratio: 4/5) {
 .mood-hero--video .mood-stage { height: auto; aspect-ratio: 1080 / 1442; align-items: flex-end; padding: 0 22px 30px; }
-.mood-hero--video .mood-content { width: fit-content; max-width: 100%; }
-/* Soft-edged rectangle hugging the copy and the button, not a full-width band. */
+.mood-hero--video .mood-content { width: 100%; text-align: center; }
+.mood-hero--video .mood-title { margin-inline: auto; }
+.mood-hero--video .mood-subtitle { margin-inline: auto !important; }
+.mood-hero--video .mood-actions { justify-content: center; }
+/* Blur only, no tint: a feathered ellipse behind the copy and the button. */
 .mood-hero--video .mood-content::before {
-  inset: -30px -22px -26px;
-  background: rgb(18 40 96 / .36);
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 30px, #000 calc(100% - 30px), transparent), linear-gradient(to bottom, transparent, #000 34px, #000 calc(100% - 30px), transparent);
-  mask-image: linear-gradient(to right, transparent, #000 30px, #000 calc(100% - 30px), transparent), linear-gradient(to bottom, transparent, #000 34px, #000 calc(100% - 30px), transparent);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
+  inset: -44px -22px -30px;
+  background: transparent;
+  -webkit-mask-image: radial-gradient(ellipse closest-side, #000 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse closest-side, #000 35%, transparent 100%);
 }
 }
