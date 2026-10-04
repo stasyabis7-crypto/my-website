@@ -62,10 +62,18 @@ window.portfolioProjects = [
     bento: {
       rows: 6,
       tiles: [
-        { col: [1, 3], row: [1, 6], mobile: 'half' },
-        { col: [4, 3], row: [1, 6], mobile: 'half' },
-        { col: [7, 6], row: [1, 3], mobile: 'full' },
-        { col: [7, 6], row: [4, 3], mobile: 'full' }
+        { col: [1, 3], row: [1, 6], mobile: 'half',
+          image: '/pages/home/assets/kind-subscription/thanks-screens.webp',
+          alt: 'Экран «Спасибо за помощь»: отправляем 100 ₽ в фонд «Старость в радость»' },
+        { col: [4, 3], row: [1, 6], mobile: 'half',
+          image: '/pages/home/assets/kind-subscription/donation-form.webp',
+          alt: 'Форма пожертвования и блок подключённой «Доброй подписки»' },
+        { col: [7, 6], row: [1, 3], mobile: 'full',
+          image: '/pages/home/assets/kind-subscription/promo-star.webp',
+          alt: 'Плашка «Умножайте добро: ежемесячно поддерживайте любимый фонд»' },
+        { col: [7, 6], row: [4, 3], mobile: 'full',
+          image: '/pages/home/assets/kind-subscription/promo-banner.webp',
+          alt: 'Баннер «Помогать фондам проще, чем кажется» с кнопкой «Подключить подписку»' }
       ]
     }
   }
