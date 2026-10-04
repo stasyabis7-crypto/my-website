@@ -1,6 +1,7 @@
 /*
   Лента проектов Главной: сразу после баннера проекты идут один под другим.
   У каждого — название с описанием, кнопка кейса и своя бенто-сетка картинок.
+  На кейс ведёт только кнопка.
   Кнопки — только типы из styles/buttons.css.
 */
 .project-feed {
@@ -71,18 +72,13 @@
   aspect-ratio: var(--bento-ratio);
   min-width: 0;
 }
-/* Плитка — ссылка на кейс. Hover ловит неподвижная плитка, а уменьшается
-   рамка внутри — иначе на краю уменьшенная картинка выпускала бы курсор
-   и дёргалась. */
+/* Плитка — просто картинка: без ссылки и без реакции на наведение. */
 .bento__tile {
-  --wg-hover-scale: 0.985;
   display: block;
   grid-column: var(--col);
   grid-row: var(--row);
   min-width: 0;
   min-height: 0;
-  color: inherit;
-  text-decoration: none;
 }
 .bento__frame {
   display: grid;
@@ -94,8 +90,6 @@
   border-radius: var(--project-card-radius);
   /* Скелетон, пока картинка грузится, и фон заглушки. */
   background: var(--skeleton-color);
-  scale: 1;
-  transition: scale 0.35s var(--button-hover-ease, ease-out);
 }
 .bento__frame img,
 .bento__frame video {
@@ -106,13 +100,6 @@
 }
 /* Заглушка: размер картинки для этой плитки. */
 .bento__placeholder { padding: 8px; color: var(--color-text-muted); text-align: center; }
-@media (hover: hover) and (pointer: fine) {
-  .bento__tile:hover .bento__frame { scale: var(--wg-hover-scale); }
-}
-.bento__tile:active .bento__frame { scale: var(--wg-hover-scale); transition-duration: 0.2s; }
-@media (prefers-reduced-motion: reduce) {
-  .bento__frame { transition-duration: 0.01ms; }
-}
 
 /* Телефон: две колонки. Крупная плитка — на всю ширину, мелкие
    (.bento__tile--half) встают по две в строку; форма плитки — как на десктопе. */

@@ -1,6 +1,6 @@
 /*
   Лента проектов Главной: один проект — один ряд. Название и описание,
-  кнопка кейса и своя бенто-сетка картинок; любая плитка ведёт на кейс.
+  кнопка кейса и своя бенто-сетка картинок; на кейс ведёт только кнопка.
   Данные — pages/home/data/projects.js.
 */
 (function () {
@@ -37,15 +37,14 @@
       '" height="' + height * 2 + '" muted loop playsinline autoplay preload="auto" aria-label="' + alt + '"></video>';
   }
 
-  // Плитки дублируют ссылку кнопки, поэтому скрыты от клавиатуры и
-  // скринридера (фокус — на кнопке).
-  function tile(project, item) {
+  // Плитки — только картинки; на кейс ведёт кнопка.
+  function tile(item) {
     var width = span(item.col[1]);
     var height = span(item.row[1]);
-    return '<a class="bento__tile' + (item.mobile === 'half' ? ' bento__tile--half' : '') + '" href="' + escape(project.href) +
-      '" tabindex="-1" aria-hidden="true" style="--col:' + item.col[0] + ' / span ' + item.col[1] +
+    return '<div class="bento__tile' + (item.mobile === 'half' ? ' bento__tile--half' : '') +
+      '" style="--col:' + item.col[0] + ' / span ' + item.col[1] +
       ';--row:' + item.row[0] + ' / span ' + item.row[1] + ';--ratio:' + width + ' / ' + height + '">' +
-      '<span class="bento__frame">' + media(item, width, height) + '</span></a>';
+      '<span class="bento__frame">' + media(item, width, height) + '</span></div>';
   }
 
   function card(project) {
@@ -57,7 +56,7 @@
       '<p class="feed-card__description text-body" data-subtitle>' + escape(project.description) + '</p>' +
       '</div>' +
       '<div class="bento" style="--bento-rows:' + bento.rows + ';--bento-ratio:' + span(12) + ' / ' + span(bento.rows) + '">' +
-      bento.tiles.map(function (item) { return tile(project, item); }).join('') +
+      bento.tiles.map(tile).join('') +
       '</div>' +
       '<a class="feed-card__action btn btn--fill-pink btn--icon-right" href="' + escape(project.href) +
       '" aria-label="Смотреть кейс «' + escape(project.title) + '»">Смотреть кейс' +
