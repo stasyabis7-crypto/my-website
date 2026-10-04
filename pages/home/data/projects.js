@@ -23,10 +23,10 @@ window.portfolioProjects = [
           image: '/pages/home/assets/customer-segments/segments-table.webp',
           alt: 'Раздел «Сегменты покупателей» в кабинете Ozon Seller: таблица сегментов с рекомендациями' },
         { col: [9, 4], row: [1, 3], mobile: 'half',
-          image: '/pages/home/assets/customer-segments/activity-feed.webp',
+          image: '/pages/home/assets/customer-segments/activity-feed-2.webp',
           alt: 'Лента активностей покупателей — фича на будущее' },
         { col: [9, 4], row: [4, 3], mobile: 'half',
-          image: '/pages/home/assets/customer-segments/customer-cards.webp',
+          image: '/pages/home/assets/customer-segments/customer-cards-2.webp',
           alt: 'Карточка покупателя, подсказка о рассылке постоянным клиентам и календарь периода' }
       ]
     }
