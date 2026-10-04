@@ -51,7 +51,7 @@
   function card(project) {
     var bento = project.bento;
     // Order in the markup follows the phone: text, bento, then the button.
-    return '<li class="project-feed__item"><article class="feed-card" data-action-hover>' +
+    return '<li class="project-feed__item"><article class="feed-card">' +
       '<div class="feed-card__text">' +
       '<h3 class="feed-card__title text-h3">' + escape(project.title) + '</h3>' +
       '<p class="feed-card__description text-body" data-subtitle>' + escape(project.description) + '</p>' +
