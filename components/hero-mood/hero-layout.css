@@ -181,10 +181,12 @@ to { opacity: 1; transform: translateY(0); } }
 .mood-hero--video .hero-reveal-word, .mood-hero--video .mood-subtitle, .mood-hero--video .mood-actions { animation: none !important; opacity: 1 !important; }
 .hero-video__clip { display: none; }
 }
-/* Portrait screens: the vertical clip is shown whole at full width (no crop),
-   and the copy moves to the bottom of the banner. */
+/* Portrait screens: the vertical clip fills the whole screen height; taller
+   phones crop its sides (a little more on the left, to keep the hand in frame).
+   The copy moves to the bottom of the banner. */
 @media (max-aspect-ratio: 4/5) {
-.mood-hero--video .mood-stage { height: auto; aspect-ratio: 1080 / 1442; align-items: flex-end; padding: 0 22px 30px; }
+.mood-hero--video .mood-stage { align-items: flex-end; padding: 0 22px 30px; }
+.hero-video__poster, .hero-video__clip { object-position: 58% 50%; }
 /* The copy lies on the yellow sweater here, so it is dark, not white. */
 .mood-hero--video .mood-content { width: 100%; text-align: center; color: #111; }
 .mood-hero--video .mood-title { margin-inline: auto; }
