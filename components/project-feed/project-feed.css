@@ -86,7 +86,6 @@
   overflow: hidden;
   width: 100%;
   height: 100%;
-  border: var(--project-cover-border);
   border-radius: var(--project-card-radius);
   /* Скелетон, пока картинка грузится, и фон заглушки. */
   background: var(--skeleton-color);
