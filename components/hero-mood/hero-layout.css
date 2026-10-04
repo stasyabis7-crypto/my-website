@@ -136,3 +136,54 @@ to { opacity: 1; transform: translateY(0); } }
      cover (feed gap + card title sit in between) peeks out under the button. */
   .mood-hero--spheres .mood-stage { height: auto; min-height: calc(var(--hero-vh, 100svh) - 240px); padding-top: clamp(100px, 24svh - 30px, 190px); padding-bottom: 72px; }
 }
+
+/* Home video banner: full-bleed clip behind the copy. The colours are fixed —
+   the copy sits on footage, so it does not follow the site theme. */
+.mood-hero--video { padding: 0; }
+.mood-hero--video .mood-stage {
+  height: var(--hero-vh, 100svh);
+  min-height: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: calc(var(--header-h, 64px) + clamp(28px, 8vh, 96px)) clamp(24px, 5vw, 88px) 48px;
+  border-radius: 0;
+  background: #2b63c9;
+  color: #fff;
+}
+.hero-video { position: absolute; z-index: 0; inset: 0; pointer-events: none; }
+.hero-video__poster, .hero-video__clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-video__clip { opacity: 0; transition: opacity .5s ease; }
+.hero-video__clip.is-playing { opacity: 1; }
+.mood-hero--video .mood-content { width: min(100%, 640px); margin: 0; text-align: left; }
+/* Feathered blur keeps the copy readable wherever it lands on the footage. */
+.mood-hero--video .mood-content::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -80px -96px;
+  pointer-events: none;
+  background: rgb(24 62 150 / .3);
+  -webkit-backdrop-filter: blur(26px);
+  backdrop-filter: blur(26px);
+  -webkit-mask-image: radial-gradient(ellipse closest-side, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse closest-side, #000 40%, transparent 100%);
+}
+.mood-hero--video .mood-title { max-width: none; margin: 0; color: inherit; text-wrap: balance; }
+.mood-hero--video .mood-subtitle { margin-inline: 0 !important; color: inherit; }
+.mood-hero--video .mood-actions { display: flex; justify-content: flex-start; }
+.mood-hero--video.is-reveal-pending .hero-reveal-word, .mood-hero--video.is-reveal-pending .mood-subtitle, .mood-hero--video.is-reveal-pending .mood-actions { opacity: 0; }
+.mood-hero--video.is-revealing .hero-reveal-word { animation: hero-text-appear .6s both; animation-delay: var(--reveal-delay); }
+.mood-hero--video.is-revealing .mood-subtitle { animation: hero-text-appear .6s .1s both; }
+.mood-hero--video.is-revealing .mood-actions { animation: hero-text-appear .6s .2s both; }
+@media (prefers-reduced-motion: reduce) {
+.mood-hero--video .hero-reveal-word, .mood-hero--video .mood-subtitle, .mood-hero--video .mood-actions { animation: none !important; opacity: 1 !important; }
+.hero-video__clip { display: none; }
+}
+/* Portrait screens: the vertical clip is shown whole at full width (no crop),
+   and the copy moves to the bottom of the banner. */
+@media (max-aspect-ratio: 4/5) {
+.mood-hero--video .mood-stage { height: auto; aspect-ratio: 1080 / 1442; align-items: flex-end; padding: 0 22px 30px; }
+.mood-hero--video .mood-content { width: 100%; }
+.mood-hero--video .mood-content::before { inset: -72px -22px -30px; background: rgb(18 40 96 / .36); -webkit-mask-image: linear-gradient(to bottom, transparent, #000 84px); mask-image: linear-gradient(to bottom, transparent, #000 84px); }
+}

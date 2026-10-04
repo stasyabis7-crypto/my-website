@@ -19,7 +19,7 @@ function check(file) {
   if (!/<h1\b[^>]*class="[^"]*\bmood-title\b/.test(markup)) fail('Нет заголовка баннера');
   if (!/<p\b[^>]*class="[^"]*\bmood-subtitle\b/.test(markup)) fail('Нет подзаголовка баннера');
   if (file === 'index.html') {
-    if (!markup.includes('class="hero-spheres"') || markup.includes('id="mood-character"')) fail('На Главной ожидаются декоративные сферы без персонажа');
+    if (!markup.includes('class="hero-video__clip"') || !markup.includes('class="hero-video__poster"')) fail('На Главной ожидается видео-баннер с картинкой-заглушкой');
   } else {
     if (!/<img\b[^>]*class="[^"]*\bproject-hero__image\b/.test(markup)) fail('Внутренний баннер должен содержать картинку');
     if (markup.includes('id="mood-character"')) fail('Персонаж не должен заменять картинку внутреннего баннера');

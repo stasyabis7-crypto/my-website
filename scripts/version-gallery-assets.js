@@ -18,6 +18,7 @@ const assets = [
   'components/hero-mood/hero-layout.css',
   'components/hero-mood/hero-viewport.js',
   'components/hero-mood/hero-spheres.js',
+  'components/hero-mood/hero-video.js',
   'components/project-feed/feed-entry.js',
   'styles/layout.css',
   'components/project-cards/project-cards.css',

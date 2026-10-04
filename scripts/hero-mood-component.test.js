@@ -8,7 +8,7 @@ const source = path.resolve(__dirname, '..');
 try {
   const files = ['scripts/hero-mood-component.js', 'scripts/hero-mood-content.js',
     'components/hero-mood/template.html', 'components/hero-mood/baseline.json',
-    'components/hero-mood/hero-spheres.js', 'components/hero-mood/hero-layout.css', 'components/hero-mood/hero-viewport.js', 'index.html'];
+    'components/hero-mood/hero-spheres.js', 'components/hero-mood/hero-video.js', 'components/hero-mood/hero-layout.css', 'components/hero-mood/hero-viewport.js', 'index.html'];
   for (const file of files) {
     fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
     fs.copyFileSync(path.join(source, file), path.join(root, file));

@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="styles/fonts.css?v=3" />
 <link rel="stylesheet" href="components/content-reveal/content-reveal.css?v=1" />
 <link rel="stylesheet" href="components/site-chrome/site-chrome.css?v=2-s1" />
-<link rel="stylesheet" href="components/hero-mood/hero-layout.css?v=fullscreen-5-s1" />
+<link rel="stylesheet" href="components/hero-mood/hero-layout.css?v=video-1" />
 <link rel="stylesheet" href="components/page-loader/page-loader.css?v=3" />
 <link rel="stylesheet" href="components/image-reveal/image-reveal.css?v=1" />
 <script src="components/image-reveal/image-reveal.js?v=1" defer></script>
@@ -139,11 +139,17 @@
 
 
   <main class="container page-works">
-    <!-- Белые сферы. Источник — template.html. -->
+    <!-- Видео-баннер. Источник — template.html. -->
     <!-- component:hero-mood:start -->
-    <section class="mood-hero mood-hero--spheres" id="hero" aria-labelledby="mood-heading">
+    <section class="mood-hero mood-hero--video" id="hero" aria-labelledby="mood-heading">
       <div class="mood-stage">
-        <canvas class="hero-spheres" aria-hidden="true"></canvas>
+        <div class="hero-video" aria-hidden="true" data-video-landscape="/components/hero-mood/media/hero-desktop.mp4" data-video-portrait="/components/hero-mood/media/hero-mobile.mp4">
+          <picture>
+            <source media="(max-aspect-ratio: 4/5)" srcset="/components/hero-mood/media/hero-mobile.webp" width="1086" height="1448" />
+            <img class="hero-video__poster" src="/components/hero-mood/media/hero-desktop.webp" width="1672" height="941" alt="" decoding="async" fetchpriority="high" />
+          </picture>
+          <video class="hero-video__clip" muted loop playsinline preload="none" tabindex="-1" disablepictureinpicture></video>
+        </div>
         <div class="mood-content">
           <h1 class="mood-title text-h1" id="mood-heading">Анастасия Вихарева</h1>
           <p class="mood-subtitle text-body" data-subtitle>Senior Product Designer в Авито, раньше Ozon.<br class="mood-br" /> 6&nbsp;лет проектирую продуктовые сценарии: платежи, CRM, дашборды.</p>
@@ -258,7 +264,7 @@
   </div>
 
   <script src="components/site-chrome/site-chrome.js?v=3"></script>
-  <script src="components/hero-mood/hero-spheres.js"></script>
+  <script src="components/hero-mood/hero-video.js"></script>
   <script src="components/hero-mood/hero-viewport.js?v=dock-bottom-edge-1"></script>
   <script src="components/site-chrome/layout-chrome.js?v=gallery-3"></script>
   <script src="components/page-loader/page-loader.js?v=mood-3"></script>

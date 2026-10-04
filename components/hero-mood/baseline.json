@@ -1,9 +1,10 @@
 {
   "components/hero-mood/template.html": {
     "mode": "hero-content-slots-v1",
-    "sha256": "d7b1d973e7d4009eee596ba2795291fb95c3a9421bb0ab8b756f08932412e1cb"
+    "sha256": "2d80a66cd2950f14eda3234612eba678a91bfefe10044cffdae720b3afcdd594"
   },
-  "components/hero-mood/hero-layout.css": "37fe90b50d106a977ce9e8579da6772bc880673cb6ae761214c2689c7374dc5b",
+  "components/hero-mood/hero-layout.css": "92d3b6916a05b02eaccf81b5b6747ee8391783de5ca80c6a261065477fc63b7a",
   "components/hero-mood/hero-viewport.js": "c5ee69452005be83adec22f935be3553332c2f01ed489eb05898fde07747c176",
-  "components/hero-mood/hero-spheres.js": "30dc1c640685f21c4fc209c616150ff0e880f64f4bbb466f039544179efcb874"
+  "components/hero-mood/hero-spheres.js": "30dc1c640685f21c4fc209c616150ff0e880f64f4bbb466f039544179efcb874",
+  "components/hero-mood/hero-video.js": "4221a9101f72fd37921ffbb64c693fb4b59e3abe725a52fd6e7f8f4616d145de"
 }
