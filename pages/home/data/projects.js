@@ -113,9 +113,16 @@ window.portfolioProjects = [
     title: 'Цены в ЛК селлера',
     feed: { image: '/projects/ozon-prices/prices-table/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Тёмный экран приложения продавца Ozon: кванты, цены товара, цена для покупателя и бустинг в поиске'
+  },
+  {
+    id: 'gamification',
+    soon: true,
+    title: 'Геймификация в ЛК',
+    feed: { image: '/projects/avito-charity/gamification/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Блок «Творим добро» со списком заданий и баллами: пожертвовать в фонд, купить мерч, поддержать «ЛизаАлерт»'
   }
 ];
 
 /* Заглушки в ленте Главной: пустые плитки на местах проектов, которые ещё
    не описаны. Убираются по мере добавления кейсов выше. */
-window.portfolioFeedStubs = 2;
+window.portfolioFeedStubs = 1;
