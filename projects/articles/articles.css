@@ -4,19 +4,22 @@
   круглая стеклянная кнопка со стрелкой в правом верхнем углу; кликается вся
   плитка (зона клика кнопки растянута на неё).
   От 1000px: четыре колонки, квадратные плитки, каждая восьмая пара — крупная
-  2×2 попеременно слева и справа, рядом остаётся пустая ячейка.
+  2×2 попеременно слева и справа, рядом остаётся пустая ячейка. Крупная плитка
+  выше своей ширины на отступ между рядами.
   700–999px: две колонки квадратов. Ниже 700px: одна колонка, высота по тексту.
 */
 .collection {
   --articles-gutter: 32px;
   --articles-gap: 16px;
+  /* Между рядами воздуха больше, чем между колонками, как в ленте Главной. */
+  --articles-row-gap: 48px;
   max-width: none;
   padding-inline: var(--articles-gutter);
 }
 .articles-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--articles-gap);
+  gap: var(--articles-row-gap) var(--articles-gap);
   margin: 28px 0 0;
   padding: 0;
   list-style: none;
@@ -66,10 +69,11 @@
   .articles-grid > :is(:nth-child(8n + 1), :nth-child(8n + 7)) { --tile-pad: 32px; }
 }
 @media (max-width: 999px) {
-  .collection { --articles-gutter: 16px; --articles-gap: 10px; }
+  .collection { --articles-gutter: 16px; --articles-gap: 10px; --articles-row-gap: 28px; }
   .articles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 699px) {
+  .collection { --articles-row-gap: 10px; }
   .articles-grid { grid-template-columns: minmax(0, 1fr); }
   .article-tile {
     --tile-pad: 16px;

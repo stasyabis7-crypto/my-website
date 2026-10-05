@@ -1,32 +1,30 @@
 /*
-  Playground — ряды одной высоты из картинок разной ширины.
+  Playground — каталог, как лента Главной: четыре колонки, широкие работы
+  занимают две, квадратные одну, часть ячеек намеренно пустует.
   Пропорции плиток прежние: широкая 1852:1158, квадрат 1:1 (вертикальные
-  экраны телефона стоят внутри квадратной подложки). В ряду ширина плитки
-  пропорциональна её пропорции, поэтому высоты совпадают, а широкая плитка
-  встаёт то слева, то справа — ряды идут зигзагом. Последний ряд — три квадрата.
-  До 640px плитки идут друг под другом во всю ширину (styles/layout.css).
-  Без скруглений; сетка на всю ширину окна с полями, как на Главной.
+  экраны телефона стоят целиком внутри квадратной подложки). Плитки в ряду
+  выровнены по верху; между рядами воздуха больше, чем между колонками.
+  До 999px — две колонки (широкая во всю ширину, квадраты парами),
+  до 640px — одна. Без скруглений, поля как на Главной.
 */
 .collection {
-  --wg-side: 32px;
-  --wg-gap: 16px;
-  --wg-max-width: none;
-  --wg-radius: 0px;
+  --pg-gutter: 32px;
+  --pg-gap: 16px;
+  --pg-row-gap: 56px;
   max-width: none;
-  padding-inline: var(--wg-side);
+  padding-inline: var(--pg-gutter);
 }
-@media (max-width: 999px) {
-  .collection { --wg-side: 16px; --wg-gap: 10px; }
+.playground-catalog {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--pg-row-gap) var(--pg-gap);
+  align-items: start;
+  margin-top: 28px;
 }
-.collection__section > .playground-grid { margin-top: 28px; }
-
-.playground-grid__item--wide { aspect-ratio: 1852 / 1158; }
+.playground-catalog > .works-grid__item { border-radius: 0; }
+.playground-grid__item--wide { grid-column: span 2; aspect-ratio: 1852 / 1158; }
 .playground-grid__item--square,
 .playground-grid__item--framed { aspect-ratio: 1; }
-@media (min-width: 641px) {
-  .playground-grid__row > .playground-grid__item--wide { flex: 1852 1 0; }
-  .playground-grid__row > :is(.playground-grid__item--square, .playground-grid__item--framed) { flex: 1158 1 0; }
-}
 
 /* Вертикальный экран телефона — целиком внутри квадратной подложки. */
 .playground-grid__item--framed { background: var(--color-surface); }
@@ -39,4 +37,28 @@
   height: auto;
   max-width: 84%;
   max-height: 84%;
+}
+
+@media (min-width: 1000px) {
+  /* Ряд 1: широкая слева, два квадрата справа. */
+  .playground-catalog > :nth-child(1) { grid-area: 1 / 1 / auto / span 2; }
+  .playground-catalog > :nth-child(2) { grid-area: 1 / 3; }
+  .playground-catalog > :nth-child(3) { grid-area: 1 / 4; }
+  /* Ряд 2: квадрат слева, пустая ячейка, широкая справа. */
+  .playground-catalog > :nth-child(4) { grid-area: 2 / 1; }
+  .playground-catalog > :nth-child(5) { grid-area: 2 / 3 / auto / span 2; }
+  /* Ряд 3: два квадрата через ячейку. */
+  .playground-catalog > :nth-child(6) { grid-area: 3 / 2; }
+  .playground-catalog > :nth-child(7) { grid-area: 3 / 4; }
+  /* Ряд 4: широкая слева, пустая ячейка, квадрат справа. */
+  .playground-catalog > :nth-child(8) { grid-area: 4 / 1 / auto / span 2; }
+  .playground-catalog > :nth-child(9) { grid-area: 4 / 4; }
+}
+@media (max-width: 999px) {
+  .collection { --pg-gutter: 16px; --pg-gap: 10px; --pg-row-gap: 10px; }
+  .playground-catalog { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: dense; }
+}
+@media (max-width: 640px) {
+  .playground-catalog { grid-template-columns: minmax(0, 1fr); }
+  .playground-grid__item--wide { grid-column: auto; }
 }
