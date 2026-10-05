@@ -5,8 +5,8 @@
   1×1; часть ячеек намеренно пустует — это воздух раскладки. Место каждой
   плитки задаёт project-feed.js (--feed-col / --feed-row).
   Строки одной высоты: вертикальная плитка + место под название, поэтому
-  пустая ячейка держит свою высоту, а крупная обложка заканчивается ровно
-  по низу второй строки. Высота считается от ширины ленты (cqw), так что
+  пустая ячейка держит свою высоту, а крупная обложка (ровно 3:4)
+  заканчивается по низу второй строки. Высота считается от ширины ленты (cqw), так что
   плитки меняют размер пропорционально на любой ширине.
 
   Ниже 1000px: поток в две колонки, каждая пятая плитка — во всю ширину.
@@ -20,7 +20,9 @@
   --feed-gap: 16px;
   --feed-row-gap: 40px;
   --feed-cols: 4;
-  /* Пропорция плитки: ширина к высоте. */
+  /* Пропорции обложек: ширина к высоте. Крупная плитка — ровно 3:4 на любой
+     ширине, чтобы её обложка не обрезалась; обычная на телефоне — ровно 5:6. */
+  --feed-big-ratio: 3 / 4;
   --feed-tile-ratio: 5 / 6;
   /* Название — того же размера, что пункты меню в шапке (текст .btn). */
   --feed-caption-size: calc(var(--font-size-text) * .85);
@@ -44,7 +46,11 @@
 
 .project-feed__grid {
   --feed-col-w: calc((100cqw - (var(--feed-cols) - 1) * var(--feed-gap)) / var(--feed-cols));
-  --feed-tile-h: calc(var(--feed-col-w) / (var(--feed-tile-ratio)));
+  /* Высота обычной плитки на десктопе выводится из крупной: две строки, подпись
+     и отступ между ними вместе дают обложку 3:4. Обычная плитка при этом
+     получается около 5:6 (отклонение до пары процентов). */
+  --feed-big-h: calc((2 * var(--feed-col-w) + var(--feed-gap)) / (var(--feed-big-ratio)));
+  --feed-tile-h: calc((var(--feed-big-h) - var(--feed-caption-h) - var(--feed-row-gap)) / 2);
   display: grid;
   grid-template-columns: repeat(var(--feed-cols), minmax(0, 1fr));
   grid-auto-rows: calc(var(--feed-tile-h) + var(--feed-caption-h));
@@ -101,6 +107,7 @@
   /* В потоке высоту задаёт сама плитка. */
   .feed-card { height: auto; }
   .feed-card__cover { aspect-ratio: var(--feed-tile-ratio); height: auto; }
+  .project-feed__item--big .feed-card__cover { aspect-ratio: var(--feed-big-ratio); }
   .project-feed__item--stub .feed-card { padding-bottom: 0; }
 }
 
