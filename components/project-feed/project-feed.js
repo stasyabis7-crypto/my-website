@@ -22,6 +22,12 @@
   // and reduced motion (then the video never starts).
   function media(project) {
     // focus — какая часть горизонтальной обложки остаётся в вертикальной плитке.
+    // feed — отдельная вертикальная обложка для плитки ленты; с ней кадр
+    // страницы кейса (image/video) в ленте не используется.
+    if (project.feed) {
+      return '<img src="' + escape(project.feed.image) + '" width="' + project.feed.width + '" height="' + project.feed.height +
+        '" alt="' + escape(project.alt) + '" loading="lazy" decoding="async" />';
+    }
     var focus = project.focus ? ' style="object-position:' + escape(project.focus) + '"' : '';
     var poster = '<img src="' + escape(project.image) + '" width="' + project.width + '" height="' + project.height +
       '" alt="' + escape(project.alt) + '" loading="lazy" decoding="async"' + focus + ' />';

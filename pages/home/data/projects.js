@@ -6,6 +6,8 @@
    заглушкой, пока видео грузится или если его нельзя воспроизвести.
    Обложка живёт в covers/ кейса и она же — первый кадр страницы кейса
    (проверяет scripts/check-case-covers.js).
+   feed — необязательная вертикальная обложка только для ленты Главной
+   (крупная плитка 3:4, обычная 5:6); страница кейса берёт image/video.
    focus — необязательная точка кадрирования (object-position): плитки ленты
    вертикальные, а обложки пока горизонтальные; по умолчанию — центр. */
 window.portfolioPlatforms = [
@@ -28,7 +30,7 @@ window.portfolioTags = [
 window.portfolioProjects = [
   {
     id: 'customer-segments',
-    focus: 'left center',
+    feed: { image: '/projects/ozon-crm/customer-segments/covers/feed-cover-900x1200.webp', width: 900, height: 1200 },
     title: 'CRM для продавцов Ozon',
     description: 'Сегменты покупателей и рассылки для продавцов',
     href: '/projects/ozon-crm/customer-segments/',
