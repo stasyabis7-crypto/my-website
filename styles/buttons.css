@@ -154,7 +154,7 @@
      размер/трекинг и то же обычное начертание, что у основного текста),
      один и тот же на любой кнопке сайта, большой или маленькой. */
   font-family: var(--font-family-body, "IBM Plex Mono", ui-monospace, monospace);
-  font-size: calc(var(--font-size-text) * .85);
+  font-size: var(--font-size-text);
   font-weight: var(--font-weight-regular, 400);
   line-height: var(--line-height-default);
   letter-spacing: var(--letter-spacing-text, -0.03em);
