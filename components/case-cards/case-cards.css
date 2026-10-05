@@ -335,3 +335,17 @@
 .case-card__icon-row .case-problems__icon {
   margin-bottom: 0;
 }
+
+/*
+  Асимметричная редакционная сетка (тест, ветка square-grid): в сетках
+  карточек кейса соседние колонки стоят со сдвигом по вертикали. Высоты
+  карточек остаются равными, сдвиг компенсируется отступом снизу.
+*/
+@media (min-width: 901px) {
+  .case-cards-grid--cols-2,
+  .case-cards-grid--cols-3,
+  .case-cards-grid--cols-4 { --case-stagger: clamp(32px, 4vw, 64px); padding-bottom: var(--case-stagger); }
+  .case-cards-grid--cols-2 > :nth-child(2n),
+  .case-cards-grid--cols-3 > :nth-child(3n + 2),
+  .case-cards-grid--cols-4 > :nth-child(2n) { translate: 0 var(--case-stagger); }
+}

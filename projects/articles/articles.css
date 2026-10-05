@@ -70,3 +70,30 @@
   .activity-article,
   .activity-article::before { transition: none; }
 }
+
+/*
+  Асимметричная редакционная сетка (тест, ветка square-grid): заголовок
+  раздела стоит слева и прилипает при прокрутке, список статей сдвинут
+  вправо на 8 колонок из 12. Описание уходит под название.
+*/
+@media (min-width: 1000px) {
+  #articles {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--wg-gap);
+    align-items: start;
+  }
+  #articles > .text-h1 {
+    grid-column: 1 / span 4;
+    position: sticky;
+    top: calc(var(--header-h, 64px) + 32px);
+  }
+  #articles > .activity-articles { grid-column: 5 / -1; margin-top: 0; }
+  .activity-article {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 7fr);
+    row-gap: 8px;
+    padding-inline: 16px;
+  }
+  .activity-article__number { grid-row: span 2; }
+  .activity-article__description { grid-column: 2; }
+}

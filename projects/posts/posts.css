@@ -8,3 +8,24 @@
 @media (max-width: 700px) {
   .posts-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+/*
+  Асимметричная редакционная сетка (тест, ветка square-grid), как лента
+  Главной: 12 колонок, квадраты разной ширины со сдвигом по вертикали.
+  Раскладка повторяется каждые четыре поста.
+*/
+@media (min-width: 701px) {
+  .posts-grid { align-items: start; row-gap: 64px; }
+  .posts-grid > :nth-child(even) { margin-top: 64px; }
+}
+@media (min-width: 1000px) {
+  .posts-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--wg-gap);
+    row-gap: clamp(72px, 8vw, 128px);
+  }
+  .posts-grid > :nth-child(4n + 1) { grid-column: 1 / span 5; }
+  .posts-grid > :nth-child(4n + 2) { grid-column: 8 / span 4; margin-top: clamp(96px, 11vw, 200px); }
+  .posts-grid > :nth-child(4n + 3) { grid-column: 3 / span 4; }
+  .posts-grid > :nth-child(4n + 4) { grid-column: 8 / span 5; margin-top: clamp(64px, 7vw, 120px); }
+}
