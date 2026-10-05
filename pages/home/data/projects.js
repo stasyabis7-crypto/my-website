@@ -106,9 +106,16 @@ window.portfolioProjects = [
     title: 'Благотворительность в ЛК',
     feed: { image: '/projects/avito-charity/charity-profile/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Телефон на зелёной ткани с разделом «#яПомогаю» в Авито: подписки, поддержка людей, забота о природе'
+  },
+  {
+    id: 'prices-table',
+    soon: true,
+    title: 'Цены в ЛК селлера',
+    feed: { image: '/projects/ozon-prices/prices-table/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Тёмный экран приложения продавца Ozon: кванты, цены товара, цена для покупателя и бустинг в поиске'
   }
 ];
 
 /* Заглушки в ленте Главной: пустые плитки на местах проектов, которые ещё
    не описаны. Убираются по мере добавления кейсов выше. */
-window.portfolioFeedStubs = 3;
+window.portfolioFeedStubs = 2;
