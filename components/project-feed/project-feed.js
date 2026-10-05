@@ -79,7 +79,7 @@
       media(project) + '</a>' +
       // Ведёт туда же, что и обложка, поэтому скрыта от клавиатуры и
       // скринридера (фокус — на обложке).
-      '<a class="feed-card__action btn btn--fill-white btn--icon-only btn--icon-diagonal-motion" href="' + escape(project.href) +
+      '<a class="feed-card__action btn btn--fill-glass-round btn--icon-only btn--icon-diagonal-motion" href="' + escape(project.href) +
       '" tabindex="-1" aria-hidden="true"><span class="icon icon--arrow-diagonal"></span></a>' +
       '</div></div>' + title + '</article>');
   }

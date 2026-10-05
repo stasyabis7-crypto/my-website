@@ -35,6 +35,9 @@
                       эталон: .mood-primary «Смотреть работы»
                       (components/site-chrome/site-chrome.css)
 
+    .btn--fill-glass-round  матовое стекло в круглой форме: стрелка на
+                      обложках ленты Главной (components/project-feed)
+
     .btn--fill-tile   та же чёрная праймари-заливка, но квадратная
                       плашка (форма .btn--fill-glass с постов), для
                       иконок-действий на карточках
@@ -190,15 +193,15 @@
   --btn-hover-gradient-text: #111111;
 }
 @media (hover: hover) and (pointer: fine) {
-  .btn:is(.btn--fill-pink, .btn--fill-tile, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui) {
+  .btn:is(.btn--fill-pink, .btn--fill-tile, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-round, .btn--fill-glass-ui) {
     background-image: var(--btn-hover-gradient);
     background-repeat: no-repeat;
     background-position: left center;
     background-size: 0% 100%;
     transition: transform 0.12s ease, color .3s ease, background-size .5s ease;
   }
-  .btn:is(.btn--fill-pink, .btn--fill-tile, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui):hover,
-  [data-action-hover]:hover .btn:is(.btn--fill-pink, .btn--fill-tile, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-ui) {
+  .btn:is(.btn--fill-pink, .btn--fill-tile, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-round, .btn--fill-glass-ui):hover,
+  [data-action-hover]:hover .btn:is(.btn--fill-pink, .btn--fill-tile, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-round, .btn--fill-glass-ui) {
     opacity: 1;
     color: var(--btn-hover-gradient-text);
     background-size: 100% 100%;
@@ -232,6 +235,16 @@
 .btn--fill-glass {
   /* Square tile with softly rounded corners, not a pill. */
   border-radius: var(--radius-inner);
+  background-color: rgb(255 255 255 / .62);
+  color: #111111;
+  -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.1);
+  backdrop-filter: blur(18px) saturate(180%) brightness(1.1);
+}
+
+/* Round frosted glass (cover action on the home feed): the same recipe as
+   .btn--fill-glass in the round shape of an icon-only button.
+   Usage: .btn.btn--fill-glass-round.btn--icon-only[.btn--icon-diagonal-motion]. */
+.btn--fill-glass-round {
   background-color: rgb(255 255 255 / .62);
   color: #111111;
   -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.1);
@@ -320,7 +333,7 @@
   transition: transform 0.12s ease, opacity var(--btn-hover-duration) ease, box-shadow 0.25s ease;
 }
 /* Compact icon-only controls sit inside the header and need no shadow. */
-html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glass):not(.btn--fill-glass-ui) {
+html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glass):not(.btn--fill-glass-round):not(.btn--fill-glass-ui) {
   box-shadow: var(--control-scroll-shadow);
 }
 

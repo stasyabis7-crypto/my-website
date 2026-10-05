@@ -109,7 +109,7 @@
   .feed-card__badge { top: 10px; right: 10px; }
 }
 /* «Скоро появится» — подпись на обложке проекта без страницы (не кнопка):
-   стоит на месте стрелки, той же высоты и белой заливки. */
+   стоит на месте стрелки, той же высоты и того же матового стекла. */
 .feed-card__badge {
   display: flex;
   align-items: center;
@@ -117,8 +117,10 @@
   max-width: calc(100% - 32px);
   padding-inline: 16px;
   border-radius: calc(var(--button-height) / 2);
-  background: #fff;
-  color: #101014;
+  background-color: rgb(255 255 255 / .62);
+  color: #111111;
+  -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.1);
+  backdrop-filter: blur(18px) saturate(180%) brightness(1.1);
   font-family: var(--font-family-body);
   font-size: var(--font-size-text);
   line-height: var(--line-height-default);
