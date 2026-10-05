@@ -101,12 +101,15 @@ function layout(items) {
 }
 function blockHtml(block) {
   const vars = [];
+  const off = [];
   for (const [bp, prefix] of [['d', ''], ['t', 't'], ['m', 'm']]) {
+    // Блока нет на этой ширине экрана.
+    if (!block.pos[bp]) { off.push(bp + '-off'); continue; }
     const [c, r, w, h] = block.pos[bp];
     vars.push(`--${prefix}c:${c}`, `--${prefix}r:${r}`, `--${prefix}w:${w}`, `--${prefix}h:${h}`);
     if (block.ratio) vars.push(`--${prefix}fit:${Math.abs(Math.log((w / h) / block.ratio)) > 0.13 ? 'contain' : 'cover'}`);
   }
-  const cls = ['b', ...(block.type ? block.type.split(' ').map(name => 'b--' + name) : []), ...(block.href ? ['b--click'] : [])].join(' ');
+  const cls = ['b', ...(block.type ? block.type.split(' ').map(name => 'b--' + name) : []), ...(block.href ? ['b--click'] : []), ...off].join(' ');
   if (block.group) block.attrs = (block.attrs || '') + ` data-group="${block.group}"`;
   const tag = block.href ? 'a' : 'div';
   const link = block.href ? ` href="${esc(block.href)}"${/^https?:/.test(block.href) ? ' target="_blank" rel="noopener noreferrer"' : ''}` : '';
@@ -216,15 +219,36 @@ ${contactsSection()}
 
 const pages = {};
 
-// Главная. Баннер разделён на секции-квадраты: видео, заголовок, подзаголовок
-// и кнопка. На месте видео пока заглушка, чтобы была видна разметка.
-const hero = section('Баннер', [
-  { ...placeholder('Видео', sized([3, 3], [4, 2], [2, 2])), pin: { d: [1, 0] } },
-  { html: '<h1 class="t-title">Анастасия Вихарева</h1>', type: 'title', size: sized([3, 2], [4, 1], [2, 1]), pin: { d: [4, 0] } },
-  { html: '<p class="t-body">Senior Product Designer в Авито, раньше Ozon. 6&nbsp;лет проектирую продуктовые сценарии: платежи, CRM, дашборды.</p>',
-    type: 'text', size: sized([2, 1], [3, 1], [1, 1]), pin: { d: [4, 2] }, col: { t: 1, m: 1 } },
-  { ...button('Смотреть работы', '', '#works'), pin: { d: [6, 2] }, col: { t: 4, m: 2 } },
-], { air: 0 });
+// Главная. Баннер — одна фотография, разрезанная на квадраты-секторы. Каждый
+// сектор показывает свой кусок фото в одном из стилей и время от времени
+// меняет стиль (grid.js). Заголовок, подзаголовок и кнопка занимают по одному
+// квадрату; у текстовых квадратов меняется только яркий фон.
+// Пока настоящих стилизованных фото нет, стили изображают CSS-фильтры.
+const HERO = {
+  d: { cols: 6, rows: 3, title: [5, 2], text: [5, 3], button: [6, 3] },
+  t: { cols: 4, rows: 4, title: [3, 3], text: [3, 4], button: [4, 4] },
+  m: { cols: 2, rows: 4, title: [1, 3], text: [1, 4], button: [2, 4] },
+};
+const heroFree = bp => {
+  const { cols, rows, title, text, button } = HERO[bp];
+  const taken = [title, text, button].map(String);
+  const cells = [];
+  for (let r = 1; r <= rows; r++) for (let c = 1; c <= cols; c++) if (!taken.includes(String([c, r]))) cells.push([c, r]);
+  return cells;
+};
+const heroCell = (html, type, at, extra = {}) => ({
+  html, type, ...extra,
+  pos: Object.fromEntries(['d', 't', 'm'].map(bp => [bp, at[bp] ? [...at[bp], 1, 1] : null])),
+});
+const free = { d: heroFree('d'), t: heroFree('t'), m: heroFree('m') };
+const heroBlocks = [
+  ...free.d.map((cell, i) => heroCell('', 'photo', { d: cell, t: free.t[i], m: free.m[i] }, { attrs: ` data-style="${(i * 3) % 7}" aria-hidden="true"` })),
+  heroCell('<h1 class="t-body">Анастасия Вихарева</h1>', 'tone', { d: HERO.d.title, t: HERO.t.title, m: HERO.m.title }, { attrs: ' data-tone="0"' }),
+  heroCell('<p class="t-body">Senior Product Designer в Авито, раньше Ozon. 6&nbsp;лет проектирую продуктовые сценарии: платежи, CRM, дашборды.</p>',
+    'tone', { d: HERO.d.text, t: HERO.t.text, m: HERO.m.text }, { attrs: ' data-tone="2"' }),
+  heroCell('<span>Смотреть работы</span>', 'btn', { d: HERO.d.button, t: HERO.t.button, m: HERO.m.button }, { href: '#works' }),
+];
+const hero = `    <!-- Баннер -->\n    <section class="grid hero" aria-label="Баннер">\n${heroBlocks.map(blockHtml).join('\n')}\n    </section>`;
 const feed = [];
 projects.forEach((project, index) => {
   // Пара проектов — общий ряд; между парами ряд воздуха (на узких экранах — между проектами).
@@ -248,10 +272,10 @@ function caseItem(item, context) {
   if (item.kind === 'card') {
     const text = { html: (item.title ? `<h3 class="t-h3">${esc(item.title)}</h3>` : '') + `<p class="t-body">${esc(item.text)}</p>`, type: 'text' };
     if (!item.media) return { ...text, size: textSize(item.text.length, cardWidths, (item.title || '').length) };
-    // Картинка с подписью: подпись — отдельный блок той же ширины под картинкой.
+    // Картинка с подписью: сначала текст, под ним картинка той же ширины.
     const media = mediaBlock(item.media, context.pairSize);
     const widths = { d: media.size.d[0], t: media.size.t[0], m: media.size.m[0] };
-    return { ...media, stack: [{ ...text, size: textSize(item.text.length, widths, (item.title || '').length) }] };
+    return { ...text, size: textSize(item.text.length, widths, (item.title || '').length), stack: [media] };
   }
   return textBlock(item.text);
 }
@@ -313,17 +337,17 @@ function checker(units, rows, gap) {
   return items;
 }
 
-// Статьи: у каждой обложка (пока заглушка), название стоит блоком той же
-// ширины сразу под своей обложкой; пары отделены друг от друга пустотой.
+// Статьи: сначала название, сразу под ним обложка той же ширины (пока
+// заглушка); пары отделены друг от друга пустотой.
 const articles = content['/projects/articles/'].sections[0];
 pages['articles.html'] = page('Статьи', 'articles.html', true, [
   section('Статьи', [
     heading(articles.title, 'h1'),
     { break: 1 },
     ...checker(articles.items.filter(item => item.kind === 'article').map((item, index) => ({
-      ...placeholder('Обложка ' + item.number, sized([2, 1])), href: item.href, group: 'article-' + index, attrs: ' tabindex="-1" aria-hidden="true"',
-      stack: [{ html: `<p class="t-small">${esc(item.number)}</p><h3 class="t-h3">${esc(item.title)}</h3><p class="t-body">${esc(item.text)}</p>`,
-        type: 'text', size: sized([2, 1]), href: item.href, group: 'article-' + index }],
+      html: `<p class="t-small">${esc(item.number)}</p><h3 class="t-h3">${esc(item.title)}</h3><p class="t-body">${esc(item.text)}</p>`,
+      type: 'text', size: sized([2, 1]), href: item.href, group: 'article-' + index,
+      stack: [{ ...placeholder('Обложка ' + item.number, sized([2, 1])), href: item.href, group: 'article-' + index, attrs: ' tabindex="-1" aria-hidden="true"' }],
     })), 2, 1),
   ], { air: 0 }),
 ]);

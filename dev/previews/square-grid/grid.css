@@ -15,13 +15,14 @@
 */
 :root {
   --cols: 6;
-  --bg: #edf0f2;
+  --bg: #ffffff;
   --ink: #14161a;
   --muted: #5f6673;
   --line: color-mix(in srgb, var(--ink) 30%, var(--bg));
-  --media: #dde2e5;
-  /* Наведение на любой кликабельный блок: яркая заливка слева направо. */
-  --hover-fill: linear-gradient(to right, #0fd850 0%, #f9f047 100%);
+  --media: #f0f1f2;
+  /* Наведение на любой кликабельный блок: заливка одним ярким цветом слева направо. */
+  --hover-color: #d5ff00;
+  --hover-fill: linear-gradient(var(--hover-color), var(--hover-color));
   --lw: 1px;
   --header-row: 64px;
 }
@@ -83,6 +84,7 @@ body { overflow-x: clip; font-family: var(--font-family-body); }
 .t-h3 { font-size: max(18px, calc(var(--cell) * 0.1)); }
 .t-metric { font-size: calc(var(--cell) * 0.3); }
 .t-body, .t-tags, .t-small { margin: 0; font-size: var(--text); line-height: var(--line-height-text); letter-spacing: var(--letter-spacing-text); }
+h1.t-body { font-weight: 400; }
 .t-small, .t-tags { font-size: var(--small); color: var(--muted); }
 .t-tags { margin-top: auto; }
 
@@ -163,3 +165,40 @@ body { overflow-x: clip; font-family: var(--font-family-body); }
   .drop--menu { position: fixed; top: var(--header-row); right: 0; bottom: 0; left: 0; width: auto; padding-block: var(--pad); border: 0; overflow-y: auto; }
   .drop__row--big { padding-block: 10px; font-family: var(--font-family-heading); font-size: clamp(32px, 9cqw, 56px); letter-spacing: 0; line-height: 1.1; }
 }
+
+/* ---------- Баннер Главной: фото, разрезанное на квадраты ---------- */
+/* Каждый сектор показывает свой кусок одной фотографии: фон сдвинут на номер
+   колонки и ряда. Стиль сектора — data-style (пока CSS-фильтры вместо
+   настоящих стилизованных фото), его меняет grid.js. */
+@media (max-width: 999px) { .b.t-off { display: none; } }
+@media (max-width: 599px) { .b.m-off { display: none; } .b.t-off:not(.m-off) { display: block; } }
+.b--photo { position: relative; padding: 0; background: var(--media); }
+.b--photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/components/hero-mood/media/hero-desktop.webp") no-repeat;
+  background-size: calc(var(--cell) * 6) auto;
+  background-position: calc(var(--cell) * (1 - var(--c))) calc(var(--cell) * (0.81 - var(--r)));
+  transition: filter 0.9s ease;
+}
+@media (max-width: 999px) {
+  .b--photo::before { background-size: auto calc(var(--cell) * 4); background-position: calc(var(--cell) * (-0.3 - var(--tc))) calc(var(--cell) * (1 - var(--tr))); }
+}
+@media (max-width: 599px) {
+  .b--photo::before { background-image: url("/components/hero-mood/media/hero-mobile.webp"); background-position: calc(var(--cell) * (0.4 - var(--mc))) calc(var(--cell) * (1 - var(--mr))); }
+}
+.b--photo[data-style="1"]::before { filter: grayscale(1) contrast(1.15); }
+.b--photo[data-style="2"]::before { filter: sepia(1) saturate(1.6) hue-rotate(-18deg); }
+.b--photo[data-style="3"]::before { filter: invert(1) hue-rotate(180deg); }
+.b--photo[data-style="4"]::before { filter: saturate(2.4) contrast(1.1); }
+.b--photo[data-style="5"]::before { filter: hue-rotate(150deg) saturate(1.3); }
+.b--photo[data-style="6"]::before { filter: grayscale(1) contrast(1.9) brightness(1.15); }
+/* Текстовые квадраты баннера: меняется только яркий фон. */
+.b--tone { transition: background-color 0.9s ease; }
+.b--tone[data-tone="0"] { background-color: #ffe14a; }
+.b--tone[data-tone="1"] { background-color: #35e07a; }
+.b--tone[data-tone="2"] { background-color: #ff8fc0; }
+.b--tone[data-tone="3"] { background-color: #7fb4ff; }
+.b--tone[data-tone="4"] { background-color: #ff9d47; }
+@media (prefers-reduced-motion: reduce) { .b--photo::before, .b--tone { transition: none; } }

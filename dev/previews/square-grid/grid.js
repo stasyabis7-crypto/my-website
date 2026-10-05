@@ -39,4 +39,23 @@
   document.addEventListener('mouseout', function (event) { group(event, false); });
   document.addEventListener('focusin', function (event) { group(event, true); });
   document.addEventListener('focusout', function (event) { group(event, false); });
+
+  // Баннер: секторы фото по одному меняют стиль, текстовые квадраты — фон.
+  var photos = Array.prototype.slice.call(document.querySelectorAll('.b--photo'));
+  var tones = Array.prototype.slice.call(document.querySelectorAll('.b--tone'));
+  if (photos.length && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var next = function (value, count) { return (value + 1 + Math.floor(Math.random() * (count - 1))) % count; };
+    setInterval(function () {
+      var cell = photos[Math.floor(Math.random() * photos.length)];
+      cell.dataset.style = next(+cell.dataset.style, 7);
+    }, 1300);
+    setInterval(function () {
+      var cell = tones[Math.floor(Math.random() * tones.length)];
+      if (!cell) return;
+      var others = tones.filter(function (item) { return item !== cell; }).map(function (item) { return +item.dataset.tone; });
+      var tone = +cell.dataset.tone;
+      do { tone = next(tone, 5); } while (others.indexOf(tone) !== -1);
+      cell.dataset.tone = tone;
+    }, 3200);
+  }
 })();
