@@ -173,20 +173,20 @@ h1.t-body { font-weight: 400; }
 @media (max-width: 999px) { .b.t-off { display: none; } }
 @media (max-width: 599px) { .b.m-off { display: none; } .b.t-off:not(.m-off) { display: block; } }
 .b--photo { position: relative; padding: 0; background: var(--media); }
+/* Фото одной пропорции 2:1 на любой ширине: его ширина — вся страница
+   (--cols квадратов), высота — половина. Нынешний кадр 16:9, поэтому он
+   чуть подрезан сверху и снизу поровну (0.0314 × число колонок). */
+.b { --col: var(--c); --row: var(--r); }
+@media (max-width: 999px) { .b { --col: var(--tc); --row: var(--tr); } }
+@media (max-width: 599px) { .b { --col: var(--mc); --row: var(--mr); } }
 .b--photo::before {
   content: "";
   position: absolute;
   inset: 0;
   background: url("/components/hero-mood/media/hero-desktop.webp") no-repeat;
-  background-size: calc(var(--cell) * 6) auto;
-  background-position: calc(var(--cell) * (1 - var(--c))) calc(var(--cell) * (0.81 - var(--r)));
+  background-size: calc(var(--cell) * var(--cols)) auto;
+  background-position: calc(var(--cell) * (1 - var(--col))) calc(var(--cell) * (1 - var(--row) - 0.0314 * var(--cols)));
   transition: filter 0.9s ease;
-}
-@media (max-width: 999px) {
-  .b--photo::before { background-size: auto calc(var(--cell) * 4); background-position: calc(var(--cell) * (-0.3 - var(--tc))) calc(var(--cell) * (1 - var(--tr))); }
-}
-@media (max-width: 599px) {
-  .b--photo::before { background-image: url("/components/hero-mood/media/hero-mobile.webp"); background-position: calc(var(--cell) * (0.4 - var(--mc))) calc(var(--cell) * (1 - var(--mr))); }
 }
 .b--photo[data-style="1"]::before { filter: grayscale(1) contrast(1.15); }
 .b--photo[data-style="2"]::before { filter: sepia(1) saturate(1.6) hue-rotate(-18deg); }
