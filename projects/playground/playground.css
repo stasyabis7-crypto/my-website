@@ -1,14 +1,34 @@
-/* Playground: концепты сеткой .works-grid (styles/layout.css), клик по
-   карточке открывает фото на весь экран (components/case-lightbox). */
-.collection__section > .playground-grid { margin-top: 28px; }
+/*
+  Playground — каталог, как лента Главной: четыре колонки, широкие работы
+  занимают две, квадратные одну, часть ячеек намеренно пустует.
+  Пропорции плиток прежние: широкая 1852:1158, квадрат 1:1 (вертикальные
+  экраны телефона стоят целиком внутри квадратной подложки). Плитки в ряду
+  выровнены по верху; между рядами воздуха больше, чем между колонками.
+  До 999px — две колонки (широкая во всю ширину, квадраты парами),
+  до 640px — одна. Без скруглений, поля как на Главной.
+*/
+.collection {
+  --pg-gutter: 32px;
+  --pg-gap: 16px;
+  --pg-row-gap: 56px;
+  max-width: none;
+  padding-inline: var(--pg-gutter);
+}
+.playground-catalog {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--pg-row-gap) var(--pg-gap);
+  align-items: start;
+  margin-top: 28px;
+}
+.playground-catalog > .works-grid__item { border-radius: 0; }
+.playground-grid__item--wide { grid-column: span 2; aspect-ratio: 1852 / 1158; }
+.playground-grid__item--square,
+.playground-grid__item--framed { aspect-ratio: 1; }
 
-/* Между картинками везде 16px — и на десктопе, и на телефоне. */
-.playground-grid { --wg-gap: 16px; }
-
-/* Вертикальные скрины — в квадратных плашках на стандартном сером фоне,
-   целиком и по центру. */
-.playground-grid__row--framed .works-grid__item { background: var(--color-surface); }
-.playground-grid__row--framed .works-grid__item img {
+/* Вертикальный экран телефона — целиком внутри квадратной подложки. */
+.playground-grid__item--framed { background: var(--color-surface); }
+.playground-grid__item--framed img {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -17,6 +37,28 @@
   height: auto;
   max-width: 84%;
   max-height: 84%;
-  /* Скругление экрана мягче, чем у самой плашки (3/4 от --wg-radius). */
-  border-radius: calc(var(--wg-radius) * 0.75);
+}
+
+@media (min-width: 1000px) {
+  /* Ряд 1: широкая слева, два квадрата справа. */
+  .playground-catalog > :nth-child(1) { grid-area: 1 / 1 / auto / span 2; }
+  .playground-catalog > :nth-child(2) { grid-area: 1 / 3; }
+  .playground-catalog > :nth-child(3) { grid-area: 1 / 4; }
+  /* Ряд 2: квадрат слева, пустая ячейка, широкая справа. */
+  .playground-catalog > :nth-child(4) { grid-area: 2 / 1; }
+  .playground-catalog > :nth-child(5) { grid-area: 2 / 3 / auto / span 2; }
+  /* Ряд 3: два квадрата через ячейку. */
+  .playground-catalog > :nth-child(6) { grid-area: 3 / 2; }
+  .playground-catalog > :nth-child(7) { grid-area: 3 / 4; }
+  /* Ряд 4: широкая слева, пустая ячейка, квадрат справа. */
+  .playground-catalog > :nth-child(8) { grid-area: 4 / 1 / auto / span 2; }
+  .playground-catalog > :nth-child(9) { grid-area: 4 / 4; }
+}
+@media (max-width: 999px) {
+  .collection { --pg-gutter: 16px; --pg-gap: 10px; --pg-row-gap: 10px; }
+  .playground-catalog { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: dense; }
+}
+@media (max-width: 640px) {
+  .playground-catalog { grid-template-columns: minmax(0, 1fr); }
+  .playground-grid__item--wide { grid-column: auto; }
 }
