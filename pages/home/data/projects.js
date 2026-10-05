@@ -92,9 +92,16 @@ window.portfolioProjects = [
     title: 'Медицинское приложение для пациентов',
     feed: { image: '/projects/swtec-medical/patient-app/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Два экрана приложения для пациентов: накопленные баллы с графиком и анкета с выбором пола'
+  },
+  {
+    id: 'minimum-price',
+    soon: true,
+    title: 'Временная минимальная цена',
+    feed: { image: '/projects/ozon-prices/minimum-price/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Окно «Отслеживайте срок действия минимальной цены» с будильником и тремя способами настройки'
   }
 ];
 
 /* Заглушки в ленте Главной: пустые плитки на местах проектов, которые ещё
    не описаны. Убираются по мере добавления кейсов выше. */
-window.portfolioFeedStubs = 5;
+window.portfolioFeedStubs = 4;
