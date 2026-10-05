@@ -5,9 +5,6 @@
 /* Между картинками везде 16px — и на десктопе, и на телефоне. */
 .playground-grid { --wg-gap: 16px; }
 
-/* Та же лёгкая кромка, что у обложек и скриншотов в кейсах. */
-.playground-grid .works-grid__item { border: var(--media-border); }
-
 /* Вертикальные скрины — в квадратных плашках на стандартном сером фоне,
    целиком и по центру. */
 .playground-grid__row--framed .works-grid__item { background: var(--color-surface); }
@@ -20,8 +17,6 @@
   height: auto;
   max-width: 84%;
   max-height: 84%;
-  /* Скругление экрана мягче, чем у самой плашки (3/4 от --wg-radius),
-     и та же лёгкая кромка, что у плиток. */
+  /* Скругление экрана мягче, чем у самой плашки (3/4 от --wg-radius). */
   border-radius: calc(var(--wg-radius) * 0.75);
-  border: var(--media-border);
 }
