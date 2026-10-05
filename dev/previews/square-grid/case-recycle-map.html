@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Сетка — Карта переработки вещей</title>
+<link rel="stylesheet" href="../../../styles/fonts.css" />
+<link rel="stylesheet" href="../../../styles/typography.css" />
+<link rel="stylesheet" href="../../../components/icons/icons.css" />
+<link rel="stylesheet" href="grid.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="lines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <!-- Шапка -->
+    <header class="site-top">
+      <a class="top-home" href="index.html" aria-label="Назад на главную"><span class="icon icon--arrow-left" aria-hidden="true"></span><span class="top-logo"></span></a>
+      <nav class="top-nav" aria-label="Разделы сайта">
+        <a class="top-link" href="articles.html">Статьи</a>
+        <a class="top-link" href="posts.html">Посты</a>
+        <a class="top-link" href="playground.html">Playground</a>
+        <a class="top-link" href="/cv.pdf" target="_blank" rel="noopener noreferrer">Резюме PDF</a>
+        <button type="button" class="top-link" data-drop="drop-contacts" aria-expanded="false" aria-controls="drop-contacts">Связаться</button>
+      </nav>
+      <button type="button" class="top-link top-menu" data-drop="drop-menu" aria-expanded="false" aria-controls="drop-menu">Меню</button>
+      <div class="drop" id="drop-contacts" hidden>
+        <a class="drop__row" href="https://t.me/stasyabis" target="_blank" rel="noopener noreferrer"><span>Telegram</span><span class="icon icon--social-telegram" aria-hidden="true"></span></a>
+        <a class="drop__row" href="mailto:stasyabis7@gmail.com"><span>Почта</span><span class="icon icon--social-email" aria-hidden="true"></span></a>
+        <a class="drop__row" href="https://dribbble.com/Stasyabis" target="_blank" rel="noopener noreferrer"><span>Dribbble</span><span class="icon icon--social-dribbble" aria-hidden="true"></span></a>
+        <a class="drop__row" href="https://www.figma.com/@stasyabis" target="_blank" rel="noopener noreferrer"><span>Figma community</span><span class="icon icon--social-figma" aria-hidden="true"></span></a>
+        <a class="drop__row" href="https://medium.com/@stasyabis" target="_blank" rel="noopener noreferrer"><span>Medium</span><span class="icon icon--social-medium" aria-hidden="true"></span></a>
+        <a class="drop__row" href="https://habr.com/ru/users/stasyabis/" target="_blank" rel="noopener noreferrer"><span>Habr</span><span class="icon icon--social-habr" aria-hidden="true"></span></a>
+      </div>
+      <div class="drop" id="drop-menu" hidden>
+        <a class="drop__row" href="articles.html"><span>Статьи</span></a>
+        <a class="drop__row" href="posts.html"><span>Посты</span></a>
+        <a class="drop__row" href="playground.html"><span>Playground</span></a>
+        <a class="drop__row" href="/cv.pdf"><span>Резюме PDF</span><span class="icon icon--cv" aria-hidden="true"></span></a>
+        <a class="drop__row" href="https://t.me/stasyabis" target="_blank" rel="noopener noreferrer"><span>Telegram</span><span class="icon icon--social-telegram" aria-hidden="true"></span></a>
+        <a class="drop__row" href="mailto:stasyabis7@gmail.com"><span>Почта</span><span class="icon icon--social-email" aria-hidden="true"></span></a>
+        <a class="drop__row" href="https://dribbble.com/Stasyabis" target="_blank" rel="noopener noreferrer"><span>Dribbble</span><span class="icon icon--social-dribbble" aria-hidden="true"></span></a>
+        <a class="drop__row" href="https://www.figma.com/@stasyabis" target="_blank" rel="noopener noreferrer"><span>Figma community</span><span class="icon icon--social-figma" aria-hidden="true"></span></a>
+        <a class="drop__row" href="https://medium.com/@stasyabis" target="_blank" rel="noopener noreferrer"><span>Medium</span><span class="icon icon--social-medium" aria-hidden="true"></span></a>
+        <a class="drop__row" href="https://habr.com/ru/users/stasyabis/" target="_blank" rel="noopener noreferrer"><span>Habr</span><span class="icon icon--social-habr" aria-hidden="true"></span></a>
+      </div>
+    </header>
+
+    <!-- Сводка -->
+    <section class="grid" aria-label="Сводка" id="summary">
+      <div class="b b--head" style="--c:1;--r:1;--w:4;--h:1;--tc:1;--tr:1;--tw:3;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h1 class="t-h1">Карта переработки вещей</h1></div>
+      <a class="b b--btn" href="https://www.avito.ru/avito-care/recyclemap" target="_blank" rel="noopener noreferrer" style="--c:6;--r:1;--w:1;--h:1;--tc:4;--tr:1;--tw:1;--th:1;--mc:2;--mr:2;--mw:1;--mh:1"><span>Открыть карту на Авито</span><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>
+      <div class="b b--text" style="--c:1;--r:2;--w:3;--h:1;--tc:1;--tr:2;--tw:3;--th:1;--mc:1;--mr:3;--mw:2;--mh:1"><p class="t-body">Проблема: человек находил пункт приёма и уходил. Фильтры выглядели неактивными, сохранить точку было нельзя, а вернуться к другим инициативам было неоткуда.</p></div>
+      <div class="b b--text" style="--c:4;--r:2;--w:3;--h:1;--tc:1;--tr:3;--tw:3;--th:1;--mc:1;--mr:4;--mw:2;--mh:1"><p class="t-body">Решение: пересобрала поиск, фильтры и карточку пункта, добавила избранное и общую навигацию благотворительности</p></div>
+      <div class="b b--fill b--cover" style="--c:1;--r:3;--w:4;--h:3;--tc:1;--tr:4;--tw:4;--th:3;--mc:1;--mr:5;--mw:2;--mh:2"><video src="/projects/avito-charity/recycle-map/covers/cover.webm?v=3" poster="/projects/avito-charity/recycle-map/covers/cover-poster.webp" muted loop playsinline autoplay preload="metadata" aria-label="Карта Avito с пунктами приёма вещей и панелью категорий"></video></div>
+      <div class="b b--text" style="--c:5;--r:3;--w:2;--h:1;--tc:1;--tr:7;--tw:2;--th:1;--mc:1;--mr:7;--mw:2;--mh:1"><p class="t-metric">306K</p><p class="t-body">Загрузок точек в день</p></div>
+      <div class="b b--text" style="--c:5;--r:4;--w:2;--h:1;--tc:3;--tr:7;--tw:2;--th:1;--mc:1;--mr:8;--mw:2;--mh:1"><p class="t-metric">1,5–3K</p><p class="t-body">Открытий карточки пункта в день</p></div>
+      <div class="b b--text" style="--c:5;--r:5;--w:2;--h:1;--tc:1;--tr:8;--tw:2;--th:1;--mc:1;--mr:9;--mw:2;--mh:1"><p class="t-metric">ДО 70</p><p class="t-body">Сохранений точек в избранное в день</p></div>
+    </section>
+
+    <!-- О проекте -->
+    <section class="grid" aria-label="О проекте" id="about" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">О проекте</h2></div>
+      <div class="b b--fill" style="--c:1;--r:2;--w:2;--h:2;--fit:contain;--tc:1;--tr:2;--tw:2;--th:2;--tfit:contain;--mc:1;--mr:2;--mw:2;--mh:2;--mfit:contain"><img src="/projects/avito-charity/recycle-map/media/about/banner.webp?v=2" alt="" loading="lazy" decoding="async" /></div>
+      <div class="b b--text" style="--c:1;--r:4;--w:2;--h:1;--tc:1;--tr:4;--tw:2;--th:1;--mc:1;--mr:4;--mw:2;--mh:1"><p class="t-body">Карта помогает найти, куда сдать вторсырьё и вещи на благотворительность, а точки на ней поставляют партнёрские организации</p></div>
+      <div class="b b--text" style="--c:3;--r:2;--w:2;--h:1;--tc:3;--tr:2;--tw:2;--th:1;--mc:1;--mr:5;--mw:2;--mh:1"><p class="t-body">Человек приходил сдать вещи и уходил, не узнав об остальных способах помочь, переходов в соседние инициативы было единицы в день</p></div>
+      <div class="b b--text" style="--c:5;--r:2;--w:2;--h:1;--tc:3;--tr:3;--tw:2;--th:1;--mc:1;--mr:6;--mw:2;--mh:1"><p class="t-body">Продакт поставил задачу перестать терять на карте человека. Успехом считали возвраты на карту и переходы в другие инициативы благотворительности, но замерить получилось только возвраты</p></div>
+      <div class="b b--text" style="--c:3;--r:3;--w:2;--h:1;--tc:3;--tr:4;--tw:2;--th:1;--mc:1;--mr:7;--mw:2;--mh:1"><p class="t-body">Тысячи адресов с разным качеством описаний, править описания на нашей стороне нельзя, улучшать можно было только интерфейс</p></div>
+    </section>
+
+    <!-- Команда -->
+    <section class="grid" aria-label="Команда" id="team" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">Команда</h2></div>
+      <div class="b b--text" style="--c:3;--r:1;--w:3;--h:1;--tc:1;--tr:2;--tw:3;--th:1;--mc:1;--mr:2;--mw:2;--mh:1"><p class="t-body">Разработка длилась три месяца от постановки задачи до запуска. Общались всей командой. Нажми, чтобы познакомиться со всеми.</p></div>
+      <div class="b b--text" style="--c:1;--r:2;--w:1;--h:1;--tc:1;--tr:3;--tw:1;--th:1;--mc:1;--mr:3;--mw:1;--mh:1"><p class="t-small">01 / 05</p><h3 class="t-h3">Продакт</h3><p class="t-small">Обсуждали цели и гипотезы</p></div>
+      <div class="b b--text" style="--c:2;--r:2;--w:1;--h:1;--tc:2;--tr:3;--tw:1;--th:1;--mc:2;--mr:3;--mw:1;--mh:1"><p class="t-small">02 / 05</p><h3 class="t-h3">Проджект</h3><p class="t-small">Согласовывали концепты</p></div>
+      <div class="b b--text" style="--c:3;--r:2;--w:1;--h:1;--tc:3;--tr:3;--tw:1;--th:1;--mc:1;--mr:4;--mw:1;--mh:1"><p class="t-small">03 / 05</p><h3 class="t-h3">Бэкенд</h3><p class="t-small">Продумывали логику</p></div>
+      <div class="b b--text" style="--c:4;--r:2;--w:1;--h:1;--tc:4;--tr:3;--tw:1;--th:1;--mc:2;--mr:4;--mw:1;--mh:1"><p class="t-small">04 / 05</p><h3 class="t-h3">Фронтенд</h3><p class="t-small">Проводили дизайн ревью</p></div>
+      <div class="b b--text" style="--c:5;--r:2;--w:1;--h:1;--tc:1;--tr:4;--tw:1;--th:1;--mc:1;--mr:5;--mw:1;--mh:1"><p class="t-small">05 / 05</p><h3 class="t-h3">Редактор</h3><p class="t-small">Вместе обсуждали формулировки</p></div>
+    </section>
+
+    <!-- Роль -->
+    <section class="grid" aria-label="Роль" id="role" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">Роль</h2></div>
+      <div class="b b--fill" style="--c:1;--r:2;--w:2;--h:3;--fit:cover;--tc:1;--tr:2;--tw:2;--th:3;--tfit:cover;--mc:1;--mr:2;--mw:2;--mh:3;--mfit:cover"><img src="/projects/avito-charity/subscription/media/role/banner.webp" alt="" loading="lazy" decoding="async" /></div>
+      <div class="b b--text" style="--c:1;--r:5;--w:2;--h:1;--tc:1;--tr:5;--tw:2;--th:1;--mc:1;--mr:5;--mw:2;--mh:1"><p class="t-body">Вела ключевой сценарий карты целиком</p></div>
+      <div class="b b--text" style="--c:3;--r:2;--w:2;--h:1;--tc:3;--tr:2;--tw:2;--th:1;--mc:1;--mr:6;--mw:2;--mh:1"><p class="t-body">Пересобрала поиск и навигацию. Ближайший пункт находится по адресу или городу, а фильтры помогают выбрать тип отходов</p></div>
+      <div class="b b--text" style="--c:5;--r:2;--w:2;--h:1;--tc:3;--tr:3;--tw:2;--th:1;--mc:1;--mr:7;--mw:2;--mh:1"><p class="t-body">Добавила избранное. Свои пункты можно сохранить и не искать заново</p></div>
+      <div class="b b--text" style="--c:3;--r:3;--w:2;--h:1;--tc:3;--tr:4;--tw:2;--th:1;--mc:1;--mr:8;--mw:2;--mh:1"><p class="t-body">Обновила карточку пункта. Что принимают, адрес, часы работы и фото собраны на одном экране</p></div>
+    </section>
+
+    <!-- Сценарий -->
+    <section class="grid" aria-label="Сценарий" id="scenario" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">Сценарий</h2></div>
+      <div class="b b--text" style="--c:1;--r:2;--w:1;--h:1;--tc:1;--tr:2;--tw:1;--th:1;--mc:1;--mr:2;--mw:1;--mh:1"><p class="t-small">01 / 04</p><p class="t-body">Найти пункт</p></div>
+      <div class="b b--text" style="--c:2;--r:2;--w:1;--h:1;--tc:2;--tr:2;--tw:1;--th:1;--mc:2;--mr:2;--mw:1;--mh:1"><p class="t-small">02 / 04</p><p class="t-body">Использовать фильтры</p></div>
+      <div class="b b--text" style="--c:3;--r:2;--w:1;--h:1;--tc:3;--tr:2;--tw:1;--th:1;--mc:1;--mr:3;--mw:1;--mh:1"><p class="t-small">03 / 04</p><p class="t-body">Проверить условия</p></div>
+      <div class="b b--text" style="--c:4;--r:2;--w:1;--h:1;--tc:4;--tr:2;--tw:1;--th:1;--mc:2;--mr:3;--mw:1;--mh:1"><p class="t-small">04 / 04</p><p class="t-body">Сдать вещи</p></div>
+    </section>
+
+    <!-- Проблемы -->
+    <section class="grid" aria-label="Проблемы" id="problems" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">Проблемы</h2></div>
+      <div class="b b--text" style="--c:3;--r:1;--w:3;--h:1;--tc:1;--tr:2;--tw:3;--th:1;--mc:1;--mr:2;--mw:2;--mh:1"><p class="t-body">Сценарий рвался в трёх местах</p></div>
+      <div class="b b--text" style="--c:1;--r:2;--w:2;--h:1;--tc:1;--tr:3;--tw:2;--th:1;--mc:1;--mr:3;--mw:2;--mh:1"><p class="t-body">Карта не была связана с остальной благотворительностью: переходов в другие инициативы — единицы в день</p></div>
+      <div class="b b--text" style="--c:3;--r:2;--w:2;--h:1;--tc:3;--tr:3;--tw:2;--th:1;--mc:1;--mr:4;--mw:2;--mh:1"><p class="t-body">Фильтры в изначальном виде выглядели как неактивные и люди писали в поддержку, что фильтры недоступны, хотя кликабельны</p></div>
+      <div class="b b--text" style="--c:5;--r:2;--w:2;--h:1;--tc:1;--tr:4;--tw:2;--th:1;--mc:1;--mr:5;--mw:2;--mh:1"><p class="t-body">Сохранить найденный пункт было нельзя. Между визитами проходят недели, и человек искал заново</p></div>
+    </section>
+
+    <!-- Концепты -->
+    <section class="grid" aria-label="Концепты" id="concepts" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">Концепты</h2></div>
+      <div class="b b--text" style="--c:3;--r:1;--w:3;--h:2;--tc:1;--tr:2;--tw:3;--th:2;--mc:1;--mr:2;--mw:2;--mh:2"><p class="t-body">Сравнила две компоновки. В первой большая шапка заменена мини-панелью, а фильтры остаются в ней на виду. Во второй фильтры спрятаны в одну кнопку, а слева больше места под список. Выбрала первую: фильтр по типу отходов нужен почти каждому, и лишний клик бил бы по основному сценарию. Заодно проверила, как компоненты дизайн-системы ведут себя в разных вариантах.</p></div>
+      <div class="b b--fill" style="--c:1;--r:3;--w:3;--h:2;--fit:contain;--tc:1;--tr:4;--tw:3;--th:2;--tfit:contain;--mc:1;--mr:4;--mw:2;--mh:2;--mfit:contain"><img src="/projects/avito-charity/recycle-map/media/concepts/var-1.webp?v=2" alt="Концепт карты с миниатюрной панелью вместо большой шапки и фильтрами внутри панели" loading="lazy" decoding="async" /></div>
+      <div class="b b--text" style="--c:1;--r:5;--w:3;--h:1;--tc:1;--tr:6;--tw:3;--th:1;--mc:1;--mr:6;--mw:2;--mh:1"><p class="t-body">Вариант 1: мини-панель, выбрали</p></div>
+      <div class="b b--fill" style="--c:4;--r:3;--w:3;--h:2;--fit:contain;--tc:1;--tr:7;--tw:3;--th:2;--tfit:contain;--mc:1;--mr:7;--mw:2;--mh:2;--mfit:contain"><img src="/projects/avito-charity/recycle-map/media/concepts/var-2.webp?v=2" alt="Концепт карты с фильтрами, скрытыми в одну кнопку, и расширенной левой панелью" loading="lazy" decoding="async" /></div>
+      <div class="b b--text" style="--c:4;--r:5;--w:3;--h:1;--tc:1;--tr:9;--tw:3;--th:1;--mc:1;--mr:9;--mw:2;--mh:1"><p class="t-body">Вариант 2: фильтры в одной кнопке</p></div>
+    </section>
+
+    <!-- Навигация -->
+    <section class="grid" aria-label="Навигация" id="navigation" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">Навигация</h2></div>
+      <div class="b b--text" style="--c:3;--r:1;--w:3;--h:1;--tc:1;--tr:2;--tw:3;--th:1;--mc:1;--mr:2;--mw:2;--mh:1"><p class="t-body">Человек попадал на карту и оставался в ней: вернуться к другим инициативам было неоткуда</p></div>
+      <div class="b b--fill" style="--c:1;--r:2;--w:3;--h:3;--fit:cover;--tc:1;--tr:3;--tw:2;--th:2;--tfit:cover;--mc:1;--mr:3;--mw:2;--mh:2;--mfit:cover"><img src="/projects/avito-charity/recycle-map/media/navigation/nav-1.webp?v=5" alt="Карта до изменений: без общей навигации" loading="lazy" decoding="async" /></div>
+      <div class="b b--text" style="--c:1;--r:5;--w:3;--h:1;--tc:1;--tr:5;--tw:2;--th:1;--mc:1;--mr:5;--mw:2;--mh:1"><p class="t-body">До</p></div>
+      <div class="b b--fill" style="--c:4;--r:2;--w:3;--h:3;--fit:cover;--tc:3;--tr:3;--tw:2;--th:2;--tfit:cover;--mc:1;--mr:6;--mw:2;--mh:2;--mfit:cover"><img src="/projects/avito-charity/recycle-map/media/navigation/nav-2.webp?v=5" alt="Карта после изменений: с навигацией по благотворительным инициативам" loading="lazy" decoding="async" /></div>
+      <div class="b b--text" style="--c:4;--r:5;--w:3;--h:1;--tc:3;--tr:5;--tw:2;--th:1;--mc:1;--mr:8;--mw:2;--mh:1"><p class="t-body">После</p></div>
+      <div class="b b--text" style="--c:1;--r:6;--w:3;--h:2;--tc:1;--tr:6;--tw:3;--th:2;--mc:1;--mr:9;--mw:2;--mh:2"><p class="t-body">Добавила общую навигацию пространства благотворительности. Соседние команды хотели, чтобы на карте была та же шапка, что и на остальных страницах раздела. Но полноразмерная шапка забирала место у карты, поэтому договорились о плавающей панели: пункты меню и выпадающие списки те же, а карта остаётся на весь экран. Так навигация работает одинаково по всему разделу, а на карте не мешает поиску пунктов.</p></div>
+    </section>
+
+    <!-- Поиск и фильтры -->
+    <section class="grid" aria-label="Поиск и фильтры" id="filters" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">Поиск и фильтры</h2></div>
+      <div class="b b--text" style="--c:3;--r:1;--w:3;--h:1;--tc:1;--tr:2;--tw:3;--th:1;--mc:1;--mr:2;--mw:2;--mh:1"><p class="t-body">Иконки фильтров серые и выглядят неактивными. Люди писали в поддержку, что фильтры недоступны.</p></div>
+      <div class="b b--fill" style="--c:1;--r:2;--w:3;--h:3;--fit:cover;--tc:1;--tr:3;--tw:2;--th:2;--tfit:cover;--mc:1;--mr:3;--mw:2;--mh:2;--mfit:cover"><img src="/projects/avito-charity/recycle-map/media/filters/filter-1.webp" alt="Фильтры до изменений: категории с неочевидными состояниями выбора" loading="lazy" decoding="async" /></div>
+      <div class="b b--text" style="--c:1;--r:5;--w:3;--h:1;--tc:1;--tr:5;--tw:2;--th:1;--mc:1;--mr:5;--mw:2;--mh:1"><p class="t-body">До</p></div>
+      <div class="b b--fill" style="--c:4;--r:2;--w:3;--h:3;--fit:cover;--tc:3;--tr:3;--tw:2;--th:2;--tfit:cover;--mc:1;--mr:6;--mw:2;--mh:2;--mfit:cover"><img src="/projects/avito-charity/recycle-map/media/filters/filter-2.webp" alt="Фильтры после изменений: категории и иконки из дизайн-системы" loading="lazy" decoding="async" /></div>
+      <div class="b b--text" style="--c:4;--r:5;--w:3;--h:1;--tc:3;--tr:5;--tw:2;--th:1;--mc:1;--mr:8;--mw:2;--mh:1"><p class="t-body">После</p></div>
+    </section>
+
+    <!-- Карточка пункта и избранное -->
+    <section class="grid" aria-label="Карточка пункта и избранное" id="favorites" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">Карточка пункта и избранное</h2></div>
+      <div class="b b--text" style="--c:3;--r:1;--w:3;--h:1;--tc:1;--tr:2;--tw:3;--th:1;--mc:1;--mr:2;--mw:2;--mh:1"><p class="t-body">Адрес, условия приёма, режим работы и контакты лежали в карточке одним весом — понять, подходит ли пункт, было долго. Сохранить его было нельзя.</p></div>
+      <div class="b b--fill" style="--c:1;--r:2;--w:3;--h:2;--fit:cover;--tc:1;--tr:3;--tw:3;--th:2;--tfit:cover;--mc:1;--mr:3;--mw:2;--mh:2;--mfit:contain"><img src="/projects/avito-charity/recycle-map/media/favorites/favs-desktop.webp?v=2" alt="Карточка пункта приёма и избранное на карте" loading="lazy" decoding="async" /></div>
+      <div class="b b--text" style="--c:1;--r:4;--w:3;--h:1;--tc:1;--tr:5;--tw:3;--th:1;--mc:1;--mr:5;--mw:2;--mh:1"><p class="t-body">Перегруппировала карточку по задачам: где это, что примут, когда открыто, как связаться</p></div>
+      <div class="b b--text" style="--c:4;--r:4;--w:3;--h:1;--tc:1;--tr:6;--tw:3;--th:1;--mc:1;--mr:6;--mw:2;--mh:1"><p class="t-body">Унифицировала типографику, ссылки и состояния. Спроектировала сохранение пункта и список избранного.</p></div>
+    </section>
+
+    <!-- Почему избранное отдельным списком -->
+    <section class="grid" aria-label="Почему избранное отдельным списком" id="favorites-decision" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">Почему избранное отдельным списком</h2></div>
+      <div class="b b--text" style="--c:3;--r:1;--w:3;--h:1;--tc:1;--tr:2;--tw:3;--th:1;--mc:1;--mr:2;--mw:2;--mh:1"><p class="t-body">Рассматривала флаг «сохранено» внутри карточки: дешевле и не добавляет новой сущности. Выбрала отдельный список.</p></div>
+      <div class="b b--fill" style="--c:1;--r:2;--w:1;--h:2;--fit:cover;--tc:1;--tr:3;--tw:1;--th:2;--tfit:cover;--mc:1;--mr:3;--mw:1;--mh:2;--mfit:cover"><img src="/projects/avito-charity/recycle-map/media/favorites-list/favorites-removed-v2.webp" alt="Пункт удалён из избранного, в уведомлении кнопка «Вернуть», ниже список избранного" loading="lazy" decoding="async" /></div>
+      <div class="b b--fill" style="--c:2;--r:2;--w:1;--h:2;--fit:cover;--tc:2;--tr:3;--tw:1;--th:2;--tfit:cover;--mc:2;--mr:3;--mw:1;--mh:2;--mfit:cover"><img src="/projects/avito-charity/recycle-map/media/favorites-list/favorites-empty.webp" alt="Пустой список избранного «Пока что тут тихо» с кнопкой «Найти пункт переработки»" loading="lazy" decoding="async" /></div>
+      <div class="b b--text" style="--c:1;--r:4;--w:3;--h:1;--tc:1;--tr:5;--tw:3;--th:1;--mc:1;--mr:5;--mw:2;--mh:2"><p class="t-body">Флаг помечает пункт, но не помогает к нему вернуться: человек, который сдаёт вещи раз в месяц, не помнит, где эта точка на карте. Ему нужен не признак, а место, куда можно прийти. Список стоил дороже, но без него сценарий возврата не закрывался.</p></div>
+      <div class="b b--text" style="--c:4;--r:4;--w:3;--h:1;--tc:1;--tr:6;--tw:3;--th:1;--mc:1;--mr:7;--mw:2;--mh:1"><p class="t-body">Проверить этот выбор можно только данными — он первый в плане замеров</p></div>
+    </section>
+
+    <!-- Результаты -->
+    <section class="grid" aria-label="Результаты" id="results" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">Результаты</h2></div>
+      <div class="b b--text" style="--c:3;--r:1;--w:3;--h:1;--tc:1;--tr:2;--tw:3;--th:1;--mc:1;--mr:2;--mw:2;--mh:1"><p class="t-body">Раскатывали на всех сразу, без А/Б-теста, поэтому приписывать редизайну весь трафик карты я не могу. По данным:</p></div>
+      <div class="b b--text" style="--c:1;--r:2;--w:2;--h:1;--tc:1;--tr:3;--tw:2;--th:1;--mc:1;--mr:3;--mw:2;--mh:1"><p class="t-metric">306K</p><p class="t-body">Загрузок точек в день</p></div>
+      <div class="b b--text" style="--c:3;--r:2;--w:2;--h:1;--tc:3;--tr:3;--tw:2;--th:1;--mc:1;--mr:4;--mw:2;--mh:1"><p class="t-metric">1,5–3K</p><p class="t-body">Открытий карточки пункта в день</p></div>
+      <div class="b b--text" style="--c:5;--r:2;--w:2;--h:1;--tc:1;--tr:4;--tw:2;--th:1;--mc:1;--mr:5;--mw:2;--mh:1"><p class="t-metric">ДО 70</p><p class="t-body">Сохранений точек в избранное в день</p></div>
+      <div class="b b--text" style="--c:1;--r:3;--w:3;--h:1;--tc:1;--tr:5;--tw:3;--th:1;--mc:1;--mr:6;--mw:2;--mh:1"><p class="t-body">Эти числа говорят, что картой пользуются регулярно, а не разово. Что это следствие именно редизайна — не говорят: для такого вывода нужен замер, которого у нас не было.</p></div>
+    </section>
+
+    <!-- Что проверяю дальше -->
+    <section class="grid" aria-label="Что проверяю дальше" id="next" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">Что проверяю дальше</h2></div>
+      <div class="b b--text" style="--c:3;--r:1;--w:3;--h:1;--tc:1;--tr:2;--tw:3;--th:1;--mc:1;--mr:2;--mw:2;--mh:1"><p class="t-body">Сколько времени уходит на поиск подходящего пункта. Если долго даже с фильтрами, то это узкое место не в интерфейсе, а в качестве партнёрских данных, и работать надо с ними, а не с экраном.</p></div>
+      <div class="b b--text" style="--c:1;--r:2;--w:3;--h:1;--tc:1;--tr:3;--tw:3;--th:1;--mc:1;--mr:3;--mw:2;--mh:1"><p class="t-body">Как часто открывают сохранённые точки. Если реже раза в месяц, то избранное работает как закладка «на всякий случай», и тогда логичнее напоминание, а не список.</p></div>
+      <div class="b b--text" style="--c:4;--r:2;--w:3;--h:1;--tc:1;--tr:4;--tw:3;--th:1;--mc:1;--mr:4;--mw:2;--mh:1"><p class="t-body">Какие фильтры чаще приводят к открытию карточки и построению маршрута. Редко используемые фильтры будут кандидатами на удаление: короткий список фильтров обычно работает лучше полного.</p></div>
+    </section>
+
+    <!-- Следующий проект -->
+    <section class="grid" aria-label="Следующий проект" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">Следующий проект</h2></div>
+      <div class="b b--text" style="--c:1;--r:2;--w:3;--h:1;--tc:1;--tr:2;--tw:3;--th:1;--mc:1;--mr:2;--mw:2;--mh:1"><h3 class="t-h3">Добрая подписка</h3><p class="t-body">Ежемесячная помощь фондам в приложении</p><p class="t-tags">Avito · B2C · Благотворительность · Платежи</p></div>
+      <a class="b b--fill b--cover" href="case-subscription.html" aria-label="Открыть кейс «Добрая подписка»" style="--c:1;--r:3;--w:3;--h:2;--tc:1;--tr:3;--tw:3;--th:2;--mc:1;--mr:3;--mw:2;--mh:2"><video src="/projects/avito-charity/subscription/covers/subscription-cover-loop-1440x900-60fps.mp4" poster="/projects/avito-charity/subscription/covers/subscription-cover-poster-2880x1800.webp" muted loop playsinline autoplay preload="metadata" aria-label="«Добрая подписка» в приложении Авито"></video><span class="corner"><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></span></a>
+    </section>
+
+    <!-- Контакты -->
+    <section class="grid" aria-label="Контакты" id="contacts" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tr:1;--tw:2;--th:1;--mc:1;--mr:1;--mw:2;--mh:1"><h2 class="t-h2">Связаться</h2></div>
+      <a class="b b--link" href="https://t.me/stasyabis" target="_blank" rel="noopener noreferrer" style="--c:1;--r:2;--w:1;--h:1;--tc:1;--tr:2;--tw:1;--th:1;--mc:1;--mr:2;--mw:1;--mh:1"><span>Telegram</span><span class="icon icon--social-telegram" aria-hidden="true"></span></a>
+      <a class="b b--link" href="mailto:stasyabis7@gmail.com" style="--c:2;--r:2;--w:1;--h:1;--tc:2;--tr:2;--tw:1;--th:1;--mc:2;--mr:2;--mw:1;--mh:1"><span>Почта</span><span class="icon icon--social-email" aria-hidden="true"></span></a>
+      <a class="b b--link" href="https://dribbble.com/Stasyabis" target="_blank" rel="noopener noreferrer" style="--c:3;--r:2;--w:1;--h:1;--tc:3;--tr:2;--tw:1;--th:1;--mc:1;--mr:3;--mw:1;--mh:1"><span>Dribbble</span><span class="icon icon--social-dribbble" aria-hidden="true"></span></a>
+      <a class="b b--link" href="https://www.figma.com/@stasyabis" target="_blank" rel="noopener noreferrer" style="--c:4;--r:2;--w:1;--h:1;--tc:4;--tr:2;--tw:1;--th:1;--mc:2;--mr:3;--mw:1;--mh:1"><span>Figma community</span><span class="icon icon--social-figma" aria-hidden="true"></span></a>
+      <a class="b b--link" href="https://medium.com/@stasyabis" target="_blank" rel="noopener noreferrer" style="--c:5;--r:2;--w:1;--h:1;--tc:1;--tr:3;--tw:1;--th:1;--mc:1;--mr:4;--mw:1;--mh:1"><span>Medium</span><span class="icon icon--social-medium" aria-hidden="true"></span></a>
+      <a class="b b--link" href="https://habr.com/ru/users/stasyabis/" target="_blank" rel="noopener noreferrer" style="--c:6;--r:2;--w:1;--h:1;--tc:2;--tr:3;--tw:1;--th:1;--mc:2;--mr:4;--mw:1;--mh:1"><span>Habr</span><span class="icon icon--social-habr" aria-hidden="true"></span></a>
+    </section>
+  </div>
+  <script src="grid.js"></script>
+</body>
+</html>

@@ -1,0 +1,2036 @@
+{
+ "/projects/ozon-crm/customer-segments/": {
+  "title": "CRM для продавцов Ozon",
+  "path": "/projects/ozon-crm/customer-segments/",
+  "sections": [
+   {
+    "id": "summary",
+    "title": "CRM для продавцов Ozon",
+    "level": "h1",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Проблема: у продавцов были данные о покупателях, но не было понятного способа превратить их в действие"
+     },
+     {
+      "kind": "text",
+      "text": "Решение: предложила ключевой сегмент на сводной и пошаговую настройку рассылки: кому отправить, что предложить, как показать"
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "video",
+       "src": "/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-1440x900-60fps.mp4",
+       "poster": "/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-poster-1440x900.webp",
+       "alt": "Раздел CRM в кабинете Ozon Seller: постоянные покупатели и рекомендации по сегментам",
+       "ratio": 1.6
+      }
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "15%",
+      "text": "Продавцов используют CRM ежемесячно, в 1,5 раза выше цели",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "≈1 МЛН",
+      "text": "Покупателей получают сообщения ежедневно, на 25% выше цели",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "13%",
+      "text": "Открываемость сообщений, на 3 п. п. выше цели",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "about",
+    "title": "О проекте",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Мы создавали «Сегменты покупателей» с нуля как часть CRM Ozon Seller. Задача пришла от SPO: дать продавцам инструмент для работы с покупательской базой",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/about/banner.webp",
+       "poster": null,
+       "alt": "",
+       "ratio": 1.498
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Продавец видит показатели каждой группы и рекомендации действий",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Раздел объединяет покупателей в группы по их покупкам и интересу к товарам",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "В MVP вошли готовые сегменты и подсегменты. Создание собственных сегментов оставили за рамками первого запуска",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "team",
+    "title": "Команда",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Разработка длилась 6 месяцев от постановки задачи до запуска. Общались всей командой. Нажми, чтобы познакомиться со всеми."
+     },
+     {
+      "kind": "team",
+      "number": "01 / 05",
+      "title": "Продакт",
+      "text": "Обсуждали цели и гипотезы",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "team",
+      "number": "02 / 05",
+      "title": "Проджект",
+      "text": "Согласовывали концепты",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "team",
+      "number": "03 / 05",
+      "title": "Бэкенд",
+      "text": "Продумывали логику",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "team",
+      "number": "04 / 05",
+      "title": "Фронтенд",
+      "text": "Проводили дизайн ревью",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "team",
+      "number": "05 / 05",
+      "title": "Ресёрчер",
+      "text": "Проводили UX, обсуждали гипотезы",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "role",
+    "title": "Роль",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Отстояла сокращение объёма страницы и предложила два решения, которые вошли в MVP",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/role/banner.webp",
+       "poster": null,
+       "alt": "",
+       "ratio": 0.749
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Настояла, чтобы портрет покупателя и аналитика продаж остались в существующих разделах, а в CRM попали только данные для действий",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Предложила блок на сводной, который подстраивается под базу продавца и показывает аудиторию, которой нужно внимание в первую очередь",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Спроектировала рекомендации под каждый сегмент и два входа в создание рассылки: через сегмент или сразу к последнему шагу",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "scenario",
+    "title": "Сценарий",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "step",
+      "number": "01 / 04",
+      "title": "Оценить аудиторию",
+      "text": "",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "step",
+      "number": "02 / 04",
+      "title": "Выбрать сегмент",
+      "text": "",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "step",
+      "number": "03 / 04",
+      "title": "Подобрать предложение",
+      "text": "",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "step",
+      "number": "04 / 04",
+      "title": "Создать коммуникацию",
+      "text": "",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "problems",
+    "title": "Проблемы",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "card",
+      "number": "",
+      "title": "Обзор и детали",
+      "text": "На сводной нужен обзор всей базы, а внутри сегмента детали для работы с конкретной аудиторией",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "От цифр к действию",
+      "text": "Рядом с аналитикой нужны рекомендации: какую задачу решать с группой и какое предложение использовать",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "Разные продавцы",
+      "text": "У одних уже есть постоянные покупатели, у других только первые заказы или интерес к товарам",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "concepts",
+    "title": "Концепты",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Начали с инвентаризации данных о покупателях: RFM-сегменты, корзина, избранное, просмотры, средний чек, демография, регионы и категории. Для каждого решили, что нужно продавцу здесь, а что он уже смотрит в других разделах кабинета."
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/concepts/bento-1-v2.webp",
+       "poster": null,
+       "alt": "Концепт страницы сегментов покупателей",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/concepts/bento-2.webp?v=2",
+       "poster": null,
+       "alt": "Концепт страницы сегментов покупателей",
+       "ratio": 2.038
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/concepts/bento-4.webp",
+       "poster": null,
+       "alt": "Концепт страницы сегментов покупателей",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/concepts/bento-3.webp",
+       "poster": null,
+       "alt": "Концепт страницы сегментов покупателей",
+       "ratio": 1
+      }
+     }
+    ]
+   },
+   {
+    "id": "dashboard",
+    "title": "Понимание аудитории",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Главной задачей интерфейса стало связать данные о покупателях с дальнейшим действием. На сводной видны постоянные, новые и потенциальные покупатели, их показатели и рекомендации по работе с каждой группой."
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/summary/table-v2.webp",
+       "poster": null,
+       "alt": "Сводная таблица: постоянные, новые и потенциальные покупатели с количеством, суммой покупок, средним чеком и динамикой",
+       "ratio": 1.743
+      }
+     }
+    ]
+   },
+   {
+    "id": "setup",
+    "title": "Настройки рекомендации",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "В CRM можно начать с готового сценария под задачу: удержать постоянных покупателей, мотивировать новых на повторную покупку или расширить аудиторию. Для самостоятельной настройки предусмотрен запуск с нуля."
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/setup/scenarios.webp?v=2",
+       "poster": null,
+       "alt": "Выбор готового сценария рассылки или запуск с нуля",
+       "ratio": 1.671
+      }
+     }
+    ]
+   },
+   {
+    "id": "conditions",
+    "title": "Объяснить условия до отправки",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "За общим сценарием стоят разные ограничения. Обычное сообщение можно отправить не каждой аудитории; у рассылок есть условия подписки и лимит получателей; дата отправки зависит от срока действия акции."
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/conditions/1.webp",
+       "poster": null,
+       "alt": "Условия отправки рассылки",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/conditions/2.webp",
+       "poster": null,
+       "alt": "Условия отправки рассылки",
+       "ratio": 1
+      }
+     }
+    ]
+   },
+   {
+    "id": "customers",
+    "title": "Поддержать работу с отдельным покупателем",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Массовую коммуникацию дополняет список покупателей. В нём собраны покупки, недавние действия, интересы и рекомендованные товары. Продавец может отфильтровать аудиторию и перейти к личному общению, если чат доступен."
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/customers/list.webp",
+       "poster": null,
+       "alt": "Список покупателей с покупками, интересами и рекомендованными товарами",
+       "ratio": 1.68
+      }
+     },
+     {
+      "kind": "text",
+      "text": "Для более глубокого анализа группы в CRM встроен существующий портрет покупателя с работой по сегментам. А виджет на главной кабинета показывает недавний интерес покупателей и предлагает действие — так работа с аудиторией может начаться ещё до входа в раздел."
+     }
+    ]
+   },
+   {
+    "id": "after-send",
+    "title": "Продолжить работу после отправки",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "В списке рассылок продавец видит статус, количество получателей, открытия и переходы. Рекомендации помогают решить, повторить удачную коммуникацию или пересмотреть предложение."
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/after-send/list.webp",
+       "poster": null,
+       "alt": "Список рассылок со статусом, количеством получателей, открытиями и переходами",
+       "ratio": 1.68
+      }
+     }
+    ]
+   },
+   {
+    "id": "results",
+    "title": "Итог",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "В результате проектирования получился связный CRM-сценарий: понять аудиторию, выбрать действие, настроить коммуникацию и оценить отклик. Мой основной вклад: концепция ключевого сегмента и пошаговая организация настройки, которые задают понятную последовательность работы с продуктом."
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/results/bento-1.webp?v=2",
+       "poster": null,
+       "alt": "Итоговый экран CRM",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/results/bento-2.webp?v=2",
+       "poster": null,
+       "alt": "Итоговый экран CRM",
+       "ratio": 2.046
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/results/bento-3.webp",
+       "poster": null,
+       "alt": "Итоговый экран CRM",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/ozon-crm/customer-segments/media/results/bento-4.webp?v=2",
+       "poster": null,
+       "alt": "Итоговый экран CRM",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "7%",
+      "text": "Продавцов используют CRM ежемесячно, в 1,5 раза выше цели",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "≈0 МЛН",
+      "text": "Покупателей получают сообщения ежедневно, на 25% выше цели",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "6%",
+      "text": "Открываемость сообщений, на 3 п. п. выше цели",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "text",
+      "text": "Вклад отдельных решений не измеряли"
+     }
+    ]
+   }
+  ]
+ },
+ "/projects/avito-charity/recycle-map/": {
+  "title": "Карта переработки вещей",
+  "path": "/projects/avito-charity/recycle-map/",
+  "sections": [
+   {
+    "id": "summary",
+    "title": "Карта переработки вещей",
+    "level": "h1",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Проблема: человек находил пункт приёма и уходил. Фильтры выглядели неактивными, сохранить точку было нельзя, а вернуться к другим инициативам было неоткуда."
+     },
+     {
+      "kind": "text",
+      "text": "Решение: пересобрала поиск, фильтры и карточку пункта, добавила избранное и общую навигацию благотворительности"
+     },
+     {
+      "kind": "button",
+      "title": "Открыть карту на Авито",
+      "href": "https://www.avito.ru/avito-care/recyclemap"
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "video",
+       "src": "/projects/avito-charity/recycle-map/covers/cover.webm?v=3",
+       "poster": "/projects/avito-charity/recycle-map/covers/cover-poster.webp",
+       "alt": "Карта Avito с пунктами приёма вещей и панелью категорий",
+       "ratio": 1.6
+      }
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "306K",
+      "text": "Загрузок точек в день",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "1,5–3K",
+      "text": "Открытий карточки пункта в день",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "ДО 70",
+      "text": "Сохранений точек в избранное в день",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "about",
+    "title": "О проекте",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Карта помогает найти, куда сдать вторсырьё и вещи на благотворительность, а точки на ней поставляют партнёрские организации",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/recycle-map/media/about/banner.webp?v=2",
+       "poster": null,
+       "alt": "",
+       "ratio": 0.839
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Человек приходил сдать вещи и уходил, не узнав об остальных способах помочь, переходов в соседние инициативы было единицы в день",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Продакт поставил задачу перестать терять на карте человека. Успехом считали возвраты на карту и переходы в другие инициативы благотворительности, но замерить получилось только возвраты",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Тысячи адресов с разным качеством описаний, править описания на нашей стороне нельзя, улучшать можно было только интерфейс",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "team",
+    "title": "Команда",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Разработка длилась три месяца от постановки задачи до запуска. Общались всей командой. Нажми, чтобы познакомиться со всеми."
+     },
+     {
+      "kind": "team",
+      "number": "01 / 05",
+      "title": "Продакт",
+      "text": "Обсуждали цели и гипотезы",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "team",
+      "number": "02 / 05",
+      "title": "Проджект",
+      "text": "Согласовывали концепты",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "team",
+      "number": "03 / 05",
+      "title": "Бэкенд",
+      "text": "Продумывали логику",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "team",
+      "number": "04 / 05",
+      "title": "Фронтенд",
+      "text": "Проводили дизайн ревью",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "team",
+      "number": "05 / 05",
+      "title": "Редактор",
+      "text": "Вместе обсуждали формулировки",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "role",
+    "title": "Роль",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Вела ключевой сценарий карты целиком",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/role/banner.webp",
+       "poster": null,
+       "alt": "",
+       "ratio": 0.749
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Пересобрала поиск и навигацию. Ближайший пункт находится по адресу или городу, а фильтры помогают выбрать тип отходов",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Добавила избранное. Свои пункты можно сохранить и не искать заново",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Обновила карточку пункта. Что принимают, адрес, часы работы и фото собраны на одном экране",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "scenario",
+    "title": "Сценарий",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "step",
+      "number": "01 / 04",
+      "title": "Найти пункт",
+      "text": "",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "step",
+      "number": "02 / 04",
+      "title": "Использовать фильтры",
+      "text": "",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "step",
+      "number": "03 / 04",
+      "title": "Проверить условия",
+      "text": "",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "step",
+      "number": "04 / 04",
+      "title": "Сдать вещи",
+      "text": "",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "problems",
+    "title": "Проблемы",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Сценарий рвался в трёх местах"
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Карта не была связана с остальной благотворительностью: переходов в другие инициативы — единицы в день",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Фильтры в изначальном виде выглядели как неактивные и люди писали в поддержку, что фильтры недоступны, хотя кликабельны",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Сохранить найденный пункт было нельзя. Между визитами проходят недели, и человек искал заново",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "concepts",
+    "title": "Концепты",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Сравнила две компоновки. В первой большая шапка заменена мини-панелью, а фильтры остаются в ней на виду. Во второй фильтры спрятаны в одну кнопку, а слева больше места под список. Выбрала первую: фильтр по типу отходов нужен почти каждому, и лишний клик бил бы по основному сценарию. Заодно проверила, как компоненты дизайн-системы ведут себя в разных вариантах."
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Вариант 1: мини-панель, выбрали",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/recycle-map/media/concepts/var-1.webp?v=2",
+       "poster": null,
+       "alt": "Концепт карты с миниатюрной панелью вместо большой шапки и фильтрами внутри панели",
+       "ratio": 1.8
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Вариант 2: фильтры в одной кнопке",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/recycle-map/media/concepts/var-2.webp?v=2",
+       "poster": null,
+       "alt": "Концепт карты с фильтрами, скрытыми в одну кнопку, и расширенной левой панелью",
+       "ratio": 1.8
+      }
+     }
+    ]
+   },
+   {
+    "id": "navigation",
+    "title": "Навигация",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Человек попадал на карту и оставался в ней: вернуться к другим инициативам было неоткуда"
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "До",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/recycle-map/media/navigation/nav-1.webp?v=5",
+       "poster": null,
+       "alt": "Карта до изменений: без общей навигации",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "После",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/recycle-map/media/navigation/nav-2.webp?v=5",
+       "poster": null,
+       "alt": "Карта после изменений: с навигацией по благотворительным инициативам",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "text",
+      "text": "Добавила общую навигацию пространства благотворительности. Соседние команды хотели, чтобы на карте была та же шапка, что и на остальных страницах раздела. Но полноразмерная шапка забирала место у карты, поэтому договорились о плавающей панели: пункты меню и выпадающие списки те же, а карта остаётся на весь экран. Так навигация работает одинаково по всему разделу, а на карте не мешает поиску пунктов."
+     }
+    ]
+   },
+   {
+    "id": "filters",
+    "title": "Поиск и фильтры",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Иконки фильтров серые и выглядят неактивными. Люди писали в поддержку, что фильтры недоступны."
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "До",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/recycle-map/media/filters/filter-1.webp",
+       "poster": null,
+       "alt": "Фильтры до изменений: категории с неочевидными состояниями выбора",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "После",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/recycle-map/media/filters/filter-2.webp",
+       "poster": null,
+       "alt": "Фильтры после изменений: категории и иконки из дизайн-системы",
+       "ratio": 1
+      }
+     }
+    ]
+   },
+   {
+    "id": "favorites",
+    "title": "Карточка пункта и избранное",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Адрес, условия приёма, режим работы и контакты лежали в карточке одним весом — понять, подходит ли пункт, было долго. Сохранить его было нельзя."
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/recycle-map/media/favorites/favs-desktop.webp?v=2",
+       "poster": null,
+       "alt": "Карточка пункта приёма и избранное на карте",
+       "ratio": 1.6
+      }
+     },
+     {
+      "kind": "text",
+      "text": "Перегруппировала карточку по задачам: где это, что примут, когда открыто, как связаться"
+     },
+     {
+      "kind": "text",
+      "text": "Унифицировала типографику, ссылки и состояния. Спроектировала сохранение пункта и список избранного."
+     }
+    ]
+   },
+   {
+    "id": "favorites-decision",
+    "title": "Почему избранное отдельным списком",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Рассматривала флаг «сохранено» внутри карточки: дешевле и не добавляет новой сущности. Выбрала отдельный список."
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/recycle-map/media/favorites-list/favorites-removed-v2.webp",
+       "poster": null,
+       "alt": "Пункт удалён из избранного, в уведомлении кнопка «Вернуть», ниже список избранного",
+       "ratio": 0.462
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/recycle-map/media/favorites-list/favorites-empty.webp",
+       "poster": null,
+       "alt": "Пустой список избранного «Пока что тут тихо» с кнопкой «Найти пункт переработки»",
+       "ratio": 0.462
+      }
+     },
+     {
+      "kind": "text",
+      "text": "Флаг помечает пункт, но не помогает к нему вернуться: человек, который сдаёт вещи раз в месяц, не помнит, где эта точка на карте. Ему нужен не признак, а место, куда можно прийти. Список стоил дороже, но без него сценарий возврата не закрывался."
+     },
+     {
+      "kind": "text",
+      "text": "Проверить этот выбор можно только данными — он первый в плане замеров"
+     }
+    ]
+   },
+   {
+    "id": "results",
+    "title": "Результаты",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Раскатывали на всех сразу, без А/Б-теста, поэтому приписывать редизайну весь трафик карты я не могу. По данным:"
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "306K",
+      "text": "Загрузок точек в день",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "1,5–3K",
+      "text": "Открытий карточки пункта в день",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "ДО 70",
+      "text": "Сохранений точек в избранное в день",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "text",
+      "text": "Эти числа говорят, что картой пользуются регулярно, а не разово. Что это следствие именно редизайна — не говорят: для такого вывода нужен замер, которого у нас не было."
+     }
+    ]
+   },
+   {
+    "id": "next",
+    "title": "Что проверяю дальше",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Сколько времени уходит на поиск подходящего пункта. Если долго даже с фильтрами, то это узкое место не в интерфейсе, а в качестве партнёрских данных, и работать надо с ними, а не с экраном."
+     },
+     {
+      "kind": "text",
+      "text": "Как часто открывают сохранённые точки. Если реже раза в месяц, то избранное работает как закладка «на всякий случай», и тогда логичнее напоминание, а не список."
+     },
+     {
+      "kind": "text",
+      "text": "Какие фильтры чаще приводят к открытию карточки и построению маршрута. Редко используемые фильтры будут кандидатами на удаление: короткий список фильтров обычно работает лучше полного."
+     }
+    ]
+   }
+  ]
+ },
+ "/projects/avito-charity/subscription/": {
+  "title": "Как устроена регулярная помощь в Авито",
+  "path": "/projects/avito-charity/subscription/",
+  "sections": [
+   {
+    "id": "summary",
+    "title": "Добрая подписка",
+    "level": "h1",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Проблема: помочь фонду на Авито можно было только разово, у фондов не было регулярных поступлений из этого канала"
+     },
+     {
+      "kind": "text",
+      "text": "Решение: спроектировала ежемесячную «Добрую подписку», от выбора фонда до управления в профиле, и добавила отчёты о работе фондов"
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "video",
+       "src": "/projects/avito-charity/subscription/covers/subscription-cover-loop-1440x900-60fps.mp4",
+       "poster": "/projects/avito-charity/subscription/covers/subscription-cover-poster-2880x1800.webp",
+       "alt": "«Добрая подписка» в приложении Авито",
+       "ratio": 1.6
+      }
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "~55",
+      "text": "Новых подписок в день, поток стабильный",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "+64%",
+      "text": "Средний платёж выше минимального",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "~1 300",
+      "text": "Открытий отчётов в день, людям важно знать о фонде",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "about",
+    "title": "О проекте",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "В благотворительном разделе Авито можно было совершать только разовые пожертвования",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/about/banner.webp",
+       "poster": null,
+       "alt": "",
+       "ratio": 1.101
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Чтобы поддерживать фонд постоянно, человеку приходилось повторять сценарий",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Мы добавили ежемесячную помощь и отчёты о работе фондов",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Я спроектировала ежемесячную подписку и управление ею",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "team",
+    "title": "Команда",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "С командой оплаты согласовала представление способов оплаты в приложении и на вебе. Обновление баннера «Знака добра» согласовывала с charity-командой и командой экрана успешной подачи объявления."
+     },
+     {
+      "kind": "team",
+      "number": "01 / 05",
+      "title": "Продакт",
+      "text": "Обсуждали цели и гипотезы",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "team",
+      "number": "02 / 05",
+      "title": "Проджект",
+      "text": "Согласовывали концепты",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "team",
+      "number": "03 / 05",
+      "title": "Бэкенд",
+      "text": "Продумывали логику",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "team",
+      "number": "04 / 05",
+      "title": "Фронтенд",
+      "text": "Проводили дизайн ревью",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "team",
+      "number": "05 / 05",
+      "title": "Редактор",
+      "text": "Обсуждали формулировки",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "role",
+    "title": "Роль",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Вела сценарий регулярной помощи целиком",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/role/banner.webp",
+       "poster": null,
+       "alt": "",
+       "ratio": 0.749
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Спроектировала подписку: условия видны до подключения, а сумму можно изменить прямо в профиле",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Добавила отчёты фондов, чтобы видеть, на что фонд тратит деньги, до того как решиться помочь",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Объединила экраны оплаты и благодарности во всём сценарии",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "scenario",
+    "title": "Сценарий",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "step",
+      "number": "01 / 04",
+      "title": "Выбрать фонд",
+      "text": "",
+      "href": "#choose-fund",
+      "media": null
+     },
+     {
+      "kind": "step",
+      "number": "02 / 04",
+      "title": "Настроить помощь",
+      "text": "",
+      "href": "#settings",
+      "media": null
+     },
+     {
+      "kind": "step",
+      "number": "03 / 04",
+      "title": "Подключить подписку",
+      "text": "",
+      "href": "#settings",
+      "media": null
+     },
+     {
+      "kind": "step",
+      "number": "04 / 04",
+      "title": "Управлять подпиской",
+      "text": "",
+      "href": "#manage",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "problems",
+    "title": "Проблемы",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "У проекта было несколько связанных задач"
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "Помогать регулярно было нельзя",
+      "text": "В разделе были только разовые пожертвования, и для каждой помощи сценарий проходили заново",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "Не хватало информации о фонде",
+      "text": "В исследованиях люди просили отчёты и конкретные результаты работы фондов",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "Оплата и благодарность выглядели по‑разному",
+      "text": "Экран оплаты нужно было собрать в дизайн-системе, а экраны благодарности в charity-проектах не совпадали",
+      "href": "",
+      "media": null
+     }
+    ]
+   },
+   {
+    "id": "before",
+    "title": "Как был устроен прежний флоу",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Выбор фонда и суммы были разнесены на два экрана, а возможности подключить регулярную помощь не было"
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "До",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/before/before.webp",
+       "poster": null,
+       "alt": "Прежний флоу: выбор фонда и выбор суммы на двух отдельных экранах",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "После",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/before/after.webp",
+       "poster": null,
+       "alt": "Новый флоу: фонд, сумма и переключатель «Разово / Ежемесячно» на одном экране",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "text",
+      "text": "Каждое пожертвование требовало отдельных переходов, и для постоянной поддержки фонда приходилось заново проходить весь сценарий"
+     }
+    ]
+   },
+   {
+    "id": "concepts",
+    "title": "Концепты",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Проверяла эмоциональную подачу: 3D-персонаж на экране подписки и конфетти на экране благодарности. Отказалась: персонаж занимал половину экрана. Оставила: конфетти добавляли эмоциональную составляющую механики. Выбрала сдержанный вариант для страницы настройки, где главная информация помещается в один экран."
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/concepts/1.webp",
+       "poster": null,
+       "alt": "",
+       "ratio": 0.8
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/concepts/2.webp",
+       "poster": null,
+       "alt": "",
+       "ratio": 0.8
+      }
+     }
+    ]
+   },
+   {
+    "id": "entry-points",
+    "title": "Точки входа",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Я предусмотрела три точки входа в подписку: в выдаче объявлений, на charity-лендинге и после подачи объявления"
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/entry-points/entry-1.webp",
+       "poster": null,
+       "alt": "Баннер «Умножайте добро» в выдаче объявлений",
+       "ratio": 2.046
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/entry-points/entry-2.webp?v=2",
+       "poster": null,
+       "alt": "Блок подписки на charity-лендинге",
+       "ratio": 2.046
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/entry-points/entry-3.webp?v=3",
+       "poster": null,
+       "alt": "Шторка «Умножайте добро» после подачи объявления",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "text",
+      "text": "После подачи предлагаем помощь, когда основная задача уже завершена; в выдаче знакомим с подпиской через компактный баннер, сохраняя фокус на поиске; на charity-лендинге раскрываем условия подробнее для тех, кто уже интересуется благотворительностью"
+     }
+    ]
+   },
+   {
+    "id": "choose-fund",
+    "title": "Выбор фонда",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Я перенесла выбор фонда на первый экран: до выбора суммы можно узнать о подставленном фонде. При смене фонда открывается список, а из него можно перейти на страницу фонда с отчётами «Добрые дела фонда». При разовом пожертвовании подставляем фонды из случайных категорий, чтобы помощь получали и менее популярные направления, помимо детей и животных."
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Подписка",
+      "href": "",
+      "media": {
+       "tag": "video",
+       "src": "/projects/avito-charity/subscription/media/choose-fund/subscription-fund-flow-v2-1600x2000-60fps.mp4",
+       "poster": null,
+       "alt": "Выбор фонда при оформлении подписки",
+       "ratio": 0.8
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Разовое пожертвование",
+      "href": "",
+      "media": {
+       "tag": "video",
+       "src": "/projects/avito-charity/subscription/media/choose-fund/one-time-donation-flow-v2-1600x2000-60fps.mp4",
+       "poster": null,
+       "alt": "Выбор фонда при разовом пожертвовании",
+       "ratio": 0.8
+      }
+     }
+    ]
+   },
+   {
+    "id": "settings",
+    "title": "Настроить подписку",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "На экране подключения я собрала основные условия подписки: фонд, сумму и ежемесячность списаний. Человек может выбрать 100, 300 или 500 ₽ либо указать свою сумму. Пояснение о повторении платежа находится рядом с суммой, до кнопки подключения."
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Оплата",
+      "href": "",
+      "media": {
+       "tag": "video",
+       "src": "/projects/avito-charity/subscription/media/settings/subscription-payment-flow-1600x2000-60fps.mp4",
+       "poster": null,
+       "alt": "Подключение подписки: выбор суммы и оплата",
+       "ratio": 0.8
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "Как это работает",
+      "href": "",
+      "media": {
+       "tag": "video",
+       "src": "/projects/avito-charity/subscription/media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4",
+       "poster": null,
+       "alt": "Шторка «Как это работает» с условиями подписки",
+       "ratio": 0.8
+      }
+     },
+     {
+      "kind": "text",
+      "text": "Дополнительные условия вынесены в «Как это работает»: отсутствие комиссии, перечисление денег фондам напрямую, ежемесячный «Знак добра», возможность изменения и отключения подписки. Это позволяет сохранить основной экран компактным и дать подробности тем, кому они нужны."
+     }
+    ]
+   },
+   {
+    "id": "success",
+    "title": "Экран благодарности",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Экраны благодарности в charity-сценариях выглядели по-разному, а прежнюю анимацию заменили статичным изображением. Я разработала общий подход для полноэкранного формата, шторки и модального окна: понятное подтверждение действия, вклад пользователя и благодарность."
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "До",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/success/before.webp",
+       "poster": null,
+       "alt": "Прежний экран благодарности со статичным изображением",
+       "ratio": 0.8
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "После",
+      "href": "",
+      "media": {
+       "tag": "video",
+       "src": "/projects/avito-charity/subscription/media/success/after-1600x2000-60fps.mp4",
+       "poster": null,
+       "alt": "Новый экран благодарности: подтверждение, вклад пользователя и благодарность",
+       "ratio": 0.8
+      }
+     },
+     {
+      "kind": "text",
+      "text": "В подписке экран подтверждает ежемесячную помощь и её условия. Добавила анимацию сердечек, чтобы благодарность была теплее, и два действия: поделиться и добавить «Знак добра» на объявление."
+     },
+     {
+      "kind": "text",
+      "text": "Масштаб использования: около 2 000 показов экранов благодарности в день во всех charity-сценариях"
+     }
+    ]
+   },
+   {
+    "id": "manage",
+    "title": "Управление подпиской",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Управление подпиской доступно из профиля и со страниц «Знака добра» в charity. В профиле видны фонд, сумма и дата ближайшего платежа — сумму можно быстро изменить прямо в карточке."
+     },
+     {
+      "kind": "text",
+      "text": "В настройках можно указать другую сумму или отключить подписку. Сменить фонд можно через отключение и новую подписку. В MVP так сделали, потому что так устроена платёжная система Юкассы. Смена фонда без отключения запланирована следующим шагом."
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/manage/manage-1.webp",
+       "poster": null,
+       "alt": "Карточка «Доброй подписки» в профиле: сумма, настройки и дата ближайшего платежа",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/manage/manage-2.webp",
+       "poster": null,
+       "alt": "Баннер «Доброй подписки» на странице «Знака добра»",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "text",
+      "text": "Здесь мы видим уже синие контролы, так как форма расположена сразу на лендинге, вне платёжного флоу. Здесь решили стилизовать чипсы и кнопку под стиль charity."
+     }
+    ]
+   },
+   {
+    "id": "summary-end",
+    "title": "Итог",
+    "level": "h2",
+    "items": [
+     {
+      "kind": "text",
+      "text": "Запустили регулярную помощь с подключением и управлением подпиской, дополнили выбор фонда информацией о его работе. Дальше важно оценить повторные списания, отмены подписок и конверсию каждой точки входа в подключение."
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/results/bento-1.webp",
+       "poster": null,
+       "alt": "Экран благодарности после оформления подписки",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/results/bento-2.webp",
+       "poster": null,
+       "alt": "Баннер «Умножайте добро» с приглашением оформить подписку",
+       "ratio": 2.046
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/results/bento-3.webp",
+       "poster": null,
+       "alt": "Экран «Вы помогаете фонду» для подписчика",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "media",
+      "media": {
+       "tag": "img",
+       "src": "/projects/avito-charity/subscription/media/results/bento-4.webp",
+       "poster": null,
+       "alt": "Преимущества подписки: без комиссии, знак добра, гибкие настройки, значок #яПомогаю",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "~28",
+      "text": "Новых подписок в день, поток стабильный",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "+32%",
+      "text": "Средний платёж выше минимального",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "metric",
+      "number": "",
+      "title": "~655",
+      "text": "Открытий отчётов в день, людям важно знать о фонде",
+      "href": "",
+      "media": null
+     },
+     {
+      "kind": "text",
+      "text": "Людям нужен простой способ помогать регулярно. Проверяли по числу подключений без отдельного продвижения. В среднем ~55 новых подписок в день, гипотеза подтвердилась."
+     },
+     {
+      "kind": "text",
+      "text": "Отчёты фонда помогают решиться на пожертвование. Запрос пришёл из исследований. После запуска вкладку «Добрые дела фонда» открывают ~1 000 раз в день со «Знака добра» и ~300 раз с #яПомогаю: спрос подтвердился."
+     },
+     {
+      "kind": "text",
+      "text": "Подсказки сумм мотивируют выбирать больше минимума. Предложила варианты 100, 300 и 500 ₽. Средний платёж на 64% выше минимальной суммы: люди чаще выбирают сумму больше 100 ₽."
+     },
+     {
+      "kind": "text",
+      "text": "Оплата не должна терять людей. Цель пока не достигнута. Около половины оплат не доходит до конца на внешнем интерфейсе ЮKassa. Следующий шаг: переход на платёжный флоу Авито."
+     }
+    ]
+   }
+  ]
+ },
+ "/projects/articles/": {
+  "title": "Статьи",
+  "path": "/projects/articles/",
+  "sections": [
+   {
+    "id": "articles",
+    "title": "Статьи",
+    "level": "h1",
+    "items": [
+     {
+      "kind": "article",
+      "number": "[01]",
+      "title": "Скилл сеты дизайнера",
+      "text": "В каком направлении развиваться в команде",
+      "href": "https://vc.ru/design/1828292-raznye-formy-skill-setov-dlya-razvitiya-dizainera",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[02]",
+      "title": "Инклюзия в дизайне",
+      "text": "Стандартные правила доступного интерфейса",
+      "href": "https://vc.ru/design/1168392-interfeisy-i-inklyuzivnost",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[03]",
+      "title": "Date selector and Calendar",
+      "text": "Подробное описание компонентов",
+      "href": "https://vc.ru/design/1168339-date-selector-and-calendar",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[04]",
+      "title": "Text Input состояния",
+      "text": "Подробное описание компонентов",
+      "href": "https://vc.ru/design/1168267-text-input-sostoyaniya",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[05]",
+      "title": "ТРИЗ",
+      "text": "Как применять подход на практике",
+      "href": "https://vc.ru/design/1168007-triz",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[06]",
+      "title": "Как скачать плагин Lottie",
+      "text": "Подробная инструкция для новичков",
+      "href": "https://vc.ru/design/609586-kak-skachat-plagin-lottie-dlya-adobe-after-effects-na-windows-i-nachat-im-polzovatsya",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[07]",
+      "title": "Продуктовые метрики",
+      "text": "Поясняю термины для начинающих дизайнеров",
+      "href": "https://vc.ru/design/1237967-produktovye-metriki-instrukciya-dlya-dizainera",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[08]",
+      "title": "Вопросы на собеседовании",
+      "text": "Как подготовиться и что могут спросить",
+      "href": "https://vc.ru/design/1306587-voprosy-na-sobesedovanii-dlya-produktovogo-dizainera-gotovimsya-k-intervyu",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[09]",
+      "title": "Конференция DUMP 2024",
+      "text": "Екатеринбург принял дизайнеров с распростёртыми объятиями",
+      "href": "https://vc.ru/design/1169783-konferenciya-dump-25-aprelya-2024-goda-ekaterinburg",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[10]",
+      "title": "DesignProsmotr 2023",
+      "text": "Яркая и интересная конференция для дизайнеров",
+      "href": "https://vc.ru/design/1168304-designprosmotr-2023-06-07-maya-moskva",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[11]",
+      "title": "ДВ Суздаль 2023",
+      "text": "Больше брендинга, чем продуктового дизайна",
+      "href": "https://vc.ru/design/635298-dizain-vyhodnye-suzdal-10-12-marta-2023-goda",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[12]",
+      "title": "Дизайн Просмотр 2024",
+      "text": "Первая моя конференция Дизайн Просмотра",
+      "href": "https://habr.com/ru/articles/855954/",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[13]",
+      "title": "Инсула Древний Рим",
+      "text": "Не знала слово и решила его погуглить",
+      "href": "https://vc.ru/education/1212420-insula-mnogoetazhka-drevnego-rima",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[14]",
+      "title": "Markthal",
+      "text": "Красивый рынок, который стал достопримечательностью",
+      "href": "https://vc.ru/design/1194004-markthal-kak-dizain-novogo-zdaniya-preobrazil-gorod-v-niderlandah",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[15]",
+      "title": "Bystander Effect",
+      "text": "How to pay attention to what is happening",
+      "href": "https://medium.com/@stasyabis/the-bystander-effect-b1f4b625d1e7",
+      "media": null
+     },
+     {
+      "kind": "article",
+      "number": "[16]",
+      "title": "Поездка в Японию 2024",
+      "text": "Статья, которая помогла многим, но и зажгла кучу хейтеров",
+      "href": "https://habr.com/ru/articles/841766/",
+      "media": null
+     }
+    ]
+   }
+  ]
+ },
+ "/projects/posts/": {
+  "title": "Посты",
+  "path": "/projects/posts/",
+  "sections": [
+   {
+    "id": "posts",
+    "title": "Посты в Telegram",
+    "level": "h1",
+    "items": [
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "",
+      "href": "https://t.me/designavito/1848",
+      "media": {
+       "tag": "img",
+       "src": "/projects/posts/blanket-post/covers/cover.webp",
+       "poster": null,
+       "alt": "Пост о пледе от фонда «Старость в радость» с фотографией пледа ручной работы",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "",
+      "href": "https://t.me/designavito/1874?single",
+      "media": {
+       "tag": "img",
+       "src": "/projects/posts/where-is-money-post/covers/cover.webp?v=2",
+       "poster": null,
+       "alt": "Пост «Куда идут ваши деньги», 76% жертвователей не знают, куда уходят их переводы",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "",
+      "href": "https://t.me/designavito/1971",
+      "media": {
+       "tag": "img",
+       "src": "/projects/posts/silver-wishes-post/covers/cover.webp",
+       "poster": null,
+       "alt": "Пост «Серебряные желания» в вязаной рамке, о том как средний чек сборов вырос втрое",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "",
+      "href": "https://t.me/ozondesign/4393",
+      "media": {
+       "tag": "img",
+       "src": "/pages/home/assets/ozon/4-original.webp",
+       "poster": null,
+       "alt": "Пост-инструкция «Работаем с Photoshop» об импорте mp4 в слои и покадровой анимации",
+       "ratio": 1
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "/projects/playground/": {
+  "title": "Playground",
+  "path": "/projects/playground/",
+  "sections": [
+   {
+    "id": "playground",
+    "title": "Playground",
+    "level": "h1",
+    "items": [
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/concepts/dashboard-concept/covers/cover.webp",
+       "poster": null,
+       "alt": "Дашборд команды с показателями вовлечённости в процентах и календарём",
+       "ratio": 1.599
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/concepts/educational-app/covers/cover.webp",
+       "poster": null,
+       "alt": "Экран обучающего приложения со списком направлений, дизайн и программирование",
+       "ratio": 0.462
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/concepts/mail-app/covers/cover.webp",
+       "poster": null,
+       "alt": "Почтовое приложение, письмо во входящих с кнопками ответа и отметки прочитанным",
+       "ratio": 0.462
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/concepts/tlm-landing/covers/cover.webp",
+       "poster": null,
+       "alt": "Лендинг компании TLM Software Design с крупным анимированным заголовком",
+       "ratio": 1.599
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/concepts/music-controller/covers/cover.webp",
+       "poster": null,
+       "alt": "Интерфейс аудиоплагина, ручки wet, dry и output gain, пресеты и частота дискретизации",
+       "ratio": 1.599
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/concepts/object-settings/covers/cover.webp",
+       "poster": null,
+       "alt": "Панель настроек объекта, оси X, Y, Z, размеры и радиус скругления",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/concepts/your-custom/covers/cover.webp",
+       "poster": null,
+       "alt": "Раскладка экранов мобильного магазина одежды",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/concepts/time-warp/covers/cover.webp",
+       "poster": null,
+       "alt": "Лендинг путешествий во времени с фильтрами подбора тура",
+       "ratio": 1
+      }
+     },
+     {
+      "kind": "card",
+      "number": "",
+      "title": "",
+      "text": "",
+      "href": "",
+      "media": {
+       "tag": "img",
+       "src": "/projects/concepts/flecto/covers/cover.webp",
+       "poster": null,
+       "alt": "Два экрана сервиса аренды Flecto со способами оплаты",
+       "ratio": 1
+      }
+     }
+    ]
+   }
+  ]
+ }
+}
