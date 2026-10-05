@@ -66,7 +66,7 @@ html.contact-scroll-lock, html.contact-scroll-lock body { overflow: hidden; over
   position: absolute;
   /* 6px от нижнего края кнопки «Связаться»: она центрирована в полосе
      высотой с хедер, поэтому считаем от центра, а не от низа обёртки. */
-  top: calc(50% + var(--button-height) / 2 + 6px);
+  top: 100%;
   right: 0;
   /* Shrink to the longest item instead of a fixed width with empty
      space next to short labels. */
@@ -102,105 +102,113 @@ html.contact-scroll-lock, html.contact-scroll-lock body { overflow: hidden; over
   .site-socials__panel { transition: none; }
 }
 
-/* Пока не проскроллено — хедер и соцсети визуально внутри баннера,
-   в 10px от его кромки (кромка = --hero-edge от вьюпорта). При скролле
-   site-chrome.js ставит html.chrome--pinned → уезжают в углы. */
-html:not(.chrome--pinned) .site-socials {
-  top: calc(var(--hero-edge, 10px) + var(--hero-chrome-inset, 10px));
-  right: calc(var(--hero-edge, 10px) + var(--hero-chrome-inset, 10px) + var(--chrome-socials-offset, 0px));
-}
-
-/* Десктоп (≥1000px): хедер слева (в баннере на скролл-топе, в
-   углу при скролле), соцсети — отдельная плавающая хрома справа.
-   Перебиваем центрирование из header.css. */
+/*
+  Шапка — ряд ячеек сетки (см. --cell/--grid-lines в styles/theme.css):
+  непрозрачная полоса во всю ширину высотой в полячейки, приклеена к верху.
+  Каждый контрол — своя ячейка с линией справа; ширины кратны колонкам
+  страницы, поэтому линии шапки продолжаются линиями баннера под ней.
+  Слева аватар (или «назад») и «Резюме PDF» — вместе две колонки, по центру
+  лого — две колонки, справа от фиксированной колонки разделы и «Связаться».
+  Ниже 1000px: аватар, лого и две квадратные ячейки-иконки.
+*/
+html body { padding-top: var(--header-row); }
 .site-header {
+  top: 0;
+  left: 0;
+  right: 0;
   transform: none;
-  transition: top 0.25s ease, left 0.25s ease;
+  width: 100%;
+  height: var(--header-row);
+  padding: 0;
+  gap: 0;
+  align-items: stretch;
+  justify-content: flex-start;
+  background: var(--color-bg);
+  border-bottom: var(--grid-line);
+  border-radius: 0;
+  transition: none;
 }
+.site-header__identity { align-items: stretch; gap: 0; }
+html .site-header .site-header__identity { gap: 0; }
+.site-header .site-header__avatar,
+.site-header .site-header__back {
+  flex: 0 0 var(--header-row);
+  width: var(--header-row);
+  height: 100%;
+  border-right: var(--grid-line);
+  border-radius: 0;
+}
+.site-header__avatar img { border-radius: 0; -webkit-mask-image: none; mask-image: none; }
+.site-header__avatar::after { border-radius: 0; }
+.site-header__logo { color: var(--color-text); }
+.site-header__logo-mark { height: calc(var(--header-row) * 0.6); }
+.site-header__cta { border-right: var(--grid-line); }
+
+.site-socials {
+  top: 0;
+  right: 0;
+  height: var(--header-row);
+  gap: 0;
+  align-items: stretch;
+  pointer-events: auto;
+  transition: none;
+}
+.site-nav { gap: 0; align-items: stretch; }
+.site-nav > .btn { width: var(--cell); padding-inline: 8px; border-left: var(--grid-line); }
+.site-socials > .btn { border-left: var(--grid-line); }
+.site-socials .site-menu-trigger { width: var(--header-row); }
+.site-socials .contact-trigger { justify-content: space-between; }
+.site-socials__panel {
+  top: 100%;
+  right: 0;
+  min-width: 100%;
+  padding: 0;
+  gap: 0;
+  border: var(--grid-line);
+  border-right: 0;
+  background: var(--color-bg);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transform: none;
+}
+.site-socials__panel nav { gap: 0; }
 
 @media (min-width: 1000px) {
-  html:not(.chrome--pinned) .site-header {
-    top: calc(var(--hero-edge, 10px) + var(--hero-chrome-inset, 10px));
-    left: calc(var(--hero-edge, 10px) + var(--hero-chrome-inset, 10px));
-  }
-
-  html.chrome--pinned .site-header {
-    left: var(--page-px, 10px);
-  }
-
-  /* Лого — по центру экрана, на одной линии с плашкой хедера (аватар и
-     «Резюме PDF» остаются слева). top повторяет top хедера (баннер /
-     закреплённый) + половину его высоты. В моб-плашке (<1000px) лого
-     остаётся в ряду, как было. */
+  .site-header__cta { width: calc(var(--cell) * 2 - var(--header-row)); }
+  /* Лого — две центральные колонки. Левая линия ячейки совпадает с линией
+     страницы (она на последнем пикселе предыдущей колонки). */
   .site-header__logo {
-    position: fixed;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition:
-      top 0.25s ease,
-      scale var(--button-press-duration, 0.12s) ease-out,
-      opacity var(--btn-hover-duration, 0.15s) ease;
+    position: absolute;
+    top: 0;
+    left: calc(var(--cell) * (var(--grid-cols) / 2 - 1) - 1px);
+    width: calc(var(--cell) * 2 + 1px);
+    height: 100%;
+    justify-content: center;
+    border-inline: var(--grid-line);
   }
-
-  html:not(.chrome--pinned) .site-header__logo {
-    top: calc(var(--hero-edge, 10px) + var(--hero-chrome-inset, 10px) + var(--header-h, var(--chrome-h)) / 2);
-  }
-
-  html.chrome--pinned .site-header__logo {
-    top: calc(var(--page-px, 10px) + var(--header-h, var(--chrome-h)) / 2);
-  }
+  /* Правая группа начинается от линии колонки, а не от правого края:
+     остаток ширины страницы достаётся последней ячейке («Связаться»). */
+  .site-socials { left: calc(var(--cell) * (var(--grid-cols) - 2) - 1px); }
+  .site-socials .contact-trigger { flex: 1 1 0; min-width: 0; }
+  .site-socials { box-sizing: border-box; border-bottom: var(--grid-line); }
+}
+@media (min-width: 1200px) {
+  .site-socials { left: calc(var(--cell) * (var(--grid-cols) - 5) - 1px); }
 }
 @media (width < 1000px) {
-  .site-header {
-    left: 50%;
-    transform: translateX(-50%);
-    padding-inline: var(--chrome-pad-block);
-    /* Паддинг между «Резюме» и кнопкой соцсетей (и заодно до аватара). */
-    gap: 6px;
-  }
-  .site-header:has(.site-header__logo[hidden]) {
-    width: calc(100% - 2 * (var(--hero-edge, 10px) + 16px));
-  }
-  .site-header:has(.site-header__logo[hidden]) .site-header__cta {
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-  .site-header__identity,
-  .site-header .site-socials { flex-shrink: 0; }
-  html:not(.chrome--pinned) .site-header {
-    top: calc(var(--hero-edge, 10px) + var(--hero-chrome-inset, 10px));
-    left: 50%;
-  }
-  html.chrome--pinned .site-header {
-    top: var(--page-px, 10px);
-    left: 50%;
-  }
-
-  .site-socials,
-  html:not(.chrome--pinned) .site-socials {
+  .site-header__identity { flex: 1 1 auto; min-width: 0; }
+  .site-header__logo { padding-inline: var(--cell-pad); }
+  .site-header__logo-mark { max-width: none; }
+  .site-socials {
     position: static;
     inset: auto;
-    height: auto;
-    pointer-events: auto;
+    flex: 0 0 auto;
     display: flex;
-    align-items: center;
-    transition: none;
+    height: auto;
   }
-  .site-socials__list {
-    display: none;
-  }
-  .contact-trigger__label {
-    display: none;
-  }
-  /* Лого ужимается / убирается из JS (layout-chrome.js), чтобы плашка по
-     центру влезала в экран; это — страховочный потолок. */
-  .site-header__logo-mark {
-    max-width: 42vw;
-  }
-}
-
-@media (max-width: 480px) {
-  .site-header__logo-mark { max-width: 34vw; }
+  .site-header .site-socials > .btn { width: var(--header-row); }
+  .site-socials .contact-trigger { justify-content: center; }
+  .contact-trigger__label { display: none; }
 }
 
 .contact-dialog { position: fixed; inset: 0; z-index: 100; }
@@ -233,12 +241,12 @@ html:not(.chrome--pinned) .site-socials {
 .contact-dialog.is-closing .contact-dialog__head,
 .contact-dialog.is-closing .contact-dialog__close-wrap { animation: contact-item-out .18s ease both; }
 @keyframes contact-surface-in {
-  from { clip-path: var(--contact-origin, inset(0 0 100% 100% round 32px)); }
-  to { clip-path: inset(0 round 36px); }
+  from { clip-path: var(--contact-origin, inset(0 0 100% 100% round 0px)); }
+  to { clip-path: inset(0 round 0px); }
 }
 @keyframes contact-surface-out {
-  from { clip-path: inset(0 round 36px); }
-  to { clip-path: var(--contact-origin, inset(0 0 100% 100% round 32px)); }
+  from { clip-path: inset(0 round 0px); }
+  to { clip-path: var(--contact-origin, inset(0 0 100% 100% round 0px)); }
 }
 @keyframes contact-item-in { from { opacity: 0; transform: translateY(24px) scale(.9); } to { opacity: 1; transform: none; } }
 @keyframes contact-item-out { to { opacity: 0; transform: translateY(10px) scale(.96); } }
@@ -259,4 +267,3 @@ html:not(.chrome--pinned) .site-socials {
 /* Над видео-баннером Главной лого белое; за его пределами — обычное тёмное.
    Класс ставит components/hero-mood/hero-video.js. */
 .site-header__logo { transition-property: top, scale, opacity, color; }
-html.chrome--on-hero .site-header__logo { color: #fff; }

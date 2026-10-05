@@ -57,6 +57,9 @@
   }
 
   function updateCompactOverride() {
+    // Шапка — полоса сетки во всю ширину: наезжать ей не на что.
+    root.classList.remove('chrome--compact');
+    return;
     if (window.innerWidth < DESKTOP_MIN) {
       // Ниже брейкпоинта и так всегда моб-плашки — класс не нужен.
       root.classList.remove('chrome--compact');
@@ -118,6 +121,8 @@
     // в его естественном размере, а не то, до чего он был сжат/спрятан.
     logoMark.style.width = '';
     if (logoLink) logoLink.hidden = false;
+    // В шапке-сетке лого занимает свою ячейку и не сжимается.
+    return;
     if (window.innerWidth >= 1000) return;
 
     var heroEdge = parseFloat(getComputedStyle(root).getPropertyValue('--hero-edge')) || 10;

@@ -1,69 +1,70 @@
 /*
-  Лента проектов Главной: сразу после баннера сетка обложек на всю ширину
-  экрана (две колонки, на телефоне — одна). Кнопки — только типы из
-  styles/buttons.css.
+  Лента проектов Главной в сетке из квадратов (--cell/--grid-columns/
+  --grid-lines — styles/theme.css). Секция расчерчена линиями пустых ячеек;
+  карточка занимает прямоугольник из целого числа квадратов:
+    ряд текста (название и описание) + кнопка-ячейка со стрелкой,
+    обложка, узкий ряд тегов (полячейки) и узкий ряд ромбов-меток.
+  Кнопки — только типы из styles/buttons.css.
 */
 .project-feed {
-  --feed-gutter: 32px;
-  display: grid;
-  gap: 24px;
-  /* Заметная пауза после баннера. */
-  padding: 120px var(--feed-gutter) 120px;
-  scroll-margin-top: calc(var(--header-h, 80px) + 12px);
+  /* Ширина карточки в колонках и высоты её рядов в ячейках. */
+  --feed-span: 4;
+  --feed-text-rows: 1.5;
+  --feed-cover-rows: 2.5;
+  background: var(--grid-lines), var(--color-bg);
+  scroll-margin-top: var(--header-row);
 }
-@media (max-width: 999px) {
-  .project-feed {
-    --feed-gutter: 16px;
-    padding-top: 72px;
-    padding-bottom: calc(var(--footer-h, 64px) + 96px);
-  }
+@media (min-width: 600px) {
+  .project-feed { --feed-span: 6; --feed-text-rows: 1; --feed-cover-rows: 4; }
+}
+@media (min-width: 1000px) {
+  .project-feed { --feed-span: 4; --feed-text-rows: 1.5; --feed-cover-rows: 2.5; }
+}
+@media (min-width: 1200px) {
+  .project-feed { --feed-span: 6; --feed-text-rows: 1; --feed-cover-rows: 4; }
 }
 
 .project-feed__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 80px 24px;
+  grid-template-columns: var(--grid-columns);
   margin: 0;
   padding: 0;
   list-style: none;
 }
-@media (max-width: 767px) {
-  .project-feed__grid { grid-template-columns: minmax(0, 1fr); gap: 64px; }
-}
-
-/* Текст, обложка и теги соседних карточек стоят на общих линиях сетки
-   (subgrid): разная длина подзаголовка не сдвигает обложки. Свой row-gap
-   subgrid-а перекрывает 80px между рядами проектов. */
-.project-feed__item,
+.project-feed__item { display: grid; grid-column: span var(--feed-span); grid-template-columns: subgrid; min-width: 0; }
 .feed-card {
   display: grid;
-  grid-row: span 3;
-  grid-template-rows: subgrid;
-  row-gap: 12px;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  grid-template-rows:
+    calc(var(--cell) * var(--feed-text-rows))
+    calc(var(--cell) * var(--feed-cover-rows))
+    calc(var(--cell) / 2)
+    calc(var(--cell) / 2);
   min-width: 0;
 }
-.feed-card { grid-column: 1 / -1; }
-@supports not (grid-template-rows: subgrid) {
-  .project-feed__item, .feed-card { grid-row: auto; grid-template-rows: none; }
-}
+.feed-card > * { box-sizing: border-box; min-width: 0; border-right: var(--grid-line); border-bottom: var(--grid-line); }
 
-/* Обложка — ссылка карточки (стрелка дублирует её для мыши). Наведение
-   уменьшает рамку, как кликабельные картинки на страницах кейсов
-   (case-lightbox.css). Hover ловит неподвижная обёртка, а уменьшается
-   рамка внутри — иначе на краю
-   уменьшенная обложка выпускала бы курсор и дёргалась. */
-.feed-card__media { --wg-hover-scale: 0.985; }
-.feed-card__frame {
-  position: relative;
-  scale: 1;
-  transition: scale 0.35s var(--button-hover-ease, ease-out);
+/* Порядок: название и описание (плотная группа) → обложка → теги. */
+.feed-card__text {
+  grid-column: 1 / -2;
+  display: grid;
+  align-content: center;
+  padding: 0 var(--cell-pad);
+  overflow: hidden;
+  background: var(--color-bg);
 }
+/* Перебивает общий отступ .text-h3 + .text-body из typography.css. */
+.feed-card__text > .feed-card__description { margin-top: 4px; }
+.feed-card__action { grid-column: -2 / -1; --icon-size: 28px; }
+
+/* Обложка — ссылка карточки; кнопка-ячейка над ней дублирует её для мыши
+   и подсвечивается при наведении на карточку (data-action-hover). */
+.feed-card__media { grid-column: 1 / -1; }
 .feed-card__cover {
   display: block;
+  height: 100%;
   overflow: hidden;
-  aspect-ratio: 16 / 10;
-  border: var(--project-cover-border);
-  border-radius: var(--project-card-radius);
   /* Скелетон, пока обложка грузится. */
   background: var(--skeleton-color);
 }
@@ -74,24 +75,17 @@
   height: 100%;
   object-fit: cover;
 }
-/* Кнопка-стрелка в правом нижнем углу, как на обложках Постов (project-cards.css). */
-.feed-card__action { position: absolute; right: 16px; bottom: 16px; }
-@media (hover: hover) and (pointer: fine) {
-  .feed-card__media:hover .feed-card__frame { scale: var(--wg-hover-scale); }
-}
-.feed-card__frame:active { scale: var(--wg-hover-scale); transition-duration: 0.2s; }
-.feed-card__cover:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
-@media (prefers-reduced-motion: reduce) {
-  .feed-card__frame { transition-duration: 0.01ms; }
-}
+.feed-card__cover:focus-visible { outline: 2px solid var(--color-text); outline-offset: -4px; }
 
-/* Теги — подписи, не кнопки: мелкие плашки без интерактива. */
-.feed-card__tags { margin: 0; padding: 0; list-style: none; gap: 6px; }
+/* Теги — подписи, не кнопки: узкие ячейки в ряд, разделённые линиями. */
+.feed-card > .chip-scroller { grid-column: 1 / -1; background: var(--color-bg); }
+.feed-card__tags { height: 100%; margin: 0; padding: 0; list-style: none; gap: 0; }
 .feed-card__tag {
   flex: 0 0 auto;
-  padding: 3px 8px;
-  border-radius: var(--radius-tag);
-  background: var(--color-surface-alt);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--cell-pad);
+  border-right: var(--grid-line);
   color: var(--color-text);
   font-family: var(--font-family-body);
   font-size: calc(var(--font-size-text) * .8);
@@ -100,8 +94,36 @@
   white-space: nowrap;
 }
 
-/* Порядок: название и описание (плотная группа) → обложка → теги. */
-.feed-card__text { display: grid; align-content: start; margin-bottom: 8px; }
-/* Перебивает общий отступ .text-h3 + .text-body из typography.css. */
-.feed-card__text > .feed-card__description { margin-top: 4px; }
-
+/* Ряд меток: ромбы на линиях колонок, через один залитые. Сам ряд
+   прозрачный — линии ячеек под ним рисует фон секции. */
+.feed-card > .feed-card__marks {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: center;
+  border: 0;
+}
+.feed-card__marks i {
+  justify-self: end;
+  box-sizing: border-box;
+  width: 9px;
+  height: 9px;
+  translate: 50% 0;
+  rotate: 45deg;
+  border: 1px solid var(--grid-line-color);
+  background: var(--color-bg);
+}
+.feed-card__marks i:nth-child(odd) { background: var(--grid-line-color); }
+/* Меток столько, сколько линий колонок внутри карточки; у правого края
+   страницы метки нет (её бы срезало). */
+.feed-card__marks i:nth-child(n + 4) { display: none; }
+@media (min-width: 600px) and (max-width: 999px) {
+  .feed-card__marks i:nth-child(-n + 5) { display: block; }
+}
+@media (min-width: 1000px) {
+  .project-feed__item:nth-child(odd) .feed-card__marks i:nth-child(4) { display: block; }
+}
+@media (min-width: 1200px) {
+  .feed-card__marks i:nth-child(-n + 5) { display: block; }
+  .project-feed__item:nth-child(odd) .feed-card__marks i:nth-child(6) { display: block; }
+}

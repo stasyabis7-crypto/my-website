@@ -149,10 +149,10 @@
     const bounds = panel.getBoundingClientRect(), trigger = toggle.getBoundingClientRect();
     const top = Math.max(0, Math.min(bounds.height - 64, trigger.top - bounds.top));
     const folded = {
-      clipPath: `inset(${top}px 0px ${Math.max(0, bounds.height - top - 64)}px ${bounds.width - 12}px round 24px)`,
+      clipPath: `inset(${top}px 0px ${Math.max(0, bounds.height - top - 64)}px ${bounds.width - 12}px round 0px)`,
       opacity: 0, transform: 'translateX(12px) scale(.96)'
     };
-    const expanded = { clipPath: 'inset(0px 0px 0px 0px round 24px)', opacity: 1, transform: 'translateX(0px) scale(1)' };
+    const expanded = { clipPath: 'inset(0px 0px 0px 0px round 0px)', opacity: 1, transform: 'translateX(0px) scale(1)' };
     const animation = panel.animate([previous || (open ? folded : expanded), open ? expanded : folded], {
       duration: open ? 650 : 400,
       easing: open ? 'cubic-bezier(.22,1,.36,1)' : 'cubic-bezier(.65,0,.35,1)',
@@ -170,7 +170,7 @@
     const r = surface.getBoundingClientRect(), t = toggle.getBoundingClientRect();
     const clamp = (v, max) => Math.max(0, Math.min(max, v));
     const top = clamp(t.top - r.top, r.height), left = clamp(t.left - r.left, r.width);
-    surface.style.setProperty('--contact-origin', `inset(${top}px ${clamp(r.right - t.right, r.width - left)}px ${clamp(r.bottom - t.bottom, r.height - top)}px ${left}px round 32px)`);
+    surface.style.setProperty('--contact-origin', `inset(${top}px ${clamp(r.right - t.right, r.width - left)}px ${clamp(r.bottom - t.bottom, r.height - top)}px ${left}px round 0px)`);
   }
   function finishClose() {
     clearTimeout(closeTimer);
