@@ -12,8 +12,8 @@
   Ниже 1000px: поток в две колонки, каждая пятая плитка — во всю ширину.
 
   Под обложкой только название обычным текстом. У кликабельных проектов в
-  правом верхнем углу круглая кнопка со стрелкой; заглушки — пустые плитки
-  без ссылки. Обложки без скруглений, обводка — --project-cover-border из
+  правом верхнем углу круглая кнопка со стрелкой, у проектов без страницы
+  (soon) — подпись «Скоро появится»; заглушки — пустые плитки без ссылки. Обложки без скруглений, обводка — --project-cover-border из
   styles/card-tokens.css.
 */
 .project-feed {
@@ -27,7 +27,8 @@
   --feed-caption-gap: 12px;
   --feed-caption-h: calc(var(--feed-caption-gap) + 2 * var(--font-size-text) * var(--line-height-text));
   container-type: inline-size;
-  padding: 120px var(--feed-gutter) 120px;
+  /* Лента начинается сразу под баннером: сверху тот же отступ, что по бокам. */
+  padding: var(--feed-gutter) var(--feed-gutter) 120px;
   scroll-margin-top: calc(var(--header-h, 80px) + 12px);
 }
 @media (max-width: 999px) {
@@ -36,7 +37,6 @@
     --feed-gap: 10px;
     --feed-row-gap: 28px;
     --feed-cols: 2;
-    padding-top: 72px;
     padding-bottom: calc(var(--footer-h, 64px) + 96px);
   }
 }
@@ -104,9 +104,32 @@
   .project-feed__item--stub .feed-card { padding-bottom: 0; }
 }
 
-.feed-card__action { position: absolute; top: 16px; right: 16px; }
+.feed-card__action,
+.feed-card__badge { position: absolute; top: 16px; right: 16px; }
 @media (max-width: 999px) {
-  .feed-card__action { top: 10px; right: 10px; }
+  .feed-card__action,
+  .feed-card__badge { top: 10px; right: 10px; }
+}
+/* «Скоро появится» — подпись на обложке проекта без страницы (не кнопка):
+   стоит на месте стрелки, той же высоты и белой заливки. */
+.feed-card__badge {
+  display: flex;
+  align-items: center;
+  height: var(--button-height);
+  max-width: calc(100% - 32px);
+  padding-inline: 16px;
+  border-radius: calc(var(--button-height) / 2);
+  background: #fff;
+  color: #101014;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-text);
+  line-height: var(--line-height-default);
+  letter-spacing: var(--letter-spacing-text);
+  white-space: nowrap;
+  pointer-events: none;
+}
+@media (max-width: 999px) {
+  .feed-card__badge { max-width: calc(100% - 20px); padding-inline: 12px; }
 }
 
 /* Сама обложка на наведение не реагирует: отзывается только кнопка

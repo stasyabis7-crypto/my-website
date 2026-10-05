@@ -56,7 +56,17 @@
 
   // Обложка-ссылка, круглая кнопка со стрелкой в правом верхнем углу и
   // название обычным текстом. Подзаголовок и теги в ленте не показываются.
+  // Проект без страницы (soon: true) — обложка без ссылки, вместо стрелки
+  // подпись «Скоро появится».
   function card(project, index) {
+    var title = '<h3 class="feed-card__title text-body">' + escape(project.title) + '</h3>';
+    if (project.soon) {
+      return item(index, '<article class="feed-card">' +
+        '<div class="feed-card__media"><div class="feed-card__frame">' +
+        '<div class="feed-card__cover">' + media(project) + '</div>' +
+        '<span class="feed-card__badge">Скоро появится</span>' +
+        '</div></div>' + title + '</article>');
+    }
     return item(index, '<article class="feed-card">' +
       '<div class="feed-card__media" data-action-hover><div class="feed-card__frame">' +
       '<a class="feed-card__cover" href="' + escape(project.href) + '" aria-label="Открыть кейс «' + escape(project.title) + '»">' +
@@ -65,9 +75,7 @@
       // скринридера (фокус — на обложке).
       '<a class="feed-card__action btn btn--fill-white btn--icon-only btn--icon-diagonal-motion" href="' + escape(project.href) +
       '" tabindex="-1" aria-hidden="true"><span class="icon icon--arrow-diagonal"></span></a>' +
-      '</div></div>' +
-      '<h3 class="feed-card__title text-body">' + escape(project.title) + '</h3>' +
-      '</article>');
+      '</div></div>' + title + '</article>');
   }
 
   // Заглушка проекта, который ещё не описан: пустая плитка без ссылки и текста.
