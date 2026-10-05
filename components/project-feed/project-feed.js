@@ -31,13 +31,15 @@
       '" height="' + project.height + '" muted loop playsinline autoplay preload="auto" aria-label="' + escape(project.alt) + '"></video>';
   }
 
-  function card(project) {
+  function card(project, index) {
     var tags = project.tags.map(function (id) { return tagById[id]; }).filter(Boolean).map(function (tag) {
       return '<li class="feed-card__tag">' + escape(tag.label) + '</li>';
     }).join('');
     // Order: title and subtitle, then the cover, then the tags.
     return '<li class="project-feed__item"><article class="feed-card">' +
       '<div class="feed-card__text">' +
+      // Порядковый номер — моно-подпись на полях асимметричной сетки.
+      '<span class="feed-card__index text-body" aria-hidden="true">' + (index < 9 ? '0' : '') + (index + 1) + '</span>' +
       '<h3 class="feed-card__title text-h3">' + escape(project.title) + '</h3>' +
       '<p class="feed-card__description text-body" data-subtitle>' + escape(project.description) + '</p>' +
       '</div>' +
