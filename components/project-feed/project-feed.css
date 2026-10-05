@@ -119,27 +119,28 @@
   .feed-card__badge { top: 10px; right: 10px; }
 }
 /* «Скоро появится» — подпись на обложке проекта без страницы (не кнопка):
-   стоит на месте стрелки, той же высоты и того же матового стекла. */
+   стоит на месте стрелки, из того же матового стекла, но компактнее кнопки —
+   размером с тег. */
 .feed-card__badge {
   display: flex;
   align-items: center;
-  height: var(--button-height);
+  height: 28px;
   max-width: calc(100% - 32px);
-  padding-inline: 16px;
-  border-radius: calc(var(--button-height) / 2);
+  padding-inline: 10px;
+  border-radius: 14px;
   background-color: rgb(255 255 255 / .62);
   color: #111111;
   -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.1);
   backdrop-filter: blur(18px) saturate(180%) brightness(1.1);
   font-family: var(--font-family-body);
-  font-size: var(--feed-caption-size);
+  font-size: calc(var(--feed-caption-size) * .8);
   line-height: var(--line-height-default);
   letter-spacing: var(--letter-spacing-text);
   white-space: nowrap;
   pointer-events: none;
 }
 @media (max-width: 999px) {
-  .feed-card__badge { max-width: calc(100% - 20px); padding-inline: 12px; }
+  .feed-card__badge { height: 24px; max-width: calc(100% - 20px); padding-inline: 8px; border-radius: 12px; }
 }
 
 /* Сама обложка на наведение не реагирует: отзывается только кнопка
