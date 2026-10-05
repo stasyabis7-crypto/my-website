@@ -120,9 +120,16 @@ window.portfolioProjects = [
     title: 'Геймификация в ЛК',
     feed: { image: '/projects/avito-charity/gamification/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Блок «Творим добро» со списком заданий и баллами: пожертвовать в фонд, купить мерч, поддержать «ЛизаАлерт»'
+  },
+  {
+    id: 'doctor-dashboard',
+    soon: true,
+    title: 'Дашборд для врачей',
+    feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/feed-cover-900x1200.webp', width: 900, height: 1200 },
+    alt: 'Дашборд врача: список пациентов с событиями по дням и почасовой график показателя'
   }
 ];
 
 /* Заглушки в ленте Главной: пустые плитки на местах проектов, которые ещё
    не описаны. Убираются по мере добавления кейсов выше. */
-window.portfolioFeedStubs = 1;
+window.portfolioFeedStubs = 0;
