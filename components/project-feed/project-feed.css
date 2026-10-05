@@ -13,8 +13,7 @@
 
   Под обложкой только название обычным текстом. У кликабельных проектов в
   правом верхнем углу круглая кнопка со стрелкой, у проектов без страницы
-  (soon) — подпись «Скоро появится»; заглушки — пустые плитки без ссылки. Обложки без скруглений, обводка — --project-cover-border из
-  styles/card-tokens.css.
+  (soon) — подпись «Скоро появится»; заглушки — пустые плитки без ссылки. Обложки без скруглений и без обводки.
 */
 .project-feed {
   --feed-gutter: 32px;
@@ -81,12 +80,11 @@
   display: block;
   overflow: hidden;
   height: 100%;
-  border: var(--project-cover-border);
   border-radius: 0;
   background: var(--skeleton-color);
 }
 /* Заглушка: плитка той же высоты, что обложка, под ней пустое место названия. */
-.feed-card > .feed-card__cover { flex: 1 1 auto; height: auto; border: 0; }
+.feed-card > .feed-card__cover { flex: 1 1 auto; height: auto; }
 .feed-card > .feed-card__cover::after { content: none; }
 .project-feed__item--stub .feed-card { padding-bottom: var(--feed-caption-h); }
 
