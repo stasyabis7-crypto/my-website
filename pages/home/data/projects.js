@@ -125,7 +125,7 @@ window.portfolioProjects = [
     id: 'doctor-dashboard',
     soon: true,
     title: 'Дашборд для врачей',
-    feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/feed-cover-900x1200.webp', width: 900, height: 1200 },
+    feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/feed-cover-1800x2400.webp', width: 1800, height: 2400 },
     alt: 'Дашборд врача: список пациентов с событиями по дням и почасовой график показателя'
   }
 ];
