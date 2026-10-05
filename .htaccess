@@ -30,6 +30,10 @@ AddType video/mp4 .mp4
 # оставлены для старых ссылок; заготовки можно вернуть, убрав их из правил.
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # Обложки ленты Главной лежат в covers/ кейсов, в том числе ещё не
+  # опубликованных («Скоро появится»): сами файлы отдаются, редиректятся
+  # только страницы.
+  RewriteRule ^projects/.+/covers/[^/]+\.(?:webp|png|jpe?g|avif|svg|mp4|webm)$ - [L]
   RewriteRule ^projects/(?:avito-charity|ozon-crm)/?(?:index\.html)?$ /#works-gallery [R=302,NE,L]
   RewriteRule ^projects/avito-charity/(?:about-company|charity-profile|donation-subscription|gamification|rebranding)(?:/.*)?$ /#works-gallery [R=302,NE,L]
   RewriteRule ^projects/ozon-crm/(?:campaign-creation|campaigns|customer-portrait|customers|seller-home)(?:/.*)?$ /#works-gallery [R=302,NE,L]
