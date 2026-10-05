@@ -1,72 +1,97 @@
 /*
-  Лента проектов Главной: сразу после баннера сетка обложек на всю ширину
-  экрана (две колонки, на телефоне — одна). Кнопки — только типы из
-  styles/buttons.css.
+  Лента проектов Главной — каталог обложек.
+
+  Десктоп (≥1000px): 4 колонки. Две крупные обложки занимают 2×2, остальные
+  1×1; часть ячеек намеренно пустует — это воздух раскладки. Место каждой
+  плитки задаёт project-feed.js (--feed-col / --feed-row).
+  Строки одной высоты: вертикальная плитка + место под название, поэтому
+  пустая ячейка держит свою высоту, а крупная обложка заканчивается ровно
+  по низу второй строки. Высота считается от ширины ленты (cqw), так что
+  плитки меняют размер пропорционально на любой ширине.
+
+  Ниже 1000px: поток в две колонки, каждая пятая плитка — во всю ширину.
+
+  Под обложкой только название обычным текстом. У кликабельных проектов в
+  правом верхнем углу круглая кнопка со стрелкой; заглушки — пустые плитки
+  без ссылки. Обложки — --project-card-radius и --project-cover-border из
+  styles/card-tokens.css.
 */
 .project-feed {
   --feed-gutter: 32px;
-  display: grid;
-  gap: 24px;
-  /* Заметная пауза после баннера. */
+  --feed-gap: 16px;
+  --feed-row-gap: 40px;
+  --feed-cols: 4;
+  /* Пропорция плитки: ширина к высоте. */
+  --feed-tile-ratio: 5 / 6;
+  /* Место под название: отступ и две строки текста. */
+  --feed-caption-gap: 12px;
+  --feed-caption-h: calc(var(--feed-caption-gap) + 2 * var(--font-size-text) * var(--line-height-text));
+  container-type: inline-size;
   padding: 120px var(--feed-gutter) 120px;
   scroll-margin-top: calc(var(--header-h, 80px) + 12px);
 }
 @media (max-width: 999px) {
   .project-feed {
     --feed-gutter: 16px;
+    --feed-gap: 10px;
+    --feed-row-gap: 28px;
+    --feed-cols: 2;
     padding-top: 72px;
     padding-bottom: calc(var(--footer-h, 64px) + 96px);
   }
 }
 
 .project-feed__grid {
+  --feed-col-w: calc((100cqw - (var(--feed-cols) - 1) * var(--feed-gap)) / var(--feed-cols));
+  --feed-tile-h: calc(var(--feed-col-w) / (var(--feed-tile-ratio)));
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 80px 24px;
+  grid-template-columns: repeat(var(--feed-cols), minmax(0, 1fr));
+  grid-auto-rows: calc(var(--feed-tile-h) + var(--feed-caption-h));
+  gap: var(--feed-row-gap) var(--feed-gap);
   margin: 0;
   padding: 0;
   list-style: none;
 }
-@media (max-width: 767px) {
-  .project-feed__grid { grid-template-columns: minmax(0, 1fr); gap: 64px; }
+
+.project-feed__item { min-width: 0; }
+.project-feed__item--big { grid-column: span 2; grid-row: span 2; }
+@media (min-width: 1000px) {
+  .project-feed__item { grid-column: var(--feed-col); grid-row: var(--feed-row); }
+  .project-feed__item--big { grid-column: var(--feed-col) / span 2; grid-row: var(--feed-row) / span 2; }
+}
+@media (max-width: 999px) {
+  /* Строки по содержимому: пустых ячеек нет, крупная плитка — отдельной строкой. */
+  .project-feed__grid { grid-auto-rows: auto; }
+  .project-feed__item--big { grid-row: auto; }
+  .project-feed__item:nth-child(5n + 1) { grid-column: 1 / -1; }
 }
 
-/* Текст, обложка и теги соседних карточек стоят на общих линиях сетки
-   (subgrid): разная длина подзаголовка не сдвигает обложки. Свой row-gap
-   subgrid-а перекрывает 80px между рядами проектов. */
-.project-feed__item,
 .feed-card {
-  display: grid;
-  grid-row: span 3;
-  grid-template-rows: subgrid;
-  row-gap: 12px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   min-width: 0;
 }
-.feed-card { grid-column: 1 / -1; }
-@supports not (grid-template-rows: subgrid) {
-  .project-feed__item, .feed-card { grid-row: auto; grid-template-rows: none; }
-}
-
-/* Обложка — ссылка карточки (стрелка дублирует её для мыши). Наведение
-   уменьшает рамку, как кликабельные картинки на страницах кейсов
-   (case-lightbox.css). Hover ловит неподвижная обёртка, а уменьшается
-   рамка внутри — иначе на краю
-   уменьшенная обложка выпускала бы курсор и дёргалась. */
-.feed-card__media { --wg-hover-scale: 0.985; }
+.feed-card__media { --wg-hover-scale: 0.985; flex: 1 1 auto; min-height: 0; }
 .feed-card__frame {
   position: relative;
+  height: 100%;
   scale: 1;
   transition: scale 0.35s var(--button-hover-ease, ease-out);
 }
 .feed-card__cover {
   display: block;
   overflow: hidden;
-  aspect-ratio: 16 / 10;
+  height: 100%;
   border: var(--project-cover-border);
   border-radius: var(--project-card-radius);
-  /* Скелетон, пока обложка грузится. */
   background: var(--skeleton-color);
 }
+/* Заглушка: плитка той же высоты, что обложка, под ней пустое место названия. */
+.feed-card > .feed-card__cover { flex: 1 1 auto; height: auto; border: 0; }
+.feed-card > .feed-card__cover::after { content: none; }
+.project-feed__item--stub .feed-card { padding-bottom: var(--feed-caption-h); }
+
 .feed-card__cover img,
 .feed-card__cover video {
   display: block;
@@ -74,8 +99,18 @@
   height: 100%;
   object-fit: cover;
 }
-/* Кнопка-стрелка в правом нижнем углу, как на обложках Постов (project-cards.css). */
-.feed-card__action { position: absolute; right: 16px; bottom: 16px; }
+@media (max-width: 999px) {
+  /* В потоке высоту задаёт сама плитка. */
+  .feed-card { height: auto; }
+  .feed-card__cover { aspect-ratio: var(--feed-tile-ratio); height: auto; }
+  .project-feed__item--stub .feed-card { padding-bottom: 0; }
+}
+
+.feed-card__action { position: absolute; top: 16px; right: 16px; }
+@media (max-width: 999px) {
+  .feed-card__action { top: 10px; right: 10px; }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .feed-card__media:hover .feed-card__frame { scale: var(--wg-hover-scale); }
 }
@@ -85,23 +120,16 @@
   .feed-card__frame { transition-duration: 0.01ms; }
 }
 
-/* Теги — подписи, не кнопки: мелкие плашки без интерактива. */
-.feed-card__tags { margin: 0; padding: 0; list-style: none; gap: 6px; }
-.feed-card__tag {
+/* Название — обычный текст сайта, не заголовок; на десктопе не больше двух строк. */
+.feed-card__title.text-body {
   flex: 0 0 auto;
-  padding: 3px 8px;
-  border-radius: var(--radius-tag);
-  background: var(--color-surface-alt);
-  color: var(--color-text);
-  font-family: var(--font-family-body);
-  font-size: calc(var(--font-size-text) * .8);
-  line-height: var(--line-height-default);
-  letter-spacing: var(--letter-spacing-text);
-  white-space: nowrap;
+  max-width: none;
+  margin-top: var(--feed-caption-gap);
+  font-weight: var(--font-weight-regular);
 }
-
-/* Порядок: название и описание (плотная группа) → обложка → теги. */
-.feed-card__text { display: grid; align-content: start; margin-bottom: 8px; }
-/* Перебивает общий отступ .text-h3 + .text-body из typography.css. */
-.feed-card__text > .feed-card__description { margin-top: 4px; }
-
+@media (min-width: 1000px) {
+  .feed-card__title.text-body {
+    height: calc(var(--feed-caption-h) - var(--feed-caption-gap));
+    overflow: hidden;
+  }
+}

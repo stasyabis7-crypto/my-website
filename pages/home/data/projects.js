@@ -5,7 +5,9 @@
    video — необязательная обложка-видео (webm, 16:10); image тогда служит
    заглушкой, пока видео грузится или если его нельзя воспроизвести.
    Обложка живёт в covers/ кейса и она же — первый кадр страницы кейса
-   (проверяет scripts/check-case-covers.js). */
+   (проверяет scripts/check-case-covers.js).
+   focus — необязательная точка кадрирования (object-position): плитки ленты
+   вертикальные, а обложки пока горизонтальные; по умолчанию — центр. */
 window.portfolioPlatforms = [
   { id: 'mobile', label: 'Mobile' },
   { id: 'web', label: 'Web' }
@@ -26,6 +28,7 @@ window.portfolioTags = [
 window.portfolioProjects = [
   {
     id: 'customer-segments',
+    focus: 'left center',
     title: 'CRM для продавцов Ozon',
     description: 'Сегменты покупателей и рассылки для продавцов',
     href: '/projects/ozon-crm/customer-segments/',
@@ -39,6 +42,7 @@ window.portfolioProjects = [
   },
   {
     id: 'recycle-map',
+    focus: 'left center',
     title: 'Карта переработки вещей',
     description: 'Поиск пункта приёма, фильтры и избранное',
     href: '/projects/avito-charity/recycle-map/',
@@ -64,3 +68,7 @@ window.portfolioProjects = [
     tags: ['avito', 'b2c', 'charity', 'payments']
   }
 ];
+
+/* Заглушки в ленте Главной: пустые плитки на местах проектов, которые ещё
+   не описаны. Убираются по мере добавления кейсов выше. */
+window.portfolioFeedStubs = 8;

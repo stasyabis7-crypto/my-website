@@ -1,7 +1,7 @@
 /*
-  Лента проектов Главной: сетка обложек сразу после баннера, без заголовка
-  и фильтров. Теги под обложкой — только подписи (не фильтр).
-  Данные — pages/home/data/projects.js.
+  Лента проектов Главной: каталог обложек сразу после баннера, без заголовка
+  и фильтров. Под обложкой — только название. Данные и число заглушек —
+  pages/home/data/projects.js.
 */
 (function () {
   'use strict';
@@ -9,9 +9,6 @@
   if (!feed || !window.portfolioProjects) return;
 
   var projects = window.portfolioProjects;
-  var tagById = {};
-  (window.portfolioTags || []).forEach(function (tag) { tagById[tag.id] = tag; });
-
   var grid = feed.querySelector('.project-feed__grid');
   var reduced = matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -24,38 +21,61 @@
   // Video covers loop silently; the poster covers loading, unsupported codecs
   // and reduced motion (then the video never starts).
   function media(project) {
+    // focus — какая часть горизонтальной обложки остаётся в вертикальной плитке.
+    var focus = project.focus ? ' style="object-position:' + escape(project.focus) + '"' : '';
     var poster = '<img src="' + escape(project.image) + '" width="' + project.width + '" height="' + project.height +
-      '" alt="' + escape(project.alt) + '" loading="lazy" decoding="async" />';
+      '" alt="' + escape(project.alt) + '" loading="lazy" decoding="async"' + focus + ' />';
     if (!project.video || reduced.matches) return poster;
     return '<video src="' + escape(project.video) + '" poster="' + escape(project.image) + '" width="' + project.width +
-      '" height="' + project.height + '" muted loop playsinline autoplay preload="auto" aria-label="' + escape(project.alt) + '"></video>';
+      '" height="' + project.height + '" muted loop playsinline autoplay preload="auto" aria-label="' + escape(project.alt) + '"' + focus + '></video>';
   }
 
-  function card(project) {
-    var tags = project.tags.map(function (id) { return tagById[id]; }).filter(Boolean).map(function (tag) {
-      return '<li class="feed-card__tag">' + escape(tag.label) + '</li>';
-    }).join('');
-    // Order: title and subtitle, then the cover, then the tags.
-    return '<li class="project-feed__item"><article class="feed-card">' +
-      '<div class="feed-card__text">' +
-      '<h3 class="feed-card__title text-h3">' + escape(project.title) + '</h3>' +
-      '<p class="feed-card__description text-body" data-subtitle>' + escape(project.description) + '</p>' +
-      '</div>' +
+  /* Раскладка каталога: 4 колонки, две крупные обложки 2×2, остальные 1×1,
+     часть ячеек пустует. Позиция — [колонка, строка], крупные помечены big.
+     Набор повторяется вниз блоками по ROWS строк. На телефоне и планшете
+     позиции не действуют: там обычный поток в две колонки. */
+  var PATTERN = [
+    { c: 1, r: 1, big: true }, { c: 3, r: 1 }, { c: 4, r: 1 },
+    { c: 1, r: 3 }, { c: 3, r: 3 }, { c: 4, r: 3 },
+    { c: 2, r: 4 }, { c: 4, r: 4 },
+    { c: 1, r: 5 }, { c: 2, r: 5 }, { c: 3, r: 5, big: true }
+  ];
+  var ROWS = 6;
+
+  function slot(index) {
+    var cell = PATTERN[index % PATTERN.length];
+    var row = cell.r + Math.floor(index / PATTERN.length) * ROWS;
+    return ' style="--feed-col:' + cell.c + ';--feed-row:' + row + '"';
+  }
+
+  function item(index, inner, stubbed) {
+    var big = PATTERN[index % PATTERN.length].big;
+    return '<li class="project-feed__item' + (big ? ' project-feed__item--big' : '') +
+      (stubbed ? ' project-feed__item--stub" aria-hidden="true' : '') + '"' + slot(index) + '>' + inner + '</li>';
+  }
+
+  // Обложка-ссылка, круглая кнопка со стрелкой в правом верхнем углу и
+  // название обычным текстом. Подзаголовок и теги в ленте не показываются.
+  function card(project, index) {
+    return item(index, '<article class="feed-card">' +
       '<div class="feed-card__media" data-action-hover><div class="feed-card__frame">' +
       '<a class="feed-card__cover" href="' + escape(project.href) + '" aria-label="Открыть кейс «' + escape(project.title) + '»">' +
       media(project) + '</a>' +
-      // Та же стрелка, что на обложках Постов; ведёт туда же, что и обложка,
-      // поэтому скрыта от клавиатуры и скринридера (фокус — на обложке).
-      '<a class="feed-card__action btn btn--fill-glass btn--icon-only btn--icon-diagonal-motion" href="' + escape(project.href) +
+      // Ведёт туда же, что и обложка, поэтому скрыта от клавиатуры и
+      // скринридера (фокус — на обложке).
+      '<a class="feed-card__action btn btn--fill-white btn--icon-only btn--icon-diagonal-motion" href="' + escape(project.href) +
       '" tabindex="-1" aria-hidden="true"><span class="icon icon--arrow-diagonal"></span></a>' +
       '</div></div>' +
-      '<div class="chip-scroller" data-chip-scroller>' +
-      '<button type="button" class="btn btn--fill-bare btn--icon-only chip-scroller__arrow chip-scroller__arrow--prev" aria-label="Прокрутить теги назад" hidden><span class="icon icon--arrow-left" aria-hidden="true"></span></button>' +
-      '<ul class="chip-scroller__track feed-card__tags" aria-label="Теги">' + tags + '</ul>' +
-      '<button type="button" class="btn btn--fill-bare btn--icon-only chip-scroller__arrow chip-scroller__arrow--next" aria-label="Прокрутить теги вперёд" hidden><span class="icon icon--arrow-right" aria-hidden="true"></span></button>' +
-      '</div></article></li>';
+      '<h3 class="feed-card__title text-body">' + escape(project.title) + '</h3>' +
+      '</article>');
   }
 
-  grid.innerHTML = projects.map(card).join('');
-  if (window.chipScroller) window.chipScroller.init(feed);
+  // Заглушка проекта, который ещё не описан: пустая плитка без ссылки и текста.
+  function stub(index) {
+    return item(index, '<div class="feed-card"><div class="feed-card__cover"></div></div>', true);
+  }
+
+  var cards = projects.map(card);
+  for (var i = 0; i < (window.portfolioFeedStubs || 0); i++) cards.push(stub(projects.length + i));
+  grid.innerHTML = cards.join('');
 })();
