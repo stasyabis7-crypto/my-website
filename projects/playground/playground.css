@@ -1,14 +1,36 @@
-/* Playground: концепты сеткой .works-grid (styles/layout.css), клик по
-   карточке открывает фото на весь экран (components/case-lightbox). */
+/*
+  Playground — ряды одной высоты из картинок разной ширины.
+  Пропорции плиток прежние: широкая 1852:1158, квадрат 1:1 (вертикальные
+  экраны телефона стоят внутри квадратной подложки). В ряду ширина плитки
+  пропорциональна её пропорции, поэтому высоты совпадают, а широкая плитка
+  встаёт то слева, то справа — ряды идут зигзагом. Последний ряд — три квадрата.
+  До 640px плитки идут друг под другом во всю ширину (styles/layout.css).
+  Без скруглений; сетка на всю ширину окна с полями, как на Главной.
+*/
+.collection {
+  --wg-side: 32px;
+  --wg-gap: 16px;
+  --wg-max-width: none;
+  --wg-radius: 0px;
+  max-width: none;
+  padding-inline: var(--wg-side);
+}
+@media (max-width: 999px) {
+  .collection { --wg-side: 16px; --wg-gap: 10px; }
+}
 .collection__section > .playground-grid { margin-top: 28px; }
 
-/* Между картинками везде 16px — и на десктопе, и на телефоне. */
-.playground-grid { --wg-gap: 16px; }
+.playground-grid__item--wide { aspect-ratio: 1852 / 1158; }
+.playground-grid__item--square,
+.playground-grid__item--framed { aspect-ratio: 1; }
+@media (min-width: 641px) {
+  .playground-grid__row > .playground-grid__item--wide { flex: 1852 1 0; }
+  .playground-grid__row > :is(.playground-grid__item--square, .playground-grid__item--framed) { flex: 1158 1 0; }
+}
 
-/* Вертикальные скрины — в квадратных плашках на стандартном сером фоне,
-   целиком и по центру. */
-.playground-grid__row--framed .works-grid__item { background: var(--color-surface); }
-.playground-grid__row--framed .works-grid__item img {
+/* Вертикальный экран телефона — целиком внутри квадратной подложки. */
+.playground-grid__item--framed { background: var(--color-surface); }
+.playground-grid__item--framed img {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -17,6 +39,4 @@
   height: auto;
   max-width: 84%;
   max-height: 84%;
-  /* Скругление экрана мягче, чем у самой плашки (3/4 от --wg-radius). */
-  border-radius: calc(var(--wg-radius) * 0.75);
 }
