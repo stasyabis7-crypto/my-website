@@ -1,13 +1,13 @@
 /* Обложки Главной, разделов и проектов — заметное скругление и лёгкая
    обводка, та же, что у дропдаунов. */
 :root {
-  --project-card-radius: 16px;
+  --project-card-radius: 0;
   --project-cover-border: var(--media-border);
   --wg-radius: var(--project-card-radius);
 }
 /* На телефоне скругления меньше, как и всё остальное (theme.css). */
 @media (max-width: 767px) {
-  :root { --project-card-radius: 8px; }
+  :root { --project-card-radius: 0; }
 }
 
 /* Бейдж карточек проектов. */

@@ -1,0 +1,352 @@
+/*
+  Редакционная сетка — тестовая концепция (ветка square-grid).
+
+  Один слой поверх компонентов: подключается ПОСЛЕДНИМ на каждой странице,
+  после её <style>. Убрать концепцию — снять эту ссылку со страниц и вернуть
+  радиусы в theme.css / card-tokens.css / buttons.css.
+
+  Правила концепции:
+  — 12 колонок на всю ширину окна, узкие поля (--grid-margin);
+  — одна общая ось: заголовок блока стоит в колонках 1–4, текст — с 5-й;
+  — крупные картинки идут на всю ширину сетки, вертикальные экраны и
+    карточки — в колонках 5–12, под текстом своего блока;
+  — подпись не лежит на картинке, а стоит под ней, по левому краю;
+  — скруглений нет (токены радиусов обнулены в theme.css);
+  — ≤1100px всё складывается в одну колонку, картинки сохраняют пропорции.
+*/
+
+:root {
+  --grid-gap: 16px;
+  --grid-margin: 32px;
+  --grid-text-start: 5;   /* с этой колонки начинается текст */
+  --grid-text-end: 11;    /* до этой линии — длина строки */
+  --toc-lane: 0px;        /* дорожка плавающего оглавления кейса */
+  --caption-size: calc(var(--font-size-text) * .8);
+
+  /* Поля и шаг прежней галереи читают сетку. */
+  --wg-side: var(--grid-margin);
+  --wg-gap: var(--grid-gap);
+  --wg-max-width: none;
+  --space-section: 200px;
+}
+@media (max-width: 1100px) {
+  :root { --grid-gap: 10px; --grid-margin: 20px; --space-section: 128px; }
+}
+@media (max-width: 640px) {
+  :root { --grid-margin: 16px; --space-section: 96px; }
+}
+
+/* ─── Скругления: то, что задано не токеном ──────────────────────────── */
+.works-grid__page-link,
+.work-toc__panel,
+.work-toc__bars span,
+.case-team__card,
+.case-scenario__card,
+.playground-grid__row--framed .works-grid__item img,
+.fav-pair .case-screens-frame img,
+.crm-stub,
+.site-footer__menu-btn-line { border-radius: 0; }
+.case-card__icon rect { rx: 0; }
+
+/* ─── Подпись под картинкой ──────────────────────────────────────────── */
+.media-caption,
+.case-card--media .case-card__title,
+.case-card--media .case-card__subtitle,
+.feed-card__tag {
+  font-size: var(--caption-size);
+  line-height: var(--line-height-default);
+}
+
+/* ═══ Главная: лента проектов ════════════════════════════════════════ */
+.project-feed {
+  --feed-gutter: var(--grid-margin);
+  gap: 0;
+  padding-top: var(--space-section);
+  padding-bottom: var(--space-section);
+}
+.project-feed__grid {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 120px var(--grid-gap);
+}
+.project-feed__item,
+.feed-card {
+  display: block;
+  grid-row: auto;
+}
+/* Первая работа в каждой тройке — на всю ширину, следующие две — пополам. */
+.project-feed__item { grid-column: span 6; }
+.project-feed__item:nth-child(3n + 1) { grid-column: 1 / -1; }
+
+.feed-card__cover { border-radius: 0; }
+.feed-card__caption {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  align-items: start;
+  margin-top: 16px;
+}
+.feed-card__text { grid-column: 1 / 5; margin: 0; }
+.feed-card__tags {
+  grid-column: 5 / -1;
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 6px 0 0;
+  list-style: none;
+}
+.feed-card__tag {
+  padding: 0;
+  background: none;
+  color: var(--color-text-muted);
+  white-space: normal;
+}
+/* Широкая карточка: название, описание и теги — три колонки под обложкой. */
+.project-feed__item:nth-child(3n + 1) .feed-card__caption { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.project-feed__item:nth-child(3n + 1) .feed-card__text { display: contents; }
+.project-feed__item:nth-child(3n + 1) .feed-card__title { grid-column: 1 / 5; }
+.project-feed__item:nth-child(3n + 1) .feed-card__description { grid-column: 5 / 10; margin-top: 0; padding-top: 6px; }
+.project-feed__item:nth-child(3n + 1) .feed-card__tags { grid-column: 10 / -1; }
+
+@media (max-width: 999px) {
+  .project-feed { padding-bottom: calc(var(--footer-h, 64px) + 96px); }
+  .project-feed__grid { row-gap: 88px; }
+}
+@media (max-width: 767px) {
+  .project-feed__grid { row-gap: 64px; }
+  .project-feed__item,
+  .project-feed__item:nth-child(3n + 1) { grid-column: 1 / -1; }
+  .feed-card__caption,
+  .project-feed__item:nth-child(3n + 1) .feed-card__caption { display: block; margin-top: 12px; }
+  .project-feed__item:nth-child(3n + 1) .feed-card__text { display: grid; }
+  .project-feed__item:nth-child(3n + 1) :is(.feed-card__title, .feed-card__description) { grid-column: auto; }
+  .project-feed__item:nth-child(3n + 1) .feed-card__description { margin-top: 4px; padding-top: 0; }
+}
+/* Узкая половинная карточка: теги — строкой под текстом, а не колонкой справа. */
+@media (max-width: 1100px) {
+  .project-feed__item:not(:nth-child(3n + 1)) .feed-card__caption { display: block; }
+  .project-feed__item:not(:nth-child(3n + 1)) .feed-card__tags { display: flex; flex-wrap: wrap; gap: 2px 12px; padding-top: 10px; }
+}
+@media (max-width: 767px) {
+  .feed-card__tags { display: flex; flex-wrap: wrap; gap: 2px 12px; padding-top: 10px; }
+}
+
+/* ═══ Статьи, Посты, Playground ══════════════════════════════════════ */
+.collection { padding-top: calc(var(--header-h, 64px) + 140px); }
+.collection__section {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  row-gap: 56px;
+}
+.collection__section > * { grid-column: 1 / -1; margin-top: 0; }
+.collection__section > .playground-grid,
+.collection__section > .project-grid { margin-top: 0; }
+.collection__section > h1 { grid-column: var(--grid-text-start) / -1; }
+
+/* Посты: четыре обложки в ряд. */
+.project-grid { gap: var(--grid-gap); }
+.posts-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.project-card__cover { border-radius: 0; }
+
+/* Playground: во всю ширину окна, шаг — как у сетки. */
+.playground-grid { --wg-gap: var(--grid-gap); }
+
+/* Статьи: строка списка лежит на общих колонках — название на оси текста. */
+.activity-articles { margin: 0; }
+.activity-articles > li,
+.activity-articles > li:last-child { border-color: var(--color-border); }
+.activity-article {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  padding: 28px 0;
+}
+.activity-article__number { grid-column: 1 / 5; color: var(--color-text-muted); }
+.activity-article__title { grid-column: 5 / 10; }
+.activity-article__description { grid-column: 10 / -1; padding-top: 8px; }
+.activity-article:hover .activity-article__number,
+.activity-article:focus-visible .activity-article__number { color: inherit; }
+
+@media (max-width: 1100px) {
+  .collection { padding-top: calc(var(--header-h, 64px) + 96px); }
+  .collection__section { row-gap: 40px; }
+  .collection__section > h1 { grid-column: 1 / -1; }
+  .posts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .activity-article__number { grid-column: 1 / 3; }
+  .activity-article__title { grid-column: 3 / 9; }
+  .activity-article__description { grid-column: 9 / -1; }
+}
+@media (max-width: 700px) {
+  .collection { padding-top: calc(var(--header-h, 64px) + 56px); }
+  .collection__section { row-gap: 28px; }
+  .activity-article { grid-template-columns: minmax(0, 1fr); gap: 8px; padding-block: 20px; }
+  .activity-article__number,
+  .activity-article__title,
+  .activity-article__description { grid-column: 1 / -1; padding-top: 0; }
+}
+@media (max-width: 480px) {
+  .posts-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ═══ Кейс ═══════════════════════════════════════════════════════════ */
+.case { max-width: none; }
+
+/* Картинка-карточка: кадр сверху, подпись под ним (на всех ширинах). */
+.case-card.case-card--media {
+  aspect-ratio: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  overflow: visible;
+  justify-content: flex-start;
+}
+.case-card--media .case-card__media {
+  position: relative;
+  inset: auto;
+  flex: 0 0 auto;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: var(--media-border);
+  background: var(--skeleton-color);
+}
+.case-comparison__card--portrait .case-card__media { aspect-ratio: 1600 / 2000; }
+.case-comparison__card--wide .case-card__media { aspect-ratio: 2880 / 1600; }
+.case-card--media .case-card__media :is(img, video) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.case-card--media .case-card__title,
+.case-card--media .case-card__subtitle {
+  width: auto;
+  max-width: 46ch;
+  margin-top: 12px;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+/* Большое фото в «О проекте» и «Роли» растёт на высоту соседней колонки. */
+.case-cards-feature__banner { min-height: 0; }
+.case-cards-feature__banner .case-card__media {
+  flex: 1 1 auto;
+  aspect-ratio: auto;
+  min-height: 420px;
+}
+
+/* Текстовые карточки — без плашки: тонкая линия сверху и текст на сетке. */
+.case-card:not(.case-card--media):not(.case-card--bg-custom) {
+  min-height: 0;
+  padding: 20px 0 0;
+  border-top: 1px solid var(--color-border);
+  background: none;
+  box-shadow: none;
+  overflow: visible;
+  justify-content: flex-start;
+}
+.case-cards-feature__side { gap: 40px; }
+.case-cards-feature__side .case-card { flex: 0 0 auto; min-height: 0; }
+.case-card__icon-row { align-items: flex-start; gap: 24px; }
+.case-problems__icon { margin-bottom: 28px; }
+.case-problems__card .case-card__subtitle { margin-top: 0; }
+.case-cards-grid { gap: var(--grid-gap); }
+.case-cards-grid:not(.case-comparison__grid):not(.case-schedule__grid) { row-gap: 40px; }
+.case-cards-feature { gap: var(--grid-gap); }
+
+.case-cover__metrics { gap: var(--grid-gap); }
+.sub-entry-grid, .sub-pair, .sub-bento, .crm-bento, .fav-pair { gap: var(--grid-gap); }
+.sub-bento + .case-cover__metrics-scroll .case-cover__metrics,
+.crm-bento + .case-cover__metrics-scroll .case-cover__metrics { margin-top: 0; }
+
+/* Текст кейса — одна длина строки, задаёт её колонка, а не max-width. */
+.case-subtitle { max-width: 62ch; }
+
+@media (min-width: 1101px) {
+  /* Плавающее оглавление справа получает свою дорожку: картинки до него не доходят. */
+  :root { --toc-lane: 32px; }
+  .case { padding-right: calc(var(--grid-margin) + var(--toc-lane)); }
+  .work-toc { right: 12px; }
+  /* Цветная подложка блока остаётся во всю ширину окна, несмотря на дорожку. */
+  .case-block--surface::before { left: calc(50% + var(--toc-lane) / 2); }
+
+  .case-block:not(.case-team) {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--grid-gap);
+    align-items: start;
+  }
+  /* По умолчанию блок занимает всю ширину — так стоят крупные картинки. */
+  .case-block:not(.case-team) > * { grid-column: 1 / -1; min-width: 0; }
+
+  /* Заголовок блока — левая колонка, первая строка. */
+  .case-block:not(.case-team) > h2 {
+    grid-column: 1 / var(--grid-text-start);
+    grid-row: 1;
+    padding-right: 24px;
+  }
+  /* Текст — на общей оси. */
+  .case-block:not(.case-team) > :is(p, ul, .case-favorites__description) {
+    grid-column: var(--grid-text-start) / var(--grid-text-end);
+  }
+  /* Карточки, метрики и вертикальные экраны — под текстом, в правой части. */
+  .case-block:not(.case-team) > :is(
+    .case-cards-feature,
+    .case-cover__metrics-scroll,
+    .fav-pair,
+    .sub-pair,
+    .case-comparison__grid:has(.case-comparison__card--portrait)
+  ) {
+    grid-column: var(--grid-text-start) / -1;
+  }
+  /* Три карточки с текстом встают на колонки 1, 5 и 9 — во всю ширину сетки.
+     Метрики сразу после коллажа продолжают его ширину. */
+  .case-block:not(.case-team) > :is(.sub-bento, .crm-bento) + .case-cover__metrics-scroll {
+    grid-column: 1 / -1;
+    margin-top: var(--grid-gap);
+  }
+  /* То, что встало в первую строку рядом с заголовком, начинается с его верха. */
+  .case-block:not(.case-team) > h2 + :is(
+    p, ul, .case-favorites__description,
+    .case-cards-feature, .case-cover__metrics-scroll, .fav-pair, .sub-pair,
+    .case-comparison__grid:has(.case-comparison__card--portrait)
+  ) { margin-top: 0; }
+  .case-block:not(.case-team) > h2 + :is(p, ul) { padding-top: .5em; }
+
+  /* Обложка: название слева, проблема и решение на оси текста, кнопка справа. */
+  .case-cover { row-gap: 0; }
+  .case-cover__head,
+  .case-cover__head-text { display: contents; }
+  .case-cover__title { grid-column: 1 / var(--grid-text-start); grid-row: 1 / span 3; padding-right: 24px; }
+  .case-cover .case-cover__subtitle.text-body-lg { grid-column: var(--grid-text-start) / 10; margin-top: 0; }
+  .case-cover .case-cover__subtitle.text-body-lg:first-of-type { padding-top: .5em; }
+  .case-cover .case-cover__subtitle + .case-cover__subtitle.text-body-lg { margin-top: var(--space-stack-paragraph); }
+  .case-cover__cta { grid-column: 10 / -1; grid-row: 1; justify-self: end; margin-top: .25em; }
+  .case-cover > .case-cover__media { margin-top: 72px; }
+  .case-cover > .case-cover__metrics-scroll { margin-top: var(--grid-gap); }
+  .case-cover .case-cover__metrics { margin-top: 0; }
+
+  /* «Сценарий»: заголовок слева, шаги — справа на той же строке. */
+  .case-scenario > .case-scenario__flow { grid-column: var(--grid-text-start) / -1; margin-top: 0; gap: 28px; }
+  .case-scenario__step:not(:last-child)::before,
+  .case-scenario__step:not(:last-child)::after { left: calc(100% + 6px); width: 16px; }
+
+  /* Сетки из двух широких экранов — на всю ширину, одна под другой подписи. */
+  .case-comparison__grid.case-cards-grid:not(.case-cards-grid--cols-2) { row-gap: 56px; }
+}
+
+/* «Команда»: текст слева на оси заголовков, колода справа. */
+@media (min-width: 1101px) {
+  .case-team { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-gap); gap: var(--grid-gap); align-items: start; }
+  .case-team__intro { grid-column: 1 / 9; display: grid; grid-template-columns: subgrid; }
+  .case-team__title { grid-column: 1 / 5; }
+  .case-team__intro .case-team__subtitle.text-body-lg { grid-column: 5 / -1; margin-top: 0; padding-top: .5em; }
+  .case-team__carousel { grid-column: 9 / -1; }
+}
+
+@media (max-width: 1100px) {
+  .case-cards-feature__banner .case-card__media { min-height: 0; aspect-ratio: 4 / 3; }
+  .case-cards-feature__side { gap: 28px; }
+}
