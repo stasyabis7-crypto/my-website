@@ -234,25 +234,3 @@
   pointer-events: none;
   transform-origin: top left;
 }
-
-/*
-  Асимметричная редакционная сетка (тест, ветка square-grid), как лента
-  Главной: большие карточки поочерёдно прижаты к левому и правому краю,
-  в парных рядах карточки разной ширины, меньшая опущена ниже. Сторона
-  чередуется от ряда к ряду. Телефон — без изменений, одна колонка.
-*/
-@media (min-width: 641px) {
-  .works-grid__inner { gap: clamp(48px, 6vw, 104px); }
-  .works-grid__row { align-items: flex-start; }
-
-  .works-grid__row--big .works-grid__item { flex: 0 0 83.333%; }
-  .works-grid__row--big:nth-child(even) { justify-content: flex-end; }
-
-  .works-grid__row--sq2 .works-grid__item:first-child { flex-grow: 7; }
-  .works-grid__row--sq2 .works-grid__item:last-child { flex-grow: 5; margin-top: clamp(48px, 7vw, 128px); }
-  .works-grid__row--sq2:nth-child(even) .works-grid__item:first-child { flex-grow: 5; margin-top: clamp(48px, 7vw, 128px); }
-  .works-grid__row--sq2:nth-child(even) .works-grid__item:last-child { flex-grow: 7; margin-top: 0; }
-
-  .works-grid__row--el3 .works-grid__item:nth-child(2),
-  .works-grid__row--sq3 .works-grid__item:nth-child(2) { margin-top: clamp(40px, 6vw, 96px); }
-}
