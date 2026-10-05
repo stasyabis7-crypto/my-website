@@ -9,7 +9,9 @@ const context = { window: {} };
 vm.runInNewContext(fs.readFileSync(path.join(root, 'pages/home/data/projects.js'), 'utf8'), context);
 const clean = url => (url || '').split(/[?#]/)[0];
 const errors = [];
-for (const project of context.window.portfolioProjects) {
+// Проекты без страницы (soon) в ленте стоят с подписью «Скоро появится» — сверять не с чем.
+const published = context.window.portfolioProjects.filter(project => !project.soon);
+for (const project of published) {
   const page = path.join(root, project.href.replace(/^\//, ''), 'index.html');
   const html = fs.readFileSync(page, 'utf8');
   const summary = html.match(/<section\b[^>]*\bid="summary"[\s\S]*?<\/section>/);
@@ -28,4 +30,4 @@ for (const project of context.window.portfolioProjects) {
 if (errors.length) {
   console.error('Обложки кейсов:\n' + errors.join('\n'));
   process.exitCode = 1;
-} else console.log(`Обложки кейсов: ${context.window.portfolioProjects.length} совпадают с первым кадром страницы.`);
+} else console.log(`Обложки кейсов: ${published.length} совпадают с первым кадром страницы.`);

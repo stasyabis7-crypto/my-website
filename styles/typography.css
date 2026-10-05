@@ -32,10 +32,12 @@
   --letter-spacing-heading: 0;
   --line-height-heading: 1.04;
 
+  /* Размер обычного текста равен размеру пунктов меню в шапке (текст .btn):
+     подзаголовки, абзацы, подписи и кнопки — один и тот же кегль. */
   /* --- Обычный текст и кнопки: один размер/интерлиньяж/трекинг на весь
      сайт, снят с подзаголовка Главной (.mood-subtitle) — кнопки
      дополнительно берут тот же трекинг (.mood-primary использует его же). */
-  --font-size-text: 14px;
+  --font-size-text: 11.9px;
   --line-height-text: 1.42;
   --letter-spacing-text: -0.03em;
 
@@ -102,7 +104,7 @@
     --font-size-2xl: 40px;
     --font-size-3xl: 54.1538px;
     --font-size-4xl: 67.6923px;
-    --font-size-text: 16px;
+    --font-size-text: 13.6px;
   }
 }
 
@@ -118,7 +120,7 @@
     --font-size-2xl: 46px;
     --font-size-3xl: 61.4799px;
     --font-size-4xl: 76.8498px;
-    --font-size-text: 18px;
+    --font-size-text: 15.3px;
   }
 }
 
@@ -134,7 +136,7 @@
     --font-size-2xl: 48px;
     --font-size-3xl: 64.4103px;
     --font-size-4xl: 80.5128px;
-    --font-size-text: 20px;
+    --font-size-text: 17px;
   }
 }
 
@@ -150,7 +152,7 @@
     --font-size-2xl: 52px;
     --font-size-3xl: 68px;
     --font-size-4xl: 84px;
-    --font-size-text: 20px;
+    --font-size-text: 17px;
   }
 }
 
@@ -166,7 +168,7 @@
     --font-size-2xl: 52px;
     --font-size-3xl: 68px;
     --font-size-4xl: 84px;
-    --font-size-text: 20px;
+    --font-size-text: 17px;
   }
 }
 
@@ -182,7 +184,7 @@
     --font-size-2xl: 58px;
     --font-size-3xl: 76px;
     --font-size-4xl: 96px;
-    --font-size-text: 22px;
+    --font-size-text: 18.7px;
   }
 }
 
