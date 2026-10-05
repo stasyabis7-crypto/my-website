@@ -110,14 +110,12 @@
   }
 }
 
-/* Image tiles never shrink on touch: :active fires as a scroll begins, so a
-   press-scale on a photo/card reads as a glitch. Real buttons keep the press. */
-@media (hover: none), (pointer: coarse) {
-  :is(a[href], [role="button"]):has(:is(img, picture, video, canvas)):not(.btn):active,
-  .case-lightbox-openable:active,
-  .works-grid__item:active,
-  .project-card:active {
-    scale: 1;
-    transform: none;
-  }
+/* Image tiles never shrink, on hover or on press, on any device.
+   Real buttons keep the press. */
+:is(a[href], [role="button"]):has(:is(img, picture, video, canvas)):not(.btn):active,
+.case-lightbox-openable:active,
+.works-grid__item:active,
+.project-card:active {
+  scale: 1;
+  transform: none;
 }

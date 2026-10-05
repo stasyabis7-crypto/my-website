@@ -81,27 +81,8 @@
   /* Курсор нарочно НЕ pointer — карточки пока не кликабельны, тактильный
      scale-фидбек не должен читаться как обещание клика. */
   cursor: default;
-  scale: 1;
-  /* Свой, более лёгкий и медленный scale, чем --button-press-scale
-     (0.96/0.12s — снэппи "нажатие" для настоящих кнопок): тут не фидбек
-     на клик, а мягкая реакция на наведение, резкая просадка смотрелась
-     как баг, а не как дизайн. */
-  --wg-hover-scale: 0.985;
-  transition:
-    background-color var(--theme-transition-duration, 0.6s) var(--theme-transition-ease, ease),
-    scale 0.35s var(--button-hover-ease, ease-out);
-}
-
-/* Hover/press shrink is desktop-only: on touch, :active fires on every tap-scroll. */
-@media (hover: hover) and (pointer: fine) {
-  .works-grid__item:hover {
-    scale: var(--wg-hover-scale);
-  }
-
-  .works-grid__item:active {
-    scale: var(--wg-hover-scale);
-    transition-duration: 0.2s;
-  }
+  /* Картинки на наведение и нажатие не уменьшаются — правило всего сайта. */
+  transition: background-color var(--theme-transition-duration, 0.6s) var(--theme-transition-ease, ease);
 }
 
 .works-grid__row--big .works-grid__item {
