@@ -116,6 +116,8 @@ h1.t-body { font-weight: 400; }
   .b--fill.b--click:hover video, .b--fill.b--click:hover img,
   .b--fill.b--click.is-hover video, .b--fill.b--click.is-hover img { scale: 1.04; }
 }
+/* Кнопка открытого списка («Связаться», «Меню») остаётся залитой, пока список не закрыт. */
+.b--click[aria-expanded="true"] { background-size: 100% 100%; color: var(--ink); }
 .b--click:focus-visible { outline: 2px solid var(--ink); outline-offset: -4px; }
 @media (prefers-reduced-motion: reduce) { .b--click, .b--click video, .b--click img { transition: none; } }
 
