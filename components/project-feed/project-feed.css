@@ -72,12 +72,10 @@
   height: 100%;
   min-width: 0;
 }
-.feed-card__media { --wg-hover-scale: 0.985; flex: 1 1 auto; min-height: 0; }
+.feed-card__media { flex: 1 1 auto; min-height: 0; }
 .feed-card__frame {
   position: relative;
   height: 100%;
-  scale: 1;
-  transition: scale 0.35s var(--button-hover-ease, ease-out);
 }
 .feed-card__cover {
   display: block;
@@ -111,14 +109,9 @@
   .feed-card__action { top: 10px; right: 10px; }
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .feed-card__media:hover .feed-card__frame { scale: var(--wg-hover-scale); }
-}
-.feed-card__frame:active { scale: var(--wg-hover-scale); transition-duration: 0.2s; }
+/* Сама обложка на наведение не реагирует: отзывается только кнопка
+   (её ховер из styles/buttons.css включается наведением на обложку). */
 .feed-card__cover:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
-@media (prefers-reduced-motion: reduce) {
-  .feed-card__frame { transition-duration: 0.01ms; }
-}
 
 /* Название — обычный текст сайта, не заголовок; на десктопе не больше двух строк. */
 .feed-card__title.text-body {
