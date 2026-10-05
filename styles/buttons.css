@@ -120,7 +120,7 @@
 :root {
   --button-height: 44px;
   /* Кнопки — полностью скруглённые «таблетки», как переключатель на Главной. */
-  --radius-control: 0;
+  --radius-control: 999px;
   --button-icon-size: 20px;
   --control-scroll-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.14), 0 14px 32px -8px rgba(0, 0, 0, 0.2);
   /* Основной цвет кнопок сайта. */
@@ -595,12 +595,12 @@ html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[hre
   gap: 2px;
   height: var(--button-height);
   padding: 4px;
-  border-radius: var(--radius-control);
+  border-radius: 999px;
   background: var(--color-surface-alt);
 }
 .btn-segmented > .btn--fill-segment { height: 100%; }
 .btn--fill-segment {
-  border-radius: var(--radius-control);
+  border-radius: 999px;
   padding-inline: 18px;
   background: transparent;
   color: var(--color-text-muted);
