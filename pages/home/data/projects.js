@@ -99,9 +99,16 @@ window.portfolioProjects = [
     title: 'Временная минимальная цена',
     feed: { image: '/projects/ozon-prices/minimum-price/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Окно «Отслеживайте срок действия минимальной цены» с будильником и тремя способами настройки'
+  },
+  {
+    id: 'charity-profile',
+    soon: true,
+    title: 'Благотворительность в ЛК',
+    feed: { image: '/projects/avito-charity/charity-profile/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Телефон на зелёной ткани с разделом «#яПомогаю» в Авито: подписки, поддержка людей, забота о природе'
   }
 ];
 
 /* Заглушки в ленте Главной: пустые плитки на местах проектов, которые ещё
    не описаны. Убираются по мере добавления кейсов выше. */
-window.portfolioFeedStubs = 4;
+window.portfolioFeedStubs = 3;
