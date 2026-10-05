@@ -105,7 +105,7 @@
       var left = clamp(t.left - r.left, r.width);
       var right = clamp(r.right - t.right, r.width - left);
       var bottom = clamp(r.bottom - t.bottom, r.height - top);
-      panel.style.setProperty('--contact-origin', 'inset(' + top + 'px ' + right + 'px ' + bottom + 'px ' + left + 'px round 0px)');
+      panel.style.setProperty('--contact-origin', 'inset(' + top + 'px ' + right + 'px ' + bottom + 'px ' + left + 'px round 32px)');
     }
     window.addEventListener('resize', function () { if (sheet && !sheet.hidden) setOrigin(); });
     function close() {

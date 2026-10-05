@@ -119,8 +119,8 @@
 /* Единая высота для всех вариаций .btn, на всех брейкпоинтах. */
 :root {
   --button-height: 44px;
-  /* Сетка из квадратов: кнопки прямоугольные, без скруглений. */
-  --radius-control: 0px;
+  /* Кнопки — полностью скруглённые «таблетки», как переключатель на Главной. */
+  --radius-control: 999px;
   --button-icon-size: 20px;
   --control-scroll-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.14), 0 14px 32px -8px rgba(0, 0, 0, 0.2);
   /* Основной цвет кнопок сайта. */
@@ -249,7 +249,7 @@
 /* Translucent glass for header/chrome controls over the light page with ink
    content. Usage: .btn.btn--fill-glass-ui with an optional .btn--icon-* layout.
    .btn--hover-accent is kept as a no-op hook on existing markup. */
-:root { --btn-glass-ui-bg: color-mix(in srgb, var(--color-bg) 72%, transparent); }
+:root { --btn-glass-ui-bg: color-mix(in srgb, #fff 60%, transparent); }
 .btn--fill-glass-ui {
   background: var(--btn-glass-ui-bg);
   color: var(--color-ink);
@@ -388,7 +388,7 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   .work-toc__toggle { overflow: visible; width: 80px; }
   .work-toc__bars { display: flex; flex: none; flex-direction: column; align-items: flex-end; gap: 8px; padding-block: 10px; }
   .work-toc__bars span { flex-shrink: 0; transition: width .3s ease, height .3s ease, background-color .3s ease; }
-  .work-toc__bars span { width: 36px; height: 3px; border-radius: 0; background: color-mix(in srgb, var(--color-ink) 22%, transparent); }
+  .work-toc__bars span { width: 36px; height: 3px; border-radius: 3px; background: color-mix(in srgb, var(--color-ink) 22%, transparent); }
   .work-toc__bars span.is-current { width: 48px; height: 5px; background: var(--btn-accent); }
   .work-toc__toggle:hover .work-toc__bars span { width: 48px; }
 }
@@ -455,7 +455,7 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   flex: 0 0 auto;
   width: 6px;
   height: 6px;
-  border-radius: 0;
+  border-radius: 50%;
   background: var(--btn-nav-live);
   animation: btn-nav-live 2.4s ease-out infinite;
 }
@@ -595,12 +595,12 @@ html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[hre
   gap: 2px;
   height: var(--button-height);
   padding: 4px;
-  border-radius: 0;
+  border-radius: 999px;
   background: var(--color-surface-alt);
 }
 .btn-segmented > .btn--fill-segment { height: 100%; }
 .btn--fill-segment {
-  border-radius: 0;
+  border-radius: 999px;
   padding-inline: 18px;
   background: transparent;
   color: var(--color-text-muted);
@@ -641,32 +641,5 @@ html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[hre
 .btn--size-chrome.btn--fill-pink {
   transition: transform 0.12s ease, color .3s ease, background-size .5s ease, background-color 0.25s ease, box-shadow 0.25s ease;
 }
-
-/* Ячейка сетки: кнопка заполняет свою ячейку целиком — прямоугольник без
-   скруглений, подпись внизу слева, иконка внизу справа. Размер ячейки
-   (сколько квадратов занимает) задаёт раскладка страницы, не кнопка.
-   Usage: .btn.btn--cell + тип заливки [+ .btn--icon-right/.btn--icon-only].
-   Контролы шапки — тоже ячейки: высота ряда шапки вместо --button-height. */
-.btn--cell {
-  width: 100%;
-  height: 100%;
-  border-radius: 0;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding: var(--cell-pad);
-  white-space: normal;
-  text-align: left;
-}
-.btn--cell.btn--icon-only {
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  aspect-ratio: auto;
-}
-.site-header > .btn,
-.site-header__identity > .btn,
-.site-socials > .btn,
-.site-nav > .btn {
-  height: 100%;
-  border-radius: 0;
-}
+html.chrome--on-hero .btn.btn--size-chrome.btn--fill-pink { background-color: #fff; color: #101014; }
+html.chrome--on-hero .btn.btn--size-chrome.btn--fill-nav { color: #fff; }

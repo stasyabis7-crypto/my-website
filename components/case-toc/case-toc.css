@@ -47,7 +47,7 @@
     right: 100%;
     padding: 16px;
     /* Concentric with the pill items: their half-height + the padding. */
-    border-radius: 0;
+    border-radius: calc(var(--button-height) / 2 + 16px);
     max-height: 80dvh;
     transform-origin: right 25%;
   }

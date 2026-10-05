@@ -380,13 +380,13 @@
 
 .case-lightbox__seek::-webkit-slider-runnable-track {
   height: 4px;
-  border-radius: 0;
+  border-radius: 999px;
   background: linear-gradient(to right, var(--color-text) var(--seek-progress, 0%), var(--seek-track) var(--seek-progress, 0%));
 }
 
 .case-lightbox__seek::-moz-range-track {
   height: 4px;
-  border-radius: 0;
+  border-radius: 999px;
   background: linear-gradient(to right, var(--color-text) var(--seek-progress, 0%), var(--seek-track) var(--seek-progress, 0%));
 }
 
@@ -397,7 +397,7 @@
   height: 16px;
   margin-top: -6px;
   border: 0;
-  border-radius: 0;
+  border-radius: 50%;
   background: var(--color-text);
 }
 
@@ -405,12 +405,12 @@
   width: 16px;
   height: 16px;
   border: 0;
-  border-radius: 0;
+  border-radius: 50%;
   background: var(--color-text);
 }
 
 .case-lightbox__seek:focus-visible {
   outline: 2px solid var(--color-text);
   outline-offset: 4px;
-  border-radius: 0;
+  border-radius: 999px;
 }

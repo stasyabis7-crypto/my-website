@@ -11,12 +11,11 @@
 
   /* Шкала скруглений. На телефоне (≤767px) все ступени меньше — см. блок
      @media ниже. Пилюли кнопок (--radius-control) и круги не трогаем. */
-  /* Сетка из квадратов: скруглений на сайте нет, все ступени — 0. */
-  --radius-hero: 0px;     /* баннер, цветные подложки */
-  --radius-surface: 0px;  /* панели, меню */
-  --case-content-radius: 0px; /* обложка, баннеры, картинки и карточки кейсов */
-  --radius-inner: 0px;    /* аватар, мелкие карточки, картинки в карточках */
-  --radius-tag: 0px;      /* бейджи и теги */
+  --radius-hero: clamp(28px, 3vw, 44px); /* баннер, цветные подложки */
+  --radius-surface: 14px; /* панели, меню */
+  --case-content-radius: 24px; /* обложка, баннеры, картинки и карточки кейсов */
+  --radius-inner: 10px;   /* аватар, мелкие карточки, картинки в карточках */
+  --radius-tag: 6px;      /* бейджи и теги */
 
   /* Матовое стекло (хедер/футер/кнопки навигации) — одна и та же
      "рецептура" размытия в обеих темах, меняются только цвета-токены
@@ -47,40 +46,14 @@
     inset 0 0 4px 1px rgba(255, 255, 255, 0.35);
 }
 
-/*
-  Сетка из квадратов — основа раскладки сайта. Страница делится на
-  --grid-cols колонок; --cell — сторона квадрата (целые px, чтобы линии были
-  чёткими), остаток ширины забирает последняя колонка (--grid-columns).
-  Блоки занимают целое число ячеек; узкие ряды (шапка, теги) — половину.
-  --grid-lines рисует линии пустых ячеек фоном секции; блок поверх них
-  закрашивает свои ячейки и сам рисует правую и нижнюю линию (--grid-line).
-*/
-:root {
-  --grid-cols: 4;
-  --cell: calc(100vw / var(--grid-cols));
-  --grid-columns: repeat(3, var(--cell)) minmax(0, 1fr);
-  --grid-line-color: var(--color-ink);
-  --grid-line: 1px solid var(--grid-line-color);
-  --grid-lines:
-    repeating-linear-gradient(to right, transparent 0 calc(var(--cell) - 1px), var(--grid-line-color) calc(var(--cell) - 1px) var(--cell))
-      0 0 / calc(var(--cell) * (var(--grid-cols) - 1)) 100% no-repeat,
-    repeating-linear-gradient(to bottom, transparent 0 calc(var(--cell) - 1px), var(--grid-line-color) calc(var(--cell) - 1px) var(--cell))
-      0 0 / 100% 100% no-repeat;
-  /* Поля текста внутри ячейки и высота ряда шапки (половина ячейки). */
-  --cell-pad: clamp(14px, calc(var(--cell) * 0.17), 28px);
-  --header-row: clamp(48px, calc(var(--cell) / 2), 72px);
-}
-@supports (width: round(down, 10px, 1px)) {
-  :root { --cell: round(down, calc(100vw / var(--grid-cols)), 1px); }
-}
-@media (min-width: 600px) {
-  :root { --grid-cols: 6; --grid-columns: repeat(5, var(--cell)) minmax(0, 1fr); }
-}
-@media (min-width: 1000px) {
-  :root { --grid-cols: 8; --grid-columns: repeat(7, var(--cell)) minmax(0, 1fr); }
-}
-@media (min-width: 1200px) {
-  :root { --grid-cols: 12; --grid-columns: repeat(11, var(--cell)) minmax(0, 1fr); }
+@media (max-width: 767px) {
+  :root {
+    --radius-hero: 20px;
+    --radius-surface: 10px;
+    --case-content-radius: 8px;
+    --radius-inner: 6px;
+    --radius-tag: 4px;
+  }
 }
 
 /* WebKit (весь мобильный браузер на iOS, а не только сама Safari) не
@@ -138,13 +111,12 @@ html.no-liquid-glass-distort .footer-menu-panel__bar {
 :root {
   color-scheme: light;
 
-  /* Фон — слоновая кость; поверхности и обводки — её тёплые ступени. */
-  --color-bg: #f5f2e9;
-  --color-surface: #ece8dc;
-  --color-surface-alt: #e4dfd1;
+  --color-bg: #ffffff;
+  --color-surface: #f3f4f6;
+  --color-surface-alt: #eceef2;
   --color-text: #14161a;
   --color-text-muted: #5f6673;
-  --color-border: #d6d1c2;
+  --color-border: #dde0e6;
 
   /* "Ink" — цвет обводки/заливки монохромных контролов (кнопки,
      иконки), инвертируется относительно surface в каждой теме. */
@@ -157,8 +129,8 @@ html.no-liquid-glass-distort .footer-menu-panel__bar {
      (не color-border — он тут слишком плотный/непрозрачный) — типичная
      кромка стекла по краю панели; ею же обведены все дропдауны
      (вместо тени). */
-  --color-glass: rgba(245, 242, 233, 0.72);
-  --color-glass-alt: rgba(236, 232, 220, 0.72);
+  --color-glass: rgba(255, 255, 255, 0.6);
+  --color-glass-alt: rgba(243, 244, 246, 0.6);
   --color-glass-border: rgba(20, 22, 26, 0.08);
 
   /* Лёгкая обводка картинок: обложки Главной и скриншоты интерфейсов в
