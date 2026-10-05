@@ -6,17 +6,22 @@
     одной тонкой линией, внутри него разделителей нет;
   - пустое место не расчерчено: через него идут только вертикальные линии колонок;
   - воздух — это пропущенные квадраты, а не отступы;
-  - шапка — не сетка: обычная строка со ссылками.
+  - шапка — не сетка: строка с линией снизу, пункты меню по центру,
+    «Резюме PDF» и «Связаться» — кнопки-ячейки;
+  - у всех кликабельных блоков одно наведение: текст заливается ярким цветом
+    слева направо, обложка слегка приближается.
   Размеры текста привязаны к стороне квадрата (--cell), поэтому блок вмещает
   один и тот же текст на любой ширине экрана.
 */
 :root {
   --cols: 6;
-  --bg: #f1f2ee;
+  --bg: #edf0f2;
   --ink: #14161a;
   --muted: #5f6673;
   --line: color-mix(in srgb, var(--ink) 30%, var(--bg));
-  --media: #e3e5e0;
+  --media: #dde2e5;
+  /* Наведение на любой кликабельный блок: яркая заливка слева направо. */
+  --hover-fill: linear-gradient(to right, #0fd850 0%, #f9f047 100%);
   --lw: 1px;
   --header-row: 64px;
 }
@@ -91,21 +96,37 @@ body { overflow-x: clip; font-family: var(--font-family-body); }
 .b--fill { padding: 0; background: var(--media); }
 .b--fill video, .b--fill img { display: block; width: 100%; height: 100%; object-fit: var(--fit); }
 .b--cover video, .b--cover img { object-fit: cover; }
-/* Стрелка-кнопка в углу обложки: кликабельна вся обложка. */
 .b--fill { position: relative; }
-.corner { position: absolute; right: 0; bottom: 0; display: grid; place-items: center; width: clamp(44px, calc(var(--cell) * 0.24), 64px); aspect-ratio: 1; background: var(--ink); color: var(--bg); }
+.b--ph { display: flex; padding: var(--pad); }
 
-/* ---------- Шапка: строка без сетки ---------- */
+/* ---------- Наведение: одно на все кликабельные блоки ---------- */
+.b--click {
+  cursor: pointer;
+  background-image: var(--hover-fill);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 0.45s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.b--fill.b--click video, .b--fill.b--click img { transition: scale 0.5s ease; }
+@media (hover: hover) and (pointer: fine) {
+  .b--click:hover, .b--click.is-hover { background-size: 100% 100%; color: var(--ink); }
+  .b--click:hover .t-small, .b--click:hover .t-tags, .b--click.is-hover .t-small, .b--click.is-hover .t-tags { color: var(--ink); }
+  .b--fill.b--click:hover video, .b--fill.b--click:hover img,
+  .b--fill.b--click.is-hover video, .b--fill.b--click.is-hover img { scale: 1.04; }
+}
+.b--click:focus-visible { outline: 2px solid var(--ink); outline-offset: -4px; }
+@media (prefers-reduced-motion: reduce) { .b--click, .b--click video, .b--click img { transition: none; } }
+
+/* ---------- Шапка: строка с линией снизу ---------- */
 .site-top {
   position: sticky;
   top: 0;
   z-index: 5;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 24px;
   height: var(--header-row);
   padding-inline: var(--pad);
+  border-bottom: var(--lw) solid var(--line);
   background: var(--bg);
 }
 .top-home { display: flex; align-items: center; gap: 12px; color: inherit; }
@@ -113,45 +134,32 @@ body { overflow-x: clip; font-family: var(--font-family-body); }
 .top-logo { display: block; width: 118px; height: 36px; background: currentColor;
   -webkit-mask: url("../../../components/site-brand/logo.svg") left center / contain no-repeat;
   mask: url("../../../components/site-brand/logo.svg") left center / contain no-repeat; }
-.top-nav { display: flex; align-items: center; gap: clamp(20px, 2.6cqw, 40px); }
-.top-link {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  font-size: 15px;
-  letter-spacing: var(--letter-spacing-text);
-  text-decoration: none;
-  text-underline-offset: 5px;
-  text-decoration-thickness: 1px;
-  cursor: pointer;
-}
-.top-link:hover, .top-link[aria-current="page"], .top-link[aria-expanded="true"] { text-decoration-line: underline; }
-.top-menu { display: none; }
+/* Пункты меню — текстом по центру. */
+.top-nav { position: absolute; left: 50%; translate: -50% 0; display: flex; align-items: center; gap: clamp(20px, 2.6cqw, 40px); }
+.top-link, .top-cell { font: inherit; font-size: 15px; letter-spacing: var(--letter-spacing-text); color: inherit; text-decoration: none; }
+.top-link { text-underline-offset: 5px; text-decoration-thickness: 1px; }
+.top-link:hover, .top-link[aria-current="page"] { text-decoration-line: underline; }
+/* Кнопки-ячейки: каждая шириной в колонку и стоит на её линии. */
+.top-actions { position: absolute; top: 0; right: 0; bottom: 0; display: flex; }
+.top-cell { position: relative; display: flex; align-items: center; width: var(--cell); padding: 0 var(--pad); border: 0; background-color: transparent; }
+.top-cell::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(-1 * var(--lw)); width: var(--lw); background: var(--line); }
+.top-cell--resume { background-color: var(--ink); color: var(--bg); }
+.top-cell--menu { display: none; }
 @media (max-width: 999px) {
-  .top-nav { display: none; }
-  .top-menu { display: block; }
+  .top-nav, .top-cell--resume { display: none; }
+  .top-cell--menu { display: flex; }
 }
-/* Выпадающий список: одна рамка, строки без разделителей. */
-.drop {
-  position: absolute;
-  top: calc(100% - 8px);
-  right: var(--pad);
-  min-width: 240px;
-  padding: 8px 0;
-  border: var(--lw) solid var(--line);
-  background: var(--bg);
+@media (max-width: 599px) {
+  .top-cell--contacts { display: none; }
 }
+/* Выпадающий список контактов: колонка под своей кнопкой, одна рамка. */
+.drop { position: absolute; top: 100%; right: 0; width: var(--cell); min-width: 220px; border: var(--lw) solid var(--line); border-right: 0; background: var(--bg); }
 .drop[hidden] { display: none; }
-.drop__row { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 10px 16px; color: inherit; font-size: 15px; letter-spacing: var(--letter-spacing-text); text-decoration: none; }
-.drop__row:hover { background: var(--media); }
+.drop__row { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 12px var(--pad); color: inherit; font-size: 15px; letter-spacing: var(--letter-spacing-text); text-decoration: none; }
 .drop__row .icon { --icon-size: 18px; }
-
-/* ---------- Баннер Главной ---------- */
-/* Видео на весь экран под шапкой; заголовок, подзаголовок и кнопка —
-   блоки на сетке у его нижнего края. */
-.hero { position: relative; z-index: 1; height: calc(100svh - var(--header-row)); min-height: calc(var(--cell) * 2); background: #2b63c9; overflow: hidden; }
-.hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-@media (max-aspect-ratio: 4/5) { .hero__video { object-position: 58% 0; } }
-.hero__cells { position: absolute; left: 0; right: 0; bottom: 0; }
+@media (max-width: 999px) {
+  .drop--contacts { right: var(--cell); border-right: var(--lw) solid var(--line); }
+  /* Меню на весь экран. */
+  .drop--menu { position: fixed; top: var(--header-row); right: 0; bottom: 0; left: 0; width: auto; padding-block: var(--pad); border: 0; overflow-y: auto; }
+  .drop__row--big { padding-block: 10px; font-family: var(--font-family-heading); font-size: clamp(32px, 9cqw, 56px); letter-spacing: 0; line-height: 1.1; }
+}

@@ -106,7 +106,8 @@ function blockHtml(block) {
     vars.push(`--${prefix}c:${c}`, `--${prefix}r:${r}`, `--${prefix}w:${w}`, `--${prefix}h:${h}`);
     if (block.ratio) vars.push(`--${prefix}fit:${Math.abs(Math.log((w / h) / block.ratio)) > 0.13 ? 'contain' : 'cover'}`);
   }
-  const cls = ['b', ...(block.type ? block.type.split(' ').map(name => 'b--' + name) : [])].join(' ');
+  const cls = ['b', ...(block.type ? block.type.split(' ').map(name => 'b--' + name) : []), ...(block.href ? ['b--click'] : [])].join(' ');
+  if (block.group) block.attrs = (block.attrs || '') + ` data-group="${block.group}"`;
   const tag = block.href ? 'a' : 'div';
   const link = block.href ? ` href="${esc(block.href)}"${/^https?:/.test(block.href) ? ' target="_blank" rel="noopener noreferrer"' : ''}` : '';
   return `      <${tag} class="${cls}"${link}${block.attrs || ''} style="${vars.join(';')}">${block.html}</${tag}>`;
@@ -122,20 +123,24 @@ const mediaTag = (media, auto = true) => media.tag === 'video'
 const mediaBlock = (media, size) => ({ html: mediaTag(media), type: 'fill', size: size || mediaSize(media.ratio), ratio: media.ratio });
 const heading = (title, level = 'h2') => ({ html: `<${level} class="t-${level}">${esc(title)}</${level}>`, type: 'head', size: sized([level === 'h1' ? 4 : 2, 1], [level === 'h1' ? 4 : 2, 1], [2, 1]) });
 const textBlock = (text, widths = { d: 3, t: 3, m: 2 }) => ({ html: `<p class="t-body">${esc(text)}</p>`, type: 'text', size: textSize(text.length, widths) });
-const button = (label, name, href) => ({ html: `<span>${esc(label)}</span>${icon(name)}`, type: 'btn', size: sized([1, 1]), href });
+// Кнопка — ячейка с подписью, без стрелки.
+const button = (label, name, href) => ({ html: `<span>${esc(label)}</span>`, type: 'btn', size: sized([1, 1]), href });
+// Заглушка на месте будущей картинки.
+const placeholder = (label, size) => ({ html: `<span class="t-small">${esc(label)}</span>`, type: 'fill ph', size });
 
-// Проект: сначала название с описанием, под ними обложка; стрелка-кнопка —
-// маленький квадрат в углу обложки. На десктопе место закреплено, чтобы два
+// Проект: сначала название с описанием, под ними обложка. Кликабельны оба
+// блока и подсвечиваются вместе. На десктопе место закреплено, чтобы два
 // проекта рядом стояли на одном уровне.
 function projectItems(project, col) {
   const tags = project.tags.map(id => tagLabel[id]).join(' · ');
   const href = caseFile(project.href);
   const cover = { tag: 'video', src: project.video, poster: project.image, alt: project.alt, ratio: project.width / project.height };
+  const group = 'project-' + project.id;
   return [
     { html: `<h3 class="t-h3">${esc(project.title)}</h3><p class="t-body">${esc(project.description)}</p><p class="t-tags">${esc(tags)}</p>`,
-      type: 'text', size: sized([3, 1], [3, 1], [2, 1]), col: { t: 1, m: 1 }, pin: { d: [col, 0] } },
-    { html: mediaTag(cover) + `<span class="corner">${icon('arrow-diagonal')}</span>`, type: 'fill cover', size: sized([3, 2], [3, 2], [2, 2]),
-      col: { t: 1, m: 1 }, pin: { d: [col, 1] }, href, attrs: ` aria-label="Открыть кейс «${esc(project.title)}»"` },
+      type: 'text', size: sized([3, 1], [3, 1], [2, 1]), col: { t: 1, m: 1 }, pin: { d: [col, 0] }, href, group },
+    { html: mediaTag(cover), type: 'fill cover', size: sized([3, 2], [3, 2], [2, 2]),
+      col: { t: 1, m: 1 }, pin: { d: [col, 1] }, href, group, attrs: ` tabindex="-1" aria-hidden="true"` },
   ];
 }
 
@@ -154,27 +159,29 @@ const contactsSection = () => section('Контакты', [
   ...CONTACTS.map(([label, name, href]) => ({ html: `<span>${label}</span>${icon('social-' + name)}`, type: 'link', size: sized([1, 1]), href })),
 ], { id: 'contacts' });
 
-// Шапка — не сетка: обычная строка без ячеек и линий. Лого слева, ссылки
-// текстом справа. «Связаться» открывает выпадающий список контактов; ниже
-// десктопа ссылки уходят в «Меню».
+// Шапка — не сетка: строка с линией снизу. Лого слева, пункты меню текстом
+// по центру, справа кнопки-ячейки «Резюме PDF» и «Связаться» шириной в
+// колонку. Ниже десктопа пункты уходят в «Меню» на весь экран.
 function header(current, back) {
   const external = href => (/^https?:/.test(href) ? ' target="_blank" rel="noopener noreferrer"' : '');
-  const row = ([label, name, href], cls = '') => `        <a class="drop__row${cls}" href="${href}"${external(href)}><span>${label}</span>${name ? icon(name) : ''}</a>`;
+  const row = ([label, name, href], cls = '') => `        <a class="drop__row b--click${cls}" href="${href}"${external(href)}><span>${label}</span>${name ? icon(name) : ''}</a>`;
   const contactRows = CONTACTS.map(([label, name, href]) => [label, 'social-' + name, href]);
   return `    <!-- Шапка -->
     <header class="site-top">
       <a class="top-home" href="index.html" aria-label="${back ? 'Назад на главную' : 'Анастасия Вихарева'}">${back ? icon('arrow-left') : ''}<span class="top-logo"></span></a>
       <nav class="top-nav" aria-label="Разделы сайта">
 ${NAV.map(([label, href]) => `        <a class="top-link" href="${href}"${current === href ? ' aria-current="page"' : ''}>${label}</a>`).join('\n')}
-        <a class="top-link" href="/cv.pdf" target="_blank" rel="noopener noreferrer">Резюме PDF</a>
-        <button type="button" class="top-link" data-drop="drop-contacts" aria-expanded="false" aria-controls="drop-contacts">Связаться</button>
       </nav>
-      <button type="button" class="top-link top-menu" data-drop="drop-menu" aria-expanded="false" aria-controls="drop-menu">Меню</button>
-      <div class="drop" id="drop-contacts" hidden>
+      <div class="top-actions">
+        <a class="top-cell top-cell--resume b--click" href="/cv.pdf" target="_blank" rel="noopener noreferrer">Резюме PDF</a>
+        <button type="button" class="top-cell top-cell--contacts b--click" data-drop="drop-contacts" aria-expanded="false" aria-controls="drop-contacts">Связаться</button>
+        <button type="button" class="top-cell top-cell--menu b--click" data-drop="drop-menu" aria-expanded="false" aria-controls="drop-menu">Меню</button>
+      </div>
+      <div class="drop drop--contacts" id="drop-contacts" hidden>
 ${contactRows.map(item => row(item)).join('\n')}
       </div>
-      <div class="drop" id="drop-menu" hidden>
-${[...NAV.map(([label, href]) => row([label, '', href])), row(['Резюме PDF', 'cv', '/cv.pdf']), ...contactRows.map(item => row(item))].join('\n')}
+      <div class="drop drop--menu" id="drop-menu" hidden>
+${[...NAV.map(([label, href]) => row([label, '', href], ' drop__row--big')), row(['Резюме PDF', '', '/cv.pdf'], ' drop__row--big'), ...contactRows.map(item => row(item))].join('\n')}
       </div>
     </header>`;
 }
@@ -209,29 +216,15 @@ ${contactsSection()}
 
 const pages = {};
 
-// Главная: баннер-видео на весь экран с тремя блоками у нижнего края, затем проекты парами на одном уровне.
-const heroBlocks = layout([
-  { html: '<h1 class="t-title">Анастасия Вихарева</h1>', type: 'title', size: sized([3, 1], [3, 1], [2, 1]), col: { d: 4, t: 1, m: 1 } },
-  { break: 0 },
+// Главная. Баннер разделён на секции-квадраты: видео, заголовок, подзаголовок
+// и кнопка. На месте видео пока заглушка, чтобы была видна разметка.
+const hero = section('Баннер', [
+  { ...placeholder('Видео', sized([3, 3], [4, 2], [2, 2])), pin: { d: [1, 0] } },
+  { html: '<h1 class="t-title">Анастасия Вихарева</h1>', type: 'title', size: sized([3, 2], [4, 1], [2, 1]), pin: { d: [4, 0] } },
   { html: '<p class="t-body">Senior Product Designer в Авито, раньше Ozon. 6&nbsp;лет проектирую продуктовые сценарии: платежи, CRM, дашборды.</p>',
-    type: 'text', size: sized([2, 1], [3, 1], [1, 1]), col: { d: 4, t: 1, m: 1 } },
-  { ...button('Смотреть работы', 'down', '#works'), col: { d: 6, t: 4, m: 2 } },
-]);
-const hero = `    <!-- Баннер -->
-    <section class="hero" aria-label="Баннер">
-      <video class="hero__video" muted loop playsinline autoplay
-        poster="/components/hero-mood/media/hero-desktop.webp" src="/components/hero-mood/media/hero-desktop-v2.mp4"
-        data-portrait-poster="/components/hero-mood/media/hero-mobile.webp" data-portrait-src="/components/hero-mood/media/hero-mobile-v2.mp4"></video>
-      <script>
-        (function () {
-          var v = document.currentScript.previousElementSibling;
-          if (matchMedia('(max-aspect-ratio: 4/5)').matches) { v.poster = v.dataset.portraitPoster; v.src = v.dataset.portraitSrc; }
-        })();
-      </script>
-      <div class="grid hero__cells">
-${heroBlocks.map(blockHtml).join('\n')}
-      </div>
-    </section>`;
+    type: 'text', size: sized([2, 1], [3, 1], [1, 1]), pin: { d: [4, 2] }, col: { t: 1, m: 1 } },
+  { ...button('Смотреть работы', '', '#works'), pin: { d: [6, 2] }, col: { t: 4, m: 2 } },
+], { air: 0 });
 const feed = [];
 projects.forEach((project, index) => {
   // Пара проектов — общий ряд; между парами ряд воздуха (на узких экранах — между проектами).
@@ -301,40 +294,68 @@ projects.forEach((project, index) => {
   pages[caseFile(project.href)] = page(summary.title, '', true, [
     section('Сводка', top, { air: 0, id: 'summary' }),
     ...parts.map(caseSection),
-    section('Следующий проект', [heading('Следующий проект'), { break: 0 }, ...projectItems(next, 1)]),
+    // Перед контактами — блок с другим проектом.
+    section('Другие проекты', [heading('Другие проекты'), { break: 0 }, ...projectItems(next, 1)]),
   ]);
 });
 
-// Статьи: заголовок и список — по три статьи в ряд на одном уровне.
+// Шахматная раскладка: по два блока в ряду, каждый следующий ряд сдвинут на
+// колонку, между блоками остаётся пустая колонка. На планшете — по два без
+// сдвига, на телефоне — по одному.
+function checker(units, rows, gap) {
+  const items = [];
+  units.forEach((unit, index) => {
+    const band = Math.floor(index / 2);
+    if (index % 2 === 0 && index) items.push({ break: gap, only: ['t'] });
+    if (index) items.push({ break: gap, only: ['m'] });
+    items.push({ ...unit, pin: { d: [(band % 2 ? 2 : 1) + (index % 2) * 3, band * (rows + gap)] } });
+  });
+  return items;
+}
+
+// Статьи: у каждой обложка (пока заглушка), название стоит блоком той же
+// ширины сразу под своей обложкой; пары отделены друг от друга пустотой.
 const articles = content['/projects/articles/'].sections[0];
 pages['articles.html'] = page('Статьи', 'articles.html', true, [
   section('Статьи', [
     heading(articles.title, 'h1'),
     { break: 1 },
-    ...articles.items.filter(item => item.kind === 'article').map(item => ({
-      html: `<p class="t-small">${esc(item.number)}</p><h3 class="t-h3">${esc(item.title)}</h3><p class="t-body">${esc(item.text)}</p>`,
-      type: 'text link-card', size: sized([2, 1]), href: item.href,
-    })),
+    ...checker(articles.items.filter(item => item.kind === 'article').map((item, index) => ({
+      ...placeholder('Обложка ' + item.number, sized([2, 1])), href: item.href, group: 'article-' + index, attrs: ' tabindex="-1" aria-hidden="true"',
+      stack: [{ html: `<p class="t-small">${esc(item.number)}</p><h3 class="t-h3">${esc(item.title)}</h3><p class="t-body">${esc(item.text)}</p>`,
+        type: 'text', size: sized([2, 1]), href: item.href, group: 'article-' + index }],
+    })), 2, 1),
   ], { air: 0 }),
 ]);
 
-// Посты: квадратные обложки парами.
+// Посты: квадратные обложки в шахматном порядке.
 const posts = content['/projects/posts/'].sections[0];
 pages['posts.html'] = page('Посты', 'posts.html', true, [
   section('Посты', [
     heading(posts.title, 'h1'),
     { break: 1 },
-    ...posts.items.filter(item => item.media).map(item => ({ ...mediaBlock(item.media, sized([3, 3], [2, 2], [2, 2])), href: item.href })),
+    ...checker(posts.items.filter(item => item.media).map(item => ({ ...mediaBlock(item.media, sized([2, 2])), type: 'fill cover', ratio: 0, href: item.href })), 2, 0),
   ], { air: 0 }),
 ]);
 
-// Playground: мозаика — размер блока по пропорции работы.
+// Playground: мозаика с воздухом. На десктопе места закреплены: крупные
+// работы чередуются слева и справа, рядом с ними остаются пустые колонки.
 const playground = content['/projects/playground/'].sections[0];
+const works = playground.items.filter(item => item.media);
+const wide = works.filter(item => item.media.ratio >= 1.4);
+const tall = works.filter(item => item.media.ratio < 0.78);
+const square = works.filter(item => item.media.ratio >= 0.78 && item.media.ratio < 1.4);
+const mosaic = [
+  [wide[0], [3, 2], [1, 0]], [tall[0], [1, 2], [5, 0]], [tall[1], [1, 2], [6, 0]],
+  [square[0], [2, 2], [2, 2]], [wide[1], [3, 2], [4, 2]],
+  [wide[2], [3, 2], [1, 4]], [square[1], [2, 2], [5, 4]],
+  [square[2], [2, 2], [2, 6]], [square[3], [2, 2], [4, 6]],
+].filter(([item]) => item);
 pages['playground.html'] = page('Playground', 'playground.html', true, [
   section('Playground', [
     heading(playground.title, 'h1'),
     { break: 1 },
-    ...playground.items.filter(item => item.media).map(item => mediaBlock(item.media)),
+    ...mosaic.map(([item, size, pin]) => ({ ...mediaBlock(item.media, { ...mediaSize(item.media.ratio), d: size }), type: 'fill cover', ratio: 0, pin: { d: pin } })),
   ], { air: 0 }),
 ]);
 

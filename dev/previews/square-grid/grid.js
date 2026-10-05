@@ -26,4 +26,17 @@
   document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') close();
   });
+
+  // Блоки одной группы (обложка и её подпись) подсвечиваются вместе.
+  function group(event, on) {
+    var block = event.target.closest('[data-group]');
+    if (!block) return;
+    document.querySelectorAll('[data-group="' + block.dataset.group + '"]').forEach(function (item) {
+      item.classList.toggle('is-hover', on);
+    });
+  }
+  document.addEventListener('mouseover', function (event) { group(event, true); });
+  document.addEventListener('mouseout', function (event) { group(event, false); });
+  document.addEventListener('focusin', function (event) { group(event, true); });
+  document.addEventListener('focusout', function (event) { group(event, false); });
 })();
