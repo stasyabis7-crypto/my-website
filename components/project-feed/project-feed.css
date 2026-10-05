@@ -22,9 +22,11 @@
   --feed-cols: 4;
   /* Пропорция плитки: ширина к высоте. */
   --feed-tile-ratio: 5 / 6;
+  /* Название — того же размера, что пункты меню в шапке (текст .btn). */
+  --feed-caption-size: calc(var(--font-size-text) * .85);
   /* Место под название: отступ и две строки текста. */
   --feed-caption-gap: 12px;
-  --feed-caption-h: calc(var(--feed-caption-gap) + 2 * var(--font-size-text) * var(--line-height-text));
+  --feed-caption-h: calc(var(--feed-caption-gap) + 2 * var(--feed-caption-size) * var(--line-height-text));
   container-type: inline-size;
   /* Лента начинается сразу под баннером: сверху тот же отступ, что по бокам. */
   padding: var(--feed-gutter) var(--feed-gutter) 120px;
@@ -122,7 +124,7 @@
   -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.1);
   backdrop-filter: blur(18px) saturate(180%) brightness(1.1);
   font-family: var(--font-family-body);
-  font-size: var(--font-size-text);
+  font-size: var(--feed-caption-size);
   line-height: var(--line-height-default);
   letter-spacing: var(--letter-spacing-text);
   white-space: nowrap;
@@ -141,6 +143,7 @@
   flex: 0 0 auto;
   max-width: none;
   margin-top: var(--feed-caption-gap);
+  font-size: var(--feed-caption-size);
   font-weight: var(--font-weight-regular);
 }
 @media (min-width: 1000px) {
