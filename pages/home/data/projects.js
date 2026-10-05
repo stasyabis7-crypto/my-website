@@ -58,6 +58,7 @@ window.portfolioProjects = [
   },
   {
     id: 'kind-subscription',
+    feed: { image: '/projects/avito-charity/subscription/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
     title: 'Добрая подписка',
     description: 'Ежемесячная помощь фондам в приложении',
     href: '/projects/avito-charity/subscription/',
