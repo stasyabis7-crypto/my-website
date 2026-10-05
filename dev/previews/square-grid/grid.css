@@ -1,0 +1,70 @@
+/*
+  Стенд структуры «сетка из квадратов»: пустые заглушки вместо контента.
+  Правила сетки:
+  - страница делится на крупные квадраты: 6 колонок, на планшете 4, на телефоне 2;
+  - каждый компонент занимает прямоугольник из целых квадратов и обведён
+    одной тонкой линией, внутри него разделителей нет;
+  - пустое место не расчерчено: через него идут только вертикальные линии колонок;
+  - воздух — это пропущенные квадраты, а не отступы.
+*/
+:root {
+  --cols: 6;
+  --bg: #f5f2e9;
+  --ink: #14161a;
+  --line: color-mix(in srgb, var(--ink) 30%, var(--bg));
+  --media: #e9e5d8;
+  --lw: 1px;
+  --header-row: 64px;
+}
+@media (min-resolution: 2dppx) { :root { --lw: 0.5px; --line: color-mix(in srgb, var(--ink) 55%, var(--bg)); } }
+@media (max-width: 999px) { :root { --cols: 4; } }
+@media (max-width: 599px) { :root { --cols: 2; --header-row: 56px; } }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); }
+body { overflow-x: clip; }
+.page { position: relative; overflow-x: clip; container-type: inline-size; --cell: calc(100cqw / var(--cols)); }
+
+/* Вертикальные линии колонок — единственное, что есть в пустоте. */
+.lines, .grid { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); margin-right: calc(-1 * var(--lw)); }
+.lines { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.lines i { border-right: var(--lw) solid var(--line); }
+.lines i:nth-child(n + 5) { display: none; }
+@media (min-width: 1000px) { .lines i:nth-child(n + 5) { display: block; } }
+@media (max-width: 599px) { .lines i:nth-child(n + 3) { display: none; } }
+
+.grid { position: relative; z-index: 1; grid-auto-rows: var(--cell); margin-top: calc(var(--cell) * var(--air, 0)); }
+.grid--header { position: sticky; top: 0; z-index: 5; grid-auto-rows: var(--header-row); margin-top: 0; }
+
+/* Компонент: прямоугольник из квадратов. Рамка ложится на линии колонок и
+   на рамку соседа, поэтому линия между блоками всегда одна. */
+.b {
+  grid-column: var(--c) / span var(--w);
+  grid-row: var(--r) / span var(--h);
+  margin: calc(-1 * var(--lw)) 0 0 calc(-1 * var(--lw));
+  padding: clamp(12px, 1.4cqw, 22px);
+  border: var(--lw) solid var(--line);
+  background: var(--bg);
+  color: inherit;
+  text-decoration: none;
+  font-family: var(--font-family-body);
+  font-size: 13px;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  min-width: 0;
+  overflow: hidden;
+}
+.b--media { background: var(--media); }
+.b--btn { background: var(--ink); color: var(--bg); border-color: var(--ink); display: flex; align-items: flex-end; }
+.grid--header .b { display: flex; align-items: center; padding-block: 0; }
+.b[hidden] { display: none; }
+@media (max-width: 999px) {
+  .b { grid-column: var(--tc) / span var(--tw); grid-row: auto / span var(--th); }
+  .b.t-off { display: none; }
+}
+@media (max-width: 599px) {
+  .b { grid-column: var(--mc) / span var(--mw); grid-row: auto / span var(--mh); }
+  .b.m-off { display: none; }
+  .b.m-on { display: block; }
+}
+@media (min-width: 1000px) { .b.d-off { display: none; } }
