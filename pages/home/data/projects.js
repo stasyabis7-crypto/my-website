@@ -78,9 +78,16 @@ window.portfolioProjects = [
     title: 'Лендинг о компании Авито',
     feed: { image: '/projects/avito-charity/about-company/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Телефон в руке с лендингом Авито: пять бизнес-направлений — товары, авто, недвижимость, работа'
+  },
+  {
+    id: 'watches-patches',
+    soon: true,
+    title: 'Медицинское приложение для часов',
+    feed: { image: '/projects/swtec-medical/watches-patches/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Умные часы с экраном показателей: пульс 100 ударов в минуту, 10 757 шагов, 2 345 килокалорий'
   }
 ];
 
 /* Заглушки в ленте Главной: пустые плитки на местах проектов, которые ещё
    не описаны. Убираются по мере добавления кейсов выше. */
-window.portfolioFeedStubs = 7;
+window.portfolioFeedStubs = 6;
