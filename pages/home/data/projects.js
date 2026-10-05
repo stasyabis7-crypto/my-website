@@ -30,7 +30,7 @@ window.portfolioTags = [
 window.portfolioProjects = [
   {
     id: 'customer-segments',
-    feed: { image: '/projects/ozon-crm/customer-segments/covers/feed-cover-900x1200.webp', width: 900, height: 1200 },
+    feed: { image: '/projects/ozon-crm/customer-segments/covers/feed-cover-1800x2400.webp', width: 1800, height: 2400 },
     title: 'CRM для продавцов Ozon',
     description: 'Сегменты покупателей и рассылки для продавцов',
     href: '/projects/ozon-crm/customer-segments/',
