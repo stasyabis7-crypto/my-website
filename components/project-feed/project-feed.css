@@ -13,7 +13,7 @@
 
   Под обложкой только название обычным текстом. У кликабельных проектов в
   правом верхнем углу круглая кнопка со стрелкой; заглушки — пустые плитки
-  без ссылки. Обложки — --project-card-radius и --project-cover-border из
+  без ссылки. Обложки без скруглений, обводка — --project-cover-border из
   styles/card-tokens.css.
 */
 .project-feed {
@@ -84,7 +84,7 @@
   overflow: hidden;
   height: 100%;
   border: var(--project-cover-border);
-  border-radius: var(--project-card-radius);
+  border-radius: 0;
   background: var(--skeleton-color);
 }
 /* Заглушка: плитка той же высоты, что обложка, под ней пустое место названия. */
