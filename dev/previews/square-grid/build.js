@@ -7,15 +7,19 @@ const path = require('path');
 const block = ([label, type, d, t, m, href]) => {
   const vars = [`--c:${d[0]}`, `--r:${d[1]}`, `--w:${d[2]}`, `--h:${d[3]}`];
   const cls = ['b'];
-  if (type) cls.push('b--' + type);
+  if (type) type.split(' ').forEach(name => cls.push('b--' + name));
   if (t) vars.push(`--tc:${t[0]}`, `--tw:${t[1]}`, `--th:${t[2]}`); else cls.push('t-off');
   const mm = m === undefined ? t : m;
   if (mm) vars.push(`--mc:${mm[0]}`, `--mw:${mm[1]}`, `--mh:${mm[2]}`); else cls.push('m-off');
   const tag = href ? 'a' : 'div';
   return `      <${tag} class="${cls.join(' ')}"${href ? ` href="${href}"` : ''} style="${vars.join(';')}">${label}</${tag}>`;
 };
-const grid = ({ name, air = 0, header, blocks }) =>
-  `    <!-- ${name} -->\n    <section class="grid${header ? ' grid--header' : ''}"${air ? ` style="--air:${air}"` : ''} aria-label="${name}">\n${blocks.map(block).join('\n')}\n    </section>`;
+const grid = ({ name, air = 0, header, hero, blocks }) => {
+  const cells = `<div class="grid${header ? ' grid--header' : ''}${hero ? ' hero__cells' : ''}"${air ? ` style="--air:${air}"` : ''}>\n${blocks.map(block).join('\n')}\n    </div>`;
+  if (header) return `    <!-- ${name} -->\n    <header class="site-top" aria-label="${name}">${cells}</header>`;
+  if (hero) return `    <!-- ${name} -->\n    <section class="hero" aria-label="${name}">\n${hero}\n    ${cells}\n    </section>`;
+  return `    <!-- ${name} -->\n    <section aria-label="${name}">${cells}</section>`;
+};
 const page = (title, sections) => `<!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -25,6 +29,7 @@ const page = (title, sections) => `<!DOCTYPE html>
 <title>Сетка — ${title}</title>
 <link rel="stylesheet" href="../../../styles/fonts.css" />
 <link rel="stylesheet" href="../../../styles/typography.css" />
+<link rel="stylesheet" href="../../../components/icons/icons.css" />
 <link rel="stylesheet" href="grid.css" />
 </head>
 <body>
@@ -36,27 +41,52 @@ ${sections.map(grid).join('\n\n')}
 </html>
 `;
 
+const icon = name => `<span class="icon icon--${name}" aria-hidden="true"></span>`;
 const header = back => ({ name: 'Шапка', header: true, blocks: [
-  [back ? '← Назад · Лого' : 'Аватар · Лого', '', [1, 1, 1, 1], [1, 2, 1], [1, 1, 1], 'index.html'],
-  ['Резюме PDF', 'btn', [2, 1, 1, 1], 0],
-  ['Статьи', '', [3, 1, 1, 1], 0, 0, 'collection.html'],
-  ['Посты', '', [4, 1, 1, 1], 0, 0, 'collection.html'],
-  ['Playground', '', [5, 1, 1, 1], 0, 0, 'playground.html'],
-  ['Связаться', '', [6, 1, 1, 1], [3, 1, 1], 0],
-  ['Меню', '', [1, 1, 1, 1], [4, 1, 1], [2, 1, 1]],
+  [(back ? icon('arrow-left') : '<img class="top-avatar" src="../../../components/site-brand/avatar-portrait-v2.webp" alt="" />') +
+    '<span class="top-logo" role="img" aria-label="Анастасия Вихарева"></span>', 'row', [1, 1, 1, 1], [1, 2, 1], [1, 1, 1], 'index.html'],
+  ['<span>Резюме PDF</span>' + icon('cv'), 'btn row', [2, 1, 1, 1], 0, 0, '/cv.pdf'],
+  ['Статьи', 'row', [3, 1, 1, 1], 0, 0, 'collection.html'],
+  ['Посты', 'row', [4, 1, 1, 1], 0, 0, 'collection.html'],
+  ['Playground', 'row', [5, 1, 1, 1], 0, 0, 'playground.html'],
+  ['<span>Связаться</span>' + icon('contacts'), 'row', [6, 1, 1, 1], [3, 1, 1], 0, '#contacts'],
+  ['<span>Меню</span>' + icon('hamburger'), 'row menu', [1, 1, 1, 1], [4, 1, 1], [2, 1, 1]],
 ] });
-// «Меню» есть только ниже десктопа.
-const fixHeader = html => html.replace(/class="b" style="([^"]*)">Меню/, 'class="b d-off" style="$1">Меню');
+const fixHeader = html => html;
 
+const contactLink = (label, name, href, d, t, m) =>
+  [`<span>${label}</span>${icon('social-' + name)}`, 'link', d, t, m, href];
 const contacts = { name: 'Контакты', air: 1, blocks: [
-  ['Связаться — заголовок', '', [1, 1, 2, 1], [1, 2, 1], [1, 2, 1]],
-  ['Telegram', '', [1, 2, 1, 1], [1, 1, 1], [1, 1, 1]],
-  ['Почта', '', [2, 2, 1, 1], [2, 1, 1], [2, 1, 1]],
-  ['Dribbble', '', [3, 2, 1, 1], [3, 1, 1], [1, 1, 1]],
-  ['Figma', '', [4, 2, 1, 1], [4, 1, 1], [2, 1, 1]],
-  ['Medium', '', [5, 2, 1, 1], [1, 1, 1], [1, 1, 1]],
-  ['Habr', '', [6, 2, 1, 1], [2, 1, 1], [2, 1, 1]],
+  ['<h2 class="t-h2" id="contacts">Связаться</h2>', 'head', [1, 1, 2, 1], [1, 2, 1], [1, 2, 1]],
+  contactLink('Telegram', 'telegram', 'https://t.me/stasyabis', [1, 2, 1, 1], [1, 1, 1], [1, 1, 1]),
+  contactLink('Почта', 'email', 'mailto:stasyabis7@gmail.com', [2, 2, 1, 1], [2, 1, 1], [2, 1, 1]),
+  contactLink('Dribbble', 'dribbble', 'https://dribbble.com/Stasyabis', [3, 2, 1, 1], [3, 1, 1], [1, 1, 1]),
+  contactLink('Figma community', 'figma', 'https://www.figma.com/@stasyabis', [4, 2, 1, 1], [4, 1, 1], [2, 1, 1]),
+  contactLink('Medium', 'medium', 'https://medium.com/@stasyabis', [5, 2, 1, 1], [1, 1, 1], [1, 1, 1]),
+  contactLink('Habr', 'habr', 'https://habr.com/ru/users/stasyabis/', [6, 2, 1, 1], [2, 1, 1], [2, 1, 1]),
 ] };
+
+// Данные проектов — те же, что у ленты Главной.
+const vm = require('vm');
+const data = { window: {} };
+vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../../../pages/home/data/projects.js'), 'utf8'), data);
+const tagLabel = Object.fromEntries(data.window.portfolioTags.map(tag => [tag.id, tag.label]));
+const realProject = (p, c, r, tc) => [
+  [`<video src="${p.video}" poster="${p.image}" muted loop playsinline autoplay preload="metadata" aria-label="${p.alt}"></video>`,
+    'fill', [c, r, 3, 2], [tc, 3, 2], [1, 2, 2], p.href],
+  [`<h3 class="t-h3">${p.title}</h3><p class="t-body">${p.description}</p><p class="t-tags">${p.tags.map(id => tagLabel[id]).join(' · ')}</p>`,
+    'text', [c, r + 2, 2, 1], [tc, 2, 1], [1, 2, 1]],
+  ['<span>Открыть кейс</span>' + icon('arrow-diagonal'), 'btn', [c + 2, r + 2, 1, 1], [tc + 2, 1, 1], [2, 1, 1], p.href],
+];
+const heroMedia = `      <video class="hero__video" muted loop playsinline autoplay
+        poster="/components/hero-mood/media/hero-desktop.webp" src="/components/hero-mood/media/hero-desktop-v2.mp4"
+        data-portrait-poster="/components/hero-mood/media/hero-mobile.webp" data-portrait-src="/components/hero-mood/media/hero-mobile-v2.mp4"></video>
+      <script>
+        (function () {
+          var v = document.currentScript.previousElementSibling;
+          if (matchMedia('(max-aspect-ratio: 4/5)').matches) { v.poster = v.dataset.portraitPoster; v.src = v.dataset.portraitSrc; }
+        })();
+      </script>`;
 
 // Проект в ленте: обложка, текст (название, описание, теги) и кнопка.
 const project = (n, c, r, tc) => [
@@ -68,13 +98,13 @@ const project = (n, c, r, tc) => [
 const pages = {
   'index.html': ['Главная', [
     header(false),
-    { name: 'Баннер', blocks: [
-      ['Заголовок — имя', '', [1, 1, 3, 2], [1, 3, 2], [1, 2, 1]],
-      ['Видео', 'media', [5, 1, 2, 3], [2, 3, 3], [1, 2, 2]],
-      ['Подзаголовок — кто я и чем занимаюсь', '', [1, 3, 2, 1], [1, 3, 1], [1, 2, 1]],
-      ['Смотреть работы ↓', 'btn', [3, 3, 1, 1], [4, 1, 1], [1, 1, 1]],
+    // Баннер — видео на весь экран; на нём три квадрата-блока у нижнего края.
+    { name: 'Баннер', hero: heroMedia, blocks: [
+      ['<h1 class="t-title">Анастасия Вихарева</h1>', 'title', [4, 1, 3, 1], [1, 3, 1], [1, 2, 1]],
+      ['<p class="t-body">Senior Product Designer в Авито, раньше Ozon. 6&nbsp;лет проектирую продуктовые сценарии: платежи, CRM, дашборды.</p>', 'text', [4, 2, 2, 1], [1, 3, 1], [1, 1, 1]],
+      ['<span>Смотреть работы</span>' + icon('down'), 'btn', [6, 2, 1, 1], [4, 1, 1], [2, 1, 1], '#works'],
     ] },
-    { name: 'Проекты', air: 1, blocks: [...project(1, 1, 1, 1), ...project(2, 4, 2, 2), ...project(3, 1, 5, 1)] },
+    { name: 'Проекты', air: 1, blocks: [...realProject(data.window.portfolioProjects[0], 1, 1, 1), ...realProject(data.window.portfolioProjects[1], 4, 2, 2), ...realProject(data.window.portfolioProjects[2], 1, 5, 1)] },
     contacts,
   ]],
   'case.html': ['Кейс', [

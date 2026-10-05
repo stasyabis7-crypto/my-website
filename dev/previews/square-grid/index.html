@@ -7,53 +7,64 @@
 <title>Сетка — Главная</title>
 <link rel="stylesheet" href="../../../styles/fonts.css" />
 <link rel="stylesheet" href="../../../styles/typography.css" />
+<link rel="stylesheet" href="../../../components/icons/icons.css" />
 <link rel="stylesheet" href="grid.css" />
 </head>
 <body>
   <div class="page">
     <div class="lines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <!-- Шапка -->
-    <section class="grid grid--header" aria-label="Шапка">
-      <a class="b" href="index.html" style="--c:1;--r:1;--w:1;--h:1;--tc:1;--tw:2;--th:1;--mc:1;--mw:1;--mh:1">Аватар · Лого</a>
-      <div class="b b--btn t-off m-off" style="--c:2;--r:1;--w:1;--h:1">Резюме PDF</div>
-      <a class="b t-off m-off" href="collection.html" style="--c:3;--r:1;--w:1;--h:1">Статьи</a>
-      <a class="b t-off m-off" href="collection.html" style="--c:4;--r:1;--w:1;--h:1">Посты</a>
-      <a class="b t-off m-off" href="playground.html" style="--c:5;--r:1;--w:1;--h:1">Playground</a>
-      <div class="b m-off" style="--c:6;--r:1;--w:1;--h:1;--tc:3;--tw:1;--th:1">Связаться</div>
-      <div class="b d-off" style="--c:1;--r:1;--w:1;--h:1;--tc:4;--tw:1;--th:1;--mc:2;--mw:1;--mh:1">Меню</div>
-    </section>
+    <header class="site-top" aria-label="Шапка"><div class="grid grid--header">
+      <a class="b b--row" href="index.html" style="--c:1;--r:1;--w:1;--h:1;--tc:1;--tw:2;--th:1;--mc:1;--mw:1;--mh:1"><img class="top-avatar" src="../../../components/site-brand/avatar-portrait-v2.webp" alt="" /><span class="top-logo" role="img" aria-label="Анастасия Вихарева"></span></a>
+      <a class="b b--btn b--row t-off m-off" href="/cv.pdf" style="--c:2;--r:1;--w:1;--h:1"><span>Резюме PDF</span><span class="icon icon--cv" aria-hidden="true"></span></a>
+      <a class="b b--row t-off m-off" href="collection.html" style="--c:3;--r:1;--w:1;--h:1">Статьи</a>
+      <a class="b b--row t-off m-off" href="collection.html" style="--c:4;--r:1;--w:1;--h:1">Посты</a>
+      <a class="b b--row t-off m-off" href="playground.html" style="--c:5;--r:1;--w:1;--h:1">Playground</a>
+      <a class="b b--row m-off" href="#contacts" style="--c:6;--r:1;--w:1;--h:1;--tc:3;--tw:1;--th:1"><span>Связаться</span><span class="icon icon--contacts" aria-hidden="true"></span></a>
+      <div class="b b--row b--menu" style="--c:1;--r:1;--w:1;--h:1;--tc:4;--tw:1;--th:1;--mc:2;--mw:1;--mh:1"><span>Меню</span><span class="icon icon--hamburger" aria-hidden="true"></span></div>
+    </div></header>
 
     <!-- Баннер -->
-    <section class="grid" aria-label="Баннер">
-      <div class="b" style="--c:1;--r:1;--w:3;--h:2;--tc:1;--tw:3;--th:2;--mc:1;--mw:2;--mh:1">Заголовок — имя</div>
-      <div class="b b--media" style="--c:5;--r:1;--w:2;--h:3;--tc:2;--tw:3;--th:3;--mc:1;--mw:2;--mh:2">Видео</div>
-      <div class="b" style="--c:1;--r:3;--w:2;--h:1;--tc:1;--tw:3;--th:1;--mc:1;--mw:2;--mh:1">Подзаголовок — кто я и чем занимаюсь</div>
-      <div class="b b--btn" style="--c:3;--r:3;--w:1;--h:1;--tc:4;--tw:1;--th:1;--mc:1;--mw:1;--mh:1">Смотреть работы ↓</div>
+    <section class="hero" aria-label="Баннер">
+      <video class="hero__video" muted loop playsinline autoplay
+        poster="/components/hero-mood/media/hero-desktop.webp" src="/components/hero-mood/media/hero-desktop-v2.mp4"
+        data-portrait-poster="/components/hero-mood/media/hero-mobile.webp" data-portrait-src="/components/hero-mood/media/hero-mobile-v2.mp4"></video>
+      <script>
+        (function () {
+          var v = document.currentScript.previousElementSibling;
+          if (matchMedia('(max-aspect-ratio: 4/5)').matches) { v.poster = v.dataset.portraitPoster; v.src = v.dataset.portraitSrc; }
+        })();
+      </script>
+    <div class="grid hero__cells">
+      <div class="b b--title" style="--c:4;--r:1;--w:3;--h:1;--tc:1;--tw:3;--th:1;--mc:1;--mw:2;--mh:1"><h1 class="t-title">Анастасия Вихарева</h1></div>
+      <div class="b b--text" style="--c:4;--r:2;--w:2;--h:1;--tc:1;--tw:3;--th:1;--mc:1;--mw:1;--mh:1"><p class="t-body">Senior Product Designer в Авито, раньше Ozon. 6&nbsp;лет проектирую продуктовые сценарии: платежи, CRM, дашборды.</p></div>
+      <a class="b b--btn" href="#works" style="--c:6;--r:2;--w:1;--h:1;--tc:4;--tw:1;--th:1;--mc:2;--mw:1;--mh:1"><span>Смотреть работы</span><span class="icon icon--down" aria-hidden="true"></span></a>
+    </div>
     </section>
 
     <!-- Проекты -->
-    <section class="grid" style="--air:1" aria-label="Проекты">
-      <a class="b b--media" href="case.html" style="--c:1;--r:1;--w:3;--h:2;--tc:1;--tw:3;--th:2;--mc:1;--mw:2;--mh:2">Обложка проекта 1</a>
-      <div class="b" style="--c:1;--r:3;--w:2;--h:1;--tc:1;--tw:2;--th:1;--mc:1;--mw:2;--mh:1">Название, описание и теги проекта 1</div>
-      <a class="b b--btn" href="case.html" style="--c:3;--r:3;--w:1;--h:1;--tc:3;--tw:1;--th:1;--mc:2;--mw:1;--mh:1">Открыть кейс ↗</a>
-      <a class="b b--media" href="case.html" style="--c:4;--r:2;--w:3;--h:2;--tc:2;--tw:3;--th:2;--mc:1;--mw:2;--mh:2">Обложка проекта 2</a>
-      <div class="b" style="--c:4;--r:4;--w:2;--h:1;--tc:2;--tw:2;--th:1;--mc:1;--mw:2;--mh:1">Название, описание и теги проекта 2</div>
-      <a class="b b--btn" href="case.html" style="--c:6;--r:4;--w:1;--h:1;--tc:4;--tw:1;--th:1;--mc:2;--mw:1;--mh:1">Открыть кейс ↗</a>
-      <a class="b b--media" href="case.html" style="--c:1;--r:5;--w:3;--h:2;--tc:1;--tw:3;--th:2;--mc:1;--mw:2;--mh:2">Обложка проекта 3</a>
-      <div class="b" style="--c:1;--r:7;--w:2;--h:1;--tc:1;--tw:2;--th:1;--mc:1;--mw:2;--mh:1">Название, описание и теги проекта 3</div>
-      <a class="b b--btn" href="case.html" style="--c:3;--r:7;--w:1;--h:1;--tc:3;--tw:1;--th:1;--mc:2;--mw:1;--mh:1">Открыть кейс ↗</a>
-    </section>
+    <section aria-label="Проекты"><div class="grid" style="--air:1">
+      <a class="b b--fill" href="/projects/ozon-crm/customer-segments/" style="--c:1;--r:1;--w:3;--h:2;--tc:1;--tw:3;--th:2;--mc:1;--mw:2;--mh:2"><video src="/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-1440x900-60fps.mp4" poster="/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-poster-1440x900.webp" muted loop playsinline autoplay preload="metadata" aria-label="Раздел CRM в кабинете Ozon Seller: постоянные покупатели и рекомендации по сегментам"></video></a>
+      <div class="b b--text" style="--c:1;--r:3;--w:2;--h:1;--tc:1;--tw:2;--th:1;--mc:1;--mw:2;--mh:1"><h3 class="t-h3">CRM для продавцов Ozon</h3><p class="t-body">Сегменты покупателей и рассылки для продавцов</p><p class="t-tags">Ozon · B2B · E-commerce · CRM</p></div>
+      <a class="b b--btn" href="/projects/ozon-crm/customer-segments/" style="--c:3;--r:3;--w:1;--h:1;--tc:3;--tw:1;--th:1;--mc:2;--mw:1;--mh:1"><span>Открыть кейс</span><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>
+      <a class="b b--fill" href="/projects/avito-charity/recycle-map/" style="--c:4;--r:2;--w:3;--h:2;--tc:2;--tw:3;--th:2;--mc:1;--mw:2;--mh:2"><video src="/projects/avito-charity/recycle-map/covers/cover.webm?v=3" poster="/projects/avito-charity/recycle-map/covers/cover-poster.webp" muted loop playsinline autoplay preload="metadata" aria-label="Карта Avito с пунктами приёма вещей и панелью категорий: одежда, пластик, бумага, стекло"></video></a>
+      <div class="b b--text" style="--c:4;--r:4;--w:2;--h:1;--tc:2;--tw:2;--th:1;--mc:1;--mw:2;--mh:1"><h3 class="t-h3">Карта переработки вещей</h3><p class="t-body">Поиск пункта приёма, фильтры и избранное</p><p class="t-tags">Avito · B2C · Благотворительность · Карты</p></div>
+      <a class="b b--btn" href="/projects/avito-charity/recycle-map/" style="--c:6;--r:4;--w:1;--h:1;--tc:4;--tw:1;--th:1;--mc:2;--mw:1;--mh:1"><span>Открыть кейс</span><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>
+      <a class="b b--fill" href="/projects/avito-charity/subscription/" style="--c:1;--r:5;--w:3;--h:2;--tc:1;--tw:3;--th:2;--mc:1;--mw:2;--mh:2"><video src="/projects/avito-charity/subscription/covers/subscription-cover-loop-1440x900-60fps.mp4" poster="/projects/avito-charity/subscription/covers/subscription-cover-poster-2880x1800.webp" muted loop playsinline autoplay preload="metadata" aria-label="«Добрая подписка» в приложении Авито"></video></a>
+      <div class="b b--text" style="--c:1;--r:7;--w:2;--h:1;--tc:1;--tw:2;--th:1;--mc:1;--mw:2;--mh:1"><h3 class="t-h3">Добрая подписка</h3><p class="t-body">Ежемесячная помощь фондам в приложении</p><p class="t-tags">Avito · B2C · Благотворительность · Платежи</p></div>
+      <a class="b b--btn" href="/projects/avito-charity/subscription/" style="--c:3;--r:7;--w:1;--h:1;--tc:3;--tw:1;--th:1;--mc:2;--mw:1;--mh:1"><span>Открыть кейс</span><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></a>
+    </div></section>
 
     <!-- Контакты -->
-    <section class="grid" style="--air:1" aria-label="Контакты">
-      <div class="b" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tw:2;--th:1;--mc:1;--mw:2;--mh:1">Связаться — заголовок</div>
-      <div class="b" style="--c:1;--r:2;--w:1;--h:1;--tc:1;--tw:1;--th:1;--mc:1;--mw:1;--mh:1">Telegram</div>
-      <div class="b" style="--c:2;--r:2;--w:1;--h:1;--tc:2;--tw:1;--th:1;--mc:2;--mw:1;--mh:1">Почта</div>
-      <div class="b" style="--c:3;--r:2;--w:1;--h:1;--tc:3;--tw:1;--th:1;--mc:1;--mw:1;--mh:1">Dribbble</div>
-      <div class="b" style="--c:4;--r:2;--w:1;--h:1;--tc:4;--tw:1;--th:1;--mc:2;--mw:1;--mh:1">Figma</div>
-      <div class="b" style="--c:5;--r:2;--w:1;--h:1;--tc:1;--tw:1;--th:1;--mc:1;--mw:1;--mh:1">Medium</div>
-      <div class="b" style="--c:6;--r:2;--w:1;--h:1;--tc:2;--tw:1;--th:1;--mc:2;--mw:1;--mh:1">Habr</div>
-    </section>
+    <section aria-label="Контакты"><div class="grid" style="--air:1">
+      <div class="b b--head" style="--c:1;--r:1;--w:2;--h:1;--tc:1;--tw:2;--th:1;--mc:1;--mw:2;--mh:1"><h2 class="t-h2" id="contacts">Связаться</h2></div>
+      <a class="b b--link" href="https://t.me/stasyabis" style="--c:1;--r:2;--w:1;--h:1;--tc:1;--tw:1;--th:1;--mc:1;--mw:1;--mh:1"><span>Telegram</span><span class="icon icon--social-telegram" aria-hidden="true"></span></a>
+      <a class="b b--link" href="mailto:stasyabis7@gmail.com" style="--c:2;--r:2;--w:1;--h:1;--tc:2;--tw:1;--th:1;--mc:2;--mw:1;--mh:1"><span>Почта</span><span class="icon icon--social-email" aria-hidden="true"></span></a>
+      <a class="b b--link" href="https://dribbble.com/Stasyabis" style="--c:3;--r:2;--w:1;--h:1;--tc:3;--tw:1;--th:1;--mc:1;--mw:1;--mh:1"><span>Dribbble</span><span class="icon icon--social-dribbble" aria-hidden="true"></span></a>
+      <a class="b b--link" href="https://www.figma.com/@stasyabis" style="--c:4;--r:2;--w:1;--h:1;--tc:4;--tw:1;--th:1;--mc:2;--mw:1;--mh:1"><span>Figma community</span><span class="icon icon--social-figma" aria-hidden="true"></span></a>
+      <a class="b b--link" href="https://medium.com/@stasyabis" style="--c:5;--r:2;--w:1;--h:1;--tc:1;--tw:1;--th:1;--mc:1;--mw:1;--mh:1"><span>Medium</span><span class="icon icon--social-medium" aria-hidden="true"></span></a>
+      <a class="b b--link" href="https://habr.com/ru/users/stasyabis/" style="--c:6;--r:2;--w:1;--h:1;--tc:2;--tw:1;--th:1;--mc:2;--mw:1;--mh:1"><span>Habr</span><span class="icon icon--social-habr" aria-hidden="true"></span></a>
+    </div></section>
   </div>
 </body>
 </html>
