@@ -6,6 +6,8 @@
     одной тонкой линией, внутри него разделителей нет;
   - пустое место не расчерчено: через него идут только вертикальные линии колонок;
   - воздух — это пропущенные квадраты, а не отступы;
+  - название над обложкой — исключение: его ряд по высоте текста, не в квадрат;
+  - текст в любой ячейке выровнен одинаково — сверху слева;
   - шапка — не сетка: строка с линией снизу, пункты меню по центру,
     «Резюме PDF» и «Связаться» — кнопки-ячейки;
   - у всех кликабельных блоков одно наведение: текст заливается ярким цветом
@@ -52,7 +54,9 @@ body { overflow-x: clip; font-family: var(--font-family-body); }
 @media (min-width: 1000px) { .lines i:nth-child(n + 5) { display: block; } }
 @media (max-width: 599px) { .lines i:nth-child(n + 3) { display: none; } }
 
-.grid { position: relative; z-index: 1; grid-auto-rows: var(--cell); margin-top: calc(var(--cell) * var(--air, 0)); }
+.grid { position: relative; z-index: 1; grid-auto-rows: var(--cell); grid-template-rows: var(--rows, none); margin-top: calc(var(--cell) * var(--air, 0)); }
+@media (max-width: 999px) { .grid { grid-template-rows: var(--trows, none); } }
+@media (max-width: 599px) { .grid { grid-template-rows: var(--mrows, none); } }
 
 /* Компонент: прямоугольник из квадратов. Рамка ложится на линии колонок и
    на рамку соседа, поэтому линия между блоками всегда одна. */
@@ -86,13 +90,11 @@ body { overflow-x: clip; font-family: var(--font-family-body); }
 .t-body, .t-tags, .t-small { margin: 0; font-size: var(--text); line-height: var(--line-height-text); letter-spacing: var(--letter-spacing-text); }
 h1.t-body { font-weight: 400; }
 .t-small, .t-tags { font-size: var(--small); color: var(--muted); }
-.t-tags { margin-top: auto; }
 
 /* ---------- Виды блоков ---------- */
-.b--title, .b--head { display: flex; align-items: flex-end; }
+/* Текст в любой ячейке стоит сверху слева. */
 .b--text { display: flex; flex-direction: column; gap: calc(var(--pad) * 0.35); }
-.b--text > .t-small:first-child { margin-bottom: auto; }
-.b--btn, .b--link { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; font-size: var(--text); letter-spacing: var(--letter-spacing-text); }
+.b--btn, .b--link { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; font-size: var(--text); letter-spacing: var(--letter-spacing-text); }
 .b--btn { background: var(--ink); border-color: var(--ink); color: var(--bg); }
 .b .icon { --icon-size: clamp(18px, calc(var(--cell) * 0.09), 24px); }
 .b--fill { padding: 0; background: var(--media); }

@@ -97,6 +97,16 @@ function layout(items) {
       for (const part of parts) { part.pos[bp] = [c, row, w, part.size[bp][1]]; row += part.size[bp][1]; }
     }
   }
+  // Ряд, в котором стоят только названия над обложками, — по высоте текста,
+  // а не в целый квадрат.
+  blocks.rows = {};
+  for (const bp of ['d', 't', 'm']) {
+    const last = Math.max(...blocks.map(block => block.pos[bp][1] + block.pos[bp][3] - 1));
+    blocks.rows[bp] = Array.from({ length: last }, (_, i) => {
+      const inRow = blocks.filter(block => block.pos[bp][1] <= i + 1 && i + 1 < block.pos[bp][1] + block.pos[bp][3]);
+      return inRow.length && inRow.every(block => block.hug && block.pos[bp][3] === 1) ? 'auto' : 'var(--cell)';
+    }).join(' ');
+  }
   return blocks;
 }
 function blockHtml(block) {
@@ -115,8 +125,11 @@ function blockHtml(block) {
   const link = block.href ? ` href="${esc(block.href)}"${/^https?:/.test(block.href) ? ' target="_blank" rel="noopener noreferrer"' : ''}` : '';
   return `      <${tag} class="${cls}"${link}${block.attrs || ''} style="${vars.join(';')}">${block.html}</${tag}>`;
 }
-const section = (name, items, { air = 1, id = '' } = {}) =>
-  `    <!-- ${name} -->\n    <section class="grid" aria-label="${esc(name)}"${id ? ` id="${id}"` : ''}${air ? ` style="--air:${air}"` : ''}>\n${layout(items).map(blockHtml).join('\n')}\n    </section>`;
+const section = (name, items, { air = 1, id = '' } = {}) => {
+  const blocks = layout(items);
+  const style = `--air:${air};--rows:${blocks.rows.d};--trows:${blocks.rows.t};--mrows:${blocks.rows.m}`;
+  return `    <!-- ${name} -->\n    <section class="grid" aria-label="${esc(name)}"${id ? ` id="${id}"` : ''} style="${style}">\n${blocks.map(blockHtml).join('\n')}\n    </section>`;
+};
 
 /* ---------- Компоненты ---------- */
 
@@ -135,13 +148,12 @@ const placeholder = (label, size) => ({ html: `<span class="t-small">${esc(label
 // блока и подсвечиваются вместе. На десктопе место закреплено, чтобы два
 // проекта рядом стояли на одном уровне.
 function projectItems(project, col) {
-  const tags = project.tags.map(id => tagLabel[id]).join(' · ');
   const href = caseFile(project.href);
   const cover = { tag: 'video', src: project.video, poster: project.image, alt: project.alt, ratio: project.width / project.height };
   const group = 'project-' + project.id;
   return [
-    { html: `<h3 class="t-h3">${esc(project.title)}</h3><p class="t-body">${esc(project.description)}</p><p class="t-tags">${esc(tags)}</p>`,
-      type: 'text', size: sized([3, 1], [3, 1], [2, 1]), col: { t: 1, m: 1 }, pin: { d: [col, 0] }, href, group },
+    { html: `<h3 class="t-h3">${esc(project.title)}</h3><p class="t-body">${esc(project.description)}</p>`,
+      type: 'text', hug: true, size: sized([3, 1], [3, 1], [2, 1]), col: { t: 1, m: 1 }, pin: { d: [col, 0] }, href, group },
     { html: mediaTag(cover), type: 'fill cover', size: sized([3, 2], [3, 2], [2, 2]),
       col: { t: 1, m: 1 }, pin: { d: [col, 1] }, href, group, attrs: ` tabindex="-1" aria-hidden="true"` },
   ];
@@ -278,7 +290,7 @@ function caseItem(item, context) {
     // Картинка с подписью: сначала текст, под ним картинка той же ширины.
     const media = mediaBlock(item.media, context.pairSize);
     const widths = { d: media.size.d[0], t: media.size.t[0], m: media.size.m[0] };
-    return { ...text, size: textSize(item.text.length, widths, (item.title || '').length), stack: [media] };
+    return { ...text, hug: true, size: sized([widths.d, 1], [widths.t, 1], [widths.m, 1]), stack: [media] };
   }
   return textBlock(item.text);
 }
@@ -349,7 +361,7 @@ pages['articles.html'] = page('Статьи', 'articles.html', true, [
     { break: 1 },
     ...checker(articles.items.filter(item => item.kind === 'article').map((item, index) => ({
       html: `<p class="t-small">${esc(item.number)}</p><h3 class="t-h3">${esc(item.title)}</h3><p class="t-body">${esc(item.text)}</p>`,
-      type: 'text', size: sized([2, 1]), href: item.href, group: 'article-' + index,
+      type: 'text', hug: true, size: sized([2, 1]), href: item.href, group: 'article-' + index,
       stack: [{ ...placeholder('Обложка ' + item.number, sized([2, 1])), href: item.href, group: 'article-' + index, attrs: ' tabindex="-1" aria-hidden="true"' }],
     })), 2, 1),
   ], { air: 0 }),
