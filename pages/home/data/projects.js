@@ -85,9 +85,16 @@ window.portfolioProjects = [
     title: 'Медицинское приложение для часов',
     feed: { image: '/projects/swtec-medical/watches-patches/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Умные часы с экраном показателей: пульс 100 ударов в минуту, 10 757 шагов, 2 345 килокалорий'
+  },
+  {
+    id: 'patient-app',
+    soon: true,
+    title: 'Медицинское приложение для пациентов',
+    feed: { image: '/projects/swtec-medical/patient-app/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Два экрана приложения для пациентов: накопленные баллы с графиком и анкета с выбором пола'
   }
 ];
 
 /* Заглушки в ленте Главной: пустые плитки на местах проектов, которые ещё
    не описаны. Убираются по мере добавления кейсов выше. */
-window.portfolioFeedStubs = 6;
+window.portfolioFeedStubs = 5;
