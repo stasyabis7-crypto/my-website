@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="../../../components/page-motion/page-motion.css?v=8" />
 <link rel="stylesheet" href="../../../components/case-blocks/case-blocks.css?v=74" />
 <link rel="stylesheet" href="../../../components/case-cards/case-cards.css?v=9" />
+<link rel="stylesheet" href="../../../components/case-grid/case-grid.css?v=1" />
 <link rel="stylesheet" href="../../../components/case-lightbox/case-lightbox.css?v=13" />
 <link rel="stylesheet" href="../../../components/hero-mood/hero-layout.css?v=speech-tail-4" />
 
@@ -89,141 +90,6 @@ body {
   gap: var(--case-block-gap);
 }
 
-/* Keep Team and Scenario with their preceding blocks in normal flow on phones and tablets. */
-@media (max-width: 1024px) {
-  .overlap-group:has(> :is(#team, #scenario)) > .overlap-sticky {
-    position: relative;
-    top: auto;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transition: none;
-  }
-}
-
-/* Метрики в обложке и в «Результатах» — графики вместо картинок, как в кейсе
-   подписки (projects/avito-charity/subscription). Пропорции по цифрам:
-   15% против цели 10% (×1,5), ≈1 млн в день против цели ≈800 тыс. (+25%),
-   open rate 13% против цели 10%. Пунктир — цель. Анимация стартует при
-   появлении карточки (.is-drawn — скрипт внизу страницы); без JS или при
-   prefers-reduced-motion графики сразу в финальном состоянии. */
-.crm-chart {
-  aspect-ratio: auto;
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: -12px;
-}
-.crm-chart svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-.crm-chart__bars rect {
-  fill: url(#crm-chart-bar);
-  transform-box: fill-box;
-  transform-origin: 50% 100%;
-}
-.crm-chart__bars rect.is-accent { fill: url(#crm-chart-bar-accent); }
-.crm-chart__note {
-  font-family: var(--font-family-body);
-  font-size: 13px;
-  fill: var(--color-text-muted);
-}
-.crm-chart__target {
-  stroke: var(--color-text-muted);
-  stroke-width: 2;
-  stroke-dasharray: 2 6;
-  stroke-linecap: round;
-}
-.crm-chart__line {
-  fill: none;
-  stroke: var(--case-icon-2);
-  stroke-width: 3;
-  stroke-linecap: round;
-}
-.crm-chart__halo { fill: var(--case-icon-2); opacity: .18; }
-.crm-chart__dot  { fill: var(--case-icon-2); }
-
-@media (prefers-reduced-motion: no-preference) {
-  .js-crm-charts .crm-chart__bars rect {
-    transform: scaleY(0);
-    transition: transform .8s cubic-bezier(.22, 1, .36, 1) calc(var(--i) * 50ms);
-  }
-  .js-crm-charts :is(.crm-chart__line, .crm-chart__area, .crm-chart__dot, .crm-chart__halo, .crm-chart__note, .crm-chart__target) {
-    opacity: 0;
-    transition: opacity .6s ease .7s;
-  }
-  .js-crm-charts .crm-chart.is-drawn .crm-chart__bars rect { transform: none; }
-  .js-crm-charts .crm-chart.is-drawn :is(.crm-chart__line, .crm-chart__area, .crm-chart__dot, .crm-chart__note, .crm-chart__target) { opacity: 1; }
-  .js-crm-charts .crm-chart.is-drawn .crm-chart__halo { opacity: .18; }
-
-  /* После появления столбики медленно «дышат», каждый в своём ритме. */
-  /* Кроме «цель/факт»: там столбик цели должен ровно стоять на пунктире. */
-  .js-crm-charts .crm-chart.is-drawn:not(.crm-chart--compare) .crm-chart__bars rect {
-    animation: crm-bar-breathe var(--d, 3.4s) ease-in-out calc(1.4s + var(--i) * .17s) infinite alternate;
-  }
-  .crm-chart__bars rect:nth-child(odd)  { --k: .92; }
-  .crm-chart__bars rect:nth-child(even) { --k: 1.05; }
-  .crm-chart__bars rect:nth-child(3n)   { --d: 4.2s; }
-  .crm-chart__bars rect:nth-child(3n+1) { --d: 2.9s; }
-  .crm-chart__bars rect.is-accent:nth-child(2) { --k: 1.03; }
-
-  /* Линия — синусоида, которая медленно едет вправо на длину волны
-     (бесшовно), точка на конце качается в такт и не опускается до цели. */
-  .crm-chart__wave { animation: crm-wave 14s linear infinite; }
-  .crm-chart__marker { animation: crm-marker 7s cubic-bezier(.37, 0, .63, 1) infinite alternate; }
-}
-@keyframes crm-wave {
-  from { transform: translateX(0); }
-  to   { transform: translateX(260px); }
-}
-@keyframes crm-marker {
-  from { transform: translateY(0); }
-  to   { transform: translateY(16px); }
-}
-@keyframes crm-bar-breathe {
-  from { transform: scaleY(1); }
-  to   { transform: scaleY(var(--k, .94)); }
-}
-
-/* Заглушки медиа до готовых картинок/видео: размер экспорта подписан. */
-.crm-stub {
-  display: grid;
-  place-items: center;
-  aspect-ratio: var(--stub-ratio, auto);
-  border: 1px dashed var(--color-text-muted);
-  border-radius: var(--case-content-radius, var(--radius-surface));
-  background: var(--case-surface);
-  color: var(--case-accent);
-}
-.case-schedule__grid .crm-stub.case-cover__media { background: var(--case-surface); }
-
-/* Бенто «Итога»: большой квадрат 2×2, широкая 2×1 и два квадрата 1×1. */
-.crm-bento {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-top: var(--space-intro-media);
-}
-.crm-bento > * { margin-top: 0; }
-.crm-bento .case-cover__media img { height: 100%; }
-/* Картинки концептов — без обводки, кроме белых (crm-bento__framed). */
-.crm-bento .case-cover__media:not(.crm-bento__framed) { border: 0; }
-/* Метрики под бенто — с тем же зазором, что между ячейками. */
-.crm-bento + .case-cover__metrics-scroll .case-cover__metrics { margin-top: 16px; }
-.crm-bento__big { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
-.crm-bento__wide { grid-column: span 2; aspect-ratio: 2 / 1; }
-.crm-bento__square { aspect-ratio: 1; }
-/* Видео трёх шагов — вплотную под карточками, отступ как между ними. */
-.case-schedule .crm-steps-video { margin-top: 16px; }
-/* Текст после видео — с тем же зазором, что между вступлением и медиа. */
-.case-schedule .case-cover__media + .case-subtitle { margin-top: var(--space-intro-media); }
-@media (max-width: 900px) {
-  .crm-bento { grid-template-columns: repeat(2, 1fr); }
-  .crm-bento__big { grid-row: auto; aspect-ratio: 1; }
-}
-
 </style>
 </head>
 <body>
@@ -251,10 +117,10 @@ body {
     </button>
   </div>
 
-  <aside class="work-toc" aria-label="Навигация по проекту" hidden>
+  <aside class="work-toc work-toc--corner" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="concepts"></span><span data-toc-marker="dashboard"></span><span data-toc-marker="setup"></span><span data-toc-marker="conditions"></span><span data-toc-marker="customers"></span><span data-toc-marker="after-send"></span><span data-toc-marker="results"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="role"></span><span data-toc-marker="problems"></span><span data-toc-marker="concepts"></span><span data-toc-marker="dashboard"></span><span data-toc-marker="setup"></span><span data-toc-marker="conditions"></span><span data-toc-marker="customers"></span><span data-toc-marker="after-send"></span><span data-toc-marker="results"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -262,9 +128,7 @@ body {
       <nav aria-label="Оглавление проекта">
         <a class="btn btn--fill-toc" href="#summary"><span>Саммари</span></a>
         <a class="btn btn--fill-toc" href="#about"><span>О проекте</span></a>
-        <a class="btn btn--fill-toc" href="#team"><span>Команда</span></a>
         <a class="btn btn--fill-toc" href="#role"><span>Роль</span></a>
-        <a class="btn btn--fill-toc" href="#scenario"><span>Сценарий</span></a>
         <a class="btn btn--fill-toc" href="#problems"><span>Проблемы</span></a>
         <a class="btn btn--fill-toc" href="#concepts"><span>Концепты</span></a>
         <a class="btn btn--fill-toc" href="#dashboard"><span>Понимание аудитории</span></a>
@@ -278,472 +142,278 @@ body {
   </aside>
 
   <main>
-    <div class="case">
+    <div class="case case--grid">
 
     <div class="case__blocks">
 
-      <section class="case-block case-cover" id="summary" tabindex="-1" aria-label="Саммари проекта">
-        <div class="case-cover__head">
-          <div class="case-cover__head-text">
-            <h1 class="case-cover__title text-h1">CRM для продавцов Ozon</h1>
-            <p class="case-cover__subtitle case-subtitle text-body-lg" data-subtitle>Проблема: у продавцов были данные о покупателях, но не было понятного способа превратить их в действие</p>
-            <p class="case-cover__subtitle case-subtitle text-body-lg" data-subtitle>Решение: предложила ключевой сегмент на сводной и пошаговую настройку рассылки: кому отправить, что предложить, как показать</p>
+      <!-- Страница собрана на сетке components/case-grid/case-grid.css:
+           правила раскладки и классы ячеек описаны в начале этого файла. -->
+      <section class="case-block case-cover cg" id="summary" tabindex="-1" aria-label="Саммари проекта">
+        <div class="cg-intro">
+          <h1 class="case-cover__title text-h1">CRM для продавцов Ozon</h1>
+          <div class="cg-intro__text">
+            <p class="text-body-lg" data-subtitle><span class="cg-label">Проблема:</span> у продавцов были данные о покупателях, но не было понятного способа превратить их в действие</p>
+            <p class="text-body-lg" data-subtitle><span class="cg-label">Решение:</span> предложила ключевой сегмент на сводной и пошаговую настройку рассылки: кому отправить, что предложить, как показать</p>
           </div>
         </div>
 
-        <div class="case-cover__media case-cover__media--natural">
-          <video src="/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-1440x900-60fps.mp4" poster="/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-poster-1440x900.webp" width="2880" height="1800" muted loop playsinline autoplay preload="auto" aria-label="Раздел CRM в кабинете Ozon Seller: постоянные покупатели и рекомендации по сегментам"></video>
+        <!-- Первый кадр кейса — та же обложка, что записана в
+             pages/home/data/projects.js: видео с заглушкой. -->
+        <div class="cg-stage cg-q234 cg-row-2" style="--stage-w: 82%">
+          <div class="case-cover__media case-cover__media--natural">
+            <video src="/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-1440x900-60fps.mp4" poster="/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-poster-1440x900.webp" width="2880" height="1800" muted loop playsinline autoplay preload="auto" aria-label="Раздел CRM в кабинете Ozon Seller: постоянные покупатели и рекомендации по сегментам"></video>
+          </div>
         </div>
 
-        <div class="case-cover__metrics-scroll">
-          <div class="case-cover__metrics">
-            <div class="case-metric case-metric--theme">
-              <p class="case-metric__value">15%</p>
-              <p class="case-metric__label text-body-sm">Продавцов используют CRM ежемесячно, в&nbsp;1,5&nbsp;раза выше цели</p>
-              <div class="case-metric__art crm-chart crm-chart--compare" aria-hidden="true">
-                <svg viewBox="0 0 360 180">
-                  <defs>
-                    <linearGradient id="crm-chart-bar" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0" stop-color="var(--case-accent)" stop-opacity=".32"/>
-                      <stop offset="1" stop-color="var(--case-accent)" stop-opacity=".08"/>
-                    </linearGradient>
-                    <linearGradient id="crm-chart-bar-accent" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0" stop-color="var(--case-accent)"/>
-                      <stop offset="1" stop-color="var(--case-accent)" stop-opacity=".55"/>
-                    </linearGradient>
-                  </defs>
-                  <g class="crm-chart__bars">
-                    <rect x="92" y="54" width="80" height="96" rx="18" style="--i:0"/>
-                    <rect x="188" y="6" width="80" height="144" rx="18" class="is-accent" style="--i:3"/>
-                  </g>
-                  <line class="crm-chart__target" x1="92" x2="268" y1="54" y2="54"/>
-                  <text class="crm-chart__note" x="132" y="174" text-anchor="middle">цель</text>
-                  <text class="crm-chart__note" x="228" y="174" text-anchor="middle">факт</text>
-                </svg>
-              </div>
-            </div>
-            <div class="case-metric">
-              <p class="case-metric__value">≈1&nbsp;млн</p>
-              <p class="case-metric__label text-body-sm">Покупателей получают сообщения ежедневно, на&nbsp;25% выше цели</p>
-              <div class="case-metric__art crm-chart" aria-hidden="true">
-                <svg viewBox="0 0 360 180">
-                  <g class="crm-chart__bars">
-                    <rect x="30" y="56" width="18" height="104" rx="9" style="--i:0"/>
-                    <rect x="60" y="44" width="18" height="116" rx="9" style="--i:1"/>
-                    <rect x="90" y="52" width="18" height="108" rx="9" style="--i:2"/>
-                    <rect x="120" y="42" width="18" height="118" rx="9" style="--i:3"/>
-                    <rect x="150" y="50" width="18" height="110" rx="9" style="--i:4"/>
-                    <rect x="180" y="54" width="18" height="106" rx="9" style="--i:5"/>
-                    <rect x="210" y="40" width="18" height="120" rx="9" style="--i:6"/>
-                    <rect x="240" y="48" width="18" height="112" rx="9" style="--i:7"/>
-                    <rect x="270" y="46" width="18" height="114" rx="9" class="is-accent" style="--i:8"/>
-                  </g>
-                  <line class="crm-chart__target" x1="24" x2="296" y1="71" y2="71"/>
-                  <text class="crm-chart__note" x="304" y="75">цель</text>
-                </svg>
-              </div>
-            </div>
-            <div class="case-metric">
-              <p class="case-metric__value">13%</p>
-              <p class="case-metric__label text-body-sm">Открываемость сообщений, на&nbsp;3&nbsp;п.&nbsp;п. выше цели</p>
-              <div class="case-metric__art crm-chart crm-chart--line" aria-hidden="true">
-                <svg viewBox="0 0 360 180">
-                  <defs>
-                    <linearGradient id="crm-chart-fill" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0" stop-color="var(--case-icon-2)" stop-opacity=".22"/>
-                      <stop offset="1" stop-color="var(--case-icon-2)" stop-opacity="0"/>
-                    </linearGradient>
-                    <clipPath id="crm-chart-clip"><rect x="24" y="0" width="312" height="180"/></clipPath>
-                  </defs>
-                  <g clip-path="url(#crm-chart-clip)">
-                    <g class="crm-chart__wave">
-                      <path class="crm-chart__area" fill="url(#crm-chart-fill)" d="M-236 63.53 L-232 62.81 L-228 62.11 L-224 61.46 L-220 60.84 L-216 60.28 L-212 59.76 L-208 59.31 L-204 58.92 L-200 58.59 L-196 58.33 L-192 58.15 L-188 58.04 L-184 58.00 L-180 58.04 L-176 58.15 L-172 58.33 L-168 58.59 L-164 58.92 L-160 59.31 L-156 59.76 L-152 60.28 L-148 60.84 L-144 61.46 L-140 62.11 L-136 62.81 L-132 63.53 L-128 64.27 L-124 65.04 L-120 65.81 L-116 66.58 L-112 67.35 L-108 68.10 L-104 68.84 L-100 69.55 L-96 70.22 L-92 70.86 L-88 71.45 L-84 71.99 L-80 72.47 L-76 72.90 L-72 73.25 L-68 73.55 L-64 73.77 L-60 73.92 L-56 73.99 L-52 73.99 L-48 73.92 L-44 73.77 L-40 73.55 L-36 73.25 L-32 72.90 L-28 72.47 L-24 71.99 L-20 71.45 L-16 70.86 L-12 70.22 L-8 69.55 L-4 68.84 L0 68.10 L4 67.35 L8 66.58 L12 65.81 L16 65.04 L20 64.27 L24 63.53 L28 62.81 L32 62.11 L36 61.46 L40 60.84 L44 60.28 L48 59.76 L52 59.31 L56 58.92 L60 58.59 L64 58.33 L68 58.15 L72 58.04 L76 58.00 L80 58.04 L84 58.15 L88 58.33 L92 58.59 L96 58.92 L100 59.31 L104 59.76 L108 60.28 L112 60.84 L116 61.46 L120 62.11 L124 62.81 L128 63.53 L132 64.27 L136 65.04 L140 65.81 L144 66.58 L148 67.35 L152 68.10 L156 68.84 L160 69.55 L164 70.22 L168 70.86 L172 71.45 L176 71.99 L180 72.47 L184 72.90 L188 73.25 L192 73.55 L196 73.77 L200 73.92 L204 73.99 L208 73.99 L212 73.92 L216 73.77 L220 73.55 L224 73.25 L228 72.90 L232 72.47 L236 71.99 L240 71.45 L244 70.86 L248 70.22 L252 69.55 L256 68.84 L260 68.10 L264 67.35 L268 66.58 L272 65.81 L276 65.04 L280 64.27 L284 63.53 L288 62.81 L292 62.11 L296 61.46 L300 60.84 L304 60.28 L308 59.76 L312 59.31 L316 58.92 L320 58.59 L324 58.33 L328 58.15 L332 58.04 L336 58.00 L340 58.04 V160 H-236 Z"/>
-                      <path class="crm-chart__line" d="M-236 63.53 L-232 62.81 L-228 62.11 L-224 61.46 L-220 60.84 L-216 60.28 L-212 59.76 L-208 59.31 L-204 58.92 L-200 58.59 L-196 58.33 L-192 58.15 L-188 58.04 L-184 58.00 L-180 58.04 L-176 58.15 L-172 58.33 L-168 58.59 L-164 58.92 L-160 59.31 L-156 59.76 L-152 60.28 L-148 60.84 L-144 61.46 L-140 62.11 L-136 62.81 L-132 63.53 L-128 64.27 L-124 65.04 L-120 65.81 L-116 66.58 L-112 67.35 L-108 68.10 L-104 68.84 L-100 69.55 L-96 70.22 L-92 70.86 L-88 71.45 L-84 71.99 L-80 72.47 L-76 72.90 L-72 73.25 L-68 73.55 L-64 73.77 L-60 73.92 L-56 73.99 L-52 73.99 L-48 73.92 L-44 73.77 L-40 73.55 L-36 73.25 L-32 72.90 L-28 72.47 L-24 71.99 L-20 71.45 L-16 70.86 L-12 70.22 L-8 69.55 L-4 68.84 L0 68.10 L4 67.35 L8 66.58 L12 65.81 L16 65.04 L20 64.27 L24 63.53 L28 62.81 L32 62.11 L36 61.46 L40 60.84 L44 60.28 L48 59.76 L52 59.31 L56 58.92 L60 58.59 L64 58.33 L68 58.15 L72 58.04 L76 58.00 L80 58.04 L84 58.15 L88 58.33 L92 58.59 L96 58.92 L100 59.31 L104 59.76 L108 60.28 L112 60.84 L116 61.46 L120 62.11 L124 62.81 L128 63.53 L132 64.27 L136 65.04 L140 65.81 L144 66.58 L148 67.35 L152 68.10 L156 68.84 L160 69.55 L164 70.22 L168 70.86 L172 71.45 L176 71.99 L180 72.47 L184 72.90 L188 73.25 L192 73.55 L196 73.77 L200 73.92 L204 73.99 L208 73.99 L212 73.92 L216 73.77 L220 73.55 L224 73.25 L228 72.90 L232 72.47 L236 71.99 L240 71.45 L244 70.86 L248 70.22 L252 69.55 L256 68.84 L260 68.10 L264 67.35 L268 66.58 L272 65.81 L276 65.04 L280 64.27 L284 63.53 L288 62.81 L292 62.11 L296 61.46 L300 60.84 L304 60.28 L308 59.76 L312 59.31 L316 58.92 L320 58.59 L324 58.33 L328 58.15 L332 58.04 L336 58.00 L340 58.04"/>
-                    </g>
-                  </g>
-                  <line class="crm-chart__target" x1="24" x2="336" y1="88" y2="88"/>
-                  <text class="crm-chart__note" x="336" y="108" text-anchor="end">цель</text>
-                  <g class="crm-chart__marker">
-                    <circle class="crm-chart__halo" cx="336" cy="58" r="14"/>
-                    <circle class="crm-chart__dot" cx="336" cy="58" r="6"/>
-                  </g>
-                </svg>
-              </div>
-            </div>
+        <!-- Поля проекта: роль, команда и срок вместо отдельных секций. -->
+        <div class="cg-meta cg-q1 cg-row-2">
+          <dl class="cg-list text-body">
+            <div><dt>Роль</dt><dd>Отстояла сокращение объёма страницы и предложила два решения, которые вошли в MVP</dd></div>
+            <div><dt>Команда</dt><dd>Продакт, проджект, бэкенд, фронтенд, ресёрчер</dd></div>
+            <div><dt>Срок</dt><dd>6 месяцев от постановки задачи до запуска</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="case-block cg" id="about" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">О проекте</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg" data-subtitle>Мы создавали «Сегменты покупателей» с нуля как часть CRM Ozon Seller. Задача пришла от SPO: дать продавцам инструмент для работы с покупательской базой</p>
+          </div>
+        </div>
+
+        <div class="case-cover__media case-cover__media--natural cg-l">
+            <img src="media/about/banner.webp" width="1200" height="801" alt="" />
+          </div>
+        <div class="cg-text cg-r">
+          <p data-subtitle class="text-body-lg">Продавец видит показатели каждой группы и рекомендации действий</p>
+          <p data-subtitle class="text-body-lg">Раздел объединяет покупателей в группы по их покупкам и интересу к товарам</p>
+          <p data-subtitle class="text-body-lg">В MVP вошли готовые сегменты и подсегменты. Создание собственных сегментов оставили за рамками первого запуска</p>
+        </div>
+      </section>
+
+      <section class="case-block cg" id="role" tabindex="-1">
+        <div class="cg-intro cg-intro--thirds">
+          <h2 class="text-h1">Роль</h2>
+        </div>
+
+        <div class="cg-item cg-t1">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">01</p>
+          <div class="cg-item__text">
+            <p class="text-body">Настояла, чтобы портрет покупателя и аналитика продаж остались в существующих разделах, а в CRM попали только данные для действий</p>
+          </div>
+        </div>
+        <div class="cg-item cg-t2">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">02</p>
+          <div class="cg-item__text">
+            <p class="text-body">Предложила блок на сводной, который подстраивается под базу продавца и показывает аудиторию, которой нужно внимание в первую очередь</p>
+          </div>
+        </div>
+        <div class="cg-item cg-t3">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">03</p>
+          <div class="cg-item__text">
+            <p class="text-body">Спроектировала рекомендации под каждый сегмент и два входа в создание рассылки: через сегмент или сразу к последнему шагу</p>
           </div>
         </div>
       </section>
 
-      <section class="case-block case-about" id="about" tabindex="-1">
-        <h2 class="case-about__title text-h1">О проекте</h2>
+      <section class="case-block cg" id="problems" tabindex="-1">
+        <div class="cg-intro cg-intro--thirds">
+          <h2 class="text-h1">Проблемы</h2>
+        </div>
 
-        <div class="case-about__grid case-cards-feature">
-          <div class="case-card case-card--media case-card--align-bottom case-cards-feature__banner" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="media/about/banner.webp" width="1200" height="801" alt="" />
-            </div>
-            <p data-subtitle class="case-card__subtitle case-subtitle text-body-lg">Мы создавали «Сегменты покупателей» с нуля как часть CRM Ozon Seller. Задача пришла от SPO: дать продавцам инструмент для работы с покупательской базой</p>
+        <div class="cg-item cg-t1">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">01</p>
+          <div class="cg-item__text">
+            <h3 class="text-h3">Обзор и детали</h3>
+            <p class="text-body">На сводной нужен обзор всей базы, а внутри сегмента детали для работы с конкретной аудиторией</p>
           </div>
-
-          <div class="case-cards-feature__side">
-            <div class="case-card case-card--light case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Продавец видит показатели каждой группы и рекомендации действий</p>
-                <svg class="case-card__icon case-card__icon--theme" aria-hidden="true" focusable="false" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="48" height="48" rx="11" fill="currentColor"/>
-<path d="M10.666 23.4435H17.3327L20.7334 12.3334L28.063 35.6667L30.6499 23.4435H37.3327" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-              </div>
-            </div>
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Раздел объединяет покупателей в группы по их покупкам и интересу к товарам</p>
-                <svg class="case-card__icon case-card__icon--theme" aria-hidden="true" focusable="false" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="48" height="48" rx="11" fill="currentColor"/>
-<path d="M34.1743 32.2708C33.3573 32.408 32.8063 33.1816 32.9435 33.9986C33.0808 34.8155 33.8543 35.3666 34.6713 35.2293L34.4228 33.7501L34.1743 32.2708ZM32.3587 23.1373C31.5303 23.1373 30.8587 23.8089 30.8587 24.6373C30.8587 25.4658 31.5303 26.1373 32.3587 26.1373V24.6373V23.1373ZM30.8206 19.4711V20.9711C33.1887 20.9711 35.1076 19.051 35.1076 16.6834H33.6076H32.1076C32.1076 17.395 31.531 17.9711 30.8206 17.9711V19.4711ZM28.0336 16.6834H26.5336C26.5336 19.051 28.4526 20.9711 30.8206 20.9711V19.4711V17.9711C30.1102 17.9711 29.5336 17.395 29.5336 16.6834H28.0336ZM30.8206 13.8956V12.3956C28.4526 12.3956 26.5336 14.3157 26.5336 16.6834H28.0336H29.5336C29.5336 15.9718 30.1102 15.3956 30.8206 15.3956V13.8956ZM33.6076 16.6834H35.1076C35.1076 14.3157 33.1887 12.3956 30.8206 12.3956V13.8956V15.3956C31.531 15.3956 32.1076 15.9718 32.1076 16.6834H33.6076ZM39 29.2735H37.5C37.5 29.9989 37.27 30.602 36.8141 31.0803C36.3448 31.5727 35.528 32.0434 34.1743 32.2708L34.4228 33.7501L34.6713 35.2293C36.4868 34.9244 37.9587 34.2276 38.9856 33.1502C40.026 32.0588 40.5 30.6898 40.5 29.2735H39ZM32.3587 24.6373V26.1373C33.9235 26.1373 35.2756 26.5825 36.1962 27.2252C37.1218 27.8713 37.5 28.619 37.5 29.2735H39H40.5C40.5 27.3676 39.3915 25.7971 37.9134 24.7653C36.4303 23.73 34.4618 23.1373 32.3587 23.1373V24.6373ZM22.7709 16.3823H21.2709C21.2709 18.1894 20.0759 19.2179 18.8197 19.2179V20.7179V22.2179C21.9279 22.2179 24.2709 19.6442 24.2709 16.3823H22.7709ZM18.8197 20.7179V19.2179C17.5635 19.2179 16.3685 18.1894 16.3685 16.3823H14.8685H13.3685C13.3685 19.6442 15.7116 22.2179 18.8197 22.2179V20.7179ZM14.8685 16.3823H16.3685C16.3685 15.4799 16.6746 14.8689 17.0716 14.4827C17.4779 14.0875 18.0773 13.8334 18.8197 13.8334V12.3334V10.8334C17.38 10.8334 16.0037 11.3364 14.98 12.3321C13.947 13.3368 13.3685 14.7502 13.3685 16.3823H14.8685ZM18.8197 12.3334V13.8334C19.5622 13.8334 20.1615 14.0875 20.5678 14.4827C20.9648 14.8689 21.2709 15.4799 21.2709 16.3823H22.7709H24.2709C24.2709 14.7502 23.6924 13.3368 22.6594 12.3321C21.6357 11.3364 20.2594 10.8334 18.8197 10.8334V12.3334ZM29.1171 30.9465H27.6171C27.6171 31.5459 27.3093 32.2836 26.0233 32.9541C24.6877 33.6505 22.4473 34.1667 19.0586 34.1667V35.6667V37.1667C22.6803 37.1667 25.4692 36.6263 27.4102 35.6143C29.4009 34.5764 30.6171 32.954 30.6171 30.9465H29.1171ZM19.0586 35.6667V34.1667C15.6698 34.1667 13.4294 33.6505 12.0938 32.9541C10.8078 32.2836 10.5 31.5459 10.5 30.9465H9H7.5C7.5 32.954 8.71622 34.5764 10.7069 35.6143C12.6479 36.6263 15.4368 37.1667 19.0586 37.1667V35.6667ZM9 30.9465H10.5C10.5 30.5676 10.8847 29.7638 12.5833 28.9667C14.163 28.2254 16.4507 27.7263 19.0586 27.7263V26.2263V24.7263C16.1113 24.7263 13.3697 25.2838 11.3088 26.2509C9.36702 27.1621 7.5 28.7185 7.5 30.9465H9ZM19.0586 26.2263V27.7263C21.6664 27.7263 23.9542 28.2254 25.5338 28.9667C27.2325 29.7638 27.6171 30.5676 27.6171 30.9465H29.1171H30.6171C30.6171 28.7185 28.7501 27.1621 26.8083 26.2509C24.7474 25.2838 22.0059 24.7263 19.0586 24.7263V26.2263Z" style="fill: var(--card-icon-ink); stroke: none"/>
-</svg>
-              </div>
-            </div>
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">В MVP вошли готовые сегменты и подсегменты. Создание собственных сегментов оставили за рамками первого запуска</p>
-                <svg class="case-card__icon case-card__icon--theme" aria-hidden="true" focusable="false" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="48" height="48" rx="11" fill="currentColor"/>
-<path d="M24.0007 13.1667V7.33337M24.0007 40.6667V34.8334M34.834 24H40.6673M7.33398 24H13.1673M37.334 24C37.334 31.3638 31.3644 37.3334 24.0007 37.3334C16.6369 37.3334 10.6673 31.3638 10.6673 24C10.6673 16.6362 16.6369 10.6667 24.0007 10.6667C31.3644 10.6667 37.334 16.6362 37.334 24Z" stroke="white" stroke-width="3" stroke-linecap="round"/>
-</svg>
-              </div>
-            </div>
+        </div>
+        <div class="cg-item cg-t2">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">02</p>
+          <div class="cg-item__text">
+            <h3 class="text-h3">От цифр к действию</h3>
+            <p class="text-body">Рядом с аналитикой нужны рекомендации: какую задачу решать с группой и какое предложение использовать</p>
+          </div>
+        </div>
+        <div class="cg-item cg-t3">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">03</p>
+          <div class="cg-item__text">
+            <h3 class="text-h3">Разные продавцы</h3>
+            <p class="text-body">У одних уже есть постоянные покупатели, у других только первые заказы или интерес к товарам</p>
           </div>
         </div>
       </section>
 
-      <section class="case-block case-team case-block--surface" id="team" tabindex="-1">
-        <div class="case-team__intro">
-          <h2 class="case-team__title text-h1">Команда</h2>
-          <p class="case-team__subtitle case-subtitle text-body-lg">Разработка длилась 6 месяцев от постановки задачи до запуска. Общались всей командой. Нажми, чтобы познакомиться со всеми.</p>
-        </div>
-        <div class="case-team__carousel" aria-label="Команда проекта" aria-roledescription="карусель">
-          <div class="case-team__cards">
-            <article class="case-team__card" aria-label="1 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">01 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/1.webp" alt="" width="600" height="600" />
-              <h3 class="case-team__card-title text-h2">Продакт</h3>
-              <p class="case-team__card-subtitle text-body-sm">Обсуждали цели и гипотезы</p>
-            </article>
-            <article class="case-team__card" aria-label="2 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">02 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/2.webp" alt="" width="600" height="600" />
-              <h3 class="case-team__card-title text-h2">Проджект</h3>
-              <p class="case-team__card-subtitle text-body-sm">Согласовывали концепты</p>
-            </article>
-            <article class="case-team__card" aria-label="3 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">03 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/3.webp" alt="" width="600" height="600" />
-              <h3 class="case-team__card-title text-h2">Бэкенд</h3>
-              <p class="case-team__card-subtitle text-body-sm">Продумывали логику</p>
-            </article>
-            <article class="case-team__card" aria-label="4 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">04 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/4.webp" alt="" width="600" height="600" />
-              <h3 class="case-team__card-title text-h2">Фронтенд</h3>
-              <p class="case-team__card-subtitle text-body-sm">Проводили дизайн ревью</p>
-            </article>
-            <article class="case-team__card" aria-label="5 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">05 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/5.webp" alt="" width="800" height="800" />
-              <h3 class="case-team__card-title text-h2">Ресёрчер</h3>
-              <p class="case-team__card-subtitle text-body-sm">Проводили UX, обсуждали гипотезы</p>
-            </article>
+      <section class="case-block cg" id="concepts" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">Концепты</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">Начали с инвентаризации данных о покупателях: RFM-сегменты, корзина, избранное, просмотры, средний чек, демография, регионы и категории. Для каждого решили, что нужно продавцу здесь, а что он уже смотрит в других разделах кабинета.</p>
           </div>
+        </div>
+
+        <!-- Бенто как лента Главной: крупный кадр слева, широкий и два квадрата справа. -->
+        <div class="cg-gallery">
+          <div class="cg-gallery__tile cg-gallery__tile--big case-cover__media case-cover__media--natural" style="--g-col: 1"><img src="media/concepts/bento-1-v2.webp" width="1424" height="1424" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
+          <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 1; --g-span: 2"><img src="media/concepts/bento-2.webp?v=2" width="1500" height="736" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
+          <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 2"><img src="media/concepts/bento-4.webp" width="696" height="696" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
+          <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 4; --g-row: 2"><img src="media/concepts/bento-3.webp" width="1732" height="1732" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
         </div>
       </section>
 
-      <!-- Роль — тот же паттерн, что в «Доброй подписке»: .case-cards-feature (components/case-cards/case-cards.css),
-           фото то же, что там. -->
-      <section class="case-block case-about case-role-summary" id="role" tabindex="-1">
-        <h2 class="case-about__title text-h1">Роль</h2>
-
-        <div class="case-about__grid case-cards-feature">
-          <div class="case-card case-card--media case-card--align-bottom case-cards-feature__banner" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="/projects/avito-charity/subscription/media/role/banner.webp" width="1440" height="1922" alt="" loading="lazy" />
-            </div>
-            <p data-subtitle class="case-card__subtitle case-subtitle text-body-lg">Отстояла сокращение объёма страницы и предложила два решения, которые вошли в MVP</p>
-          </div>
-
-          <div class="case-cards-feature__side">
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Настояла, чтобы портрет покупателя и аналитика продаж остались в существующих разделах, а в CRM попали только данные для действий</p>
-                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt-2.svg')" aria-hidden="true"></span>
-              </div>
-            </div>
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Предложила блок на сводной, который подстраивается под базу продавца и показывает аудиторию, которой нужно внимание в первую очередь</p>
-                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt-1.svg')" aria-hidden="true"></span>
-              </div>
-            </div>
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Спроектировала рекомендации под каждый сегмент и два входа в создание рассылки: через сегмент или сразу к последнему шагу</p>
-                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt.svg')" aria-hidden="true"></span>
-              </div>
-            </div>
+      <section class="case-block cg" id="dashboard" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">Понимание аудитории</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">Главной задачей интерфейса стало связать данные о покупателях с дальнейшим действием. На сводной видны постоянные, новые и потенциальные покупатели, их показатели и рекомендации по работе с каждой группой.</p>
           </div>
         </div>
-      </section>
 
-      <section class="case-block case-scenario case-block--surface" id="scenario" tabindex="-1">
-        <h2 class="case-scenario__title text-h1">Сценарий</h2>
-        <ol class="case-scenario__flow" aria-label="Путь пользователя">
-          <li class="case-scenario__step" style="--step-index: 0">
-            <div class="case-scenario__card">
-              <span class="case-scenario__dot" aria-hidden="true"></span>
-              <p class="case-scenario__label text-body">Оценить аудиторию</p>
-              <span class="case-scenario__number text-body-sm" aria-hidden="true">01 / 04</span>
-              <span class="case-scenario__check" aria-hidden="true"><span class="icon icon--check"></span></span>
-            </div>
-          </li>
-          <li class="case-scenario__step" style="--step-index: 1">
-            <div class="case-scenario__card">
-              <span class="case-scenario__dot" aria-hidden="true"></span>
-              <p class="case-scenario__label text-body">Выбрать сегмент</p>
-              <span class="case-scenario__number text-body-sm" aria-hidden="true">02 / 04</span>
-              <span class="case-scenario__check" aria-hidden="true"><span class="icon icon--check"></span></span>
-            </div>
-          </li>
-          <li class="case-scenario__step" style="--step-index: 2">
-            <div class="case-scenario__card">
-              <span class="case-scenario__dot" aria-hidden="true"></span>
-              <p class="case-scenario__label text-body">Подобрать предложение</p>
-              <span class="case-scenario__number text-body-sm" aria-hidden="true">03 / 04</span>
-              <span class="case-scenario__check" aria-hidden="true"><span class="icon icon--check"></span></span>
-            </div>
-          </li>
-          <li class="case-scenario__step" style="--step-index: 3">
-            <div class="case-scenario__card">
-              <span class="case-scenario__dot" aria-hidden="true"></span>
-              <p class="case-scenario__label text-body">Создать коммуникацию</p>
-              <span class="case-scenario__number text-body-sm" aria-hidden="true">04 / 04</span>
-              <span class="case-scenario__check" aria-hidden="true"><span class="icon icon--check"></span></span>
-            </div>
-          </li>
-        </ol>
-      </section>
-
-      <section class="case-block case-problems" id="problems" tabindex="-1">
-        <h2 class="case-problems__title text-h1">Проблемы</h2>
-        <div class="case-problems__grid case-cards-grid case-cards-grid--cols-3">
-          <div class="case-card case-problems__card">
-            <span class="case-problems__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt-2.svg')" aria-hidden="true"></span>
-            <h3 class="case-card__title text-h3">Обзор и детали</h3>
-            <p class="case-card__subtitle text-body">На сводной нужен обзор всей базы, а внутри сегмента детали для работы с конкретной аудиторией</p>
-          </div>
-          <div class="case-card case-problems__card">
-            <span class="case-problems__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt-1.svg')" aria-hidden="true"></span>
-            <h3 class="case-card__title text-h3">От цифр к действию</h3>
-            <p class="case-card__subtitle text-body">Рядом с аналитикой нужны рекомендации: какую задачу решать с группой и какое предложение использовать</p>
-          </div>
-          <div class="case-card case-problems__card">
-            <span class="case-problems__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt.svg')" aria-hidden="true"></span>
-            <h3 class="case-card__title text-h3">Разные продавцы</h3>
-            <p class="case-card__subtitle text-body">У одних уже есть постоянные покупатели, у других только первые заказы или интерес к товарам</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="case-block case-favorites" id="concepts" tabindex="-1">
-        <h2 class="text-h1">Концепты</h2>
-
-        <p class="case-favorites__subtitle case-subtitle text-body-lg">Начали с инвентаризации данных о покупателях: RFM-сегменты, корзина, избранное, просмотры, средний чек, демография, регионы и категории. Для каждого решили, что нужно продавцу здесь, а что он уже смотрит в других разделах кабинета.</p>
-
-        <div class="crm-bento">
-          <div class="case-cover__media crm-bento__big"><img src="media/concepts/bento-1-v2.webp" width="1424" height="1424" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
-          <div class="case-cover__media crm-bento__wide"><img src="media/concepts/bento-2.webp?v=2" width="1500" height="736" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
-          <div class="case-cover__media crm-bento__square"><img src="media/concepts/bento-4.webp" width="696" height="696" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
-          <div class="case-cover__media crm-bento__square crm-bento__framed"><img src="media/concepts/bento-3.webp" width="1732" height="1732" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
-        </div>
-      </section>
-
-      <section class="case-block case-favorites" id="dashboard" tabindex="-1">
-        <h2 class="text-h1">Понимание аудитории</h2>
-
-        <p class="case-favorites__subtitle case-subtitle text-body-lg">Главной задачей интерфейса стало связать данные о покупателях с дальнейшим действием. На сводной видны постоянные, новые и потенциальные покупатели, их показатели и рекомендации по работе с каждой группой.</p>
-
-        <div class="case-cover__media case-cover__media--natural">
+        <div class="cg-stage">
+          <div class="case-cover__media case-cover__media--natural">
             <img src="media/summary/table-v2.webp" width="2880" height="1652" alt="Сводная таблица: постоянные, новые и потенциальные покупатели с количеством, суммой покупок, средним чеком и динамикой" loading="lazy" />
           </div>
-      </section>
+        </div>
 
-      <div class="case-block case-schedule">
-        <p class="case-subtitle text-body-lg">Я предложила выделять ключевой сегмент и подробнее раскрывать его на сводной. Так у продавца появляется точка старта: он видит аудиторию, которой стоит уделить внимание, и возможные действия рядом с её показателями.</p>
-        <div class="case-cover__media case-cover__media--natural">
+        <p class="text-body-lg cg-r">Я предложила выделять ключевой сегмент и подробнее раскрывать его на сводной. Так у продавца появляется точка старта: он видит аудиторию, которой стоит уделить внимание, и возможные действия рядом с её показателями.</p>
+
+        <div class="cg-stage">
+          <div class="case-cover__media case-cover__media--natural">
             <video src="media/summary/key-segment-tooltip-1440x900-60fps.mp4" width="2880" height="1800" muted loop playsinline autoplay preload="metadata" aria-label="Блок «Ключевой сегмент» под таблицей с рекомендациями для выбранной группы"></video>
           </div>
-        <p class="case-subtitle text-body-lg">Плюс: у продавца есть точка старта. Минус: остальные сегменты получают меньше внимания.</p>
-        <p class="case-subtitle text-body-lg">Почему так: большинство продавцов не знает, с чего начать.</p>
-      </div>
+        </div>
 
-      <section class="case-block case-favorites" id="setup" tabindex="-1">
-        <h2 class="text-h1">Настройки рекомендации</h2>
-
-        <p class="case-favorites__subtitle case-subtitle text-body-lg">В CRM можно начать с готового сценария под задачу: удержать постоянных покупателей, мотивировать новых на повторную покупку или расширить аудиторию. Для самостоятельной настройки предусмотрен запуск с нуля.</p>
-
-        <div class="case-cover__media case-cover__media--natural">
-          <img src="media/setup/scenarios.webp?v=2" width="2880" height="1724" alt="Выбор готового сценария рассылки или запуск с нуля" loading="lazy" />
+        <div class="cg-text cg-r">
+          <p class="text-body-lg">Плюс: у продавца есть точка старта. Минус: остальные сегменты получают меньше внимания.</p>
+          <p class="text-body-lg">Почему так: большинство продавцов не знает, с чего начать.</p>
         </div>
       </section>
 
-      <div class="case-block case-schedule">
-        <p class="case-subtitle text-body-lg">Чтобы собрать разные механики в понятный процесс, я разделила его на три шага:</p>
-        <div class="case-problems__grid case-cards-grid case-cards-grid--cols-3">
-          <div class="case-card case-problems__card">
-            <span class="case-problems__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt-2.svg')" aria-hidden="true"></span>
-            <h3 class="case-card__title text-h2">Кому отправить</h3>
-            <p class="case-card__subtitle text-body">Выбрать аудиторию</p>
-          </div>
-          <div class="case-card case-problems__card">
-            <span class="case-problems__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt-1.svg')" aria-hidden="true"></span>
-            <h3 class="case-card__title text-h2">Что предложить</h3>
-            <p class="case-card__subtitle text-body">Использовать акцию, бонусы или рассказать о товарах</p>
-          </div>
-          <div class="case-card case-problems__card">
-            <span class="case-problems__icon" style="--problems-icon: url('/projects/ozon-crm/customer-segments/media/problems/gestalt.svg')" aria-hidden="true"></span>
-            <h3 class="case-card__title text-h2">Как показать</h3>
-            <p class="case-card__subtitle text-body">Настроить подходящий формат и целевую страницу</p>
+      <section class="case-block cg" id="setup" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">Настройки рекомендации</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">В CRM можно начать с готового сценария под задачу: удержать постоянных покупателей, мотивировать новых на повторную покупку или расширить аудиторию. Для самостоятельной настройки предусмотрен запуск с нуля.</p>
           </div>
         </div>
-        <div class="case-cover__media case-cover__media--natural crm-steps-video">
-          <video src="media/steps/steps-black-subtitles-1440x900-60fps.mp4" width="2880" height="1800" muted loop playsinline autoplay preload="metadata" aria-label="Три шага создания рассылки: кому отправить, что предложить, как показать"></video>
+
+        <div class="cg-stage">
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/setup/scenarios.webp?v=2" width="2880" height="1724" alt="Выбор готового сценария рассылки или запуск с нуля" loading="lazy" />
+          </div>
         </div>
-      </div>
 
-      <section class="case-block case-favorites" id="conditions" tabindex="-1">
-        <h2 class="text-h1">Объяснить условия до отправки</h2>
+        <p class="text-body-lg cg-r">Чтобы собрать разные механики в понятный процесс, я разделила его на три шага:</p>
 
-        <p class="case-favorites__subtitle case-subtitle text-body-lg">За общим сценарием стоят разные ограничения. Обычное сообщение можно отправить не каждой аудитории; у рассылок есть условия подписки и лимит получателей; дата отправки зависит от срока действия акции.</p>
+        <div class="cg-item cg-t1">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">01</p>
+          <div class="cg-item__text">
+            <h3 class="text-h3">Кому отправить</h3>
+            <p class="text-body">Выбрать аудиторию</p>
+          </div>
+        </div>
+        <div class="cg-item cg-t2">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">02</p>
+          <div class="cg-item__text">
+            <h3 class="text-h3">Что предложить</h3>
+            <p class="text-body">Использовать акцию, бонусы или рассказать о товарах</p>
+          </div>
+        </div>
+        <div class="cg-item cg-t3">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">03</p>
+          <div class="cg-item__text">
+            <h3 class="text-h3">Как показать</h3>
+            <p class="text-body">Настроить подходящий формат и целевую страницу</p>
+          </div>
+        </div>
 
-        <div class="case-schedule__grid case-cards-grid case-cards-grid--cols-2">
-          <div class="case-cover__media case-cover__media--natural"><img src="media/conditions/1.webp" width="1728" height="1728" alt="Условия отправки рассылки" loading="lazy" /></div>
-          <div class="case-cover__media case-cover__media--natural"><img src="media/conditions/2.webp" width="1728" height="1728" alt="Условия отправки рассылки" loading="lazy" /></div>
+        <div class="cg-stage">
+          <div class="case-cover__media case-cover__media--natural">
+            <video src="media/steps/steps-black-subtitles-1440x900-60fps.mp4" width="2880" height="1800" muted loop playsinline autoplay preload="metadata" aria-label="Три шага создания рассылки: кому отправить, что предложить, как показать"></video>
+          </div>
         </div>
       </section>
 
-      <section class="case-block case-favorites" id="customers" tabindex="-1">
-        <h2 class="text-h1">Поддержать работу с отдельным покупателем</h2>
-
-        <p class="case-favorites__subtitle case-subtitle text-body-lg">Массовую коммуникацию дополняет список покупателей. В нём собраны покупки, недавние действия, интересы и рекомендованные товары. Продавец может отфильтровать аудиторию и перейти к личному общению, если чат доступен.</p>
-
-        <div class="case-cover__media case-cover__media--natural"><img src="media/customers/list.webp" width="2880" height="1714" alt="Список покупателей с покупками, интересами и рекомендованными товарами" loading="lazy" /></div>
-
-        <div class="case-favorites__description">
-          <p class="case-subtitle text-body-lg">Для более глубокого анализа группы в CRM встроен существующий портрет покупателя с работой по сегментам. А виджет на главной кабинета показывает недавний интерес покупателей и предлагает действие — так работа с аудиторией может начаться ещё до входа в раздел.</p>
-        </div>
-      </section>
-
-      <section class="case-block case-favorites" id="after-send" tabindex="-1">
-        <h2 class="text-h1">Продолжить работу после отправки</h2>
-
-        <p class="case-favorites__subtitle case-subtitle text-body-lg">В списке рассылок продавец видит статус, количество получателей, открытия и переходы. Рекомендации помогают решить, повторить удачную коммуникацию или пересмотреть предложение.</p>
-
-        <div class="case-cover__media case-cover__media--natural"><img src="media/after-send/list.webp" width="2880" height="1714" alt="Список рассылок со статусом, количеством получателей, открытиями и переходами" loading="lazy" /></div>
-      </section>
-
-      <section class="case-block case-results" id="results" tabindex="-1">
-        <h2 class="text-h1">Итог</h2>
-        <p class="case-result__subtitle case-subtitle text-body-lg">В результате проектирования получился связный CRM-сценарий: понять аудиторию, выбрать действие, настроить коммуникацию и оценить отклик. Мой основной вклад: концепция ключевого сегмента и пошаговая организация настройки, которые задают понятную последовательность работы с продуктом.</p>
-
-        <div class="crm-bento">
-          <div class="case-cover__media crm-bento__big"><img src="media/results/bento-1.webp?v=2" width="1424" height="1424" alt="Итоговый экран CRM" loading="lazy" /></div>
-          <div class="case-cover__media crm-bento__wide"><img src="media/results/bento-2.webp?v=2" width="1424" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
-          <div class="case-cover__media crm-bento__square"><img src="media/results/bento-3.webp" width="696" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
-          <div class="case-cover__media crm-bento__square"><img src="media/results/bento-4.webp?v=2" width="696" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
-        </div>
-
-        <div class="case-cover__metrics-scroll">
-          <div class="case-cover__metrics">
-            <div class="case-metric case-metric--theme">
-              <p class="case-metric__value">15%</p>
-              <p class="case-metric__label text-body-sm">Продавцов используют CRM ежемесячно, в&nbsp;1,5&nbsp;раза выше цели</p>
-              <div class="case-metric__art crm-chart crm-chart--compare" aria-hidden="true">
-                <svg viewBox="0 0 360 180">
-                  <defs>
-                    <linearGradient id="crm-chart-bar-end" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0" stop-color="var(--case-accent)" stop-opacity=".32"/>
-                      <stop offset="1" stop-color="var(--case-accent)" stop-opacity=".08"/>
-                    </linearGradient>
-                    <linearGradient id="crm-chart-bar-accent-end" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0" stop-color="var(--case-accent)"/>
-                      <stop offset="1" stop-color="var(--case-accent)" stop-opacity=".55"/>
-                    </linearGradient>
-                  </defs>
-                  <g class="crm-chart__bars">
-                    <rect x="92" y="54" width="80" height="96" rx="18" style="--i:0"/>
-                    <rect x="188" y="6" width="80" height="144" rx="18" class="is-accent" style="--i:3"/>
-                  </g>
-                  <line class="crm-chart__target" x1="92" x2="268" y1="54" y2="54"/>
-                  <text class="crm-chart__note" x="132" y="174" text-anchor="middle">цель</text>
-                  <text class="crm-chart__note" x="228" y="174" text-anchor="middle">факт</text>
-                </svg>
-              </div>
-            </div>
-            <div class="case-metric">
-              <p class="case-metric__value">≈1&nbsp;млн</p>
-              <p class="case-metric__label text-body-sm">Покупателей получают сообщения ежедневно, на&nbsp;25% выше цели</p>
-              <div class="case-metric__art crm-chart" aria-hidden="true">
-                <svg viewBox="0 0 360 180">
-                  <g class="crm-chart__bars">
-                    <rect x="30" y="56" width="18" height="104" rx="9" style="--i:0"/>
-                    <rect x="60" y="44" width="18" height="116" rx="9" style="--i:1"/>
-                    <rect x="90" y="52" width="18" height="108" rx="9" style="--i:2"/>
-                    <rect x="120" y="42" width="18" height="118" rx="9" style="--i:3"/>
-                    <rect x="150" y="50" width="18" height="110" rx="9" style="--i:4"/>
-                    <rect x="180" y="54" width="18" height="106" rx="9" style="--i:5"/>
-                    <rect x="210" y="40" width="18" height="120" rx="9" style="--i:6"/>
-                    <rect x="240" y="48" width="18" height="112" rx="9" style="--i:7"/>
-                    <rect x="270" y="46" width="18" height="114" rx="9" class="is-accent" style="--i:8"/>
-                  </g>
-                  <line class="crm-chart__target" x1="24" x2="296" y1="71" y2="71"/>
-                  <text class="crm-chart__note" x="304" y="75">цель</text>
-                </svg>
-              </div>
-            </div>
-            <div class="case-metric">
-              <p class="case-metric__value">13%</p>
-              <p class="case-metric__label text-body-sm">Открываемость сообщений, на&nbsp;3&nbsp;п.&nbsp;п. выше цели</p>
-              <div class="case-metric__art crm-chart crm-chart--line" aria-hidden="true">
-                <svg viewBox="0 0 360 180">
-                  <defs>
-                    <linearGradient id="crm-chart-fill-end" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0" stop-color="var(--case-icon-2)" stop-opacity=".22"/>
-                      <stop offset="1" stop-color="var(--case-icon-2)" stop-opacity="0"/>
-                    </linearGradient>
-                    <clipPath id="crm-chart-clip-end"><rect x="24" y="0" width="312" height="180"/></clipPath>
-                  </defs>
-                  <g clip-path="url(#crm-chart-clip-end)">
-                    <g class="crm-chart__wave">
-                      <path class="crm-chart__area" fill="url(#crm-chart-fill-end)" d="M-236 63.53 L-232 62.81 L-228 62.11 L-224 61.46 L-220 60.84 L-216 60.28 L-212 59.76 L-208 59.31 L-204 58.92 L-200 58.59 L-196 58.33 L-192 58.15 L-188 58.04 L-184 58.00 L-180 58.04 L-176 58.15 L-172 58.33 L-168 58.59 L-164 58.92 L-160 59.31 L-156 59.76 L-152 60.28 L-148 60.84 L-144 61.46 L-140 62.11 L-136 62.81 L-132 63.53 L-128 64.27 L-124 65.04 L-120 65.81 L-116 66.58 L-112 67.35 L-108 68.10 L-104 68.84 L-100 69.55 L-96 70.22 L-92 70.86 L-88 71.45 L-84 71.99 L-80 72.47 L-76 72.90 L-72 73.25 L-68 73.55 L-64 73.77 L-60 73.92 L-56 73.99 L-52 73.99 L-48 73.92 L-44 73.77 L-40 73.55 L-36 73.25 L-32 72.90 L-28 72.47 L-24 71.99 L-20 71.45 L-16 70.86 L-12 70.22 L-8 69.55 L-4 68.84 L0 68.10 L4 67.35 L8 66.58 L12 65.81 L16 65.04 L20 64.27 L24 63.53 L28 62.81 L32 62.11 L36 61.46 L40 60.84 L44 60.28 L48 59.76 L52 59.31 L56 58.92 L60 58.59 L64 58.33 L68 58.15 L72 58.04 L76 58.00 L80 58.04 L84 58.15 L88 58.33 L92 58.59 L96 58.92 L100 59.31 L104 59.76 L108 60.28 L112 60.84 L116 61.46 L120 62.11 L124 62.81 L128 63.53 L132 64.27 L136 65.04 L140 65.81 L144 66.58 L148 67.35 L152 68.10 L156 68.84 L160 69.55 L164 70.22 L168 70.86 L172 71.45 L176 71.99 L180 72.47 L184 72.90 L188 73.25 L192 73.55 L196 73.77 L200 73.92 L204 73.99 L208 73.99 L212 73.92 L216 73.77 L220 73.55 L224 73.25 L228 72.90 L232 72.47 L236 71.99 L240 71.45 L244 70.86 L248 70.22 L252 69.55 L256 68.84 L260 68.10 L264 67.35 L268 66.58 L272 65.81 L276 65.04 L280 64.27 L284 63.53 L288 62.81 L292 62.11 L296 61.46 L300 60.84 L304 60.28 L308 59.76 L312 59.31 L316 58.92 L320 58.59 L324 58.33 L328 58.15 L332 58.04 L336 58.00 L340 58.04 V160 H-236 Z"/>
-                      <path class="crm-chart__line" d="M-236 63.53 L-232 62.81 L-228 62.11 L-224 61.46 L-220 60.84 L-216 60.28 L-212 59.76 L-208 59.31 L-204 58.92 L-200 58.59 L-196 58.33 L-192 58.15 L-188 58.04 L-184 58.00 L-180 58.04 L-176 58.15 L-172 58.33 L-168 58.59 L-164 58.92 L-160 59.31 L-156 59.76 L-152 60.28 L-148 60.84 L-144 61.46 L-140 62.11 L-136 62.81 L-132 63.53 L-128 64.27 L-124 65.04 L-120 65.81 L-116 66.58 L-112 67.35 L-108 68.10 L-104 68.84 L-100 69.55 L-96 70.22 L-92 70.86 L-88 71.45 L-84 71.99 L-80 72.47 L-76 72.90 L-72 73.25 L-68 73.55 L-64 73.77 L-60 73.92 L-56 73.99 L-52 73.99 L-48 73.92 L-44 73.77 L-40 73.55 L-36 73.25 L-32 72.90 L-28 72.47 L-24 71.99 L-20 71.45 L-16 70.86 L-12 70.22 L-8 69.55 L-4 68.84 L0 68.10 L4 67.35 L8 66.58 L12 65.81 L16 65.04 L20 64.27 L24 63.53 L28 62.81 L32 62.11 L36 61.46 L40 60.84 L44 60.28 L48 59.76 L52 59.31 L56 58.92 L60 58.59 L64 58.33 L68 58.15 L72 58.04 L76 58.00 L80 58.04 L84 58.15 L88 58.33 L92 58.59 L96 58.92 L100 59.31 L104 59.76 L108 60.28 L112 60.84 L116 61.46 L120 62.11 L124 62.81 L128 63.53 L132 64.27 L136 65.04 L140 65.81 L144 66.58 L148 67.35 L152 68.10 L156 68.84 L160 69.55 L164 70.22 L168 70.86 L172 71.45 L176 71.99 L180 72.47 L184 72.90 L188 73.25 L192 73.55 L196 73.77 L200 73.92 L204 73.99 L208 73.99 L212 73.92 L216 73.77 L220 73.55 L224 73.25 L228 72.90 L232 72.47 L236 71.99 L240 71.45 L244 70.86 L248 70.22 L252 69.55 L256 68.84 L260 68.10 L264 67.35 L268 66.58 L272 65.81 L276 65.04 L280 64.27 L284 63.53 L288 62.81 L292 62.11 L296 61.46 L300 60.84 L304 60.28 L308 59.76 L312 59.31 L316 58.92 L320 58.59 L324 58.33 L328 58.15 L332 58.04 L336 58.00 L340 58.04"/>
-                    </g>
-                  </g>
-                  <line class="crm-chart__target" x1="24" x2="336" y1="88" y2="88"/>
-                  <text class="crm-chart__note" x="336" y="108" text-anchor="end">цель</text>
-                  <g class="crm-chart__marker">
-                    <circle class="crm-chart__halo" cx="336" cy="58" r="14"/>
-                    <circle class="crm-chart__dot" cx="336" cy="58" r="6"/>
-                  </g>
-                </svg>
-              </div>
-            </div>
+      <section class="case-block cg" id="conditions" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">Объяснить условия до отправки</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">За общим сценарием стоят разные ограничения. Обычное сообщение можно отправить не каждой аудитории; у рассылок есть условия подписки и лимит получателей; дата отправки зависит от срока действия акции.</p>
           </div>
         </div>
-        <p class="case-cover__metrics-note text-body-sm">Вклад отдельных решений не измеряли</p>
+
+        <div class="case-cover__media case-cover__media--natural cg-l cg-m-l">
+            <img src="media/conditions/1.webp" width="1728" height="1728" alt="Условия отправки рассылки" loading="lazy" />
+          </div>
+        <div class="case-cover__media case-cover__media--natural cg-r cg-m-r">
+            <img src="media/conditions/2.webp" width="1728" height="1728" alt="Условия отправки рассылки" loading="lazy" />
+          </div>
+      </section>
+
+      <section class="case-block cg" id="customers" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">Поддержать работу с отдельным покупателем</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">Массовую коммуникацию дополняет список покупателей. В нём собраны покупки, недавние действия, интересы и рекомендованные товары. Продавец может отфильтровать аудиторию и перейти к личному общению, если чат доступен.</p>
+          </div>
+        </div>
+
+        <div class="cg-stage">
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/customers/list.webp" width="2880" height="1714" alt="Список покупателей с покупками, интересами и рекомендованными товарами" loading="lazy" />
+          </div>
+        </div>
+
+        <p class="text-body-lg cg-r">Для более глубокого анализа группы в CRM встроен существующий портрет покупателя с работой по сегментам. А виджет на главной кабинета показывает недавний интерес покупателей и предлагает действие — так работа с аудиторией может начаться ещё до входа в раздел.</p>
+      </section>
+
+      <section class="case-block cg" id="after-send" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">Продолжить работу после отправки</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">В списке рассылок продавец видит статус, количество получателей, открытия и переходы. Рекомендации помогают решить, повторить удачную коммуникацию или пересмотреть предложение.</p>
+          </div>
+        </div>
+
+        <div class="cg-stage">
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/after-send/list.webp" width="2880" height="1714" alt="Список рассылок со статусом, количеством получателей, открытиями и переходами" loading="lazy" />
+          </div>
+        </div>
+      </section>
+
+      <section class="case-block cg" id="results" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">Итог</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">В результате проектирования получился связный CRM-сценарий: понять аудиторию, выбрать действие, настроить коммуникацию и оценить отклик. Мой основной вклад: концепция ключевого сегмента и пошаговая организация настройки, которые задают понятную последовательность работы с продуктом.</p>
+          </div>
+        </div>
+
+        <!-- Бенто как лента Главной: крупный кадр слева, широкий и два квадрата справа. -->
+        <div class="cg-gallery">
+          <div class="cg-gallery__tile cg-gallery__tile--big case-cover__media case-cover__media--natural" style="--g-col: 1"><img src="media/results/bento-1.webp?v=2" width="1424" height="1424" alt="Итоговый экран CRM" loading="lazy" /></div>
+          <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 1; --g-span: 2"><img src="media/results/bento-2.webp?v=2" width="1424" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
+          <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 2"><img src="media/results/bento-3.webp" width="696" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
+          <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 4; --g-row: 2"><img src="media/results/bento-4.webp?v=2" width="696" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
+        </div>
+
+        <div class="cg-item cg-item--stat cg-t1">
+          <p class="cg-item__num text-display">15%</p>
+          <p class="cg-item__text text-body">Продавцов используют CRM ежемесячно, в&nbsp;1,5&nbsp;раза выше цели</p>
+        </div>
+        <div class="cg-item cg-item--stat cg-t2">
+          <p class="cg-item__num text-display">≈1&nbsp;млн</p>
+          <p class="cg-item__text text-body">Покупателей получают сообщения ежедневно, на&nbsp;25% выше цели</p>
+        </div>
+        <div class="cg-item cg-item--stat cg-t3">
+          <p class="cg-item__num text-display">13%</p>
+          <p class="cg-item__text text-body">Открываемость сообщений, на&nbsp;3&nbsp;п.&nbsp;п. выше цели</p>
+        </div>
+
+        <p class="text-body cg-t23">Вклад отдельных решений не измеряли</p>
       </section>
 
     </div>
@@ -824,20 +494,5 @@ body {
   <script src="../../../components/content-reveal/content-reveal.js?v=1"></script>
   <script src="../../../components/page-motion/page-motion.js?v=10"></script>
   <script src="../../../components/case-lightbox/case-lightbox.js?v=13"></script>
-  <script>
-  /* Графики метрик: запуск анимации при появлении карточки во вьюпорте. */
-  (function () {
-    var charts = document.querySelectorAll('.crm-chart');
-    if (!charts.length) return;
-    if (!('IntersectionObserver' in window)) return;
-    document.documentElement.classList.add('js-crm-charts');
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('is-drawn'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.4 });
-    charts.forEach(function (c) { io.observe(c); });
-  })();
-  </script>
 </body>
 </html>

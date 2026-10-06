@@ -178,6 +178,8 @@
   grid-row: 1;
 }
 
+/* Пункт с названием: заголовок и под ним пояснение. */
+.cg-item__text > * + * { margin-top: 8px; }
 .cg-item--stat .cg-item__num { grid-column: 1 / span 2; }
 .cg-item--stat .cg-item__text { grid-column: 3 / -1; }
 
