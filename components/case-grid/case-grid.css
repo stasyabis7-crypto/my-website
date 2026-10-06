@@ -52,7 +52,8 @@
       четыре колонки, крупная плитка на две колонки и обе строки, рядом
       мелкие и пустые ячейки. Плитка — картинка в своих пропорциях, без
       обрезки; --g-col и --g-row задают место, --g-span — ширину в
-      колонках, --end прижимает к низу. Без просмотра и подписей ────────
+      колонках, --end прижимает к низу; на телефоне место — --gm-col и
+      --gm-row. Без просмотра и подписей ────────────────────────────────
 */
 
 .case.case--grid {
@@ -151,7 +152,12 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--cg-gap);
 }
-.cg-gallery__tile { grid-column: span var(--g-span, 1); }
+/* На телефоне плитка встаёт по порядку; --gm-col и --gm-row ставят её
+   в свою ячейку, чтобы соседняя осталась пустой. */
+.cg-gallery__tile {
+  grid-column: var(--gm-col, auto) / span var(--g-span, 1);
+  grid-row: var(--gm-row, auto);
+}
 .cg-gallery__tile img {
   display: block;
   width: 100%;
@@ -176,7 +182,7 @@
   grid-template-columns: subgrid;
   align-items: end;
   align-items: last baseline;
-  padding-top: 12px;
+  padding-top: 24px;
   border-top: 1px solid var(--color-border);
 }
 .cg-item__num {
@@ -239,7 +245,7 @@
   .cg-intro--action > .cg-intro__action { order: 1; }
 
   /* Пункты одного ряда идут плотнее, чем блоки секции. */
-  .case--grid .cg > .cg-item + .cg-item { margin-top: calc(12px - var(--cg-row)); }
+  .case--grid .cg > .cg-item + .cg-item { margin-top: calc(24px - var(--cg-row)); }
 }
 
 /* ─── От 700px: 12 колонок ─── */
