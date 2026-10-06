@@ -36,9 +36,9 @@ window.portfolioProjects = [
     title: 'CRM для продавцов Ozon',
     description: 'Сегменты покупателей и рассылки для продавцов',
     href: '/projects/ozon-crm/customer-segments/',
-    image: '/projects/ozon-crm/customer-segments/covers/cover-b-1440x900.webp',
-    width: 1440,
-    height: 900,
+    image: '/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800.webp',
+    width: 2880,
+    height: 1800,
     alt: 'Раздел CRM в кабинете Ozon Seller: постоянные покупатели и рекомендации по сегментам',
     platforms: ['web'],
     tags: ['ozon', 'b2b', 'ecommerce', 'crm']

@@ -1236,3 +1236,8 @@ a.case-scenario__card:focus-visible { outline: 2px solid var(--color-action-acti
   transition: none;
 }
 
+
+/* Единая длина строки заголовков всех кейсов, независимо от ширины сетки. */
+.case-block :is(h1, h2, h3, h4, h5, h6) {
+  max-inline-size: 640px;
+}
