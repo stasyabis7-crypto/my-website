@@ -120,7 +120,7 @@ body {
   <aside class="work-toc work-toc--corner" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="role"></span><span data-toc-marker="problems"></span><span data-toc-marker="concepts"></span><span data-toc-marker="dashboard"></span><span data-toc-marker="setup"></span><span data-toc-marker="conditions"></span><span data-toc-marker="customers"></span><span data-toc-marker="after-send"></span><span data-toc-marker="results"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="problems"></span><span data-toc-marker="concepts"></span><span data-toc-marker="dashboard"></span><span data-toc-marker="setup"></span><span data-toc-marker="conditions"></span><span data-toc-marker="customers"></span><span data-toc-marker="after-send"></span><span data-toc-marker="results"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -128,7 +128,6 @@ body {
       <nav aria-label="Оглавление проекта">
         <a class="btn btn--fill-toc" href="#summary"><span>Саммари</span></a>
         <a class="btn btn--fill-toc" href="#about"><span>О проекте</span></a>
-        <a class="btn btn--fill-toc" href="#role"><span>Роль</span></a>
         <a class="btn btn--fill-toc" href="#problems"><span>Проблемы</span></a>
         <a class="btn btn--fill-toc" href="#concepts"><span>Концепты</span></a>
         <a class="btn btn--fill-toc" href="#dashboard"><span>Понимание аудитории</span></a>
@@ -193,31 +192,6 @@ body {
         </div>
       </section>
 
-      <section class="case-block cg" id="role" tabindex="-1">
-        <div class="cg-intro cg-intro--thirds">
-          <h2 class="text-h1">Роль</h2>
-        </div>
-
-        <div class="cg-item cg-t1">
-          <p class="cg-item__num text-display-lg" aria-hidden="true">01</p>
-          <div class="cg-item__text">
-            <p class="text-body">Настояла, чтобы портрет покупателя и аналитика продаж остались в существующих разделах, а в CRM попали только данные для действий</p>
-          </div>
-        </div>
-        <div class="cg-item cg-t2">
-          <p class="cg-item__num text-display-lg" aria-hidden="true">02</p>
-          <div class="cg-item__text">
-            <p class="text-body">Предложила блок на сводной, который подстраивается под базу продавца и показывает аудиторию, которой нужно внимание в первую очередь</p>
-          </div>
-        </div>
-        <div class="cg-item cg-t3">
-          <p class="cg-item__num text-display-lg" aria-hidden="true">03</p>
-          <div class="cg-item__text">
-            <p class="text-body">Спроектировала рекомендации под каждый сегмент и два входа в создание рассылки: через сегмент или сразу к последнему шагу</p>
-          </div>
-        </div>
-      </section>
-
       <section class="case-block cg" id="problems" tabindex="-1">
         <div class="cg-intro cg-intro--thirds">
           <h2 class="text-h1">Проблемы</h2>
@@ -254,12 +228,14 @@ body {
           </div>
         </div>
 
-        <!-- Бенто как лента Главной: крупный кадр слева, широкий и два квадрата справа. -->
+        <!-- Сетка как в ленте Главной: крупный кадр слева, два квадрата по
+             диагонали справа, широкий — со сдвигом в третьей строке; часть
+             ячеек пустует. -->
         <div class="cg-gallery">
           <div class="cg-gallery__tile cg-gallery__tile--big case-cover__media case-cover__media--natural" style="--g-col: 1"><img src="media/concepts/bento-1-v2.webp" width="1424" height="1424" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
-          <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 1; --g-span: 2"><img src="media/concepts/bento-2.webp?v=2" width="1500" height="736" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
-          <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 2"><img src="media/concepts/bento-4.webp" width="696" height="696" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
+          <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 1"><img src="media/concepts/bento-4.webp" width="696" height="696" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
           <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 4; --g-row: 2"><img src="media/concepts/bento-3.webp" width="1732" height="1732" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
+          <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 2; --g-row: 3; --g-span: 2"><img src="media/concepts/bento-2.webp?v=2" width="1500" height="736" alt="Концепт страницы сегментов покупателей" loading="lazy" /></div>
         </div>
       </section>
 
@@ -305,7 +281,7 @@ body {
           </div>
         </div>
 
-        <p class="text-body-lg cg-r">Чтобы собрать разные механики в понятный процесс, я разделила его на три шага:</p>
+        <p class="text-body-lg cg-t23">Чтобы собрать разные механики в понятный процесс, я разделила его на три шага:</p>
 
         <div class="cg-item cg-t1">
           <p class="cg-item__num text-display-lg" aria-hidden="true">01</p>
