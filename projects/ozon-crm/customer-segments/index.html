@@ -356,10 +356,12 @@ body {
         </div>
       </section>
 
-      <!-- Галерея перед «Результатами», сетка как в ленте Главной. -->
+      <!-- Галерея перед «Результатами» — та же раскладка, что в кейсе карты:
+           крупный кадр слева, квадрат сверху и широкий внизу справа. -->
       <div class="case-block cg-gallery">
         <div class="cg-gallery__tile cg-gallery__tile--big case-cover__media case-cover__media--natural" style="--g-col: 1"><img src="media/results/bento-1.webp?v=2" width="1424" height="1424" alt="Итоговый экран CRM" loading="lazy" /></div>
         <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 1"><img src="media/results/bento-3.webp" width="696" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
+        <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 2; --g-span: 2"><img src="media/results/bento-2.webp?v=2" width="1424" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
       </div>
 
       <section class="case-block cg" id="results" tabindex="-1">
@@ -386,10 +388,12 @@ body {
         <p class="text-body cg-t23">Вклад отдельных решений не измеряли</p>
       </section>
 
-      <!-- Галерея после «Результатов»: зеркально первой. -->
+      <!-- Галерея после «Результатов» — зеркально первой. Заглушки стоят на
+           местах будущих кадров, размер экспорта подписан. -->
       <div class="case-block cg-gallery">
-        <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 2; --g-row: 1"><img src="media/results/bento-4.webp?v=2" width="696" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
-        <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 2; --g-span: 2"><img src="media/results/bento-2.webp?v=2" width="1424" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
+        <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 1; --g-row: 1"><img src="media/results/bento-4.webp?v=2" width="696" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
+        <div class="cg-gallery__tile cg-gallery__tile--end cg-stub" style="--g-col: 2; --g-row: 2; --stub-ratio: 5 / 6"><span class="text-body">700 × 840</span></div>
+        <div class="cg-gallery__tile cg-gallery__tile--big cg-stub" style="--g-col: 3; --stub-ratio: 5 / 6"><span class="text-body">1400 × 1680</span></div>
       </div>
 
     </div>
