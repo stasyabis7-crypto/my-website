@@ -375,7 +375,7 @@
     function moveTrack(x) {
       trackX = x;
       track.style.transition = 'none';
-      track.style.transform = 'translate3d(' + x + 'px,0,0)';
+      track.style.transform = 'translateX(' + x + 'px)';
     }
     var desktopMq = window.matchMedia('(min-width: 768px)');
     // Возвращает длительность доезда в мс. После свайпа (velocity, px/мс)
@@ -395,7 +395,7 @@
       }
       var on = animate && !reducedMotion.matches;
       track.style.transition = on ? 'transform ' + duration + 's ' + (velocity !== undefined ? SWIPE_EASING : SLIDE_EASING) : 'none';
-      track.style.transform = 'translate3d(' + target + 'px,0,0)';
+      track.style.transform = 'translateX(' + target + 'px)';
       trackX = target;
       return on ? duration * 1000 : 0;
     }
@@ -404,7 +404,9 @@
       image.style.transitionProperty = animate ? 'transform' : 'none';
       image.style.transitionDuration = animate ? '.25s' : '0s';
       image.style.transitionTimingFunction = 'ease';
-      image.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
+      image.style.transform = scale === 1 && tx === 0 && ty === 0
+        ? 'none'
+        : 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
       image.classList.toggle('is-zoomed', scale > 1.001);
       root.classList.toggle('is-zoomed', scale > 1.001);
     }

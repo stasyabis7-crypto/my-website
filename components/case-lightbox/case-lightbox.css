@@ -154,7 +154,6 @@
   inset: 0;
   display: flex;
   gap: 2px;
-  will-change: transform;
 }
 
 .case-lightbox__slide {
@@ -286,10 +285,8 @@
 
 .case-lightbox__image.is-zoomed {
   cursor: grab;
-  /* Слой только пока картинка увеличена: постоянный will-change на
-     каждом фото держал в памяти телефона десятки больших слоёв и
-     подтормаживал пролистывание. */
-  will-change: transform;
+  /* Не фиксируем растровый слой: при зуме браузер перерисовывает
+     исходное изображение в новом масштабе. */
 }
 
 .case-lightbox__image.is-panning {
