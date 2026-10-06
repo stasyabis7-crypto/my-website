@@ -44,13 +44,16 @@
   ─── .cg-item — пункт ряда: крупный номер и текст; в колонках — линия
       слева, на телефоне — строка с линией сверху. --stat — метрика:
       число, под ним подпись ────────────────────────────────────────────
+  ─── .cg-stub — заглушка будущего кадра: серое поле в его пропорциях
+      (--stub-ratio) с подписью размера ─────────────────────────────────
   ─── .cg-list — поля «подпись — значение» ──────────────────────────────
   ─── .cg-bleed — кадр без сцены, один в ряду: до краёв экрана ──────────
   ─── .cg-gallery — декоративная галерея интерфейса, как лента Главной:
       четыре колонки, крупная плитка на две колонки и обе строки, рядом
       мелкие и пустые ячейки. Плитка — картинка в своих пропорциях, без
       обрезки; --g-col и --g-row задают место, --g-span — ширину в
-      колонках, --end прижимает к низу. Без просмотра и подписей ────────
+      колонках, --end прижимает к низу; на телефоне место — --gm-col и
+      --gm-row. Без подписей; кадры открываются в просмотре ─────────────
 */
 
 .case.case--grid {
@@ -149,13 +152,27 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--cg-gap);
 }
-.cg-gallery__tile { grid-column: span var(--g-span, 1); }
+/* На телефоне плитка встаёт по порядку; --gm-col и --gm-row ставят её
+   в свою ячейку, чтобы соседняя осталась пустой. */
+.cg-gallery__tile {
+  grid-column: var(--gm-col, auto) / span var(--g-span, 1);
+  grid-row: var(--gm-row, auto);
+}
 .cg-gallery__tile img {
   display: block;
   width: 100%;
   height: auto;
 }
 .cg-gallery__tile--big { grid-column: span 2; }
+
+/* Заглушка на месте будущего кадра: серое поле в его пропорциях,
+   по центру подписан размер экспорта. */
+.cg-stub {
+  display: grid;
+  place-items: center;
+  aspect-ratio: var(--stub-ratio, 5 / 6);
+  background: var(--color-surface);
+}
 
 /* ─── Пункты и поля ─── */
 /* В строке номер и текст стоят по низу: базовая линия номера совпадает
@@ -165,7 +182,7 @@
   grid-template-columns: subgrid;
   align-items: end;
   align-items: last baseline;
-  padding-top: 12px;
+  padding-top: 24px;
   border-top: 1px solid var(--color-border);
 }
 .cg-item__num {
@@ -178,6 +195,8 @@
   grid-row: 1;
 }
 
+/* Пункт с названием: заголовок и под ним пояснение. */
+.cg-item__text > * + * { margin-top: 8px; }
 .cg-item--stat .cg-item__num { grid-column: 1 / span 2; }
 .cg-item--stat .cg-item__text { grid-column: 3 / -1; }
 
@@ -226,7 +245,7 @@
   .cg-intro--action > .cg-intro__action { order: 1; }
 
   /* Пункты одного ряда идут плотнее, чем блоки секции. */
-  .case--grid .cg > .cg-item + .cg-item { margin-top: calc(12px - var(--cg-row)); }
+  .case--grid .cg > .cg-item + .cg-item { margin-top: calc(24px - var(--cg-row)); }
 }
 
 /* ─── От 700px: 12 колонок ─── */

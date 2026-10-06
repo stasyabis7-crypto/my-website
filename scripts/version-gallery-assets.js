@@ -56,6 +56,8 @@ const assets = [
   'components/case-cards/case-cards.css',
   'components/case-cards/case-cards.js',
   'components/case-grid/case-grid.css',
+  'components/case-slideshow/case-slideshow.css',
+  'components/case-slideshow/case-slideshow.js',
   'components/case-lightbox/case-lightbox.css',
   'components/case-lightbox/case-lightbox.js',
   'components/case-toc/case-toc.css',
