@@ -406,6 +406,23 @@ html.chrome--pinned .btn--scroll-shadow:not(.btn--icon-only):not(.btn--fill-glas
   .work-toc__toggle:hover .work-toc__bars span { width: 48px; }
 }
 
+/* Corner contents (.work-toc--corner): the desktop trigger stays the filled
+   list button of the mobile layout instead of the marker rail. */
+@media (min-width: 1101px) {
+  .work-toc--corner .btn--fill-toc-trigger,
+  .work-toc--corner .btn--fill-toc-trigger:hover,
+  .work-toc--corner .btn--fill-toc-trigger:focus-visible,
+  .work-toc--corner .btn--fill-toc-trigger:active {
+    background: var(--btn-accent);
+    color: var(--btn-accent-text);
+  }
+  .work-toc--corner .work-toc__toggle { overflow: hidden; }
+  .work-toc--corner .work-toc__bars { display: none; }
+  .work-toc--corner .work-toc__toggle .work-toc__list-icon { display: block; }
+  .work-toc--corner .work-toc__toggle[aria-expanded="true"] .work-toc__list-icon { display: none; }
+  .work-toc--corner .work-toc__toggle[aria-expanded="true"] .work-toc__close-icon { display: block; }
+}
+
 /* Current section uses the main button colour on both surfaces. */
 .btn--fill-toc[aria-current="location"],
 .work-toc-sheet .contact-row[aria-current="location"] {

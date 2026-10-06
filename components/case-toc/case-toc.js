@@ -5,6 +5,8 @@
   const toggle = root.querySelector('.work-toc__toggle');
   const panel = root.querySelector('.work-toc__panel');
   const desktopScroll = panel.querySelector('nav');
+  // Corner layout: the desktop trigger is the mobile-style button bottom-left.
+  const corner = root.classList.contains('work-toc--corner');
   // Keep native scrolling inside the menu: the page's wheel easing can stall
   // before the edge when the browser rounds its fractional scroll positions.
   desktopScroll.addEventListener('wheel', event => event.stopPropagation(), { passive: true });
@@ -148,11 +150,15 @@
     panel.hidden = false;
     const bounds = panel.getBoundingClientRect(), trigger = toggle.getBoundingClientRect();
     const top = Math.max(0, Math.min(bounds.height - 64, trigger.top - bounds.top));
-    const folded = {
+    // The rail unfolds sideways from its markers, the corner button upwards.
+    const folded = corner ? {
+      clipPath: `inset(${Math.max(0, bounds.height - trigger.height)}px ${Math.max(0, bounds.width - trigger.width)}px 0px 0px round 24px)`,
+      opacity: 0, transform: 'translateY(12px) scale(.96)'
+    } : {
       clipPath: `inset(${top}px 0px ${Math.max(0, bounds.height - top - 64)}px ${bounds.width - 12}px round 24px)`,
       opacity: 0, transform: 'translateX(12px) scale(.96)'
     };
-    const expanded = { clipPath: 'inset(0px 0px 0px 0px round 24px)', opacity: 1, transform: 'translateX(0px) scale(1)' };
+    const expanded = { clipPath: 'inset(0px 0px 0px 0px round 24px)', opacity: 1, transform: corner ? 'translateY(0px) scale(1)' : 'translateX(0px) scale(1)' };
     const animation = panel.animate([previous || (open ? folded : expanded), open ? expanded : folded], {
       duration: open ? 650 : 400,
       easing: open ? 'cubic-bezier(.22,1,.36,1)' : 'cubic-bezier(.65,0,.35,1)',
@@ -211,7 +217,7 @@
   function syncMode() {
     if (!sheet.hidden) finishClose();
     setPopover(false);
-    toggle.classList.toggle('btn--scroll-shadow', !desktop.matches);
+    toggle.classList.toggle('btn--scroll-shadow', corner || !desktop.matches);
     toggle.setAttribute('aria-controls', desktop.matches ? panel.id : sheet.id);
     if (desktop.matches) toggle.removeAttribute('aria-haspopup');
     else toggle.setAttribute('aria-haspopup', 'dialog');

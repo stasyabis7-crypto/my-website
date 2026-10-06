@@ -1,0 +1,357 @@
+/*
+  Сетка страниц проектов — общий набор раскладок для всех кейсов.
+  Подключается после case-blocks.css и case-cards.css; включается классом
+  .case--grid на обёртке .case.
+
+  От 700px — 12 колонок: делятся на половины, трети и четверти,
+  поэтому любой ряд начинается от левого края. Поля и зазор — как у ленты
+  Главной (32px / 16px).
+  Телефон (до 700px) — 4 колонки, поля 16px. Заголовки и текст стоят на
+  одном левом крае; медиа выходит за поля до краёв экрана; парные
+  квадратные кадры остаются рядом; пункты идут строками «номер — текст».
+
+  Правила раскладки:
+  · текст — вспомогательный: не шире половины, одна мысль — одна колонка;
+  · равные по смыслу вещи равны по размеру: «До/После» — половины, три
+    пункта — трети, четыре — четверти;
+  · в ряду все ячейки начинаются с одной верхней линии, а текст стоит на
+    той же вертикали, что и колонки под ним;
+  · кадр, который стоит в ряду один, идёт до краёв экрана; скриншот без
+    своего фона — по центру серой сцены; пропорции медиа — из файла;
+  · весь текст одного цвета; серыми бывают только подписи (.cg-list dt, .cg-label);
+  · без скруглений, плашек, иконок и цветных подложек; ряды пунктов
+    разделяет только тонкая линия.
+
+  ─── .cg — секция-сетка ────────────────────────────────────────────────
+  Ставится на .case-block. Прямые потомки по умолчанию занимают всю ширину.
+  Место на десктопе: .cg-l / .cg-r — половины, .cg-t1…t3 — трети,
+  .cg-q1…q4 — четверти, .cg-q234 — три правые четверти, .cg-row-2 — вторая
+  строка (когда порядок в разметке задан под телефон).
+  Место на телефоне: .cg-m-l / .cg-m-r — половины.
+
+  ─── .cg-intro — шапка секции, одна на всю страницу: заголовок слева,
+      текст справа (на телефоне — под заголовком, от того же края). Текст
+      встаёт на ту же вертикаль, что и ряд под ним: по умолчанию на
+      середину, с --thirds — на вторую треть; --action — с кнопкой;
+      --base — короткий текст по базовой линии заголовка ───────────────
+  ─── .cg-text — несколько абзацев в одной ячейке ───────────────────────
+  ─── .cg-figure — медиа в пропорциях файла с подписью под ним ──────────
+  ─── .cg-stage — серая сцена, медиа по центру; ширину кадра задаёт
+      --stage-w (на телефоне --stage-w-m) ───────────────────────────────────
+  ─── .cg-photo — кадр на всю ширину с крупной фразой поверх; фраза
+      стоит на свободном светлом поле кадра: слева внизу, на телефоне —
+      внизу ─────────────────────────────────────────────────────────────
+  ─── .cg-item — пункт ряда: крупный номер и текст; в колонках — линия
+      слева, на телефоне — строка с линией сверху. --stat — метрика:
+      число, под ним подпись ────────────────────────────────────────────
+  ─── .cg-list — поля «подпись — значение» ──────────────────────────────
+  ─── .cg-bleed — кадр без сцены, один в ряду: до краёв экрана ──────────
+  ─── .cg-gallery — декоративная галерея интерфейса, как лента Главной:
+      четыре колонки, крупная плитка на две колонки и обе строки, рядом
+      мелкие и пустые ячейки. Плитка — картинка в своих пропорциях, без
+      обрезки; --g-col и --g-row задают место, --g-span — ширину в
+      колонках, --end прижимает к низу. Без просмотра и подписей ────────
+*/
+
+.case.case--grid {
+  --cg-gutter: 16px;
+  --cg-gap: 10px;
+  --cg-row: 28px;
+  --cg-axis: 2;
+  /* Расстояние от верха строки до верха строчной буквы, в долях кегля. */
+  --cg-x-heading: .421;
+  --cg-x-text: .569;
+  --case-block-gap: 112px;
+
+  /* Без скруглений у медиа и карточек кейса. Кнопки не трогаем. */
+  --case-content-radius: 0px;
+  --card-radius: 0px;
+  --radius-surface: 0px;
+  --radius-inner: 0px;
+
+  /* Без обводки у картинок и видео. */
+  --media-border: 0;
+
+  max-width: none;
+  padding-inline: var(--cg-gutter);
+}
+
+.cg {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--cg-row) var(--cg-gap);
+}
+
+.case--grid .cg > * {
+  grid-column: 1 / -1;
+  min-width: 0;
+  margin-top: 0;
+}
+
+/* Текст в ячейке: длину строки задаёт колонка, но не шире удобной меры. */
+.case--grid .cg .text-body,
+.case--grid .cg .text-body-lg {
+  max-width: 640px;
+}
+
+.cg-intro {
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: 12px;
+}
+.cg-intro > * {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+.cg-text > * + *,
+.cg-intro__text > * + * { margin-top: 16px; }
+
+/* ─── Медиа ─── */
+.cg-figure { margin: 0; }
+.cg-figure > figcaption.text-body { margin-top: 12px; }
+
+.case--grid .case-cover__media { margin-top: 0; }
+
+.cg-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cg-gap);
+  padding: var(--cg-gutter);
+  background: var(--color-surface);
+}
+.cg-stage > * {
+  flex: 0 1 var(--stage-w-m, 100%);
+  min-width: 0;
+}
+
+.cg-photo {
+  position: relative;
+  margin: 0;
+  background: var(--color-surface);
+}
+.cg-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.cg-photo__text {
+  position: absolute;
+  right: var(--cg-gutter);
+  bottom: var(--cg-gutter);
+  left: var(--cg-gutter);
+}
+/* ─── Галерея ─── */
+.cg-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--cg-gap);
+}
+.cg-gallery__tile { grid-column: span var(--g-span, 1); }
+.cg-gallery__tile img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.cg-gallery__tile--big { grid-column: span 2; }
+
+/* ─── Пункты и поля ─── */
+/* В строке номер и текст стоят по низу: базовая линия номера совпадает
+   с базовой линией последней строки текста. */
+.cg-item {
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: end;
+  align-items: last baseline;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+.cg-item__num {
+  grid-column: 1;
+  grid-row: 1;
+  font-variant-numeric: lining-nums;
+}
+.cg-item__text {
+  grid-column: 2 / -1;
+  grid-row: 1;
+}
+
+.cg-item--stat .cg-item__num { grid-column: 1 / span 2; }
+.cg-item--stat .cg-item__text { grid-column: 3 / -1; }
+
+.cg-meta {
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: 24px;
+}
+.cg-meta > * { grid-column: 1 / -1; }
+
+.cg-list {
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: 12px;
+  margin: 0;
+}
+.cg-list > * {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+.cg-list dt { grid-column: 1 / var(--cg-axis); margin: 0; }
+/* Серым — только подписи: названия полей и вводные слова абзаца. */
+.cg-list dt,
+.cg-label { color: var(--color-text-muted); }
+.cg-list dd { grid-column: var(--cg-axis) / -1; margin: 0; }
+
+/* ─── Телефон ─── */
+@media (max-width: 699px) {
+  .case--grid .cg > .cg-m-l { grid-column: 1 / span 2; }
+  .case--grid .cg > .cg-m-r { grid-column: 3 / span 2; }
+
+  /* Медиа — до краёв экрана. */
+  .case--grid .cg > :is(.cg-stage, .cg-photo, .cg-bleed, .cg-figure:not(.cg-m-l, .cg-m-r)) {
+    /* Ширина — от ячейки, а не 100%: иначе кадр только сдвигается влево. */
+    width: auto;
+    margin-inline: calc(-1 * var(--cg-gutter));
+  }
+  .cg-figure:not(.cg-m-l, .cg-m-r) > figcaption { padding-inline: var(--cg-gutter); }
+
+  /* Шапка с действием раскрывается в сетку секции: кнопка уходит в конец,
+     после кадра и полей. */
+  .cg-intro--action { display: contents; }
+  .case--grid .cg-intro--action > * { grid-column: 1 / -1; }
+  .case--grid .cg-intro--action > .cg-intro__text { margin-top: calc(12px - var(--cg-row)); }
+  .cg-intro--action > .cg-intro__action { order: 1; }
+
+  /* Пункты одного ряда идут плотнее, чем блоки секции. */
+  .case--grid .cg > .cg-item + .cg-item { margin-top: calc(12px - var(--cg-row)); }
+}
+
+/* ─── От 700px: 12 колонок ─── */
+@media (min-width: 700px) {
+  .case.case--grid {
+    --cg-gutter: 24px;
+    --cg-gap: 16px;
+    --cg-row: 40px;
+    --cg-axis: 4;
+    --case-block-gap: 140px;
+  }
+
+  .cg { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+
+  .case--grid .cg > .cg-l { grid-column: 1 / span 6; }
+  .case--grid .cg > .cg-r { grid-column: 7 / span 6; }
+  .case--grid .cg > .cg-t1 { grid-column: 1 / span 4; }
+  .case--grid .cg > .cg-t2 { grid-column: 5 / span 4; }
+  .case--grid .cg > .cg-t3 { grid-column: 9 / span 4; }
+  .case--grid .cg > .cg-t23 { grid-column: 5 / span 8; }
+
+  /* Текст шапки выровнен с заголовком по верху строчных букв. */
+  .cg-intro > :first-child { grid-column: 1 / span 6; }
+  .cg-intro__text {
+    grid-column: 7 / span 6;
+    padding-top: calc(var(--font-size-2xl) * var(--cg-x-heading) - var(--font-size-text) * var(--cg-x-text));
+  }
+  .cg-intro--thirds > :first-child { grid-column: 1 / span 4; }
+  .cg-intro--thirds .cg-intro__text { grid-column: 5 / span 8; }
+  .cg-intro > :only-child { grid-column: 1 / -1; }
+  /* Короткая подводка в одну-две строки стоит по низу: её последняя строка
+     на базовой линии заголовка. По верхнему краю одна строка рядом
+     с крупным словом выглядит висящей. */
+  .cg-intro--base { align-items: end; align-items: last baseline; }
+  .cg-intro--base .cg-intro__text { padding-top: 0; }
+
+  /* Шапка с действием: кнопка сразу под заголовком, текст справа на обе строки. */
+  .cg-intro--action { row-gap: 24px; }
+  .cg-intro--action .cg-intro__text { grid-row: 1 / span 2; }
+  .cg-intro > .cg-intro__action {
+    grid-column: 1 / span 6;
+    grid-row: 2;
+    justify-self: start;
+    align-self: start;
+  }
+
+  .cg-stage {
+    gap: clamp(16px, 4vw, 64px);
+    padding: clamp(32px, 5vw, 80px);
+  }
+  .cg-stage > * { flex-basis: var(--stage-w, 68%); }
+
+  .cg-photo__text {
+    right: auto;
+    bottom: 40px;
+    left: 32px;
+    max-width: 42%;
+  }
+
+  .cg-gallery {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: start;
+  }
+  .cg-gallery__tile {
+    grid-column: var(--g-col) / span var(--g-span, 1);
+    grid-row: var(--g-row);
+  }
+  /* Крупная плитка занимает две колонки и обе строки мелких. */
+  .cg-gallery__tile--big {
+    grid-column: var(--g-col) / span 2;
+    grid-row: 1 / span 2;
+  }
+  .cg-gallery__tile--end { align-self: end; }
+
+  /* Кадр, который стоит в ряду один, идёт до краёв экрана, как на телефоне. */
+  .case--grid .cg > :is(.cg-photo, .cg-bleed) {
+    width: auto;
+    margin-inline: calc(-1 * var(--cg-gutter));
+  }
+
+  /* Пункт — колонка: крупный номер или число, сразу под ним текст. */
+  .cg-item {
+    position: relative;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    /* В колонке содержимое стоит от её левой линии. */
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 0;
+    border-top: 0;
+  }
+  /* Линия стоит в зазоре, текст пункта остаётся на линии колонки. */
+  .cg-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--cg-gap) / -2);
+    border-left: 1px solid var(--color-border);
+  }
+}
+
+/* ─── От 1000px: поля шире, у обложки колонка полей рядом с кадром ─── */
+@media (min-width: 1000px) {
+  .case.case--grid {
+    --cg-gutter: 32px;
+    --cg-row: 56px;
+    --case-block-gap: 200px;
+  }
+
+  .case--grid .cg > .cg-q1 { grid-column: 1 / span 3; }
+  .case--grid .cg > .cg-q234 { grid-column: 4 / span 9; }
+  .case--grid .cg > .cg-row-2 { grid-row: 2; }
+
+  /* Кадр рядом с колонкой полей остаётся в своих колонках. */
+  .case--grid .cg > .cg-bleed.cg-q234 { margin-inline: 0; }
+
+  /* Поля: подпись над значением; блок стоит по нижнему краю соседнего кадра. */
+  .cg-meta {
+    align-self: end;
+    display: block;
+  }
+  .cg-list,
+  .cg-list > * { display: block; }
+  .cg-list > * + * { margin-top: 20px; }
+}

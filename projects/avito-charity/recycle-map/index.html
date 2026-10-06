@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="../../../components/page-motion/page-motion.css?v=8" />
 <link rel="stylesheet" href="../../../components/case-blocks/case-blocks.css?v=74" />
 <link rel="stylesheet" href="../../../components/case-cards/case-cards.css?v=9" />
+<link rel="stylesheet" href="../../../components/case-grid/case-grid.css?v=1" />
 <link rel="stylesheet" href="../../../components/case-lightbox/case-lightbox.css?v=13" />
 <link rel="stylesheet" href="../../../components/hero-mood/hero-layout.css?v=speech-tail-4" />
 
@@ -89,62 +90,6 @@ body {
   gap: var(--case-block-gap);
 }
 
-/* Keep Team and Scenario with their preceding blocks in normal flow on phones and tablets. */
-@media (max-width: 1024px) {
-  .overlap-group:has(> :is(#team, #scenario)) > .overlap-sticky {
-    position: relative;
-    top: auto;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transition: none;
-  }
-}
-
-/* Серый фрейм под скрины (так же открывается и в полноэкранном просмотре). */
-.case-screens-frame {
-  margin-top: var(--space-intro-media);
-  overflow: hidden;
-  border-radius: var(--case-content-radius, var(--radius-surface));
-  background: #F4F3F5;
-}
-.case-screens-frame img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* «Почему отдельный список»: два вытянутых фрейма рядом, в каждом телефон
-   по центру. Углы экрана скруглены здесь — мягче, чем у самого фрейма
-   (3/4 от --case-content-radius: 18px на десктопе, 6px на телефоне). */
-.fav-pair {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-top: var(--space-intro-media);
-}
-.fav-pair .case-screens-frame {
-  position: relative;
-  margin-top: 0;
-  aspect-ratio: 4 / 5;
-}
-.fav-pair .case-screens-frame img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  width: auto;
-  height: auto;
-  max-width: 84%;
-  max-height: 84%;
-  border-radius: calc(var(--case-content-radius) * 0.75);
-  /* Та же лёгкая кромка, что у скриншотов в кейсах. */
-  border: var(--media-border);
-}
-@media (max-width: 640px) {
-  .fav-pair { grid-template-columns: 1fr; }
-}
-
 </style>
 </head>
 <body>
@@ -172,10 +117,10 @@ body {
     </button>
   </div>
 
-  <aside class="work-toc" aria-label="Навигация по проекту" hidden>
+  <aside class="work-toc work-toc--corner" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="concepts"></span><span data-toc-marker="navigation"></span><span data-toc-marker="filters"></span><span data-toc-marker="favorites"></span><span data-toc-marker="favorites-decision"></span><span data-toc-marker="results"></span><span data-toc-marker="next"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="problems"></span><span data-toc-marker="concepts"></span><span data-toc-marker="navigation"></span><span data-toc-marker="filters"></span><span data-toc-marker="favorites"></span><span data-toc-marker="favorites-decision"></span><span data-toc-marker="results"></span><span data-toc-marker="next"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -183,9 +128,6 @@ body {
       <nav aria-label="Оглавление проекта">
         <a class="btn btn--fill-toc" href="#summary"><span>Саммари</span></a>
         <a class="btn btn--fill-toc" href="#about"><span>О проекте</span></a>
-        <a class="btn btn--fill-toc" href="#team"><span>Команда</span></a>
-        <a class="btn btn--fill-toc" href="#role"><span>Роль</span></a>
-        <a class="btn btn--fill-toc" href="#scenario"><span>Сценарий</span></a>
         <a class="btn btn--fill-toc" href="#problems"><span>Проблемы</span></a>
         <a class="btn btn--fill-toc" href="#concepts"><span>Концепты</span></a>
         <a class="btn btn--fill-toc" href="#navigation"><span>Навигация</span></a>
@@ -199,402 +141,258 @@ body {
   </aside>
 
   <main>
-    <div class="case">
+    <div class="case case--grid">
 
     <div class="case__blocks">
 
-      <section class="case-block case-cover" id="summary" tabindex="-1" aria-label="Саммари проекта">
-        <div class="case-cover__head">
-          <div class="case-cover__head-text">
-            <h1 class="case-cover__title text-h1">Карта переработки вещей</h1>
-            <p class="case-cover__subtitle case-subtitle text-body-lg" data-subtitle>Проблема: человек находил пункт приёма и уходил. Фильтры выглядели неактивными, сохранить точку было нельзя, а вернуться к другим инициативам было неоткуда.</p>
-            <p class="case-cover__subtitle case-subtitle text-body-lg" data-subtitle>Решение: пересобрала поиск, фильтры и карточку пункта, добавила избранное и общую навигацию благотворительности</p>
+      <!-- Страница собрана на сетке components/case-grid/case-grid.css:
+           правила раскладки и классы ячеек описаны в начале этого файла. -->
+      <section class="case-block case-cover cg" id="summary" tabindex="-1" aria-label="Саммари проекта">
+        <div class="cg-intro cg-intro--action">
+          <h1 class="case-cover__title text-h1">Карта переработки вещей</h1>
+          <div class="cg-intro__text">
+            <p class="text-body-lg" data-subtitle><span class="cg-label">Проблема:</span> человек находил пункт приёма и уходил. Фильтры выглядели неактивными, сохранить точку было нельзя, а вернуться к другим инициативам было неоткуда.</p>
+            <p class="text-body-lg" data-subtitle><span class="cg-label">Решение:</span> пересобрала поиск, фильтры и карточку пункта, добавила избранное и общую навигацию благотворительности</p>
           </div>
-          <a class="btn btn--fill-pink btn--icon-right case-cover__cta" href="https://www.avito.ru/avito-care/recyclemap" target="_blank" rel="noopener noreferrer">
+          <!-- Действие: от 700px сразу под заголовком, на телефоне — после полей. -->
+          <a class="btn btn--fill-pink btn--icon-right case-cover__cta cg-intro__action" href="https://www.avito.ru/avito-care/recyclemap" target="_blank" rel="noopener noreferrer">
             <span>Открыть карту на Авито</span>
             <span class="icon icon--arrow-diagonal" aria-hidden="true"></span>
           </a>
         </div>
 
-        <div class="case-cover__media case-cover__media--natural">
-          <!-- Первый кадр кейса — та же обложка, что на Главной (covers/): видео
-               с заглушкой, пока грузится или если его нельзя воспроизвести. -->
-          <video src="/projects/avito-charity/recycle-map/covers/cover.webm?v=3" poster="/projects/avito-charity/recycle-map/covers/cover-poster.webp" width="2880" height="1800" muted loop playsinline autoplay preload="auto" aria-label="Карта Avito с пунктами приёма вещей и панелью категорий"></video>
+        <!-- Первый кадр кейса — файл из covers/, он же записан обложкой в
+             pages/home/data/projects.js. Без серой сцены: кадр сам занимает
+             три правые четверти. -->
+        <div class="case-cover__media case-cover__media--natural cg-bleed cg-q234 cg-row-2">
+          <img src="/projects/avito-charity/recycle-map/covers/cover-1440x900.webp" width="1440" height="900" alt="Карта Avito с пунктами приёма вещей и панелью категорий" />
         </div>
 
-        <div class="case-cover__metrics-scroll">
-          <div class="case-cover__metrics">
-            <div class="case-metric case-metric--theme">
-              <p class="case-metric__value">306K</p>
-              <p class="case-metric__label text-body-sm">Загрузок точек в день</p>
-              <div class="case-metric__art case-metric__art--point"><img src="media/metric-1.webp" alt="" aria-hidden="true" /></div>
-            </div>
-            <div class="case-metric">
-              <p class="case-metric__value">1,5–3K</p>
-              <p class="case-metric__label text-body-sm">Открытий карточки<br />пункта в день</p>
-              <div class="case-metric__art"><img src="media/metric-2.webp" alt="" aria-hidden="true" /></div>
-            </div>
-            <div class="case-metric">
-              <p class="case-metric__value">До 70</p>
-              <p class="case-metric__label text-body-sm">Сохранений точек в избранное в день</p>
-              <div class="case-metric__art"><img src="media/metric-3.webp" alt="" aria-hidden="true" /></div>
-            </div>
-          </div>
+        <!-- Поля проекта: роль, команда и срок вместо отдельных секций. -->
+        <div class="cg-meta cg-q1 cg-row-2">
+          <dl class="cg-list text-body">
+            <div><dt>Роль</dt><dd>Вела ключевой сценарий карты целиком</dd></div>
+            <div><dt>Команда</dt><dd>Продакт, проджект, бэкенд, фронтенд, редактор</dd></div>
+            <div><dt>Срок</dt><dd>Три месяца от постановки задачи до запуска</dd></div>
+          </dl>
         </div>
       </section>
 
-      <!-- О проекте — компонент .case-about (components/case-blocks/case-blocks.css),
-           карточки — .case-cards-feature/.case-card (components/case-cards/case-cards.css).
-
-           У картинок этого блока — свой ?v=N (не только у CSS/JS): CDN
-           Hostinger (hcdn) кеширует статику по URL на 7 дней (max-age=
-           604800) и не видит, что файл по тому же имени переехал —
-           без версии в URL при замене banner.webp/menu.webp CDN отдавал
-           старый закешированный файл ещё несколько дней, хотя ориджин
-           уже обновился. При следующей замене любой картинки этого
-           блока — бампать её ?v=. -->
-      <section class="case-block case-about" id="about" tabindex="-1">
-        <h2 class="case-about__title text-h1">О проекте</h2>
-
-        <div class="case-about__grid case-cards-feature">
-          <div class="case-card case-card--media case-card--align-bottom case-cards-feature__banner" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="media/about/banner.webp?v=2" alt="" />
-            </div>
-            <img class="case-card__media-overlay" src="media/about/menu.webp?v=1" alt="Категории приёма: одежда, пластик, бумага, крышечки, стекло, шины, батарейки, тетрапак, опасные отходы, бытовая техника, металл, лампочки, другое; переключатель «Пункты на закрытой территории»" />
-            <p data-subtitle class="case-card__subtitle case-subtitle text-body-lg">Карта помогает найти, куда сдать вторсырьё и вещи на благотворительность, а точки на ней поставляют партнёрские организации</p>
-          </div>
-
-          <div class="case-cards-feature__side">
-            <div class="case-card case-card--light case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Человек приходил сдать вещи и уходил, не узнав об остальных способах помочь, переходов в соседние инициативы было единицы в день</p>
-                <svg class="case-card__icon case-card__icon--theme" aria-hidden="true" focusable="false" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="48" height="48" rx="11" fill="currentColor"/>
-<path d="M16.5278 33.5H33.5L33.4998 16.283M33.5 33.5L14.5 14.5" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-              </div>
-            </div>
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Продакт поставил задачу перестать терять на карте человека. Успехом считали возвраты на карту и переходы в другие инициативы благотворительности, но замерить получилось только возвраты</p>
-                <svg class="case-card__icon case-card__icon--theme" aria-hidden="true" focusable="false" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="48" height="48" rx="11" fill="currentColor"/>
-<path d="M10.666 23.4435H17.3327L20.7334 12.3334L28.063 35.6667L30.6499 23.4435H37.3327" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-              </div>
-            </div>
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Тысячи адресов с разным качеством описаний, править описания на нашей стороне нельзя, улучшать можно было только интерфейс</p>
-                <svg class="case-card__icon case-card__icon--theme" aria-hidden="true" focusable="false" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="48" height="48" rx="11" fill="currentColor"/>
-<path d="M17.9105 36.7H23.3208M23.3208 36.7H28.9815M23.3208 36.7V23.9259M12.8008 17.0629V14.5581C12.8008 14.0531 13.0206 13.5995 13.3697 13.2876M23.3208 12.8549H31.4361C32.3768 12.8549 33.1393 13.6174 33.1393 14.5581V17.7642M23.3208 12.8549V16.2613M23.3208 12.8549H20.4653M34.9428 36.7L11.9492 10.3" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Команда — компонент .case-team (components/case-blocks/case-blocks.css). -->
-      <section class="case-block case-team case-block--surface" id="team" tabindex="-1">
-        <div class="case-team__intro">
-          <h2 class="case-team__title text-h1">Команда</h2>
-          <p class="case-team__subtitle case-subtitle text-body-lg">Разработка длилась три месяца от постановки задачи до запуска. Общались всей командой. Нажми, чтобы познакомиться со всеми.</p>
-        </div>
-        <div class="case-team__carousel" aria-label="Команда проекта" aria-roledescription="карусель">
-          <div class="case-team__cards">
-            <article class="case-team__card" aria-label="1 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">01 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/1.webp" alt="" width="600" height="600" />
-              <h3 class="case-team__card-title text-h2">Продакт</h3>
-              <p class="case-team__card-subtitle text-body-sm">Обсуждали цели и гипотезы</p>
-            </article>
-            <article class="case-team__card" aria-label="2 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">02 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/2.webp" alt="" width="600" height="600" />
-              <h3 class="case-team__card-title text-h2">Проджект</h3>
-              <p class="case-team__card-subtitle text-body-sm">Согласовывали концепты</p>
-            </article>
-            <article class="case-team__card" aria-label="3 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">03 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/3.webp" alt="" width="600" height="600" />
-              <h3 class="case-team__card-title text-h2">Бэкенд</h3>
-              <p class="case-team__card-subtitle text-body-sm">Продумывали логику</p>
-            </article>
-            <article class="case-team__card" aria-label="4 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">04 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/4.webp" alt="" width="600" height="600" />
-              <h3 class="case-team__card-title text-h2">Фронтенд</h3>
-              <p class="case-team__card-subtitle text-body-sm">Проводили дизайн ревью</p>
-            </article>
-            <article class="case-team__card" aria-label="5 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">05 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/5.webp" alt="" width="800" height="800" />
-              <h3 class="case-team__card-title text-h2">Редактор</h3>
-              <p class="case-team__card-subtitle text-body-sm">Вместе обсуждали формулировки</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- Роль — тот же паттерн, что в «Доброй подписке»: .case-cards-feature (components/case-cards/case-cards.css),
-           фото то же, что там. -->
-      <section class="case-block case-about case-role-summary" id="role" tabindex="-1">
-        <h2 class="case-about__title text-h1">Роль</h2>
-
-        <div class="case-about__grid case-cards-feature">
-          <div class="case-card case-card--media case-card--align-bottom case-cards-feature__banner" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="/projects/avito-charity/subscription/media/role/banner.webp" width="1440" height="1922" alt="" loading="lazy" />
-            </div>
-            <p data-subtitle class="case-card__subtitle case-subtitle text-body-lg">Вела ключевой сценарий карты целиком</p>
-          </div>
-
-          <div class="case-cards-feature__side">
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Пересобрала поиск и навигацию. Ближайший пункт находится по адресу или городу, а фильтры помогают выбрать тип отходов</p>
-                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/avito-charity/recycle-map/media/problems/gestalt-2.svg')" aria-hidden="true"></span>
-              </div>
-            </div>
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Добавила избранное. Свои пункты можно сохранить и не искать заново</p>
-                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/avito-charity/recycle-map/media/problems/gestalt-1.svg')" aria-hidden="true"></span>
-              </div>
-            </div>
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Обновила карточку пункта. Что принимают, адрес, часы работы и фото собраны на одном экране</p>
-                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/avito-charity/recycle-map/media/problems/gestalt.svg')" aria-hidden="true"></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Сценарий — анимированная цепочка шагов (components/case-blocks/case-blocks.css). -->
-      <section class="case-block case-scenario case-block--surface" id="scenario" tabindex="-1">
-        <h2 class="case-scenario__title text-h1">Сценарий</h2>
-        <ol class="case-scenario__flow" aria-label="Путь пользователя">
-          <li class="case-scenario__step" style="--step-index: 0">
-            <div class="case-scenario__card">
-              <span class="case-scenario__dot" aria-hidden="true"></span>
-              <p class="case-scenario__label text-body">Найти пункт</p>
-              <span class="case-scenario__number text-body-sm" aria-hidden="true">01 / 04</span>
-              <span class="case-scenario__check" aria-hidden="true"><span class="icon icon--check"></span></span>
-            </div>
-          </li>
-          <li class="case-scenario__step" style="--step-index: 1">
-            <div class="case-scenario__card">
-              <span class="case-scenario__dot" aria-hidden="true"></span>
-              <p class="case-scenario__label text-body">Использовать фильтры</p>
-              <span class="case-scenario__number text-body-sm" aria-hidden="true">02 / 04</span>
-              <span class="case-scenario__check" aria-hidden="true"><span class="icon icon--check"></span></span>
-            </div>
-          </li>
-          <li class="case-scenario__step" style="--step-index: 2">
-            <div class="case-scenario__card">
-              <span class="case-scenario__dot" aria-hidden="true"></span>
-              <p class="case-scenario__label text-body">Проверить условия</p>
-              <span class="case-scenario__number text-body-sm" aria-hidden="true">03 / 04</span>
-              <span class="case-scenario__check" aria-hidden="true"><span class="icon icon--check"></span></span>
-            </div>
-          </li>
-          <li class="case-scenario__step" style="--step-index: 3">
-            <div class="case-scenario__card">
-              <span class="case-scenario__dot" aria-hidden="true"></span>
-              <p class="case-scenario__label text-body">Сдать вещи</p>
-              <span class="case-scenario__number text-body-sm" aria-hidden="true">04 / 04</span>
-              <span class="case-scenario__check" aria-hidden="true"><span class="icon icon--check"></span></span>
-            </div>
-          </li>
-        </ol>
-      </section>
-
-      <!-- Проблемы — компонент .case-problems (components/case-blocks/case-blocks.css). -->
-      <section class="case-block case-problems" id="problems" tabindex="-1">
-        <h2 class="case-problems__title text-h1">Проблемы</h2>
-        <p class="case-problems__subtitle case-subtitle text-body-lg">Сценарий рвался в трёх местах</p>
-        <div class="case-problems__grid case-cards-grid case-cards-grid--cols-3">
-          <div class="case-card case-problems__card">
-            <span class="case-problems__icon" style="--problems-icon: url('/projects/avito-charity/recycle-map/media/problems/gestalt-2.svg')" aria-hidden="true"></span>
-            <p class="case-card__subtitle text-body">Карта не была связана с остальной благотворительностью: переходов в другие инициативы — единицы в день</p>
-          </div>
-          <div class="case-card case-problems__card">
-            <span class="case-problems__icon" style="--problems-icon: url('/projects/avito-charity/recycle-map/media/problems/gestalt-1.svg')" aria-hidden="true"></span>
-            <p class="case-card__subtitle text-body">Фильтры в изначальном виде выглядели как неактивные и люди писали в поддержку, что фильтры недоступны, хотя кликабельны</p>
-          </div>
-          <div class="case-card case-problems__card">
-            <span class="case-problems__icon" style="--problems-icon: url('/projects/avito-charity/recycle-map/media/problems/gestalt.svg')" aria-hidden="true"></span>
-            <p class="case-card__subtitle text-body">Сохранить найденный пункт было нельзя. Между визитами проходят недели, и человек искал заново</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Концепты — два скриншота на всю ширину в карточках с плашками-подписями (как «До/После»). -->
-      <section class="case-block case-concepts" id="concepts" tabindex="-1">
-        <h2 class="text-h1">Концепты</h2>
-        <p class="case-favorites__subtitle case-subtitle text-body-lg">Сравнила две компоновки. В первой большая шапка заменена мини-панелью, а фильтры остаются в ней на виду. Во второй фильтры спрятаны в одну кнопку, а слева больше места под список. Выбрала первую: фильтр по типу отходов нужен почти каждому, и лишний клик бил бы по основному сценарию. Заодно проверила, как компоненты дизайн-системы ведут себя в разных вариантах.</p>
-
-        <div class="case-comparison__grid case-cards-grid">
-          <div class="case-comparison__card case-comparison__card--wide case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="media/concepts/var-1.webp?v=2" alt="Концепт карты с миниатюрной панелью вместо большой шапки и фильтрами внутри панели" width="2880" height="1600" loading="lazy" />
-            </div>
-            <p class="case-card__subtitle text-body">Вариант 1: мини-панель, выбрали</p>
-          </div>
-          <div class="case-comparison__card case-comparison__card--wide case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="media/concepts/var-2.webp?v=2" alt="Концепт карты с фильтрами, скрытыми в одну кнопку, и расширенной левой панелью" width="2880" height="1600" loading="lazy" />
-            </div>
-            <p class="case-card__subtitle text-body">Вариант 2: фильтры в одной кнопке</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Навигация — общие карточки с медиа и затемнением из «О проекте». -->
-      <section class="case-block case-comparison case-navigation" id="navigation" tabindex="-1">
-        <h2 class="text-h1">Навигация</h2>
-        <p class="case-comparison__subtitle case-subtitle text-body-lg">Человек попадал на карту и оставался в ней: вернуться к другим инициативам было неоткуда.</p>
-
-        <div class="case-comparison__grid case-cards-grid case-cards-grid--cols-2">
-          <div class="case-comparison__card case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="media/navigation/nav-1.webp?v=5" alt="Карта до изменений: без общей навигации" loading="lazy" />
-            </div>
-            <p class="case-card__subtitle text-body">До</p>
-          </div>
-          <div class="case-comparison__card case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="media/navigation/nav-2.webp?v=5" alt="Карта после изменений: с навигацией по благотворительным инициативам" loading="lazy" />
-            </div>
-            <p class="case-card__subtitle text-body">После</p>
+      <section class="case-block cg" id="about" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">О проекте</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg" data-subtitle>Карта помогает найти, куда сдать вторсырьё и вещи на благотворительность, а точки на ней поставляют партнёрские организации</p>
+            <p class="text-body-lg" data-subtitle>Продакт поставил задачу перестать терять на карте человека. Успехом считали возвраты на карту и переходы в другие инициативы благотворительности, но замерить получилось только возвраты</p>
+            <p class="text-body-lg" data-subtitle>Тысячи адресов с разным качеством описаний, править описания на нашей стороне нельзя, улучшать можно было только интерфейс</p>
           </div>
         </div>
 
-        <p class="case-comparison__description case-subtitle text-body-lg">Добавила общую навигацию пространства благотворительности. Соседние команды хотели, чтобы на карте была та же шапка, что и на остальных страницах раздела. Но полноразмерная шапка забирала место у карты, поэтому договорились о плавающей панели: пункты меню и выпадающие списки те же, а карта остаётся на весь экран. Так навигация работает одинаково по всему разделу, а на карте не мешает поиску пунктов.</p>
-      </section>
-
-      <!-- Поиск и фильтры — тот же компонент сравнения, что и «Навигация». -->
-      <section class="case-block case-comparison case-filters" id="filters" tabindex="-1">
-        <h2 class="text-h1">Поиск и фильтры</h2>
-        <p class="case-comparison__subtitle case-subtitle text-body-lg">Иконки фильтров серые и выглядят неактивными. Люди писали в поддержку, что фильтры недоступны.</p>
-
-        <div class="case-comparison__grid case-cards-grid case-cards-grid--cols-2">
-          <div class="case-comparison__card case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="media/filters/filter-1.webp" alt="Фильтры до изменений: категории с неочевидными состояниями выбора" loading="lazy" />
-            </div>
-            <p class="case-card__subtitle text-body">До</p>
-          </div>
-          <div class="case-comparison__card case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="media/filters/filter-2.webp" alt="Фильтры после изменений: категории и иконки из дизайн-системы" loading="lazy" />
-            </div>
-            <p class="case-card__subtitle text-body">После</p>
-          </div>
-        </div>
-      </section>
-
-      <div class="case-block case-filters-detail">
-        <p class="case-subtitle text-body-lg">Привела категории и пины к дизайн-системе Авито: категорийных пинов и фильтра с множественным выбором в ней не было, их пришлось спроектировать и внести в систему.</p>
-        <div class="case-cover__media case-cover__media--natural">
+        <!-- Кадр на всю ширину с крупной фразой поверх: у десктопной и
+             телефонной версии своё свободное поле под текст. -->
+        <figure class="cg-photo">
           <picture>
-            <source media="(max-width: 640px)" srcset="media/filters/filters-mob.webp" />
-            <img src="media/filters/filters-desktop.webp?v=2" alt="Обновлённая карта с поиском, выбором нескольких категорий и пинами из дизайн-системы Авито" loading="lazy" />
+            <source media="(max-width: 699px)" srcset="media/about/statement-mobile-1200x1500.webp" width="1200" height="1500" />
+            <img src="media/about/statement-3840x1680.webp" width="3840" height="1680" alt="" loading="lazy" />
           </picture>
+          <figcaption class="cg-photo__text text-h2">Человек приходил сдать вещи и уходил, не узнав об остальных способах помочь</figcaption>
+        </figure>
+      </section>
+
+      <section class="case-block cg" id="problems" tabindex="-1">
+        <div class="cg-intro cg-intro--thirds cg-intro--base">
+          <h2 class="text-h1">Проблемы</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">Сценарий рвался в трёх местах</p>
+          </div>
         </div>
+
+        <div class="cg-item cg-t1">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">01</p>
+          <p class="cg-item__text text-body">Карта не была связана с остальной благотворительностью: переходов в другие инициативы — единицы в день</p>
+        </div>
+        <div class="cg-item cg-t2">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">02</p>
+          <p class="cg-item__text text-body">Фильтры в изначальном виде выглядели как неактивные и люди писали в поддержку, что фильтры недоступны, хотя кликабельны</p>
+        </div>
+        <div class="cg-item cg-t3">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">03</p>
+          <p class="cg-item__text text-body">Сохранить найденный пункт было нельзя. Между визитами проходят недели, и человек искал заново</p>
+        </div>
+      </section>
+
+      <section class="case-block cg" id="concepts" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">Концепты</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">Сравнила две компоновки. Выбрала показывать все фильтры сразу: фильтр по типу отходов нужен почти каждому, и лишний клик бил бы по основному сценарию. Заодно проверила, как компоненты дизайн-системы ведут себя в разных вариантах.</p>
+          </div>
+        </div>
+
+        <figure class="cg-figure cg-l">
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/concepts/concept-1-2880x1600.webp" alt="Концепт карты с миниатюрной панелью вместо большой шапки и фильтрами внутри панели" width="2880" height="1600" loading="lazy" />
+          </div>
+          <figcaption class="text-body">Вариант 1, выбрали: большая шапка заменена мини-панелью, фильтры остаются в ней на виду</figcaption>
+        </figure>
+        <figure class="cg-figure cg-r">
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/concepts/concept-2-2880x1600.webp" alt="Концепт карты с фильтрами, скрытыми в одну кнопку, и расширенной левой панелью" width="2880" height="1600" loading="lazy" />
+          </div>
+          <figcaption class="text-body">Вариант 2: фильтры спрятаны в одну кнопку, слева больше места под список</figcaption>
+        </figure>
+      </section>
+
+      <section class="case-block cg" id="navigation" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">Навигация</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">Человек попадал на карту и оставался в ней: вернуться к другим инициативам было неоткуда.</p>
+          </div>
+        </div>
+
+        <figure class="cg-figure cg-l">
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/navigation/before-2880x1600.webp" alt="Карта до изменений: без общей навигации" width="2880" height="1600" loading="lazy" />
+          </div>
+          <figcaption class="text-body">До</figcaption>
+        </figure>
+        <figure class="cg-figure cg-r">
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/navigation/after-2880x1600.webp" alt="Карта после изменений: с навигацией по благотворительным инициативам" width="2880" height="1600" loading="lazy" />
+          </div>
+          <figcaption class="text-body">После</figcaption>
+        </figure>
+
+        <p class="text-body-lg cg-r">Добавила общую навигацию пространства благотворительности. Соседние команды хотели, чтобы на карте была та же шапка, что и на остальных страницах раздела. Но полноразмерная шапка забирала место у карты, поэтому договорились о плавающей панели: пункты меню и выпадающие списки те же, а карта остаётся на весь экран. Так навигация работает одинаково по всему разделу, а на карте не мешает поиску пунктов.</p>
+      </section>
+
+      <section class="case-block cg" id="filters" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">Поиск и фильтры</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">Иконки фильтров серые и выглядят неактивными. Люди писали в поддержку, что фильтры недоступны.</p>
+          </div>
+        </div>
+
+        <figure class="cg-figure cg-l cg-m-l">
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/filters/before-1600.webp" alt="Фильтры до изменений: категории с неочевидными состояниями выбора" width="1600" height="1600" loading="lazy" />
+          </div>
+          <figcaption class="text-body">До</figcaption>
+        </figure>
+        <figure class="cg-figure cg-r cg-m-r">
+          <div class="case-cover__media case-cover__media--natural">
+            <img src="media/filters/after-1600.webp" alt="Фильтры после изменений: категории и иконки из дизайн-системы" width="1600" height="1600" loading="lazy" />
+          </div>
+          <figcaption class="text-body">После</figcaption>
+        </figure>
+
+        <p class="text-body-lg cg-r">Привела категории и пины к дизайн-системе Авито: категорийных пинов и фильтра с множественным выбором в ней не было, их пришлось спроектировать и внести в систему.</p>
+
+        <!-- Кадр со своим фоном стоит без серой сцены, на всю ширину. -->
+        <div class="case-cover__media case-cover__media--natural cg-bleed">
+          <img src="media/filters/result-c-1440x900.webp" alt="Обновлённая карта с поиском, выбором нескольких категорий и пинами из дизайн-системы Авито" width="1440" height="900" loading="lazy" />
+        </div>
+      </section>
+
+      <section class="case-block cg" id="favorites" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">Карточка пункта и избранное</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">Адрес, условия приёма, режим работы и контакты лежали в карточке одним весом — понять, подходит ли пункт, было долго. Сохранить его было нельзя.</p>
+          </div>
+        </div>
+
+        <!-- Кадр со своим фоном стоит без серой сцены, на всю ширину. -->
+        <div class="case-cover__media case-cover__media--natural cg-bleed">
+          <img src="media/favorites/card-2880x1600.webp" alt="Карточка пункта приёма и избранное на карте" width="2880" height="1600" loading="lazy" />
+        </div>
+
+        <div class="cg-text cg-r">
+          <p class="text-body-lg">Перегруппировала карточку по задачам: где это, что примут, когда открыто, как связаться.</p>
+          <p class="text-body-lg">Унифицировала типографику, ссылки и состояния. Спроектировала сохранение пункта и список избранного.</p>
+          <p class="text-body-lg">Развернула режим работы в подробный график — из-за неточного времени чаще всего ездят зря.</p>
+        </div>
+
+        <div class="case-cover__media case-cover__media--natural cg-r">
+          <img src="media/favorites/schedule-1600.webp" alt="График работы пункта по дням недели: будни 10:00–20:00, среда и воскресенье — выходной, суббота 10:00–15:00" width="1600" height="1600" loading="lazy" />
+        </div>
+      </section>
+
+      <section class="case-block cg" id="favorites-decision" tabindex="-1">
+        <div class="cg-intro">
+          <h2 class="text-h1">Почему избранное отдельным списком</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">Рассматривала флаг «сохранено» внутри карточки: дешевле и не добавляет новой сущности. Выбрала отдельный список.</p>
+          </div>
+        </div>
+
+        <!-- Кадр со своим фоном стоит без серой сцены, на всю ширину. -->
+        <div class="case-cover__media case-cover__media--natural cg-bleed">
+          <img src="media/favorites-list/favorites-2880x1600.webp" alt="Два экрана избранного: список сохранённых пунктов с уведомлением «Пункт удалён из избранного» и кнопкой «Вернуть»; пустой список «Пока что тут тихо» с кнопкой «Найти пункт переработки»" width="2880" height="1600" loading="lazy" />
+        </div>
+
+        <div class="cg-text cg-r">
+          <p class="text-body-lg">Флаг помечает пункт, но не помогает к нему вернуться: человек, который сдаёт вещи раз в месяц, не помнит, где эта точка на карте. Ему нужен не признак, а место, куда можно прийти. Список стоил дороже, но без него сценарий возврата не закрывался.</p>
+          <p class="text-body-lg">Проверить этот выбор можно только данными — он первый в плане замеров.</p>
+        </div>
+      </section>
+
+      <!-- Галерея интерфейса — декор между секциями, без подписей и просмотра. -->
+      <div class="case-block cg-gallery" aria-hidden="true">
+        <div class="cg-gallery__tile cg-gallery__tile--big" style="--g-col: 1"><img src="media/gallery/filters-1400x1680.webp" width="1400" height="1680" alt="" loading="lazy" /></div>
+        <div class="cg-gallery__tile" style="--g-col: 3; --g-row: 1"><img src="media/gallery/pin-1400x864.webp" width="1400" height="864" alt="" loading="lazy" /></div>
+        <div class="cg-gallery__tile cg-gallery__tile--end" style="--g-col: 3; --g-row: 2; --g-span: 2"><img src="media/gallery/icons-1792x864.webp" width="1792" height="864" alt="" loading="lazy" /></div>
       </div>
 
-      <section class="case-block case-favorites" id="favorites" tabindex="-1">
-        <h2 class="text-h1">Карточка пункта и избранное</h2>
-        <p class="case-favorites__subtitle case-subtitle text-body-lg">Адрес, условия приёма, режим работы и контакты лежали в карточке одним весом — понять, подходит ли пункт, было долго. Сохранить его было нельзя.</p>
-
-        <div class="case-cover__media case-cover__media--natural">
-          <picture>
-            <source media="(max-width: 640px)" srcset="media/favorites/favs-mob.webp" />
-            <img src="media/favorites/favs-desktop.webp?v=2" alt="Карточка пункта приёма и избранное на карте" loading="lazy" />
-          </picture>
+      <section class="case-block cg" id="results" tabindex="-1">
+        <div class="cg-intro cg-intro--thirds cg-intro--base">
+          <h2 class="text-h1">Результаты</h2>
+          <div class="cg-intro__text">
+            <p class="text-body-lg">Раскатывали на всех сразу, без А/Б-теста, поэтому приписывать редизайну весь трафик карты я не могу. По данным:</p>
+          </div>
         </div>
 
-        <div class="case-favorites__description">
-          <p class="case-subtitle text-body-lg">Перегруппировала карточку по задачам: где это, что примут, когда открыто, как связаться.</p>
-          <p class="case-subtitle text-body-lg">Унифицировала типографику, ссылки и состояния. Спроектировала сохранение пункта и список избранного.</p>
+        <div class="cg-item cg-item--stat cg-t1">
+          <p class="cg-item__num text-display">306K</p>
+          <p class="cg-item__text text-body">Загрузок точек в день</p>
         </div>
+        <div class="cg-item cg-item--stat cg-t2">
+          <p class="cg-item__num text-display">1,5–3K</p>
+          <p class="cg-item__text text-body">Открытий карточки пункта в день</p>
+        </div>
+        <div class="cg-item cg-item--stat cg-t3">
+          <p class="cg-item__num text-display">До 70</p>
+          <p class="cg-item__text text-body">Сохранений точек в избранное в день</p>
+        </div>
+
+        <p class="text-body-lg cg-t23">Эти числа говорят, что картой пользуются регулярно, а не разово. Что это следствие именно редизайна — не говорят: для такого вывода нужен замер, которого у нас не было.</p>
       </section>
 
-      <div class="case-block case-schedule">
-        <p class="case-subtitle text-body-lg">Развернула режим работы в подробный график — из-за неточного времени чаще всего ездят зря.</p>
-        <div class="case-schedule__grid case-cards-grid case-cards-grid--cols-3">
-          <div class="case-cover__media case-cover__media--natural">
-            <img src="media/favorites/12.webp?v=2" alt="График работы: будни 10:00–20:00, суббота 10:00–15:00, воскресенье — выходной" loading="lazy" />
-          </div>
-          <div class="case-cover__media case-cover__media--natural">
-            <img src="media/favorites/13.webp?v=2" alt="Режим работы: круглосуточно, без выходных; ниже телефон, почта и сайт пункта" loading="lazy" />
-          </div>
-          <div class="case-cover__media case-cover__media--natural">
-            <img src="media/favorites/14.webp?v=2" alt="Пункт закрыт, откроется в четверг; график работы свёрнут, ниже контакты" loading="lazy" />
-          </div>
-        </div>
+      <div class="case-block cg-gallery" aria-hidden="true">
+        <div class="cg-gallery__tile" style="--g-col: 1; --g-row: 1"><img src="media/gallery/categories-1200x904.webp" width="1200" height="904" alt="" loading="lazy" /></div>
+        <div class="cg-gallery__tile cg-gallery__tile--end" style="--g-col: 2; --g-row: 2"><img src="media/gallery/card-700x840.webp" width="700" height="840" alt="" loading="lazy" /></div>
+        <div class="cg-gallery__tile cg-gallery__tile--big" style="--g-col: 3"><img src="media/gallery/saved-1400x1680.webp" width="1400" height="1680" alt="" loading="lazy" /></div>
       </div>
 
-      <section class="case-block case-favorites-decision" id="favorites-decision" tabindex="-1">
-        <h2 class="text-h1">Почему избранное отдельным списком</h2>
-        <p class="case-favorites__subtitle case-subtitle text-body-lg">Рассматривала флаг «сохранено» внутри карточки: дешевле и не добавляет новой сущности. Выбрала отдельный список.</p>
-
-        <div class="fav-pair">
-          <div class="case-screens-frame"><img src="media/favorites-list/favorites-removed-v2.webp" alt="Пункт удалён из избранного, в уведомлении кнопка «Вернуть», ниже список избранного" width="1500" height="3244" loading="lazy" /></div>
-          <div class="case-screens-frame"><img src="media/favorites-list/favorites-empty.webp" alt="Пустой список избранного «Пока что тут тихо» с кнопкой «Найти пункт переработки»" width="1500" height="3244" loading="lazy" /></div>
+      <section class="case-block cg" id="next" tabindex="-1">
+        <div class="cg-intro cg-intro--thirds">
+          <h2 class="text-h1">Что проверяю дальше</h2>
         </div>
 
-        <div class="case-favorites__description">
-          <p class="case-subtitle text-body-lg">Флаг помечает пункт, но не помогает к нему вернуться: человек, который сдаёт вещи раз в месяц, не помнит, где эта точка на карте. Ему нужен не признак, а место, куда можно прийти. Список стоил дороже, но без него сценарий возврата не закрывался.</p>
-          <p class="case-subtitle text-body-lg">Проверить этот выбор можно только данными — он первый в плане замеров.</p>
+        <div class="cg-item cg-t1">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">01</p>
+          <p class="cg-item__text text-body"><strong>Сколько времени уходит на поиск подходящего пункта.</strong> Если долго даже с фильтрами, то это узкое место не в интерфейсе, а в качестве партнёрских данных, и работать надо с ними, а не с экраном.</p>
         </div>
-      </section>
-
-      <section class="case-block case-results" id="results" tabindex="-1">
-        <h2 class="text-h1">Результаты</h2>
-        <p class="case-result__subtitle case-subtitle text-body-lg">Раскатывали на всех сразу, без А/Б-теста, поэтому приписывать редизайну весь трафик карты я не могу. По данным:</p>
-
-        <div class="case-cover__metrics-scroll">
-          <div class="case-cover__metrics">
-            <div class="case-metric case-metric--theme">
-              <p class="case-metric__value">306K</p>
-              <p class="case-metric__label text-body-sm">Загрузок точек в день</p>
-              <div class="case-metric__art case-metric__art--point"><img src="media/metric-1.webp" alt="" aria-hidden="true" /></div>
-            </div>
-            <div class="case-metric">
-              <p class="case-metric__value">1,5–3K</p>
-              <p class="case-metric__label text-body-sm">Открытий карточки<br />пункта в день</p>
-              <div class="case-metric__art"><img src="media/metric-2.webp" alt="" aria-hidden="true" /></div>
-            </div>
-            <div class="case-metric">
-              <p class="case-metric__value">До 70</p>
-              <p class="case-metric__label text-body-sm">Сохранений точек в избранное в день</p>
-              <div class="case-metric__art"><img src="media/metric-3.webp" alt="" aria-hidden="true" /></div>
-            </div>
-          </div>
+        <div class="cg-item cg-t2">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">02</p>
+          <p class="cg-item__text text-body"><strong>Как часто открывают сохранённые точки.</strong> Если реже раза в месяц, то избранное работает как закладка «на всякий случай», и тогда логичнее напоминание, а не список.</p>
         </div>
-
-        <p class="case-comparison__description case-subtitle text-body-lg">Эти числа говорят, что картой пользуются регулярно, а не разово. Что это следствие именно редизайна — не говорят: для такого вывода нужен замер, которого у нас не было.</p>
-      </section>
-
-      <section class="case-block case-next" id="next" tabindex="-1">
-        <h2 class="text-h1">Что проверяю дальше</h2>
-        <ul class="case-next__list case-subtitle text-body-lg">
-          <li><strong>Сколько времени уходит на поиск подходящего пункта.</strong> Если долго даже с фильтрами, то это узкое место не в интерфейсе, а в качестве партнёрских данных, и работать надо с ними, а не с экраном.</li>
-          <li><strong>Как часто открывают сохранённые точки.</strong> Если реже раза в месяц, то избранное работает как закладка «на всякий случай», и тогда логичнее напоминание, а не список.</li>
-          <li><strong>Какие фильтры чаще приводят к открытию карточки и построению маршрута.</strong> Редко используемые фильтры будут кандидатами на удаление: короткий список фильтров обычно работает лучше полного.</li>
-        </ul>
+        <div class="cg-item cg-t3">
+          <p class="cg-item__num text-display-lg" aria-hidden="true">03</p>
+          <p class="cg-item__text text-body"><strong>Какие фильтры чаще приводят к открытию карточки и построению маршрута.</strong> Редко используемые фильтры будут кандидатами на удаление: короткий список фильтров обычно работает лучше полного.</p>
+        </div>
       </section>
 
     </div>

@@ -50,10 +50,9 @@ window.portfolioProjects = [
     title: 'Карта переработки вещей',
     description: 'Поиск пункта приёма, фильтры и избранное',
     href: '/projects/avito-charity/recycle-map/',
-    image: '/projects/avito-charity/recycle-map/covers/cover-poster.webp',
-    video: '/projects/avito-charity/recycle-map/covers/cover.webm?v=3',
-    width: 2880,
-    height: 1800,
+    image: '/projects/avito-charity/recycle-map/covers/cover-1440x900.webp',
+    width: 1440,
+    height: 900,
     alt: 'Карта Avito с пунктами приёма вещей и панелью категорий: одежда, пластик, бумага, стекло',
     platforms: ['mobile', 'web'],
     tags: ['avito', 'b2c', 'charity', 'maps']
