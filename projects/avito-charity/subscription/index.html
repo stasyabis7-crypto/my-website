@@ -12,7 +12,6 @@
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Как устроена регулярная помощь в Авито" />
 <meta name="twitter:description" content="Подключение и управление «Доброй подпиской», выбор фонда, отчёты, оплата и экран благодарности после пожертвования" />
-<meta name="robots" content="noindex" />
 <link rel="icon" type="image/webp" sizes="64x64" href="../../../components/site-brand/favicon.webp" />
 
 <script src="../../../site/analytics-config.js?v=1"></script>
@@ -39,6 +38,7 @@
 <link rel="stylesheet" href="../../../components/page-motion/page-motion.css?v=8" />
 <link rel="stylesheet" href="../../../components/case-blocks/case-blocks.css?v=74" />
 <link rel="stylesheet" href="../../../components/case-cards/case-cards.css?v=9" />
+<link rel="stylesheet" href="../../../components/case-grid/case-grid.css?v=1" />
 <link rel="stylesheet" href="../../../components/case-lightbox/case-lightbox.css?v=13" />
 <link rel="stylesheet" href="../../../components/hero-mood/hero-layout.css?v=speech-tail-4" />
 
@@ -91,171 +91,9 @@ body {
   gap: var(--case-block-gap);
 }
 
-/* «Точки входа», «Управление подпиской» — три экрана на светлом фоне одной
-   картинкой (так же открывается и в полноэкранном просмотре). */
-.case-screens-frame {
-  margin-top: var(--space-intro-media);
-  overflow: hidden;
-  border-radius: var(--case-content-radius, var(--radius-surface));
-  background: #F4F3F5;
-}
-.case-screens-frame img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* Keep Team and Scenario with their preceding blocks in normal flow on phones and tablets. */
-@media (max-width: 1024px) {
-  .overlap-group:has(> :is(#team, #scenario)) > .overlap-sticky {
-    position: relative;
-    top: auto;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transition: none;
-  }
-}
-
-/* Картинки и видео на сером фоне (#F3F3F4 уже в самом кадре) — без обводки. */
-:is(#summary, #before, #concepts, #choose-fund, #fund-info, #settings, #payment, #success, #summary-end)
-  :is(.case-cover__media, .case-card--media, .case-moodboard__media) {
-  border: 0;
-}
-
-/* Видео в карточке «До/После» — как картинка: на всю карточку. */
-.case-card__media video {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Метрики в обложке — графики вместо картинок (.case-metric__art.sub-chart).
-   Столбики вырастают, линия прорисовывается, когда карточка попадает во
-   вьюпорт (.is-drawn навешивает скрипт внизу страницы); без JS или при
-   prefers-reduced-motion графики сразу в финальном состоянии. */
-/* График одного размера во всех карточках (ширина карточки → высота по
-   viewBox), прижат к низу; свободное место, если подпись короче, — над ним. */
-.sub-chart {
-  aspect-ratio: auto;
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: -12px;
-}
-.sub-chart svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-.sub-chart__bars rect {
-  fill: url(#sub-chart-bar);
-  transform-box: fill-box;
-  transform-origin: 50% 100%;
-}
-.sub-chart__bars rect.is-accent { fill: url(#sub-chart-bar-accent); }
-.sub-chart__note {
-  font-family: var(--font-family-body);
-  font-size: 13px;
-  fill: var(--color-text-muted);
-}
-.sub-chart__line {
-  fill: none;
-  stroke: var(--case-icon-2);
-  stroke-width: 3;
-  stroke-linecap: round;
-}
-.sub-chart__halo { fill: var(--case-icon-2); opacity: .18; }
-.sub-chart__dot  { fill: var(--case-icon-2); }
-
-@media (prefers-reduced-motion: no-preference) {
-  .js-sub-charts .sub-chart__bars rect {
-    transform: scaleY(0);
-    transition: transform .8s cubic-bezier(.22, 1, .36, 1) calc(var(--i) * 50ms);
-  }
-  .js-sub-charts :is(.sub-chart__line, .sub-chart__area, .sub-chart__dot, .sub-chart__halo, .sub-chart__note) {
-    opacity: 0;
-    transition: opacity .6s ease .7s;
-  }
-  .js-sub-charts .sub-chart.is-drawn .sub-chart__bars rect { transform: none; }
-  .js-sub-charts .sub-chart.is-drawn :is(.sub-chart__line, .sub-chart__area, .sub-chart__dot, .sub-chart__note) { opacity: 1; }
-  .js-sub-charts .sub-chart.is-drawn .sub-chart__halo { opacity: .18; }
-
-  /* После появления столбики медленно «дышат», каждый в своём ритме. */
-  .js-sub-charts .sub-chart.is-drawn .sub-chart__bars rect {
-    animation: sub-bar-breathe var(--d, 3.4s) ease-in-out calc(1.4s + var(--i) * .17s) infinite alternate;
-  }
-  .sub-chart__bars rect:nth-child(odd)  { --k: .9; }
-  .sub-chart__bars rect:nth-child(even) { --k: 1.06; }
-  .sub-chart__bars rect:nth-child(3n)   { --d: 4.2s; }
-  .sub-chart__bars rect:nth-child(3n+1) { --d: 2.9s; }
-  .sub-chart__bars rect.is-accent:nth-child(2) { --k: 1.03; }
-}
-/* Линия — одна синусоида, которая медленно едет вправо на длину волны
-   (бесшовно), точка на конце качается вверх-вниз в такт. */
-@media (prefers-reduced-motion: no-preference) {
-  .sub-chart__wave { animation: sub-wave 14s linear infinite; }
-  .sub-chart__marker { animation: sub-marker 7s cubic-bezier(.37, 0, .63, 1) infinite alternate; }
-}
-@keyframes sub-wave {
-  from { transform: translateX(0); }
-  to   { transform: translateX(260px); }
-}
-@keyframes sub-marker {
-  from { transform: translateY(0); }
-  to   { transform: translateY(28px); }
-}
-@keyframes sub-bar-breathe {
-  from { transform: scaleY(1); }
-  to   { transform: scaleY(var(--k, .94)); }
-}
-
-/* Точки входа: сетка 2 слева (друг под другом) + 1 справа на всю высоту. */
-.sub-entry-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 16px;
-  margin-top: var(--space-intro-media);
-}
-.sub-entry-grid > * { margin-top: 0; }
-.sub-entry-grid .case-cover__media { border: 0; aspect-ratio: 1424 / 696; }
-.sub-entry-grid .sub-entry-grid__tall { grid-column: 2; grid-row: 1 / span 2; aspect-ratio: auto; }
-@media (max-width: 900px) {
-  .sub-entry-grid { grid-template-columns: 1fr; }
-  .sub-entry-grid .sub-entry-grid__tall { grid-column: auto; grid-row: auto; aspect-ratio: 1; }
-}
-/* Управление подпиской: два квадрата рядом. */
-.sub-pair {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-top: var(--space-intro-media);
-}
-.sub-pair > * { margin-top: 0; }
-.sub-pair .case-cover__media { border: 0; aspect-ratio: 1; }
-@media (max-width: 900px) {
-  .sub-pair { grid-template-columns: 1fr; }
-}
-/* Бенто «Итога» (как в CRM): большой квадрат 2×2, широкая 2×1 и два квадрата 1×1. */
-.sub-bento {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-top: var(--space-intro-media);
-}
-.sub-bento > * { margin-top: 0; }
-.sub-bento .case-cover__media { border: 0; }
-.sub-bento .case-cover__media img { height: 100%; }
-/* Метрики под бенто — с тем же зазором, что между ячейками. */
-.sub-bento + .case-cover__metrics-scroll .case-cover__metrics { margin-top: 16px; }
-.sub-bento__big { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
-.sub-bento__wide { grid-column: span 2; aspect-ratio: 2 / 1; }
-.sub-bento__square { aspect-ratio: 1; }
-@media (max-width: 900px) {
-  .sub-bento { grid-template-columns: repeat(2, 1fr); }
-  .sub-bento__big { grid-row: auto; aspect-ratio: 1; }
+.case--grid .cg-intro > :is(h1, h2, h3) {
+  max-width: 16ch;
+  text-wrap: balance;
 }
 
 </style>
@@ -285,546 +123,150 @@ body {
     </button>
   </div>
 
-  <aside class="work-toc" aria-label="Навигация по проекту" hidden>
+  <aside class="work-toc work-toc--corner" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="team"></span><span data-toc-marker="role"></span><span data-toc-marker="scenario"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="moodboard"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="fund-info"></span><span data-toc-marker="settings"></span><span data-toc-marker="manage"></span><span data-toc-marker="payment"></span><span data-toc-marker="success"></span><span data-toc-marker="summary-end"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="settings"></span><span data-toc-marker="success"></span><span data-toc-marker="manage"></span><span data-toc-marker="summary-end"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
     <div class="work-toc__panel" id="work-toc-panel" hidden>
       <nav aria-label="Оглавление проекта">
-        <a class="btn btn--fill-toc" href="#summary"><span>Саммари</span></a>
-        <a class="btn btn--fill-toc" href="#about"><span>О проекте</span></a>
-        <a class="btn btn--fill-toc" href="#team"><span>Команда</span></a>
-        <a class="btn btn--fill-toc" href="#role"><span>Роль</span></a>
-        <a class="btn btn--fill-toc" href="#scenario"><span>Сценарий</span></a>
-        <a class="btn btn--fill-toc" href="#problems"><span>Проблемы</span></a>
-        <a class="btn btn--fill-toc" href="#before"><span>Прежний флоу</span></a>
-        <a class="btn btn--fill-toc" href="#concepts"><span>Концепты</span></a>
-        <a class="btn btn--fill-toc" href="#entry-points"><span>Точки входа</span></a>
-        <a class="btn btn--fill-toc" href="#choose-fund"><span>Выбор фонда</span></a>
-        <a class="btn btn--fill-toc" href="#settings"><span>Настроить подписку</span></a>
-        <a class="btn btn--fill-toc" href="#success"><span>Экран благодарности</span></a>
-        <a class="btn btn--fill-toc" href="#manage"><span>Управление подпиской</span></a>
-        <a class="btn btn--fill-toc" href="#summary-end"><span>Итог</span></a>
+<a class="btn btn--fill-toc" href="#summary"><span>Саммари</span></a>
+<a class="btn btn--fill-toc" href="#about"><span>О проекте</span></a>
+<a class="btn btn--fill-toc" href="#problems"><span>Проблемы</span></a>
+<a class="btn btn--fill-toc" href="#before"><span>Новый сценарий</span></a>
+<a class="btn btn--fill-toc" href="#concepts"><span>Концепты</span></a>
+<a class="btn btn--fill-toc" href="#entry-points"><span>Точки входа</span></a>
+<a class="btn btn--fill-toc" href="#choose-fund"><span>Выбор фонда</span></a>
+<a class="btn btn--fill-toc" href="#settings"><span>Подключение подписки</span></a>
+<a class="btn btn--fill-toc" href="#success"><span>Благодарность</span></a>
+<a class="btn btn--fill-toc" href="#manage"><span>Управление подпиской</span></a>
+<a class="btn btn--fill-toc" href="#summary-end"><span>Результаты</span></a>
       </nav>
     </div>
   </aside>
 
   <main>
-    <div class="case">
+    <div class="case case--grid">
 
     <div class="case__blocks">
 
-      <section class="case-block case-cover" id="summary" tabindex="-1" aria-label="Саммари проекта">
-        <div class="case-cover__head">
-          <div class="case-cover__head-text">
-            <h1 class="case-cover__title text-h1">Добрая подписка</h1>
-            <p class="case-cover__subtitle case-subtitle text-body-lg" data-subtitle>Проблема: помочь фонду на Авито можно было только разово, у фондов не было регулярных поступлений из этого канала.</p>
-            <p class="case-cover__subtitle case-subtitle text-body-lg" data-subtitle>Решение: спроектировала ежемесячную «Добрую подписку», от выбора фонда до управления в профиле, и добавила отчёты о работе фондов.</p>
-          </div>
-        </div>
+<section class="case-block case-cover cg" id="summary" tabindex="-1" aria-label="Саммари проекта">
+ <div class="cg-intro"><h1 class="case-cover__title text-h1">Добрая подписка</h1><div class="cg-intro__text">
+ <p class="text-body-lg" data-subtitle><span class="cg-label">Проблема:</span> на Авито можно было помогать фондам только разово — для постоянной поддержки приходилось повторять весь сценарий</p>
+ <p class="text-body-lg" data-subtitle><span class="cg-label">Решение:</span> спроектировала ежемесячную помощь: от выбора фонда и подключения до управления подпиской в профиле</p>
+ </div></div>
+ <div class="case-cover__media case-cover__media--natural cg-bleed cg-q234 cg-row-2"><video src="/projects/avito-charity/subscription/covers/subscription-cover-loop-1440x900-60fps.mp4" poster="/projects/avito-charity/subscription/covers/subscription-cover-poster-2880x1800.webp" width="2880" height="1800" muted loop playsinline autoplay preload="auto" aria-label="«Добрая подписка» в приложении Авито"></video></div>
+ <div class="cg-meta cg-q1 cg-row-2"><dl class="cg-list text-body">
+ <div><dt>Роль</dt><dd>Вела сценарий регулярной помощи целиком: подписка, отчёты фондов, оплата и благодарность</dd></div>
+ <div><dt>Команда</dt><dd>Продакт, проджект, бэкенд, фронтенд, редактор</dd></div>
+ <div><dt>Взаимодействие</dt><dd>Согласовала способы оплаты с платёжной командой, точки входа — с charity-командой и командой подачи объявлений</dd></div>
+ </dl></div>
+</section>
 
-        <div class="case-cover__media case-cover__media--natural">
-          <!-- Первый кадр кейса — та же обложка, что на Главной (covers/): видео
-               с заглушкой, пока грузится или если его нельзя воспроизвести. -->
-          <video src="/projects/avito-charity/subscription/covers/subscription-cover-loop-1440x900-60fps.mp4" poster="/projects/avito-charity/subscription/covers/subscription-cover-poster-2880x1800.webp" width="2880" height="1800" muted loop playsinline autoplay preload="auto" aria-label="«Добрая подписка» в приложении Авито"></video>
-        </div>
+<section class="case-block cg" id="about" tabindex="-1">
+  <div class="cg-intro">
+    <h2 class="text-h1">О проекте</h2>
+    <div class="cg-intro__text">
+      <p class="text-body-lg">«Добрая подписка» — ежемесячное пожертвование фонду в благотворительном разделе Авито. Человек выбирает фонд и сумму, а следующие платежи проходят автоматически.</p>
+      <p class="text-body-lg">Регулярные поступления помогают фондам планировать работу. Для человека важно заранее понимать, кому пойдут деньги, когда повторится платёж и как изменить или отключить подписку.</p>
+      <p class="text-body-lg">В исследованиях люди просили отчёты и конкретные результаты работы фондов. Поэтому информацию о фонде добавили до подключения подписки.</p>
+    </div>
+  </div>
+  <div class="case-cover__media case-cover__media--natural cg-bleed">
+    <img src="media/about/about-2880x1600.webp" width="2880" height="1600" alt="Иллюстрация проекта «Добрая подписка»" loading="lazy" />
+  </div>
+</section>
 
-        <!-- Метрики — .case-cover__metrics (components/case-blocks/case-blocks.css),
-             вместо картинок inline-SVG графики (.sub-chart, стили в <style> выше).
-             Форма рядов иллюстративная, пропорции — по реальным цифрам. -->
-        <div class="case-cover__metrics-scroll">
-          <div class="case-cover__metrics">
-            <div class="case-metric case-metric--theme">
-              <p class="case-metric__value">~55</p>
-              <p class="case-metric__label text-body-sm">Новых подписок в день, поток стабильный</p>
-              <div class="case-metric__art sub-chart" aria-hidden="true">
-                <svg viewBox="0 0 360 180">
-                  <defs>
-                    <linearGradient id="sub-chart-bar" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0" stop-color="var(--case-accent)" stop-opacity=".32"/>
-                      <stop offset="1" stop-color="var(--case-accent)" stop-opacity=".08"/>
-                    </linearGradient>
-                    <linearGradient id="sub-chart-bar-accent" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0" stop-color="var(--case-accent)"/>
-                      <stop offset="1" stop-color="var(--case-accent)" stop-opacity=".55"/>
-                    </linearGradient>
-                  </defs>
-                  <g class="sub-chart__bars">
-                    <rect x="36" y="60" width="18" height="100" rx="9" style="--i:0"/>
-                    <rect x="66" y="46" width="18" height="114" rx="9" style="--i:1"/>
-                    <rect x="96" y="54" width="18" height="106" rx="9" style="--i:2"/>
-                    <rect x="126" y="44" width="18" height="116" rx="9" style="--i:3"/>
-                    <rect x="156" y="52" width="18" height="108" rx="9" style="--i:4"/>
-                    <rect x="186" y="56" width="18" height="104" rx="9" style="--i:5"/>
-                    <rect x="216" y="42" width="18" height="118" rx="9" style="--i:6"/>
-                    <rect x="246" y="50" width="18" height="110" rx="9" style="--i:7"/>
-                    <rect x="276" y="48" width="18" height="112" rx="9" style="--i:8"/>
-                    <rect x="306" y="50" width="18" height="110" rx="9" class="is-accent" style="--i:9"/>
-                  </g>
-                </svg>
-              </div>
-            </div>
-            <div class="case-metric">
-              <p class="case-metric__value">+64%</p>
-              <p class="case-metric__label text-body-sm">Средний платёж выше минимального</p>
-              <div class="case-metric__art sub-chart" aria-hidden="true">
-                <svg viewBox="0 0 360 180">
-                  <g class="sub-chart__bars">
-                    <rect x="92" y="62" width="80" height="88" rx="18" style="--i:0"/>
-                    <rect x="188" y="6" width="80" height="144" rx="18" class="is-accent" style="--i:3"/>
-                  </g>
-                  <text class="sub-chart__note" x="132" y="174" text-anchor="middle">минимум</text>
-                  <text class="sub-chart__note" x="228" y="174" text-anchor="middle">средний</text>
-                </svg>
-              </div>
-            </div>
-            <div class="case-metric">
-              <p class="case-metric__value">~1 300</p>
-              <p class="case-metric__label text-body-sm">Открытий отчётов в день, людям важно знать о фонде</p>
-              <div class="case-metric__art sub-chart sub-chart--line" aria-hidden="true">
-                <svg viewBox="0 0 360 180">
-                  <defs>
-                    <linearGradient id="sub-chart-fill" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0" stop-color="var(--case-icon-2)" stop-opacity=".22"/>
-                      <stop offset="1" stop-color="var(--case-icon-2)" stop-opacity="0"/>
-                    </linearGradient>
-                    <clipPath id="sub-chart-clip"><rect x="24" y="0" width="312" height="180"/></clipPath>
-                  </defs>
-                  <g clip-path="url(#sub-chart-clip)">
-                    <g class="sub-chart__wave">
-                      <path class="sub-chart__area" fill="url(#sub-chart-fill)" d="M-236 79.67 L-232 78.41 L-228 77.20 L-224 76.05 L-220 74.97 L-216 73.98 L-212 73.08 L-208 72.29 L-204 71.60 L-200 71.03 L-196 70.58 L-192 70.26 L-188 70.07 L-184 70.00 L-180 70.07 L-176 70.26 L-172 70.58 L-168 71.03 L-164 71.60 L-160 72.29 L-156 73.08 L-152 73.98 L-148 74.97 L-144 76.05 L-140 77.20 L-136 78.41 L-132 79.67 L-128 80.98 L-124 82.31 L-120 83.66 L-116 85.01 L-112 86.36 L-108 87.68 L-104 88.96 L-100 90.20 L-96 91.39 L-92 92.50 L-88 93.53 L-84 94.48 L-80 95.33 L-76 96.07 L-72 96.70 L-68 97.21 L-64 97.59 L-60 97.85 L-56 97.98 L-52 97.98 L-48 97.85 L-44 97.59 L-40 97.21 L-36 96.70 L-32 96.07 L-28 95.33 L-24 94.48 L-20 93.53 L-16 92.50 L-12 91.39 L-8 90.20 L-4 88.96 L0 87.68 L4 86.36 L8 85.01 L12 83.66 L16 82.31 L20 80.98 L24 79.67 L28 78.41 L32 77.20 L36 76.05 L40 74.97 L44 73.98 L48 73.08 L52 72.29 L56 71.60 L60 71.03 L64 70.58 L68 70.26 L72 70.07 L76 70.00 L80 70.07 L84 70.26 L88 70.58 L92 71.03 L96 71.60 L100 72.29 L104 73.08 L108 73.98 L112 74.97 L116 76.05 L120 77.20 L124 78.41 L128 79.67 L132 80.98 L136 82.31 L140 83.66 L144 85.01 L148 86.36 L152 87.68 L156 88.96 L160 90.20 L164 91.39 L168 92.50 L172 93.53 L176 94.48 L180 95.33 L184 96.07 L188 96.70 L192 97.21 L196 97.59 L200 97.85 L204 97.98 L208 97.98 L212 97.85 L216 97.59 L220 97.21 L224 96.70 L228 96.07 L232 95.33 L236 94.48 L240 93.53 L244 92.50 L248 91.39 L252 90.20 L256 88.96 L260 87.68 L264 86.36 L268 85.01 L272 83.66 L276 82.31 L280 80.98 L284 79.67 L288 78.41 L292 77.20 L296 76.05 L300 74.97 L304 73.98 L308 73.08 L312 72.29 L316 71.60 L320 71.03 L324 70.58 L328 70.26 L332 70.07 L336 70.00 L340 70.07 V160 H-236 Z"/>
-                      <path class="sub-chart__line" d="M-236 79.67 L-232 78.41 L-228 77.20 L-224 76.05 L-220 74.97 L-216 73.98 L-212 73.08 L-208 72.29 L-204 71.60 L-200 71.03 L-196 70.58 L-192 70.26 L-188 70.07 L-184 70.00 L-180 70.07 L-176 70.26 L-172 70.58 L-168 71.03 L-164 71.60 L-160 72.29 L-156 73.08 L-152 73.98 L-148 74.97 L-144 76.05 L-140 77.20 L-136 78.41 L-132 79.67 L-128 80.98 L-124 82.31 L-120 83.66 L-116 85.01 L-112 86.36 L-108 87.68 L-104 88.96 L-100 90.20 L-96 91.39 L-92 92.50 L-88 93.53 L-84 94.48 L-80 95.33 L-76 96.07 L-72 96.70 L-68 97.21 L-64 97.59 L-60 97.85 L-56 97.98 L-52 97.98 L-48 97.85 L-44 97.59 L-40 97.21 L-36 96.70 L-32 96.07 L-28 95.33 L-24 94.48 L-20 93.53 L-16 92.50 L-12 91.39 L-8 90.20 L-4 88.96 L0 87.68 L4 86.36 L8 85.01 L12 83.66 L16 82.31 L20 80.98 L24 79.67 L28 78.41 L32 77.20 L36 76.05 L40 74.97 L44 73.98 L48 73.08 L52 72.29 L56 71.60 L60 71.03 L64 70.58 L68 70.26 L72 70.07 L76 70.00 L80 70.07 L84 70.26 L88 70.58 L92 71.03 L96 71.60 L100 72.29 L104 73.08 L108 73.98 L112 74.97 L116 76.05 L120 77.20 L124 78.41 L128 79.67 L132 80.98 L136 82.31 L140 83.66 L144 85.01 L148 86.36 L152 87.68 L156 88.96 L160 90.20 L164 91.39 L168 92.50 L172 93.53 L176 94.48 L180 95.33 L184 96.07 L188 96.70 L192 97.21 L196 97.59 L200 97.85 L204 97.98 L208 97.98 L212 97.85 L216 97.59 L220 97.21 L224 96.70 L228 96.07 L232 95.33 L236 94.48 L240 93.53 L244 92.50 L248 91.39 L252 90.20 L256 88.96 L260 87.68 L264 86.36 L268 85.01 L272 83.66 L276 82.31 L280 80.98 L284 79.67 L288 78.41 L292 77.20 L296 76.05 L300 74.97 L304 73.98 L308 73.08 L312 72.29 L316 71.60 L320 71.03 L324 70.58 L328 70.26 L332 70.07 L336 70.00 L340 70.07"/>
-                    </g>
-                  </g>
-                  <g class="sub-chart__marker">
-                    <circle class="sub-chart__halo" cx="336" cy="70" r="14"/>
-                    <circle class="sub-chart__dot" cx="336" cy="70" r="6"/>
-                  </g>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
+<section class="case-block cg" id="problems" tabindex="-1">
+ <div class="cg-intro cg-intro--thirds"><h2 class="text-h1">Проблемы</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Сценарий нужно было собрать вокруг трёх задач</p></div></div>
+ <div class="cg-item cg-t1"><p class="cg-item__num text-display-lg" aria-hidden="true">01</p><p class="cg-item__text text-body">Дать возможность помогать регулярно, без повторного прохождения всего сценария</p></div><div class="cg-item cg-t2"><p class="cg-item__num text-display-lg" aria-hidden="true">02</p><p class="cg-item__text text-body">Показать работу фонда до оплаты, чтобы человек мог решить, кому доверить помощь</p></div><div class="cg-item cg-t3"><p class="cg-item__num text-display-lg" aria-hidden="true">03</p><p class="cg-item__text text-body">Объединить оплату и благодарность: в charity-сценариях они выглядели по-разному</p></div>
+</section>
 
-      </section>
+<section class="case-block cg" id="before" tabindex="-1">
+ <div class="cg-intro"><h2 class="text-h1">От разовой помощи к подписке</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Собрала фонд, сумму и переключатель «Разово / Ежемесячно» на одном экране. Раньше выбор фонда и суммы были разнесены на два</p></div></div>
+ <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural "><img src="media/before/before.webp" width="1800" height="1800" alt="Прежний сценарий выбора фонда и суммы" loading="lazy" /></div><figcaption class="text-body">До</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural "><img src="media/before/after.webp" width="1800" height="1800" alt="Фонд, сумма и периодичность на одном экране" loading="lazy" /></div><figcaption class="text-body">После</figcaption></figure>
+</section>
 
-      <!-- О проекте — компонент .case-about (components/case-blocks/case-blocks.css),
-           карточки — .case-cards-feature/.case-card (components/case-cards/case-cards.css). -->
-      <section class="case-block case-about" id="about" tabindex="-1">
-        <h2 class="case-about__title text-h1">О проекте</h2>
+<section class="case-block cg" id="concepts" tabindex="-1">
+ <div class="cg-intro"><h2 class="text-h1">Концепты</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Проверяла 3D-персонажа на экране подписки и конфетти в благодарности. Персонаж занимал половину экрана — для настройки выбрала сдержанный вариант, в котором условия видны сразу. Эмоциональную анимацию оставила после оплаты</p></div></div>
+ <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural "><img src="media/concepts/1.webp" width="1600" height="2000" alt="Концепт подписки с 3D-персонажем" loading="lazy" /></div><figcaption class="text-body">Эмоциональная подача</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural "><img src="media/concepts/2.webp" width="1600" height="2000" alt="Концепт настройки и благодарности" loading="lazy" /></div><figcaption class="text-body">Настройка и благодарность</figcaption></figure>
+</section>
 
-        <div class="case-about__grid case-cards-feature">
-          <div class="case-card case-card--media case-card--align-bottom case-cards-feature__banner" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="media/about/banner.webp" width="2380" height="2160" alt="" />
-            </div>
-            <p data-subtitle class="case-card__subtitle case-subtitle text-body-lg">В благотворительном разделе Авито можно было совершать только разовые пожертвования</p>
-          </div>
+<section class="case-block cg" id="entry-points" tabindex="-1">
+ <div class="cg-intro"><h2 class="text-h1">Точки входа</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Подписку можно найти в выдаче объявлений, на charity-лендинге и после подачи объявления. В каждом месте предложение учитывает основную задачу человека</p></div></div>
+ <div class="cg-gallery">
+  <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 1; --g-row: 1; --g-span: 2; --gm-col: 1; --gm-row: 1; --gm-span: 1">
+    <img src="media/entry-points/entry-1.webp" width="1424" height="696" alt="Баннер «Умножайте добро» в выдаче" loading="lazy" />
+  </div>
+  <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 1 / span 2; --g-span: 2; --gm-col: 2; --gm-row: 2; --gm-span: 1">
+    <img src="media/entry-points/entry-3.webp?v=3" width="1424" height="1424" alt="Предложение подписки после подачи объявления" loading="lazy" />
+  </div>
+  <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 1; --g-row: 2; --g-span: 2; --gm-col: 1; --gm-row: 3">
+    <img src="media/entry-points/entry-2.webp?v=2" width="1424" height="696" alt="Подписка на charity-лендинге" loading="lazy" />
+  </div>
+ </div>
+ <p class="text-body-lg cg-r">После подачи объявления предлагаем помощь, когда основная задача уже завершена. В выдаче знакомим с подпиской через компактный баннер, а на charity-лендинге подробнее раскрываем условия.</p>
+</section>
 
-          <div class="case-cards-feature__side">
-            <div class="case-card case-card--light case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Чтобы поддерживать фонд постоянно, человеку приходилось повторять сценарий</p>
-                <svg class="case-card__icon case-card__icon--theme" aria-hidden="true" focusable="false" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="48" height="48" rx="11" fill="currentColor"/>
-<path d="M35.1332 18.0208C33.0483 14.4216 29.1514 12 24.6882 12C19.6277 12 15.2953 15.113 13.5065 19.526M31.4709 19.526H37.5V13.5052M14.3668 30.0625C16.4517 33.6618 20.3486 36.0833 24.8118 36.0833C29.8723 36.0833 34.2047 32.9703 35.9935 28.5573M18.0291 28.5573H12V34.5781" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-              </div>
-            </div>
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Мы добавили ежемесячную помощь и отчёты о работе фондов</p>
-                <svg class="case-card__icon case-card__icon--theme" aria-hidden="true" focusable="false" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="48" height="48" rx="11" fill="currentColor"/>
-<path d="M19.9909 31.2001V16.8001H26.8636C27.775 16.8001 28.6491 17.1252 29.2935 17.7039C29.938 18.2826 30.3 19.0674 30.3 19.8858C30.3 20.7042 29.938 21.4891 29.2935 22.0677C28.6491 22.6464 27.775 22.9715 26.8636 22.9715H17.7M26.8636 27.0858H17.7M38.4 24.0001C38.4 31.953 31.9529 38.4001 24 38.4001C16.0471 38.4001 9.6 31.953 9.6 24.0001C9.6 16.0472 16.0471 9.6001 24 9.6001C31.9529 9.6001 38.4 16.0472 38.4 24.0001Z" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-              </div>
-            </div>
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Я спроектировала ежемесячную подписку и управление ею</p>
-                <svg class="case-card__icon case-card__icon--theme" aria-hidden="true" focusable="false" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="48" height="48" rx="11" fill="currentColor"/>
-<path d="M20.4 22.7811L23.1 25.4811L28.5 20.0811M13.2 14.6811L21.585 10.4886C23.1053 9.72843 24.8947 9.72843 26.415 10.4885L34.8 14.6811C34.8 14.6811 34.8 22.5651 34.8 26.7231C34.8 30.8811 30.9564 33.6879 24 38.0811C17.0436 33.6879 13.2 29.9811 13.2 26.7231V14.6811Z" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+<section class="case-block cg" id="choose-fund" tabindex="-1">
+ <div class="cg-intro"><h2 class="text-h1">Выбор фонда</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Перенесла выбор фонда на первый экран: до выбора суммы можно узнать о фонде, сменить его и открыть отчёты «Добрые дела фонда»</p></div></div>
+ <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural"><video src="media/choose-fund/subscription-fund-flow-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор фонда при оформлении подписки"></video></div><figcaption class="text-body">Подписка</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural"><video src="media/choose-fund/one-time-donation-flow-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор фонда при разовом пожертвовании"></video></div><figcaption class="text-body">Разовое пожертвование</figcaption></figure><p class="text-body-lg cg-r">В разовом пожертвовании подставляем фонды из случайных категорий, чтобы помощь получали и менее популярные направления, помимо детей и животных.</p>
+</section>
 
-      <!-- Команда — компонент .case-team (components/case-blocks/case-blocks.css). -->
-      <section class="case-block case-team case-block--surface" id="team" tabindex="-1">
-        <div class="case-team__intro">
-          <h2 class="case-team__title text-h1">Команда</h2>
-          <p class="case-team__subtitle case-subtitle text-body-lg">С командой оплаты согласовала представление способов оплаты в приложении и на вебе. Обновление баннера «Знака добра» согласовывала с charity-командой и командой экрана успешной подачи объявления.</p>
-        </div>
-        <div class="case-team__carousel" aria-label="Команда проекта" aria-roledescription="карусель">
-          <div class="case-team__cards">
-            <article class="case-team__card" aria-label="1 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">01 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/1.webp" alt="" width="600" height="600" />
-              <h3 class="case-team__card-title text-h2">Продакт</h3>
-              <p class="case-team__card-subtitle text-body-sm">Обсуждали цели и гипотезы</p>
-            </article>
-            <article class="case-team__card" aria-label="2 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">02 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/2.webp" alt="" width="600" height="600" />
-              <h3 class="case-team__card-title text-h2">Проджект</h3>
-              <p class="case-team__card-subtitle text-body-sm">Согласовывали концепты</p>
-            </article>
-            <article class="case-team__card" aria-label="3 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">03 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/3.webp" alt="" width="600" height="600" />
-              <h3 class="case-team__card-title text-h2">Бэкенд</h3>
-              <p class="case-team__card-subtitle text-body-sm">Продумывали логику</p>
-            </article>
-            <article class="case-team__card" aria-label="4 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">04 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/4.webp" alt="" width="600" height="600" />
-              <h3 class="case-team__card-title text-h2">Фронтенд</h3>
-              <p class="case-team__card-subtitle text-body-sm">Проводили дизайн ревью</p>
-            </article>
-            <article class="case-team__card" aria-label="5 из 5">
-              <span class="case-team__number text-body-sm" aria-hidden="true">05 / 05</span>
-              <button class="case-team__hit btn btn--fill-tile btn--icon-only btn--icon-diagonal-motion btn--hit-area" type="button" data-team-next aria-label="Следующая карточка команды" hidden><span class="icon icon--arrow-diagonal" aria-hidden="true"></span></button>
-              <img class="case-team__avatar" src="media/team/5.webp" alt="" width="800" height="800" />
-              <h3 class="case-team__card-title text-h2">Редактор</h3>
-              <p class="case-team__card-subtitle text-body-sm">Обсуждали формулировки</p>
-            </article>
-          </div>
-        </div>
-      </section>
+<section class="case-block cg" id="settings" tabindex="-1">
+ <div class="cg-intro"><h2 class="text-h1">Подключение подписки</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>На экране настройки собрала фонд, сумму и ежемесячность списаний. Можно выбрать 100, 300 или 500 ₽ либо указать свою сумму; пояснение о повторении платежа видно до подключения</p></div></div>
+ <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural"><video src="media/settings/subscription-payment-flow-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор суммы и оплата подписки"></video></div><figcaption class="text-body">Оплата</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural"><video src="media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Подробные условия подписки"></video></div><figcaption class="text-body">Как это работает</figcaption></figure><p class="text-body-lg cg-r">Подробности вынесла в «Как это работает»: отсутствие комиссии, перечисление денег фондам напрямую, ежемесячный «Знак добра», изменение и отключение подписки. Основной экран остаётся компактным.</p>
+</section>
 
-      <!-- Роль — тот же паттерн, что «О проекте»: .case-cards-feature (components/case-cards/case-cards.css),
-           иконки — из блока «Проблемы». -->
-      <section class="case-block case-about case-role-summary" id="role" tabindex="-1">
-        <h2 class="case-about__title text-h1">Роль</h2>
+<section class="case-block cg" id="success" tabindex="-1">
+ <div class="cg-intro"><h2 class="text-h1">Благодарность после оплаты</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Объединила благодарность в charity-сценариях: подтверждение действия, вклад человека и спасибо. Этот подход работает в полноэкранном формате, шторке и модальном окне</p></div></div>
+ <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural "><img src="media/success/before.webp" width="1600" height="2000" alt="Прежняя благодарность со статичным изображением" loading="lazy" /></div><figcaption class="text-body">До</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural"><video src="media/success/after-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Новый экран благодарности с анимацией сердечек"></video></div><figcaption class="text-body">После</figcaption></figure><div class="cg-text cg-r">
+  <p class="text-body-lg">Для подписки экран подтверждает ежемесячную помощь и её условия. Добавила анимацию сердечек и два действия: поделиться и добавить «Знак добра» на объявление.</p>
+  <p class="text-body-lg">Около 2 000 показов благодарности в день — масштаб всех charity-сценариев, а не только подписки.</p>
+</div>
+</section>
 
-        <div class="case-about__grid case-cards-feature">
-          <div class="case-card case-card--media case-card--align-bottom case-cards-feature__banner" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="media/role/banner.webp" width="1440" height="1922" alt="" loading="lazy" />
-            </div>
-            <p data-subtitle class="case-card__subtitle case-subtitle text-body-lg">Вела сценарий регулярной помощи целиком</p>
-          </div>
+<section class="case-block cg" id="manage" tabindex="-1">
+ <div class="cg-intro"><h2 class="text-h1">Управление подпиской</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>В профиле видны фонд, сумма и дата ближайшего платежа. Сумму можно изменить прямо в карточке, а в настройках — отключить подписку. Управление доступно и со страницы «Знака добра»</p></div></div>
+ <figure class="cg-figure cg-l cg-m-l">
+  <div class="case-cover__media case-cover__media--natural"><img src="media/manage/manage-1.webp" width="1424" height="1424" alt="Карточка подписки в профиле" loading="lazy" /></div>
+  <figcaption class="text-body">Настройки в ЛК</figcaption>
+</figure><figure class="cg-figure cg-r cg-m-r">
+  <div class="case-cover__media case-cover__media--natural"><img src="media/manage/manage-2.webp" width="1424" height="1424" alt="Подписка на странице «Знака добра»" loading="lazy" /></div>
+  <figcaption class="text-body">Баннер на лендингах чарити</figcaption>
+</figure><p class="text-body-lg cg-r">В MVP смена фонда требует отключения и новой подписки — это ограничение платёжной системы Юкассы. Смена фонда без отключения запланирована следующим шагом.</p>
+</section>
 
-          <div class="case-cards-feature__side">
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Спроектировала подписку: условия видны до подключения, а сумму можно изменить прямо в профиле</p>
-                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/avito-charity/subscription/media/problems/gestalt-2.svg')" aria-hidden="true"></span>
-              </div>
-            </div>
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Добавила отчёты фондов, чтобы видеть, на что фонд тратит деньги, до того как решиться помочь</p>
-                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/avito-charity/subscription/media/problems/gestalt-1.svg')" aria-hidden="true"></span>
-              </div>
-            </div>
-            <div class="case-card case-card--align-bottom" style="--card-pad-bottom: 40px">
-              <div class="case-card__icon-row">
-                <p data-subtitle class="case-card__subtitle text-body">Объединила экраны оплаты и благодарности во всём сценарии</p>
-                <span class="case-problems__icon case-card__icon" style="--problems-icon: url('/projects/avito-charity/subscription/media/problems/gestalt.svg')" aria-hidden="true"></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+<div class="case-block cg-gallery">
+  <div class="cg-gallery__tile cg-gallery__tile--big case-cover__media case-cover__media--natural" style="--g-col: 1; --gm-row: 1">
+    <img src="media/results/bento-1.webp" width="1424" height="1424" alt="Благодарность после подключения подписки" loading="lazy" />
+  </div>
+  <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 4; --g-row: 1; --gm-col: 2; --gm-row: 2">
+    <img src="media/results/bento-3.webp" width="696" height="696" alt="Экран «Вы помогаете фонду»" loading="lazy" />
+  </div>
+  <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 3; --g-span: 2; --gm-row: 3">
+    <img src="media/results/bento-2.webp" width="1424" height="696" alt="Баннер «Умножайте добро»" loading="lazy" />
+  </div>
+</div>
 
-      <!-- Сценарий — анимированная цепочка шагов (components/case-blocks/case-blocks.css). -->
-      <section class="case-block case-scenario case-block--surface" id="scenario" tabindex="-1">
-        <h2 class="case-scenario__title text-h1">Сценарий</h2>
-        <ol class="case-scenario__flow" aria-label="Путь пользователя">
-          <li class="case-scenario__step" style="--step-index: 0">
-            <a class="case-scenario__card" href="#choose-fund">
-              <span class="case-scenario__dot" aria-hidden="true"></span>
-              <p class="case-scenario__label text-body">Выбрать фонд</p>
-              <span class="case-scenario__number text-body-sm" aria-hidden="true">01 / 04</span>
-              <span class="case-scenario__check" aria-hidden="true"><span class="icon icon--check"></span></span>
-            </a>
-          </li>
-          <li class="case-scenario__step" style="--step-index: 1">
-            <a class="case-scenario__card" href="#settings">
-              <span class="case-scenario__dot" aria-hidden="true"></span>
-              <p class="case-scenario__label text-body">Настроить помощь</p>
-              <span class="case-scenario__number text-body-sm" aria-hidden="true">02 / 04</span>
-              <span class="case-scenario__check" aria-hidden="true"><span class="icon icon--check"></span></span>
-            </a>
-          </li>
-          <li class="case-scenario__step" style="--step-index: 2">
-            <a class="case-scenario__card" href="#settings">
-              <span class="case-scenario__dot" aria-hidden="true"></span>
-              <p class="case-scenario__label text-body">Подключить подписку</p>
-              <span class="case-scenario__number text-body-sm" aria-hidden="true">03 / 04</span>
-              <span class="case-scenario__check" aria-hidden="true"><span class="icon icon--check"></span></span>
-            </a>
-          </li>
-          <li class="case-scenario__step" style="--step-index: 3">
-            <a class="case-scenario__card" href="#manage">
-              <span class="case-scenario__dot" aria-hidden="true"></span>
-              <p class="case-scenario__label text-body">Управлять подпиской</p>
-              <span class="case-scenario__number text-body-sm" aria-hidden="true">04 / 04</span>
-              <span class="case-scenario__check" aria-hidden="true"><span class="icon icon--check"></span></span>
-            </a>
-          </li>
-        </ol>
-      </section>
+<section class="case-block cg" id="summary-end" tabindex="-1">
+ <div class="cg-intro cg-intro--thirds"><h2 class="text-h1">Результаты</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Запустили регулярную помощь с подключением и управлением подпиской. Выбор фонда дополнили информацией о его работе</p></div></div>
+ <div class="cg-item cg-item--stat cg-t1"><p class="cg-item__num text-display">≈55</p><p class="cg-item__text text-body">Новых подписок в день</p></div><div class="cg-item cg-item--stat cg-t2"><p class="cg-item__num text-display">+64%</p><p class="cg-item__text text-body">Средний платёж выше минимального</p></div><div class="cg-item cg-item--stat cg-t3"><p class="cg-item__num text-display">≈1 300</p><p class="cg-item__text text-body">Открытий отчётов фондов в день</p></div><p class="text-body-lg cg-t23">Эти показатели описывают использование продукта. Чтобы оценить устойчивость регулярной помощи, дальше нужно измерить повторные списания, отмены и конверсию каждой точки входа.</p>
+</section>
 
-      <!-- Проблемы — компонент .case-problems (components/case-blocks/case-blocks.css). -->
-      <section class="case-block case-problems" id="problems" tabindex="-1">
-        <h2 class="case-problems__title text-h1">Проблемы</h2>
-        <p class="case-problems__subtitle case-subtitle text-body-lg">У проекта было несколько связанных задач.</p>
-        <div class="case-problems__grid case-cards-grid case-cards-grid--cols-3">
-          <div class="case-card case-problems__card">
-            <span class="case-problems__icon" style="--problems-icon: url('/projects/avito-charity/subscription/media/problems/gestalt-2.svg')" aria-hidden="true"></span>
-            <h3 class="case-card__title text-h3">Помогать регулярно было нельзя</h3>
-            <p class="case-card__subtitle text-body">В разделе были только разовые пожертвования, и для каждой помощи сценарий проходили заново</p>
-          </div>
-          <div class="case-card case-problems__card">
-            <span class="case-problems__icon" style="--problems-icon: url('/projects/avito-charity/subscription/media/problems/gestalt-1.svg')" aria-hidden="true"></span>
-            <h3 class="case-card__title text-h3">Не хватало информации о фонде</h3>
-            <p class="case-card__subtitle text-body">В исследованиях люди просили отчёты и конкретные результаты работы фондов</p>
-          </div>
-          <div class="case-card case-problems__card">
-            <span class="case-problems__icon" style="--problems-icon: url('/projects/avito-charity/subscription/media/problems/gestalt.svg')" aria-hidden="true"></span>
-            <h3 class="case-card__title text-h3">Оплата и благодарность выглядели по‑разному</h3>
-            <p class="case-card__subtitle text-body">Экран оплаты нужно было собрать в дизайн-системе, а экраны благодарности в charity-проектах не совпадали</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Прежний флоу — компонент сравнения .case-comparison (как в карте раздельного сбора). -->
-      <section class="case-block case-comparison case-before" id="before" tabindex="-1">
-        <h2 class="text-h1">Как был устроен прежний флоу</h2>
-        <p class="case-comparison__subtitle case-subtitle text-body-lg">Выбор фонда и суммы были разнесены на два экрана, а возможности подключить регулярную помощь не было</p>
-
-        <div class="case-comparison__grid case-cards-grid case-cards-grid--cols-2">
-          <div class="case-comparison__card case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="media/before/before.webp" alt="Прежний флоу: выбор фонда и выбор суммы на двух отдельных экранах" loading="lazy" />
-            </div>
-            <p class="case-card__subtitle text-body">До</p>
-          </div>
-          <div class="case-comparison__card case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="media/before/after.webp" alt="Новый флоу: фонд, сумма и переключатель «Разово / Ежемесячно» на одном экране" loading="lazy" />
-            </div>
-            <p class="case-card__subtitle text-body">После</p>
-          </div>
-        </div>
-
-        <p class="case-comparison__description case-subtitle text-body-lg">Каждое пожертвование требовало отдельных переходов, и для постоянной поддержки фонда приходилось заново проходить весь сценарий.</p>
-      </section>
-
-      <!-- Концепты — компонент .case-moodboard, два больших баннера рядом. -->
-      <section class="case-block case-moodboard case-concepts" id="concepts" tabindex="-1">
-        <h2 class="case-moodboard__title text-h1">Концепты</h2>
-        <p data-subtitle class="case-moodboard__subtitle case-subtitle text-body-lg">Проверяла эмоциональную подачу: 3D-персонаж на экране подписки и конфетти на экране благодарности. Отказалась: персонаж занимал половину экрана. Оставила: конфетти добавляли эмоциональную составляющую механики. Выбрала сдержанный вариант для страницы настройки, где главная информация помещается в один экран.</p>
-
-        <div class="case-moodboard__grid case-cards-feature">
-          <div class="case-moodboard__media"><img src="media/concepts/1.webp" alt="" width="1600" height="2000" loading="lazy" /></div>
-          <div class="case-moodboard__media"><img src="media/concepts/2.webp" alt="" width="1600" height="2000" loading="lazy" /></div>
-        </div>
-      </section>
-
-      <!-- Точки входа — структура .case-role (components/case-blocks/case-blocks.css). -->
-      <section class="case-block case-role case-entry-points" id="entry-points" tabindex="-1">
-        <h2 class="case-role__title text-h1">Точки входа</h2>
-        <p class="case-role__subtitle case-subtitle text-body-lg">Я предусмотрела три точки входа в подписку: в выдаче объявлений, на charity-лендинге и после подачи объявления</p>
-
-        <div class="sub-entry-grid">
-          <div class="case-cover__media"><img src="media/entry-points/entry-1.webp" width="1424" height="696" alt="Баннер «Умножайте добро» в выдаче объявлений" loading="lazy" /></div>
-          <div class="case-cover__media"><img src="media/entry-points/entry-2.webp?v=2" width="1424" height="696" alt="Блок подписки на charity-лендинге" loading="lazy" /></div>
-          <div class="case-cover__media sub-entry-grid__tall"><img src="media/entry-points/entry-3.webp?v=3" width="1424" height="1424" alt="Шторка «Умножайте добро» после подачи объявления" loading="lazy" /></div>
-        </div>
-
-        <p class="case-role__description case-subtitle text-body-lg">После подачи предлагаем помощь, когда основная задача уже завершена; в выдаче знакомим с подпиской через компактный баннер, сохраняя фокус на поиске; на charity-лендинге раскрываем условия подробнее для тех, кто уже интересуется благотворительностью.</p>
-      </section>
-
-      <!-- Выбор фонда — два видео рядом в карточках с плашками-подписями (как «До/После»). -->
-      <section class="case-block case-moodboard case-choose-fund" id="choose-fund" tabindex="-1">
-        <h2 class="case-moodboard__title text-h1">Выбор фонда</h2>
-        <p data-subtitle class="case-moodboard__subtitle case-subtitle text-body-lg">Я перенесла выбор фонда на первый экран: до выбора суммы можно узнать о подставленном фонде. При смене фонда открывается список, а из него можно перейти на страницу фонда с отчётами «Добрые дела фонда». При разовом пожертвовании подставляем фонды из случайных категорий, чтобы помощь получали и менее популярные направления, помимо детей и животных.</p>
-
-        <div class="case-comparison__grid case-cards-grid case-cards-grid--cols-2">
-          <div class="case-comparison__card case-comparison__card--portrait case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <video src="media/choose-fund/subscription-fund-flow-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор фонда при оформлении подписки"></video>
-            </div>
-            <p class="case-card__subtitle text-body">Подписка</p>
-          </div>
-          <div class="case-comparison__card case-comparison__card--portrait case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <video src="media/choose-fund/one-time-donation-flow-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор фонда при разовом пожертвовании"></video>
-            </div>
-            <p class="case-card__subtitle text-body">Разовое пожертвование</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Настроить подписку — два видео рядом в карточках с плашками-подписями (как «До/После») + текст ниже. -->
-      <section class="case-block case-moodboard case-settings" id="settings" tabindex="-1">
-        <h2 class="case-moodboard__title text-h1">Настроить подписку</h2>
-        <p data-subtitle class="case-moodboard__subtitle case-subtitle text-body-lg">На экране подключения я собрала основные условия подписки: фонд, сумму и ежемесячность списаний. Человек может выбрать 100, 300 или 500 ₽ либо указать свою сумму. Пояснение о повторении платежа находится рядом с суммой, до кнопки подключения.</p>
-
-        <div class="case-comparison__grid case-cards-grid case-cards-grid--cols-2">
-          <div class="case-comparison__card case-comparison__card--portrait case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <video src="media/settings/subscription-payment-flow-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Подключение подписки: выбор суммы и оплата"></video>
-            </div>
-            <p class="case-card__subtitle text-body">Оплата</p>
-          </div>
-          <div class="case-comparison__card case-comparison__card--portrait case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <video src="media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Шторка «Как это работает» с условиями подписки"></video>
-            </div>
-            <p class="case-card__subtitle text-body">Как это работает</p>
-          </div>
-        </div>
-
-        <p class="case-comparison__description case-subtitle text-body-lg">Дополнительные условия вынесены в «Как это работает»: отсутствие комиссии, перечисление денег фондам напрямую, ежемесячный «Знак добра», возможность изменения и отключения подписки. Это позволяет сохранить основной экран компактным и дать подробности тем, кому они нужны.</p>
-      </section>
-
-      <!-- Экран благодарности — компонент сравнения .case-comparison (как «Прежний флоу»). -->
-      <section class="case-block case-comparison case-success" id="success" tabindex="-1">
-        <h2 class="text-h1">Экран благодарности</h2>
-        <p class="case-comparison__subtitle case-subtitle text-body-lg">Экраны благодарности в charity-сценариях выглядели по-разному, а прежнюю анимацию заменили статичным изображением. Я разработала общий подход для полноэкранного формата, шторки и модального окна: понятное подтверждение действия, вклад пользователя и благодарность.</p>
-
-        <div class="case-comparison__grid case-cards-grid case-cards-grid--cols-2">
-          <div class="case-comparison__card case-comparison__card--portrait case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <img src="media/success/before.webp" alt="Прежний экран благодарности со статичным изображением" width="1600" height="2000" loading="lazy" />
-            </div>
-            <p class="case-card__subtitle text-body">До</p>
-          </div>
-          <div class="case-comparison__card case-comparison__card--portrait case-card case-card--media case-card--align-bottom" style="--card-pad-bottom: 40px">
-            <div class="case-card__media">
-              <video src="media/success/after-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Новый экран благодарности: подтверждение, вклад пользователя и благодарность"></video>
-            </div>
-            <p class="case-card__subtitle text-body">После</p>
-          </div>
-        </div>
-
-        <p class="case-comparison__description case-subtitle text-body-lg">В подписке экран подтверждает ежемесячную помощь и её условия. Добавила анимацию сердечек, чтобы благодарность была теплее, и два действия: поделиться и добавить «Знак добра» на объявление.</p>
-        <p class="case-subtitle text-body-lg">Масштаб использования: около 2 000 показов экранов благодарности в день во всех charity-сценариях.</p>
-      </section>
-
-      <!-- Управление подпиской — два квадрата рядом (.sub-pair). -->
-      <section class="case-block case-role case-manage" id="manage" tabindex="-1">
-        <h2 class="case-role__title text-h1">Управление подпиской</h2>
-        <p class="case-role__subtitle case-subtitle text-body-lg">Управление подпиской доступно из профиля и со страниц «Знака добра» в charity. В профиле видны фонд, сумма и дата ближайшего платежа — сумму можно быстро изменить прямо в карточке.</p>
-        <p class="case-role__subtitle case-subtitle text-body-lg">В настройках можно указать другую сумму или отключить подписку. Сменить фонд можно через отключение и новую подписку. В MVP так сделали, потому что так устроена платёжная система Юкассы. Смена фонда без отключения запланирована следующим шагом.</p>
-
-        <div class="sub-pair">
-          <div class="case-cover__media"><img src="media/manage/manage-1.webp" width="1424" height="1424" alt="Карточка «Доброй подписки» в профиле: сумма, настройки и дата ближайшего платежа" loading="lazy" /></div>
-          <div class="case-cover__media"><img src="media/manage/manage-2.webp" width="1424" height="1424" alt="Баннер «Доброй подписки» на странице «Знака добра»" loading="lazy" /></div>
-        </div>
-        <p class="case-role__description case-subtitle text-body-lg">Здесь мы видим уже синие контролы, так как форма расположена сразу на лендинге, вне платёжного флоу. Здесь решили стилизовать чипсы и кнопку под стиль charity.</p>
-
-      </section>
-
-      <!-- Итог — текст и та же обложка, что в первом блоке кейса. -->
-      <section class="case-block case-summary-end" id="summary-end" tabindex="-1">
-        <h2 class="text-h1">Итог</h2>
-        <p class="case-cover__subtitle case-subtitle text-body-lg">Запустили регулярную помощь с подключением и управлением подпиской, дополнили выбор фонда информацией о его работе. Дальше важно оценить повторные списания, отмены подписок и конверсию каждой точки входа в подключение.</p>
-
-        <div class="sub-bento">
-          <div class="case-cover__media sub-bento__big"><img src="media/results/bento-1.webp" width="1424" height="1424" alt="Экран благодарности после оформления подписки" loading="lazy" /></div>
-          <div class="case-cover__media sub-bento__wide"><img src="media/results/bento-2.webp" width="1424" height="696" alt="Баннер «Умножайте добро» с приглашением оформить подписку" loading="lazy" /></div>
-          <div class="case-cover__media sub-bento__square"><img src="media/results/bento-3.webp" width="696" height="696" alt="Экран «Вы помогаете фонду» для подписчика" loading="lazy" /></div>
-          <div class="case-cover__media sub-bento__square"><img src="media/results/bento-4.webp" width="696" height="696" alt="Преимущества подписки: без комиссии, знак добра, гибкие настройки, значок #яПомогаю" loading="lazy" /></div>
-        </div>
-
-        <div class="case-cover__metrics-scroll">
-          <div class="case-cover__metrics">
-            <div class="case-metric case-metric--theme">
-              <p class="case-metric__value">~55</p>
-              <p class="case-metric__label text-body-sm">Новых подписок в день, поток стабильный</p>
-              <div class="case-metric__art sub-chart" aria-hidden="true">
-                <svg viewBox="0 0 360 180">
-                  <defs>
-                    <linearGradient id="sub-chart-bar-end" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0" stop-color="var(--case-accent)" stop-opacity=".32"/>
-                      <stop offset="1" stop-color="var(--case-accent)" stop-opacity=".08"/>
-                    </linearGradient>
-                    <linearGradient id="sub-chart-bar-accent-end" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0" stop-color="var(--case-accent)"/>
-                      <stop offset="1" stop-color="var(--case-accent)" stop-opacity=".55"/>
-                    </linearGradient>
-                  </defs>
-                  <g class="sub-chart__bars">
-                    <rect x="36" y="60" width="18" height="100" rx="9" style="--i:0"/>
-                    <rect x="66" y="46" width="18" height="114" rx="9" style="--i:1"/>
-                    <rect x="96" y="54" width="18" height="106" rx="9" style="--i:2"/>
-                    <rect x="126" y="44" width="18" height="116" rx="9" style="--i:3"/>
-                    <rect x="156" y="52" width="18" height="108" rx="9" style="--i:4"/>
-                    <rect x="186" y="56" width="18" height="104" rx="9" style="--i:5"/>
-                    <rect x="216" y="42" width="18" height="118" rx="9" style="--i:6"/>
-                    <rect x="246" y="50" width="18" height="110" rx="9" style="--i:7"/>
-                    <rect x="276" y="48" width="18" height="112" rx="9" style="--i:8"/>
-                    <rect x="306" y="50" width="18" height="110" rx="9" class="is-accent" style="--i:9"/>
-                  </g>
-                </svg>
-              </div>
-            </div>
-            <div class="case-metric">
-              <p class="case-metric__value">+64%</p>
-              <p class="case-metric__label text-body-sm">Средний платёж выше минимального</p>
-              <div class="case-metric__art sub-chart" aria-hidden="true">
-                <svg viewBox="0 0 360 180">
-                  <g class="sub-chart__bars">
-                    <rect x="92" y="62" width="80" height="88" rx="18" style="--i:0"/>
-                    <rect x="188" y="6" width="80" height="144" rx="18" class="is-accent" style="--i:3"/>
-                  </g>
-                  <text class="sub-chart__note" x="132" y="174" text-anchor="middle">минимум</text>
-                  <text class="sub-chart__note" x="228" y="174" text-anchor="middle">средний</text>
-                </svg>
-              </div>
-            </div>
-            <div class="case-metric">
-              <p class="case-metric__value">~1 300</p>
-              <p class="case-metric__label text-body-sm">Открытий отчётов в день, людям важно знать о фонде</p>
-              <div class="case-metric__art sub-chart sub-chart--line" aria-hidden="true">
-                <svg viewBox="0 0 360 180">
-                  <defs>
-                    <linearGradient id="sub-chart-fill-end" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0" stop-color="var(--case-icon-2)" stop-opacity=".22"/>
-                      <stop offset="1" stop-color="var(--case-icon-2)" stop-opacity="0"/>
-                    </linearGradient>
-                    <clipPath id="sub-chart-clip-end"><rect x="24" y="0" width="312" height="180"/></clipPath>
-                  </defs>
-                  <g clip-path="url(#sub-chart-clip-end)">
-                    <g class="sub-chart__wave">
-                      <path class="sub-chart__area" fill="url(#sub-chart-fill-end)" d="M-236 79.67 L-232 78.41 L-228 77.20 L-224 76.05 L-220 74.97 L-216 73.98 L-212 73.08 L-208 72.29 L-204 71.60 L-200 71.03 L-196 70.58 L-192 70.26 L-188 70.07 L-184 70.00 L-180 70.07 L-176 70.26 L-172 70.58 L-168 71.03 L-164 71.60 L-160 72.29 L-156 73.08 L-152 73.98 L-148 74.97 L-144 76.05 L-140 77.20 L-136 78.41 L-132 79.67 L-128 80.98 L-124 82.31 L-120 83.66 L-116 85.01 L-112 86.36 L-108 87.68 L-104 88.96 L-100 90.20 L-96 91.39 L-92 92.50 L-88 93.53 L-84 94.48 L-80 95.33 L-76 96.07 L-72 96.70 L-68 97.21 L-64 97.59 L-60 97.85 L-56 97.98 L-52 97.98 L-48 97.85 L-44 97.59 L-40 97.21 L-36 96.70 L-32 96.07 L-28 95.33 L-24 94.48 L-20 93.53 L-16 92.50 L-12 91.39 L-8 90.20 L-4 88.96 L0 87.68 L4 86.36 L8 85.01 L12 83.66 L16 82.31 L20 80.98 L24 79.67 L28 78.41 L32 77.20 L36 76.05 L40 74.97 L44 73.98 L48 73.08 L52 72.29 L56 71.60 L60 71.03 L64 70.58 L68 70.26 L72 70.07 L76 70.00 L80 70.07 L84 70.26 L88 70.58 L92 71.03 L96 71.60 L100 72.29 L104 73.08 L108 73.98 L112 74.97 L116 76.05 L120 77.20 L124 78.41 L128 79.67 L132 80.98 L136 82.31 L140 83.66 L144 85.01 L148 86.36 L152 87.68 L156 88.96 L160 90.20 L164 91.39 L168 92.50 L172 93.53 L176 94.48 L180 95.33 L184 96.07 L188 96.70 L192 97.21 L196 97.59 L200 97.85 L204 97.98 L208 97.98 L212 97.85 L216 97.59 L220 97.21 L224 96.70 L228 96.07 L232 95.33 L236 94.48 L240 93.53 L244 92.50 L248 91.39 L252 90.20 L256 88.96 L260 87.68 L264 86.36 L268 85.01 L272 83.66 L276 82.31 L280 80.98 L284 79.67 L288 78.41 L292 77.20 L296 76.05 L300 74.97 L304 73.98 L308 73.08 L312 72.29 L316 71.60 L320 71.03 L324 70.58 L328 70.26 L332 70.07 L336 70.00 L340 70.07 V160 H-236 Z"/>
-                      <path class="sub-chart__line" d="M-236 79.67 L-232 78.41 L-228 77.20 L-224 76.05 L-220 74.97 L-216 73.98 L-212 73.08 L-208 72.29 L-204 71.60 L-200 71.03 L-196 70.58 L-192 70.26 L-188 70.07 L-184 70.00 L-180 70.07 L-176 70.26 L-172 70.58 L-168 71.03 L-164 71.60 L-160 72.29 L-156 73.08 L-152 73.98 L-148 74.97 L-144 76.05 L-140 77.20 L-136 78.41 L-132 79.67 L-128 80.98 L-124 82.31 L-120 83.66 L-116 85.01 L-112 86.36 L-108 87.68 L-104 88.96 L-100 90.20 L-96 91.39 L-92 92.50 L-88 93.53 L-84 94.48 L-80 95.33 L-76 96.07 L-72 96.70 L-68 97.21 L-64 97.59 L-60 97.85 L-56 97.98 L-52 97.98 L-48 97.85 L-44 97.59 L-40 97.21 L-36 96.70 L-32 96.07 L-28 95.33 L-24 94.48 L-20 93.53 L-16 92.50 L-12 91.39 L-8 90.20 L-4 88.96 L0 87.68 L4 86.36 L8 85.01 L12 83.66 L16 82.31 L20 80.98 L24 79.67 L28 78.41 L32 77.20 L36 76.05 L40 74.97 L44 73.98 L48 73.08 L52 72.29 L56 71.60 L60 71.03 L64 70.58 L68 70.26 L72 70.07 L76 70.00 L80 70.07 L84 70.26 L88 70.58 L92 71.03 L96 71.60 L100 72.29 L104 73.08 L108 73.98 L112 74.97 L116 76.05 L120 77.20 L124 78.41 L128 79.67 L132 80.98 L136 82.31 L140 83.66 L144 85.01 L148 86.36 L152 87.68 L156 88.96 L160 90.20 L164 91.39 L168 92.50 L172 93.53 L176 94.48 L180 95.33 L184 96.07 L188 96.70 L192 97.21 L196 97.59 L200 97.85 L204 97.98 L208 97.98 L212 97.85 L216 97.59 L220 97.21 L224 96.70 L228 96.07 L232 95.33 L236 94.48 L240 93.53 L244 92.50 L248 91.39 L252 90.20 L256 88.96 L260 87.68 L264 86.36 L268 85.01 L272 83.66 L276 82.31 L280 80.98 L284 79.67 L288 78.41 L292 77.20 L296 76.05 L300 74.97 L304 73.98 L308 73.08 L312 72.29 L316 71.60 L320 71.03 L324 70.58 L328 70.26 L332 70.07 L336 70.00 L340 70.07"/>
-                    </g>
-                  </g>
-                  <g class="sub-chart__marker">
-                    <circle class="sub-chart__halo" cx="336" cy="70" r="14"/>
-                    <circle class="sub-chart__dot" cx="336" cy="70" r="6"/>
-                  </g>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <ul class="case-next__list case-subtitle text-body-lg">
-          <li><strong>Людям нужен простой способ помогать регулярно.</strong> Проверяли по числу подключений без отдельного продвижения. В среднем ~55 новых подписок в день, гипотеза подтвердилась.</li>
-          <li><strong>Отчёты фонда помогают решиться на пожертвование.</strong> Запрос пришёл из исследований. После запуска вкладку «Добрые дела фонда» открывают ~1 000 раз в день со «Знака добра» и ~300 раз с #яПомогаю: спрос подтвердился.</li>
-          <li><strong>Подсказки сумм мотивируют выбирать больше минимума.</strong> Предложила варианты 100, 300 и 500 ₽. Средний платёж на 64% выше минимальной суммы: люди чаще выбирают сумму больше 100 ₽.</li>
-          <li><strong>Оплата не должна терять людей.</strong> Цель пока не достигнута. Около половины оплат не доходит до конца на внешнем интерфейсе ЮKassa. Следующий шаг: переход на платёжный флоу Авито.</li>
-        </ul>
-      </section>
-
+<div class="case-block cg-gallery">
+  <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 1; --g-row: 1; --gm-col: 1; --gm-row: 1">
+    <img src="media/results/bento-4.webp" width="696" height="696" alt="Преимущества подписки: без комиссии, гибкие настройки и знак добра" loading="lazy" />
+  </div>
+  <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 2; --g-row: 3; --gm-col: 2; --gm-row: 2">
+    <img src="media/results/final-concept-small-v2.webp" width="700" height="840" alt="Концепт «Доброй подписки» — маленький кадр" loading="lazy" />
+  </div>
+  <div class="cg-gallery__tile cg-gallery__tile--big case-cover__media case-cover__media--natural" style="--g-col: 3; --gm-row: 3">
+    <img src="media/results/final-concept-large.webp" width="1400" height="1680" alt="Концепт «Доброй подписки» — большой кадр" loading="lazy" />
+  </div>
+</div>
     </div>
     </div>
   </main>
@@ -902,21 +344,6 @@ body {
   <script src="../../../components/case-toc/case-toc.js?v=10"></script>
   <script src="../../../components/content-reveal/content-reveal.js?v=1"></script>
   <script src="../../../components/page-motion/page-motion.js?v=10"></script>
-  <script src="../../../components/case-lightbox/case-lightbox.js?v=13"></script>
-  <script>
-  /* Графики метрик: запуск анимации при появлении карточки во вьюпорте. */
-  (function () {
-    var charts = document.querySelectorAll('.sub-chart');
-    if (!charts.length) return;
-    if (!('IntersectionObserver' in window)) return;
-    document.documentElement.classList.add('js-sub-charts');
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('is-drawn'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.4 });
-    charts.forEach(function (c) { io.observe(c); });
-  })();
-  </script>
+  <script src="../../../components/case-lightbox/case-lightbox.js?v=14"></script>
 </body>
 </html>

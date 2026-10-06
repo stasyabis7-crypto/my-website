@@ -155,7 +155,7 @@
 /* На телефоне плитка встаёт по порядку; --gm-col и --gm-row ставят её
    в свою ячейку, чтобы соседняя осталась пустой. */
 .cg-gallery__tile {
-  grid-column: var(--gm-col, auto) / span var(--g-span, 1);
+  grid-column: var(--gm-col, auto) / span var(--gm-span, var(--g-span, 1));
   grid-row: var(--gm-row, auto);
 }
 .cg-gallery__tile img {
@@ -218,7 +218,14 @@
   display: grid;
   grid-template-columns: subgrid;
 }
-.cg-list dt { grid-column: 1 / var(--cg-axis); margin: 0; }
+.cg-list dt {
+  grid-column: 1 / var(--cg-axis);
+  min-width: 0;
+  margin: 0;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  overflow-wrap: anywhere;
+}
 /* Серым — только подписи: названия полей и вводные слова абзаца. */
 .cg-list dt,
 .cg-label { color: var(--color-text-muted); }
