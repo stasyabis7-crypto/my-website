@@ -135,7 +135,7 @@ body {
         <a class="btn btn--fill-toc" href="#conditions"><span>Условия отправки</span></a>
         <a class="btn btn--fill-toc" href="#customers"><span>Работа с покупателем</span></a>
         <a class="btn btn--fill-toc" href="#after-send"><span>После отправки</span></a>
-        <a class="btn btn--fill-toc" href="#results"><span>Итог</span></a>
+        <a class="btn btn--fill-toc" href="#results"><span>Результаты</span></a>
       </nav>
     </div>
   </aside>
@@ -158,10 +158,8 @@ body {
 
         <!-- Первый кадр кейса — та же обложка, что записана в
              pages/home/data/projects.js: видео с заглушкой. -->
-        <div class="cg-stage cg-q234 cg-row-2" style="--stage-w: 82%">
-          <div class="case-cover__media case-cover__media--natural">
-            <video src="/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-1440x900-60fps.mp4" poster="/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-poster-1440x900.webp" width="2880" height="1800" muted loop playsinline autoplay preload="auto" aria-label="Раздел CRM в кабинете Ozon Seller: постоянные покупатели и рекомендации по сегментам"></video>
-          </div>
+        <div class="case-cover__media case-cover__media--natural cg-bleed cg-q234 cg-row-2">
+          <video src="/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-1440x900-60fps.mp4" poster="/projects/ozon-crm/customer-segments/covers/crm-flow-short-stable-poster-1440x900.webp" width="2880" height="1800" muted loop playsinline autoplay preload="auto" aria-label="Раздел CRM в кабинете Ozon Seller: постоянные покупатели и рекомендации по сегментам"></video>
         </div>
 
         <!-- Поля проекта: роль, команда и срок вместо отдельных секций. -->
@@ -179,16 +177,14 @@ body {
           <h2 class="text-h1">О проекте</h2>
           <div class="cg-intro__text">
             <p class="text-body-lg" data-subtitle>Мы создавали «Сегменты покупателей» с нуля как часть CRM Ozon Seller. Задача пришла от SPO: дать продавцам инструмент для работы с покупательской базой</p>
+            <p class="text-body-lg" data-subtitle>Продавец видит показатели каждой группы и рекомендации действий</p>
+            <p class="text-body-lg" data-subtitle>Раздел объединяет покупателей в группы по их покупкам и интересу к товарам</p>
+            <p class="text-body-lg" data-subtitle>В MVP вошли готовые сегменты и подсегменты. Создание собственных сегментов оставили за рамками первого запуска</p>
           </div>
         </div>
 
-        <div class="case-cover__media case-cover__media--natural cg-l">
-            <img src="media/about/banner.webp" width="1200" height="801" alt="" />
-          </div>
-        <div class="cg-text cg-r">
-          <p data-subtitle class="text-body-lg">Продавец видит показатели каждой группы и рекомендации действий</p>
-          <p data-subtitle class="text-body-lg">Раздел объединяет покупателей в группы по их покупкам и интересу к товарам</p>
-          <p data-subtitle class="text-body-lg">В MVP вошли готовые сегменты и подсегменты. Создание собственных сегментов оставили за рамками первого запуска</p>
+        <div class="case-cover__media case-cover__media--natural cg-bleed">
+          <img src="media/about/banner.webp" width="1200" height="801" alt="" />
         </div>
       </section>
 
@@ -360,20 +356,18 @@ body {
         </div>
       </section>
 
+      <!-- Галерея перед «Результатами», сетка как в ленте Главной. -->
+      <div class="case-block cg-gallery">
+        <div class="cg-gallery__tile cg-gallery__tile--big case-cover__media case-cover__media--natural" style="--g-col: 1"><img src="media/results/bento-1.webp?v=2" width="1424" height="1424" alt="Итоговый экран CRM" loading="lazy" /></div>
+        <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 1"><img src="media/results/bento-3.webp" width="696" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
+      </div>
+
       <section class="case-block cg" id="results" tabindex="-1">
-        <div class="cg-intro">
-          <h2 class="text-h1">Итог</h2>
+        <div class="cg-intro cg-intro--thirds">
+          <h2 class="text-h1">Результаты</h2>
           <div class="cg-intro__text">
             <p class="text-body-lg">В результате проектирования получился связный CRM-сценарий: понять аудиторию, выбрать действие, настроить коммуникацию и оценить отклик. Мой основной вклад: концепция ключевого сегмента и пошаговая организация настройки, которые задают понятную последовательность работы с продуктом.</p>
           </div>
-        </div>
-
-        <!-- Бенто как лента Главной: крупный кадр слева, широкий и два квадрата справа. -->
-        <div class="cg-gallery">
-          <div class="cg-gallery__tile cg-gallery__tile--big case-cover__media case-cover__media--natural" style="--g-col: 1"><img src="media/results/bento-1.webp?v=2" width="1424" height="1424" alt="Итоговый экран CRM" loading="lazy" /></div>
-          <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 1; --g-span: 2"><img src="media/results/bento-2.webp?v=2" width="1424" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
-          <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 2"><img src="media/results/bento-3.webp" width="696" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
-          <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 4; --g-row: 2"><img src="media/results/bento-4.webp?v=2" width="696" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
         </div>
 
         <div class="cg-item cg-item--stat cg-t1">
@@ -391,6 +385,12 @@ body {
 
         <p class="text-body cg-t23">Вклад отдельных решений не измеряли</p>
       </section>
+
+      <!-- Галерея после «Результатов»: зеркально первой. -->
+      <div class="case-block cg-gallery">
+        <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 2; --g-row: 1"><img src="media/results/bento-4.webp?v=2" width="696" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
+        <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 2; --g-span: 2"><img src="media/results/bento-2.webp?v=2" width="1424" height="696" alt="Итоговый экран CRM" loading="lazy" /></div>
+      </div>
 
     </div>
     </div>
