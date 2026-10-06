@@ -9,7 +9,7 @@
   // Видео (обложка кейса) входят в ту же галерею: в полноэкранном слайде
   // у них свои контролы — плей/пауза, дорожка и время. Подпись у видео —
   // aria-label вместо alt.
-  var SELECTOR = '.case-cover__media img, .case-cover__media video, .case-card__media img, .case-card__media video, .case-card__media-overlay, .case-role__col-art img, .case-moodboard__media img, .case-moodboard__media video, .case-screens-frame img, .playground-grid .works-grid__item img';
+  var SELECTOR = '.case-cover__media img, .case-cover__media video, .case-card__media img, .case-card__media video, .case-card__media-overlay, .case-role__col-art img, .case-moodboard__media img, .case-moodboard__media video, .case-screens-frame img, .cg-photo img, .cg-gallery__tile img, .playground-grid .works-grid__item img';
 
   var MIN_SCALE = 1;
   var MAX_SCALE = 4;
@@ -45,7 +45,11 @@
       // страницы (счётчик/пролистывание по всем фото) не входит.
       // [data-no-lightbox] — повтор медиа, которое уже есть в галерее
       // (например, обложка в «Итоге»).
-      return !!(alt && alt.trim()) && !img.closest('#about, .case-about, [data-no-lightbox]');
+      // На страницах на сетке (.case--grid) «О проекте» — обычный кадр
+      // интерфейса и открывается, как остальные.
+      var decorative = img.closest('.case-about, [data-no-lightbox]') ||
+        (img.closest('#about') && !img.closest('.case--grid'));
+      return !!(alt && alt.trim()) && !decorative;
     });
     if (!items.length) return;
 
