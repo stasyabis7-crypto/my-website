@@ -11,6 +11,8 @@
   let gutter = 0;
   const measureGutter = () => {
     gutter = feed ? parseFloat(getComputedStyle(feed).paddingLeft) || 0 : 0;
+    hero.style.setProperty('--hero-scroll-gutter', `${gutter}px`);
+    hero.style.setProperty('--hero-inline-size', `${hero.clientWidth}px`);
   };
   measureGutter();
   const scrollReduced = matchMedia('(prefers-reduced-motion: reduce)');

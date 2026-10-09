@@ -190,7 +190,11 @@ to { opacity: 1; transform: translateY(0); } }
 /* The copy lies on the yellow sweater here, so it is dark, not white. */
 .mood-hero--video .mood-content { width: 100%; text-align: center; color: #111; }
 .mood-hero--video .mood-title { margin-inline: auto; }
-.mood-hero--video .mood-subtitle { margin-inline: auto !important; }
+.mood-hero--video .mood-subtitle {
+  margin-inline: auto !important;
+  /* Keep line breaks stable from the full-width frame to its grid inset. */
+  width: calc(var(--hero-inline-size, 100vw) - 44px - 2 * var(--hero-scroll-gutter, 16px));
+}
 .mood-hero--video .mood-actions { justify-content: center; }
 /* Blur only, no tint: a feathered ellipse behind the copy and the button. */
 .mood-hero--video .mood-content::before {
