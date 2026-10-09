@@ -3,6 +3,31 @@
   'use strict';
   const hero = document.querySelector('.mood-hero--video');
   if (!hero) return;
+  // Scroll the frame more slowly than the page, opening a small rounded gutter.
+  // Only this banner moves: the document, anchors and touch scrolling stay native.
+  const stage = hero.querySelector('.mood-stage');
+  const backdrop = hero.querySelector('.hero-video');
+  const scrollReduced = matchMedia('(prefers-reduced-motion: reduce)');
+  let scrollFrame = 0;
+  const syncScroll = () => {
+    scrollFrame = 0;
+    const height = hero.offsetHeight;
+    const distance = Math.max(0, Math.min(height, -hero.getBoundingClientRect().top));
+    const progress = scrollReduced.matches ? 0 : Math.min(1, distance / (height * .45));
+    const edge = Math.min(10, hero.clientWidth * .025) * progress;
+    backdrop.style.transform = `translateY(${scrollReduced.matches ? 0 : distance * .15}px)`;
+    stage.style.marginInline = `${edge}px`;
+    stage.style.borderRadius = `${16 * progress}px`;
+  };
+  const queueScroll = () => {
+    if (!scrollFrame) scrollFrame = requestAnimationFrame(syncScroll);
+  };
+  addEventListener('scroll', queueScroll, { passive: true });
+  addEventListener('resize', queueScroll, { passive: true });
+  addEventListener('pageshow', queueScroll);
+  scrollReduced.addEventListener('change', queueScroll);
+  new ResizeObserver(queueScroll).observe(hero);
+  syncScroll();
   const title = hero.querySelector('.mood-title');
   // Preserve the heading's accessible name and spaces, including Cyrillic copy.
   const words = title.textContent.trim().split(/\s+/);

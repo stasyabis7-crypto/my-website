@@ -139,7 +139,7 @@ to { opacity: 1; transform: translateY(0); } }
 
 /* Home video banner: full-bleed clip behind the copy. The colours are fixed —
    the copy sits on footage, so it does not follow the site theme. */
-.mood-hero--video { padding: 0; }
+.mood-hero--video { padding: 0; overflow: clip; }
 .mood-hero--video .mood-stage {
   height: var(--hero-vh, 100svh);
   min-height: 0;
