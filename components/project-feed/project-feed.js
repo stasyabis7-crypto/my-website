@@ -24,16 +24,13 @@
     // focus — какая часть горизонтальной обложки остаётся в вертикальной плитке.
     // feed — отдельная вертикальная обложка для плитки ленты; с ней кадр
     // страницы кейса (image/video) в ленте не используется.
-    if (project.feed) {
-      return '<img src="' + escape(project.feed.image) + '" width="' + project.feed.width + '" height="' + project.feed.height +
-        '" alt="' + escape(project.alt) + '" loading="lazy" decoding="async" />';
-    }
+    var source = project.feed || project;
     var focus = project.focus ? ' style="object-position:' + escape(project.focus) + '"' : '';
-    var poster = '<img src="' + escape(project.image) + '" width="' + project.width + '" height="' + project.height +
+    var poster = '<img src="' + escape(source.image) + '" width="' + source.width + '" height="' + source.height +
       '" alt="' + escape(project.alt) + '" loading="lazy" decoding="async"' + focus + ' />';
-    if (!project.video || reduced.matches) return poster;
-    return '<video src="' + escape(project.video) + '" poster="' + escape(project.image) + '" width="' + project.width +
-      '" height="' + project.height + '" muted loop playsinline autoplay preload="auto" aria-label="' + escape(project.alt) + '"' + focus + '></video>';
+    if (!source.video || reduced.matches) return poster;
+    return '<video src="' + escape(source.video) + '" poster="' + escape(source.image) + '" width="' + source.width +
+      '" height="' + source.height + '" muted loop playsinline autoplay preload="auto" aria-label="' + escape(project.alt) + '"' + focus + '></video>';
   }
 
   /* Раскладка каталога: 4 колонки, две крупные обложки 2×2, остальные 1×1,

@@ -10,6 +10,8 @@
    «Скоро появится»; ему нужны только title, feed и alt.
    feed — необязательная вертикальная обложка только для ленты Главной
    (крупная плитка 3:4, обычная 5:6); страница кейса берёт image/video.
+   feed.video — зацикленная обложка ленты без звука; feed.image — её первый кадр
+   на время загрузки и при reduced motion.
    focus — необязательная точка кадрирования (object-position): плитки ленты
    вертикальные, а обложки пока горизонтальные; по умолчанию — центр. */
 window.portfolioPlatforms = [
@@ -32,7 +34,7 @@ window.portfolioTags = [
 window.portfolioProjects = [
   {
     id: 'customer-segments',
-    feed: { image: '/projects/ozon-crm/customer-segments/covers/feed-cover-1800x2400.webp', width: 1800, height: 2400 },
+    feed: { image: '/projects/ozon-crm/customer-segments/covers/feed-cover-preview-900x1200.webp', video: '/projects/ozon-crm/customer-segments/covers/feed-cover-preview-900x1200.mp4', width: 900, height: 1200 },
     title: 'CRM для продавцов Ozon',
     description: 'Сегменты покупателей и рассылки для продавцов',
     href: '/projects/ozon-crm/customer-segments/',
