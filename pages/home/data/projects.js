@@ -47,7 +47,7 @@ window.portfolioProjects = [
   },
   {
     id: 'recycle-map',
-    feed: { image: '/projects/avito-charity/recycle-map/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
+    feed: { image: '/projects/avito-charity/recycle-map/covers/feed-cover-showreel-750x900.webp', video: '/projects/avito-charity/recycle-map/covers/feed-cover-showreel-750x900.mp4', width: 750, height: 900 },
     title: 'Карта переработки вещей',
     description: 'Поиск пункта приёма, фильтры и избранное',
     href: '/projects/avito-charity/recycle-map/',
