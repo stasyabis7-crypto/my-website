@@ -75,7 +75,7 @@ window.portfolioProjects = [
     id: 'about-company',
     soon: true,
     title: 'Лендинг о компании Авито',
-    feed: { image: '/projects/avito-charity/about-company/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
+    feed: { image: '/projects/avito-charity/about-company/covers/feed-cover-cifry-750x900.webp', video: '/projects/avito-charity/about-company/covers/feed-cover-cifry-750x900.mp4', width: 750, height: 900 },
     alt: 'Телефон в руке с лендингом Авито: пять бизнес-направлений — товары, авто, недвижимость, работа'
   },
   {
