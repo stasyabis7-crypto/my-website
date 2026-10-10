@@ -48,11 +48,12 @@
 .article-tile .article-tile__description { max-width: 36ch; margin-top: 8px; }
 /* Кнопка — единственная ссылка плитки; её зона клика растянута на всю плитку. */
 .article-tile__action {
+  --action-top: var(--tile-pad);
   position: absolute;
-  top: var(--tile-pad);
+  top: var(--action-top);
   right: var(--tile-pad);
   --hit-left: calc(var(--tile-pad) + var(--button-height) - 100cqw - 2 * var(--tile-pad));
-  --hit-top: calc(-1 * var(--tile-pad));
+  --hit-top: calc(-1 * var(--action-top));
   --hit-width: calc(100cqw + 2 * var(--tile-pad));
   --hit-height: calc(100cqh + 2 * var(--tile-pad));
 }
@@ -67,6 +68,7 @@
   .articles-grid > :nth-child(8n + 7) { grid-column: 3 / span 2; grid-row: span 2; }
   .articles-grid > :nth-child(8n + 8) { grid-column: 1; }
   .articles-grid > :is(:nth-child(8n + 1), :nth-child(8n + 7)) { --tile-pad: 32px; }
+  .articles-grid > :is(:nth-child(8n + 1), :nth-child(8n + 7)) .article-tile__action { --action-top: 20px; }
 }
 @media (max-width: 999px) {
   .collection { --articles-gutter: 16px; --articles-gap: 10px; --articles-row-gap: 28px; }
