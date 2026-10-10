@@ -89,7 +89,7 @@ window.portfolioProjects = [
     id: 'patient-app',
     soon: true,
     title: 'Медицинское приложение для пациентов',
-    feed: { image: '/projects/swtec-medical/patient-app/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
+    feed: { image: '/projects/swtec-medical/patient-app/covers/feed-cover-prolaio-750x900.webp', video: '/projects/swtec-medical/patient-app/covers/feed-cover-prolaio-750x900.mp4', width: 750, height: 900 },
     alt: 'Два экрана приложения для пациентов: накопленные баллы с графиком и анкета с выбором пола'
   },
   {
