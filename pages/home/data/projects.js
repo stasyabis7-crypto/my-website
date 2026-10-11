@@ -95,9 +95,9 @@ window.portfolioProjects = [
   {
     id: 'minimum-price',
     soon: true,
-    title: 'Временная минимальная цена',
-    feed: { image: '/projects/ozon-prices/minimum-price/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
-    alt: 'Окно «Отслеживайте срок действия минимальной цены» с будильником и тремя способами настройки'
+    title: 'Бустинг акций в ценах',
+    feed: { image: '/projects/ozon-prices/minimum-price/covers/feed-cover-boosting-v4-22-percent-1500x1800.webp', video: '/projects/ozon-prices/minimum-price/covers/feed-cover-boosting-v4-1500x1800.mp4', width: 1500, height: 1800 },
+    alt: 'Бустинг акций в ценах: карточка с показателем 22% и зелёным индикатором'
   },
   {
     id: 'charity-profile',
