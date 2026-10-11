@@ -103,7 +103,7 @@ window.portfolioProjects = [
     id: 'charity-profile',
     soon: true,
     title: 'Благотворительность в ЛК',
-    feed: { image: '/projects/avito-charity/charity-profile/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
+    feed: { image: '/projects/avito-charity/charity-profile/covers/feed-cover-help-hub-v5-1500x1800.webp', video: '/projects/avito-charity/charity-profile/covers/feed-cover-help-hub-v5-1500x1800.mp4', width: 1500, height: 1800 },
     alt: 'Телефон на зелёной ткани с разделом «#яПомогаю» в Авито: подписки, поддержка людей, забота о природе'
   },
   {
