@@ -192,6 +192,22 @@
   --btn-hover-gradient: linear-gradient(to right, #0fd850 0%, #f9f047 100%);
   --btn-hover-gradient-text: #111111;
 }
+/* Логотип использует тот же проход градиента внутри SVG-маски. */
+@media (hover: hover) and (pointer: fine) {
+  .site-header__logo-mark {
+    background-image: var(--btn-hover-gradient);
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 0% 100%;
+    transition: background-size .5s ease;
+  }
+  .site-header__logo:hover .site-header__logo-mark {
+    background-size: 100% 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-header__logo-mark { transition: none; }
+}
 @media (hover: hover) and (pointer: fine) {
   .btn:is(.btn--fill-pink, .btn--fill-tile, .btn--fill-white, .btn--fill-ink, .btn--fill-chip, .btn--fill-glass, .btn--fill-glass-round, .btn--fill-glass-ui) {
     background-image: var(--btn-hover-gradient);

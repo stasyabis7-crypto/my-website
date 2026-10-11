@@ -158,12 +158,6 @@
   display: none;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .site-header__logo:hover {
-    opacity: var(--btn-hover-opacity, 0.72);
-  }
-}
-
 /* Высота = --chrome-item-h (как у аватара) — ширина следует сама через
    aspect-ratio, а не задана числом: раньше была фиксированной (5rem),
    поэтому не росла вместе с аватаром/кнопкой. */
