@@ -124,7 +124,7 @@ window.portfolioProjects = [
     id: 'doctor-dashboard',
     soon: true,
     title: 'Дашборд для врачей',
-    feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v4-poster.webp', video: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v4.mp4', width: 1800, height: 2400 },
+    feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5-poster.webp', video: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5.mp4', width: 1800, height: 2400 },
     alt: 'Дашборд врача: список пациентов с событиями по дням и почасовой график показателя'
   }
 ];
