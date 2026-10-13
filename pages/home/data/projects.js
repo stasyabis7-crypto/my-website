@@ -117,7 +117,7 @@ window.portfolioProjects = [
     id: 'gamification',
     soon: true,
     title: 'Геймификация в ЛК',
-    feed: { image: '/projects/avito-charity/gamification/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
+    feed: { image: '/projects/avito-charity/gamification/covers/feed-cover-tvorim-dobro-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Блок «Творим добро» со списком заданий и баллами: пожертвовать в фонд, купить мерч, поддержать «ЛизаАлерт»'
   },
   {
