@@ -140,6 +140,13 @@ window.portfolioProjects = [
     title: 'Портрет покупателя',
     feed: { image: '/projects/customer-portrait/covers/feed-cover-segment-chart-motion-poster.webp', video: '/projects/customer-portrait/covers/feed-cover-segment-chart-motion.mp4', width: 1500, height: 1800 },
     alt: 'Портрет покупателя: график распределения покупателей по полу и возрасту'
+  },
+  {
+    id: 'employee-account',
+    soon: true,
+    title: 'ЛК сотрудника',
+    feed: { image: '/projects/employee-account/covers/feed-cover-admin-seating-motion-v3-poster.webp', video: '/projects/employee-account/covers/feed-cover-admin-seating-motion-v3.mp4', width: 1500, height: 1800 },
+    alt: 'Личный кабинет сотрудника: план офиса и управление рабочими местами'
   }
 ];
 
