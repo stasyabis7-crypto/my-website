@@ -126,6 +126,13 @@ window.portfolioProjects = [
     title: 'Дашборд для врачей',
     feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5-poster.webp', video: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5.mp4', width: 1800, height: 2400 },
     alt: 'Дашборд врача: список пациентов с событиями по дням и почасовой график показателя'
+  },
+  {
+    id: 'esg-report',
+    soon: true,
+    title: 'ESG–отчёт',
+    feed: { image: '/projects/esg-report/covers/feed-cover-esg-orbit-motion.webp', video: '/projects/esg-report/covers/feed-cover-esg-orbit-motion.mp4', width: 1800, height: 2400 },
+    alt: 'Анимированная обложка проекта ESG–отчёт'
   }
 ];
 
