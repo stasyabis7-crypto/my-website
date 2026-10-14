@@ -145,7 +145,7 @@ window.portfolioProjects = [
     id: 'esg-report',
     soon: true,
     title: 'ESG–отчёт',
-    feed: { image: '/projects/esg-report/covers/feed-cover-esg-orbit-small-poster.webp', video: '/projects/esg-report/covers/feed-cover-esg-orbit-small.mp4', width: 1500, height: 1800 },
+    feed: { image: '/projects/esg-report/covers/feed-cover-esg-orbit-small-centered-poster.webp', video: '/projects/esg-report/covers/feed-cover-esg-orbit-small-centered.mp4', width: 1500, height: 1800 },
     alt: 'Анимированная обложка проекта ESG–отчёт'
   }
 ];
