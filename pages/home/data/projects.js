@@ -128,11 +128,11 @@ window.portfolioProjects = [
     alt: 'Дашборд врача: список пациентов с событиями по дням и почасовой график показателя'
   },
   {
-    id: 'esg-report',
+    id: 'employee-account',
     soon: true,
-    title: 'ESG–отчёт',
-    feed: { image: '/projects/esg-report/covers/feed-cover-esg-orbit-motion.webp', video: '/projects/esg-report/covers/feed-cover-esg-orbit-motion.mp4', width: 1800, height: 2400 },
-    alt: 'Анимированная обложка проекта ESG–отчёт'
+    title: 'ЛК сотрудника',
+    feed: { image: '/projects/employee-account/covers/feed-cover-admin-seating-large-poster.webp', video: '/projects/employee-account/covers/feed-cover-admin-seating-large.mp4', width: 1500, height: 2000 },
+    alt: 'Личный кабинет сотрудника: план офиса и управление рабочими местами'
   },
   {
     id: 'customer-portrait',
@@ -142,11 +142,11 @@ window.portfolioProjects = [
     alt: 'Портрет покупателя: график распределения покупателей по полу и возрасту'
   },
   {
-    id: 'employee-account',
+    id: 'esg-report',
     soon: true,
-    title: 'ЛК сотрудника',
-    feed: { image: '/projects/employee-account/covers/feed-cover-admin-seating-motion-v3-poster.webp', video: '/projects/employee-account/covers/feed-cover-admin-seating-motion-v3.mp4', width: 1500, height: 1800 },
-    alt: 'Личный кабинет сотрудника: план офиса и управление рабочими местами'
+    title: 'ESG–отчёт',
+    feed: { image: '/projects/esg-report/covers/feed-cover-esg-orbit-small-poster.webp', video: '/projects/esg-report/covers/feed-cover-esg-orbit-small.mp4', width: 1500, height: 1800 },
+    alt: 'Анимированная обложка проекта ESG–отчёт'
   }
 ];
 
