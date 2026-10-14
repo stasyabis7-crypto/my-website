@@ -29,6 +29,8 @@
   height: 100%;
   object-fit: contain;
 }
+.article-tile__media--crop { overflow: hidden; }
+.article-tile__media--crop img { object-fit: cover; object-position: center; }
 .article-tile__title.text-body {
   max-width: none;
   margin: 12px 0 0;
