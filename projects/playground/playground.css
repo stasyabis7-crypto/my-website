@@ -25,6 +25,8 @@
 .playground-grid__item--wide { grid-column: span 2; aspect-ratio: 1852 / 1158; }
 .playground-grid__item--square,
 .playground-grid__item--framed { aspect-ratio: 1; }
+.playground-grid__item--native-video { aspect-ratio: var(--playground-media-ratio); }
+.playground-grid__item--native-video video { object-fit: contain; }
 
 /* Вертикальный экран телефона — целиком внутри квадратной подложки. */
 .playground-grid__item--framed { background: var(--color-surface); }
