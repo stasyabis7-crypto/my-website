@@ -133,6 +133,13 @@ window.portfolioProjects = [
     title: 'ESG–отчёт',
     feed: { image: '/projects/esg-report/covers/feed-cover-esg-orbit-motion.webp', video: '/projects/esg-report/covers/feed-cover-esg-orbit-motion.mp4', width: 1800, height: 2400 },
     alt: 'Анимированная обложка проекта ESG–отчёт'
+  },
+  {
+    id: 'customer-portrait',
+    soon: true,
+    title: 'Портрет покупателя',
+    feed: { image: '/projects/customer-portrait/covers/feed-cover-segment-chart-motion-poster.webp', video: '/projects/customer-portrait/covers/feed-cover-segment-chart-motion.mp4', width: 1500, height: 1800 },
+    alt: 'Портрет покупателя: график распределения покупателей по полу и возрасту'
   }
 ];
 
