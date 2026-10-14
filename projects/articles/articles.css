@@ -1,17 +1,7 @@
-/*
-  Статьи — каталог текстовых плиток, как лента Главной и Посты.
-  Плитка: серая подложка (--color-surface, #F3F4F6), название и описание внизу,
-  круглая стеклянная кнопка со стрелкой в правом верхнем углу; кликается вся
-  плитка (зона клика кнопки растянута на неё).
-  От 1000px: четыре колонки, квадратные плитки, каждая восьмая пара — крупная
-  2×2 попеременно слева и справа, рядом остаётся пустая ячейка. Крупная плитка
-  выше своей ширины на отступ между рядами.
-  700–999px: две колонки квадратов. Ниже 700px: одна колонка, высота по тексту.
-*/
+/* Статьи: обложка и одна подпись обычным текстом, как на Главной. */
 .collection {
   --articles-gutter: 32px;
   --articles-gap: 16px;
-  /* Между рядами воздуха больше, чем между колонками, как в ленте Главной. */
   --articles-row-gap: 48px;
   max-width: none;
   padding-inline: var(--articles-gutter);
@@ -20,44 +10,39 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--articles-row-gap) var(--articles-gap);
+  align-items: start;
   margin: 28px 0 0;
   padding: 0;
   list-style: none;
 }
-.article-tile {
-  --tile-pad: 20px;
+.article-tile { min-width: 0; }
+.article-tile__media {
   container-type: size;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  min-width: 0;
   aspect-ratio: 1;
-  padding: var(--tile-pad);
   background: var(--color-surface);
-  color: var(--color-text);
 }
-.article-tile__title,
-.article-tile__description {
-  min-width: 0;
-  margin: 0;
-  -webkit-hyphens: auto;
-  hyphens: auto;
+.article-tile__media img,
+.article-tile__media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.article-tile__title.text-body {
+  max-width: none;
+  margin: 12px 0 0;
   overflow-wrap: anywhere;
 }
-.article-tile .article-tile__description { max-width: 36ch; margin-top: 8px; }
-/* Кнопка — единственная ссылка плитки; её зона клика растянута на всю плитку. */
 .article-tile__action {
-  --action-top: var(--tile-pad);
   position: absolute;
-  top: var(--action-top);
-  right: var(--tile-pad);
-  --hit-left: calc(var(--tile-pad) + var(--button-height) - 100cqw - 2 * var(--tile-pad));
-  --hit-top: calc(-1 * var(--action-top));
-  --hit-width: calc(100cqw + 2 * var(--tile-pad));
-  --hit-height: calc(100cqh + 2 * var(--tile-pad));
+  top: 16px;
+  right: 16px;
+  --hit-left: calc(16px + var(--button-height) - 100cqw);
+  --hit-top: -16px;
+  --hit-width: 100cqw;
+  --hit-height: 100cqh;
 }
-
 @media (min-width: 1000px) {
   .articles-grid > :nth-child(8n + 1) { grid-column: 1 / span 2; grid-row: span 2; }
   .articles-grid > :nth-child(8n + 2) { grid-column: 3; }
@@ -67,24 +52,17 @@
   .articles-grid > :nth-child(8n + 6) { grid-column: 2; }
   .articles-grid > :nth-child(8n + 7) { grid-column: 3 / span 2; grid-row: span 2; }
   .articles-grid > :nth-child(8n + 8) { grid-column: 1; }
-  .articles-grid > :is(:nth-child(8n + 1), :nth-child(8n + 7)) { --tile-pad: 32px; }
-  .articles-grid > :is(:nth-child(8n + 1), :nth-child(8n + 7)) .article-tile__action { --action-top: 20px; }
 }
 @media (max-width: 999px) {
   .collection { --articles-gutter: 16px; --articles-gap: 10px; --articles-row-gap: 28px; }
   .articles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .article-tile__action {
+    top: 10px;
+    right: 10px;
+    --hit-left: calc(10px + var(--button-height) - 100cqw);
+    --hit-top: -10px;
+  }
 }
 @media (max-width: 699px) {
-  .collection { --articles-row-gap: 10px; }
   .articles-grid { grid-template-columns: minmax(0, 1fr); }
-  .article-tile {
-    --tile-pad: 16px;
-    container-type: inline-size;
-    aspect-ratio: auto;
-    min-height: 140px;
-    padding-right: calc(var(--tile-pad) * 2 + var(--button-height));
-  }
-  /* Высота плитки здесь по тексту — зону клика тянем с запасом, лишнее обрезает плитка. */
-  .article-tile { overflow: hidden; }
-  .article-tile__action { --hit-left: calc(var(--tile-pad) + var(--button-height) - 100cqw - 3 * var(--tile-pad) - var(--button-height)); --hit-width: 200cqw; --hit-height: 1000px; }
 }
