@@ -27,6 +27,8 @@
 .playground-grid__item--framed { aspect-ratio: 1; }
 .playground-grid__item--native-video { aspect-ratio: var(--playground-media-ratio); }
 .playground-grid__item--native-video video { object-fit: contain; }
+.playground-grid__item--portrait { aspect-ratio: 4 / 5; }
+.playground-grid__item--portrait img { object-fit: contain; }
 /* У Homa чёрные пиксели за скруглённым контуром записаны в самом ролике. */
 .playground-catalog > .playground-grid__item--homa { background: var(--color-white, #fff); }
 .playground-grid__item--homa video { clip-path: inset(0 round 1.4% / 2.5%); }
@@ -52,12 +54,15 @@
   /* Ряд 2: квадрат слева, пустая ячейка, широкая справа. */
   .playground-catalog > :nth-child(4) { grid-area: 2 / 1; }
   .playground-catalog > :nth-child(5) { grid-area: 2 / 3 / auto / span 2; }
-  /* Ряд 3: два квадрата через ячейку. */
-  .playground-catalog > :nth-child(6) { grid-area: 3 / 2; }
+  /* Ряд 3: крупный Time Warp слева, квадрат справа. */
+  .playground-catalog > :nth-child(6) { grid-area: 3 / 1 / auto / span 2; }
   .playground-catalog > :nth-child(7) { grid-area: 3 / 4; }
   /* Ряд 4: широкая слева, пустая ячейка, квадрат справа. */
   .playground-catalog > :nth-child(8) { grid-area: 4 / 1 / auto / span 2; }
   .playground-catalog > :nth-child(9) { grid-area: 4 / 4; }
+  /* Ряд 5: две небольшие анимации через ячейку. */
+  .playground-catalog > :nth-child(10) { grid-area: 5 / 2; }
+  .playground-catalog > :nth-child(11) { grid-area: 5 / 4; }
 }
 @media (max-width: 999px) {
   .collection { --pg-gutter: 16px; --pg-gap: 10px; --pg-row-gap: 10px; }
