@@ -27,6 +27,9 @@
 .playground-grid__item--framed { aspect-ratio: 1; }
 .playground-grid__item--native-video { aspect-ratio: var(--playground-media-ratio); }
 .playground-grid__item--native-video video { object-fit: contain; }
+/* У Homa чёрные пиксели за скруглённым контуром записаны в самом ролике. */
+.playground-catalog > .playground-grid__item--homa { background: var(--color-white, #fff); }
+.playground-grid__item--homa video { clip-path: inset(0 round 1.4% / 2.5%); }
 
 /* Вертикальный экран телефона — целиком внутри квадратной подложки. */
 .playground-grid__item--framed { background: var(--color-surface); }
