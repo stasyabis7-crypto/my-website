@@ -30,7 +30,8 @@
   object-fit: contain;
 }
 .article-tile__media--crop { overflow: hidden; }
-.article-tile__media--product-metrics { aspect-ratio: 8 / 9; }
+.article-tile__media--product-metrics,
+.article-tile__media--portrait { aspect-ratio: 8 / 9; }
 .article-tile__media--crop img { object-fit: cover; object-position: center; }
 .article-tile__title.text-body {
   max-width: none;
