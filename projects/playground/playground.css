@@ -57,9 +57,9 @@
   /* Ряд 3: крупный Time Warp слева, квадрат справа. */
   .playground-catalog > :nth-child(6) { grid-area: 3 / 1 / auto / span 2; }
   .playground-catalog > :nth-child(7) { grid-area: 3 / 4; }
-  /* Ряд 4: широкая слева, пустая ячейка, квадрат справа. */
+  /* Ряд 4: две широкие работы, каждая занимает две колонки. */
   .playground-catalog > :nth-child(8) { grid-area: 4 / 1 / auto / span 2; }
-  .playground-catalog > :nth-child(9) { grid-area: 4 / 4; }
+  .playground-catalog > :nth-child(9) { grid-area: 4 / 3 / auto / span 2; }
   /* Ряд 5: две небольшие анимации через ячейку. */
   .playground-catalog > :nth-child(10) { grid-area: 5 / 2; }
   .playground-catalog > :nth-child(11) { grid-area: 5 / 4; }
