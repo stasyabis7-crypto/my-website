@@ -36,7 +36,7 @@ window.portfolioTags = [
 window.portfolioProjects = [
   {
     id: 'customer-segments',
-    feed: { image: '/projects/ozon-crm/customer-segments/covers/feed-cover-preview-900x1200.webp', video: '/projects/ozon-crm/customer-segments/covers/feed-cover-preview-web-900x1200.mp4', width: 900, height: 1200 },
+    feed: { image: '/projects/ozon-crm/customer-segments/covers/feed-cover-frame-2147239075-1800x2400.webp', width: 1800, height: 2400 },
     title: 'CRM для продавцов Ozon',
     description: 'Сегменты покупателей и рассылки для продавцов',
     href: '/projects/ozon-crm/customer-segments/',
@@ -45,11 +45,12 @@ window.portfolioProjects = [
     height: 1800,
     alt: 'Раздел CRM в кабинете Ozon Seller: постоянные покупатели и рекомендации по сегментам',
     platforms: ['web'],
-    tags: ['ozon', 'b2b', 'ecommerce', 'crm']
+    tags: ['ozon', 'b2b', 'ecommerce', 'crm'],
+    place: { c: 1, r: 1, big: true }
   },
   {
     id: 'recycle-map',
-    feed: { image: '/projects/avito-charity/recycle-map/covers/feed-cover-showreel-750x900.webp', video: '/projects/avito-charity/recycle-map/covers/feed-cover-showreel-web-750x900.mp4', width: 750, height: 900 },
+    feed: { image: '/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp', width: 1500, height: 1800 },
     title: 'Карта переработки вещей',
     description: 'Поиск пункта приёма, фильтры и избранное',
     href: '/projects/avito-charity/recycle-map/',
@@ -58,11 +59,12 @@ window.portfolioProjects = [
     height: 1800,
     alt: 'Карта переработки Авито на экране ноутбука: пункты приёма, категории и избранное',
     platforms: ['mobile', 'web'],
-    tags: ['avito', 'b2c', 'charity', 'maps']
+    tags: ['avito', 'b2c', 'charity', 'maps'],
+    place: { c: 3, r: 1 }
   },
   {
     id: 'kind-subscription',
-    feed: { image: '/projects/avito-charity/subscription/covers/feed-cover-loop-750x900.webp', video: '/projects/avito-charity/subscription/covers/feed-cover-loop-web-750x900.mp4', width: 750, height: 900 },
+    feed: { image: '/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp', width: 1500, height: 1800 },
     title: 'Добрая подписка',
     description: 'Ежемесячная помощь фондам в приложении',
     href: '/projects/avito-charity/subscription/',
@@ -71,84 +73,80 @@ window.portfolioProjects = [
     height: 1800,
     alt: '«Добрая подписка» в приложении Авито',
     platforms: ['mobile', 'web'],
-    tags: ['avito', 'b2c', 'charity', 'payments']
+    tags: ['avito', 'b2c', 'charity', 'payments'],
+    place: { c: 4, r: 1 }
   },
   {
     id: 'about-company',
     soon: true,
     title: 'Лендинг о компании Авито',
-    feed: { image: '/projects/avito-charity/about-company/covers/feed-cover-cifry-750x900.webp', video: '/projects/avito-charity/about-company/covers/feed-cover-cifry-web-750x900.mp4', width: 750, height: 900 },
-    alt: 'Телефон в руке с лендингом Авито: пять бизнес-направлений — товары, авто, недвижимость, работа'
+    feed: { image: '/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Телефон в руке с лендингом Авито: пять бизнес-направлений — товары, авто, недвижимость, работа',
+    place: { c: 1, r: 3 }
   },
   {
     id: 'watches-patches',
     soon: true,
     title: 'Медицинское приложение для часов',
     feed: { image: '/projects/swtec-medical/watches-patches/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
-    alt: 'Умные часы с экраном показателей: пульс 100 ударов в минуту, 10 757 шагов, 2 345 килокалорий'
+    alt: 'Умные часы с экраном показателей: пульс 100 ударов в минуту, 10 757 шагов, 2 345 килокалорий',
+    place: { c: 3, r: 3 }
   },
   {
     id: 'patient-app',
     soon: true,
     title: 'Медицинское приложение для пациентов',
-    feed: { image: '/projects/swtec-medical/patient-app/covers/feed-cover-prolaio-phone-750x900.webp', video: '/projects/swtec-medical/patient-app/covers/feed-cover-prolaio-v2-web-750x900.mp4', width: 750, height: 900 },
-    alt: 'Два экрана приложения для пациентов: накопленные баллы с графиком и анкета с выбором пола'
+    feed: { image: '/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Два экрана приложения для пациентов: накопленные баллы с графиком и анкета с выбором пола',
+    place: { c: 4, r: 3 }
   },
   {
     id: 'minimum-price',
     soon: true,
     title: 'Бустинг акций в ценах',
-    feed: { image: '/projects/ozon-prices/minimum-price/covers/feed-cover-boosting-v4-22-percent-1500x1800.webp', video: '/projects/ozon-prices/minimum-price/covers/feed-cover-boosting-v4-900x1080.mp4', width: 1500, height: 1800 },
-    alt: 'Бустинг акций в ценах: карточка с показателем 22% и зелёным индикатором'
+    feed: { image: '/projects/ozon-prices/minimum-price/covers/feed-cover-frame-2147239076-1800x2400.webp', width: 1800, height: 2400 },
+    alt: 'Бустинг акций в ценах: карточка с показателем 22% и зелёным индикатором',
+    place: { c: 1, r: 4, big: true }
   },
   {
     id: 'charity-profile',
     soon: true,
     title: 'Благотворительность в ЛК',
-    feed: { image: '/projects/avito-charity/charity-profile/covers/feed-cover-help-hub-v5-1500x1800.webp', video: '/projects/avito-charity/charity-profile/covers/feed-cover-help-hub-v5-900x1080.mp4', width: 1500, height: 1800 },
-    alt: 'Телефон на зелёной ткани с разделом «#яПомогаю» в Авито: подписки, поддержка людей, забота о природе'
+    feed: { image: '/projects/avito-charity/charity-profile/covers/feed-cover-324719915-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Телефон на зелёной ткани с разделом «#яПомогаю» в Авито: подписки, поддержка людей, забота о природе',
+    place: { c: 4, r: 4 }
   },
   {
     id: 'prices-table',
     soon: true,
     title: 'Цены в ЛК селлера',
-    feed: { image: '/projects/ozon-prices/prices-table/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
-    alt: 'Тёмный экран приложения продавца Ozon: кванты, цены товара, цена для покупателя и бустинг в поиске'
+    feed: { image: '/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Тёмный экран приложения продавца Ozon: кванты, цены товара, цена для покупателя и бустинг в поиске',
+    place: { c: 1, r: 6 }
   },
   {
     id: 'gamification',
     soon: true,
     title: 'Геймификация в ЛК',
-    feed: { image: '/projects/avito-charity/gamification/covers/feed-cover-tvorim-dobro-1500x1800.webp', width: 1500, height: 1800 },
-    alt: 'Блок «Творим добро» со списком заданий и баллами: пожертвовать в фонд, купить мерч, поддержать «ЛизаАлерт»'
+    feed: { image: '/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Блок «Творим добро» со списком заданий и баллами: пожертвовать в фонд, купить мерч, поддержать «ЛизаАлерт»',
+    place: { c: 2, r: 6 }
   },
   {
     id: 'doctor-dashboard',
     soon: true,
     title: 'Дашборд для врачей',
-    feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5-poster.webp', video: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5-1350x1800.mp4', width: 1800, height: 2400 },
-    alt: 'Дашборд врача: список пациентов с событиями по дням и почасовой график показателя'
+    feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400.webp', width: 1800, height: 2400 },
+    alt: 'Дашборд врача: список пациентов с событиями по дням и почасовой график показателя',
+    place: { c: 3, r: 6, big: true }
   },
   {
     id: 'employee-account',
     soon: true,
     title: 'ЛК сотрудника',
-    feed: { image: '/projects/employee-account/covers/feed-cover-admin-seating-large-poster.webp', video: '/projects/employee-account/covers/feed-cover-admin-seating-large-1350x1800.mp4', width: 1500, height: 2000 },
-    alt: 'Личный кабинет сотрудника: план офиса и управление рабочими местами'
-  },
-  {
-    id: 'customer-portrait',
-    soon: true,
-    title: 'Портрет покупателя',
-    feed: { image: '/projects/customer-portrait/covers/feed-cover-segment-chart-motion-poster.webp', video: '/projects/customer-portrait/covers/feed-cover-segment-chart-motion-900x1080.mp4', width: 1500, height: 1800 },
-    alt: 'Портрет покупателя: график распределения покупателей по полу и возрасту'
-  },
-  {
-    id: 'esg-report',
-    soon: true,
-    title: 'ESG–отчёт',
-    feed: { image: '/projects/esg-report/covers/feed-cover-esg-orbit-small-centered-poster.webp', video: '/projects/esg-report/covers/feed-cover-esg-orbit-small-centered-900x1080.mp4', width: 1500, height: 1800 },
-    alt: 'Анимированная обложка проекта ESG–отчёт'
+    feed: { image: '/projects/employee-account/covers/feed-cover-frame-2147239078-1800x2400.webp', width: 1800, height: 2400 },
+    alt: 'Личный кабинет сотрудника: план офиса и управление рабочими местами',
+    place: { c: 1, r: 8, big: true }
   }
 ];
 
