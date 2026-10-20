@@ -19,7 +19,9 @@
   }
 
   // Video covers loop silently; the poster covers loading, unsupported codecs
-  // and reduced motion (then the video never starts).
+  // and reduced motion (then the video never starts). The file is attached only
+  // when the tile nears the viewport (see watchVideos): eleven clips loading at
+  // once starved each other and none reached its first frame.
   function media(project) {
     // focus — какая часть горизонтальной обложки остаётся в вертикальной плитке.
     // feed — отдельная вертикальная обложка для плитки ленты; с ней кадр
@@ -29,8 +31,34 @@
     var poster = '<img src="' + escape(source.image) + '" width="' + source.width + '" height="' + source.height +
       '" alt="' + escape(project.alt) + '" loading="lazy" decoding="async"' + focus + ' />';
     if (!source.video || reduced.matches) return poster;
-    return '<video src="' + escape(source.video) + '" poster="' + escape(source.image) + '" width="' + source.width +
-      '" height="' + source.height + '" muted loop playsinline autoplay preload="auto" aria-label="' + escape(project.alt) + '"' + focus + '></video>';
+    return '<video data-src="' + escape(source.video) + '" poster="' + escape(source.image) + '" width="' + source.width +
+      '" height="' + source.height + '" muted loop playsinline preload="none" aria-label="' + escape(project.alt) + '"' + focus + '></video>';
+  }
+
+  // Plays the clips on screen (and half a screen ahead), pauses the rest.
+  function watchVideos() {
+    var videos = grid.querySelectorAll('video[data-src]');
+    if (!videos.length) return;
+    function play(video) {
+      if (!video.src) {
+        video.src = video.getAttribute('data-src');
+        video.preload = 'auto';
+      }
+      video.muted = true;
+      var started = video.play();
+      if (started) started.catch(function () {});
+    }
+    if (!('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(videos, play);
+      return;
+    }
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) play(entry.target);
+        else if (entry.target.src) entry.target.pause();
+      });
+    }, { rootMargin: '50% 0px' });
+    Array.prototype.forEach.call(videos, function (video) { observer.observe(video); });
   }
 
   /* Раскладка каталога: 4 колонки, две крупные обложки 2×2, остальные 1×1,
@@ -89,4 +117,5 @@
   var cards = projects.map(card);
   for (var i = 0; i < (window.portfolioFeedStubs || 0); i++) cards.push(stub(projects.length + i));
   grid.innerHTML = cards.join('');
+  watchVideos();
 })();

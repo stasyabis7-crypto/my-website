@@ -34,7 +34,7 @@ window.portfolioTags = [
 window.portfolioProjects = [
   {
     id: 'customer-segments',
-    feed: { image: '/projects/ozon-crm/customer-segments/covers/feed-cover-preview-900x1200.webp', video: '/projects/ozon-crm/customer-segments/covers/feed-cover-preview-900x1200.mp4', width: 900, height: 1200 },
+    feed: { image: '/projects/ozon-crm/customer-segments/covers/feed-cover-preview-900x1200.webp', video: '/projects/ozon-crm/customer-segments/covers/feed-cover-preview-web-900x1200.mp4', width: 900, height: 1200 },
     title: 'CRM для продавцов Ozon',
     description: 'Сегменты покупателей и рассылки для продавцов',
     href: '/projects/ozon-crm/customer-segments/',
@@ -47,7 +47,7 @@ window.portfolioProjects = [
   },
   {
     id: 'recycle-map',
-    feed: { image: '/projects/avito-charity/recycle-map/covers/feed-cover-showreel-750x900.webp', video: '/projects/avito-charity/recycle-map/covers/feed-cover-showreel-750x900.mp4', width: 750, height: 900 },
+    feed: { image: '/projects/avito-charity/recycle-map/covers/feed-cover-showreel-750x900.webp', video: '/projects/avito-charity/recycle-map/covers/feed-cover-showreel-web-750x900.mp4', width: 750, height: 900 },
     title: 'Карта переработки вещей',
     description: 'Поиск пункта приёма, фильтры и избранное',
     href: '/projects/avito-charity/recycle-map/',
@@ -60,7 +60,7 @@ window.portfolioProjects = [
   },
   {
     id: 'kind-subscription',
-    feed: { image: '/projects/avito-charity/subscription/covers/feed-cover-loop-750x900.webp', video: '/projects/avito-charity/subscription/covers/feed-cover-loop-750x900.mp4', width: 750, height: 900 },
+    feed: { image: '/projects/avito-charity/subscription/covers/feed-cover-loop-750x900.webp', video: '/projects/avito-charity/subscription/covers/feed-cover-loop-web-750x900.mp4', width: 750, height: 900 },
     title: 'Добрая подписка',
     description: 'Ежемесячная помощь фондам в приложении',
     href: '/projects/avito-charity/subscription/',
@@ -75,7 +75,7 @@ window.portfolioProjects = [
     id: 'about-company',
     soon: true,
     title: 'Лендинг о компании Авито',
-    feed: { image: '/projects/avito-charity/about-company/covers/feed-cover-cifry-750x900.webp', video: '/projects/avito-charity/about-company/covers/feed-cover-cifry-750x900.mp4', width: 750, height: 900 },
+    feed: { image: '/projects/avito-charity/about-company/covers/feed-cover-cifry-750x900.webp', video: '/projects/avito-charity/about-company/covers/feed-cover-cifry-web-750x900.mp4', width: 750, height: 900 },
     alt: 'Телефон в руке с лендингом Авито: пять бизнес-направлений — товары, авто, недвижимость, работа'
   },
   {
@@ -89,7 +89,7 @@ window.portfolioProjects = [
     id: 'patient-app',
     soon: true,
     title: 'Медицинское приложение для пациентов',
-    feed: { image: '/projects/swtec-medical/patient-app/covers/feed-cover-prolaio-phone-750x900.webp', video: '/projects/swtec-medical/patient-app/covers/feed-cover-prolaio-v2-750x900.mp4', width: 750, height: 900 },
+    feed: { image: '/projects/swtec-medical/patient-app/covers/feed-cover-prolaio-phone-750x900.webp', video: '/projects/swtec-medical/patient-app/covers/feed-cover-prolaio-v2-web-750x900.mp4', width: 750, height: 900 },
     alt: 'Два экрана приложения для пациентов: накопленные баллы с графиком и анкета с выбором пола'
   },
   {
@@ -103,7 +103,7 @@ window.portfolioProjects = [
     id: 'charity-profile',
     soon: true,
     title: 'Благотворительность в ЛК',
-    feed: { image: '/projects/avito-charity/charity-profile/covers/feed-cover-help-hub-v5-1500x1800.webp', video: '/projects/avito-charity/charity-profile/covers/feed-cover-help-hub-v5-1500x1800.mp4', width: 1500, height: 1800 },
+    feed: { image: '/projects/avito-charity/charity-profile/covers/feed-cover-help-hub-v5-1500x1800.webp', video: '/projects/avito-charity/charity-profile/covers/feed-cover-help-hub-v5-web-1500x1800.mp4', width: 1500, height: 1800 },
     alt: 'Телефон на зелёной ткани с разделом «#яПомогаю» в Авито: подписки, поддержка людей, забота о природе'
   },
   {
@@ -124,7 +124,7 @@ window.portfolioProjects = [
     id: 'doctor-dashboard',
     soon: true,
     title: 'Дашборд для врачей',
-    feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5-poster.webp', video: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5.mp4', width: 1800, height: 2400 },
+    feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5-poster.webp', video: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5-web.mp4', width: 1800, height: 2400 },
     alt: 'Дашборд врача: список пациентов с событиями по дням и почасовой график показателя'
   },
   {
@@ -145,7 +145,7 @@ window.portfolioProjects = [
     id: 'esg-report',
     soon: true,
     title: 'ESG–отчёт',
-    feed: { image: '/projects/esg-report/covers/feed-cover-esg-orbit-small-centered-poster.webp', video: '/projects/esg-report/covers/feed-cover-esg-orbit-small-centered.mp4', width: 1500, height: 1800 },
+    feed: { image: '/projects/esg-report/covers/feed-cover-esg-orbit-small-centered-poster.webp', video: '/projects/esg-report/covers/feed-cover-esg-orbit-small-centered-web.mp4', width: 1500, height: 1800 },
     alt: 'Анимированная обложка проекта ESG–отчёт'
   }
 ];
