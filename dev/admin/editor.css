@@ -1,0 +1,54 @@
+/* Рамки режима правки поверх страницы (dev/admin/editor.js). */
+html.admin-edit *,
+html.admin-edit *::before,
+html.admin-edit *::after {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition: none !important;
+}
+html.admin-edit [data-admin-text],
+html.admin-edit img[data-admin-id],
+html.admin-edit video[data-admin-id],
+html.admin-edit .cg-stub { cursor: pointer; }
+html.admin-edit .page-spinner,
+html.admin-edit [class*="page-loader"] { display: none !important; }
+
+.admin-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2147483646;
+  pointer-events: none;
+  box-sizing: border-box;
+  border: 2px solid #3b6cf6;
+  border-radius: 2px;
+}
+.admin-box[hidden] { display: none; }
+.admin-box--hover { border-style: dashed; border-color: rgb(59 108 246 / .7); }
+.admin-box--hover[data-kind="block"] { border-color: rgb(240 107 168 / .8); }
+.admin-box--selected { box-shadow: 0 0 0 4000px rgb(20 24 40 / .06); }
+.admin-box--selected[data-kind="block"] { border-color: #f06ba8; }
+.admin-box--drop { border: 3px solid #12a150; background: rgb(18 161 80 / .12); }
+
+.admin-box__label {
+  position: absolute;
+  top: -24px;
+  left: -2px;
+  padding: 3px 8px;
+  border-radius: 4px 4px 4px 0;
+  background: #3b6cf6;
+  color: #fff;
+  font: 500 12px/16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.admin-box[data-kind="block"] .admin-box__label { background: #f06ba8; }
+.admin-box--drop .admin-box__label { background: #12a150; }
+.admin-box--hover .admin-box__label { opacity: .9; }
+
+.admin-editing {
+  outline: 2px solid #12a150 !important;
+  outline-offset: 4px;
+  cursor: text !important;
+  background: rgb(18 161 80 / .06);
+}

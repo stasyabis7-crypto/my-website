@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "admin": "node scripts/admin/server.js",
+    "admin:test": "node scripts/admin/admin.test.js",
     "auto-commit": "node scripts/auto-commit.js",
     "check": "npm run check:components && npm run check:ds && npm run check:links && npm run check:images && npm run check:typography",
     "check:components": "node scripts/hero-mood-component.js && node scripts/hero-mood-component.test.js && node scripts/hero-spheres.test.js && node scripts/check-page-heroes.js && node scripts/check-case-covers.js",
@@ -16,5 +18,8 @@
   },
   "dependencies": {
     "chokidar": "^3.5.3"
+  },
+  "devDependencies": {
+    "parse5": "^7.1.2"
   }
 }

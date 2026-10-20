@@ -77,7 +77,9 @@
   /* Раскладка каталога: 4 колонки, две крупные обложки 2×2, остальные 1×1,
      часть ячеек пустует. Позиция — [колонка, строка], крупные помечены big.
      Набор повторяется вниз блоками по ROWS строк. На телефоне и планшете
-     позиции не действуют: там обычный поток в две колонки. */
+     позиции не действуют: там обычный поток в две колонки.
+     Поле place у проекта (его ставит админка, docs/admin.md) задаёт место
+     и размер плитки явно и заменяет позицию из набора. */
   var PATTERN = [
     { c: 1, r: 1, big: true }, { c: 3, r: 1 }, { c: 4, r: 1 },
     { c: 1, r: 3 }, { c: 3, r: 3 }, { c: 4, r: 3 },
@@ -86,16 +88,17 @@
   ];
   var ROWS = 6;
 
-  function slot(index) {
-    var cell = PATTERN[index % PATTERN.length];
-    var row = cell.r + Math.floor(index / PATTERN.length) * ROWS;
-    return ' style="--feed-col:' + cell.c + ';--feed-row:' + row + '"';
+  function cell(index) {
+    if (projects[index] && projects[index].place) return projects[index].place;
+    var preset = PATTERN[index % PATTERN.length];
+    return { c: preset.c, r: preset.r + Math.floor(index / PATTERN.length) * ROWS, big: preset.big };
   }
 
   function item(index, inner, stubbed) {
-    var big = PATTERN[index % PATTERN.length].big;
-    return '<li class="project-feed__item' + (big ? ' project-feed__item--big' : '') +
-      (stubbed ? ' project-feed__item--stub" aria-hidden="true' : '') + '"' + slot(index) + '>' + inner + '</li>';
+    var place = cell(index);
+    return '<li class="project-feed__item' + (place.big ? ' project-feed__item--big' : '') +
+      (stubbed ? ' project-feed__item--stub" aria-hidden="true' : '') + '"' +
+      ' style="--feed-col:' + place.c + ';--feed-row:' + place.r + '">' + inner + '</li>';
   }
 
   // Обложка-ссылка, круглая кнопка со стрелкой в правом верхнем углу и
