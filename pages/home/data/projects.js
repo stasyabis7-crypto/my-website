@@ -96,14 +96,14 @@ window.portfolioProjects = [
     id: 'minimum-price',
     soon: true,
     title: 'Бустинг акций в ценах',
-    feed: { image: '/projects/ozon-prices/minimum-price/covers/feed-cover-boosting-v4-22-percent-1500x1800.webp', video: '/projects/ozon-prices/minimum-price/covers/feed-cover-boosting-v4-1500x1800.mp4', width: 1500, height: 1800 },
+    feed: { image: '/projects/ozon-prices/minimum-price/covers/feed-cover-boosting-v4-22-percent-1500x1800.webp', video: '/projects/ozon-prices/minimum-price/covers/feed-cover-boosting-v4-900x1080.mp4', width: 1500, height: 1800 },
     alt: 'Бустинг акций в ценах: карточка с показателем 22% и зелёным индикатором'
   },
   {
     id: 'charity-profile',
     soon: true,
     title: 'Благотворительность в ЛК',
-    feed: { image: '/projects/avito-charity/charity-profile/covers/feed-cover-help-hub-v5-1500x1800.webp', video: '/projects/avito-charity/charity-profile/covers/feed-cover-help-hub-v5-web-1500x1800.mp4', width: 1500, height: 1800 },
+    feed: { image: '/projects/avito-charity/charity-profile/covers/feed-cover-help-hub-v5-1500x1800.webp', video: '/projects/avito-charity/charity-profile/covers/feed-cover-help-hub-v5-900x1080.mp4', width: 1500, height: 1800 },
     alt: 'Телефон на зелёной ткани с разделом «#яПомогаю» в Авито: подписки, поддержка людей, забота о природе'
   },
   {
@@ -124,28 +124,28 @@ window.portfolioProjects = [
     id: 'doctor-dashboard',
     soon: true,
     title: 'Дашборд для врачей',
-    feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5-poster.webp', video: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5-web.mp4', width: 1800, height: 2400 },
+    feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5-poster.webp', video: '/projects/swtec-medical/doctor-dashboard/covers/watchlist-mci-motion-v5-1350x1800.mp4', width: 1800, height: 2400 },
     alt: 'Дашборд врача: список пациентов с событиями по дням и почасовой график показателя'
   },
   {
     id: 'employee-account',
     soon: true,
     title: 'ЛК сотрудника',
-    feed: { image: '/projects/employee-account/covers/feed-cover-admin-seating-large-poster.webp', video: '/projects/employee-account/covers/feed-cover-admin-seating-large.mp4', width: 1500, height: 2000 },
+    feed: { image: '/projects/employee-account/covers/feed-cover-admin-seating-large-poster.webp', video: '/projects/employee-account/covers/feed-cover-admin-seating-large-1350x1800.mp4', width: 1500, height: 2000 },
     alt: 'Личный кабинет сотрудника: план офиса и управление рабочими местами'
   },
   {
     id: 'customer-portrait',
     soon: true,
     title: 'Портрет покупателя',
-    feed: { image: '/projects/customer-portrait/covers/feed-cover-segment-chart-motion-poster.webp', video: '/projects/customer-portrait/covers/feed-cover-segment-chart-motion.mp4', width: 1500, height: 1800 },
+    feed: { image: '/projects/customer-portrait/covers/feed-cover-segment-chart-motion-poster.webp', video: '/projects/customer-portrait/covers/feed-cover-segment-chart-motion-900x1080.mp4', width: 1500, height: 1800 },
     alt: 'Портрет покупателя: график распределения покупателей по полу и возрасту'
   },
   {
     id: 'esg-report',
     soon: true,
     title: 'ESG–отчёт',
-    feed: { image: '/projects/esg-report/covers/feed-cover-esg-orbit-small-centered-poster.webp', video: '/projects/esg-report/covers/feed-cover-esg-orbit-small-centered-web.mp4', width: 1500, height: 1800 },
+    feed: { image: '/projects/esg-report/covers/feed-cover-esg-orbit-small-centered-poster.webp', video: '/projects/esg-report/covers/feed-cover-esg-orbit-small-centered-900x1080.mp4', width: 1500, height: 1800 },
     alt: 'Анимированная обложка проекта ESG–отчёт'
   }
 ];

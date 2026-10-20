@@ -35,30 +35,43 @@
       '" height="' + source.height + '" muted loop playsinline preload="none" aria-label="' + escape(project.alt) + '"' + focus + '></video>';
   }
 
-  // Plays the clips on screen (and half a screen ahead), pauses the rest.
+  // A screen ahead the file starts buffering; it plays only while actually on
+  // screen. Safari pauses muted clips started off screen and never resumes them.
   function watchVideos() {
-    var videos = grid.querySelectorAll('video[data-src]');
+    var videos = Array.prototype.slice.call(grid.querySelectorAll('video[data-src]'));
     if (!videos.length) return;
-    function play(video) {
-      if (!video.src) {
-        video.src = video.getAttribute('data-src');
-        video.preload = 'auto';
-      }
+    function load(video) {
+      if (video.src) return;
       video.muted = true;
+      video.preload = 'auto';
+      video.src = video.getAttribute('data-src');
+    }
+    function play(video) {
+      load(video);
       var started = video.play();
       if (started) started.catch(function () {});
     }
     if (!('IntersectionObserver' in window)) {
-      Array.prototype.forEach.call(videos, play);
+      videos.forEach(play);
       return;
     }
-    var observer = new IntersectionObserver(function (entries) {
+    var ahead = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        ahead.unobserve(entry.target);
+        load(entry.target);
+      });
+    }, { rootMargin: '100% 0px' });
+    var visible = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) play(entry.target);
         else if (entry.target.src) entry.target.pause();
       });
-    }, { rootMargin: '50% 0px' });
-    Array.prototype.forEach.call(videos, function (video) { observer.observe(video); });
+    });
+    videos.forEach(function (video) {
+      ahead.observe(video);
+      visible.observe(video);
+    });
   }
 
   /* Раскладка каталога: 4 колонки, две крупные обложки 2×2, остальные 1×1,
