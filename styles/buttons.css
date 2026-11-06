@@ -704,16 +704,28 @@ html.chrome--on-hero .btn.btn--size-chrome.btn--fill-nav { color: #fff; }
 .btn--fill-dial {
   background: transparent;
   color: var(--color-text);
-  transition: transform 0.12s ease, opacity var(--btn-hover-duration) ease, color 0.3s ease, background-color 0.3s ease;
+  transition: transform 0.12s ease, opacity var(--btn-hover-duration) ease, color 0.3s ease;
 }
 .btn--fill-dial[aria-current]::before { display: none; }
-.btn--fill-dial.is-centered {
+/* The control keeps the shared --button-height (tap target); the pill is
+   drawn a bit lower inside it. */
+.btn--fill-dial::after {
+  content: "";
+  position: absolute;
+  inset: 4px 0;
+  z-index: -1;
+  border-radius: var(--radius-control);
+  background: transparent;
+  transition: background-color 0.3s ease;
+}
+.btn--fill-dial.is-centered::after {
   background: var(--color-surface-alt);
 }
 html.chrome--on-hero .btn.btn--fill-dial { color: #fff; }
-html.chrome--on-hero .btn.btn--fill-dial.is-centered {
+html.chrome--on-hero .btn.btn--fill-dial.is-centered::after {
   background: rgba(255, 255, 255, 0.2);
 }
 @media (prefers-reduced-motion: reduce) {
-  .btn--fill-dial { transition: none; }
+  .btn--fill-dial,
+  .btn--fill-dial::after { transition: none; }
 }
