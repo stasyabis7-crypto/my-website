@@ -5,13 +5,10 @@
   поведение собирает components/site-chrome/site-chrome.js (siteDial),
   тип кнопки пункта — .btn--fill-dial в styles/buttons.css.
 
-  Состояния (ставит тот же скрипт на .site-header):
-  - .is-over-hero — над баннером: без заливки, только мягкий блюр того,
-    что под хедером. Над видео Главной (html.chrome--on-hero) цвета
-    наоборот — белые риски и подписи, чтобы не терять контраст.
-  - без .is-over-hero — белая заливка страницы.
-  - уезжает вместе с контентом при скролле вниз (--nav-shift), при
-    скролле вверх мягко возвращается (.is-revealing).
+  Всегда на белой заливке страницы, баннер Главной начинается под ним
+  (отдельного состояния «над баннером» нет). Уезжает вместе с контентом
+  при скролле вниз (--nav-shift), при скролле вверх мягко возвращается
+  (.is-revealing) — классы ставит тот же скрипт.
 */
 
 :root {
@@ -42,36 +39,11 @@
   padding-block: 10px 8px;
   background: var(--color-bg);
   transform: translateY(var(--nav-shift, 0px));
-  transition: background-color 0.35s ease;
-}
-
-/* Над баннером: заливки нет, только мягкий блюр, который к низу хедера
-   сходит на нет — без видимой кромки поверх картинки. */
-.site-header::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 -24px;
-  z-index: -1;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  -webkit-mask-image: linear-gradient(#000 55%, transparent);
-  mask-image: linear-gradient(#000 55%, transparent);
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-}
-.site-header.is-over-hero { background-color: transparent; }
-.site-header.is-over-hero::before { opacity: 1; }
-
-html.chrome--on-hero .site-header {
-  --dial-tick: rgba(255, 255, 255, 0.55);
-  --dial-needle: #fff;
 }
 
 /* Мягкое появление при скролле вверх. */
 .site-header.is-revealing {
   transition:
-    background-color 0.35s ease,
     transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.55s ease;
 }
@@ -142,7 +114,6 @@ html.chrome--on-hero .site-header {
   margin-left: -0.75px;
   border-radius: 1px;
   background: var(--dial-needle);
-  transition: background-color 0.35s ease;
   pointer-events: none;
 }
 
@@ -159,8 +130,5 @@ html.chrome--on-hero .site-header {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-header,
-  .site-header.is-revealing,
-  .site-header::before,
-  .nav-dial__needle { transition: none; }
+  .site-header.is-revealing { transition: none; }
 }

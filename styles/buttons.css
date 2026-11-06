@@ -63,8 +63,7 @@
 
     .btn--fill-dial   пункт навигации-линейки в хедере: текст одного
                       цвета; пункт под стрелкой (.is-centered) — серая
-                      «таблетка», без точки открытого раздела. Над видео
-                      Главной — белый.
+                      «таблетка», без точки открытого раздела.
                       (components/site-header/header.css)
 
   Ховер (только десктоп): у залитых типов (pink/tile/white/ink/chip/glass/
@@ -698,8 +697,7 @@ html.chrome--on-hero .btn.btn--size-chrome.btn--fill-nav { color: #fff; }
 
 /* Dial nav item (header ruler): every label in the text colour, the item
    under the needle (.is-centered) sits in a grey pill. No open-section dot:
-   the pill already marks it. Over the home video everything flips to white
-   so the contrast holds.
+   the pill already marks it. The header is always on the white page bar.
    Usage: <a class="btn btn--fill-dial is-centered" href="…">Проекты</a> */
 .btn--fill-dial {
   background: transparent;
@@ -720,10 +718,6 @@ html.chrome--on-hero .btn.btn--size-chrome.btn--fill-nav { color: #fff; }
 }
 .btn--fill-dial.is-centered::after {
   background: var(--color-surface-alt);
-}
-html.chrome--on-hero .btn.btn--fill-dial { color: #fff; }
-html.chrome--on-hero .btn.btn--fill-dial.is-centered::after {
-  background: rgba(255, 255, 255, 0.2);
 }
 @media (prefers-reduced-motion: reduce) {
   .btn--fill-dial,

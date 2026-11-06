@@ -215,7 +215,7 @@
      Клик по пункту подкатывает его под стрелку и открывает раздел. Без
      действий линейка через несколько секунд возвращается к текущему
      разделу. Хедер уезжает вместе с контентом при скролле вниз и мягко
-     появляется при скролле вверх; над баннером — без заливки, с блюром.
+     появляется при скролле вверх.
      Вид — components/site-header/header.css, .btn--fill-dial. */
   (function siteDial() {
     var header = document.querySelector('.site-header');
@@ -432,21 +432,7 @@
     });
 
     /* ---------- хедер при скролле страницы ---------- */
-    var heroEl = document.querySelector('.mood-hero');
     var lastY = Math.max(0, window.scrollY), shift = 0, upRun = 0;
-
-    function syncSurface() {
-      var over;
-      if (heroEl) {
-        var line = Math.max(1, header.offsetHeight + shift - 1);
-        var under = document.elementsFromPoint(innerWidth / 2, line)
-          .find(function (el) { return !header.contains(el); });
-        over = !!under && heroEl.contains(under);
-      } else {
-        over = window.scrollY < 4;
-      }
-      header.classList.toggle('is-over-hero', over);
-    }
 
     // Вниз — хедер едет вместе с контентом; вверх — мягко возвращается.
     function syncShift() {
@@ -478,17 +464,12 @@
       requestAnimationFrame(function () {
         pageTicking = false;
         syncShift();
-        syncSurface();
       });
     }, { passive: true });
 
-    // Баннер Главной красит хедер в белый по тому, что под ним
-    // (hero-video.js, на скролл). После возвращения хедера даём ему
-    // перепроверить уже на месте.
     header.addEventListener('transitionend', function (e) {
       if (e.target !== header || e.propertyName !== 'transform') return;
       header.classList.remove('is-revealing');
-      window.dispatchEvent(new Event('scroll'));
     });
 
     function recenter() {
@@ -499,7 +480,6 @@
     layout();
     glideTo(resting, true);
     markCentered();
-    syncSurface();
     if (typeof ResizeObserver !== 'undefined') new ResizeObserver(recenter).observe(scroller);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(recenter);
   })();
