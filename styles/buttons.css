@@ -61,9 +61,10 @@
     .btn--fill-nav    пункт меню сайта (Статьи/Посты) в хедере:
                       без заливки, только текст.
 
-    .btn--fill-dial   пункт навигации-линейки в хедере: приглушённый
-                      текст; пункт под стрелкой (.is-centered) — серая
-                      «таблетка». Над видео Главной — белый.
+    .btn--fill-dial   пункт навигации-линейки в хедере: текст одного
+                      цвета; пункт под стрелкой (.is-centered) — серая
+                      «таблетка», без точки открытого раздела. Над видео
+                      Главной — белый.
                       (components/site-header/header.css)
 
   Ховер (только десктоп): у залитых типов (pink/tile/white/ink/chip/glass/
@@ -695,23 +696,23 @@ html:not([data-focus-input="keyboard"]) :is(.btn, button, [role="button"], a[hre
 html.chrome--on-hero .btn.btn--size-chrome.btn--fill-pink { background-color: #fff; color: #101014; }
 html.chrome--on-hero .btn.btn--size-chrome.btn--fill-nav { color: #fff; }
 
-/* Dial nav item (header ruler): muted label, the item under the needle
-   (.is-centered) sits in a grey pill. Over the home video everything flips
-   to white so the contrast holds.
+/* Dial nav item (header ruler): every label in the text colour, the item
+   under the needle (.is-centered) sits in a grey pill. No open-section dot:
+   the pill already marks it. Over the home video everything flips to white
+   so the contrast holds.
    Usage: <a class="btn btn--fill-dial is-centered" href="…">Проекты</a> */
 .btn--fill-dial {
   background: transparent;
-  color: var(--color-text-muted);
+  color: var(--color-text);
   transition: transform 0.12s ease, opacity var(--btn-hover-duration) ease, color 0.3s ease, background-color 0.3s ease;
 }
+.btn--fill-dial[aria-current]::before { display: none; }
 .btn--fill-dial.is-centered {
   background: var(--color-surface-alt);
-  color: var(--color-text);
 }
-html.chrome--on-hero .btn.btn--fill-dial { color: rgba(255, 255, 255, 0.72); }
+html.chrome--on-hero .btn.btn--fill-dial { color: #fff; }
 html.chrome--on-hero .btn.btn--fill-dial.is-centered {
   background: rgba(255, 255, 255, 0.2);
-  color: #fff;
 }
 @media (prefers-reduced-motion: reduce) {
   .btn--fill-dial { transition: none; }

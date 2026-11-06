@@ -322,9 +322,9 @@
       if (centered !== resting) scheduleReturn();
     }, { passive: true });
 
-    /* Перетаскивание мышью (палец и тачпад скроллят строку нативно). Пока
-       тянем, привязка к пунктам выключена (.is-free), после отпускания
-       строка с учётом скорости докатывается до ближайшего пункта. */
+    /* Перетаскивание мышью (палец скроллит строку нативно). Пока тянем,
+       привязка к пунктам выключена (.is-free), после отпускания строка с
+       учётом скорости докатывается до ближайшего пункта. */
     var drag = null, suppressClick = false, freeTimer;
     scroller.addEventListener('pointerdown', function (e) {
       if (e.pointerType !== 'mouse' || e.button !== 0) return;
@@ -362,6 +362,29 @@
     scroller.addEventListener('click', function (e) {
       if (suppressClick) { e.preventDefault(); e.stopPropagation(); }
     }, true);
+
+    /* Тачпад и колесо мыши: любое направление жеста над линейкой крутит
+       её по горизонтали. Пока жест идёт (включая инерцию тачпада),
+       привязка выключена, после паузы строка докатывается до ближайшего
+       пункта. В крайнем положении жест отдаётся странице. */
+    var wheelTimer;
+    scroller.addEventListener('wheel', function (e) {
+      if (e.ctrlKey) return;
+      var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (e.deltaMode === 1) delta *= 16;
+      var max = scroller.scrollWidth - scroller.clientWidth;
+      var atEdge = (delta < 0 && scroller.scrollLeft <= 0) || (delta > 0 && scroller.scrollLeft >= max - 1);
+      if (!delta || (atEdge && !nav.classList.contains('is-free'))) return;
+      e.preventDefault();
+      clearTimeout(freeTimer);
+      nav.classList.add('is-free');
+      scroller.scrollLeft += delta;
+      clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(function () {
+        glideTo(nearest(scroller.scrollLeft + scroller.clientWidth / 2));
+        freeTimer = setTimeout(function () { nav.classList.remove('is-free'); }, 600);
+      }, 140);
+    }, { passive: false });
 
     function scrollPage(destination) {
       if (window.siteNavigation) window.siteNavigation.scrollTo(destination);
