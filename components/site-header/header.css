@@ -1,183 +1,166 @@
 /*
-  Хедер сайта — дефолтный skeleton-компонент (аватар + лого + кнопка
-  "Резюме PDF"), визуальный стиль ещё не финальный, стилизуем позже.
+  Хедер сайта — навигация-«линейка» (nav-dial). Сверху шкала с рисками,
+  по центру — неподвижная стрелка; под ней строка разделов, которую можно
+  тянуть. Пункт под стрелкой — в серой «таблетке». Разметку пунктов и
+  поведение собирает components/site-chrome/site-chrome.js (siteDial),
+  тип кнопки пункта — .btn--fill-dial в styles/buttons.css.
 
-  Горизонтальный отступ берётся из --page-px (см. index.html), чтобы
-  хедер, контент и футер были выровнены по одной вертикали на любой
-  ширине.
+  Состояния (ставит тот же скрипт на .site-header):
+  - .is-over-hero — над баннером: без заливки, только мягкий блюр того,
+    что под хедером. Над видео Главной (html.chrome--on-hero) цвета
+    наоборот — белые риски и подписи, чтобы не терять контраст.
+  - без .is-over-hero — белая заливка страницы.
+  - уезжает вместе с контентом при скролле вниз (--nav-shift), при
+    скролле вверх мягко возвращается (.is-revealing).
 */
 
 :root {
-  /* --chrome-item-h — реальная высота "пункта" (кнопка "Резюме PDF" /
-     .site-footer__link — иконка+подпись в столбик), меряет
-     layout-chrome.js (см. syncChromeHeights) сرендеренной кнопки и
-     подставляет сюда — сама высота зависит от font-size/строки текста
-     (те гоняются по брейкпоинтам и fluid-скейлу scale.css), формулой
-     её не описать надёжно, поэтому меряем по факту. Число ниже —
-     запасное значение на случай, если JS ещё не отработал.
-     --chrome-h (высота ОТДЕЛЬНОЙ круглой плашки — переключатель темы,
-     кнопки футера в свёрнутом виде) — тот же пункт + внешний паддинг
-     плашки, чтобы кружки были той же высоты, что и сама плашка
-     хедера/футера. ВАЖНО: оба токена продублированы в footer.css —
-     при изменении правьте оба файла синхронно. */
+  /* Высота «пункта» хромы — её же читает футер (footer.css), меряет
+     layout-chrome.js. Число — запасное значение до JS. */
   --chrome-item-h: 2.5rem;
   --chrome-pad-block: 0.25rem;
   --chrome-h: calc(var(--chrome-item-h) + var(--chrome-pad-block) * 2);
-
-  /* Размер подписи компактных плашек (моб/планшет/chrome--compact и
-     сжатый десктопный вид) — тоже общий токен с footer.css (см. дубль
-     там же), вместо того чтобы одно и то же значение по отдельности
-     жить в 11px-ах, раскиданных по обоим файлам. */
   --chrome-label-font-size-compact: clamp(10px, 2.8vw, 11px);
   --chrome-label-font-size-desktop: 11px;
+
+  /* Шкала: шаг рисок, их высота и высота стрелки. */
+  --dial-tick-step: 13px;
+  --dial-tick-h: 10px;
+  --dial-needle-h: 30px;
+  --dial-gap: 8px;
+  --dial-tick: #c4c8cf;
+  --dial-needle: var(--color-ink);
 }
 
 .site-header {
   box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  height: auto;
-  padding-block: var(--chrome-pad-block);
-  padding-inline: var(--chrome-pad-block);
-  background: transparent;
-  border: 0;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  box-shadow: none;
-  border-radius: var(--radius-surface);
-  /* Без заливки и обводки: контролы плавают прямо над страницей. */
-}
-
-/*
-  Хедер — всегда плавающая плашка, прибитая к левому краю и сжатая по
-  контенту (аватар+имя+кнопка) — на любой ширине, моб/планшет и
-  десктоп больше не отличаются по позиции: раньше на моб/планшете
-  плашка растягивалась почти во всю ширину, теперь везде hug-content
-  (ширина не задана явно — shrink-to-fit по спецификации для
-  fixed-элемента без width/right).
-
-  html.chrome--compact — принудительный откат на моб-плашки даже на
-  широких экранах: если бы хедер, переключатель темы и футер не
-  влезли в один ряд без наезда друг на друга, layout-chrome.js
-  подставляет этот класс вместо брейкпоинта (переключатель темы и
-  футер по-прежнему разъезжаются по позиции моб/десктоп, см.
-  theme-toggle.css/footer.css — у хедера теперь разницы нет).
-*/
-.site-header {
   position: fixed;
-  top: var(--page-px, 10px);
-  left: var(--page-px, 10px);
-  right: auto;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 50;
+  padding-block: 10px 8px;
+  background: var(--color-bg);
+  transform: translateY(var(--nav-shift, 0px));
+  transition: background-color 0.35s ease;
 }
 
-/* Моб/планшет — плашка по центру экрана, а не у левого края (десктоп
-   не трогаем, там остаётся left). left:50% + translateX(-50%), а не
-   right:auto с margin — ширина hug-content, точный центр только так. */
-@media (max-width: 1100px) {
-  .site-header {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-}
-
-.site-header__identity {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-width: 0;
-}
-
-.site-header__avatar {
-  position: relative;
-  flex: 0 0 auto;
-  width: var(--chrome-item-h);
-  height: var(--chrome-item-h);
-  /* Аватар — не кнопка: круглый, не --radius-control. Обрезает сама
-     картинка, чтобы индикатор статуса не срезался по кругу. */
-  border-radius: 50%;
-  /* Диаметр точки статуса и зазор-вырез вокруг неё (см. ::after). */
-  --avatar-dot: max(calc(var(--chrome-item-h) * 0.25), 8px);
-  --avatar-dot-gap: 2px;
-}
-
-/* Серая подложка — на самой картинке, а не на обёртке: её вырезает та же
-   маска, что и фото. */
-.site-header__avatar img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  background: var(--color-surface-alt);
-  --avatar-cut: radial-gradient(
-    circle at calc(100% - var(--avatar-dot) / 2) calc(100% - var(--avatar-dot) / 2),
-    transparent calc(var(--avatar-dot) / 2 + var(--avatar-dot-gap)),
-    #000 calc(var(--avatar-dot) / 2 + var(--avatar-dot-gap) + 0.5px)
-  );
-  -webkit-mask-image: var(--avatar-cut);
-  mask-image: var(--avatar-cut);
-}
-
-/* Статус «не в сети» — красная точка в правом нижнем углу, пока нет
-   страницы «Обо мне». Вокруг неё фото вырезано маской (без обводки
-   цветом фона), так что в зазоре виден тот фон, что под шапкой. */
-.site-header__avatar::after {
+/* Над баннером: заливки нет, только мягкий блюр, который к низу хедера
+   сходит на нет — без видимой кромки поверх картинки. */
+.site-header::before {
   content: "";
   position: absolute;
-  right: 0;
-  bottom: 0;
-  width: var(--avatar-dot);
-  height: var(--avatar-dot);
-  border-radius: 50%;
-  background: #ef4444;
+  inset: 0 0 -24px;
+  z-index: -1;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  -webkit-mask-image: linear-gradient(#000 55%, transparent);
+  mask-image: linear-gradient(#000 55%, transparent);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.site-header.is-over-hero { background-color: transparent; }
+.site-header.is-over-hero::before { opacity: 1; }
+
+html.chrome--on-hero .site-header {
+  --dial-tick: rgba(255, 255, 255, 0.55);
+  --dial-needle: #fff;
 }
 
-.site-header__logo {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  color: var(--color-text);
-  text-decoration: none;
+/* Мягкое появление при скролле вверх. */
+.site-header.is-revealing {
   transition:
-    scale var(--button-press-duration, 0.12s) ease-out,
-    opacity var(--btn-hover-duration, 0.15s) ease;
+    background-color 0.35s ease,
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.55s ease;
+}
+.site-header.is-away { opacity: 0; pointer-events: none; }
+
+/* ---------- линейка ---------- */
+
+.nav-dial {
+  position: relative;
+  margin-inline: auto;
+  max-width: 70rem;
+  /* Десктоп: шкала сходит на нет к краям. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
 }
 
-.site-header__logo:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 3px;
+.nav-dial__scroller {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  cursor: grab;
+}
+.nav-dial__scroller::-webkit-scrollbar { display: none; }
+.nav-dial.is-dragging .nav-dial__scroller { cursor: grabbing; }
+.nav-dial.is-free .nav-dial__scroller { scroll-snap-type: none; }
+.nav-dial.is-dragging .nav-dial__item { pointer-events: none; }
+
+.nav-dial__track {
+  position: relative;
+  display: flex;
+  width: max-content;
+  gap: 12px;
+  /* Поля по краям — чтобы и первый, и последний пункт вставали под
+     стрелку (точные значения подставляет скрипт). */
+  padding-inline: var(--dial-pad-start, 50vw) var(--dial-pad-end, 50vw);
+  padding-top: calc(var(--dial-needle-h) + var(--dial-gap));
 }
 
-/* layout-chrome.js прячет логотип на узких экранах, когда сжимать
-   словомарк дальше уже некуда (см. syncLogoScale). Своё правило нужно
-   потому, что display:inline-flex выше перебивает штатный [hidden]. */
-.site-header__logo[hidden] {
-  display: none;
+/* Риски едут вместе с пунктами. */
+.nav-dial__track::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--dial-tick-h);
+  background: repeating-linear-gradient(
+    to right,
+    var(--dial-tick) 0 1px,
+    transparent 1px var(--dial-tick-step)
+  );
 }
 
-/* Высота = --chrome-item-h (как у аватара) — ширина следует сама через
-   aspect-ratio, а не задана числом: раньше была фиксированной (5rem),
-   поэтому не росла вместе с аватаром/кнопкой. */
-.site-header__logo-mark {
-  display: block;
-  width: auto;
-  height: var(--chrome-item-h);
-  aspect-ratio: 1231 / 374;
-  background-color: currentColor;
-  -webkit-mask: url("../site-brand/logo.svg") center / contain no-repeat;
-  mask: url("../site-brand/logo.svg") center / contain no-repeat;
+.nav-dial__item {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
 }
 
-/* Отступы элементов плашки; типографика и размеры кнопки — в ДС. */
-@media (max-width: 1100px) {
-  .site-header__identity { gap: 0.5rem; }
+/* Стрелка неподвижна, по центру. */
+.nav-dial__needle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1.5px;
+  height: var(--dial-needle-h);
+  margin-left: -0.75px;
+  border-radius: 1px;
+  background: var(--dial-needle);
+  transition: background-color 0.35s ease;
+  pointer-events: none;
 }
-html.chrome--compact .site-header__identity { gap: 0.5rem; }
-@media (min-width: 1101px) {
-  html:not(.chrome--compact) { --chrome-pad-block: 4px; }
-  html:not(.chrome--compact) .site-header__identity { gap: 0.5rem; }
+
+/* Телефон/планшет: строка во всю ширину экрана, без полей и без
+   затухания — пункты обрезаются кромкой экрана. */
+@media (width < 1000px) {
+  .site-header { padding-block: 8px 6px; }
+  .nav-dial {
+    max-width: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .nav-dial__track { gap: 4px; }
 }
-.site-header__cta { flex: 0 0 auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .site-header.is-revealing,
+  .site-header::before,
+  .nav-dial__needle { transition: none; }
+}

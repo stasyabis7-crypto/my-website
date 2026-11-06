@@ -1,41 +1,9 @@
-// Shared header and contact dialog. No garden API dependencies.
+// Shared header (nav dial) and contact sheet. No garden API dependencies.
 (function () {
   'use strict';
 
   var root = document.documentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  // Keep the resume label on one line, shortening it only when space runs out.
-  var resume = document.querySelector('.site-header__cta');
-  if (resume) {
-    var textWalker = document.createTreeWalker(resume, NodeFilter.SHOW_TEXT);
-    var resumeText;
-    while (textWalker.nextNode()) {
-      if (textWalker.currentNode.textContent.trim() === 'Резюме PDF') {
-        resumeText = textWalker.currentNode;
-        break;
-      }
-    }
-    if (resumeText) {
-      var labelMeasure = document.createElement('canvas').getContext('2d');
-      function fitResumeLabel() {
-        var style = getComputedStyle(resume);
-        labelMeasure.font = style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily;
-        var labelWidth = labelMeasure.measureText('Резюме PDF').width;
-        labelWidth += (parseFloat(style.letterSpacing) || 0) * 9;
-        var icon = resume.querySelector('.icon');
-        var required = labelWidth + parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
-        if (icon) required += icon.getBoundingClientRect().width + (parseFloat(style.columnGap) || 0);
-        var logo = document.querySelector('.site-header__logo');
-        var constrained = innerWidth < 1000 && logo && logo.hidden;
-        var label = constrained && required > resume.clientWidth + 1 ? 'Резюме' : 'Резюме PDF';
-        if (resumeText.textContent !== label) resumeText.textContent = label;
-      }
-      new ResizeObserver(fitResumeLabel).observe(resume);
-      document.fonts.ready.then(fitResumeLabel);
-      window.addEventListener('resize', fitResumeLabel);
-    }
-  }
 
   // Programmatic modal focus can match :focus-visible even after a tap.
   // Keep actual focus/trapping intact, but show its ring only for keyboard use.
@@ -113,7 +81,8 @@
         restoreBackground();
         unlockScroll();
         opts.trigger.setAttribute('aria-expanded', 'false');
-        opts.trigger.focus();
+        opts.trigger.focus({ preventScroll: true });
+        if (opts.onClose) opts.onClose();
       });
     }
     function ensure() {
@@ -184,281 +153,340 @@
     requestAnimationFrame(function () { updatePinned(); pinTicking = false; });
   }, { passive: true });
 
-  /* ---------- соцсети ---------- */
-  (function socials() {
-    var wrap = document.getElementById('site-socials');
-    if (!wrap) return;
-    var toggle = document.getElementById('site-socials-toggle');
+  /* ---------- контакты ----------
+     Полноэкранная шторка, открывается пунктом «Контакты» линейки. */
+  var EMAIL = 'stasyabis7@gmail.com';
+  var CONTACTS = [
+    { label: 'Telegram', icon: 'telegram', href: 'https://t.me/stasyabis' },
+    { label: 'Скопировать адрес почты', icon: 'email', copy: EMAIL },
+    { label: 'Dribbble', icon: 'dribbble', href: 'https://dribbble.com/Stasyabis' },
+    { label: 'Figma community', icon: 'figma', href: 'https://www.figma.com/@stasyabis' },
+    { label: 'Medium', icon: 'medium', href: 'https://medium.com/@stasyabis' },
+    { label: 'Habr', icon: 'habr', href: 'https://habr.com/ru/users/stasyabis/' }
+  ];
 
-    /* Мобилка/планшет (<1000px): переносим блок ВНУТРЬ .site-header (кнопка справа
-       от «Резюме PDF», раскладка — site-chrome.css). Десктоп: возвращаем
-       обратно в body сразу после хедера — там это position:fixed кнопка в
-       правом верхнем углу, а внутри плашки с backdrop-filter fixed
-       считался бы от самой плашки. */
-    var headerEl = document.querySelector('.site-header');
-    var socialsMq = window.matchMedia('(width < 1000px)');
-    function placeSocials() {
-      if (toggle) {
-        toggle.classList.toggle('btn--icon-only', socialsMq.matches);
-        toggle.classList.toggle('btn--icon-right', !socialsMq.matches);
-      }
-      if (!headerEl) return;
-      if (socialsMq.matches) {
-        if (wrap.parentElement !== headerEl) headerEl.appendChild(wrap);
-      } else if (wrap.previousElementSibling !== headerEl) {
-        headerEl.insertAdjacentElement('afterend', wrap);
-      }
+  function copyText(text, done) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () {});
+    } else {
+      // Фолбэк (не-secure-контекст). textarea фиксируем в углу вьюпорта
+      // и прозрачным — иначе .select() проскроллит страницу к нему.
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;opacity:0;pointer-events:none';
+      document.body.appendChild(ta);
+      ta.select();
+      try { ta.setSelectionRange(0, text.length); } catch (e) {}
+      try { document.execCommand('copy'); done(); } catch (e) {}
+      document.body.removeChild(ta);
     }
-    placeSocials();
-    (socialsMq.addEventListener
-      ? socialsMq.addEventListener('change', placeSocials)
-      : socialsMq.addListener(placeSocials));
+  }
 
-    var EMAIL = 'stasyabis7@gmail.com';
-    var ITEMS = [
-      { label: 'Telegram', icon: 'telegram', href: 'https://t.me/stasyabis' },
-      { label: 'Скопировать адрес почты', icon: 'email', copy: EMAIL },
-      { label: 'Dribbble', icon: 'dribbble', href: 'https://dribbble.com/Stasyabis' },
-      { label: 'Figma community', icon: 'figma', href: 'https://www.figma.com/@stasyabis' },
-      { label: 'Medium', icon: 'medium', href: 'https://medium.com/@stasyabis' },
-      { label: 'Habr', icon: 'habr', href: 'https://habr.com/ru/users/stasyabis/' }
-    ];
-
-    function copyText(text, done) {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done, function () {});
-      } else {
-        // Фолбэк (не-secure-контекст). textarea фиксируем в углу вьюпорта
-        // и прозрачным — иначе .select() проскроллит страницу к нему.
-        var ta = document.createElement('textarea');
-        ta.value = text;
-        ta.setAttribute('readonly', '');
-        ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;opacity:0;pointer-events:none';
-        document.body.appendChild(ta);
-        ta.select();
-        try { ta.setSelectionRange(0, text.length); } catch (e) {}
-        try { document.execCommand('copy'); done(); } catch (e) {}
-        document.body.removeChild(ta);
-      }
-    }
-
-    // Мобилка/планшет (<1000px): полноэкранная шторка, как раньше — нет
-    // места для анкора. Десктоп: маленький попап у кнопки, без модального
-    // затемнения/лока скролла (см. .site-socials__panel в site-chrome.css).
-    function isDesktop() { return !socialsMq.matches; }
-    function makeRow(it, onActivate) {
-      var el;
-      if (it.copy) {
-        el = document.createElement('button');
-        el.type = 'button';
-        el.addEventListener('click', function () {
-          copyText(it.copy, function () {
-            el.lastChild.textContent = 'Почта скопирована';
-            clearTimeout(el._t);
-            el._t = setTimeout(function () { el.lastChild.textContent = it.label; }, 1800);
-          });
+  function contactRow(it, onActivate) {
+    var el;
+    if (it.copy) {
+      el = document.createElement('button');
+      el.type = 'button';
+      el.addEventListener('click', function () {
+        copyText(it.copy, function () {
+          el.lastChild.textContent = 'Почта скопирована';
+          clearTimeout(el._t);
+          el._t = setTimeout(function () { el.lastChild.textContent = it.label; }, 1800);
         });
-      } else {
-        el = document.createElement('a');
-        el.href = it.href;
-        el.target = '_blank';
-        el.rel = 'noopener noreferrer';
-        if (onActivate) el.addEventListener('click', function () { setTimeout(onActivate, 60); });
-      }
-      el.innerHTML = '<span class="icon icon--social-' + it.icon + '" aria-hidden="true"></span>';
-      el.appendChild(document.createTextNode(it.label));
-      return el;
-    }
-
-    var contactSheet = toggle && createSheet({
-      id: 'site-socials-dialog',
-      title: 'Связаться',
-      closeLabel: 'Закрыть контакты',
-      trigger: toggle,
-      build: function (add, close) {
-        ITEMS.forEach(function (it) {
-          var el = makeRow(it, close);
-          el.className = 'contact-row btn btn--fill-white btn--icon-left';
-          add(el);
-        });
-      }
-    });
-
-    var popover, popoverOpen = false;
-    function ensurePopover() {
-      if (popover) return;
-      popover = document.createElement('div');
-      popover.className = 'site-socials__panel';
-      popover.id = 'site-socials-panel';
-      popover.inert = true;
-      var nav = document.createElement('nav');
-      nav.setAttribute('aria-label', 'Связаться');
-      ITEMS.forEach(function (it) {
-        var el = makeRow(it, closePopover);
-        el.className = 'btn btn--fill-toc btn--icon-left';
-        nav.appendChild(el);
       });
-      popover.appendChild(nav);
-      wrap.appendChild(popover);
-      // Freeze the copy row's width to its initial label — swapping to
-      // the shorter "Почта скопирована" confirmation would otherwise
-      // shrink the whole panel (sized to content) and jump the layout.
-      // Re-measured once the webfont loads, since the fallback-font
-      // width measured at build time can be a few px off.
-      var copyButton = nav.querySelector('button');
-      function freezeCopyWidth() {
-        if (!copyButton) return;
-        // offsetWidth, not getBoundingClientRect — the closed panel is
-        // scale(.98)'d (see .site-socials__panel), which would otherwise
-        // bake in a slightly-too-small frozen width.
-        copyButton.style.minWidth = '';
-        copyButton.style.minWidth = copyButton.offsetWidth + 'px';
-      }
-      freezeCopyWidth();
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(freezeCopyWidth);
+    } else {
+      el = document.createElement('a');
+      el.href = it.href;
+      el.target = '_blank';
+      el.rel = 'noopener noreferrer';
+      el.addEventListener('click', function () { setTimeout(onActivate, 60); });
     }
-    function closePopover(focusToggle) {
-      if (!popoverOpen) return;
-      popoverOpen = false;
-      popover.classList.remove('is-open');
-      popover.inert = true;
-      if (toggle) toggle.setAttribute('aria-expanded', 'false');
-      if (focusToggle) toggle.focus({ preventScroll: true });
-    }
-    function openPopover() {
-      ensurePopover();
-      if (popoverOpen) return;
-      popoverOpen = true;
-      popover.inert = false;
-      popover.classList.add('is-open');
-      if (toggle) toggle.setAttribute('aria-expanded', 'true');
-    }
-    // Click-only, stays open until an item, an empty area of the page,
-    // Escape, or the trigger itself closes it — no hover/pointerleave.
-    document.addEventListener('pointerdown', function (e) {
-      if (popoverOpen && !wrap.contains(e.target)) closePopover();
-    });
-    document.addEventListener('keydown', function (e) {
-      if (popoverOpen && e.key === 'Escape') { e.preventDefault(); closePopover(true); }
-    });
-    wrap.addEventListener('focusout', function (e) {
-      if (popoverOpen && !wrap.contains(e.relatedTarget)) closePopover();
-    });
+    el.className = 'contact-row btn btn--fill-white btn--icon-left';
+    el.innerHTML = '<span class="icon icon--social-' + it.icon + '" aria-hidden="true"></span>';
+    el.appendChild(document.createTextNode(it.label));
+    return el;
+  }
 
-    function syncSocialsMode() {
-      if (isDesktop()) {
-        if (contactSheet) contactSheet.close();
-        if (toggle) {
-          toggle.setAttribute('aria-haspopup', 'true');
-          toggle.setAttribute('aria-controls', 'site-socials-panel');
-          toggle.setAttribute('aria-expanded', String(popoverOpen));
-        }
-      } else {
-        closePopover();
-        if (toggle) {
-          toggle.setAttribute('aria-haspopup', 'dialog');
-          toggle.setAttribute('aria-controls', 'site-socials-dialog');
-          toggle.setAttribute('aria-expanded', 'false');
-        }
-      }
-    }
-    if (contactSheet) contactSheet.ensure();
-    ensurePopover();
-    syncSocialsMode();
-    (socialsMq.addEventListener
-      ? socialsMq.addEventListener('change', syncSocialsMode)
-      : socialsMq.addListener(syncSocialsMode));
-    if (toggle) toggle.addEventListener('click', function (e) {
-      e.stopPropagation();
-      if (isDesktop()) { popoverOpen ? closePopover() : openPopover(); } else { contactSheet.open(); }
-    });
-  })();
-
-  /* ---------- меню разделов ----------
-     Десктоп (≥1200px, уже — наезжают на лого): пункты «Статьи»/«Посты»/«Playground» слева от «Связаться».
-     Моб/планшет: кнопка-гамбургер рядом со «Связаться» открывает такую же
-     полноэкранную шторку, в ней пункты меню и «Резюме PDF» (в самом хедере
-     резюме на этих ширинах скрыто, см. site-chrome.css). Открытый раздел
-     помечен aria-current — зелёная точка из styles/buttons.css. */
-  (function siteMenu() {
-    var wrap = document.getElementById('site-socials');
-    var toggle = document.getElementById('site-socials-toggle');
-    if (!wrap || !toggle) return;
+  /* ---------- навигация-линейка ----------
+     Шкала с рисками и неподвижной стрелкой по центру, под ней строка
+     разделов. Строку тянут мышью/пальцем (или скроллят тачпадом), она
+     доводится до ближайшего пункта; пункт под стрелкой — в «таблетке».
+     Клик по пункту подкатывает его под стрелку и открывает раздел. Без
+     действий линейка через несколько секунд возвращается к текущему
+     разделу. Хедер уезжает вместе с контентом при скролле вниз и мягко
+     появляется при скролле вверх; над баннером — без заливки, с блюром.
+     Вид — components/site-header/header.css, .btn--fill-dial. */
+  (function siteDial() {
+    var header = document.querySelector('.site-header');
+    if (!header) return;
 
     var SECTIONS = [
-      { label: 'Статьи', href: '/projects/articles/', icon: 'articles' },
-      { label: 'Посты', href: '/projects/posts/', icon: 'posts' },
-      { label: 'Playground', href: '/projects/playground/', icon: 'activities' }
+      { label: 'Мой дом', href: '/' },
+      { label: 'Проекты', href: '/#works-gallery', section: /^\/projects\/(?!articles\/|posts\/|playground\/)/ },
+      { label: 'Веселюсь', href: '/projects/playground/' },
+      // Страницы «Обо мне» пока нет — ведёт на резюме.
+      { label: 'Обо мне', href: '/cv.pdf?v=3', external: true },
+      { label: 'Активности', href: '/projects/articles/', section: /^\/projects\/posts\// },
+      { label: 'Контакты', contacts: true }
     ];
+    var RETURN_DELAY = 3000;
     var path = location.pathname.replace(/index\.html$/, '');
-    function link(it, className) {
-      var a = document.createElement('a');
-      a.className = className;
-      a.href = it.href;
-      if (path === it.href) a.setAttribute('aria-current', 'page');
-      var label = document.createElement('span');
-      label.textContent = it.label;
-      a.appendChild(label);
-      return a;
-    }
+    var isHome = path === '/';
 
     var nav = document.createElement('nav');
-    nav.className = 'site-nav';
+    nav.className = 'nav-dial';
     nav.setAttribute('aria-label', 'Разделы сайта');
-    SECTIONS.forEach(function (it) {
-      nav.appendChild(link(it, 'btn btn--fill-nav btn--size-chrome'));
+    nav.innerHTML = '<div class="nav-dial__scroller"><div class="nav-dial__track"></div></div>' +
+      '<span class="nav-dial__needle" aria-hidden="true"></span>';
+    var scroller = nav.firstChild;
+    var track = scroller.firstChild;
+
+    var current = null, contactsItem = null, projectsItem = null;
+    var items = SECTIONS.map(function (it) {
+      var el = document.createElement(it.contacts ? 'button' : 'a');
+      el.className = 'nav-dial__item btn btn--fill-dial';
+      if (it.contacts) {
+        el.type = 'button';
+        el.setAttribute('aria-haspopup', 'dialog');
+        el.setAttribute('aria-controls', 'site-contacts-dialog');
+        el.setAttribute('aria-expanded', 'false');
+        contactsItem = el;
+      } else {
+        el.href = it.href;
+        if (it.external) { el.target = '_blank'; el.rel = 'noopener noreferrer'; }
+        if (path === it.href) { el.setAttribute('aria-current', 'page'); current = el; }
+        else if (!current && it.section && it.section.test(path)) { el.setAttribute('aria-current', 'true'); current = el; }
+        if (it.href === '/#works-gallery') projectsItem = el;
+      }
+      var label = document.createElement('span');
+      label.textContent = it.label;
+      el.appendChild(label);
+      el._section = it;
+      track.appendChild(el);
+      return el;
     });
-    wrap.insertBefore(nav, toggle);
+    header.appendChild(nav);
 
-    var menuBtn = document.createElement('button');
-    menuBtn.type = 'button';
-    menuBtn.className = 'site-menu-trigger btn btn--fill-glass-ui btn--icon-only btn--size-chrome';
-    menuBtn.id = 'site-menu-toggle';
-    menuBtn.setAttribute('aria-label', 'Меню');
-    menuBtn.setAttribute('aria-haspopup', 'dialog');
-    menuBtn.setAttribute('aria-controls', 'site-menu-dialog');
-    menuBtn.setAttribute('aria-expanded', 'false');
-    menuBtn.innerHTML = '<span class="icon icon--hamburger" aria-hidden="true"></span>';
-    wrap.insertBefore(menuBtn, toggle.nextSibling);
+    // Пункт, к которому линейка возвращается. На Главной следует за
+    // разделом страницы: баннер — «Мой дом», лента — «Проекты».
+    var resting = current || items[0];
 
-    var resume = document.querySelector('.site-header__cta');
-    var menuSheet = createSheet({
-      id: 'site-menu-dialog',
-      title: 'Меню',
-      closeLabel: 'Закрыть меню',
-      trigger: menuBtn,
-      build: function (add) {
-        SECTIONS.forEach(function (it) {
-          var row = link(it, 'contact-row btn btn--fill-white btn--icon-left');
-          row.insertAdjacentHTML('afterbegin', '<span class="icon icon--' + it.icon + '" aria-hidden="true"></span>');
-          add(row);
-        });
-        if (resume) {
-          var cv = document.createElement('a');
-          cv.className = 'contact-row btn btn--fill-pink btn--icon-left';
-          cv.href = resume.href;
-          cv.target = '_blank';
-          cv.rel = 'noopener noreferrer';
-          cv.innerHTML = '<span class="icon icon--cv" aria-hidden="true"></span><span>Резюме PDF</span>';
-          add(cv);
-        }
+    function centerOf(el) { return el.offsetLeft + el.offsetWidth / 2; }
+    function layout() {
+      var half = scroller.clientWidth / 2;
+      track.style.setProperty('--dial-pad-start', Math.max(0, half - items[0].offsetWidth / 2) + 'px');
+      track.style.setProperty('--dial-pad-end', Math.max(0, half - items[items.length - 1].offsetWidth / 2) + 'px');
+    }
+    function nearest(x) {
+      var best = items[0], gap = Infinity;
+      items.forEach(function (el) {
+        var d = Math.abs(centerOf(el) - x);
+        if (d < gap) { gap = d; best = el; }
+      });
+      return best;
+    }
+    var centered = null;
+    function markCentered() {
+      var el = nearest(scroller.scrollLeft + scroller.clientWidth / 2);
+      if (el === centered) return;
+      if (centered) centered.classList.remove('is-centered');
+      centered = el;
+      el.classList.add('is-centered');
+    }
+    function glideTo(el, instant) {
+      scroller.scrollTo({
+        left: centerOf(el) - scroller.clientWidth / 2,
+        behavior: instant || reduceMotion.matches ? 'instant' : 'smooth'
+      });
+    }
+
+    var markTicking = false;
+    scroller.addEventListener('scroll', function () {
+      if (markTicking) return;
+      markTicking = true;
+      requestAnimationFrame(function () { markCentered(); markTicking = false; });
+    }, { passive: true });
+
+    // Возврат к текущему разделу, если пункт выбрали, но не открыли.
+    var returnTimer;
+    function scheduleReturn() {
+      clearTimeout(returnTimer);
+      returnTimer = setTimeout(function () {
+        if (drag || nav.matches(':hover') || nav.contains(document.activeElement)) return scheduleReturn();
+        if (contactsItem.getAttribute('aria-expanded') === 'true') return;
+        if (centered !== resting) glideTo(resting);
+      }, RETURN_DELAY);
+    }
+    scroller.addEventListener('scroll', function () {
+      if (centered !== resting) scheduleReturn();
+    }, { passive: true });
+
+    /* Перетаскивание мышью (палец и тачпад скроллят строку нативно). Пока
+       тянем, привязка к пунктам выключена (.is-free), после отпускания
+       строка с учётом скорости докатывается до ближайшего пункта. */
+    var drag = null, suppressClick = false, freeTimer;
+    scroller.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      drag = { x: e.clientX, left: scroller.scrollLeft, id: e.pointerId, t: e.timeStamp, v: 0, moved: false };
+    });
+    scroller.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var dx = e.clientX - drag.x;
+      if (!drag.moved) {
+        if (Math.abs(dx) < 4) return;
+        drag.moved = true;
+        clearTimeout(freeTimer);
+        nav.classList.add('is-dragging', 'is-free');
+        scroller.setPointerCapture(e.pointerId);
+      }
+      var left = drag.left - dx;
+      drag.v = (left - scroller.scrollLeft) / Math.max(1, e.timeStamp - drag.t);
+      drag.t = e.timeStamp;
+      scroller.scrollLeft = left;
+    });
+    function endDrag(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var d = drag;
+      drag = null;
+      if (!d.moved) return;
+      suppressClick = true;
+      setTimeout(function () { suppressClick = false; }, 0);
+      nav.classList.remove('is-dragging');
+      var v = e.timeStamp - d.t > 80 ? 0 : d.v;
+      glideTo(nearest(scroller.scrollLeft + scroller.clientWidth / 2 + v * 100));
+      freeTimer = setTimeout(function () { nav.classList.remove('is-free'); }, 600);
+    }
+    scroller.addEventListener('pointerup', endDrag);
+    scroller.addEventListener('pointercancel', endDrag);
+    scroller.addEventListener('click', function (e) {
+      if (suppressClick) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+
+    function scrollPage(destination) {
+      if (window.siteNavigation) window.siteNavigation.scrollTo(destination);
+      else window.scrollTo({ top: typeof destination === 'function' ? destination() : destination, behavior: 'smooth' });
+    }
+    var feed = isHome && document.getElementById('works-gallery');
+
+    var leaveTimer;
+    track.addEventListener('click', function (e) {
+      var el = e.target.closest('.nav-dial__item');
+      if (!el || e.defaultPrevented) return;
+      var it = el._section;
+      if (it.contacts) {
+        glideTo(el);
+        contactSheet.open();
+        return;
+      }
+      // Резюме открывается в новой вкладке, линейка остаётся на месте.
+      if (it.external) return;
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      glideTo(el);
+      if (feed && el === projectsItem) {
+        scrollPage(function () { return window.scrollY + feed.getBoundingClientRect().top - 20; });
+        return;
+      }
+      if (el.getAttribute('aria-current') === 'page') {
+        scrollPage(0);
+        return;
+      }
+      clearTimeout(leaveTimer);
+      leaveTimer = setTimeout(function () { location.href = el.href; }, reduceMotion.matches ? 0 : 320);
+    });
+
+    var contactSheet = createSheet({
+      id: 'site-contacts-dialog',
+      title: 'Контакты',
+      closeLabel: 'Закрыть контакты',
+      trigger: contactsItem,
+      onClose: function () { glideTo(resting); },
+      build: function (add, close) {
+        CONTACTS.forEach(function (it) { add(contactRow(it, close)); });
       }
     });
-    menuBtn.addEventListener('click', menuSheet.open);
 
-    var desktopMq = window.matchMedia('(width >= 1200px)');
-    function onModeChange() { if (desktopMq.matches) menuSheet.close(); }
-    (desktopMq.addEventListener
-      ? desktopMq.addEventListener('change', onModeChange)
-      : desktopMq.addListener(onModeChange));
+    /* ---------- хедер при скролле страницы ---------- */
+    var heroEl = document.querySelector('.mood-hero');
+    var lastY = Math.max(0, window.scrollY), shift = 0, upRun = 0;
+
+    function syncSurface() {
+      var over;
+      if (heroEl) {
+        var line = Math.max(1, header.offsetHeight + shift - 1);
+        var under = document.elementsFromPoint(innerWidth / 2, line)
+          .find(function (el) { return !header.contains(el); });
+        over = !!under && heroEl.contains(under);
+      } else {
+        over = window.scrollY < 4;
+      }
+      header.classList.toggle('is-over-hero', over);
+    }
+
+    // Вниз — хедер едет вместе с контентом; вверх — мягко возвращается.
+    function syncShift() {
+      var y = Math.max(0, window.scrollY);
+      var dy = y - lastY;
+      lastY = y;
+      if (root.classList.contains('contact-scroll-lock')) return;
+      var h = header.offsetHeight;
+      if (dy > 0) {
+        upRun = 0;
+        header.classList.remove('is-revealing');
+        shift = Math.max(-h, shift - dy);
+        header.classList.toggle('is-away', shift <= -h);
+      } else if (dy < 0) {
+        upRun -= dy;
+        if (shift < 0 && (upRun > 8 || y < h)) {
+          shift = 0;
+          header.classList.add('is-revealing');
+          header.classList.remove('is-away');
+        }
+      }
+      header.style.setProperty('--nav-shift', shift + 'px');
+    }
+
+    function syncResting() {
+      if (!feed || !projectsItem) return;
+      var next = feed.getBoundingClientRect().top < innerHeight / 2 ? projectsItem : items[0];
+      if (next === resting) return;
+      resting = next;
+      if (!drag && centered !== resting) glideTo(resting, shift <= -header.offsetHeight);
+    }
+
+    var pageTicking = false;
+    window.addEventListener('scroll', function () {
+      if (pageTicking) return;
+      pageTicking = true;
+      requestAnimationFrame(function () {
+        pageTicking = false;
+        syncShift();
+        syncSurface();
+        syncResting();
+      });
+    }, { passive: true });
+
+    // Баннер Главной красит хедер в белый по тому, что под ним
+    // (hero-video.js, на скролл). После возвращения хедера даём ему
+    // перепроверить уже на месте.
+    header.addEventListener('transitionend', function (e) {
+      if (e.target !== header || e.propertyName !== 'transform') return;
+      header.classList.remove('is-revealing');
+      window.dispatchEvent(new Event('scroll'));
+    });
+
+    function recenter() {
+      layout();
+      glideTo(centered || resting, true);
+      markCentered();
+    }
+    layout();
+    syncResting();
+    glideTo(resting, true);
+    markCentered();
+    syncSurface();
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(recenter).observe(scroller);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(recenter);
   })();
-
-  function measureSocialsOffset() {
-    var footer = document.querySelector('.site-footer');
-    var rect = footer && footer.getBoundingClientRect();
-    root.style.setProperty('--chrome-socials-offset', rect && rect.top < 140 && rect.right > innerWidth - 260 ? Math.ceil(rect.width + 12) + 'px' : '0px');
-  }
-  window.addEventListener('resize', measureSocialsOffset);
-  document.fonts.ready.then(measureSocialsOffset);
-  requestAnimationFrame(measureSocialsOffset);
 })();

@@ -88,7 +88,7 @@
       var url;
       try { url = new URL(href, window.location.href); } catch (_) { return; }
 
-      if (link.classList.contains('site-header__cta')) {
+      if (link.classList.contains('site-header__cta') || url.pathname === '/cv.pdf') {
         track('resume_open', { link_url: href, link_text: label });
       } else if (url.hostname === 't.me') {
         track('telegram_open', { link_url: href, link_text: label });

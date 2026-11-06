@@ -183,13 +183,6 @@ html.no-liquid-glass-distort .footer-menu-panel__bar {
   inherits: false;
 }
 
-.site-header {
-  /* Кнопка "Резюме PDF" (--btn-accent) — крайняя справа
-     (justify-content: space-between в header.css). */
-  --glass-accent: color-mix(in srgb, var(--btn-accent) 70%, transparent);
-  --glass-accent-pos: calc(100% - 2.5rem) 50%;
-}
-
 .site-footer,
 .footer-menu-panel__bar {
   /* Активный пункт "Работы" — всегда первый/крайний слева в списке
@@ -199,7 +192,6 @@ html.no-liquid-glass-distort .footer-menu-panel__bar {
 }
 
 :is(
-  .site-header,
   .site-footer,
   .footer-menu-panel__bar
 ) {
@@ -297,11 +289,4 @@ html[data-mood="stas"] {
   --color-action-hover: #D60067;
   --color-action-active-text: #FFFFFF;
   --color-action-hover-text: #FFFFFF;
-}
-html[data-mood] .site-header {
-  /* Transparent glass: colours follow the page theme, not the mood plate. */
-  transition: background-color .55s ease, top .25s ease, left .25s ease;
-}
-@media (prefers-reduced-motion: reduce) {
-  html[data-mood] .site-header { transition: none; }
 }
