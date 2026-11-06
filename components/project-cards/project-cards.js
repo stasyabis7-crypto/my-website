@@ -22,7 +22,7 @@
     if (!visual || visual.querySelector('.project-card__tag')) return;
     const tag = document.createElement('p');
     tag.className = 'project-card__tag text-body';
-    tag.textContent = 'В работе';
+    tag.textContent = 'In progress';
     visual.appendChild(tag);
   });
 })();

@@ -111,12 +111,12 @@
       return item(index, '<article class="feed-card">' +
         '<div class="feed-card__media"><div class="feed-card__frame">' +
         '<div class="feed-card__cover">' + media(project) + '</div>' +
-        '<span class="feed-card__badge">Скоро появится</span>' +
+        '<span class="feed-card__badge">Coming soon</span>' +
         '</div></div>' + title + '</article>');
     }
     return item(index, '<article class="feed-card">' +
       '<div class="feed-card__media" data-action-hover><div class="feed-card__frame">' +
-      '<a class="feed-card__cover" href="' + escape(project.href) + '" aria-label="Открыть кейс «' + escape(project.title) + '»">' +
+      '<a class="feed-card__cover" href="' + escape(project.href) + '" aria-label="Open case “' + escape(project.title) + '”">' +
       media(project) + '</a>' +
       // Ведёт туда же, что и обложка, поэтому скрыта от клавиатуры и
       // скринридера (фокус — на обложке).

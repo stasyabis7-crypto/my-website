@@ -21,7 +21,7 @@ assert.equal(html.syncToc(source), source);
 // Перестановка туда и обратно.
 const moved = html.apply(source, { type: 'moveDown', id: block(source, 'about').id }).source;
 assert.deepEqual(outline(moved).slice(0, 3).map(item => item.htmlId), ['summary', 'problems', 'about']);
-assert.match(moved, /href="#problems"><span>Проблемы<\/span><\/a>\n\s*<a class="btn btn--fill-toc" href="#about">/);
+assert.match(moved, /href="#problems"><span>Problems<\/span><\/a>\n\s*<a class="btn btn--fill-toc" href="#about">/);
 assert.equal(html.apply(moved, { type: 'moveUp', id: block(moved, 'about').id }).source, source);
 
 // Дублирование и удаление копии.
@@ -50,7 +50,7 @@ assert.equal(html.sanitizeInline('<a href="javascript:alert(1)" onclick="x">сс
 // Атрибуты картинки: меняются только src и размеры.
 const image = html.load(source).nodes.find(node => node.tagName === 'img' && /concept-1/.test(html.attr(node, 'src')));
 const swapped = html.apply(source, { type: 'setMedia', id: image.adminId, attr: 'src', url: 'media/concepts/new-1600x900.webp', width: 1600, height: 900 }).source;
-assert.match(swapped, /<img src="media\/concepts\/new-1600x900\.webp" alt="Концепт карты[^"]*" width="1600" height="900" loading="lazy" \/>/);
+assert.match(swapped, /<img src="media\/concepts\/new-1600x900\.webp" alt="Map concept[^"]*" width="1600" height="900" loading="lazy" \/>/);
 assert.equal(swapped.length - source.length, 'new-1600x900'.length - 'concept-1-v2-2880x1600'.length + 2 * ('1600'.length - '2880'.length) + ('900'.length - '1600'.length));
 
 // Заглушка под кадр превращается в медиа с классами места.

@@ -1,6 +1,6 @@
 /* Общая типографика: неразрывные связи и пунктуация подзаголовков. */
 (function () {
-  var sentences = typeof Intl.Segmenter === 'function' ? new Intl.Segmenter('ru', { granularity: 'sentence' }) : null;
+  var sentences = typeof Intl.Segmenter === 'function' ? new Intl.Segmenter('en', { granularity: 'sentence' }) : null;
   function subtitlePeriod(text) {
     var last = /\.(?=[»”"')\]]*\s*$)/.exec(text);
     if (!last || last.index === 0 || /[.!?…]/.test(text[last.index - 1])) return -1;

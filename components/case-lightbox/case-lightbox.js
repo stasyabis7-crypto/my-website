@@ -60,14 +60,14 @@
     root.hidden = true;
     root.setAttribute('role', 'dialog');
     root.setAttribute('aria-modal', 'true');
-    root.setAttribute('aria-label', 'Просмотр фото интерфейса');
+    root.setAttribute('aria-label', 'Interface photo viewer');
     root.innerHTML =
       '<header class="case-lightbox__bar">' +
-        '<p class="case-lightbox__counter text-body-sm"><span data-lightbox-kind>Фото</span> <span data-lightbox-current>1</span> из <span data-lightbox-total>' + items.length + '</span></p>' +
-        '<button type="button" class="btn btn--fill-plain btn--icon-only case-lightbox__close" aria-label="Закрыть"><span class="icon icon--close" aria-hidden="true"></span></button>' +
+        '<p class="case-lightbox__counter text-body-sm"><span data-lightbox-kind>Photo</span> <span data-lightbox-current>1</span> of <span data-lightbox-total>' + items.length + '</span></p>' +
+        '<button type="button" class="btn btn--fill-plain btn--icon-only case-lightbox__close" aria-label="Close"><span class="icon icon--close" aria-hidden="true"></span></button>' +
       '</header>' +
-      '<button type="button" class="btn btn--fill-white btn--icon-only btn--media-control case-lightbox__nav case-lightbox__nav--prev" aria-label="Предыдущее фото"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>' +
-      '<button type="button" class="btn btn--fill-white btn--icon-only btn--media-control case-lightbox__nav case-lightbox__nav--next" aria-label="Следующее фото"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>' +
+      '<button type="button" class="btn btn--fill-white btn--icon-only btn--media-control case-lightbox__nav case-lightbox__nav--prev" aria-label="Previous photo"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>' +
+      '<button type="button" class="btn btn--fill-white btn--icon-only btn--media-control case-lightbox__nav case-lightbox__nav--next" aria-label="Next photo"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>' +
       '<div class="case-lightbox__viewport"><div class="case-lightbox__track"></div></div>' +
       '<div class="case-lightbox__thumbs"></div>';
     document.body.appendChild(root);
@@ -117,7 +117,7 @@
       th.className = 'case-lightbox__thumb';
       th.tabIndex = 0;
       th.setAttribute('role', 'button');
-      th.setAttribute('aria-label', 'Фото ' + (i + 1) + ' из ' + items.length);
+      th.setAttribute('aria-label', 'Photo ' + (i + 1) + ' of ' + items.length);
       // Видео без постера: миниатюра — само видео, остановленное на
       // первом кадре (#t=0.1 — иначе Safari не рисует кадр до play).
       var ti = document.createElement(isVideo(src) ? 'video' : 'img');
@@ -172,8 +172,8 @@
       var bar = document.createElement('div');
       bar.className = 'case-lightbox__player';
       bar.innerHTML =
-        '<button type="button" class="btn btn--fill-white btn--icon-only btn--media-control case-lightbox__play" aria-label="Пауза"><span class="icon icon--pause" aria-hidden="true"></span></button>' +
-        '<input type="range" class="case-lightbox__seek" min="0" max="1000" step="1" value="0" aria-label="Перемотка видео" />' +
+        '<button type="button" class="btn btn--fill-white btn--icon-only btn--media-control case-lightbox__play" aria-label="Pause"><span class="icon icon--pause" aria-hidden="true"></span></button>' +
+        '<input type="range" class="case-lightbox__seek" min="0" max="1000" step="1" value="0" aria-label="Seek video" />' +
         '<p class="case-lightbox__time text-body-sm"><span data-time-current>0:00</span> / <span data-time-total>0:00</span></p>';
       slide.appendChild(bar);
 
@@ -199,7 +199,7 @@
       function syncButton() {
         var playing = !video.paused;
         icon.className = 'icon ' + (playing ? 'icon--pause' : 'icon--play');
-        btn.setAttribute('aria-label', playing ? 'Пауза' : 'Смотреть');
+        btn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
       }
 
       video.addEventListener('play', function () {
@@ -353,7 +353,7 @@
       target.tabIndex = 0;
       target.setAttribute('role', 'button');
       if (!target.hasAttribute('aria-label')) {
-        target.setAttribute('aria-label', 'Открыть ' + (isVideo(img) ? 'видео ' : 'фото ') + (i + 1) + ' из ' + items.length + ' на весь экран');
+        target.setAttribute('aria-label', 'Open ' + (isVideo(img) ? 'video ' : 'photo ') + (i + 1) + ' of ' + items.length + ' full screen');
       }
       target.addEventListener('click', function () { open(i, target); });
       target.addEventListener('keydown', function (e) {
@@ -463,7 +463,7 @@
 
     function updateChrome() {
       currentEl.textContent = String(index + 1);
-      kindEl.textContent = players[index] ? 'Видео' : 'Фото';
+      kindEl.textContent = players[index] ? 'Video' : 'Photo';
       prevBtn.hidden = index === 0;
       nextBtn.hidden = index === items.length - 1;
       thumbs.forEach(function (th, i) {

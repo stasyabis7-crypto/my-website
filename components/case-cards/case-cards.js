@@ -89,13 +89,13 @@
     }, { passive: true });
 
     if (counterEl && 'IntersectionObserver' in window) {
-      counterEl.textContent = '1 из ' + count;
+      counterEl.textContent = '1 of ' + count;
       var allCards = Array.prototype.slice.call(track.children);
       var cardIO = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           if (!entry.isIntersecting || entry.intersectionRatio < 0.6) return;
           var idx = entry.target.getAttribute('data-slide-index');
-          if (idx) counterEl.textContent = idx + ' из ' + count;
+          if (idx) counterEl.textContent = idx + ' of ' + count;
         });
       }, { root: track, threshold: [0.6] });
       allCards.forEach(function (card) { cardIO.observe(card); });

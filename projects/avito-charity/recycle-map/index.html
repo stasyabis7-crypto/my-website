@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="ru" data-mood="anastasia">
+<html lang="en" data-mood="anastasia">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Карта переработки вещей</title>
-<meta name="description" content="Поиск, выбор и сохранение пунктов приёма вещей в избранное" />
+<title>Recycling map</title>
+<meta name="description" content="Finding and choosing drop-off points and saving them to favourites" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="stasyabis" />
-<meta property="og:title" content="Карта переработки вещей" />
-<meta property="og:description" content="Поиск, выбор и сохранение пунктов приёма вещей в избранное" />
+<meta property="og:title" content="Recycling map" />
+<meta property="og:description" content="Finding and choosing drop-off points and saving them to favourites" />
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Карта переработки вещей" />
-<meta name="twitter:description" content="Поиск, выбор и сохранение пунктов приёма вещей в избранное" />
+<meta name="twitter:title" content="Recycling map" />
+<meta name="twitter:description" content="Finding and choosing drop-off points and saving them to favourites" />
 <meta name="robots" content="noindex" />
 <link rel="icon" type="image/webp" sizes="64x64" href="../../../components/site-brand/favicon.webp" />
 
@@ -98,25 +98,25 @@ body {
   <header class="site-header"></header>
 
 
-  <aside class="work-toc work-toc--corner" aria-label="Навигация по проекту" hidden>
+  <aside class="work-toc work-toc--corner" aria-label="Project navigation" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
-      aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
+      aria-label="Project contents" aria-expanded="false" aria-controls="work-toc-panel">
       <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="problems"></span><span data-toc-marker="concepts"></span><span data-toc-marker="navigation"></span><span data-toc-marker="filters"></span><span data-toc-marker="favorites"></span><span data-toc-marker="favorites-decision"></span><span data-toc-marker="results"></span><span data-toc-marker="next"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
     <div class="work-toc__panel" id="work-toc-panel" hidden>
-      <nav aria-label="Оглавление проекта">
-        <a class="btn btn--fill-toc" href="#summary"><span>Саммари</span></a>
-        <a class="btn btn--fill-toc" href="#about"><span>О проекте</span></a>
-        <a class="btn btn--fill-toc" href="#problems"><span>Проблемы</span></a>
-        <a class="btn btn--fill-toc" href="#concepts"><span>Концепты</span></a>
-        <a class="btn btn--fill-toc" href="#navigation"><span>Навигация</span></a>
-        <a class="btn btn--fill-toc" href="#filters"><span>Поиск и фильтры</span></a>
-        <a class="btn btn--fill-toc" href="#favorites"><span>Карточка и избранное</span></a>
-        <a class="btn btn--fill-toc" href="#favorites-decision"><span>Почему отдельный список</span></a>
-        <a class="btn btn--fill-toc" href="#results"><span>Результаты</span></a>
-        <a class="btn btn--fill-toc" href="#next"><span>Что дальше</span></a>
+      <nav aria-label="Project contents">
+        <a class="btn btn--fill-toc" href="#summary"><span>Summary</span></a>
+        <a class="btn btn--fill-toc" href="#about"><span>About the project</span></a>
+        <a class="btn btn--fill-toc" href="#problems"><span>Problems</span></a>
+        <a class="btn btn--fill-toc" href="#concepts"><span>Concepts</span></a>
+        <a class="btn btn--fill-toc" href="#navigation"><span>Navigation</span></a>
+        <a class="btn btn--fill-toc" href="#filters"><span>Search and filters</span></a>
+        <a class="btn btn--fill-toc" href="#favorites"><span>Card and favourites</span></a>
+        <a class="btn btn--fill-toc" href="#favorites-decision"><span>Why a separate list</span></a>
+        <a class="btn btn--fill-toc" href="#results"><span>Results</span></a>
+        <a class="btn btn--fill-toc" href="#next"><span>What’s next</span></a>
       </nav>
     </div>
   </aside>
@@ -128,16 +128,16 @@ body {
 
       <!-- Страница собрана на сетке components/case-grid/case-grid.css:
            правила раскладки и классы ячеек описаны в начале этого файла. -->
-      <section class="case-block case-cover cg" id="summary" tabindex="-1" aria-label="Саммари проекта">
+      <section class="case-block case-cover cg" id="summary" tabindex="-1" aria-label="Project summary">
         <div class="cg-intro cg-intro--action">
-          <h1 class="case-cover__title text-h1">Карта переработки вещей</h1>
+          <h1 class="case-cover__title text-h1">Recycling map</h1>
           <div class="cg-intro__text">
-            <p class="text-body-lg" data-subtitle><span class="cg-label">Проблема:</span> человек находил пункт приёма и уходил. Фильтры выглядели неактивными, сохранить точку было нельзя, а вернуться к другим инициативам было неоткуда.</p>
-            <p class="text-body-lg" data-subtitle><span class="cg-label">Решение:</span> пересобрала поиск, фильтры и карточку пункта, добавила избранное и общую навигацию благотворительности</p>
+            <p class="text-body-lg" data-subtitle><span class="cg-label">Problem:</span> people found a drop-off point and left. The filters looked disabled, there was no way to save a point, and nothing led back to other initiatives.</p>
+            <p class="text-body-lg" data-subtitle><span class="cg-label">Solution:</span> I rebuilt the search, filters and point card, and added favourites and shared charity navigation</p>
           </div>
           <!-- Действие: от 700px сразу под заголовком, на телефоне — после полей. -->
           <a class="btn btn--fill-pink btn--icon-right case-cover__cta cg-intro__action" href="https://www.avito.ru/avito-care/recyclemap" target="_blank" rel="noopener noreferrer">
-            <span>Открыть карту на Авито</span>
+            <span>Open the map on Avito</span>
             <span class="icon icon--arrow-diagonal" aria-hidden="true"></span>
           </a>
         </div>
@@ -145,26 +145,26 @@ body {
         <!-- Первый кадр кейса — файл из covers/, он же записан обложкой в
              pages/home/data/projects.js. Кадр занимает три правые четверти. -->
         <div class="case-cover__media case-cover__media--natural cg-bleed cg-q234 cg-row-2">
-          <img src="/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800.webp" width="2880" height="1800" alt="Карта переработки Авито на экране ноутбука: пункты приёма, категории и избранное" />
+          <img src="/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800.webp" width="2880" height="1800" alt="Avito recycling map on a laptop screen: drop-off points, categories and favourites" />
         </div>
 
         <!-- Поля проекта: роль, команда и срок вместо отдельных секций. -->
         <div class="cg-meta cg-q1 cg-row-2">
           <dl class="cg-list text-body">
-            <div><dt>Роль</dt><dd>Вела ключевой сценарий карты целиком</dd></div>
-            <div><dt>Команда</dt><dd>Продакт, проджект, бэкенд, фронтенд, редактор</dd></div>
-            <div><dt>Срок</dt><dd>Три месяца от постановки задачи до запуска</dd></div>
+            <div><dt>Role</dt><dd>Owned the map’s core flow end to end</dd></div>
+            <div><dt>Team</dt><dd>Product manager, project manager, backend, frontend, editor</dd></div>
+            <div><dt>Timeline</dt><dd>Three months from brief to launch</dd></div>
           </dl>
         </div>
       </section>
 
       <section class="case-block cg" id="about" tabindex="-1">
         <div class="cg-intro">
-          <h2 class="text-h1">О проекте</h2>
+          <h2 class="text-h1">About the project</h2>
           <div class="cg-intro__text">
-            <p class="text-body-lg" data-subtitle>Карта помогает найти, куда сдать вторсырьё и вещи на благотворительность, а точки на ней поставляют партнёрские организации</p>
-            <p class="text-body-lg" data-subtitle>Продакт поставил задачу перестать терять на карте человека. Успехом считали возвраты на карту и переходы в другие инициативы благотворительности, но замерить получилось только возвраты</p>
-            <p class="text-body-lg" data-subtitle>Тысячи адресов с разным качеством описаний, править описания на нашей стороне нельзя, улучшать можно было только интерфейс</p>
+            <p class="text-body-lg" data-subtitle>The map helps people find where to drop off recyclables and items for charity; the points on it come from partner organisations</p>
+            <p class="text-body-lg" data-subtitle>The product manager’s goal was to stop losing people on the map. Success meant people returning to the map and moving on to other charity initiatives, but we could only measure returns</p>
+            <p class="text-body-lg" data-subtitle>Thousands of addresses with descriptions of varying quality. We couldn’t edit the descriptions on our side, so only the interface could be improved</p>
           </div>
         </div>
 
@@ -175,147 +175,147 @@ body {
             <source media="(max-width: 699px)" srcset="media/about/statement-mobile-v2-1200x1500.webp" width="1200" height="1500" />
             <img src="media/about/statement-desktop-v2-3840x1680.webp" width="3840" height="1680" alt="" loading="lazy" />
           </picture>
-          <figcaption class="cg-photo__text text-h2">Человек приходил сдать вещи и уходил, не узнав об остальных способах помочь</figcaption>
+          <figcaption class="cg-photo__text text-h2">People came to drop off items and left without learning about other ways to help</figcaption>
         </figure>
       </section>
 
       <section class="case-block cg" id="problems" tabindex="-1">
         <div class="cg-intro cg-intro--thirds cg-intro--base">
-          <h2 class="text-h1">Проблемы</h2>
+          <h2 class="text-h1">Problems</h2>
           <div class="cg-intro__text">
-            <p class="text-body-lg">Сценарий рвался в трёх местах</p>
+            <p class="text-body-lg">The flow broke in three places</p>
           </div>
         </div>
 
         <div class="cg-item cg-t1">
           <p class="cg-item__num text-display-lg" aria-hidden="true">01</p>
-          <p class="cg-item__text text-body">Карта не была связана с остальной благотворительностью: переходов в другие инициативы — единицы в день</p>
+          <p class="cg-item__text text-body">The map wasn’t connected to the rest of the charity section: only a handful of people a day moved on to other initiatives</p>
         </div>
         <div class="cg-item cg-t2">
           <p class="cg-item__num text-display-lg" aria-hidden="true">02</p>
-          <p class="cg-item__text text-body">Фильтры в изначальном виде выглядели как неактивные и люди писали в поддержку, что фильтры недоступны, хотя кликабельны</p>
+          <p class="cg-item__text text-body">In their original form the filters looked disabled, and people wrote to support saying the filters didn’t work, even though they were clickable</p>
         </div>
         <div class="cg-item cg-t3">
           <p class="cg-item__num text-display-lg" aria-hidden="true">03</p>
-          <p class="cg-item__text text-body">Сохранить найденный пункт было нельзя. Между визитами проходят недели, и человек искал заново</p>
+          <p class="cg-item__text text-body">There was no way to save a point you’d found. Weeks pass between visits, so people searched all over again</p>
         </div>
       </section>
 
       <section class="case-block cg" id="concepts" tabindex="-1">
         <div class="cg-intro">
-          <h2 class="text-h1">Концепты</h2>
+          <h2 class="text-h1">Concepts</h2>
           <div class="cg-intro__text">
-            <p class="text-body-lg">Сравнила две компоновки. Выбрала показывать все фильтры сразу: фильтр по типу отходов нужен почти каждому, и лишний клик бил бы по основному сценарию. Заодно проверила, как компоненты дизайн-системы ведут себя в разных вариантах.</p>
+            <p class="text-body-lg">I compared two layouts and chose to show all filters at once: almost everyone needs the waste-type filter, and an extra click would hurt the main flow. Along the way I checked how the design system components behave in each option.</p>
           </div>
         </div>
 
         <figure class="cg-figure cg-l">
           <div class="case-cover__media case-cover__media--natural">
-            <img src="media/concepts/concept-1-v2-2880x1600.webp" alt="Концепт карты с миниатюрной панелью вместо большой шапки и фильтрами внутри панели" width="2880" height="1600" loading="lazy" />
+            <img src="media/concepts/concept-1-v2-2880x1600.webp" alt="Map concept with a mini panel instead of a large header, and filters inside the panel" width="2880" height="1600" loading="lazy" />
           </div>
-          <figcaption class="text-body">Вариант 1, выбрали: большая шапка заменена мини-панелью, фильтры остаются в ней на виду</figcaption>
+          <figcaption class="text-body">Option 1, chosen: the large header is replaced by a mini panel, and the filters stay visible in it</figcaption>
         </figure>
         <figure class="cg-figure cg-r">
           <div class="case-cover__media case-cover__media--natural">
-            <img src="media/concepts/concept-2-v2-2880x1600.webp" alt="Концепт карты с фильтрами, скрытыми в одну кнопку, и расширенной левой панелью" width="2880" height="1600" loading="lazy" />
+            <img src="media/concepts/concept-2-v2-2880x1600.webp" alt="Map concept with filters hidden behind one button and a wider left panel" width="2880" height="1600" loading="lazy" />
           </div>
-          <figcaption class="text-body">Вариант 2: фильтры спрятаны в одну кнопку, слева больше места под список</figcaption>
+          <figcaption class="text-body">Option 2: filters hidden behind one button, more room for the list on the left</figcaption>
         </figure>
       </section>
 
       <section class="case-block cg" id="navigation" tabindex="-1">
         <div class="cg-intro">
-          <h2 class="text-h1">Навигация</h2>
+          <h2 class="text-h1">Navigation</h2>
           <div class="cg-intro__text">
-            <p class="text-body-lg">Человек попадал на карту и оставался в ней: вернуться к другим инициативам было неоткуда.</p>
+            <p class="text-body-lg">People landed on the map and stayed there: nothing led back to other initiatives.</p>
           </div>
         </div>
 
         <figure class="cg-figure cg-l">
           <div class="case-cover__media case-cover__media--natural">
-            <img src="media/navigation/before-v2-2880x1600.webp" alt="Карта до изменений: без общей навигации" width="2880" height="1600" loading="lazy" />
+            <img src="media/navigation/before-v2-2880x1600.webp" alt="The map before: no shared navigation" width="2880" height="1600" loading="lazy" />
           </div>
-          <figcaption class="text-body">До</figcaption>
+          <figcaption class="text-body">Before</figcaption>
         </figure>
         <figure class="cg-figure cg-r">
           <div class="case-cover__media case-cover__media--natural">
-            <img src="media/navigation/after-v2-2880x1600.webp" alt="Карта после изменений: с навигацией по благотворительным инициативам" width="2880" height="1600" loading="lazy" />
+            <img src="media/navigation/after-v2-2880x1600.webp" alt="The map after: with navigation across charity initiatives" width="2880" height="1600" loading="lazy" />
           </div>
-          <figcaption class="text-body">После</figcaption>
+          <figcaption class="text-body">After</figcaption>
         </figure>
 
-        <p class="text-body-lg cg-r">Добавила общую навигацию пространства благотворительности. Соседние команды хотели, чтобы на карте была та же шапка, что и на остальных страницах раздела. Но полноразмерная шапка забирала место у карты, поэтому договорились о плавающей панели: пункты меню и выпадающие списки те же, а карта остаётся на весь экран. Так навигация работает одинаково по всему разделу, а на карте не мешает поиску пунктов.</p>
+        <p class="text-body-lg cg-r">I added shared navigation for the charity section. Neighbouring teams wanted the map to have the same header as the other pages in the section. But a full-size header took space away from the map, so we agreed on a floating panel: the same menu items and dropdowns, while the map stays full screen. This way navigation works the same across the section without getting in the way of finding points on the map.</p>
       </section>
 
       <section class="case-block cg" id="filters" tabindex="-1">
         <div class="cg-intro">
-          <h2 class="text-h1">Поиск и фильтры</h2>
+          <h2 class="text-h1">Search and filters</h2>
           <div class="cg-intro__text">
-            <p class="text-body-lg">Иконки фильтров серые и выглядят неактивными. Люди писали в поддержку, что фильтры недоступны.</p>
+            <p class="text-body-lg">The filter icons are grey and look disabled. People wrote to support saying the filters didn’t work.</p>
           </div>
         </div>
 
         <figure class="cg-figure cg-l cg-m-l">
           <div class="case-cover__media case-cover__media--natural">
-            <img src="media/filters/before-1600.webp" alt="Фильтры до изменений: категории с неочевидными состояниями выбора" width="1600" height="1600" loading="lazy" />
+            <img src="media/filters/before-1600.webp" alt="Filters before: categories with unclear selection states" width="1600" height="1600" loading="lazy" />
           </div>
-          <figcaption class="text-body">До</figcaption>
+          <figcaption class="text-body">Before</figcaption>
         </figure>
         <figure class="cg-figure cg-r cg-m-r">
           <div class="case-cover__media case-cover__media--natural">
-            <img src="media/filters/after-1600.webp" alt="Фильтры после изменений: категории и иконки из дизайн-системы" width="1600" height="1600" loading="lazy" />
+            <img src="media/filters/after-1600.webp" alt="Filters after: categories and icons from the design system" width="1600" height="1600" loading="lazy" />
           </div>
-          <figcaption class="text-body">После</figcaption>
+          <figcaption class="text-body">After</figcaption>
         </figure>
 
-        <p class="text-body-lg cg-r">Привела категории и пины к дизайн-системе Авито: категорийных пинов и фильтра с множественным выбором в ней не было, их пришлось спроектировать и внести в систему.</p>
+        <p class="text-body-lg cg-r">I brought the categories and pins in line with the Avito design system. It had no category pins or multi-select filter, so I designed them and added them to the system.</p>
 
         <!-- Кадр со своим фоном стоит без серой сцены, на всю ширину. -->
         <div class="case-cover__media case-cover__media--natural cg-bleed">
-          <img src="media/filters/result-v2-2880x1800.webp" alt="Обновлённая карта с поиском, выбором нескольких категорий и пинами из дизайн-системы Авито" width="2880" height="1800" loading="lazy" />
+          <img src="media/filters/result-v2-2880x1800.webp" alt="The updated map with search, multi-category selection and pins from the Avito design system" width="2880" height="1800" loading="lazy" />
         </div>
       </section>
 
       <section class="case-block cg" id="favorites" tabindex="-1">
         <div class="cg-intro">
-          <h2 class="text-h1">Карточка пункта и избранное</h2>
+          <h2 class="text-h1">Point card and favourites</h2>
           <div class="cg-intro__text">
-            <p class="text-body-lg">Адрес, условия приёма, режим работы и контакты лежали в карточке одним весом — понять, подходит ли пункт, было долго. Сохранить его было нельзя.</p>
+            <p class="text-body-lg">The address, drop-off terms, opening hours and contacts all had the same weight in the card, so it took a while to tell whether a point was right. There was no way to save it.</p>
           </div>
         </div>
 
         <!-- Кадр со своим фоном стоит без серой сцены, на всю ширину. -->
         <div class="case-cover__media case-cover__media--natural cg-bleed">
-          <img src="media/favorites/card-v2-2880x1600.webp" alt="Карточка пункта приёма и избранное на карте" width="2880" height="1600" loading="lazy" />
+          <img src="media/favorites/card-v2-2880x1600.webp" alt="Drop-off point card and favourites on the map" width="2880" height="1600" loading="lazy" />
         </div>
 
         <div class="cg-text cg-r">
-          <p class="text-body-lg">Перегруппировала карточку по задачам: где это, что примут, когда открыто, как связаться.</p>
-          <p class="text-body-lg">Унифицировала типографику, ссылки и состояния. Спроектировала сохранение пункта и список избранного.</p>
-          <p class="text-body-lg">Развернула режим работы в подробный график — из-за неточного времени чаще всего ездят зря.</p>
+          <p class="text-body-lg">Regrouped the card around tasks: where it is, what they accept, when it’s open, how to get in touch.</p>
+          <p class="text-body-lg">Unified typography, links and states. Designed saving a point and the favourites list.</p>
+          <p class="text-body-lg">Expanded the opening hours into a detailed schedule: inaccurate hours are the most common reason for a wasted trip.</p>
         </div>
 
         <div class="case-cover__media case-cover__media--natural cg-r">
-          <img src="media/favorites/schedule-b-1600.webp" alt="График работы пункта по дням недели: будни 10:00–20:00, среда и воскресенье — выходной, суббота 10:00–15:00" width="1600" height="1600" loading="lazy" />
+          <img src="media/favorites/schedule-b-1600.webp" alt="The point’s opening hours by day: weekdays 10:00–20:00, closed Wednesday and Sunday, Saturday 10:00–15:00" width="1600" height="1600" loading="lazy" />
         </div>
       </section>
 
       <section class="case-block cg" id="favorites-decision" tabindex="-1">
         <div class="cg-intro">
-          <h2 class="text-h1">Почему избранное отдельным списком</h2>
+          <h2 class="text-h1">Why favourites are a separate list</h2>
           <div class="cg-intro__text">
-            <p class="text-body-lg">Рассматривала флаг «сохранено» внутри карточки: дешевле и не добавляет новой сущности. Выбрала отдельный список.</p>
+            <p class="text-body-lg">I considered a “saved” flag inside the card: cheaper, and no new entity. I chose a separate list.</p>
           </div>
         </div>
 
         <!-- Кадр со своим фоном стоит без серой сцены, на всю ширину. -->
         <div class="case-cover__media case-cover__media--natural cg-bleed">
-          <img src="media/favorites-list/favorites-b-2880x1600.webp" alt="Два экрана избранного: список сохранённых пунктов с уведомлением «Пункт удалён из избранного» и кнопкой «Вернуть»; пустой список «Пока что тут тихо» с кнопкой «Найти пункт переработки»" width="2880" height="1600" loading="lazy" />
+          <img src="media/favorites-list/favorites-b-2880x1600.webp" alt="Two favourites screens: the list of saved points with a “Point removed from favourites” notice and an “Undo” button; and an empty “It’s quiet here for now” list with a “Find a recycling point” button" width="2880" height="1600" loading="lazy" />
         </div>
 
         <div class="cg-text cg-r">
-          <p class="text-body-lg">Флаг помечает пункт, но не помогает к нему вернуться: человек, который сдаёт вещи раз в месяц, не помнит, где эта точка на карте. Ему нужен не признак, а место, куда можно прийти. Список стоил дороже, но без него сценарий возврата не закрывался.</p>
-          <p class="text-body-lg">Проверить этот выбор можно только данными — он первый в плане замеров.</p>
+          <p class="text-body-lg">A flag marks a point but doesn’t help you get back to it: someone who drops things off once a month doesn’t remember where the point is on the map. They need a place to come back to, not a marker. The list cost more, but without it the return flow didn’t work.</p>
+          <p class="text-body-lg">Only data can validate this choice, so it’s first on the measurement plan.</p>
         </div>
       </section>
 
@@ -328,26 +328,26 @@ body {
 
       <section class="case-block cg" id="results" tabindex="-1">
         <div class="cg-intro cg-intro--thirds cg-intro--base">
-          <h2 class="text-h1">Результаты</h2>
+          <h2 class="text-h1">Results</h2>
           <div class="cg-intro__text">
-            <p class="text-body-lg">Раскатывали на всех сразу, без А/Б-теста, поэтому приписывать редизайну весь трафик карты я не могу. По данным:</p>
+            <p class="text-body-lg">We rolled it out to everyone at once, without an A/B test, so I can’t credit all of the map’s traffic to the redesign. The data shows:</p>
           </div>
         </div>
 
         <div class="cg-item cg-item--stat cg-t1">
           <p class="cg-item__num text-display">306K</p>
-          <p class="cg-item__text text-body">Загрузок точек в день</p>
+          <p class="cg-item__text text-body">Point loads a day</p>
         </div>
         <div class="cg-item cg-item--stat cg-t2">
-          <p class="cg-item__num text-display">1,5–3K</p>
-          <p class="cg-item__text text-body">Открытий карточки пункта в день</p>
+          <p class="cg-item__num text-display">1.5–3K</p>
+          <p class="cg-item__text text-body">Point card opens a day</p>
         </div>
         <div class="cg-item cg-item--stat cg-t3">
-          <p class="cg-item__num text-display">До 70</p>
-          <p class="cg-item__text text-body">Сохранений точек в избранное в день</p>
+          <p class="cg-item__num text-display">Up to 70</p>
+          <p class="cg-item__text text-body">Points saved to favourites a day</p>
         </div>
 
-        <p class="text-body-lg cg-t23">Эти числа говорят, что картой пользуются регулярно, а не разово. Что это следствие именно редизайна — не говорят: для такого вывода нужен замер, которого у нас не было.</p>
+        <p class="text-body-lg cg-t23">These numbers say the map is used regularly, not just once. They don’t say this is down to the redesign: that would need a measurement we didn’t have.</p>
       </section>
 
       <div class="case-block cg-gallery" aria-hidden="true">
@@ -358,20 +358,20 @@ body {
 
       <section class="case-block cg" id="next" tabindex="-1">
         <div class="cg-intro cg-intro--thirds">
-          <h2 class="text-h1">Что проверяю дальше</h2>
+          <h2 class="text-h1">What I’m testing next</h2>
         </div>
 
         <div class="cg-item cg-t1">
           <p class="cg-item__num text-display-lg" aria-hidden="true">01</p>
-          <p class="cg-item__text text-body"><strong>Сколько времени уходит на поиск подходящего пункта.</strong> Если долго даже с фильтрами, то это узкое место не в интерфейсе, а в качестве партнёрских данных, и работать надо с ними, а не с экраном.</p>
+          <p class="cg-item__text text-body"><strong>How long it takes to find a suitable point.</strong> If it’s slow even with filters, the bottleneck isn’t the interface but the quality of partner data, and that’s what needs work, not the screen.</p>
         </div>
         <div class="cg-item cg-t2">
           <p class="cg-item__num text-display-lg" aria-hidden="true">02</p>
-          <p class="cg-item__text text-body"><strong>Как часто открывают сохранённые точки.</strong> Если реже раза в месяц, то избранное работает как закладка «на всякий случай», и тогда логичнее напоминание, а не список.</p>
+          <p class="cg-item__text text-body"><strong>How often saved points get opened.</strong> If it’s less than once a month, favourites work as a “just in case” bookmark, and a reminder would make more sense than a list.</p>
         </div>
         <div class="cg-item cg-t3">
           <p class="cg-item__num text-display-lg" aria-hidden="true">03</p>
-          <p class="cg-item__text text-body"><strong>Какие фильтры чаще приводят к открытию карточки и построению маршрута.</strong> Редко используемые фильтры будут кандидатами на удаление: короткий список фильтров обычно работает лучше полного.</p>
+          <p class="cg-item__text text-body"><strong>Which filters most often lead to opening a card and getting directions.</strong> Rarely used filters will be candidates for removal: a short list of filters usually works better than a complete one.</p>
         </div>
       </section>
 
@@ -388,15 +388,15 @@ body {
       <ul class="site-footer__nav">
         <li><a href="../../../index.html" class="site-footer__link text-label is-current">
           <span class="icon icon--works" aria-hidden="true"></span>
-          Работы
+          Works
         </a></li>
         <li hidden><a href="#" class="site-footer__link text-label">
           <span class="icon icon--activities" aria-hidden="true"></span>
-          Активности
+          Activities
         </a></li>
         <li hidden><a href="#" class="site-footer__link text-label">
           <span class="icon icon--contacts" aria-hidden="true"></span>
-          Контакты
+          Contacts
         </a></li>
       </ul>
     </nav>
@@ -407,18 +407,18 @@ body {
       aria-haspopup="true"
       aria-expanded="false"
       aria-controls="footer-menu-panel"
-      aria-label="Меню"
+      aria-label="Menu"
     >
       <span class="site-footer__menu-btn-line site-footer__menu-btn-line--top" aria-hidden="true"></span>
       <span class="site-footer__menu-btn-line site-footer__menu-btn-line--center" aria-hidden="true"></span>
       <span class="site-footer__menu-btn-line site-footer__menu-btn-line--bottom" aria-hidden="true"></span>
     </button>
-    <button type="button" class="site-footer__top-btn" id="footer-top-btn" aria-label="Наверх">
+    <button type="button" class="site-footer__top-btn" id="footer-top-btn" aria-label="Back to top">
       <span class="icon icon--up" aria-hidden="true"></span>
     </button>
   </footer>
 
-  <button type="button" class="site-footer__top-btn" id="footer-top-btn-desktop" aria-label="Наверх">
+  <button type="button" class="site-footer__top-btn" id="footer-top-btn-desktop" aria-label="Back to top">
     <span class="icon icon--up" aria-hidden="true"></span>
   </button>
 
@@ -429,15 +429,15 @@ body {
       <ul class="footer-menu-panel__nav">
         <li><a href="../../../index.html" class="footer-menu-panel__link text-label is-current">
           <span class="icon icon--works" aria-hidden="true"></span>
-          Работы
+          Works
         </a></li>
         <li hidden><a href="#" class="footer-menu-panel__link text-label">
           <span class="icon icon--activities" aria-hidden="true"></span>
-          Активности
+          Activities
         </a></li>
         <li hidden><a href="#" class="footer-menu-panel__link text-label">
           <span class="icon icon--contacts" aria-hidden="true"></span>
-          Контакты
+          Contacts
         </a></li>
       </ul>
     </nav>

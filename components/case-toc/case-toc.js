@@ -29,11 +29,11 @@
   sheet.setAttribute('aria-labelledby', 'work-toc-title');
   sheet.innerHTML = `<div class="contact-dialog__backdrop" data-close></div>
     <div class="contact-dialog__panel"><div class="contact-dialog__body"><div class="contact-dialog__inner">
-      <div class="contact-dialog__head"><h2 class="text-h2" id="work-toc-title">Оглавление</h2></div>
-      <nav data-rows aria-label="Оглавление проекта"></nav>
+      <div class="contact-dialog__head"><h2 class="text-h2" id="work-toc-title">Contents</h2></div>
+      <nav data-rows aria-label="Project contents"></nav>
     </div></div><div class="contact-dialog__footer"><div class="contact-dialog__close-wrap">
-      <button type="button" class="btn btn--fill-ink btn--icon-right" data-close aria-label="Закрыть оглавление">
-        <span>Закрыть</span><span class="icon icon--close" aria-hidden="true"></span>
+      <button type="button" class="btn btn--fill-ink btn--icon-right" data-close aria-label="Close contents">
+        <span>Close</span><span class="icon icon--close" aria-hidden="true"></span>
       </button></div></div></div>`;
   document.body.appendChild(sheet);
   const surface = sheet.querySelector('.contact-dialog__panel');
@@ -116,7 +116,7 @@
   function scheduleUpdate() { if (!frame) frame = requestAnimationFrame(update); }
   function setExpanded(open) {
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Закрыть оглавление' : 'Оглавление проекта');
+    toggle.setAttribute('aria-label', open ? 'Close contents' : 'Project contents');
   }
   function setPopover(open, restoreFocus = false) {
     if (restoreFocus) toggle.focus({ preventScroll: true });

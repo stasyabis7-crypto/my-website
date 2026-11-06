@@ -172,7 +172,7 @@
       // Кнопка "Меню" сама становится кнопкой "закрыть" — крестик
       // подставляет CSS (см. .is-menu-open .site-footer__menu-btn
       // .icon в footer.css), тут только текст для скринридеров.
-      menuBtn.setAttribute('aria-label', 'Закрыть меню');
+      menuBtn.setAttribute('aria-label', 'Close menu');
     }
     footer.classList.add('is-menu-open');
     root.classList.add('footer-menu-open');
@@ -184,7 +184,7 @@
     if (menuBackdrop) menuBackdrop.classList.remove('is-open');
     if (menuBtn) {
       menuBtn.setAttribute('aria-expanded', 'false');
-      menuBtn.setAttribute('aria-label', 'Меню');
+      menuBtn.setAttribute('aria-label', 'Menu');
     }
     footer.classList.remove('is-menu-open');
     root.classList.remove('footer-menu-open');

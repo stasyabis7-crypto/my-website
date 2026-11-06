@@ -9,7 +9,7 @@
   var overlay;
   var text;
   var phraseTimer = 0;
-  var phrases = ['Загружаем…', 'Собираем страницу…', 'Расставляем пиксели…', 'Ещё немного…', 'Почти готово…'];
+  var phrases = ['Loading…', 'Building the page…', 'Placing the pixels…', 'Just a moment…', 'Almost there…'];
   var phraseIndex = 0;
   var MIN_VISIBLE = 300;
   var shownAt = 0;

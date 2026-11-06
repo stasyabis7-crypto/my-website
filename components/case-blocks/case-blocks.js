@@ -4,8 +4,8 @@
     карточки во вьюпорт цифры "досчитывают" от 0 до финального значения
     из разметки. Работает с любым текстом, где есть числа — регуляркой
     находит их в строке и анимирует каждое отдельно, не трогая остальной
-    текст (суффиксы вроде "тыс.", префиксы вроде "До") и сохраняя число
-    знаков после запятой ("1,5–3 тыс." → анимируются и 1,5, и 3).
+    текст (суффиксы вроде "K", префиксы вроде "Up to") и сохраняя число
+    знаков после точки ("1.5–3K" → анимируются и 1.5, и 3).
     Без JS/при prefers-reduced-motion просто остаётся финальный текст
     из разметки — анимация не обязательна для восприятия контента.
 */
@@ -16,9 +16,10 @@
   var els = document.querySelectorAll('.case-metric__value');
   if (!els.length || reduced || !('IntersectionObserver' in window)) return;
 
-  // Разряды через пробел ("4 956") — одно число, а не два.
-  var NUMBER_RE = /\d{1,3}(?:[   ]\d{3})+(?:,\d+)?|\d+(?:,\d+)?/g;
-  var GROUP_RE = /[   ]/;
+  // Английский формат: разряды через запятую ("4,956") — одно число, а не
+  // два; дробная часть через точку.
+  var NUMBER_RE = /\d{1,3}(?:[,   ]\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?/g;
+  var GROUP_RE = /[,   ]/;
   var DURATION = 1200;
 
   function animate(el) {
@@ -27,10 +28,10 @@
     if (!matches) return;
 
     var targets = matches.map(function (m) {
-      return parseFloat(m.replace(/[   ]/g, '').replace(',', '.'));
+      return parseFloat(m.replace(/[,   ]/g, ''));
     });
     var decimals = matches.map(function (m) {
-      var i = m.indexOf(',');
+      var i = m.indexOf('.');
       return i === -1 ? 0 : m.length - i - 1;
     });
     var groups = matches.map(function (m) { return (m.match(GROUP_RE) || [''])[0]; });
@@ -43,7 +44,7 @@
       var eased = 1 - Math.pow(1 - t, 3);
       var i = 0;
       el.textContent = final.replace(NUMBER_RE, function () {
-        var text = (targets[i] * eased).toFixed(decimals[i]).replace('.', ',');
+        var text = (targets[i] * eased).toFixed(decimals[i]);
         if (groups[i]) text = text.replace(/\B(?=(\d{3})+(?!\d))/g, groups[i]);
         i++;
         return text;
@@ -143,7 +144,7 @@
     }
     cards.forEach(function (card, i) {
       var next = card.querySelector('[data-team-next]');
-      next.setAttribute('aria-label', card.querySelector('h3').textContent + ', ' + (i + 1) + ' из ' + cards.length + '. Следующая карточка команды');
+      next.setAttribute('aria-label', card.querySelector('h3').textContent + ', ' + (i + 1) + ' of ' + cards.length + '. Next team card');
       next.addEventListener('click', advance);
       next.hidden = false;
     });

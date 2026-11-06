@@ -27,7 +27,7 @@
         slide.classList.toggle('is-current', i === index);
         slide.setAttribute('aria-hidden', String(i !== index));
       });
-      counter.textContent = (index + 1) + ' из ' + slides.length;
+      counter.textContent = (index + 1) + ' of ' + slides.length;
       schedule();
     }
     root.querySelector('.case-slideshow__prev').addEventListener('click', function () { show(index - 1); });

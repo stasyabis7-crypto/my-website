@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="ru" data-mood="anastasia">
+<html lang="en" data-mood="anastasia">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Как устроена регулярная помощь в Авито</title>
-<meta name="description" content="Подключение и управление «Доброй подпиской», выбор фонда, отчёты, оплата и экран благодарности после пожертвования" />
+<title>How recurring giving works at Avito</title>
+<meta name="description" content="Setting up and managing Kind Subscription: choosing a charity, reports, payment and the thank-you screen after a donation" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="stasyabis" />
-<meta property="og:title" content="Как устроена регулярная помощь в Авито" />
-<meta property="og:description" content="Подключение и управление «Доброй подпиской», выбор фонда, отчёты, оплата и экран благодарности после пожертвования" />
+<meta property="og:title" content="How recurring giving works at Avito" />
+<meta property="og:description" content="Setting up and managing Kind Subscription: choosing a charity, reports, payment and the thank-you screen after a donation" />
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Как устроена регулярная помощь в Авито" />
-<meta name="twitter:description" content="Подключение и управление «Доброй подпиской», выбор фонда, отчёты, оплата и экран благодарности после пожертвования" />
+<meta name="twitter:title" content="How recurring giving works at Avito" />
+<meta name="twitter:description" content="Setting up and managing Kind Subscription: choosing a charity, reports, payment and the thank-you screen after a donation" />
 <link rel="icon" type="image/webp" sizes="64x64" href="../../../components/site-brand/favicon.webp" />
 
 <script src="../../../site/analytics-config.js?v=1"></script>
@@ -104,26 +104,26 @@ body {
   <header class="site-header"></header>
 
 
-  <aside class="work-toc work-toc--corner" aria-label="Навигация по проекту" hidden>
+  <aside class="work-toc work-toc--corner" aria-label="Project navigation" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
-      aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
+      aria-label="Project contents" aria-expanded="false" aria-controls="work-toc-panel">
       <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="settings"></span><span data-toc-marker="success"></span><span data-toc-marker="manage"></span><span data-toc-marker="summary-end"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
     <div class="work-toc__panel" id="work-toc-panel" hidden>
-      <nav aria-label="Оглавление проекта">
-<a class="btn btn--fill-toc" href="#summary"><span>Саммари</span></a>
-<a class="btn btn--fill-toc" href="#about"><span>О проекте</span></a>
-<a class="btn btn--fill-toc" href="#problems"><span>Проблемы</span></a>
-<a class="btn btn--fill-toc" href="#before"><span>Новый сценарий</span></a>
-<a class="btn btn--fill-toc" href="#concepts"><span>Концепты</span></a>
-<a class="btn btn--fill-toc" href="#entry-points"><span>Точки входа</span></a>
-<a class="btn btn--fill-toc" href="#choose-fund"><span>Выбор фонда</span></a>
-<a class="btn btn--fill-toc" href="#settings"><span>Подключение подписки</span></a>
-<a class="btn btn--fill-toc" href="#success"><span>Благодарность</span></a>
-<a class="btn btn--fill-toc" href="#manage"><span>Управление подпиской</span></a>
-<a class="btn btn--fill-toc" href="#summary-end"><span>Результаты</span></a>
+      <nav aria-label="Project contents">
+<a class="btn btn--fill-toc" href="#summary"><span>Summary</span></a>
+<a class="btn btn--fill-toc" href="#about"><span>About the project</span></a>
+<a class="btn btn--fill-toc" href="#problems"><span>Problems</span></a>
+<a class="btn btn--fill-toc" href="#before"><span>New flow</span></a>
+<a class="btn btn--fill-toc" href="#concepts"><span>Concepts</span></a>
+<a class="btn btn--fill-toc" href="#entry-points"><span>Entry points</span></a>
+<a class="btn btn--fill-toc" href="#choose-fund"><span>Choosing a charity</span></a>
+<a class="btn btn--fill-toc" href="#settings"><span>Subscribing</span></a>
+<a class="btn btn--fill-toc" href="#success"><span>Thank-you</span></a>
+<a class="btn btn--fill-toc" href="#manage"><span>Managing the subscription</span></a>
+<a class="btn btn--fill-toc" href="#summary-end"><span>Results</span></a>
       </nav>
     </div>
   </aside>
@@ -133,119 +133,119 @@ body {
 
     <div class="case__blocks">
 
-<section class="case-block case-cover cg" id="summary" tabindex="-1" aria-label="Саммари проекта">
- <div class="cg-intro"><h1 class="case-cover__title text-h1">Добрая подписка</h1><div class="cg-intro__text">
- <p class="text-body-lg" data-subtitle><span class="cg-label">Проблема:</span> на Авито можно было помогать фондам только разово — для постоянной поддержки приходилось повторять весь сценарий</p>
- <p class="text-body-lg" data-subtitle><span class="cg-label">Решение:</span> спроектировала ежемесячную помощь: от выбора фонда и подключения до управления подпиской в профиле</p>
+<section class="case-block case-cover cg" id="summary" tabindex="-1" aria-label="Project summary">
+ <div class="cg-intro"><h1 class="case-cover__title text-h1">Kind Subscription</h1><div class="cg-intro__text">
+ <p class="text-body-lg" data-subtitle><span class="cg-label">Problem:</span> on Avito you could only help charities once at a time — to keep supporting them you had to go through the whole flow again</p>
+ <p class="text-body-lg" data-subtitle><span class="cg-label">Solution:</span> I designed monthly giving: from choosing a charity and subscribing to managing the subscription in the profile</p>
  </div></div>
- <div class="case-cover__media case-cover__media--natural cg-bleed cg-q234 cg-row-2"><img src="/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp" width="2880" height="1800" alt="«Добрая подписка» в приложении Авито" /></div>
+ <div class="case-cover__media case-cover__media--natural cg-bleed cg-q234 cg-row-2"><img src="/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp" width="2880" height="1800" alt="Kind Subscription in the Avito app" /></div>
  <div class="cg-meta cg-q1 cg-row-2"><dl class="cg-list text-body">
- <div><dt>Роль</dt><dd>Вела сценарий регулярной помощи целиком: подписка, отчёты фондов, оплата и благодарность</dd></div>
- <div><dt>Команда</dt><dd>Продакт, проджект, бэкенд, фронтенд, редактор</dd></div>
- <div><dt>Взаимодействие</dt><dd>Согласовала способы оплаты с платёжной командой, точки входа — с charity-командой и командой подачи объявлений</dd></div>
+ <div><dt>Role</dt><dd>Owned the whole recurring giving flow: subscription, charity reports, payment and thank-you</dd></div>
+ <div><dt>Team</dt><dd>Product manager, project manager, backend, frontend, editor</dd></div>
+ <div><dt>Collaboration</dt><dd>Aligned payment methods with the payments team, and entry points with the charity team and the listing-creation team</dd></div>
  </dl></div>
 </section>
 
 <section class="case-block cg" id="about" tabindex="-1">
   <div class="cg-intro">
-    <h2 class="text-h1">О проекте</h2>
+    <h2 class="text-h1">About the project</h2>
     <div class="cg-intro__text">
-      <p class="text-body-lg">«Добрая подписка» — ежемесячное пожертвование фонду в благотворительном разделе Авито. Человек выбирает фонд и сумму, а следующие платежи проходят автоматически.</p>
-      <p class="text-body-lg">Регулярные поступления помогают фондам планировать работу. Для человека важно заранее понимать, кому пойдут деньги, когда повторится платёж и как изменить или отключить подписку.</p>
-      <p class="text-body-lg">В исследованиях люди просили отчёты и конкретные результаты работы фондов. Поэтому информацию о фонде добавили до подключения подписки.</p>
+      <p class="text-body-lg">Kind Subscription is a monthly donation to a charity in Avito’s charity section. A person picks a charity and an amount, and the following payments go through automatically.</p>
+      <p class="text-body-lg">Regular income helps charities plan their work. For the donor, it matters to know up front who gets the money, when the next payment happens and how to change or cancel the subscription.</p>
+      <p class="text-body-lg">In research, people asked for reports and concrete results of the charities’ work. So we added information about the charity before the subscription step.</p>
     </div>
   </div>
   <div class="case-cover__media case-cover__media--natural cg-bleed">
-    <img src="media/about/about-v2-2880x1600.webp" width="2880" height="1600" alt="Иллюстрация проекта «Добрая подписка»" loading="lazy" />
+    <img src="media/about/about-v2-2880x1600.webp" width="2880" height="1600" alt="Kind Subscription project illustration" loading="lazy" />
   </div>
 </section>
 
 <section class="case-block cg" id="problems" tabindex="-1">
- <div class="cg-intro cg-intro--thirds"><h2 class="text-h1">Проблемы</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Сценарий нужно было собрать вокруг трёх задач</p></div></div>
- <div class="cg-item cg-t1"><p class="cg-item__num text-display-lg" aria-hidden="true">01</p><p class="cg-item__text text-body">Дать возможность помогать регулярно, без повторного прохождения всего сценария</p></div><div class="cg-item cg-t2"><p class="cg-item__num text-display-lg" aria-hidden="true">02</p><p class="cg-item__text text-body">Показать работу фонда до оплаты, чтобы человек мог решить, кому доверить помощь</p></div><div class="cg-item cg-t3"><p class="cg-item__num text-display-lg" aria-hidden="true">03</p><p class="cg-item__text text-body">Объединить оплату и благодарность: в charity-сценариях они выглядели по-разному</p></div>
+ <div class="cg-intro cg-intro--thirds"><h2 class="text-h1">Problems</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>The flow had to be built around three goals</p></div></div>
+ <div class="cg-item cg-t1"><p class="cg-item__num text-display-lg" aria-hidden="true">01</p><p class="cg-item__text text-body">Let people give regularly without going through the whole flow again</p></div><div class="cg-item cg-t2"><p class="cg-item__num text-display-lg" aria-hidden="true">02</p><p class="cg-item__text text-body">Show the charity’s work before payment so people can decide whom to trust with their help</p></div><div class="cg-item cg-t3"><p class="cg-item__num text-display-lg" aria-hidden="true">03</p><p class="cg-item__text text-body">Unify payment and thank-you screens: they looked different across charity flows</p></div>
 </section>
 
 <section class="case-block cg" id="before" tabindex="-1">
- <div class="cg-intro"><h2 class="text-h1">От разовой помощи к подписке</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Собрала фонд, сумму и переключатель «Разово / Ежемесячно» на одном экране. Раньше выбор фонда и суммы были разнесены на два</p></div></div>
- <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural "><img src="media/before/before-v2-1480x1600.webp" width="1480" height="1600" alt="Прежний сценарий выбора фонда и суммы" loading="lazy" /></div><figcaption class="text-body">До</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural "><img src="media/before/after-v2-1480x1600.webp" width="1480" height="1600" alt="Фонд, сумма и периодичность на одном экране" loading="lazy" /></div><figcaption class="text-body">После</figcaption></figure>
+ <div class="cg-intro"><h2 class="text-h1">From one-off help to a subscription</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Put the charity, the amount and a “One-off / Monthly” switch on one screen. Previously choosing the charity and the amount were split across two</p></div></div>
+ <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural "><img src="media/before/before-v2-1480x1600.webp" width="1480" height="1600" alt="The previous flow for choosing a charity and an amount" loading="lazy" /></div><figcaption class="text-body">Before</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural "><img src="media/before/after-v2-1480x1600.webp" width="1480" height="1600" alt="Charity, amount and frequency on one screen" loading="lazy" /></div><figcaption class="text-body">After</figcaption></figure>
 </section>
 
 <section class="case-block cg" id="concepts" tabindex="-1">
- <div class="cg-intro"><h2 class="text-h1">Концепты</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Проверяла 3D-персонажа на экране подписки и конфетти в благодарности. Персонаж занимал половину экрана — для настройки выбрала сдержанный вариант, в котором условия видны сразу. Эмоциональную анимацию оставила после оплаты</p></div></div>
- <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural "><img src="media/concepts/1.webp" width="1600" height="2000" alt="Концепт подписки с 3D-персонажем" loading="lazy" /></div><figcaption class="text-body">Эмоциональная подача</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural "><img src="media/concepts/2.webp" width="1600" height="2000" alt="Концепт настройки и благодарности" loading="lazy" /></div><figcaption class="text-body">Настройка и благодарность</figcaption></figure>
+ <div class="cg-intro"><h2 class="text-h1">Concepts</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Tested a 3D character on the subscription screen and confetti on the thank-you screen. The character took up half the screen, so for setup I chose a restrained version where the terms are visible right away. The emotional animation stayed after payment</p></div></div>
+ <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural "><img src="media/concepts/1.webp" width="1600" height="2000" alt="Subscription concept with a 3D character" loading="lazy" /></div><figcaption class="text-body">Emotional take</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural "><img src="media/concepts/2.webp" width="1600" height="2000" alt="Setup and thank-you concept" loading="lazy" /></div><figcaption class="text-body">Setup and thank-you</figcaption></figure>
 </section>
 
 <section class="case-block cg" id="entry-points" tabindex="-1">
- <div class="cg-intro"><h2 class="text-h1">Точки входа</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Подписку можно найти в выдаче объявлений, на charity-лендинге и после подачи объявления. В каждом месте предложение учитывает основную задачу человека</p></div></div>
+ <div class="cg-intro"><h2 class="text-h1">Entry points</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>The subscription shows up in listing search results, on the charity landing page and after posting a listing. In each place the offer respects what the person came to do</p></div></div>
  <div class="cg-gallery">
   <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 1; --g-row: 1; --g-span: 2; --gm-col: 1; --gm-row: 1; --gm-span: 1">
-    <img src="media/entry-points/entry-1.webp" width="1424" height="696" alt="Баннер «Умножайте добро» в выдаче" loading="lazy" />
+    <img src="media/entry-points/entry-1.webp" width="1424" height="696" alt="“Multiply kindness” banner in search results" loading="lazy" />
   </div>
   <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 4; --g-row: 2; --g-span: 1; --gm-col: 2; --gm-row: 2; --gm-span: 1">
-    <img src="media/entry-points/entry-3.webp?v=3" width="1424" height="1424" alt="Предложение подписки после подачи объявления" loading="lazy" />
+    <img src="media/entry-points/entry-3.webp?v=3" width="1424" height="1424" alt="Subscription offer after posting a listing" loading="lazy" />
   </div>
   <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 2; --g-row: 3; --g-span: 2; --gm-col: 1; --gm-row: 3; --gm-span: 2">
-    <img src="media/entry-points/entry-2.webp?v=2" width="1424" height="696" alt="Подписка на charity-лендинге" loading="lazy" />
+    <img src="media/entry-points/entry-2.webp?v=2" width="1424" height="696" alt="Subscription on the charity landing page" loading="lazy" />
   </div>
  </div>
- <p class="text-body-lg cg-r">После подачи объявления предлагаем помощь, когда основная задача уже завершена. В выдаче знакомим с подпиской через компактный баннер, а на charity-лендинге подробнее раскрываем условия.</p>
+ <p class="text-body-lg cg-r">After posting a listing, we offer to help once the main task is done. In search results a compact banner introduces the subscription, and the charity landing page explains the terms in more detail.</p>
 </section>
 
 <section class="case-block cg" id="choose-fund" tabindex="-1">
- <div class="cg-intro"><h2 class="text-h1">Выбор фонда</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Перенесла выбор фонда на первый экран: до выбора суммы можно узнать о фонде, сменить его и открыть отчёты «Добрые дела фонда»</p></div></div>
- <div class="case-cover__media case-cover__media--natural cg-bleed"><img src="media/choose-fund/fund-selection-2880x1600.webp" width="2880" height="1600" alt="Выбор фонда для подписки и разового пожертвования" loading="lazy" /></div><p class="text-body-lg cg-r">В разовом пожертвовании подставляем фонды из случайных категорий, чтобы помощь получали и менее популярные направления, помимо детей и животных.</p>
+ <div class="cg-intro"><h2 class="text-h1">Choosing a charity</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Moved choosing the charity to the first screen: before picking an amount you can learn about the charity, switch to another one and open its “Good deeds” reports</p></div></div>
+ <div class="case-cover__media case-cover__media--natural cg-bleed"><img src="media/choose-fund/fund-selection-2880x1600.webp" width="2880" height="1600" alt="Choosing a charity for a subscription and a one-off donation" loading="lazy" /></div><p class="text-body-lg cg-r">For one-off donations we suggest charities from random categories, so that less popular causes get help too, not just children and animals.</p>
 </section>
 
 <section class="case-block cg" id="settings" tabindex="-1">
- <div class="cg-intro"><h2 class="text-h1">Подключение подписки</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>На экране настройки собрала фонд, сумму и ежемесячность списаний. Можно выбрать 100, 300 или 500 ₽ либо указать свою сумму; пояснение о повторении платежа видно до подключения</p></div></div>
- <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural"><video src="media/settings/subscription-payment-flow-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор суммы и оплата подписки"></video></div><figcaption class="text-body">Оплата</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural"><video src="media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Подробные условия подписки"></video></div><figcaption class="text-body">Как это работает</figcaption></figure><p class="text-body-lg cg-r">Подробности вынесла в «Как это работает»: отсутствие комиссии, перечисление денег фондам напрямую, ежемесячный «Знак добра», изменение и отключение подписки. Основной экран остаётся компактным.</p>
+ <div class="cg-intro"><h2 class="text-h1">Subscribing</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>The setup screen brings together the charity, the amount and the monthly charge. You can pick 100, 300 or 500 ₽ or enter your own amount; the note about the recurring payment is visible before subscribing</p></div></div>
+ <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural"><video src="media/settings/subscription-payment-flow-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Choosing the amount and paying for the subscription"></video></div><figcaption class="text-body">Payment</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural"><video src="media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Detailed subscription terms"></video></div><figcaption class="text-body">How it works</figcaption></figure><p class="text-body-lg cg-r">The details moved to “How it works”: no fees, money goes directly to charities, a monthly “Kindness badge”, changing and cancelling the subscription. The main screen stays compact.</p>
 </section>
 
 <section class="case-block cg" id="success" tabindex="-1">
- <div class="cg-intro"><h2 class="text-h1">Благодарность после оплаты</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Объединила благодарность в charity-сценариях: подтверждение действия, вклад человека и спасибо. Этот подход работает в полноэкранном формате, шторке и модальном окне</p></div></div>
- <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural "><img src="media/success/before.webp" width="1600" height="2000" alt="Прежняя благодарность со статичным изображением" loading="lazy" /></div><figcaption class="text-body">До</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural"><video src="media/success/after-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Новый экран благодарности с анимацией сердечек"></video></div><figcaption class="text-body">После</figcaption></figure><div class="cg-text cg-r">
-  <p class="text-body-lg">Для подписки экран подтверждает ежемесячную помощь и её условия. Добавила анимацию сердечек и два действия: поделиться и добавить «Знак добра» на объявление.</p>
-  <p class="text-body-lg">Около 2 000 показов благодарности в день — масштаб всех charity-сценариев, а не только подписки.</p>
+ <div class="cg-intro"><h2 class="text-h1">Thank-you after payment</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Unified the thank-you across charity flows: confirming the action, the person’s contribution and a thank-you. The approach works full screen, in a bottom sheet and in a modal</p></div></div>
+ <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural "><img src="media/success/before.webp" width="1600" height="2000" alt="The previous thank-you with a static image" loading="lazy" /></div><figcaption class="text-body">Before</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural"><video src="media/success/after-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="The new thank-you screen with a hearts animation"></video></div><figcaption class="text-body">After</figcaption></figure><div class="cg-text cg-r">
+  <p class="text-body-lg">For the subscription, the screen confirms the monthly help and its terms. I added a hearts animation and two actions: share, and add a “Kindness badge” to your listing.</p>
+  <p class="text-body-lg">About 2,000 thank-you views a day — that’s across all charity flows, not just the subscription.</p>
 </div>
 </section>
 
 <section class="case-block cg" id="manage" tabindex="-1">
- <div class="cg-intro"><h2 class="text-h1">Управление подпиской</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>В профиле видны фонд, сумма и дата ближайшего платежа. Сумму можно изменить прямо в карточке, а в настройках — отключить подписку. Управление доступно и со страницы «Знака добра»</p></div></div>
+ <div class="cg-intro"><h2 class="text-h1">Managing the subscription</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>The profile shows the charity, the amount and the next payment date. You can change the amount right in the card and cancel the subscription in settings. It can also be managed from the “Kindness badge” page</p></div></div>
  <figure class="cg-figure cg-l cg-m-l">
-  <div class="case-cover__media case-cover__media--natural"><img src="media/manage/manage-2-v2-1480x1600.webp" width="1480" height="1600" alt="Карточка подписки в профиле" loading="lazy" /></div>
-  <figcaption class="text-body">Настройки в ЛК</figcaption>
+  <div class="case-cover__media case-cover__media--natural"><img src="media/manage/manage-2-v2-1480x1600.webp" width="1480" height="1600" alt="Subscription card in the profile" loading="lazy" /></div>
+  <figcaption class="text-body">Settings in the user account</figcaption>
 </figure><figure class="cg-figure cg-r cg-m-r">
-  <div class="case-cover__media case-cover__media--natural"><img src="media/manage/manage-1-v2-1480x1600.webp" width="1480" height="1600" alt="Подписка на странице «Знака добра»" loading="lazy" /></div>
-  <figcaption class="text-body">Баннер на лендингах чарити</figcaption>
-</figure><p class="text-body-lg cg-r">В MVP смена фонда требует отключения и новой подписки — это ограничение платёжной системы Юкассы. Смена фонда без отключения запланирована следующим шагом.</p>
+  <div class="case-cover__media case-cover__media--natural"><img src="media/manage/manage-1-v2-1480x1600.webp" width="1480" height="1600" alt="Subscription on the “Kindness badge” page" loading="lazy" /></div>
+  <figcaption class="text-body">Banner on charity landing pages</figcaption>
+</figure><p class="text-body-lg cg-r">In the MVP, switching charities requires cancelling and subscribing again — a limitation of the YooKassa payment system. Switching without cancelling is planned as the next step.</p>
 </section>
 
 <div class="case-block cg-gallery">
   <div class="cg-gallery__tile cg-gallery__tile--big case-cover__media case-cover__media--natural" style="--g-col: 1; --gm-row: 1">
-    <img src="media/results/bento-1.webp" width="1424" height="1424" alt="Благодарность после подключения подписки" loading="lazy" />
+    <img src="media/results/bento-1.webp" width="1424" height="1424" alt="Thank-you after subscribing" loading="lazy" />
   </div>
   <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 4; --g-row: 1; --gm-col: 2; --gm-row: 2">
-    <img src="media/results/bento-3.webp" width="696" height="696" alt="Экран «Вы помогаете фонду»" loading="lazy" />
+    <img src="media/results/bento-3.webp" width="696" height="696" alt="The “You’re helping a charity” screen" loading="lazy" />
   </div>
   <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 3; --g-row: 3; --g-span: 2; --gm-row: 3">
-    <img src="media/results/bento-2.webp" width="1424" height="696" alt="Баннер «Умножайте добро»" loading="lazy" />
+    <img src="media/results/bento-2.webp" width="1424" height="696" alt="“Multiply kindness” banner" loading="lazy" />
   </div>
 </div>
 
 <section class="case-block cg" id="summary-end" tabindex="-1">
- <div class="cg-intro cg-intro--thirds"><h2 class="text-h1">Результаты</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Запустили регулярную помощь с подключением и управлением подпиской. Выбор фонда дополнили информацией о его работе</p></div></div>
- <div class="cg-item cg-item--stat cg-t1"><p class="cg-item__num text-display">≈55</p><p class="cg-item__text text-body">Новых подписок в день</p></div><div class="cg-item cg-item--stat cg-t2"><p class="cg-item__num text-display">+64%</p><p class="cg-item__text text-body">Средний платёж выше минимального</p></div><div class="cg-item cg-item--stat cg-t3"><p class="cg-item__num text-display">≈1 300</p><p class="cg-item__text text-body">Открытий отчётов фондов в день</p></div><p class="text-body-lg cg-t23">Эти показатели описывают использование продукта. Чтобы оценить устойчивость регулярной помощи, дальше нужно измерить повторные списания, отмены и конверсию каждой точки входа.</p>
+ <div class="cg-intro cg-intro--thirds"><h2 class="text-h1">Results</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>Launched recurring giving with subscribing and subscription management. Choosing a charity now comes with information about its work</p></div></div>
+ <div class="cg-item cg-item--stat cg-t1"><p class="cg-item__num text-display">≈55</p><p class="cg-item__text text-body">New subscriptions a day</p></div><div class="cg-item cg-item--stat cg-t2"><p class="cg-item__num text-display">+64%</p><p class="cg-item__text text-body">Average payment above the minimum</p></div><div class="cg-item cg-item--stat cg-t3"><p class="cg-item__num text-display">≈1,300</p><p class="cg-item__text text-body">Charity report views a day</p></div><p class="text-body-lg cg-t23">These numbers describe product usage. To judge how sustainable recurring giving is, the next step is to measure repeat charges, cancellations and the conversion of each entry point.</p>
 </section>
 
 <div class="case-block cg-gallery">
   <div class="cg-gallery__tile case-cover__media case-cover__media--natural" style="--g-col: 1; --g-row: 1; --gm-col: 1; --gm-row: 1">
-    <img src="media/results/bento-4.webp" width="696" height="696" alt="Преимущества подписки: без комиссии, гибкие настройки и знак добра" loading="lazy" />
+    <img src="media/results/bento-4.webp" width="696" height="696" alt="Subscription benefits: no fees, flexible settings and a kindness badge" loading="lazy" />
   </div>
   <div class="cg-gallery__tile cg-gallery__tile--end case-cover__media case-cover__media--natural" style="--g-col: 2; --g-row: 3; --gm-col: 2; --gm-row: 2">
-    <img src="media/results/final-concept-small-v2.webp" width="700" height="840" alt="Концепт «Доброй подписки» — маленький кадр" loading="lazy" />
+    <img src="media/results/final-concept-small-v2.webp" width="700" height="840" alt="Kind Subscription concept — small frame" loading="lazy" />
   </div>
   <div class="cg-gallery__tile cg-gallery__tile--big case-cover__media case-cover__media--natural" style="--g-col: 3; --gm-row: 3">
-    <img src="media/results/final-concept-large-v2-1400x1680.webp" width="1400" height="1680" alt="Концепт «Доброй подписки» — большой кадр" loading="lazy" />
+    <img src="media/results/final-concept-large-v2-1400x1680.webp" width="1400" height="1680" alt="Kind Subscription concept — large frame" loading="lazy" />
   </div>
 </div>
     </div>
@@ -261,15 +261,15 @@ body {
       <ul class="site-footer__nav">
         <li><a href="../../../index.html" class="site-footer__link text-label is-current">
           <span class="icon icon--works" aria-hidden="true"></span>
-          Работы
+          Works
         </a></li>
         <li hidden><a href="#" class="site-footer__link text-label">
           <span class="icon icon--activities" aria-hidden="true"></span>
-          Активности
+          Activities
         </a></li>
         <li hidden><a href="#" class="site-footer__link text-label">
           <span class="icon icon--contacts" aria-hidden="true"></span>
-          Контакты
+          Contacts
         </a></li>
       </ul>
     </nav>
@@ -280,18 +280,18 @@ body {
       aria-haspopup="true"
       aria-expanded="false"
       aria-controls="footer-menu-panel"
-      aria-label="Меню"
+      aria-label="Menu"
     >
       <span class="site-footer__menu-btn-line site-footer__menu-btn-line--top" aria-hidden="true"></span>
       <span class="site-footer__menu-btn-line site-footer__menu-btn-line--center" aria-hidden="true"></span>
       <span class="site-footer__menu-btn-line site-footer__menu-btn-line--bottom" aria-hidden="true"></span>
     </button>
-    <button type="button" class="site-footer__top-btn" id="footer-top-btn" aria-label="Наверх">
+    <button type="button" class="site-footer__top-btn" id="footer-top-btn" aria-label="Back to top">
       <span class="icon icon--up" aria-hidden="true"></span>
     </button>
   </footer>
 
-  <button type="button" class="site-footer__top-btn" id="footer-top-btn-desktop" aria-label="Наверх">
+  <button type="button" class="site-footer__top-btn" id="footer-top-btn-desktop" aria-label="Back to top">
     <span class="icon icon--up" aria-hidden="true"></span>
   </button>
 
@@ -302,15 +302,15 @@ body {
       <ul class="footer-menu-panel__nav">
         <li><a href="../../../index.html" class="footer-menu-panel__link text-label is-current">
           <span class="icon icon--works" aria-hidden="true"></span>
-          Работы
+          Works
         </a></li>
         <li hidden><a href="#" class="footer-menu-panel__link text-label">
           <span class="icon icon--activities" aria-hidden="true"></span>
-          Активности
+          Activities
         </a></li>
         <li hidden><a href="#" class="footer-menu-panel__link text-label">
           <span class="icon icon--contacts" aria-hidden="true"></span>
-          Контакты
+          Contacts
         </a></li>
       </ul>
     </nav>

@@ -26,24 +26,24 @@ window.portfolioTags = [
   { id: 'ozon', label: 'Ozon', group: 'company' },
   { id: 'b2c', label: 'B2C', group: 'audience' },
   { id: 'b2b', label: 'B2B', group: 'audience' },
-  { id: 'charity', label: 'Благотворительность', group: 'industry' },
+  { id: 'charity', label: 'Charity', group: 'industry' },
   { id: 'ecommerce', label: 'E-commerce', group: 'industry' },
-  { id: 'maps', label: 'Карты', group: 'product' },
+  { id: 'maps', label: 'Maps', group: 'product' },
   { id: 'crm', label: 'CRM', group: 'product' },
-  { id: 'payments', label: 'Платежи', group: 'product' }
+  { id: 'payments', label: 'Payments', group: 'product' }
 ];
 
 window.portfolioProjects = [
   {
     id: 'customer-segments',
     feed: { image: '/projects/ozon-crm/customer-segments/covers/feed-cover-frame-2147239075-1800x2400.webp', width: 1800, height: 2400 },
-    title: 'CRM для продавцов Ozon',
-    description: 'Сегменты покупателей и рассылки для продавцов',
+    title: 'CRM for Ozon sellers',
+    description: 'Customer segments and campaigns for sellers',
     href: '/projects/ozon-crm/customer-segments/',
     image: '/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800.webp',
     width: 2880,
     height: 1800,
-    alt: 'Раздел CRM в кабинете Ozon Seller: постоянные покупатели и рекомендации по сегментам',
+    alt: 'CRM section in the Ozon Seller account: repeat customers and segment recommendations',
     platforms: ['web'],
     tags: ['ozon', 'b2b', 'ecommerce', 'crm'],
     place: { c: 1, r: 1, big: true }
@@ -51,13 +51,13 @@ window.portfolioProjects = [
   {
     id: 'recycle-map',
     feed: { image: '/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp', width: 1500, height: 1800 },
-    title: 'Карта переработки вещей',
-    description: 'Поиск пункта приёма, фильтры и избранное',
+    title: 'Recycling map',
+    description: 'Finding a drop-off point, filters and favourites',
     href: '/projects/avito-charity/recycle-map/',
     image: '/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800.webp',
     width: 2880,
     height: 1800,
-    alt: 'Карта переработки Авито на экране ноутбука: пункты приёма, категории и избранное',
+    alt: 'Avito recycling map on a laptop screen: drop-off points, categories and favourites',
     platforms: ['mobile', 'web'],
     tags: ['avito', 'b2c', 'charity', 'maps'],
     place: { c: 3, r: 1 }
@@ -65,13 +65,13 @@ window.portfolioProjects = [
   {
     id: 'kind-subscription',
     feed: { image: '/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp', width: 1500, height: 1800 },
-    title: 'Добрая подписка',
-    description: 'Ежемесячная помощь фондам в приложении',
+    title: 'Kind Subscription',
+    description: 'Monthly donations to charities in the app',
     href: '/projects/avito-charity/subscription/',
     image: '/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp',
     width: 2880,
     height: 1800,
-    alt: '«Добрая подписка» в приложении Авито',
+    alt: 'Kind Subscription in the Avito app',
     platforms: ['mobile', 'web'],
     tags: ['avito', 'b2c', 'charity', 'payments'],
     place: { c: 4, r: 1 }
@@ -79,73 +79,73 @@ window.portfolioProjects = [
   {
     id: 'about-company',
     soon: true,
-    title: 'Лендинг о компании Авито',
+    title: 'Avito company landing page',
     feed: { image: '/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800.webp', width: 1500, height: 1800 },
-    alt: 'Телефон в руке с лендингом Авито: пять бизнес-направлений — товары, авто, недвижимость, работа',
+    alt: 'A hand holding a phone with the Avito landing page: business areas — goods, cars, real estate, jobs',
     place: { c: 1, r: 3 }
   },
   {
     id: 'watches-patches',
     soon: true,
-    title: 'Медицинское приложение для часов',
+    title: 'Medical app for smartwatches',
     feed: { image: '/projects/swtec-medical/watches-patches/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
-    alt: 'Умные часы с экраном показателей: пульс 100 ударов в минуту, 10 757 шагов, 2 345 килокалорий',
+    alt: 'Smartwatch showing vitals: heart rate 100 bpm, 10,757 steps, 2,345 kcal',
     place: { c: 3, r: 3 }
   },
   {
     id: 'patient-app',
     soon: true,
-    title: 'Медицинское приложение для пациентов',
+    title: 'Medical app for patients',
     feed: { image: '/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800.webp', width: 1500, height: 1800 },
-    alt: 'Два экрана приложения для пациентов: накопленные баллы с графиком и анкета с выбором пола',
+    alt: 'Two screens of the patient app: earned points with a chart and a questionnaire with gender selection',
     place: { c: 4, r: 3 }
   },
   {
     id: 'minimum-price',
     soon: true,
-    title: 'Бустинг акций в ценах',
+    title: 'Promotion boosting in pricing',
     feed: { image: '/projects/ozon-prices/minimum-price/covers/feed-cover-frame-2147239076-1800x2400.webp', width: 1800, height: 2400 },
-    alt: 'Бустинг акций в ценах: карточка с показателем 22% и зелёным индикатором',
+    alt: 'Promotion boosting in pricing: a card showing 22% with a green indicator',
     place: { c: 1, r: 4, big: true }
   },
   {
     id: 'charity-profile',
     soon: true,
-    title: 'Благотворительность в ЛК',
+    title: 'Charity in the user account',
     feed: { image: '/projects/avito-charity/charity-profile/covers/feed-cover-324719915-1500x1800.webp', width: 1500, height: 1800 },
-    alt: 'Телефон на зелёной ткани с разделом «#яПомогаю» в Авито: подписки, поддержка людей, забота о природе',
+    alt: 'A phone on green fabric showing the Avito #яПомогаю (I help) section: subscriptions, helping people, caring for nature',
     place: { c: 4, r: 4 }
   },
   {
     id: 'prices-table',
     soon: true,
-    title: 'Цены в ЛК селлера',
+    title: 'Prices in the seller account',
     feed: { image: '/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800.webp', width: 1500, height: 1800 },
-    alt: 'Тёмный экран приложения продавца Ozon: кванты, цены товара, цена для покупателя и бустинг в поиске',
+    alt: 'Dark screen of the Ozon seller app: quantities, product prices, buyer price and search boosting',
     place: { c: 1, r: 6 }
   },
   {
     id: 'gamification',
     soon: true,
-    title: 'Геймификация в ЛК',
+    title: 'Gamification in the user account',
     feed: { image: '/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800.webp', width: 1500, height: 1800 },
-    alt: 'Блок «Творим добро» со списком заданий и баллами: пожертвовать в фонд, купить мерч, поддержать «ЛизаАлерт»',
+    alt: 'The “Doing good” block with tasks and points: donate to a charity, buy merch, support LizaAlert',
     place: { c: 2, r: 6 }
   },
   {
     id: 'doctor-dashboard',
     soon: true,
-    title: 'Дашборд для врачей',
+    title: 'Dashboard for doctors',
     feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400.webp', width: 1800, height: 2400 },
-    alt: 'Дашборд врача: список пациентов с событиями по дням и почасовой график показателя',
+    alt: 'Doctor dashboard: patient list with daily events and an hourly chart of a vital sign',
     place: { c: 3, r: 6, big: true }
   },
   {
     id: 'employee-account',
     soon: true,
-    title: 'ЛК сотрудника',
+    title: 'Employee account',
     feed: { image: '/projects/employee-account/covers/feed-cover-frame-2147239078-1800x2400.webp', width: 1800, height: 2400 },
-    alt: 'Личный кабинет сотрудника: план офиса и управление рабочими местами',
+    alt: 'Employee account: office floor plan and desk management',
     place: { c: 1, r: 8, big: true }
   }
 ];

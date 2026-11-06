@@ -99,7 +99,7 @@
         '<div class="contact-dialog__head"><h2 class="contact-dialog__title text-h2"></h2></div>' +
         '<div data-rows></div></div></div><div class="contact-dialog__footer"><div class="contact-dialog__close-wrap">' +
         '<button type="button" class="contact-dialog__close btn btn--fill-ink btn--icon-right" data-close>' +
-        '<span>Закрыть</span><span class="icon icon--close" aria-hidden="true"></span></button></div></div></div>';
+        '<span>Close</span><span class="icon icon--close" aria-hidden="true"></span></button></div></div></div>';
       sheet.querySelector('.contact-dialog__title').textContent = opts.title;
       sheet.querySelector('.contact-dialog__close').setAttribute('aria-label', opts.closeLabel);
       var rows = sheet.querySelector('[data-rows]');
@@ -158,7 +158,7 @@
   var EMAIL = 'stasyabis7@gmail.com';
   var CONTACTS = [
     { label: 'Telegram', icon: 'telegram', href: 'https://t.me/stasyabis' },
-    { label: 'Скопировать адрес почты', icon: 'email', copy: EMAIL },
+    { label: 'Copy email address', icon: 'email', copy: EMAIL },
     { label: 'Dribbble', icon: 'dribbble', href: 'https://dribbble.com/Stasyabis' },
     { label: 'Figma community', icon: 'figma', href: 'https://www.figma.com/@stasyabis' },
     { label: 'Medium', icon: 'medium', href: 'https://medium.com/@stasyabis' },
@@ -190,7 +190,7 @@
       el.type = 'button';
       el.addEventListener('click', function () {
         copyText(it.copy, function () {
-          el.lastChild.textContent = 'Почта скопирована';
+          el.lastChild.textContent = 'Email copied';
           clearTimeout(el._t);
           el._t = setTimeout(function () { el.lastChild.textContent = it.label; }, 1800);
         });
@@ -222,22 +222,22 @@
     if (!header) return;
 
     var SECTIONS = [
-      { label: 'Мой дом', href: '/' },
+      { label: 'My home', href: '/' },
       // Отдельной страницы «Проекты» пока нет: пункт подкатывается под
       // стрелку, но никуда не ведёт. Кейсы считаются этим разделом.
-      { label: 'Проекты', soon: true, section: /^\/projects\/(?!articles\/|posts\/|playground\/)/ },
-      { label: 'Веселюсь', href: '/projects/playground/' },
+      { label: 'Projects', soon: true, section: /^\/projects\/(?!articles\/|posts\/|playground\/)/ },
+      { label: 'Fun', href: '/projects/playground/' },
       // Страницы «Обо мне» пока нет — ведёт на резюме.
-      { label: 'Обо мне', href: '/cv.pdf?v=3', external: true },
-      { label: 'Активности', href: '/projects/articles/', section: /^\/projects\/posts\// },
-      { label: 'Контакты', contacts: true }
+      { label: 'About me', href: '/cv.pdf?v=3', external: true },
+      { label: 'Activities', href: '/projects/articles/', section: /^\/projects\/posts\// },
+      { label: 'Contacts', contacts: true }
     ];
     var RETURN_DELAY = 3000;
     var path = location.pathname.replace(/index\.html$/, '');
 
     var nav = document.createElement('nav');
     nav.className = 'nav-dial';
-    nav.setAttribute('aria-label', 'Разделы сайта');
+    nav.setAttribute('aria-label', 'Site sections');
     nav.innerHTML = '<div class="nav-dial__scroller"><div class="nav-dial__track"></div></div>' +
       '<span class="nav-dial__needle" aria-hidden="true"></span>';
     var scroller = nav.firstChild;
@@ -422,8 +422,8 @@
 
     var contactSheet = createSheet({
       id: 'site-contacts-dialog',
-      title: 'Контакты',
-      closeLabel: 'Закрыть контакты',
+      title: 'Contacts',
+      closeLabel: 'Close contacts',
       trigger: contactsItem,
       onClose: function () { glideTo(resting); },
       build: function (add, close) {
