@@ -132,3 +132,16 @@
 @media (prefers-reduced-motion: reduce) {
   .site-header.is-revealing { transition: none; }
 }
+
+/* Переходы между страницами: браузер плавно сменяет одну страницу другой,
+   а хедер остаётся на месте (одинаковый снимок на обеих страницах). Без
+   поддержки View Transitions — обычный переход. */
+@view-transition { navigation: auto; }
+.site-header { view-transition-name: site-header; }
+::view-transition-old(root),
+::view-transition-new(root) { animation-duration: 0.28s; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none; }
+}

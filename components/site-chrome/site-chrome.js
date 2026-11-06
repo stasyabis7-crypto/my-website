@@ -417,7 +417,12 @@
         return;
       }
       clearTimeout(leaveTimer);
-      leaveTimer = setTimeout(function () { location.href = el.href; }, reduceMotion.matches ? 0 : 320);
+      leaveTimer = setTimeout(function () {
+        // Следующая страница появится плавной сменой без экрана загрузки
+        // (см. page-spinner.js и @view-transition в header.css).
+        try { sessionStorage.setItem('page-spinner:skip', String(Date.now())); } catch (_) {}
+        location.href = el.href;
+      }, reduceMotion.matches ? 0 : 320);
     });
 
     var contactSheet = createSheet({

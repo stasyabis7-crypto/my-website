@@ -71,9 +71,16 @@
     sessionStorage.removeItem(handoffKey);
   } catch (_) { /* Without storage each page decides on its own. */ }
   var continued = !!(handoff && Date.now() - handoff.at < 8000);
+  // Arrived from the header dial: the page fades in under a still header
+  // (view transition), so no loading screen on top of it.
+  var skip = false;
+  try {
+    skip = Date.now() - Number(sessionStorage.getItem('page-spinner:skip')) < 8000;
+    sessionStorage.removeItem('page-spinner:skip');
+  } catch (_) { /* Without storage the spinner behaves as before. */ }
 
   // Any document that is still loading starts behind the spinner.
-  if (document.readyState !== 'complete') {
+  if (document.readyState !== 'complete' && !skip) {
     // Shown from the very first paint (instantly, continuing the previous
     // page's spinner when there was one), so content never flashes in first.
     show(true, continued ? handoff.index : 0);
