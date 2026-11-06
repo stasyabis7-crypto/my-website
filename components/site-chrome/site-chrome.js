@@ -223,7 +223,9 @@
 
     var SECTIONS = [
       { label: 'Мой дом', href: '/' },
-      { label: 'Проекты', href: '/#works-gallery', section: /^\/projects\/(?!articles\/|posts\/|playground\/)/ },
+      // Отдельной страницы «Проекты» пока нет: пункт подкатывается под
+      // стрелку, но никуда не ведёт. Кейсы считаются этим разделом.
+      { label: 'Проекты', soon: true, section: /^\/projects\/(?!articles\/|posts\/|playground\/)/ },
       { label: 'Веселюсь', href: '/projects/playground/' },
       // Страницы «Обо мне» пока нет — ведёт на резюме.
       { label: 'Обо мне', href: '/cv.pdf?v=3', external: true },
@@ -232,7 +234,6 @@
     ];
     var RETURN_DELAY = 3000;
     var path = location.pathname.replace(/index\.html$/, '');
-    var isHome = path === '/';
 
     var nav = document.createElement('nav');
     nav.className = 'nav-dial';
@@ -242,22 +243,24 @@
     var scroller = nav.firstChild;
     var track = scroller.firstChild;
 
-    var current = null, contactsItem = null, projectsItem = null;
+    var current = null, contactsItem = null;
     var items = SECTIONS.map(function (it) {
-      var el = document.createElement(it.contacts ? 'button' : 'a');
+      var el = document.createElement(it.href ? 'a' : 'button');
       el.className = 'nav-dial__item btn btn--fill-dial';
+      if (!it.href) el.type = 'button';
       if (it.contacts) {
-        el.type = 'button';
         el.setAttribute('aria-haspopup', 'dialog');
         el.setAttribute('aria-controls', 'site-contacts-dialog');
         el.setAttribute('aria-expanded', 'false');
         contactsItem = el;
+      } else if (it.soon) {
+        el.setAttribute('aria-disabled', 'true');
+        if (it.section.test(path)) { el.setAttribute('aria-current', 'true'); current = el; }
       } else {
         el.href = it.href;
         if (it.external) { el.target = '_blank'; el.rel = 'noopener noreferrer'; }
         if (path === it.href) { el.setAttribute('aria-current', 'page'); current = el; }
         else if (!current && it.section && it.section.test(path)) { el.setAttribute('aria-current', 'true'); current = el; }
-        if (it.href === '/#works-gallery') projectsItem = el;
       }
       var label = document.createElement('span');
       label.textContent = it.label;
@@ -268,8 +271,7 @@
     });
     header.appendChild(nav);
 
-    // Пункт, к которому линейка возвращается. На Главной следует за
-    // разделом страницы: баннер — «Мой дом», лента — «Проекты».
+    // Пункт, к которому линейка возвращается: раздел открытой страницы.
     var resting = current || items[0];
 
     function centerOf(el) { return el.offsetLeft + el.offsetWidth / 2; }
@@ -390,7 +392,6 @@
       if (window.siteNavigation) window.siteNavigation.scrollTo(destination);
       else window.scrollTo({ top: typeof destination === 'function' ? destination() : destination, behavior: 'smooth' });
     }
-    var feed = isHome && document.getElementById('works-gallery');
 
     var leaveTimer;
     track.addEventListener('click', function (e) {
@@ -402,15 +403,15 @@
         contactSheet.open();
         return;
       }
+      if (it.soon) {
+        glideTo(el);
+        return;
+      }
       // Резюме открывается в новой вкладке, линейка остаётся на месте.
       if (it.external) return;
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       e.preventDefault();
       glideTo(el);
-      if (feed && el === projectsItem) {
-        scrollPage(function () { return window.scrollY + feed.getBoundingClientRect().top - 20; });
-        return;
-      }
       if (el.getAttribute('aria-current') === 'page') {
         scrollPage(0);
         return;
@@ -470,14 +471,6 @@
       header.style.setProperty('--nav-shift', shift + 'px');
     }
 
-    function syncResting() {
-      if (!feed || !projectsItem) return;
-      var next = feed.getBoundingClientRect().top < innerHeight / 2 ? projectsItem : items[0];
-      if (next === resting) return;
-      resting = next;
-      if (!drag && centered !== resting) glideTo(resting, shift <= -header.offsetHeight);
-    }
-
     var pageTicking = false;
     window.addEventListener('scroll', function () {
       if (pageTicking) return;
@@ -486,7 +479,6 @@
         pageTicking = false;
         syncShift();
         syncSurface();
-        syncResting();
       });
     }, { passive: true });
 
@@ -505,7 +497,6 @@
       markCentered();
     }
     layout();
-    syncResting();
     glideTo(resting, true);
     markCentered();
     syncSurface();
