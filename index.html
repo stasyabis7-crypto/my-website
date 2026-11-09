@@ -27,6 +27,7 @@
 <link rel="stylesheet" href="styles/buttons.css?v=text-size-1" />
 <link rel="stylesheet" href="styles/card-tokens.css?v=3" />
 <link rel="stylesheet" href="components/project-feed/project-feed.css?v=11" />
+<link rel="stylesheet" href="components/skill-diagram/skill-diagram.css?v=2" />
 <link rel="stylesheet" href="styles/fonts.css?v=3" />
 <link rel="stylesheet" href="components/content-reveal/content-reveal.css?v=1" />
 <link rel="stylesheet" href="components/site-chrome/site-chrome.css?v=2-s1" />
@@ -142,6 +143,43 @@
     </section>
     <!-- component:hero-mood:end -->
 
+    <section class="skill-diagram" id="skill-diagram" aria-labelledby="skill-diagram-heading">
+      <div class="skill-diagram__intro">
+        <h2 class="text-h2" id="skill-diagram-heading">My stack</h2>
+        <p class="text-body" data-subtitle>What I can do and how I like to work</p>
+        <p class="skill-diagram__legend text-body"><span class="skill-diagram__swatch" aria-hidden="true"></span>Your profile (1–5)</p>
+      </div>
+      <div class="skill-diagram__chart" data-skill-diagram>
+        <div class="skill-diagram__plot" data-skill-plot></div>
+        <button type="button" class="btn btn--fill-nav btn--label-wrap skill-diagram__skill" data-angle="-90" data-score="5" style="--angle: -90deg" aria-expanded="false" aria-controls="skill-detail" data-detail="Framing problems, prioritising, and tying design to business outcomes"><span>Product thinking</span></button>
+        <button type="button" class="btn btn--fill-nav btn--label-wrap skill-diagram__skill" data-angle="-45" data-score="3.6" style="--angle: -45deg" aria-expanded="false" aria-controls="skill-detail" data-detail="Interviews, UX tests, prototype testing"><span>Research &amp; validation</span></button>
+        <button type="button" class="btn btn--fill-nav btn--label-wrap skill-diagram__skill" data-angle="0" data-score="4.6" style="--angle: 0deg" aria-expanded="false" aria-controls="skill-detail" data-detail="Visual quality, flows, mobile"><span>Interaction &amp; UI craft</span></button>
+        <button type="button" class="btn btn--fill-nav btn--label-wrap skill-diagram__skill" data-angle="45" data-score="3.2" style="--angle: 45deg" aria-expanded="false" aria-controls="skill-detail" data-detail="Using, extending and contributing components and tokens"><span>Design systems</span></button>
+        <button type="button" class="btn btn--fill-nav btn--label-wrap skill-diagram__skill" data-angle="90" data-score="5" style="--angle: 90deg" aria-expanded="false" aria-controls="skill-detail" data-detail="Designing AI experiences (AI assistants and trust UI), using AI in my workflow (prototyping, code tools Claude Code, Codex, Kling, Chat GPT)"><span>AI products &amp; tools</span></button>
+        <button type="button" class="btn btn--fill-nav btn--label-wrap skill-diagram__skill" data-angle="135" data-score="3.9" style="--angle: 135deg" aria-expanded="false" aria-controls="skill-detail" data-detail="Setting success metrics, reading A/B tests, measuring impact"><span>Data &amp; metrics</span></button>
+        <button type="button" class="btn btn--fill-nav btn--label-wrap skill-diagram__skill" data-angle="180" data-score="3.4" style="--angle: 180deg" aria-expanded="false" aria-controls="skill-detail" data-detail="One of the leaders of the accessibility stream in Avito"><span>Accessibility</span></button>
+        <button type="button" class="btn btn--fill-nav btn--label-wrap skill-diagram__skill" data-angle="225" data-score="4.1" style="--angle: 225deg" aria-expanded="false" aria-controls="skill-detail" data-detail="Working with PMs and engineers, presenting to stakeholders, mentoring"><span>Collaboration &amp; influence</span></button>
+        <div class="skill-diagram__tip" id="skill-detail" role="tooltip" hidden>
+          <p class="skill-diagram__tip-title text-h3"></p>
+          <p class="skill-diagram__tip-copy text-body"></p>
+        </div>
+      </div>
+    </section>
+
+    <div class="skill-diagram__sheet" id="skill-sheet" role="dialog" aria-modal="true" aria-labelledby="skill-sheet-title" hidden>
+      <div class="skill-diagram__sheet-backdrop" data-skill-dismiss></div>
+      <div class="skill-diagram__sheet-panel">
+        <span class="skill-diagram__grab" aria-hidden="true"></span>
+        <div class="skill-diagram__sheet-head">
+          <h3 class="text-h3" id="skill-sheet-title"></h3>
+          <button type="button" class="btn btn--fill-plain btn--icon-only" data-skill-close aria-label="Close">
+            <span class="icon icon--close" aria-hidden="true"></span>
+          </button>
+        </div>
+        <p class="skill-diagram__sheet-copy text-body"></p>
+      </div>
+    </div>
+
     <!-- Лента проектов: components/project-feed, данные — pages/home/data/projects.js. -->
     <section class="project-feed" id="works-gallery" aria-label="Projects" data-project-feed>
       <ul class="project-feed__grid"></ul>
@@ -248,6 +286,7 @@
   <script src="components/page-loader/page-loader.js?v=mood-3"></script>
   <script src="pages/home/data/projects.js?v=18"></script>
   <script src="components/project-feed/project-feed.js?v=6"></script>
+  <script src="components/skill-diagram/skill-diagram.js?v=2"></script>
   <script src="site/typography-rules.js?v=2"></script>
   <script src="site/haptics.js?v=1"></script>
   <script src="components/page-motion/page-motion.js?v=10"></script>

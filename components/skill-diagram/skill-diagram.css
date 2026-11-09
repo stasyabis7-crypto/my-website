@@ -1,0 +1,241 @@
+/*
+  Диаграмма навыков под баннером Главной. Сетка — светло-серая,
+  фон белый, фигура профиля — пиксельный градиент как на референсе.
+  Подпись навыка — кнопка ДС (.btn--fill-nav). На десктопе описание
+  в чёрном тултипе, на телефоне — белая шторка снизу.
+*/
+
+.skill-diagram {
+  padding: var(--space-section) 32px var(--space-intro-media);
+  background: var(--color-bg);
+  color: var(--color-text);
+  scroll-margin-top: calc(var(--header-h, 72px) + 12px);
+}
+
+.skill-diagram__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-title-subtitle);
+  max-width: 40rem;
+  margin-bottom: var(--space-intro-media);
+}
+
+.skill-diagram__legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: none;
+  color: var(--color-text-muted);
+}
+
+.skill-diagram__swatch {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  background:
+    linear-gradient(#ff4a32, #ff4a32) 0 0 / 4px 4px no-repeat,
+    linear-gradient(#ff6a62, #ff6a62) 4px 0 / 4px 4px no-repeat,
+    linear-gradient(#f7c9d2, #f7c9d2) 8px 0 / 4px 4px no-repeat,
+    linear-gradient(#ff6a62, #ff6a62) 0 4px / 4px 4px no-repeat,
+    linear-gradient(#ff3d1f, #ff3d1f) 4px 4px / 4px 4px no-repeat,
+    linear-gradient(#ff8ea2, #ff8ea2) 8px 4px / 4px 4px no-repeat,
+    linear-gradient(#f7c9d2, #f7c9d2) 0 8px / 4px 4px no-repeat,
+    linear-gradient(#ffb4c0, #ffb4c0) 4px 8px / 4px 4px no-repeat,
+    linear-gradient(#fdeff2, #fdeff2) 8px 8px / 4px 4px no-repeat;
+}
+
+.skill-diagram__chart {
+  position: relative;
+  width: min(680px, 100%);
+  margin-inline: auto;
+  aspect-ratio: 1;
+}
+
+.skill-diagram__plot {
+  position: absolute;
+  inset: 14%;
+}
+
+.skill-diagram__plot svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.skill-diagram__grid {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 0.35;
+  animation: skill-grid-in 0.7s ease both;
+}
+
+.skill-diagram__shape {
+  transform-box: view-box;
+  transform-origin: center;
+  animation: skill-shape-in 1.05s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.skill-diagram__shape-fill { stroke: none; }
+
+.skill-diagram__shape-line {
+  fill: none;
+  stroke: #e38b98;
+  stroke-width: 0.45;
+  stroke-linejoin: round;
+}
+
+.skill-diagram__dot {
+  fill: var(--color-bg);
+  stroke: var(--color-border);
+  stroke-width: 0.4;
+  cursor: pointer;
+}
+
+.skill-diagram__dot-hit {
+  fill: transparent;
+  cursor: pointer;
+}
+
+.skill-diagram__dot.is-active {
+  fill: #ff4a32;
+  stroke: var(--color-bg);
+}
+
+.skill-diagram__skill {
+  position: absolute;
+  left: calc(50% + cos(var(--angle)) * 46%);
+  top: calc(50% + sin(var(--angle)) * 46%);
+  z-index: 1;
+  max-width: 16rem;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.skill-diagram__tip {
+  position: absolute;
+  z-index: 3;
+  width: min(280px, calc(100% - 16px));
+  padding: 16px 18px;
+  background: var(--color-ink);
+  color: var(--color-ink-contrast);
+  border-radius: var(--radius-surface);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.28s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.skill-diagram__tip.is-open {
+  opacity: 1;
+  transform: none;
+}
+
+.skill-diagram__tip .text-body,
+.skill-diagram__sheet-copy {
+  max-width: none;
+}
+
+.skill-diagram__tip-title + .skill-diagram__tip-copy,
+.skill-diagram__sheet-head + .skill-diagram__sheet-copy {
+  margin-top: var(--space-stack-heading-lead);
+}
+
+.skill-diagram__sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+}
+
+.skill-diagram__sheet[hidden] { display: none; }
+
+.skill-diagram__sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 10, 20, 0.28);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.skill-diagram__sheet-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: min(72vh, 440px);
+  overflow: auto;
+  padding: 8px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-top: 1px solid var(--color-border);
+  border-radius: var(--radius-hero) var(--radius-hero) 0 0;
+  transform: translateY(110%);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.skill-diagram__sheet.is-open .skill-diagram__sheet-backdrop { opacity: 1; }
+.skill-diagram__sheet.is-open .skill-diagram__sheet-panel { transform: translateY(0); }
+
+.skill-diagram__grab {
+  display: block;
+  width: 36px;
+  height: 2px;
+  margin: 6px auto 16px;
+  background: var(--color-border);
+}
+
+.skill-diagram__sheet-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.skill-diagram__sheet-head .btn { flex: none; }
+
+html.skill-scroll-lock,
+html.skill-scroll-lock body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+@keyframes skill-grid-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes skill-shape-in {
+  from { opacity: 0; transform: scale(0.86); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 999px) {
+  .skill-diagram { padding-inline: 16px; }
+}
+
+@media (max-width: 699px) {
+  .skill-diagram__chart { width: 100%; }
+  .skill-diagram__plot { inset: 24%; }
+  .skill-diagram__skill {
+    max-width: 5.5rem;
+    left: calc(50% + cos(var(--angle)) * 44%);
+    top: calc(50% + sin(var(--angle)) * 44%);
+  }
+  .skill-diagram__tip { display: none; }
+}
+
+@media (min-width: 700px) {
+  .skill-diagram__sheet { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-diagram__grid,
+  .skill-diagram__shape,
+  .skill-diagram__tip,
+  .skill-diagram__sheet-backdrop,
+  .skill-diagram__sheet-panel {
+    animation: none;
+    transition: none;
+  }
+}

@@ -10,7 +10,7 @@
   var surface = null, axis = 'y';
   function stopScroll() { cancelAnimationFrame(frame); frame = 0; }
   function locked() {
-    return root.classList.contains('contact-scroll-lock') || root.classList.contains('work-toc-scroll-lock') || root.classList.contains('is-page-loading');
+    return root.classList.contains('contact-scroll-lock') || root.classList.contains('work-toc-scroll-lock') || root.classList.contains('skill-scroll-lock') || root.classList.contains('is-page-loading');
   }
   function position() {
     return surface === window ? window.scrollY : surface[axis === 'y' ? 'scrollTop' : 'scrollLeft'];
