@@ -48,7 +48,7 @@
     var target = new URL(value, location.href);
     if (target.origin !== location.origin) return value;
     var slot = assets[target.pathname];
-    return slot && slot[lang] ? slot[lang] : value;
+    return slot && slot[lang] && slot[lang] !== target.pathname ? slot[lang] : value;
   }
   function mediaPair(source) {
     var localized = Object.assign({}, source, { image: mediaURL(source.image) });
