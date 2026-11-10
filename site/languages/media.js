@@ -93,16 +93,16 @@ window.siteLanguageMedia = {
     "en": "/projects/avito-charity/about-company/covers/cover.webp"
   },
   "/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800.webp": {
-    "ru": "/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800.webp",
-    "en": "/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800.webp"
+    "ru": "/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800-ru.webp",
+    "en": "/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800-en.webp"
   },
   "/projects/avito-charity/charity-profile/covers/cover.webp": {
     "ru": "/projects/avito-charity/charity-profile/covers/cover.webp",
     "en": "/projects/avito-charity/charity-profile/covers/cover.webp"
   },
   "/projects/avito-charity/charity-profile/covers/feed-cover-324719915-1500x1800.webp": {
-    "ru": "/projects/avito-charity/charity-profile/covers/feed-cover-324719915-1500x1800.webp",
-    "en": "/projects/avito-charity/charity-profile/covers/feed-cover-324719915-1500x1800.webp"
+    "ru": "/projects/avito-charity/charity-profile/covers/feed-cover-324719915-1500x1800-ru.webp",
+    "en": "/projects/avito-charity/charity-profile/covers/feed-cover-324719915-1500x1800-en.webp"
   },
   "/projects/avito-charity/donation-subscription/covers/cover.webp": {
     "ru": "/projects/avito-charity/donation-subscription/covers/cover.webp",
@@ -113,8 +113,8 @@ window.siteLanguageMedia = {
     "en": "/projects/avito-charity/gamification/covers/cover.webp"
   },
   "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800.webp": {
-    "ru": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800.webp",
-    "en": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800.webp"
+    "ru": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800-ru.webp",
+    "en": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800-en.webp"
   },
   "/projects/avito-charity/rebranding/covers/cover.webp": {
     "ru": "/projects/avito-charity/rebranding/covers/cover.webp",
@@ -125,8 +125,8 @@ window.siteLanguageMedia = {
     "en": "/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800-en.webp"
   },
   "/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp": {
-    "ru": "/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp",
-    "en": "/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp"
+    "ru": "/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/about/statement-desktop-v2-3840x1680.webp": {
     "ru": "/projects/avito-charity/recycle-map/media/about/statement-desktop-v2-3840x1680-ru.webp",
@@ -201,8 +201,8 @@ window.siteLanguageMedia = {
     "en": "/projects/avito-charity/recycle-map/media/navigation/before-v2-2880x1600-en.webp"
   },
   "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp": {
-    "ru": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp",
-    "en": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp"
+    "ru": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800-ru.webp",
+    "en": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800-en.webp"
   },
   "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp": {
     "ru": "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800-ru.webp",
@@ -401,8 +401,8 @@ window.siteLanguageMedia = {
     "en": "/projects/concepts/your-custom/covers/stack-motion.mp4"
   },
   "/projects/employee-account/covers/feed-cover-frame-2147239078-1800x2400.webp": {
-    "ru": "/projects/employee-account/covers/feed-cover-frame-2147239078-1800x2400.webp",
-    "en": "/projects/employee-account/covers/feed-cover-frame-2147239078-1800x2400.webp"
+    "ru": "/projects/employee-account/covers/feed-cover-frame-2147239078-1800x2400-ru.webp",
+    "en": "/projects/employee-account/covers/feed-cover-frame-2147239078-1800x2400-en.webp"
   },
   "/projects/ozon-crm/campaign-creation/covers/cover.webp": {
     "ru": "/projects/ozon-crm/campaign-creation/covers/cover.webp",
@@ -417,8 +417,8 @@ window.siteLanguageMedia = {
     "en": "/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800-en.webp"
   },
   "/projects/ozon-crm/customer-segments/covers/feed-cover-frame-2147239075-1800x2400.webp": {
-    "ru": "/projects/ozon-crm/customer-segments/covers/feed-cover-frame-2147239075-1800x2400.webp",
-    "en": "/projects/ozon-crm/customer-segments/covers/feed-cover-frame-2147239075-1800x2400.webp"
+    "ru": "/projects/ozon-crm/customer-segments/covers/feed-cover-frame-2147239075-1800x2400-ru.webp",
+    "en": "/projects/ozon-crm/customer-segments/covers/feed-cover-frame-2147239075-1800x2400-en.webp"
   },
   "/projects/ozon-crm/customer-segments/media/about/about-v2-3840x1680.webp": {
     "ru": "/projects/ozon-crm/customer-segments/media/about/about-v2-3840x1680-ru.webp",
@@ -513,16 +513,16 @@ window.siteLanguageMedia = {
     "en": "/projects/ozon-prices/minimum-price/covers/cover.webp"
   },
   "/projects/ozon-prices/minimum-price/covers/feed-cover-frame-2147239076-1800x2400.webp": {
-    "ru": "/projects/ozon-prices/minimum-price/covers/feed-cover-frame-2147239076-1800x2400.webp",
-    "en": "/projects/ozon-prices/minimum-price/covers/feed-cover-frame-2147239076-1800x2400.webp"
+    "ru": "/projects/ozon-prices/minimum-price/covers/feed-cover-frame-2147239076-1800x2400-ru.webp",
+    "en": "/projects/ozon-prices/minimum-price/covers/feed-cover-frame-2147239076-1800x2400-en.webp"
   },
   "/projects/ozon-prices/prices-table/covers/cover.webp": {
     "ru": "/projects/ozon-prices/prices-table/covers/cover.webp",
     "en": "/projects/ozon-prices/prices-table/covers/cover.webp"
   },
   "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800.webp": {
-    "ru": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800.webp",
-    "en": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800.webp"
+    "ru": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800-ru.webp",
+    "en": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800-en.webp"
   },
   "/projects/ozon-prices/promotion-boosting/covers/cover.webp": {
     "ru": "/projects/ozon-prices/promotion-boosting/covers/cover.webp",
@@ -569,16 +569,16 @@ window.siteLanguageMedia = {
     "en": "/projects/swtec-medical/doctor-dashboard/covers/cover.webp"
   },
   "/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400.webp": {
-    "ru": "/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400.webp",
-    "en": "/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400.webp"
+    "ru": "/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400-ru.webp",
+    "en": "/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400-en.webp"
   },
   "/projects/swtec-medical/patient-app/covers/cover.webp": {
     "ru": "/projects/swtec-medical/patient-app/covers/cover.webp",
     "en": "/projects/swtec-medical/patient-app/covers/cover.webp"
   },
   "/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800.webp": {
-    "ru": "/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800.webp",
-    "en": "/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800.webp"
+    "ru": "/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800-ru.webp",
+    "en": "/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800-en.webp"
   },
   "/projects/swtec-medical/watches-patches/covers/cover.webp": {
     "ru": "/projects/swtec-medical/watches-patches/covers/cover.webp",
