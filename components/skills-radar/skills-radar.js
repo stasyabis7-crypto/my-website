@@ -40,7 +40,7 @@
     if (!sheet.open || sheet.classList.contains('is-closing')) return;
     if (reduced.matches) { sheet.close(); return; }
     sheet.classList.add('is-closing');
-    closeTimer = setTimeout(function () { sheet.close(); }, 280);
+    closeTimer = setTimeout(function () { sheet.close(); }, 380);
   }
   function openSkill(button) {
     var index = Number(button.dataset.skill);

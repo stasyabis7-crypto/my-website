@@ -87,7 +87,7 @@ const enSubtitle = find(en.tree, node => node.nodeType === 1 && (node.getAttribu
 assert.equal(textNodes(enSubtitle).join(''), 'I believe that the design surrounding us undoubtedly reflects the quality of our lives');
 assert(!textNodes(en.tree).join(' ').includes('Резюме PDF'));
 assert(!textNodes(en.tree).some(value => /[А-Яа-яЁё]/.test(value)), 'Home page must translate all visible copy, including non-breaking spaces');
-for (const [source, expected] of [['1 из 3', '1 of 3'], ['Оглавление проекта', 'Project contents'], ['Закрыть оглавление', 'Close contents'], ['Почта скопирована', 'Email copied']]) assert.equal(en.window.siteLanguage.t(source), expected);
+for (const [source, expected] of [['1 из 3', '1 of 3'], ['Оглавление проекта', 'Project contents'], ['Закрыть оглавление', 'Close contents'], ['Скопирована', 'Copied']]) assert.equal(en.window.siteLanguage.t(source), expected);
 const dynamic = { nodeType: 3, nodeValue: 'Скоро появится', parentElement: element('span') };
 en.mutation([{ type: 'childList', addedNodes: [dynamic] }]);
 assert.equal(dynamic.nodeValue, 'Coming soon');

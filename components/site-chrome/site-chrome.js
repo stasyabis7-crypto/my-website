@@ -217,7 +217,7 @@
     var EMAIL = 'stasyabis7@gmail.com';
     var ITEMS = [
       { label: 'Telegram', icon: 'telegram', href: 'https://t.me/stasyabis' },
-      { label: 'Скопировать адрес почты', icon: 'email', copy: EMAIL },
+      { label: EMAIL, icon: 'email', copy: EMAIL },
       { label: 'Dribbble', icon: 'dribbble', href: 'https://dribbble.com/Stasyabis' },
       { label: 'Figma community', icon: 'figma', href: 'https://www.figma.com/@stasyabis' },
       { label: 'Medium', icon: 'medium', href: 'https://medium.com/@stasyabis' },
@@ -251,9 +251,10 @@
       if (it.copy) {
         el = document.createElement('button');
         el.type = 'button';
+        el.setAttribute('aria-live', 'polite');
         el.addEventListener('click', function () {
           copyText(it.copy, function () {
-            el.lastChild.textContent = 'Почта скопирована';
+            el.lastChild.textContent = window.siteLanguage ? window.siteLanguage.t('Скопирована') : 'Скопирована';
             clearTimeout(el._t);
             el._t = setTimeout(function () { el.lastChild.textContent = it.label; }, 1800);
           });
@@ -301,7 +302,7 @@
       popover.appendChild(nav);
       wrap.appendChild(popover);
       // Freeze the copy row's width to its initial label — swapping to
-      // the shorter "Почта скопирована" confirmation would otherwise
+      // the shorter "Скопирована" confirmation would otherwise
       // shrink the whole panel (sized to content) and jump the layout.
       // Re-measured once the webfont loads, since the fallback-font
       // width measured at build time can be a few px off.

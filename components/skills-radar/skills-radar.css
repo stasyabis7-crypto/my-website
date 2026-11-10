@@ -16,11 +16,23 @@
 .skills-radar__popover strong { display: block; padding-right: 36px; }
 .skills-radar__popover [data-skill-popover-close] { position: absolute; top: 8px; right: 8px; }
 .skills-radar__popover p { margin: 12px 0 0; color: #d4d5db; }
-.skills-radar__popover:popover-open { animation: skill-popover-in .22s ease both; }
+/* Retain display and the top layer until the fade-out finishes, including
+   native Escape and outside-click dismissal. */
+.skills-radar__popover {
+  opacity: 0;
+  pointer-events: none;
+  translate: 0 4px;
+  transition: opacity .32s cubic-bezier(.4, 0, .2, 1), translate .36s cubic-bezier(.22, 1, .36, 1), display .36s allow-discrete, overlay .36s allow-discrete;
+}
+.skills-radar__popover:popover-open { opacity: 1; pointer-events: auto; translate: 0 0; }
+@starting-style {
+  .skills-radar__popover:popover-open { opacity: 0; translate: 0 4px; }
+}
 .skills-radar__sheet { position: fixed; inset: auto 0 0; width: 100%; max-width: none; max-height: calc(100svh - 24px); margin: 0; padding: 12px 24px max(32px, env(safe-area-inset-bottom)); overflow: auto; overscroll-behavior: contain; border: 0; border-radius: 24px 24px 0 0; background: #fff; color: #111; }
-.skills-radar__sheet[open] { animation: skill-sheet-in .42s cubic-bezier(.22, 1, .36, 1) both; }
-.skills-radar__sheet.is-closing { animation: skill-sheet-out .26s ease both; }
+.skills-radar__sheet[open] { animation: skill-sheet-in .48s cubic-bezier(.22, 1, .36, 1) both; }
+.skills-radar__sheet.is-closing { animation: skill-sheet-out .34s cubic-bezier(.4, 0, .2, 1) both; }
 .skills-radar__sheet::backdrop { background: rgb(20 23 36 / .24); animation: skill-backdrop-in .3s ease both; }
+.skills-radar__sheet.is-closing::backdrop { animation: skill-backdrop-out .34s ease both; }
 .skills-radar__sheet-handle { width: 36px; height: 4px; margin: 0 auto 16px; border-radius: 4px; background: #d9dbe0; }
 .skills-radar__sheet-top { position: relative; padding-right: 48px; margin-bottom: 8px; }
 .skills-radar__sheet-top [data-skill-close] { position: absolute; top: -24px; right: -8px; }
@@ -47,9 +59,9 @@ html.skills-sheet-open, html.skills-sheet-open body { overflow: hidden; }
 @keyframes skill-area-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes skill-line-in { from { stroke-dashoffset: 1; opacity: 0; } 15% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
 @keyframes skill-label-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes skill-popover-in { from { opacity: 0; translate: 0 6px; } to { opacity: 1; translate: 0 0; } }
 @keyframes skill-sheet-in { from { transform: translateY(100%); } to { transform: translateY(0); } }
 @keyframes skill-sheet-out { to { transform: translateY(100%); opacity: 0; } }
+@keyframes skill-backdrop-out { from { opacity: 1; } to { opacity: 0; } }
 @keyframes skill-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
 @media (max-width: 999px) and (min-width: 700px) {
   .skills-radar { padding-inline: 16px; }

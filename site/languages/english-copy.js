@@ -374,7 +374,6 @@ window.siteEnglish = {
     "Разделы сайта": "Site sections",
     "Скоро появится": "Coming soon",
     "В работе": "In progress",
-    "Скопировать адрес почты": "Copy email address",
     "Скопировано": "Copied",
     "Скопировано!": "Copied!",
     "Закрыть меню": "Close menu",
@@ -456,7 +455,7 @@ window.siteEnglish = {
     "Перемотка видео": "Seek video",
     "Оглавление": "Contents",
     "Закрыть оглавление": "Close contents",
-    "Почта скопирована": "Email copied",
+    "Скопирована": "Copied",
     "карусель": "carousel",
     "Верю в то, что дизайн, который нас окружает,": "I believe that the design surrounding us",
     "безусловно, отражает качество нашей жизни": "undoubtedly reflects the quality of our lives"
