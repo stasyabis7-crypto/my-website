@@ -14,24 +14,59 @@
       : (segmented.slice(0, last.index).match(/[.!?…](?:[»”"')\]]*\s+|(?=[А-ЯЁA-Z]))/gu) || []).length + 1;
     return count === 1 ? last.index : -1;
   }
-  if (typeof module !== 'undefined' && module.exports) module.exports = { subtitlePeriod };
-  if (typeof document === 'undefined') return;
-
-  var SKIP = 'script, style, pre, code, textarea, input, select, option, [contenteditable]:not([contenteditable="false"])';
+  var SKIP = 'script, style, noscript, pre, code, textarea, input, select, option, svg, [contenteditable]:not([contenteditable="false"])';
   var SUBTITLES = '[data-subtitle], .text-subtitle, [class*="subtitle"], .collection__heading > .text-body, .project-card__caption > .text-body, .project-card__copy > .text-body, .project-slider__tooltip > .text-body, .activity-article__description';
   var PREPOSITIONS = ['без', 'безо', 'в', 'во', 'для', 'до', 'за', 'из', 'изо', 'из-за', 'из-под', 'к', 'ко', 'меж', 'между', 'на', 'над', 'надо', 'о', 'об', 'обо', 'от', 'ото', 'перед', 'передо', 'по', 'под', 'подо', 'при', 'про', 'с', 'со', 'у', 'через'];
   var CONJUNCTIONS = ['а', 'и', 'но', 'да', 'или', 'либо', 'что', 'чтоб', 'чтобы', 'если', 'хотя', 'как', 'чем', 'пока', 'будто'];
   var FORWARD_PARTICLES = ['не', 'ни', 'вот', 'вон', 'ведь', 'даже', 'лишь', 'только', 'пусть', 'пускай', 'разве', 'неужели', 'уж'];
   // Не поглощаем границу перед словом: цепочки «и в», «но не» тоже склеятся.
-  // Горизонтальные пробелы сохраняют явные переводы строк.
-  var HANGING_WORDS = new RegExp('(?<![\\p{L}\\p{N}_-])(' + PREPOSITIONS.concat(CONJUNCTIONS, FORWARD_PARTICLES).join('|') + ')[ \\t\\u00a0]+(?=\\S)', 'giu');
+  // Переносы в исходном HTML — обычные пробелы; BR отделяется при обходе DOM.
+  var ENGLISH_WORDS = ['a', 'an', 'the', 'at', 'by', 'for', 'from', 'in', 'into', 'of', 'on', 'to', 'with', 'as', 'and', 'or', 'but', 'nor', 'if', 'so', 'yet', 'not', 'no'];
+  var HANGING_WORDS = new RegExp('(?<![\\p{L}\\p{N}_-])(' + PREPOSITIONS.concat(CONJUNCTIONS, FORWARD_PARTICLES, ENGLISH_WORDS).join('|') + ')([ \\t\\r\\n\\u00a0\\u202f]+)(?=\\S)', 'giu');
   // Постпозитивные частицы относятся к предыдущему слову: «сделать бы», «так же».
-  var BACKWARD_PARTICLES = /(?<=[\p{L}\p{N}»”")])[ \t\u00a0]+(бы|б|же|ж|ли|ль)(?![\p{L}\p{N}_-])/giu;
+  var BACKWARD_PARTICLES = /(?<=[\p{L}\p{N}»”")])([ \t\r\n\u00a0\u202f]+)(бы|б|же|ж|ли|ль)(?![\p{L}\p{N}_-])/giu;
 
-  function fixTextNode(node) {
-    if (!node.nodeValue || !node.parentElement || node.parentElement.closest(SKIP)) return;
-    var fixed = node.nodeValue.replace(HANGING_WORDS, '$1\u00a0').replace(BACKWARD_PARTICLES, '\u00a0$1');
-    if (fixed !== node.nodeValue) node.nodeValue = fixed;
+  function boundCharacters(text) {
+    // Retain original offsets when mapping edits across inline tags. Collapsed
+    // source indentation must become one NBSP, rather than a row of NBSPs.
+    var characters = text.split('');
+    function glue(start, length) {
+      characters[start] = '\u00a0';
+      for (var i = start + 1; i < start + length; i++) characters[i] = '';
+    }
+    text.replace(HANGING_WORDS, function (_, word, spaces, offset) { glue(offset + word.length, spaces.length); return _; });
+    text.replace(BACKWARD_PARTICLES, function (_, spaces, word, offset) { glue(offset, spaces.length); return _; });
+    return characters;
+  }
+  function keepWordsTogether(text) { return boundCharacters(text).join(''); }
+  if (typeof module !== 'undefined' && module.exports) module.exports = { subtitlePeriod, keepWordsTogether };
+  if (typeof window !== 'undefined') window.siteTypography = { keepWordsTogether };
+  if (typeof document === 'undefined') return;
+
+  var BOUNDARIES = 'address, article, aside, blockquote, body, button, caption, dd, details, dialog, div, dl, dt, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hr, iframe, legend, li, main, nav, ol, p, section, summary, table, tbody, td, th, thead, tr, ul';
+  function fixBindings(root) {
+    var nodes = [];
+    function flush() {
+      var text = nodes.map(node => node.nodeValue).join('');
+      var fixed = boundCharacters(text), offset = 0;
+      nodes.forEach(function (node) {
+        var next = fixed.slice(offset, offset + node.nodeValue.length).join('');
+        offset += node.nodeValue.length;
+        if (next !== node.nodeValue) node.nodeValue = next;
+      });
+      nodes = [];
+    }
+    function visit(node) {
+      if (node.nodeType === Node.TEXT_NODE) { nodes.push(node); return; }
+      if (node.nodeType !== Node.ELEMENT_NODE) return;
+      if (node.matches(SKIP)) { flush(); return; }
+      var boundary = node.matches(BOUNDARIES) || node.tagName === 'BR';
+      if (boundary) flush();
+      Array.from(node.childNodes).forEach(visit);
+      if (boundary) flush();
+    }
+    visit(root);
+    flush();
   }
 
   function fixSubtitle(element) {
@@ -63,17 +98,12 @@
 
   function fixSubtree(root) {
     if (!root) return;
-    if (root.nodeType === Node.TEXT_NODE) {
-      fixTextNode(root);
-      fixSubtitles(root);
-      return;
-    }
+    if (root.nodeType === Node.TEXT_NODE) root = root.parentElement;
+    if (root && root.nodeType === Node.DOCUMENT_NODE) root = root.body;
+    if (!root || root.closest(SKIP)) return;
     if (root.nodeType !== Node.ELEMENT_NODE && root.nodeType !== Node.DOCUMENT_NODE) return;
-    var doc = root.ownerDocument || root;
-    var walker = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-    var node;
-    while ((node = walker.nextNode())) fixTextNode(node);
-    fixSubtitles(root.nodeType === Node.DOCUMENT_NODE ? root.body : root);
+    fixBindings(root);
+    fixSubtitles(root);
   }
 
   function watchDocument(doc) {
@@ -81,10 +111,12 @@
     doc.__hangingPrepositionsReady = true;
     fixSubtree(doc.body);
     new MutationObserver(function (mutations) {
+      var roots = new Set();
       mutations.forEach(function (mutation) {
-        if (mutation.type === 'characterData') { fixTextNode(mutation.target); fixSubtitles(mutation.target); }
-        else { mutation.addedNodes.forEach(fixSubtree); fixSubtitles(mutation.target); }
+        var element = mutation.target.nodeType === Node.TEXT_NODE ? mutation.target.parentElement : mutation.target;
+        if (element && !element.closest(SKIP)) roots.add(element.closest(BOUNDARIES) || element);
       });
+      roots.forEach(fixSubtree);
     }).observe(doc.body, { childList: true, characterData: true, subtree: true });
   }
 

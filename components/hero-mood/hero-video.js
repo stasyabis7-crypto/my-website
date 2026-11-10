@@ -36,8 +36,8 @@
   new ResizeObserver(queueScroll).observe(hero);
   syncScroll();
   const title = hero.querySelector('.mood-title');
-  // Preserve the heading's accessible name and spaces, including Cyrillic copy.
-  const words = title.textContent.trim().split(/\s+/);
+  // Reveal whole typographic groups: a standalone inline-block «с» can wrap.
+  const words = window.siteTypography.keepWordsTogether(title.textContent.trim()).split(/[ \t\r\n]+/);
   title.setAttribute('aria-label', title.textContent.trim());
   title.replaceChildren(...words.flatMap((word, i) => {
     const span = document.createElement('span');
