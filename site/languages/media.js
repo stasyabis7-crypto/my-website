@@ -205,92 +205,92 @@ window.siteLanguageMedia = {
     "en": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp"
   },
   "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp": {
-    "ru": "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp",
-    "en": "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp"
+    "ru": "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800-ru.webp",
+    "en": "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800-en.webp"
   },
   "/projects/avito-charity/subscription/media/about/about-v2-2880x1600.webp": {
-    "ru": "/projects/avito-charity/subscription/media/about/about-v2-2880x1600.webp",
-    "en": "/projects/avito-charity/subscription/media/about/about-v2-2880x1600.webp"
+    "ru": "/projects/avito-charity/subscription/media/about/about-v2-2880x1600-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/about/about-v2-2880x1600-en.webp"
   },
   "/projects/avito-charity/subscription/media/before/after-v2-1480x1600.webp": {
-    "ru": "/projects/avito-charity/subscription/media/before/after-v2-1480x1600.webp",
-    "en": "/projects/avito-charity/subscription/media/before/after-v2-1480x1600.webp"
+    "ru": "/projects/avito-charity/subscription/media/before/after-v2-1480x1600-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/before/after-v2-1480x1600-en.webp"
   },
   "/projects/avito-charity/subscription/media/before/before-v2-1480x1600.webp": {
-    "ru": "/projects/avito-charity/subscription/media/before/before-v2-1480x1600.webp",
-    "en": "/projects/avito-charity/subscription/media/before/before-v2-1480x1600.webp"
+    "ru": "/projects/avito-charity/subscription/media/before/before-v2-1480x1600-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/before/before-v2-1480x1600-en.webp"
   },
   "/projects/avito-charity/subscription/media/choose-fund/fund-selection-2880x1600.webp": {
-    "ru": "/projects/avito-charity/subscription/media/choose-fund/fund-selection-2880x1600.webp",
-    "en": "/projects/avito-charity/subscription/media/choose-fund/fund-selection-2880x1600.webp"
+    "ru": "/projects/avito-charity/subscription/media/choose-fund/fund-selection-2880x1600-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/choose-fund/fund-selection-2880x1600-en.webp"
   },
   "/projects/avito-charity/subscription/media/concepts/1.webp": {
-    "ru": "/projects/avito-charity/subscription/media/concepts/1.webp",
-    "en": "/projects/avito-charity/subscription/media/concepts/1.webp"
+    "ru": "/projects/avito-charity/subscription/media/concepts/1-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/concepts/1-en.webp"
   },
   "/projects/avito-charity/subscription/media/concepts/2.webp": {
-    "ru": "/projects/avito-charity/subscription/media/concepts/2.webp",
-    "en": "/projects/avito-charity/subscription/media/concepts/2.webp"
+    "ru": "/projects/avito-charity/subscription/media/concepts/2-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/concepts/2-en.webp"
   },
   "/projects/avito-charity/subscription/media/entry-points/entry-1.webp": {
-    "ru": "/projects/avito-charity/subscription/media/entry-points/entry-1.webp",
-    "en": "/projects/avito-charity/subscription/media/entry-points/entry-1.webp"
+    "ru": "/projects/avito-charity/subscription/media/entry-points/entry-1-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/entry-points/entry-1-en.webp"
   },
   "/projects/avito-charity/subscription/media/entry-points/entry-2.webp": {
-    "ru": "/projects/avito-charity/subscription/media/entry-points/entry-2.webp",
-    "en": "/projects/avito-charity/subscription/media/entry-points/entry-2.webp"
+    "ru": "/projects/avito-charity/subscription/media/entry-points/entry-2-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/entry-points/entry-2-en.webp"
   },
   "/projects/avito-charity/subscription/media/entry-points/entry-3.webp": {
-    "ru": "/projects/avito-charity/subscription/media/entry-points/entry-3.webp",
-    "en": "/projects/avito-charity/subscription/media/entry-points/entry-3.webp"
+    "ru": "/projects/avito-charity/subscription/media/entry-points/entry-3-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/entry-points/entry-3-en.webp"
   },
   "/projects/avito-charity/subscription/media/manage/manage-1-v2-1480x1600.webp": {
-    "ru": "/projects/avito-charity/subscription/media/manage/manage-1-v2-1480x1600.webp",
-    "en": "/projects/avito-charity/subscription/media/manage/manage-1-v2-1480x1600.webp"
+    "ru": "/projects/avito-charity/subscription/media/manage/manage-1-v2-1480x1600-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/manage/manage-1-v2-1480x1600-en.webp"
   },
   "/projects/avito-charity/subscription/media/manage/manage-2-v2-1480x1600.webp": {
-    "ru": "/projects/avito-charity/subscription/media/manage/manage-2-v2-1480x1600.webp",
-    "en": "/projects/avito-charity/subscription/media/manage/manage-2-v2-1480x1600.webp"
+    "ru": "/projects/avito-charity/subscription/media/manage/manage-2-v2-1480x1600-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/manage/manage-2-v2-1480x1600-en.webp"
   },
   "/projects/avito-charity/subscription/media/results/bento-1.webp": {
-    "ru": "/projects/avito-charity/subscription/media/results/bento-1.webp",
-    "en": "/projects/avito-charity/subscription/media/results/bento-1.webp"
+    "ru": "/projects/avito-charity/subscription/media/results/bento-1-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/results/bento-1-en.webp"
   },
   "/projects/avito-charity/subscription/media/results/bento-2.webp": {
-    "ru": "/projects/avito-charity/subscription/media/results/bento-2.webp",
-    "en": "/projects/avito-charity/subscription/media/results/bento-2.webp"
+    "ru": "/projects/avito-charity/subscription/media/results/bento-2-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/results/bento-2-en.webp"
   },
   "/projects/avito-charity/subscription/media/results/bento-3.webp": {
-    "ru": "/projects/avito-charity/subscription/media/results/bento-3.webp",
-    "en": "/projects/avito-charity/subscription/media/results/bento-3.webp"
+    "ru": "/projects/avito-charity/subscription/media/results/bento-3-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/results/bento-3-en.webp"
   },
   "/projects/avito-charity/subscription/media/results/bento-4.webp": {
-    "ru": "/projects/avito-charity/subscription/media/results/bento-4.webp",
-    "en": "/projects/avito-charity/subscription/media/results/bento-4.webp"
+    "ru": "/projects/avito-charity/subscription/media/results/bento-4-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/results/bento-4-en.webp"
   },
   "/projects/avito-charity/subscription/media/results/final-concept-large-v2-1400x1680.webp": {
-    "ru": "/projects/avito-charity/subscription/media/results/final-concept-large-v2-1400x1680.webp",
-    "en": "/projects/avito-charity/subscription/media/results/final-concept-large-v2-1400x1680.webp"
+    "ru": "/projects/avito-charity/subscription/media/results/final-concept-large-v2-1400x1680-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/results/final-concept-large-v2-1400x1680-en.webp"
   },
   "/projects/avito-charity/subscription/media/results/final-concept-small-v2.webp": {
-    "ru": "/projects/avito-charity/subscription/media/results/final-concept-small-v2.webp",
-    "en": "/projects/avito-charity/subscription/media/results/final-concept-small-v2.webp"
+    "ru": "/projects/avito-charity/subscription/media/results/final-concept-small-v2-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/results/final-concept-small-v2-en.webp"
   },
   "/projects/avito-charity/subscription/media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4": {
-    "ru": "/projects/avito-charity/subscription/media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4",
-    "en": "/projects/avito-charity/subscription/media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4"
+    "ru": "/projects/avito-charity/subscription/media/settings/subscription-info-sheet-v2-1600x2000-60fps-ru.mp4",
+    "en": "/projects/avito-charity/subscription/media/settings/subscription-info-sheet-v2-1600x2000-60fps-en.mp4"
   },
   "/projects/avito-charity/subscription/media/settings/subscription-payment-flow-1600x2000-60fps.mp4": {
-    "ru": "/projects/avito-charity/subscription/media/settings/subscription-payment-flow-1600x2000-60fps.mp4",
-    "en": "/projects/avito-charity/subscription/media/settings/subscription-payment-flow-1600x2000-60fps.mp4"
+    "ru": "/projects/avito-charity/subscription/media/settings/subscription-payment-flow-1600x2000-60fps-ru.mp4",
+    "en": "/projects/avito-charity/subscription/media/settings/subscription-payment-flow-1600x2000-60fps-en.mp4"
   },
   "/projects/avito-charity/subscription/media/success/after-1600x2000-60fps.mp4": {
-    "ru": "/projects/avito-charity/subscription/media/success/after-1600x2000-60fps.mp4",
-    "en": "/projects/avito-charity/subscription/media/success/after-1600x2000-60fps.mp4"
+    "ru": "/projects/avito-charity/subscription/media/success/after-1600x2000-60fps-ru.mp4",
+    "en": "/projects/avito-charity/subscription/media/success/after-1600x2000-60fps-en.mp4"
   },
   "/projects/avito-charity/subscription/media/success/before.webp": {
-    "ru": "/projects/avito-charity/subscription/media/success/before.webp",
-    "en": "/projects/avito-charity/subscription/media/success/before.webp"
+    "ru": "/projects/avito-charity/subscription/media/success/before-ru.webp",
+    "en": "/projects/avito-charity/subscription/media/success/before-en.webp"
   },
   "/projects/concepts/ai-assistant/covers/cover.webp": {
     "ru": "/projects/concepts/ai-assistant/covers/cover.webp",

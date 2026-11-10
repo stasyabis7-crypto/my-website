@@ -50,3 +50,6 @@
 
 Сопоставление 19 русских и 19 английских изображений карты раздельного сбора —
 [recycle-map-media.md](recycle-map-media.md).
+
+Картинки, видео и сопоставление файлов «Доброй подписки» —
+[subscription-media.md](subscription-media.md).
