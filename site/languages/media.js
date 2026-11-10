@@ -121,84 +121,84 @@ window.siteLanguageMedia = {
     "en": "/projects/avito-charity/rebranding/covers/cover.webp"
   },
   "/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800.webp": {
-    "ru": "/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800.webp",
-    "en": "/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800.webp"
+    "ru": "/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800-en.webp"
   },
   "/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp": {
     "ru": "/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp",
     "en": "/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp"
   },
   "/projects/avito-charity/recycle-map/media/about/statement-desktop-v2-3840x1680.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/about/statement-desktop-v2-3840x1680.webp",
-    "en": "/projects/avito-charity/recycle-map/media/about/statement-desktop-v2-3840x1680.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/about/statement-desktop-v2-3840x1680-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/about/statement-desktop-v2-3840x1680-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/about/statement-mobile-v2-1200x1500.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/about/statement-mobile-v2-1200x1500.webp",
-    "en": "/projects/avito-charity/recycle-map/media/about/statement-mobile-v2-1200x1500.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/about/statement-mobile-v2-1200x1500-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/about/statement-mobile-v2-1200x1500-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/concepts/concept-1-v2-2880x1600.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/concepts/concept-1-v2-2880x1600.webp",
-    "en": "/projects/avito-charity/recycle-map/media/concepts/concept-1-v2-2880x1600.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/concepts/concept-1-v2-2880x1600-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/concepts/concept-1-v2-2880x1600-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/concepts/concept-2-v2-2880x1600.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/concepts/concept-2-v2-2880x1600.webp",
-    "en": "/projects/avito-charity/recycle-map/media/concepts/concept-2-v2-2880x1600.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/concepts/concept-2-v2-2880x1600-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/concepts/concept-2-v2-2880x1600-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/favorites-list/favorites-b-2880x1600.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/favorites-list/favorites-b-2880x1600.webp",
-    "en": "/projects/avito-charity/recycle-map/media/favorites-list/favorites-b-2880x1600.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/favorites-list/favorites-b-2880x1600-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/favorites-list/favorites-b-2880x1600-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/favorites/card-v2-2880x1600.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/favorites/card-v2-2880x1600.webp",
-    "en": "/projects/avito-charity/recycle-map/media/favorites/card-v2-2880x1600.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/favorites/card-v2-2880x1600-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/favorites/card-v2-2880x1600-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/favorites/schedule-b-1600.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/favorites/schedule-b-1600.webp",
-    "en": "/projects/avito-charity/recycle-map/media/favorites/schedule-b-1600.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/favorites/schedule-b-1600-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/favorites/schedule-b-1600-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/filters/after-1600.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/filters/after-1600.webp",
-    "en": "/projects/avito-charity/recycle-map/media/filters/after-1600.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/filters/after-1600-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/filters/after-1600-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/filters/before-1600.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/filters/before-1600.webp",
-    "en": "/projects/avito-charity/recycle-map/media/filters/before-1600.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/filters/before-1600-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/filters/before-1600-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/filters/result-v2-2880x1800.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/filters/result-v2-2880x1800.webp",
-    "en": "/projects/avito-charity/recycle-map/media/filters/result-v2-2880x1800.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/filters/result-v2-2880x1800-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/filters/result-v2-2880x1800-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/gallery/card-700x840.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/gallery/card-700x840.webp",
-    "en": "/projects/avito-charity/recycle-map/media/gallery/card-700x840.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/gallery/card-700x840-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/gallery/card-700x840-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/gallery/categories-1200x904.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/gallery/categories-1200x904.webp",
-    "en": "/projects/avito-charity/recycle-map/media/gallery/categories-1200x904.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/gallery/categories-1200x904-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/gallery/categories-1200x904-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/gallery/filters-1400x1680.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/gallery/filters-1400x1680.webp",
-    "en": "/projects/avito-charity/recycle-map/media/gallery/filters-1400x1680.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/gallery/filters-1400x1680-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/gallery/filters-1400x1680-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/gallery/icons-1792x864.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/gallery/icons-1792x864.webp",
-    "en": "/projects/avito-charity/recycle-map/media/gallery/icons-1792x864.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/gallery/icons-1792x864-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/gallery/icons-1792x864-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/gallery/pin-1400x864.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/gallery/pin-1400x864.webp",
-    "en": "/projects/avito-charity/recycle-map/media/gallery/pin-1400x864.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/gallery/pin-1400x864-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/gallery/pin-1400x864-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/gallery/saved-b-1400x1680.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/gallery/saved-b-1400x1680.webp",
-    "en": "/projects/avito-charity/recycle-map/media/gallery/saved-b-1400x1680.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/gallery/saved-b-1400x1680-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/gallery/saved-b-1400x1680-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/navigation/after-v2-2880x1600.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/navigation/after-v2-2880x1600.webp",
-    "en": "/projects/avito-charity/recycle-map/media/navigation/after-v2-2880x1600.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/navigation/after-v2-2880x1600-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/navigation/after-v2-2880x1600-en.webp"
   },
   "/projects/avito-charity/recycle-map/media/navigation/before-v2-2880x1600.webp": {
-    "ru": "/projects/avito-charity/recycle-map/media/navigation/before-v2-2880x1600.webp",
-    "en": "/projects/avito-charity/recycle-map/media/navigation/before-v2-2880x1600.webp"
+    "ru": "/projects/avito-charity/recycle-map/media/navigation/before-v2-2880x1600-ru.webp",
+    "en": "/projects/avito-charity/recycle-map/media/navigation/before-v2-2880x1600-en.webp"
   },
   "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp": {
     "ru": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp",
