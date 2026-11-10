@@ -15,6 +15,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Install WebP encoder
         run: sudo apt-get update && sudo apt-get install -y webp
 
@@ -51,6 +60,7 @@ jobs:
             assets/garden/flowers new/**
             _*.html
             package.json
+            package-lock.json
             **/*.png
             **/*.PNG
             **/*.md
