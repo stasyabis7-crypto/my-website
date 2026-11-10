@@ -14,7 +14,7 @@ body { background: var(--color-bg); color: var(--color-text); }
 .about-intro__copy > p { max-width: 48ch; }
 .about-intro__copy > .btn { margin-top: 24px; }
 .about .skills-radar { padding-top: 64px; padding-bottom: 64px; }
-.about-experience h2 { margin: 0 0 48px; }
+.about-experience h2 { margin: 0 0 48px; text-align: center; }
 .about-job { border-top: 1px solid var(--color-divider, #dedee3); }
 .about-job:last-child { border-bottom: 1px solid var(--color-divider, #dedee3); }
 .about-job__summary { display: grid; grid-template-columns: 1fr 1fr auto; gap: 24px; align-items: start; padding-block: 32px; }
@@ -32,7 +32,6 @@ body { background: var(--color-bg); color: var(--color-text); }
   .about-intro__portrait img { position: static; height: auto; }
   .about-intro__copy { padding: 40px var(--cg-gutter) 0; text-align: center; }
   .about-intro__copy h1, .about-intro__copy > p { margin-inline: auto; }
-  .about-experience > h2 { text-align: center; }
   .about .skills-radar { margin-inline: -16px; padding-inline: 16px; }
   .about-job__summary { grid-template-columns: 1fr auto; gap: 12px; padding-block: 24px; }
   .about-job__dates { grid-column: 1 / -1; }
