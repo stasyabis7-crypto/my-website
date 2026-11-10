@@ -143,8 +143,8 @@
   translate(document.documentElement);
   document.addEventListener('DOMContentLoaded', function () {
     translate(document.documentElement);
-    var wrap = document.getElementById('site-socials');
-    if (!wrap) return;
+    var header = document.querySelector('.site-header');
+    if (!header) return;
     var next = lang === 'ru' ? 'en' : 'ru';
     var target = new URL(location.href);
     if (next === 'en' && /^\/projects\/posts\//.test(target.pathname)) target.pathname = '/';
@@ -158,6 +158,7 @@
     switcher.href = target.pathname + target.search + target.hash;
     // Keep language links intact when all other internal links inherit the locale.
     switcher.setAttribute('data-language-switch', '');
-    wrap.insertBefore(switcher, wrap.firstChild);
+    var resume = header.querySelector('.site-header__cta');
+    header.insertBefore(switcher, resume ? resume.nextSibling : header.querySelector('.site-socials'));
   });
 })();
