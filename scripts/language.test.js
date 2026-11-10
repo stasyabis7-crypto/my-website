@@ -12,6 +12,25 @@ function element(tag, attrs = [], children = []) {
     getAttribute(name) { return this.attributes[name] ?? null; },
     setAttribute(name, value) { this.attributes[name] = value; },
     removeAttribute(name) { delete this.attributes[name]; },
+    get className() { return this.getAttribute('class') || ''; },
+    set className(value) { this.setAttribute('class', value); },
+    get nextSibling() { return this.parentElement?.childNodes[this.parentElement.childNodes.indexOf(this) + 1] || null; },
+    querySelector(selector) {
+      for (const child of this.childNodes) {
+        if (child.nodeType !== 1) continue;
+        if (selector.startsWith('.') ? child.className.split(' ').includes(selector.slice(1)) : child.tagName === selector.toUpperCase()) return child;
+        const nested = child.querySelector(selector);
+        if (nested) return nested;
+      }
+      return null;
+    },
+    insertBefore(node, reference) {
+      if (node.parentElement) node.parentElement.childNodes.splice(node.parentElement.childNodes.indexOf(node), 1);
+      const index = reference === null ? this.childNodes.length : this.childNodes.indexOf(reference);
+      assert(index >= 0, 'Reference must belong to the insertion parent');
+      this.childNodes.splice(index, 0, node);
+      node.parentElement = this;
+    },
     closest(selector) { return selector.split(',').some(s => { s = s.trim(); return s.startsWith('[') ? this.hasAttribute(s.slice(1, -1)) : s.toUpperCase() === this.tagName; }) ? this : this.parentElement?.closest(selector); }
   };
 }
@@ -21,21 +40,34 @@ function adapt(node) {
   for (const child of el.childNodes) child.parentElement = el;
   return el;
 }
-function run(file, query = '?lang=en', stored, denied = false, additionalMedia = {}) {
+function run(file, query = '?lang=en', stored, denied = false, additionalMedia = {}, viewportWidth = 1280) {
   const tree = adapt(parse5.parse(fs.readFileSync(path.join(root, file), 'utf8')));
   const html = tree.childNodes.find(node => node.tagName === 'HTML');
   const callbacks = {}, values = { 'portfolio-language': stored };
   let mutation, redirect;
+  const mediaQueries = [];
   const href = 'https://portfolio.test/' + file.replace(/index.html$/, '') + query;
   const context = { URL, location: { href, origin: 'https://portfolio.test', pathname: new URL(href).pathname, replace(value) { redirect = value; } },
     localStorage: { getItem(key) { if (denied) throw Error('blocked'); return values[key]; }, setItem(key, value) { if (denied) throw Error('blocked'); values[key] = value; } },
-    document: { documentElement: html, addEventListener(name, callback) { callbacks[name] = callback; }, getElementById() { return null; } },
-    MutationObserver: function (callback) { mutation = callback; this.observe = () => {}; }, window: {} };
+    document: { documentElement: html, addEventListener(name, callback) { callbacks[name] = callback; }, getElementById() { return null; },
+      querySelector(selector) { return html.querySelector(selector); }, createElement(tag) { return element(tag); } },
+    MutationObserver: function (callback) { mutation = callback; this.observe = () => {}; }, window: { matchMedia(query) {
+      assert.equal(query, '(width < 1000px)');
+      const listeners = [];
+      const media = { matches: viewportWidth < 1000, addEventListener(name, callback) { assert.equal(name, 'change'); listeners.push(callback); } };
+      mediaQueries.push({ media, listeners });
+      return media;
+    } } };
   vm.createContext(context);
   for (const source of ['site/languages/english-copy.js', 'site/languages/media.js']) vm.runInContext(fs.readFileSync(path.join(root, source), 'utf8'), context);
   Object.assign(context.window.siteLanguageMedia, additionalMedia);
   vm.runInContext(fs.readFileSync(process.env.LANGUAGE_TEST_SOURCE || path.join(root, 'site/language.js'), 'utf8'), context);
-  return { ...context, tree, html, callbacks, mutation, redirect };
+  return { ...context, tree, html, callbacks, mutation, redirect, resize(width) {
+    for (const { media, listeners } of mediaQueries) {
+      const matches = width < 1000;
+      if (matches !== media.matches) { media.matches = matches; listeners.forEach(callback => callback(media)); }
+    }
+  } };
 }
 function textNodes(node, out = []) {
   if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(node.tagName) || (node.nodeType === 1 && node.hasAttribute('hidden'))) return out;
@@ -49,6 +81,34 @@ function find(node, predicate, out = []) {
   for (const child of node.childNodes || []) find(child, predicate, out);
   return out;
 }
+
+// Mobile keeps the language control left of the logo; desktop keeps it after
+// the resume. Exercise initial placement and both directions across the breakpoint.
+for (const file of ['index.html', 'about/index.html', 'projects/ozon-crm/customer-segments/index.html']) {
+  for (const lang of ['ru', 'en']) for (const width of [375, 999, 1000, 1440]) {
+    const page = run(file, '?lang=' + lang, undefined, false, {}, width);
+    page.callbacks.DOMContentLoaded();
+    const header = page.document.querySelector('.site-header');
+    const identity = header.querySelector('.site-header__identity');
+    const logo = header.querySelector('.site-header__logo');
+    const resume = header.querySelector('.site-header__cta');
+    const switcher = header.querySelector('.site-language');
+    function checkPlacement(currentWidth) {
+      assert.equal(find(page.tree, node => node.nodeType === 1 && node.hasAttribute('data-language-switch')).length, 1);
+      if (currentWidth < 1000) {
+        assert(switcher.parentElement === identity, file + ': mobile language control must be in the identity row');
+        assert(switcher.nextSibling === logo, file + ': mobile language control must precede the logo');
+      } else {
+        assert(switcher.parentElement === header);
+        if (resume) assert(resume.nextSibling === switcher, file + ': desktop language control must follow the resume');
+      }
+      assert(switcher.href.includes('lang=' + (lang === 'ru' ? 'en' : 'ru')));
+    }
+    checkPlacement(width);
+    for (const nextWidth of [1440, 375, 1000, 999]) { page.resize(nextWidth); checkPlacement(nextWidth); }
+  }
+}
+console.log('Language switch: mobile order before logo, desktop order after resume and responsive transitions verified in 24 RU/EN layouts.');
 const metricCases = [
   ['projects/ozon-crm/customer-segments/index.html', ['15%', '≈1M', '13%']],
   ['projects/avito-charity/recycle-map/index.html', ['306K', '1.5–3K', 'Up to 70']],

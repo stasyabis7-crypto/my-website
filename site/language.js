@@ -159,6 +159,17 @@
     // Keep language links intact when all other internal links inherit the locale.
     switcher.setAttribute('data-language-switch', '');
     var resume = header.querySelector('.site-header__cta');
-    header.insertBefore(switcher, resume ? resume.nextSibling : header.querySelector('.site-socials'));
+    var identity = header.querySelector('.site-header__identity');
+    var logo = header.querySelector('.site-header__logo');
+    var mobile = window.matchMedia('(width < 1000px)');
+    function placeLanguageSwitcher() {
+      // The desktop logo floats at the screen centre; on mobile it is in
+      // the identity row, so the language control must precede it there.
+      if (mobile.matches && identity && logo) identity.insertBefore(switcher, logo);
+      else header.insertBefore(switcher, resume ? resume.nextSibling : header.querySelector('.site-socials'));
+    }
+    placeLanguageSwitcher();
+    if (mobile.addEventListener) mobile.addEventListener('change', placeLanguageSwitcher);
+    else mobile.addListener(placeLanguageSwitcher);
   });
 })();
