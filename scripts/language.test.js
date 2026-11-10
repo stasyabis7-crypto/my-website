@@ -71,9 +71,11 @@ const en = run('index.html');
 assert.equal(en.html.lang, 'en');
 assert.equal(en.window.siteLanguage.url('/about/?preview=1#experience'), '/about/?preview=1&lang=en#experience');
 assert.equal(en.window.siteLanguage.url('https://medium.com/@stasyabis'), 'https://medium.com/@stasyabis');
-assert.equal(en.window.siteLanguage.url('/cv.pdf?v=3'), '/cv.pdf?v=3');
+assert.equal(en.window.siteLanguage.url('/cv.pdf?v=3'), '/cv-en.pdf?v=3');
+assert.equal(en.window.siteLanguage.url('https://elsewhere.test/cv.pdf'), 'https://elsewhere.test/cv.pdf');
 assert.equal(en.window.siteLanguage.media('projects/articles/covers/triz.webp'), 'projects/articles/covers/triz.webp');
 assert.equal(run('index.html', '?lang=ru', 'en').html.lang, 'ru');
+assert.equal(run('index.html', '?lang=ru').window.siteLanguage.url('/cv.pdf?v=3'), '/cv.pdf?v=3');
 assert.equal(run('index.html', '', 'en').html.lang, 'en');
 assert.equal(run('index.html', '?lang=invalid', undefined, true).html.lang, 'ru');
 assert.equal(run('index.html', '?lang=en', undefined, true).html.lang, 'en');
@@ -81,6 +83,8 @@ assert.equal(run('projects/posts/index.html').redirect, '/?lang=en');
 assert.equal(run('projects/posts/index.html', '?lang=ru').redirect, undefined);
 const ru = run('index.html', '?lang=ru');
 assert(textNodes(ru.tree).join(' ').includes('Резюме PDF'));
+const enSubtitle = find(en.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').split(' ').includes('mood-subtitle'))[0];
+assert.equal(textNodes(enSubtitle).join(''), 'I believe that the design surrounding us undoubtedly reflects the quality of our lives');
 assert(!textNodes(en.tree).join(' ').includes('Резюме PDF'));
 assert(!textNodes(en.tree).some(value => /[А-Яа-яЁё]/.test(value)), 'Home page must translate all visible copy, including non-breaking spaces');
 for (const [source, expected] of [['1 из 3', '1 of 3'], ['Оглавление проекта', 'Project contents'], ['Закрыть оглавление', 'Close contents'], ['Почта скопирована', 'Email copied']]) assert.equal(en.window.siteLanguage.t(source), expected);
@@ -122,6 +126,7 @@ for (const pathname of Object.keys(en.window.siteEnglish.pages)) {
   const translated = run(file);
   for (const text of textNodes(translated.tree)) assert(!/[А-Яа-яЁё]/.test(text), file + ': untranslated text: ' + text.trim());
   for (const node of find(translated.tree, node => node.nodeType === 1)) {
+    if (node.tagName === 'A' && /cv(?:-en)?\.pdf/.test(node.getAttribute('href') || '')) assert(node.getAttribute('href').startsWith('/cv-en.pdf'), file + ': English resume');
     for (const name of ['alt', 'aria-label', 'aria-description', 'aria-roledescription', 'aria-valuetext', 'title', 'placeholder']) {
       const value = node.getAttribute(name);
       if (value) assert(!/[А-Яа-яЁё]/.test(value), file + ': untranslated ' + name + ': ' + value);

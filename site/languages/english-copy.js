@@ -3,8 +3,6 @@ window.siteEnglish = {
   "phrases": {
     "Старший продуктовый дизайнер Анастасия Вихарева": "Anastasia Vikhareva, Senior Product Designer",
     "Анастасия Вихарева": "Anastasia Vikhareva",
-    "Senior Product Designer в Авито, раньше Ozon.": "Senior Product Designer at Avito, previously Ozon.",
-    "6 лет проектирую продуктовые сценарии: платежи, CRM, дашборды.": "6 years designing product flows: payments, CRM, dashboards.",
     "Смотреть работы": "View work",
     "Проекты": "Projects",
     "Работы": "Work",
@@ -459,21 +457,23 @@ window.siteEnglish = {
     "Оглавление": "Contents",
     "Закрыть оглавление": "Close contents",
     "Почта скопирована": "Email copied",
-    "карусель": "carousel"
+    "карусель": "carousel",
+    "Верю в то, что дизайн, который нас окружает,": "I believe that the design surrounding us",
+    "безусловно, отражает качество нашей жизни": "undoubtedly reflects the quality of our lives"
   },
   "pages": {
     "/": {
       "Старший продуктовый дизайнер Анастасия Вихарева": "Anastasia Vikhareva, Senior Product Designer",
       "Анастасия Вихарева": "Anastasia Vikhareva",
-      "Senior Product Designer в Авито, раньше Ozon.": "Senior Product Designer at Avito, previously Ozon.",
-      "6 лет проектирую продуктовые сценарии: платежи, CRM, дашборды.": "6 years designing product flows: payments, CRM, dashboards.",
       "Смотреть работы": "View work",
       "Проекты": "Projects",
       "Работы": "Works",
       "Активности": "Activities",
       "Контакты": "Contacts",
       "Меню": "Menu",
-      "Наверх": "Back to top"
+      "Наверх": "Back to top",
+      "Верю в то, что дизайн, который нас окружает,": "I believe that the design surrounding us",
+      "безусловно, отражает качество нашей жизни": "undoubtedly reflects the quality of our lives"
     },
     "/projects/articles/": {
       "Статьи": "Articles",

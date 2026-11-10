@@ -40,7 +40,12 @@
   }
   function localURL(value) {
     var target = new URL(value, location.href);
-    if (target.origin !== location.origin || !/\/$|\.html$/.test(target.pathname)) return value;
+    if (target.origin !== location.origin) return value;
+    if (lang === 'en' && target.pathname === '/cv.pdf') {
+      target.pathname = '/cv-en.pdf';
+      return target.pathname + target.search + target.hash;
+    }
+    if (!/\/$|\.html$/.test(target.pathname)) return value;
     target.searchParams.set('lang', lang);
     return target.pathname + target.search + target.hash;
   }
