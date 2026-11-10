@@ -1462,8 +1462,8 @@
       "en": "/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800.webp",
-      "en": "/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800.webp"
+      "ru": "/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800-en.webp"
     },
     "pages": [
       "pages/home/data/projects.js",
@@ -1491,8 +1491,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/about/about-v2-3840x1680-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/about/about-v2-3840x1680.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/about/about-v2-3840x1680.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/about/about-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/about/about-v2-3840x1680-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1505,8 +1505,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/after-send/campaign-results-v2-3840x1680-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/after-send/campaign-results-v2-3840x1680.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/after-send/campaign-results-v2-3840x1680.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/after-send/campaign-results-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/after-send/campaign-results-v2-3840x1680-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1519,8 +1519,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-1-v2-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/concepts/bento-1-v2.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-1-v2.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/concepts/bento-1-v2-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-1-v2-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1533,8 +1533,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-2-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/concepts/bento-2.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-2.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/concepts/bento-2-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-2-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1547,8 +1547,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-4-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/concepts/bento-4.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-4.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/concepts/bento-4-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-4-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1561,8 +1561,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/concepts/preview-700x840-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/concepts/preview-700x840.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/concepts/preview-700x840.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/concepts/preview-700x840-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/concepts/preview-700x840-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1575,8 +1575,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-1-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-1.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-1.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-1-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-1-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1589,8 +1589,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-2-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-2.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-2.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-2-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-2-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1603,8 +1603,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/customers/customer-details-v3-3840x1680-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/customers/customer-details-v3-3840x1680.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/customers/customer-details-v3-3840x1680.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/customers/customer-details-v3-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/customers/customer-details-v3-3840x1680-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1617,8 +1617,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-large-2848x2848-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-1-large-2848x2848.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-large-2848x2848.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-1-large-2848x2848-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-large-2848x2848-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1631,8 +1631,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-square-2088x2088-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-1-square-2088x2088.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-square-2088x2088.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-1-square-2088x2088-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-square-2088x2088-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1645,8 +1645,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-wide-4272x2088-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-1-wide-4272x2088.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-wide-4272x2088.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-1-wide-4272x2088-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-wide-4272x2088-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1659,8 +1659,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-large-2100x2520-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-2-large-2100x2520.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-large-2100x2520.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-2-large-2100x2520-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-large-2100x2520-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1673,8 +1673,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-small-2100x2520-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-2-small-2100x2520.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-small-2100x2520.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-2-small-2100x2520-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-small-2100x2520-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1687,8 +1687,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-square-2088x2088-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-2-square-2088x2088.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-square-2088x2088.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-2-square-2088x2088-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-square-2088x2088-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1701,8 +1701,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v2-3840x1680-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v2-3840x1680.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v2-3840x1680.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v2-3840x1680-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1715,8 +1715,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-1-v2-3840x1680-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-1-v2-3840x1680.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-1-v2-3840x1680.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-1-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-1-v2-3840x1680-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1729,8 +1729,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-2-v2-3840x1680-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-2-v2-3840x1680.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-2-v2-3840x1680.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-2-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-2-v2-3840x1680-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1743,8 +1743,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-3-v2-3840x1680-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-3-v2-3840x1680.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-3-v2-3840x1680.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-3-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-3-v2-3840x1680-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1757,8 +1757,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-4-v2-3840x1680-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-4-v2-3840x1680.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-4-v2-3840x1680.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-4-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-4-v2-3840x1680-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1771,8 +1771,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
@@ -1785,8 +1785,8 @@
       "en": "/projects/ozon-crm/customer-segments/media/summary/table-v2-3840x1680-en.webp"
     },
     "active": {
-      "ru": "/projects/ozon-crm/customer-segments/media/summary/table-v2-3840x1680.webp",
-      "en": "/projects/ozon-crm/customer-segments/media/summary/table-v2-3840x1680.webp"
+      "ru": "/projects/ozon-crm/customer-segments/media/summary/table-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/summary/table-v2-3840x1680-en.webp"
     },
     "pages": [
       "projects/ozon-crm/customer-segments/index.html"
