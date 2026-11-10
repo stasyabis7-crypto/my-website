@@ -30,7 +30,9 @@ body { background: var(--color-bg); color: var(--color-text); }
   .about > section + section { margin-top: 64px; }
   .about-intro { grid-template-columns: minmax(0, 1fr); min-height: 0; }
   .about-intro__portrait img { position: static; height: auto; }
-  .about-intro__copy { padding: 40px var(--cg-gutter) 0; }
+  .about-intro__copy { padding: 40px var(--cg-gutter) 0; text-align: center; }
+  .about-intro__copy h1, .about-intro__copy > p { margin-inline: auto; }
+  .about-experience > h2 { text-align: center; }
   .about .skills-radar { margin-inline: -16px; padding-inline: 16px; }
   .about-job__summary { grid-template-columns: 1fr auto; gap: 12px; padding-block: 24px; }
   .about-job__dates { grid-column: 1 / -1; }
