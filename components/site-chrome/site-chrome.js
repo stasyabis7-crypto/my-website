@@ -423,7 +423,7 @@
     menuBtn.innerHTML = '<span class="icon icon--hamburger" aria-hidden="true"></span>';
     wrap.insertBefore(menuBtn, toggle.nextSibling);
 
-    var resume = document.querySelector('.site-header__cta');
+    var resume = document.querySelector('.site-header__cta, [data-resume-link]');
     var menuSheet = createSheet({
       id: 'site-menu-dialog',
       title: 'Меню',

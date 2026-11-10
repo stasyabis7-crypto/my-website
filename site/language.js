@@ -72,6 +72,10 @@
       return;
     }
     if (node.nodeType !== 1 || /^(SCRIPT|STYLE|NOSCRIPT)$/.test(node.tagName)) return;
+    if (node.hasAttribute('data-language-content')) {
+      if (node.getAttribute('data-language-content') === lang) node.removeAttribute('hidden');
+      else node.setAttribute('hidden', '');
+    }
     ['alt', 'aria-label', 'aria-description', 'aria-roledescription', 'aria-valuetext', 'title', 'placeholder'].forEach(function (attr) {
       if (node.hasAttribute(attr)) {
         var value = node.getAttribute(attr), translated = t(value);

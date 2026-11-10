@@ -8,6 +8,9 @@ const root = path.resolve(process.argv[2] || path.join(__dirname, '..'));
 const assets = [
   ...Array.from({ length: 40 }, (_, i) =>
     `components/page-hero/pictures/sphere-${String(i + 1).padStart(2, '0')}.webp`),
+  'components/site-brand/logo.svg',
+  'components/site-brand/logo-en.svg',
+  'components/site-brand/logo-contrast.js',
   'about/media/about-portrait.webp',
   'site/languages/english-copy.js',
   'site/languages/media.js',

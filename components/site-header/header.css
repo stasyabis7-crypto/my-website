@@ -163,10 +163,11 @@
   display: block;
   width: auto;
   height: var(--chrome-item-h);
-  aspect-ratio: 1231 / 374;
+  aspect-ratio: var(--site-logo-ratio, 1231 / 374);
   background-color: currentColor;
-  -webkit-mask: url("../site-brand/logo.svg") center / contain no-repeat;
-  mask: url("../site-brand/logo.svg") center / contain no-repeat;
+  position: relative;
+  -webkit-mask: var(--site-logo-image, url("../site-brand/logo.svg")) center / contain no-repeat;
+  mask: var(--site-logo-image, url("../site-brand/logo.svg")) center / contain no-repeat;
 }
 
 /* Отступы элементов плашки; типографика и размеры кнопки — в ДС. */
@@ -179,3 +180,17 @@ html.chrome--compact .site-header__identity { gap: 0.5rem; }
   html:not(.chrome--compact) .site-header__identity { gap: 0.5rem; }
 }
 .site-header__cta { flex: 0 0 auto; }
+
+/* Both signatures use their alpha shape, so the same contrast treatment applies. */
+html[lang="en"] .site-header__logo-mark {
+  --site-logo-image: url("../site-brand/logo-en.svg");
+  --site-logo-ratio: 1249 / 333;
+}
+.site-header__logo-mark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  clip-path: var(--logo-light-clip, inset(0 100% 0 0));
+  pointer-events: none;
+}

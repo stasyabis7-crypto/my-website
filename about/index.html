@@ -3,7 +3,7 @@
 <head>
 <script src="/site/languages/english-copy.js?v=3"></script>
 <script src="/site/languages/media.js?v=1"></script>
-<script src="/site/language.js?v=2"></script>
+<script src="/site/language.js?v=3"></script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Обо мне — stasyabis</title>
@@ -29,9 +29,9 @@
 <link rel="stylesheet" href="/styles/spacing.css?v=1" />
 <link rel="stylesheet" href="/styles/theme.css?v=mood-4-s4" />
 <link rel="stylesheet" href="/components/icons/icons.css?v=8" />
-<link rel="stylesheet" href="/components/site-header/header.css?v=101-s12" />
+<link rel="stylesheet" href="/components/site-header/header.css?v=brand-2" />
 <link rel="stylesheet" href="/components/site-footer/footer.css?v=49-s9" />
-<link rel="stylesheet" href="/components/site-chrome/site-chrome.css?v=2-s1" />
+<link rel="stylesheet" href="/components/site-chrome/site-chrome.css?v=brand-3" />
 <link rel="stylesheet" href="/styles/button-hover.css?v=102" />
 <link rel="stylesheet" href="/styles/buttons.css?v=text-size-1" />
 <link rel="stylesheet" href="/components/image-reveal/image-reveal.css?v=1" />
@@ -44,7 +44,7 @@
 
 
  <link rel="stylesheet" href="/components/project-cards/project-cards.css?v=2" />
-<link rel="stylesheet" href="/about/about.css?v=portrait-2" />
+<link rel="stylesheet" href="/about/about.css?v=brand-3" />
 <link rel="stylesheet" href="/styles/layout.css?v=14" />
 <link rel="stylesheet" href="/components/case-blocks/case-blocks.css?v=74" />
 <link rel="stylesheet" href="/components/case-cards/case-cards.css?v=9" />
@@ -59,17 +59,10 @@
   <header class="site-header">
     <div class="site-header__identity">
       <a href="/.#works-gallery" class="site-header__back btn btn--fill-glass-ui btn--hover-accent btn--icon-only" aria-label="Назад ко всем разделам"><span class="icon icon--arrow-left" aria-hidden="true"></span></a>
-      <a class="site-header__avatar btn btn--fill-avatar btn--icon-only" href="/about/" aria-label="Обо мне">
-        <img src="/components/site-brand/avatar-portrait-v2.webp" alt="Анастасия Вихарева" />
-      </a>
       <a href="/index.html" class="site-header__logo" aria-label="На главную — Работы">
         <span class="site-header__logo-mark" aria-hidden="true"></span>
       </a>
     </div>
-    <a href="/cv.pdf?v=3" class="site-header__cta btn btn--fill-pink btn--icon-right btn--size-chrome" target="_blank" rel="noopener noreferrer">
-      <span class="icon icon--cv" aria-hidden="true"></span>
-      Резюме PDF
-    </a>
   </header>
 
   <!-- Связаться: от 1000px справа; ниже — иконка в общем хедере. -->
@@ -81,7 +74,7 @@
     </button>
   </div>
 
-<main class="case case--grid about"><section class="case-block about-intro" aria-labelledby="about-heading"><div class="about-intro__portrait"><img src="/about/media/about-portrait.webp" width="976" height="1361" alt="Анастасия Вихарева" fetchpriority="high" /></div><div class="about-intro__copy"><p class="text-body" data-subtitle>Обо мне</p><h1 class="text-h1" id="about-heading">Анастасия Вихарева</h1><p class="text-body" data-subtitle>Старший продуктовый дизайнер</p><p class="text-body">Проектирую сервисы для широкой аудитории: от e-commerce и финансовых сценариев до благотворительности. Веду продукт от гипотезы до запуска и замера результата.</p><a class="btn btn--fill-pink btn--icon-right" href="/cv.pdf?v=3" target="_blank" rel="noopener noreferrer"><span>Резюме PDF</span><span class="icon icon--cv" aria-hidden="true"></span></a></div></section>
+<main class="case case--grid about"><section class="case-block about-intro" aria-labelledby="about-heading"><div class="about-intro__portrait" data-logo-light-region><img src="/about/media/about-portrait.webp" width="976" height="1361" alt="Анастасия Вихарева" fetchpriority="high" /></div><div class="about-intro__copy"><h1 class="text-h1" id="about-heading">Анастасия Вихарева</h1><p class="text-body" data-subtitle>Старший продуктовый дизайнер</p><p class="text-body">Проектирую сервисы для широкой аудитории: от e-commerce и финансовых сценариев до благотворительности. Веду продукт от гипотезы до запуска и замера результата.</p><a class="btn btn--fill-pink btn--icon-right" href="/cv.pdf?v=3" data-resume-link target="_blank" rel="noopener noreferrer"><span>Резюме PDF</span><span class="icon icon--cv" aria-hidden="true"></span></a></div></section>
     <section class="skills-radar" id="skills" aria-labelledby="skills-heading">
       <div class="skills-radar__heading">
         <h2 class="text-h2" id="skills-heading">Мои навыки</h2>
@@ -147,12 +140,138 @@
       </dialog>
       <noscript><dl class="skills-radar__fallback text-body"><dt>Продуктовое мышление</dt><dd>Формулирую проблемы, расставляю приоритеты и связываю дизайн-решения с результатами бизнеса.</dd><dt>Исследования и проверка</dt><dd>Провожу интервью и юзабилити-тесты, проверяю прототипы, чтобы понимать людей и оценивать идеи.</dd><dt>Интерфейсы и взаимодействие</dt><dd>Создаю понятные сценарии и продуманные интерфейсы для веба и мобильных приложений.</dd><dt>Дизайн-системы</dt><dd>Использую и развиваю компоненты и токены, помогаю продуктам становиться согласованнее.</dd><dt>AI-продукты и инструменты</dt><dd>Проектирую AI-сценарии, ассистентов и интерфейсы, вызывающие доверие. Использую AI в работе: прототипирование, Claude Code, Codex, Kling и ChatGPT.</dd><dt>Данные и метрики</dt><dd>Определяю метрики успеха, интерпретирую A/B-тесты и измеряю влияние дизайна.</dd><dt>Доступность</dt><dd>Один из лидеров направления доступности в Авито: помогаю делать продукты удобнее для большего числа людей.</dd><dt>Команда и влияние</dt><dd>Работаю с продакт-менеджерами и разработчиками, представляю решения стейкхолдерам и помогаю дизайнерам развиваться.</dd></dl></noscript>
     </section>
-<section class="about-experience" id="experience" aria-labelledby="experience-heading"><h2 class="text-h2" id="experience-heading">Опыт работы</h2><article class="about-job"><div class="about-job__summary"><p class="about-job__dates text-body">Апрель 2025 — настоящее время</p><div><h3 class="text-h3">Avito</h3><p class="text-body">Старший продуктовый дизайнер</p></div><button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="true" aria-controls="job-0" aria-label="Avito"><span class="icon icon--minus" aria-hidden="true"></span></button></div><div class="about-job__details" id="job-0" ><ul class="text-body"><li>Спроектировала «Добрую подписку» — первый сценарий регулярных пожертвований в Авито: от выбора фонда до управления в профиле. В среднем около 55 новых подписок в день, средний платёж на 64% выше минимальной суммы.</li><li>Провела редизайн карты раздельного сбора вещей: общая навигация благотворительности, новые компоненты дизайн-системы, избранное. Около 1,6 тыс. визитов и до 70 сохранений пунктов в день.</li><li>Собрала настройку платежа на одном экране лендинга #яПомогаю. Число разовых пожертвований выросло в 2 раза.</li></ul></div></article>
-<article class="about-job"><div class="about-job__summary"><p class="about-job__dates text-body">Июль 2024 — апрель 2025</p><div><h3 class="text-h3">Ozon</h3><p class="text-body">Продуктовый дизайнер</p></div><button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-1" aria-label="Ozon"><span class="icon icon--plus" aria-hidden="true"></span></button></div><div class="about-job__details" id="job-1" hidden><ul class="text-body"><li>Встроила «Акции» в раздел «Цены» кабинета продавца. Инструментом пользуются 30 000 селлеров в день.</li><li>Добавила функции и точку входа в онлайн-таблицу редактирования цен. Посещаемость таблицы выросла в 3 раза.</li><li>С нуля спроектировала «Сегменты покупателей» в CRM: аналитику аудитории, рекомендации и переход к рассылкам. Около 1 млн покупателей получают рассылки из CRM, 15% продавцов заходят в CRM ежемесячно, средний open rate — 13%.</li></ul></div></article>
-<article class="about-job"><div class="about-job__summary"><p class="about-job__dates text-body">Март 2024 — июль 2024</p><div><h3 class="text-h3">Flowwow</h3><p class="text-body">Старший продуктовый дизайнер</p></div><button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-2" aria-label="Flowwow"><span class="icon icon--plus" aria-hidden="true"></span></button></div><div class="about-job__details" id="job-2" hidden><ul class="text-body"><li>Реализовала интеграцию Trustpilot: конверсия сайта выросла на 8,4% в первый месяц после запуска.</li><li>Реорганизовала рабочее пространство в Figma и провела более 10 интервью с пользователями.</li></ul></div></article>
-<article class="about-job"><div class="about-job__summary"><p class="about-job__dates text-body">Ноябрь 2022 — март 2024</p><div><h3 class="text-h3">SWTecNN</h3><p class="text-body">UX/UI-дизайнер</p></div><button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-3" aria-label="SWTecNN"><span class="icon icon--plus" aria-hidden="true"></span></button></div><div class="about-job__details" id="job-3" hidden><ul class="text-body"><li>Работала над личным кабинетом сотрудников, создала MVP приложения для пациентов и реализовала приложение для шахтёров.</li></ul></div></article>
-<article class="about-job"><div class="about-job__summary"><p class="about-job__dates text-body">Февраль 2022 — ноябрь 2022</p><div><h3 class="text-h3">Nexign</h3><p class="text-body">Дизайнер интерфейсов</p></div><button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-4" aria-label="Nexign"><span class="icon icon--plus" aria-hidden="true"></span></button></div><div class="about-job__details" id="job-4" hidden><ul class="text-body"><li>Разработала и передала макеты KPI-системы в срок, получила высокие оценки от заказчиков.</li></ul></div></article>
-<article class="about-job"><div class="about-job__summary"><p class="about-job__dates text-body">Май 2021 — ноябрь 2022</p><div><h3 class="text-h3">Zero Lab · FUN & SUN</h3><p class="text-body">UX/UI-дизайнер</p></div><button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-5" aria-label="Zero Lab · FUN & SUN"><span class="icon icon--plus" aria-hidden="true"></span></button></div><div class="about-job__details" id="job-5" hidden><ul class="text-body"><li>Разрабатывала главную сайта по поиску туров и создавала лендинги.</li></ul></div></article></section><section class="case-block cg about-education"><h2 class="text-h2 cg-l">Образование</h2><div class="cg-r"><p class="text-body">ИРИТ — Институт радиотехники и информационных технологий. Информатика и вычислительная техника: вычислительные машины.</p><p class="text-body">Английский — IELTS C1, действует до 2028 года</p></div></section></main><footer class="site-footer">
+<section class="about-experience" id="experience" aria-labelledby="experience-heading"><h2 class="text-h2" id="experience-heading">Опыт работы</h2>
+<div data-language-content="ru" data-language-literal data-resume-source="/cv.pdf">
+<article class="about-job">
+  <div class="about-job__summary">
+    <p class="about-job__dates text-body">Апрель 2025 — сейчас</p>
+    <div><h3 class="text-h3">Avito</h3><p class="text-body">Старший продуктовый дизайнер</p></div>
+    <button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="true" aria-controls="job-ru-0" aria-label="Avito"><span class="icon icon--minus" aria-hidden="true"></span></button>
+  </div>
+  <div class="about-job__details" id="job-ru-0">
+    <ul class="text-body"><li>Спроектировала «Добрую подписку», первый сценарий регулярных пожертвований в Авито: от выбора фонда до управления в профиле. В среднем ~55 новых подписок в день, средний платёж на 64% выше минимальной суммы</li><li>Провела редизайн карты раздельного сбора вещей: общая навигация пространства благотворительности, новые компоненты в дизайн-системе, избранное. ~1,6 тыс. визитов и до 70 сохранений пунктов в избранное в день</li><li>Собрала настройку платежа на одном экране главного лендинга #яПомогаю. Число разовых пожертвований выросло в 2 раза</li></ul>
+  </div>
+</article>
+<article class="about-job">
+  <div class="about-job__summary">
+    <p class="about-job__dates text-body">Июль 2024 — апрель 2025</p>
+    <div><h3 class="text-h3">Ozon</h3><p class="text-body">Продуктовый дизайнер</p></div>
+    <button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-ru-1" aria-label="Ozon"><span class="icon icon--plus" aria-hidden="true"></span></button>
+  </div>
+  <div class="about-job__details" id="job-ru-1" hidden>
+    <ul class="text-body"><li>Встроила «Акции» в раздел «Цены» кабинета продавца. Инструментом пользуются 30 000 селлеров в день</li><li>Добавила новые функции и точку входа в онлайн-таблицу редактирования цен. Посещаемость таблицы выросла в 3 раза</li><li>С нуля спроектировала «Сегменты покупателей» в CRM: аналитику аудитории, рекомендации и переход к рассылкам. ≈1 млн покупателей получают рассылки из CRM, 15% продавцов ежемесячно заходят в разделы CRM, 13% средний open rate сообщений из CRM</li></ul>
+  </div>
+</article>
+<article class="about-job">
+  <div class="about-job__summary">
+    <p class="about-job__dates text-body">Март 2024 — июль 2024</p>
+    <div><h3 class="text-h3">Flowwow</h3><p class="text-body">Старший продуктовый дизайнер</p></div>
+    <button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-ru-2" aria-label="Flowwow"><span class="icon icon--plus" aria-hidden="true"></span></button>
+  </div>
+  <div class="about-job__details" id="job-ru-2" hidden>
+    <ul class="text-body"><li>Реализовала интеграцию плагина Trustpilot, это увеличило конверсию на сайте на 8,4% в течение первого месяца после запуска</li><li>Реорганизовала рабочее пространство в Figma</li><li>Успешно организовала и провела более 10 каст дев интервью</li></ul>
+  </div>
+</article>
+<article class="about-job">
+  <div class="about-job__summary">
+    <p class="about-job__dates text-body">Ноябрь 2022 — март 2024</p>
+    <div><h3 class="text-h3">SWTecNN</h3><p class="text-body">UX/UI-дизайнер</p></div>
+    <button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-ru-3" aria-label="SWTecNN"><span class="icon icon--plus" aria-hidden="true"></span></button>
+  </div>
+  <div class="about-job__details" id="job-ru-3" hidden>
+    <ul class="text-body"><li>Работала с ЛК для сотрудников</li><li>Создала MVP приложения для пациентов</li><li>Реализовала приложение для шахтёров</li></ul>
+  </div>
+</article>
+<article class="about-job">
+  <div class="about-job__summary">
+    <p class="about-job__dates text-body">Февраль 2022 — ноябрь 2022</p>
+    <div><h3 class="text-h3">Nexign</h3><p class="text-body">Дизайнер интерфейсов</p></div>
+    <button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-ru-4" aria-label="Nexign"><span class="icon icon--plus" aria-hidden="true"></span></button>
+  </div>
+  <div class="about-job__details" id="job-ru-4" hidden>
+    <ul class="text-body"><li>Разработала и передала макеты интерфейсов KPI системы в срок</li><li>Получила высокие оценки от заказчиков</li></ul>
+  </div>
+</article>
+<article class="about-job">
+  <div class="about-job__summary">
+    <p class="about-job__dates text-body">Май 2021 — ноябрь 2022</p>
+    <div><h3 class="text-h3">Zero Lab, FUN &amp; SUN</h3><p class="text-body">UX/UI-дизайнер</p></div>
+    <button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-ru-5" aria-label="Zero Lab, FUN &amp; SUN"><span class="icon icon--plus" aria-hidden="true"></span></button>
+  </div>
+  <div class="about-job__details" id="job-ru-5" hidden>
+    <ul class="text-body"><li>Разрабатывала главную сайта по поиску туров</li><li>Создавала лендинги</li></ul>
+  </div>
+</article>
+</div>
+<div data-language-content="en" data-language-literal data-resume-source="/cv-en.pdf" hidden>
+<article class="about-job">
+  <div class="about-job__summary">
+    <p class="about-job__dates text-body">Apr 2025 – Present · Remote</p>
+    <div><h3 class="text-h3">Avito</h3><p class="text-body">Senior Product Designer</p></div>
+    <button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="true" aria-controls="job-en-0" aria-label="Avito"><span class="icon icon--minus" aria-hidden="true"></span></button>
+  </div>
+  <div class="about-job__details" id="job-en-0">
+    <p class="text-body">Russia’s largest classifieds platform. Charity and ESG products.</p>
+    <ul class="text-body"><li>Launched Kind Subscription, the first recurring donations flow at Avito, owning it end-to-end: from choosing a foundation to managing the subscription in the profile. ~55 new subscriptions per day on average; average payment 64% above the minimum amount.</li><li>Doubled one-time donations by rebuilding payment setup into a single screen on the main charity landing page.</li><li>Redesigned the recycling map: unified navigation across the charity space, new design system components and saved favourites. ~1.6K daily visits and up to 70 points saved per day.</li></ul>
+  </div>
+</article>
+<article class="about-job">
+  <div class="about-job__summary">
+    <p class="about-job__dates text-body">Jul 2024 – Apr 2025 · Remote</p>
+    <div><h3 class="text-h3">Ozon</h3><p class="text-body">Product Designer</p></div>
+    <button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-en-1" aria-label="Ozon"><span class="icon icon--plus" aria-hidden="true"></span></button>
+  </div>
+  <div class="about-job__details" id="job-en-1" hidden>
+    <p class="text-body">One of Russia’s largest e-commerce marketplaces. Seller tools.</p>
+    <ul class="text-body"><li>Built Buyer Segments in the seller CRM from scratch: audience analytics, recommendations and a direct path to mailings. ~1M buyers receive CRM messages, 15% of sellers use the CRM monthly, 13% average open rate.</li><li>Integrated Promotions into the Prices section of the seller account, a tool used by 30,000 sellers daily.</li><li>Tripled traffic to the online price editing table by adding new features and a new entry point.</li></ul>
+  </div>
+</article>
+<article class="about-job">
+  <div class="about-job__summary">
+    <p class="about-job__dates text-body">Mar 2024 – Jul 2024 · Remote</p>
+    <div><h3 class="text-h3">Flowwow</h3><p class="text-body">Senior Product Designer</p></div>
+    <button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-en-2" aria-label="Flowwow"><span class="icon icon--plus" aria-hidden="true"></span></button>
+  </div>
+  <div class="about-job__details" id="job-en-2" hidden>
+    <p class="text-body">Flower and gift delivery marketplace.</p>
+    <ul class="text-body"><li>Increased website conversion by 8.4% within the first month by introducing a Trustpilot reviews integration.</li><li>Planned and conducted 10+ customer development interviews.</li><li>Restructured the team’s Figma workspace to speed up navigation and handoff.</li></ul>
+  </div>
+</article>
+<article class="about-job">
+  <div class="about-job__summary">
+    <p class="about-job__dates text-body">Nov 2022 – Mar 2024 · Remote</p>
+    <div><h3 class="text-h3">SWTecNN</h3><p class="text-body">UX/UI Designer</p></div>
+    <button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-en-3" aria-label="SWTecNN"><span class="icon icon--plus" aria-hidden="true"></span></button>
+  </div>
+  <div class="about-job__details" id="job-en-3" hidden>
+    <p class="text-body">Custom software for healthcare and industrial clients.</p>
+    <ul class="text-body"><li>Created an MVP of a mobile app for patients.</li><li>Designed an internal personal account for employees.</li><li>Delivered a mobile app for company’s workers.</li></ul>
+  </div>
+</article>
+<article class="about-job">
+  <div class="about-job__summary">
+    <p class="about-job__dates text-body">Feb 2022 – Nov 2022 · Remote</p>
+    <div><h3 class="text-h3">Nexign</h3><p class="text-body">UI Designer</p></div>
+    <button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-en-4" aria-label="Nexign"><span class="icon icon--plus" aria-hidden="true"></span></button>
+  </div>
+  <div class="about-job__details" id="job-en-4" hidden>
+    <p class="text-body">Telecom software company.</p>
+    <ul class="text-body"><li>Developed interfaces for a KPI management system and delivered developer-ready mockups on schedule.</li></ul>
+  </div>
+</article>
+<article class="about-job">
+  <div class="about-job__summary">
+    <p class="about-job__dates text-body">May 2021 – Nov 2022 · Remote</p>
+    <div><h3 class="text-h3">Zero Lab, FUN &amp; SUN</h3><p class="text-body">UX/UI Designer</p></div>
+    <button class="btn btn--fill-white btn--icon-only" type="button" data-experience-toggle aria-expanded="false" aria-controls="job-en-5" aria-label="Zero Lab, FUN &amp; SUN"><span class="icon icon--plus" aria-hidden="true"></span></button>
+  </div>
+  <div class="about-job__details" id="job-en-5" hidden>
+    <p class="text-body">Digital agency and travel company.</p>
+    <ul class="text-body"><li>Designed the tour search home page and promo landing pages for FUN &amp; SUN, a major tour operator.</li></ul>
+  </div>
+</article>
+</div>
+</section><section class="case-block cg about-education"><h2 class="text-h2 cg-l">Образование</h2><div class="cg-r"><p class="text-body">ИРИТ — Институт радиотехники и информационных технологий. Информатика и вычислительная техника: вычислительные машины.</p><p class="text-body">Английский — IELTS C1, действует до 2028 года</p></div></section></main><footer class="site-footer">
     <nav class="site-footer__nav-wrap">
       <ul class="site-footer__nav">
         <li><a href="/index.html" class="site-footer__link text-label is-current">
@@ -212,12 +331,13 @@
     </nav>
   </div>
   <script src="/components/hero-mood/hero-viewport.js?v=dock-bottom-edge-1"></script>
-  <script src="/components/site-chrome/site-chrome.js?v=contacts-4"></script>
+  <script src="/components/site-chrome/site-chrome.js?v=brand-5"></script>
   <script src="/components/site-chrome/layout-chrome.js?v=29"></script>
   <script src="/site/typography-rules.js?v=2"></script>
   <script src="/site/haptics.js?v=1"></script>
   <script src="/components/content-reveal/content-reveal.js?v=1"></script>
   <script src="/components/page-motion/page-motion.js?v=10"></script>
 <script src="/components/project-cards/project-cards.js?v=2"></script>
+<script src="/components/site-brand/logo-contrast.js?v=1"></script>
 </body>
 </html>

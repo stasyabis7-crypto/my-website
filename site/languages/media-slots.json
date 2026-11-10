@@ -24,7 +24,6 @@
       "en": "/components/site-brand/avatar-portrait-v2.webp"
     },
     "pages": [
-      "about/index.html",
       "index.html",
       "projects/articles/index.html",
       "projects/playground/index.html",

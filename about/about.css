@@ -36,3 +36,5 @@ body { background: var(--color-bg); color: var(--color-text); }
   .about-job__dates { grid-column: 1 / -1; }
   .about-job__details { margin-left: 0; padding-right: 0; }
 }
+
+.about-page .site-header__identity { min-height: var(--button-height); }

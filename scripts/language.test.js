@@ -11,7 +11,8 @@ function element(tag, attrs = [], children = []) {
     hasAttribute(name) { return Object.hasOwn(this.attributes, name); },
     getAttribute(name) { return this.attributes[name] ?? null; },
     setAttribute(name, value) { this.attributes[name] = value; },
-    closest(selector) { return selector.split(',').some(s => s.trim().toUpperCase() === this.tagName) ? this : this.parentElement?.closest(selector); }
+    removeAttribute(name) { delete this.attributes[name]; },
+    closest(selector) { return selector.split(',').some(s => { s = s.trim(); return s.startsWith('[') ? this.hasAttribute(s.slice(1, -1)) : s.toUpperCase() === this.tagName; }) ? this : this.parentElement?.closest(selector); }
   };
 }
 function adapt(node) {
@@ -37,7 +38,7 @@ function run(file, query = '?lang=en', stored, denied = false, additionalMedia =
   return { ...context, tree, html, callbacks, mutation, redirect };
 }
 function textNodes(node, out = []) {
-  if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(node.tagName)) return out;
+  if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(node.tagName) || (node.nodeType === 1 && node.hasAttribute('hidden'))) return out;
   if (node.nodeType === 3) out.push(node.nodeValue);
   for (const child of node.childNodes || []) textNodes(child, out);
   return out;
@@ -94,6 +95,23 @@ assert.equal(dynamic.nodeValue, 'Coming soon');
 const about = run('about/index.html');
 assert(textNodes(about.tree).join(' ').includes('Senior Product Designer'));
 assert(!textNodes(about.tree).some(value => /[А-Яа-яЁё]/.test(value)), 'About page must translate all visible copy');
+const enExperience = find(about.tree, node => node.nodeType === 1 && node.getAttribute('data-language-content') === 'en')[0];
+const hiddenRU = find(about.tree, node => node.nodeType === 1 && node.getAttribute('data-language-content') === 'ru')[0];
+assert(!enExperience.hasAttribute('hidden'));
+assert(hiddenRU.hasAttribute('hidden'));
+assert.equal(enExperience.getAttribute('data-resume-source'), '/cv-en.pdf');
+assert(textNodes(enExperience).join(' ').includes('Doubled one-time donations'));
+const allENExperience = find(enExperience, node => node.nodeType === 3).map(node => node.nodeValue).join(' ');
+assert(allENExperience.includes('company’s workers'));
+assert(!allENExperience.includes('miners'));
+const aboutRU = run('about/index.html', '?lang=ru');
+const ruExperience = find(aboutRU.tree, node => node.nodeType === 1 && node.getAttribute('data-language-content') === 'ru')[0];
+assert(!ruExperience.hasAttribute('hidden'));
+assert.equal(ruExperience.getAttribute('data-resume-source'), '/cv.pdf');
+assert(find(ruExperience, node => node.nodeType === 3).map(node => node.nodeValue).join(' ').includes('шахтёров'));
+assert.equal(find(about.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').includes('site-header__avatar')).length, 0);
+assert.equal(find(about.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').includes('site-header__cta')).length, 0);
+assert.equal(find(about.tree, node => node.nodeType === 1 && node.hasAttribute('data-resume-link')).length, 1);
 const project = en.window.siteLanguage.project({ id: 'customer-segments', title: 'CRM для продавцов Ozon', feed: { image: '/original.webp' } });
 assert.equal(project.title, 'CRM for Ozon sellers');
 assert.equal(project.feed.image, '/original.webp');
