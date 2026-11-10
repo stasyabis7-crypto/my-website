@@ -148,3 +148,6 @@
   -webkit-mask-image: url("./interface/filter.svg");
   mask-image: url("./interface/filter.svg");
 }
+
+.icon--plus { -webkit-mask-image: url("./interface/plus.svg"); mask-image: url("./interface/plus.svg"); }
+.icon--minus { -webkit-mask-image: url("./interface/minus.svg"); mask-image: url("./interface/minus.svg"); }

@@ -11,7 +11,7 @@
     var textWalker = document.createTreeWalker(resume, NodeFilter.SHOW_TEXT);
     var resumeText;
     while (textWalker.nextNode()) {
-      if (textWalker.currentNode.textContent.trim() === 'Резюме PDF') {
+      if (textWalker.currentNode.textContent.trim() === (document.documentElement.lang === 'en' ? 'Resume PDF' : 'Резюме PDF')) {
         resumeText = textWalker.currentNode;
         break;
       }
@@ -21,14 +21,14 @@
       function fitResumeLabel() {
         var style = getComputedStyle(resume);
         labelMeasure.font = style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily;
-        var labelWidth = labelMeasure.measureText('Резюме PDF').width;
+        var labelWidth = labelMeasure.measureText(document.documentElement.lang === 'en' ? 'Resume PDF' : 'Резюме PDF').width;
         labelWidth += (parseFloat(style.letterSpacing) || 0) * 9;
         var icon = resume.querySelector('.icon');
         var required = labelWidth + parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
         if (icon) required += icon.getBoundingClientRect().width + (parseFloat(style.columnGap) || 0);
         var logo = document.querySelector('.site-header__logo');
         var constrained = innerWidth < 1000 && logo && logo.hidden;
-        var label = constrained && required > resume.clientWidth + 1 ? 'Резюме' : 'Резюме PDF';
+        var label = constrained && required > resume.clientWidth + 1 ? (document.documentElement.lang === 'en' ? 'Resume' : 'Резюме') : (document.documentElement.lang === 'en' ? 'Resume PDF' : 'Резюме PDF');
         if (resumeText.textContent !== label) resumeText.textContent = label;
       }
       new ResizeObserver(fitResumeLabel).observe(resume);
@@ -390,6 +390,7 @@
       { label: 'Посты', href: '/projects/posts/', icon: 'posts' },
       { label: 'Playground', href: '/projects/playground/', icon: 'activities' }
     ];
+    if (document.documentElement.lang === 'en') SECTIONS = SECTIONS.filter(function (item) { return item.href !== '/projects/posts/'; });
     var path = location.pathname.replace(/index\.html$/, '');
     function link(it, className) {
       var a = document.createElement('a');
@@ -428,7 +429,7 @@
       closeLabel: 'Закрыть меню',
       trigger: menuBtn,
       build: function (add) {
-        SECTIONS.forEach(function (it) {
+        [{ label: 'Обо мне', href: '/about/', icon: 'contacts' }].concat(SECTIONS).forEach(function (it) {
           var row = link(it, 'contact-row btn btn--fill-white btn--icon-left');
           row.insertAdjacentHTML('afterbegin', '<span class="icon icon--' + it.icon + '" aria-hidden="true"></span>');
           add(row);

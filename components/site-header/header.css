@@ -121,9 +121,7 @@
   mask-image: var(--avatar-cut);
 }
 
-/* Статус «не в сети» — красная точка в правом нижнем углу, пока нет
-   страницы «Обо мне». Вокруг неё фото вырезано маской (без обводки
-   цветом фона), так что в зазоре виден тот фон, что под шапкой. */
+/* Зелёный индикатор на ссылке к странице «Обо мне». */
 .site-header__avatar::after {
   content: "";
   position: absolute;
@@ -132,7 +130,7 @@
   width: var(--avatar-dot);
   height: var(--avatar-dot);
   border-radius: 50%;
-  background: #ef4444;
+  background: #22c55e;
 }
 
 .site-header__logo {

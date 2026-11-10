@@ -260,3 +260,6 @@ html:not(.chrome--pinned) .site-socials {
    Класс ставит components/hero-mood/hero-video.js. */
 .site-header__logo { transition-property: top, scale, opacity, color; }
 html.chrome--on-hero .site-header__logo { color: #fff; }
+
+/* Language control participates in the shared header row on every width. */
+.site-language { pointer-events: auto; flex-shrink: 0; }

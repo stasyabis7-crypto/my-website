@@ -17,8 +17,9 @@
   if (!els.length || reduced || !('IntersectionObserver' in window)) return;
 
   // Разряды через пробел ("4 956") — одно число, а не два.
-  var NUMBER_RE = /\d{1,3}(?:[   ]\d{3})+(?:,\d+)?|\d+(?:,\d+)?/g;
-  var GROUP_RE = /[   ]/;
+  var englishNumbers = document.documentElement.lang === 'en';
+  var NUMBER_RE = englishNumbers ? /\d{1,3}(?:[,   ]\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?/g : /\d{1,3}(?:[   ]\d{3})+(?:,\d+)?|\d+(?:,\d+)?/g;
+  var GROUP_RE = englishNumbers ? /[,   ]/ : /[   ]/;
   var DURATION = 1200;
 
   function animate(el) {
@@ -27,10 +28,10 @@
     if (!matches) return;
 
     var targets = matches.map(function (m) {
-      return parseFloat(m.replace(/[   ]/g, '').replace(',', '.'));
+      return parseFloat(englishNumbers ? m.replace(/[,   ]/g, '') : m.replace(/[   ]/g, '').replace(',', '.'));
     });
     var decimals = matches.map(function (m) {
-      var i = m.indexOf(',');
+      var i = m.indexOf(englishNumbers ? '.' : ',');
       return i === -1 ? 0 : m.length - i - 1;
     });
     var groups = matches.map(function (m) { return (m.match(GROUP_RE) || [''])[0]; });
@@ -43,7 +44,8 @@
       var eased = 1 - Math.pow(1 - t, 3);
       var i = 0;
       el.textContent = final.replace(NUMBER_RE, function () {
-        var text = (targets[i] * eased).toFixed(decimals[i]).replace('.', ',');
+        var text = (targets[i] * eased).toFixed(decimals[i]);
+        if (!englishNumbers) text = text.replace('.', ',');
         if (groups[i]) text = text.replace(/\B(?=(\d{3})+(?!\d))/g, groups[i]);
         i++;
         return text;

@@ -8,6 +8,7 @@ on:
 
 jobs:
   ftp-deploy:
+    if: github.ref == 'refs/heads/main'
     name: FTP deploy
     runs-on: ubuntu-latest
     steps:

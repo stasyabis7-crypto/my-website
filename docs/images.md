@@ -37,3 +37,10 @@
 ## Стеклянные сферы Главной
 
 `components/page-hero/pictures/sphere-01.webp` … `sphere-40.webp` — 40 изображений 1200 × 1200 px. Подключаются в `components/hero-mood/hero-spheres.js` по номеру; на мобильном отображаются 01–24. Скрипт `scripts/version-gallery-assets.js` создаёт версии WebP по хешу содержимого до версионирования JS и обновляет ссылки внутри него.
+
+## Русская и английская версии
+
+В тестовой ветке варианты `-ru` / `-en` лежат рядом с исходником.
+Пути для загрузки и правила видео описаны в [languages.md](languages.md).
+Реестр `site/languages/media-slots.json` генерируется шагом `npm run images:prepare`;
+отсутствующие варианты заменяются исходными файлами.

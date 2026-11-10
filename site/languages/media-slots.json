@@ -1,0 +1,2062 @@
+[
+  {
+    "source": "/components/site-brand/avatar-portrait-v2.webp",
+    "planned": {
+      "ru": "/components/site-brand/avatar-portrait-v2-ru.webp",
+      "en": "/components/site-brand/avatar-portrait-v2-en.webp"
+    },
+    "active": {
+      "ru": "/components/site-brand/avatar-portrait-v2.webp",
+      "en": "/components/site-brand/avatar-portrait-v2.webp"
+    },
+    "pages": [
+      "about/index.html",
+      "index.html",
+      "projects/articles/index.html",
+      "projects/playground/index.html",
+      "projects/posts/index.html"
+    ]
+  },
+  {
+    "source": "/pages/home/assets/ozon/4-original.webp",
+    "planned": {
+      "ru": "/pages/home/assets/ozon/4-original-ru.webp",
+      "en": "/pages/home/assets/ozon/4-original-en.webp"
+    },
+    "active": {
+      "ru": "/pages/home/assets/ozon/4-original.webp",
+      "en": "/pages/home/assets/ozon/4-original.webp"
+    },
+    "pages": [
+      "projects/posts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/bystander-effect.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/bystander-effect-ru.webp",
+      "en": "/projects/articles/covers/bystander-effect-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/bystander-effect.webp",
+      "en": "/projects/articles/covers/bystander-effect.webp"
+    },
+    "pages": [
+      "projects/articles/articles-en.js",
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/date-selector-motion-poster.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/date-selector-motion-poster-ru.webp",
+      "en": "/projects/articles/covers/date-selector-motion-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/date-selector-motion-poster.webp",
+      "en": "/projects/articles/covers/date-selector-motion-poster.webp"
+    },
+    "pages": [
+      "projects/articles/articles-en.js",
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/date-selector-motion.mp4",
+    "planned": {
+      "ru": "/projects/articles/covers/date-selector-motion-ru.mp4",
+      "en": "/projects/articles/covers/date-selector-motion-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/date-selector-motion.mp4",
+      "en": "/projects/articles/covers/date-selector-motion.mp4"
+    },
+    "pages": [
+      "projects/articles/articles-en.js",
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/design-weekend-suzdal-2023.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/design-weekend-suzdal-2023-ru.webp",
+      "en": "/projects/articles/covers/design-weekend-suzdal-2023-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/design-weekend-suzdal-2023.webp",
+      "en": "/projects/articles/covers/design-weekend-suzdal-2023.webp"
+    },
+    "pages": [
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/designers-workflow-placeholder.svg",
+    "planned": {
+      "ru": "/projects/articles/covers/designers-workflow-placeholder-ru.webp",
+      "en": "/projects/articles/covers/designers-workflow-placeholder-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/designers-workflow-placeholder.svg",
+      "en": "/projects/articles/covers/designers-workflow-placeholder.svg"
+    },
+    "pages": [
+      "projects/articles/articles-en.js"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/designprosmotr-2023.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/designprosmotr-2023-ru.webp",
+      "en": "/projects/articles/covers/designprosmotr-2023-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/designprosmotr-2023.webp",
+      "en": "/projects/articles/covers/designprosmotr-2023.webp"
+    },
+    "pages": [
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/designprosmotr-2024.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/designprosmotr-2024-ru.webp",
+      "en": "/projects/articles/covers/designprosmotr-2024-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/designprosmotr-2024.webp",
+      "en": "/projects/articles/covers/designprosmotr-2024.webp"
+    },
+    "pages": [
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/dump-2024.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/dump-2024-ru.webp",
+      "en": "/projects/articles/covers/dump-2024-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/dump-2024.webp",
+      "en": "/projects/articles/covers/dump-2024.webp"
+    },
+    "pages": [
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/inclusive-design.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/inclusive-design-ru.webp",
+      "en": "/projects/articles/covers/inclusive-design-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/inclusive-design.webp",
+      "en": "/projects/articles/covers/inclusive-design.webp"
+    },
+    "pages": [
+      "projects/articles/articles-en.js",
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/insula-ancient-rome.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/insula-ancient-rome-ru.webp",
+      "en": "/projects/articles/covers/insula-ancient-rome-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/insula-ancient-rome.webp",
+      "en": "/projects/articles/covers/insula-ancient-rome.webp"
+    },
+    "pages": [
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/japan-trip-2024.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/japan-trip-2024-ru.webp",
+      "en": "/projects/articles/covers/japan-trip-2024-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/japan-trip-2024.webp",
+      "en": "/projects/articles/covers/japan-trip-2024.webp"
+    },
+    "pages": [
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/lottie-plugin.gif",
+    "planned": {
+      "ru": "/projects/articles/covers/lottie-plugin-ru.webp",
+      "en": "/projects/articles/covers/lottie-plugin-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/lottie-plugin.gif",
+      "en": "/projects/articles/covers/lottie-plugin.gif"
+    },
+    "pages": [
+      "projects/articles/articles-en.js",
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/markthal.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/markthal-ru.webp",
+      "en": "/projects/articles/covers/markthal-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/markthal.webp",
+      "en": "/projects/articles/covers/markthal.webp"
+    },
+    "pages": [
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/product-designer-interview.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/product-designer-interview-ru.webp",
+      "en": "/projects/articles/covers/product-designer-interview-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/product-designer-interview.webp",
+      "en": "/projects/articles/covers/product-designer-interview.webp"
+    },
+    "pages": [
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/product-metrics.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/product-metrics-ru.webp",
+      "en": "/projects/articles/covers/product-metrics-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/product-metrics.webp",
+      "en": "/projects/articles/covers/product-metrics.webp"
+    },
+    "pages": [
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/skill-sets.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/skill-sets-ru.webp",
+      "en": "/projects/articles/covers/skill-sets-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/skill-sets.webp",
+      "en": "/projects/articles/covers/skill-sets.webp"
+    },
+    "pages": [
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/text-input-motion-poster.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/text-input-motion-poster-ru.webp",
+      "en": "/projects/articles/covers/text-input-motion-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/text-input-motion-poster.webp",
+      "en": "/projects/articles/covers/text-input-motion-poster.webp"
+    },
+    "pages": [
+      "projects/articles/articles-en.js",
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/text-input-motion.mp4",
+    "planned": {
+      "ru": "/projects/articles/covers/text-input-motion-ru.mp4",
+      "en": "/projects/articles/covers/text-input-motion-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/text-input-motion.mp4",
+      "en": "/projects/articles/covers/text-input-motion.mp4"
+    },
+    "pages": [
+      "projects/articles/articles-en.js",
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/articles/covers/triz.webp",
+    "planned": {
+      "ru": "/projects/articles/covers/triz-ru.webp",
+      "en": "/projects/articles/covers/triz-en.webp"
+    },
+    "active": {
+      "ru": "/projects/articles/covers/triz.webp",
+      "en": "/projects/articles/covers/triz.webp"
+    },
+    "pages": [
+      "projects/articles/articles-en.js",
+      "projects/articles/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/about-company/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/about-company/covers/cover-ru.webp",
+      "en": "/projects/avito-charity/about-company/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/about-company/covers/cover.webp",
+      "en": "/projects/avito-charity/about-company/covers/cover.webp"
+    },
+    "pages": [
+      "projects/avito-charity/about-company/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800-ru.webp",
+      "en": "/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800.webp",
+      "en": "/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/charity-profile/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/charity-profile/covers/cover-ru.webp",
+      "en": "/projects/avito-charity/charity-profile/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/charity-profile/covers/cover.webp",
+      "en": "/projects/avito-charity/charity-profile/covers/cover.webp"
+    },
+    "pages": [
+      "projects/avito-charity/charity-profile/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/charity-profile/covers/feed-cover-324719915-1500x1800.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/charity-profile/covers/feed-cover-324719915-1500x1800-ru.webp",
+      "en": "/projects/avito-charity/charity-profile/covers/feed-cover-324719915-1500x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/charity-profile/covers/feed-cover-324719915-1500x1800.webp",
+      "en": "/projects/avito-charity/charity-profile/covers/feed-cover-324719915-1500x1800.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/donation-subscription/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/donation-subscription/covers/cover-ru.webp",
+      "en": "/projects/avito-charity/donation-subscription/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/donation-subscription/covers/cover.webp",
+      "en": "/projects/avito-charity/donation-subscription/covers/cover.webp"
+    },
+    "pages": [
+      "projects/avito-charity/donation-subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/gamification/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/gamification/covers/cover-ru.webp",
+      "en": "/projects/avito-charity/gamification/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/gamification/covers/cover.webp",
+      "en": "/projects/avito-charity/gamification/covers/cover.webp"
+    },
+    "pages": [
+      "projects/avito-charity/gamification/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800-ru.webp",
+      "en": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800.webp",
+      "en": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/rebranding/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/rebranding/covers/cover-ru.webp",
+      "en": "/projects/avito-charity/rebranding/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/rebranding/covers/cover.webp",
+      "en": "/projects/avito-charity/rebranding/covers/cover.webp"
+    },
+    "pages": [
+      "projects/avito-charity/rebranding/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800.webp",
+      "en": "/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js",
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp",
+      "en": "/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/about/statement-desktop-v2-3840x1680.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/about/statement-desktop-v2-3840x1680-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/about/statement-desktop-v2-3840x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/about/statement-desktop-v2-3840x1680.webp",
+      "en": "/projects/avito-charity/recycle-map/media/about/statement-desktop-v2-3840x1680.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/about/statement-mobile-v2-1200x1500.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/about/statement-mobile-v2-1200x1500-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/about/statement-mobile-v2-1200x1500-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/about/statement-mobile-v2-1200x1500.webp",
+      "en": "/projects/avito-charity/recycle-map/media/about/statement-mobile-v2-1200x1500.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/concepts/concept-1-v2-2880x1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/concepts/concept-1-v2-2880x1600-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/concepts/concept-1-v2-2880x1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/concepts/concept-1-v2-2880x1600.webp",
+      "en": "/projects/avito-charity/recycle-map/media/concepts/concept-1-v2-2880x1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/concepts/concept-2-v2-2880x1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/concepts/concept-2-v2-2880x1600-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/concepts/concept-2-v2-2880x1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/concepts/concept-2-v2-2880x1600.webp",
+      "en": "/projects/avito-charity/recycle-map/media/concepts/concept-2-v2-2880x1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/favorites-list/favorites-b-2880x1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/favorites-list/favorites-b-2880x1600-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/favorites-list/favorites-b-2880x1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/favorites-list/favorites-b-2880x1600.webp",
+      "en": "/projects/avito-charity/recycle-map/media/favorites-list/favorites-b-2880x1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/favorites/card-v2-2880x1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/favorites/card-v2-2880x1600-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/favorites/card-v2-2880x1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/favorites/card-v2-2880x1600.webp",
+      "en": "/projects/avito-charity/recycle-map/media/favorites/card-v2-2880x1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/favorites/schedule-b-1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/favorites/schedule-b-1600-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/favorites/schedule-b-1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/favorites/schedule-b-1600.webp",
+      "en": "/projects/avito-charity/recycle-map/media/favorites/schedule-b-1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/filters/after-1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/filters/after-1600-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/filters/after-1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/filters/after-1600.webp",
+      "en": "/projects/avito-charity/recycle-map/media/filters/after-1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/filters/before-1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/filters/before-1600-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/filters/before-1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/filters/before-1600.webp",
+      "en": "/projects/avito-charity/recycle-map/media/filters/before-1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/filters/result-v2-2880x1800.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/filters/result-v2-2880x1800-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/filters/result-v2-2880x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/filters/result-v2-2880x1800.webp",
+      "en": "/projects/avito-charity/recycle-map/media/filters/result-v2-2880x1800.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/gallery/card-700x840.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/gallery/card-700x840-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/gallery/card-700x840-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/gallery/card-700x840.webp",
+      "en": "/projects/avito-charity/recycle-map/media/gallery/card-700x840.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/gallery/categories-1200x904.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/gallery/categories-1200x904-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/gallery/categories-1200x904-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/gallery/categories-1200x904.webp",
+      "en": "/projects/avito-charity/recycle-map/media/gallery/categories-1200x904.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/gallery/filters-1400x1680.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/gallery/filters-1400x1680-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/gallery/filters-1400x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/gallery/filters-1400x1680.webp",
+      "en": "/projects/avito-charity/recycle-map/media/gallery/filters-1400x1680.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/gallery/icons-1792x864.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/gallery/icons-1792x864-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/gallery/icons-1792x864-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/gallery/icons-1792x864.webp",
+      "en": "/projects/avito-charity/recycle-map/media/gallery/icons-1792x864.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/gallery/pin-1400x864.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/gallery/pin-1400x864-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/gallery/pin-1400x864-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/gallery/pin-1400x864.webp",
+      "en": "/projects/avito-charity/recycle-map/media/gallery/pin-1400x864.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/gallery/saved-b-1400x1680.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/gallery/saved-b-1400x1680-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/gallery/saved-b-1400x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/gallery/saved-b-1400x1680.webp",
+      "en": "/projects/avito-charity/recycle-map/media/gallery/saved-b-1400x1680.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/navigation/after-v2-2880x1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/navigation/after-v2-2880x1600-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/navigation/after-v2-2880x1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/navigation/after-v2-2880x1600.webp",
+      "en": "/projects/avito-charity/recycle-map/media/navigation/after-v2-2880x1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/recycle-map/media/navigation/before-v2-2880x1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/recycle-map/media/navigation/before-v2-2880x1600-ru.webp",
+      "en": "/projects/avito-charity/recycle-map/media/navigation/before-v2-2880x1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/recycle-map/media/navigation/before-v2-2880x1600.webp",
+      "en": "/projects/avito-charity/recycle-map/media/navigation/before-v2-2880x1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/recycle-map/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800-ru.webp",
+      "en": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp",
+      "en": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800-ru.webp",
+      "en": "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp",
+      "en": "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js",
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/about/about-v2-2880x1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/about/about-v2-2880x1600-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/about/about-v2-2880x1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/about/about-v2-2880x1600.webp",
+      "en": "/projects/avito-charity/subscription/media/about/about-v2-2880x1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/before/after-v2-1480x1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/before/after-v2-1480x1600-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/before/after-v2-1480x1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/before/after-v2-1480x1600.webp",
+      "en": "/projects/avito-charity/subscription/media/before/after-v2-1480x1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/before/before-v2-1480x1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/before/before-v2-1480x1600-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/before/before-v2-1480x1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/before/before-v2-1480x1600.webp",
+      "en": "/projects/avito-charity/subscription/media/before/before-v2-1480x1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/choose-fund/fund-selection-2880x1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/choose-fund/fund-selection-2880x1600-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/choose-fund/fund-selection-2880x1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/choose-fund/fund-selection-2880x1600.webp",
+      "en": "/projects/avito-charity/subscription/media/choose-fund/fund-selection-2880x1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/concepts/1.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/concepts/1-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/concepts/1-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/concepts/1.webp",
+      "en": "/projects/avito-charity/subscription/media/concepts/1.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/concepts/2.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/concepts/2-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/concepts/2-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/concepts/2.webp",
+      "en": "/projects/avito-charity/subscription/media/concepts/2.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/entry-points/entry-1.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/entry-points/entry-1-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/entry-points/entry-1-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/entry-points/entry-1.webp",
+      "en": "/projects/avito-charity/subscription/media/entry-points/entry-1.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/entry-points/entry-2.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/entry-points/entry-2-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/entry-points/entry-2-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/entry-points/entry-2.webp",
+      "en": "/projects/avito-charity/subscription/media/entry-points/entry-2.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/entry-points/entry-3.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/entry-points/entry-3-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/entry-points/entry-3-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/entry-points/entry-3.webp",
+      "en": "/projects/avito-charity/subscription/media/entry-points/entry-3.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/manage/manage-1-v2-1480x1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/manage/manage-1-v2-1480x1600-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/manage/manage-1-v2-1480x1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/manage/manage-1-v2-1480x1600.webp",
+      "en": "/projects/avito-charity/subscription/media/manage/manage-1-v2-1480x1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/manage/manage-2-v2-1480x1600.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/manage/manage-2-v2-1480x1600-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/manage/manage-2-v2-1480x1600-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/manage/manage-2-v2-1480x1600.webp",
+      "en": "/projects/avito-charity/subscription/media/manage/manage-2-v2-1480x1600.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/results/bento-1.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/results/bento-1-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/results/bento-1-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/results/bento-1.webp",
+      "en": "/projects/avito-charity/subscription/media/results/bento-1.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/results/bento-2.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/results/bento-2-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/results/bento-2-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/results/bento-2.webp",
+      "en": "/projects/avito-charity/subscription/media/results/bento-2.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/results/bento-3.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/results/bento-3-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/results/bento-3-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/results/bento-3.webp",
+      "en": "/projects/avito-charity/subscription/media/results/bento-3.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/results/bento-4.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/results/bento-4-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/results/bento-4-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/results/bento-4.webp",
+      "en": "/projects/avito-charity/subscription/media/results/bento-4.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/results/final-concept-large-v2-1400x1680.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/results/final-concept-large-v2-1400x1680-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/results/final-concept-large-v2-1400x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/results/final-concept-large-v2-1400x1680.webp",
+      "en": "/projects/avito-charity/subscription/media/results/final-concept-large-v2-1400x1680.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/results/final-concept-small-v2.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/results/final-concept-small-v2-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/results/final-concept-small-v2-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/results/final-concept-small-v2.webp",
+      "en": "/projects/avito-charity/subscription/media/results/final-concept-small-v2.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/settings/subscription-info-sheet-v2-1600x2000-60fps-ru.mp4",
+      "en": "/projects/avito-charity/subscription/media/settings/subscription-info-sheet-v2-1600x2000-60fps-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4",
+      "en": "/projects/avito-charity/subscription/media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/settings/subscription-payment-flow-1600x2000-60fps.mp4",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/settings/subscription-payment-flow-1600x2000-60fps-ru.mp4",
+      "en": "/projects/avito-charity/subscription/media/settings/subscription-payment-flow-1600x2000-60fps-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/settings/subscription-payment-flow-1600x2000-60fps.mp4",
+      "en": "/projects/avito-charity/subscription/media/settings/subscription-payment-flow-1600x2000-60fps.mp4"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/success/after-1600x2000-60fps.mp4",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/success/after-1600x2000-60fps-ru.mp4",
+      "en": "/projects/avito-charity/subscription/media/success/after-1600x2000-60fps-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/success/after-1600x2000-60fps.mp4",
+      "en": "/projects/avito-charity/subscription/media/success/after-1600x2000-60fps.mp4"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/success/before.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/success/before-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/success/before-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/success/before.webp",
+      "en": "/projects/avito-charity/subscription/media/success/before.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/ai-assistant/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/concepts/ai-assistant/covers/cover-ru.webp",
+      "en": "/projects/concepts/ai-assistant/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/ai-assistant/covers/cover.webp",
+      "en": "/projects/concepts/ai-assistant/covers/cover.webp"
+    },
+    "pages": [
+      "projects/concepts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/assets/hero.webp",
+    "planned": {
+      "ru": "/projects/concepts/assets/hero-ru.webp",
+      "en": "/projects/concepts/assets/hero-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/assets/hero.webp",
+      "en": "/projects/concepts/assets/hero.webp"
+    },
+    "pages": [
+      "projects/concepts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/dashboard-concept/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/concepts/dashboard-concept/covers/cover-ru.webp",
+      "en": "/projects/concepts/dashboard-concept/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/dashboard-concept/covers/cover.webp",
+      "en": "/projects/concepts/dashboard-concept/covers/cover.webp"
+    },
+    "pages": [
+      "projects/concepts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/dashboard-concept/covers/homa-dashboard-motion-poster.webp",
+    "planned": {
+      "ru": "/projects/concepts/dashboard-concept/covers/homa-dashboard-motion-poster-ru.webp",
+      "en": "/projects/concepts/dashboard-concept/covers/homa-dashboard-motion-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/dashboard-concept/covers/homa-dashboard-motion-poster.webp",
+      "en": "/projects/concepts/dashboard-concept/covers/homa-dashboard-motion-poster.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/dashboard-concept/covers/homa-dashboard-motion.mp4",
+    "planned": {
+      "ru": "/projects/concepts/dashboard-concept/covers/homa-dashboard-motion-ru.mp4",
+      "en": "/projects/concepts/dashboard-concept/covers/homa-dashboard-motion-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/concepts/dashboard-concept/covers/homa-dashboard-motion.mp4",
+      "en": "/projects/concepts/dashboard-concept/covers/homa-dashboard-motion.mp4"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/educational-app/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/concepts/educational-app/covers/cover-ru.webp",
+      "en": "/projects/concepts/educational-app/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/educational-app/covers/cover.webp",
+      "en": "/projects/concepts/educational-app/covers/cover.webp"
+    },
+    "pages": [
+      "projects/concepts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/educational-app/covers/onboarding-motion-v2-poster.webp",
+    "planned": {
+      "ru": "/projects/concepts/educational-app/covers/onboarding-motion-v2-poster-ru.webp",
+      "en": "/projects/concepts/educational-app/covers/onboarding-motion-v2-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/educational-app/covers/onboarding-motion-v2-poster.webp",
+      "en": "/projects/concepts/educational-app/covers/onboarding-motion-v2-poster.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/educational-app/covers/onboarding-motion-v2.mp4",
+    "planned": {
+      "ru": "/projects/concepts/educational-app/covers/onboarding-motion-v2-ru.mp4",
+      "en": "/projects/concepts/educational-app/covers/onboarding-motion-v2-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/concepts/educational-app/covers/onboarding-motion-v2.mp4",
+      "en": "/projects/concepts/educational-app/covers/onboarding-motion-v2.mp4"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/flecto/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/concepts/flecto/covers/cover-ru.webp",
+      "en": "/projects/concepts/flecto/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/flecto/covers/cover.webp",
+      "en": "/projects/concepts/flecto/covers/cover.webp"
+    },
+    "pages": [
+      "projects/concepts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/flecto/covers/flecto-screens-motion-poster.webp",
+    "planned": {
+      "ru": "/projects/concepts/flecto/covers/flecto-screens-motion-poster-ru.webp",
+      "en": "/projects/concepts/flecto/covers/flecto-screens-motion-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/flecto/covers/flecto-screens-motion-poster.webp",
+      "en": "/projects/concepts/flecto/covers/flecto-screens-motion-poster.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/flecto/covers/flecto-screens-motion.mp4",
+    "planned": {
+      "ru": "/projects/concepts/flecto/covers/flecto-screens-motion-ru.mp4",
+      "en": "/projects/concepts/flecto/covers/flecto-screens-motion-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/concepts/flecto/covers/flecto-screens-motion.mp4",
+      "en": "/projects/concepts/flecto/covers/flecto-screens-motion.mp4"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/mail-app/covers/cover-phone-blue.webp",
+    "planned": {
+      "ru": "/projects/concepts/mail-app/covers/cover-phone-blue-ru.webp",
+      "en": "/projects/concepts/mail-app/covers/cover-phone-blue-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/mail-app/covers/cover-phone-blue.webp",
+      "en": "/projects/concepts/mail-app/covers/cover-phone-blue.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/mail-app/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/concepts/mail-app/covers/cover-ru.webp",
+      "en": "/projects/concepts/mail-app/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/mail-app/covers/cover.webp",
+      "en": "/projects/concepts/mail-app/covers/cover.webp"
+    },
+    "pages": [
+      "projects/concepts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/music-controller/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/concepts/music-controller/covers/cover-ru.webp",
+      "en": "/projects/concepts/music-controller/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/music-controller/covers/cover.webp",
+      "en": "/projects/concepts/music-controller/covers/cover.webp"
+    },
+    "pages": [
+      "projects/concepts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/music-controller/covers/stereo-motion-poster.webp",
+    "planned": {
+      "ru": "/projects/concepts/music-controller/covers/stereo-motion-poster-ru.webp",
+      "en": "/projects/concepts/music-controller/covers/stereo-motion-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/music-controller/covers/stereo-motion-poster.webp",
+      "en": "/projects/concepts/music-controller/covers/stereo-motion-poster.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/music-controller/covers/stereo-motion.mp4",
+    "planned": {
+      "ru": "/projects/concepts/music-controller/covers/stereo-motion-ru.mp4",
+      "en": "/projects/concepts/music-controller/covers/stereo-motion-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/concepts/music-controller/covers/stereo-motion.mp4",
+      "en": "/projects/concepts/music-controller/covers/stereo-motion.mp4"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/object-settings/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/concepts/object-settings/covers/cover-ru.webp",
+      "en": "/projects/concepts/object-settings/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/object-settings/covers/cover.webp",
+      "en": "/projects/concepts/object-settings/covers/cover.webp"
+    },
+    "pages": [
+      "projects/concepts/index.html",
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/offer-story/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/concepts/offer-story/covers/cover-ru.webp",
+      "en": "/projects/concepts/offer-story/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/offer-story/covers/cover.webp",
+      "en": "/projects/concepts/offer-story/covers/cover.webp"
+    },
+    "pages": [
+      "projects/concepts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/share-project/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/concepts/share-project/covers/cover-ru.webp",
+      "en": "/projects/concepts/share-project/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/share-project/covers/cover.webp",
+      "en": "/projects/concepts/share-project/covers/cover.webp"
+    },
+    "pages": [
+      "projects/concepts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/time-warp/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/concepts/time-warp/covers/cover-ru.webp",
+      "en": "/projects/concepts/time-warp/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/time-warp/covers/cover.webp",
+      "en": "/projects/concepts/time-warp/covers/cover.webp"
+    },
+    "pages": [
+      "projects/concepts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/time-warp/covers/playground-cover.webp",
+    "planned": {
+      "ru": "/projects/concepts/time-warp/covers/playground-cover-ru.webp",
+      "en": "/projects/concepts/time-warp/covers/playground-cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/time-warp/covers/playground-cover.webp",
+      "en": "/projects/concepts/time-warp/covers/playground-cover.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/tlm-landing/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/concepts/tlm-landing/covers/cover-ru.webp",
+      "en": "/projects/concepts/tlm-landing/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/tlm-landing/covers/cover.webp",
+      "en": "/projects/concepts/tlm-landing/covers/cover.webp"
+    },
+    "pages": [
+      "projects/concepts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/tlm-landing/covers/landing-scroll-motion-v3-poster.webp",
+    "planned": {
+      "ru": "/projects/concepts/tlm-landing/covers/landing-scroll-motion-v3-poster-ru.webp",
+      "en": "/projects/concepts/tlm-landing/covers/landing-scroll-motion-v3-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/tlm-landing/covers/landing-scroll-motion-v3-poster.webp",
+      "en": "/projects/concepts/tlm-landing/covers/landing-scroll-motion-v3-poster.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/tlm-landing/covers/landing-scroll-motion-v3.mp4",
+    "planned": {
+      "ru": "/projects/concepts/tlm-landing/covers/landing-scroll-motion-v3-ru.mp4",
+      "en": "/projects/concepts/tlm-landing/covers/landing-scroll-motion-v3-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/concepts/tlm-landing/covers/landing-scroll-motion-v3.mp4",
+      "en": "/projects/concepts/tlm-landing/covers/landing-scroll-motion-v3.mp4"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/your-custom/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/concepts/your-custom/covers/cover-ru.webp",
+      "en": "/projects/concepts/your-custom/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/your-custom/covers/cover.webp",
+      "en": "/projects/concepts/your-custom/covers/cover.webp"
+    },
+    "pages": [
+      "projects/concepts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/your-custom/covers/stack-motion-poster.webp",
+    "planned": {
+      "ru": "/projects/concepts/your-custom/covers/stack-motion-poster-ru.webp",
+      "en": "/projects/concepts/your-custom/covers/stack-motion-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/concepts/your-custom/covers/stack-motion-poster.webp",
+      "en": "/projects/concepts/your-custom/covers/stack-motion-poster.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/concepts/your-custom/covers/stack-motion.mp4",
+    "planned": {
+      "ru": "/projects/concepts/your-custom/covers/stack-motion-ru.mp4",
+      "en": "/projects/concepts/your-custom/covers/stack-motion-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/concepts/your-custom/covers/stack-motion.mp4",
+      "en": "/projects/concepts/your-custom/covers/stack-motion.mp4"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/employee-account/covers/feed-cover-frame-2147239078-1800x2400.webp",
+    "planned": {
+      "ru": "/projects/employee-account/covers/feed-cover-frame-2147239078-1800x2400-ru.webp",
+      "en": "/projects/employee-account/covers/feed-cover-frame-2147239078-1800x2400-en.webp"
+    },
+    "active": {
+      "ru": "/projects/employee-account/covers/feed-cover-frame-2147239078-1800x2400.webp",
+      "en": "/projects/employee-account/covers/feed-cover-frame-2147239078-1800x2400.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/campaign-creation/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/campaign-creation/covers/cover-ru.webp",
+      "en": "/projects/ozon-crm/campaign-creation/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/campaign-creation/covers/cover.webp",
+      "en": "/projects/ozon-crm/campaign-creation/covers/cover.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/campaign-creation/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-portrait/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-portrait/covers/cover-ru.webp",
+      "en": "/projects/ozon-crm/customer-portrait/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-portrait/covers/cover.webp",
+      "en": "/projects/ozon-crm/customer-portrait/covers/cover.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-portrait/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800.webp",
+      "en": "/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js",
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/covers/feed-cover-frame-2147239075-1800x2400.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/covers/feed-cover-frame-2147239075-1800x2400-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/covers/feed-cover-frame-2147239075-1800x2400-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/covers/feed-cover-frame-2147239075-1800x2400.webp",
+      "en": "/projects/ozon-crm/customer-segments/covers/feed-cover-frame-2147239075-1800x2400.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/about/about-v2-3840x1680.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/about/about-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/about/about-v2-3840x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/about/about-v2-3840x1680.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/about/about-v2-3840x1680.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/after-send/campaign-results-v2-3840x1680.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/after-send/campaign-results-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/after-send/campaign-results-v2-3840x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/after-send/campaign-results-v2-3840x1680.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/after-send/campaign-results-v2-3840x1680.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/concepts/bento-1-v2.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/concepts/bento-1-v2-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-1-v2-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/concepts/bento-1-v2.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-1-v2.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/concepts/bento-2.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/concepts/bento-2-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-2-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/concepts/bento-2.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-2.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/concepts/bento-4.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/concepts/bento-4-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-4-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/concepts/bento-4.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/concepts/bento-4.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/concepts/preview-700x840.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/concepts/preview-700x840-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/concepts/preview-700x840-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/concepts/preview-700x840.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/concepts/preview-700x840.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-1.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-1-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-1-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-1.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-1.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-2.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-2-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-2-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-2.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/conditions/sending-conditions-2.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/customers/customer-details-v3-3840x1680.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/customers/customer-details-v3-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/customers/customer-details-v3-3840x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/customers/customer-details-v3-3840x1680.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/customers/customer-details-v3-3840x1680.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/results/gallery-1-large-2848x2848.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-1-large-2848x2848-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-large-2848x2848-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-1-large-2848x2848.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-large-2848x2848.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/results/gallery-1-square-2088x2088.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-1-square-2088x2088-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-square-2088x2088-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-1-square-2088x2088.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-square-2088x2088.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/results/gallery-1-wide-4272x2088.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-1-wide-4272x2088-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-wide-4272x2088-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-1-wide-4272x2088.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-1-wide-4272x2088.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/results/gallery-2-large-2100x2520.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-2-large-2100x2520-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-large-2100x2520-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-2-large-2100x2520.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-large-2100x2520.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/results/gallery-2-small-2100x2520.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-2-small-2100x2520-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-small-2100x2520-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-2-small-2100x2520.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-small-2100x2520.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/results/gallery-2-square-2088x2088.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-2-square-2088x2088-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-square-2088x2088-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-2-square-2088x2088.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-square-2088x2088.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v2-3840x1680.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v2-3840x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v2-3840x1680.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v2-3840x1680.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-1-v2-3840x1680.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-1-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-1-v2-3840x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-1-v2-3840x1680.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-1-v2-3840x1680.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-2-v2-3840x1680.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-2-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-2-v2-3840x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-2-v2-3840x1680.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-2-v2-3840x1680.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-3-v2-3840x1680.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-3-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-3-v2-3840x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-3-v2-3840x1680.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-3-v2-3840x1680.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-4-v2-3840x1680.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-4-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-4-v2-3840x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-4-v2-3840x1680.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-4-v2-3840x1680.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/summary/table-v2-3840x1680.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/summary/table-v2-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/summary/table-v2-3840x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/summary/table-v2-3840x1680.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/summary/table-v2-3840x1680.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-prices/minimum-price/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/ozon-prices/minimum-price/covers/cover-ru.webp",
+      "en": "/projects/ozon-prices/minimum-price/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-prices/minimum-price/covers/cover.webp",
+      "en": "/projects/ozon-prices/minimum-price/covers/cover.webp"
+    },
+    "pages": [
+      "projects/ozon-prices/minimum-price/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-prices/minimum-price/covers/feed-cover-frame-2147239076-1800x2400.webp",
+    "planned": {
+      "ru": "/projects/ozon-prices/minimum-price/covers/feed-cover-frame-2147239076-1800x2400-ru.webp",
+      "en": "/projects/ozon-prices/minimum-price/covers/feed-cover-frame-2147239076-1800x2400-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-prices/minimum-price/covers/feed-cover-frame-2147239076-1800x2400.webp",
+      "en": "/projects/ozon-prices/minimum-price/covers/feed-cover-frame-2147239076-1800x2400.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
+    ]
+  },
+  {
+    "source": "/projects/ozon-prices/prices-table/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/ozon-prices/prices-table/covers/cover-ru.webp",
+      "en": "/projects/ozon-prices/prices-table/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-prices/prices-table/covers/cover.webp",
+      "en": "/projects/ozon-prices/prices-table/covers/cover.webp"
+    },
+    "pages": [
+      "projects/ozon-prices/prices-table/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800.webp",
+    "planned": {
+      "ru": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800-ru.webp",
+      "en": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800.webp",
+      "en": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
+    ]
+  },
+  {
+    "source": "/projects/ozon-prices/promotion-boosting/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/ozon-prices/promotion-boosting/covers/cover-ru.webp",
+      "en": "/projects/ozon-prices/promotion-boosting/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-prices/promotion-boosting/covers/cover.webp",
+      "en": "/projects/ozon-prices/promotion-boosting/covers/cover.webp"
+    },
+    "pages": [
+      "projects/ozon-prices/promotion-boosting/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-prices/vat/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/ozon-prices/vat/covers/cover-ru.webp",
+      "en": "/projects/ozon-prices/vat/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-prices/vat/covers/cover.webp",
+      "en": "/projects/ozon-prices/vat/covers/cover.webp"
+    },
+    "pages": [
+      "projects/ozon-prices/vat/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/share-icon-motion-poster.webp",
+    "planned": {
+      "ru": "/projects/playground/media/share-icon-motion-poster-ru.webp",
+      "en": "/projects/playground/media/share-icon-motion-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/share-icon-motion-poster.webp",
+      "en": "/projects/playground/media/share-icon-motion-poster.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/share-icon-motion.mp4",
+    "planned": {
+      "ru": "/projects/playground/media/share-icon-motion-ru.mp4",
+      "en": "/projects/playground/media/share-icon-motion-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/playground/media/share-icon-motion.mp4",
+      "en": "/projects/playground/media/share-icon-motion.mp4"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/tooltip-motion-poster.webp",
+    "planned": {
+      "ru": "/projects/playground/media/tooltip-motion-poster-ru.webp",
+      "en": "/projects/playground/media/tooltip-motion-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/tooltip-motion-poster.webp",
+      "en": "/projects/playground/media/tooltip-motion-poster.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/tooltip-motion.mp4",
+    "planned": {
+      "ru": "/projects/playground/media/tooltip-motion-ru.mp4",
+      "en": "/projects/playground/media/tooltip-motion-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/playground/media/tooltip-motion.mp4",
+      "en": "/projects/playground/media/tooltip-motion.mp4"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/posts/blanket-post/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/posts/blanket-post/covers/cover-ru.webp",
+      "en": "/projects/posts/blanket-post/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/posts/blanket-post/covers/cover.webp",
+      "en": "/projects/posts/blanket-post/covers/cover.webp"
+    },
+    "pages": [
+      "projects/posts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/posts/silver-wishes-post/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/posts/silver-wishes-post/covers/cover-ru.webp",
+      "en": "/projects/posts/silver-wishes-post/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/posts/silver-wishes-post/covers/cover.webp",
+      "en": "/projects/posts/silver-wishes-post/covers/cover.webp"
+    },
+    "pages": [
+      "projects/posts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/posts/where-is-money-post/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/posts/where-is-money-post/covers/cover-ru.webp",
+      "en": "/projects/posts/where-is-money-post/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/posts/where-is-money-post/covers/cover.webp",
+      "en": "/projects/posts/where-is-money-post/covers/cover.webp"
+    },
+    "pages": [
+      "projects/posts/index.html"
+    ]
+  },
+  {
+    "source": "/projects/swtec-angel/vacations/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/swtec-angel/vacations/covers/cover-ru.webp",
+      "en": "/projects/swtec-angel/vacations/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/swtec-angel/vacations/covers/cover.webp",
+      "en": "/projects/swtec-angel/vacations/covers/cover.webp"
+    },
+    "pages": [
+      "projects/swtec-angel/vacations/index.html"
+    ]
+  },
+  {
+    "source": "/projects/swtec-medical/doctor-dashboard/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/swtec-medical/doctor-dashboard/covers/cover-ru.webp",
+      "en": "/projects/swtec-medical/doctor-dashboard/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/swtec-medical/doctor-dashboard/covers/cover.webp",
+      "en": "/projects/swtec-medical/doctor-dashboard/covers/cover.webp"
+    },
+    "pages": [
+      "projects/swtec-medical/doctor-dashboard/index.html"
+    ]
+  },
+  {
+    "source": "/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400.webp",
+    "planned": {
+      "ru": "/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400-ru.webp",
+      "en": "/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400-en.webp"
+    },
+    "active": {
+      "ru": "/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400.webp",
+      "en": "/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
+    ]
+  },
+  {
+    "source": "/projects/swtec-medical/patient-app/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/swtec-medical/patient-app/covers/cover-ru.webp",
+      "en": "/projects/swtec-medical/patient-app/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/swtec-medical/patient-app/covers/cover.webp",
+      "en": "/projects/swtec-medical/patient-app/covers/cover.webp"
+    },
+    "pages": [
+      "projects/swtec-medical/patient-app/index.html"
+    ]
+  },
+  {
+    "source": "/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800.webp",
+    "planned": {
+      "ru": "/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800-ru.webp",
+      "en": "/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800.webp",
+      "en": "/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
+    ]
+  },
+  {
+    "source": "/projects/swtec-medical/watches-patches/covers/cover.webp",
+    "planned": {
+      "ru": "/projects/swtec-medical/watches-patches/covers/cover-ru.webp",
+      "en": "/projects/swtec-medical/watches-patches/covers/cover-en.webp"
+    },
+    "active": {
+      "ru": "/projects/swtec-medical/watches-patches/covers/cover.webp",
+      "en": "/projects/swtec-medical/watches-patches/covers/cover.webp"
+    },
+    "pages": [
+      "projects/swtec-medical/watches-patches/index.html"
+    ]
+  },
+  {
+    "source": "/projects/swtec-medical/watches-patches/covers/feed-cover-1500x1800.webp",
+    "planned": {
+      "ru": "/projects/swtec-medical/watches-patches/covers/feed-cover-1500x1800-ru.webp",
+      "en": "/projects/swtec-medical/watches-patches/covers/feed-cover-1500x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/swtec-medical/watches-patches/covers/feed-cover-1500x1800.webp",
+      "en": "/projects/swtec-medical/watches-patches/covers/feed-cover-1500x1800.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
+    ]
+  }
+]

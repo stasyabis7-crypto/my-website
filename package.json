@@ -6,15 +6,16 @@
     "admin": "node scripts/admin/server.js",
     "admin:test": "node scripts/admin/admin.test.js",
     "auto-commit": "node scripts/auto-commit.js",
-    "check": "npm run check:components && npm run check:ds && npm run check:links && npm run check:images && npm run check:typography",
-    "check:components": "node scripts/hero-mood-component.js && node scripts/hero-mood-component.test.js && node scripts/hero-spheres.test.js && node scripts/check-page-heroes.js && node scripts/check-case-covers.js",
+    "check": "npm run check:components && npm run check:ds && npm run check:links && npm run check:images && npm run check:typography && npm run check:languages",
+    "check:components": "node scripts/hero-mood-component.js && node scripts/hero-mood-component.test.js && node scripts/hero-spheres.test.js && node scripts/check-page-heroes.js && node scripts/check-case-covers.js && node scripts/skills-radar.test.js",
     "check:ds": "node scripts/check-design-system.js && node scripts/check-design-system.test.js",
     "check:links": "node scripts/check-local-links.js",
     "dev": "node scripts/dev.js",
-    "images:prepare": "node scripts/prepare-images.js",
+    "images:prepare": "node scripts/prepare-images.js && node scripts/prepare-language-assets.js",
     "images:watch": "node scripts/prepare-images.js --watch",
     "check:images": "node scripts/prepare-images.js --check && node scripts/prepare-images.test.js",
-    "check:typography": "node scripts/check-typography.js"
+    "check:typography": "node scripts/check-typography.js",
+    "check:languages": "node scripts/prepare-language-assets.js --check && node scripts/language.test.js"
   },
   "dependencies": {
     "chokidar": "^3.5.3"

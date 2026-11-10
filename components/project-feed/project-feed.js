@@ -8,7 +8,9 @@
   var feed = document.querySelector('[data-project-feed]');
   if (!feed || !window.portfolioProjects) return;
 
-  var projects = window.portfolioProjects;
+  var projects = window.portfolioProjects.map(function (project) {
+    return window.siteLanguage ? window.siteLanguage.project(project) : project;
+  });
   var grid = feed.querySelector('.project-feed__grid');
   var reduced = matchMedia('(prefers-reduced-motion: reduce)');
 
