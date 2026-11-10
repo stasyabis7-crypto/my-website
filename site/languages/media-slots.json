@@ -1,5 +1,19 @@
 [
   {
+    "source": "/about/media/about-portrait.webp",
+    "planned": {
+      "ru": "/about/media/about-portrait-ru.webp",
+      "en": "/about/media/about-portrait-en.webp"
+    },
+    "active": {
+      "ru": "/about/media/about-portrait.webp",
+      "en": "/about/media/about-portrait.webp"
+    },
+    "pages": [
+      "about/index.html"
+    ]
+  },
+  {
     "source": "/components/site-brand/avatar-portrait-v2.webp",
     "planned": {
       "ru": "/components/site-brand/avatar-portrait-v2-ru.webp",
