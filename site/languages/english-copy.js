@@ -1,6 +1,7 @@
 // English copy for the shared RU/EN service. Russian source text is the key.
 window.siteEnglish = {
   "phrases": {
+    "Старший продуктовый дизайнер с опытом 6 лет": "Senior Product Designer with 6 years of experience",
     "Старший продуктовый дизайнер Анастасия Вихарева": "Anastasia Vikhareva, Senior Product Designer",
     "Анастасия Вихарева": "Anastasia Vikhareva",
     "Смотреть работы": "View work",
@@ -463,6 +464,7 @@ window.siteEnglish = {
   },
   "pages": {
     "/": {
+      "Старший продуктовый дизайнер с опытом 6 лет": "Senior Product Designer with 6 years of experience",
       "Старший продуктовый дизайнер Анастасия Вихарева": "Anastasia Vikhareva, Senior Product Designer",
       "Анастасия Вихарева": "Anastasia Vikhareva",
       "Смотреть работы": "View work",
