@@ -99,6 +99,22 @@ body {
   text-wrap: balance;
 }
 
+/* Only the first two previews: keep the complete phone screens while
+   removing side space on phones and tablets. Full-screen media stays intact. */
+@media (max-width: 1199px) {
+  .subscription-screen-crop > img {
+    width: 150%;
+    max-width: none;
+    margin-inline: -25%;
+  }
+}
+@media (max-width: 699px) {
+  .subscription-screen-crop > img {
+    width: 180%;
+    margin-inline: -40%;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -160,7 +176,7 @@ body {
  <p class="text-body-lg" data-subtitle><span class="cg-label">Проблема:</span> на Авито можно было помогать фондам только разово — для постоянной поддержки приходилось повторять весь сценарий</p>
  <p class="text-body-lg" data-subtitle><span class="cg-label">Решение:</span> спроектировала ежемесячную помощь: от выбора фонда и подключения до управления подпиской в профиле</p>
  </div></div>
- <div class="case-cover__media case-cover__media--natural cg-bleed cg-q234 cg-row-2"><img src="/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp" width="2880" height="1800" alt="«Добрая подписка» в приложении Авито" /></div>
+ <div class="case-cover__media case-cover__media--natural cg-bleed cg-q234 cg-row-2 subscription-screen-crop"><img src="/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp" width="2880" height="1800" alt="«Добрая подписка» в приложении Авито" /></div>
  <div class="cg-meta cg-q1 cg-row-2"><dl class="cg-list text-body">
  <div><dt>Роль</dt><dd>Вела сценарий регулярной помощи целиком: подписка, отчёты фондов, оплата и благодарность</dd></div>
  <div><dt>Команда</dt><dd>Продакт, проджект, бэкенд, фронтенд, редактор</dd></div>
@@ -177,7 +193,7 @@ body {
       <p class="text-body-lg">В исследованиях люди просили отчёты и конкретные результаты работы фондов. Поэтому информацию о фонде добавили до подключения подписки.</p>
     </div>
   </div>
-  <div class="case-cover__media case-cover__media--natural cg-bleed">
+  <div class="case-cover__media case-cover__media--natural cg-bleed subscription-screen-crop">
     <img src="media/about/about-v2-2880x1600.webp" width="2880" height="1600" alt="Иллюстрация проекта «Добрая подписка»" loading="lazy" />
   </div>
 </section>
