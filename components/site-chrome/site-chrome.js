@@ -431,7 +431,7 @@
       closeLabel: 'Закрыть меню',
       trigger: menuBtn,
       build: function (add) {
-        [{ label: 'Обо мне', href: '/about/', icon: 'contacts' }].concat(SECTIONS).forEach(function (it) {
+        SECTIONS.forEach(function (it) {
           var row = link(it, 'contact-row btn btn--fill-white btn--icon-left');
           row.insertAdjacentHTML('afterbegin', '<span class="icon icon--' + it.icon + '" aria-hidden="true"></span>');
           add(row);
