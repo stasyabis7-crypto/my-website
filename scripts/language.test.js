@@ -121,6 +121,10 @@ const resultRows = find(subscriptionResults.tree, node => node.nodeType === 1 &&
 assert.equal(resultRows.length, 2);
 for (const [index, expected] of [[100, 130], [50, 55]].entries()) {
   const row = resultRows[index];
+  const heading = find(row, node => node.tagName === 'H3')[0];
+  assert.equal(textNodes(heading).join(''), index === 0 ? 'Report views' : 'Monthly donation subscriptions');
+  assert.equal(heading.className, 'text-display');
+  assert.equal(row.getAttribute('aria-labelledby'), heading.getAttribute('id'));
   const bars = find(row, node => node.nodeType === 1 && node.className.split(' ').includes('cg-bars__bar'));
   assert.deepEqual(bars.map(node => Number(node.getAttribute('style').match(/--bar-value: (\d+)/)[1])), expected);
   const chart = find(row, node => node.tagName === 'FIGURE')[0];

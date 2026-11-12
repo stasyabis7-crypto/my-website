@@ -44,7 +44,7 @@
   ─── .cg-item — пункт ряда: крупный номер и текст; в колонках — линия
       слева, на телефоне — строка с линией сверху. --stat — метрика:
       число, под ним подпись ────────────────────────────────────────────
-  ─── .cg-result — нумерованный результат: текст слева, сравнение цели и
+  ─── .cg-result — результат с заголовком: текст слева, сравнение цели и
       факта справа; на телефоне — последовательно. .cg-bars — столбики
       от нулевой базы, значения --bar-value / --bar-max задаются в HTML ───
   ─── .cg-stub — заглушка будущего кадра: серое поле в его пропорциях
@@ -386,10 +386,11 @@
   .cg-list > * + * { margin-top: 20px; }
 }
 
-/* Numbered results share the parent grid: copy left, chart right;
+/* Result headings and metric values share a baseline: copy left, chart right;
    the existing mobile grid stacks them in document order. */
 .cg-result.cg {
   grid-template-columns: subgrid;
+  align-items: first baseline;
   padding-top: 32px;
   border-top: 1px solid var(--color-border);
 }
@@ -397,8 +398,9 @@
   max-width: 640px;
   margin: 0;
 }
-.cg-result__chart > .text-display-lg { margin-top: 16px; }
-.cg-result__chart > .text-body { margin-top: 8px; }
+.cg-result__metric > * { display: block; }
+.cg-result__metric > .text-body { margin-top: 8px; }
+.cg-bars__caption.text-body { margin-bottom: 24px; }
 .cg-bars { margin-top: 32px; }
 .cg-bars__row + .cg-bars__row { margin-top: 24px; }
 .cg-bars__label {
