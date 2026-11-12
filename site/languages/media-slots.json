@@ -797,20 +797,6 @@
     ]
   },
   {
-    "source": "/projects/avito-charity/subscription/media/concepts/1.webp",
-    "planned": {
-      "ru": "/projects/avito-charity/subscription/media/concepts/1-ru.webp",
-      "en": "/projects/avito-charity/subscription/media/concepts/1-en.webp"
-    },
-    "active": {
-      "ru": "/projects/avito-charity/subscription/media/concepts/1-ru.webp",
-      "en": "/projects/avito-charity/subscription/media/concepts/1-en.webp"
-    },
-    "pages": [
-      "projects/avito-charity/subscription/index.html"
-    ]
-  },
-  {
     "source": "/projects/avito-charity/subscription/media/concepts/2.webp",
     "planned": {
       "ru": "/projects/avito-charity/subscription/media/concepts/2-ru.webp",

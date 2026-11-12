@@ -40,7 +40,7 @@ function adapt(node) {
   for (const child of el.childNodes) child.parentElement = el;
   return el;
 }
-function run(file, query = '?lang=en', stored, denied = false, additionalMedia = {}, viewportWidth = 1280) {
+function run(file, query = '', stored, denied = false, additionalMedia = {}, viewportWidth = 1280) {
   const tree = adapt(parse5.parse(fs.readFileSync(path.join(root, file), 'utf8')));
   const html = tree.childNodes.find(node => node.tagName === 'HTML');
   const callbacks = {}, values = { 'portfolio-language': stored };
@@ -82,33 +82,21 @@ function find(node, predicate, out = []) {
   return out;
 }
 
-// Mobile keeps the language control left of the logo; desktop keeps it after
-// the resume. Exercise initial placement and both directions across the breakpoint.
+// Every entry path stays English, even for a returning Russian-language visitor.
 for (const file of ['index.html', 'about/index.html', 'projects/ozon-crm/customer-segments/index.html']) {
-  for (const lang of ['ru', 'en']) for (const width of [375, 999, 1000, 1440]) {
-    const page = run(file, '?lang=' + lang, undefined, false, {}, width);
-    page.callbacks.DOMContentLoaded();
-    const header = page.document.querySelector('.site-header');
-    const identity = header.querySelector('.site-header__identity');
-    const logo = header.querySelector('.site-header__logo');
-    const resume = header.querySelector('.site-header__cta');
-    const switcher = header.querySelector('.site-language');
-    function checkPlacement(currentWidth) {
-      assert.equal(find(page.tree, node => node.nodeType === 1 && node.hasAttribute('data-language-switch')).length, 1);
-      if (currentWidth < 1000) {
-        assert(switcher.parentElement === identity, file + ': mobile language control must be in the identity row');
-        assert(switcher.nextSibling === logo, file + ': mobile language control must precede the logo');
-      } else {
-        assert(switcher.parentElement === header);
-        if (resume) assert(resume.nextSibling === switcher, file + ': desktop language control must follow the resume');
-      }
-      assert(switcher.href.includes('lang=' + (lang === 'ru' ? 'en' : 'ru')));
+  for (const query of ['', '?lang=ru', '?lang=en', '?lang=invalid']) {
+    for (const stored of [undefined, 'ru', 'en']) for (const width of [375, 999, 1000, 1440]) {
+      const page = run(file, query, stored, false, {}, width);
+      page.callbacks.DOMContentLoaded();
+      assert.equal(page.html.lang, 'en');
+      assert.equal(page.window.siteLanguage.current, 'en');
+      assert.equal(page.document.querySelector('.site-language'), null);
+      assert.equal(find(page.tree, node => node.nodeType === 1 && node.hasAttribute('data-language-switch')).length, 0);
+      assert(!textNodes(page.tree).some(value => /[А-Яа-яЁё]/.test(value)), file + ': English-only visible copy');
     }
-    checkPlacement(width);
-    for (const nextWidth of [1440, 375, 1000, 999]) { page.resize(nextWidth); checkPlacement(nextWidth); }
   }
 }
-console.log('Language switch: mobile order before logo, desktop order after resume and responsive transitions verified in 24 RU/EN layouts.');
+console.log('English-only entry points: defaults, old RU/EN links, stored preferences and mobile/desktop headers verified.');
 const metricCases = [
   ['projects/ozon-crm/customer-segments/index.html', ['15%', '≈1M', '13%']],
   ['projects/avito-charity/recycle-map/index.html', ['306K', '1.5–3K', 'Up to 70']],
@@ -130,20 +118,22 @@ for (const [file, expectedValues] of metricCases) {
 
 const en = run('index.html');
 assert.equal(en.html.lang, 'en');
-assert.equal(en.window.siteLanguage.url('/about/?preview=1#experience'), '/about/?preview=1&lang=en#experience');
+assert.equal(en.window.siteLanguage.url('/about/?preview=1#experience'), '/about/?preview=1#experience');
 assert.equal(en.window.siteLanguage.url('https://medium.com/@stasyabis'), 'https://medium.com/@stasyabis');
 assert.equal(en.window.siteLanguage.url('/cv.pdf?v=3'), '/cv-en.pdf?v=3');
 assert.equal(en.window.siteLanguage.url('https://elsewhere.test/cv.pdf'), 'https://elsewhere.test/cv.pdf');
 assert.equal(en.window.siteLanguage.media('projects/articles/covers/triz.webp'), 'projects/articles/covers/triz.webp');
-assert.equal(run('index.html', '?lang=ru', 'en').html.lang, 'ru');
-assert.equal(run('index.html', '?lang=ru').window.siteLanguage.url('/cv.pdf?v=3'), '/cv.pdf?v=3');
+assert.equal(run('index.html', '?lang=ru', 'en').html.lang, 'en');
+assert.equal(en.window.siteLanguage.url('/about/?lang=ru&preview=1#experience'), '/about/?preview=1#experience');
+assert.equal(run('index.html', '?lang=ru').window.siteLanguage.url('/cv.pdf?v=3'), '/cv-en.pdf?v=3');
 assert.equal(run('index.html', '', 'en').html.lang, 'en');
-assert.equal(run('index.html', '?lang=invalid', undefined, true).html.lang, 'ru');
+assert.equal(run('index.html', '?lang=invalid', undefined, true).html.lang, 'en');
 assert.equal(run('index.html', '?lang=en', undefined, true).html.lang, 'en');
-assert.equal(run('projects/posts/index.html').redirect, '/?lang=en');
-assert.equal(run('projects/posts/index.html', '?lang=ru').redirect, undefined);
+assert.equal(run('projects/posts/index.html').redirect, '/');
+assert.equal(run('projects/posts/index.html', '?lang=ru').redirect, '/');
 const ru = run('index.html', '?lang=ru');
-assert(textNodes(ru.tree).join(' ').includes('Резюме PDF'));
+assert(!textNodes(ru.tree).join(' ').includes('Резюме PDF'));
+assert(textNodes(ru.tree).join(' ').includes('Resume PDF'));
 const enSubtitle = find(en.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').split(' ').includes('mood-subtitle'))[0];
 assert.equal(textNodes(enSubtitle).join(''), 'I believe that the design surrounding us undoubtedly reflects the quality of our lives');
 assert(!textNodes(en.tree).join(' ').includes('Резюме PDF'));
@@ -156,19 +146,13 @@ const about = run('about/index.html');
 assert(textNodes(about.tree).join(' ').includes('Senior Product Designer'));
 assert(!textNodes(about.tree).some(value => /[А-Яа-яЁё]/.test(value)), 'About page must translate all visible copy');
 const enExperience = find(about.tree, node => node.nodeType === 1 && node.getAttribute('data-language-content') === 'en')[0];
-const hiddenRU = find(about.tree, node => node.nodeType === 1 && node.getAttribute('data-language-content') === 'ru')[0];
+assert.equal(find(about.tree, node => node.nodeType === 1 && node.getAttribute('data-language-content') === 'ru').length, 0);
 assert(!enExperience.hasAttribute('hidden'));
-assert(hiddenRU.hasAttribute('hidden'));
 assert.equal(enExperience.getAttribute('data-resume-source'), '/cv-en.pdf');
 assert(textNodes(enExperience).join(' ').includes('Doubled one-time donations'));
 const allENExperience = find(enExperience, node => node.nodeType === 3).map(node => node.nodeValue).join(' ');
 assert(allENExperience.includes('company’s workers'));
 assert(!allENExperience.includes('miners'));
-const aboutRU = run('about/index.html', '?lang=ru');
-const ruExperience = find(aboutRU.tree, node => node.nodeType === 1 && node.getAttribute('data-language-content') === 'ru')[0];
-assert(!ruExperience.hasAttribute('hidden'));
-assert.equal(ruExperience.getAttribute('data-resume-source'), '/cv.pdf');
-assert(find(ruExperience, node => node.nodeType === 3).map(node => node.nodeValue).join(' ').includes('шахтёров'));
 assert.equal(find(about.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').includes('site-header__avatar')).length, 0);
 assert.equal(find(about.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').includes('site-header__cta')).length, 0);
 assert.equal(find(about.tree, node => node.nodeType === 1 && node.hasAttribute('data-resume-link')).length, 1);
@@ -231,4 +215,4 @@ for (const lang of ['ru', 'en']) {
 }
 const menu = fs.readFileSync(path.join(root, 'components/site-chrome/site-chrome.js'), 'utf8');
 assert(menu.includes("item.href !== '/projects/posts/'"));
-console.log('Languages: RU/EN copy, routing, persistence, unavailable storage, dynamic content, all public page text and metadata, nine metrics, animated number formats, media fallbacks and seven English articles verified.');
+console.log('English-only site: legacy links, unavailable storage, dynamic content, all public page text and metadata, nine metrics, animated number formats, media fallbacks and seven English articles verified.');

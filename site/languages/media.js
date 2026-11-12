@@ -224,10 +224,6 @@ window.siteLanguageMedia = {
     "ru": "/projects/avito-charity/subscription/media/choose-fund/fund-selection-2880x1600-ru.webp",
     "en": "/projects/avito-charity/subscription/media/choose-fund/fund-selection-2880x1600-en.webp"
   },
-  "/projects/avito-charity/subscription/media/concepts/1.webp": {
-    "ru": "/projects/avito-charity/subscription/media/concepts/1-ru.webp",
-    "en": "/projects/avito-charity/subscription/media/concepts/1-en.webp"
-  },
   "/projects/avito-charity/subscription/media/concepts/2.webp": {
     "ru": "/projects/avito-charity/subscription/media/concepts/2-ru.webp",
     "en": "/projects/avito-charity/subscription/media/concepts/2-en.webp"

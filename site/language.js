@@ -1,15 +1,11 @@
-/* Shared RU/EN routing, copy and media. Source HTML always remains Russian. */
+/* English-only public copy and media, including legacy Russian source content. */
 (function () {
   'use strict';
   var url = new URL(location.href);
-  var requested = url.searchParams.get('lang');
-  var saved;
-  try { saved = localStorage.getItem('portfolio-language'); } catch (_) {}
-  var lang = /^(ru|en)$/.test(requested) ? requested : saved === 'en' ? 'en' : 'ru';
+  var lang = 'en';
   document.documentElement.lang = lang;
-  try { localStorage.setItem('portfolio-language', lang); } catch (_) {}
-  if (lang === 'en' && /^\/projects\/posts\//.test(url.pathname)) {
-    location.replace('/?lang=en');
+  if (/^\/projects\/posts\//.test(url.pathname)) {
+    location.replace('/');
     return;
   }
   var english = window.siteEnglish || { phrases: {}, pages: {}, projects: {} };
@@ -18,7 +14,6 @@
   Object.keys(copy).forEach(function (key) { copy[key.replace(/[\u00a0\u202f]/g, ' ')] = copy[key]; });
   var assets = window.siteLanguageMedia || {};
   function t(value) {
-    if (lang !== 'en') return value;
     var trimmed = value.trim();
     var key = trimmed.replace(/[\u00a0\u202f]/g, ' ');
     if (copy[key]) return value.replace(trimmed, copy[key]);
@@ -41,12 +36,12 @@
   function localURL(value) {
     var target = new URL(value, location.href);
     if (target.origin !== location.origin) return value;
-    if (lang === 'en' && target.pathname === '/cv.pdf') {
+    if (target.pathname === '/cv.pdf') {
       target.pathname = '/cv-en.pdf';
       return target.pathname + target.search + target.hash;
     }
     if (!/\/$|\.html$/.test(target.pathname)) return value;
-    target.searchParams.set('lang', lang);
+    target.searchParams.delete('lang');
     return target.pathname + target.search + target.hash;
   }
   function mediaURL(value) {
@@ -86,7 +81,7 @@
       var content = node.getAttribute('content'), translatedContent = t(content);
       if (content !== translatedContent) node.setAttribute('content', translatedContent);
     }
-    if (node.tagName === 'A' && !node.hasAttribute('data-language-switch') && node.hasAttribute('href') && !node.getAttribute('href').startsWith('#')) {
+    if (node.tagName === 'A' && node.hasAttribute('href') && !node.getAttribute('href').startsWith('#')) {
       var href = node.getAttribute('href'), localized = localURL(href);
       if (href !== localized) node.setAttribute('href', localized);
     }
@@ -127,7 +122,7 @@
   window.siteLanguage = {
     current: lang, t: t, url: localURL, media: mediaURL, mediaPair: mediaPair,
     project: function (project) {
-      var localized = Object.assign({}, project, lang === 'en' ? english.projects[project.id] || {} : {});
+      var localized = Object.assign({}, project, english.projects[project.id] || {});
       if (project.feed) localized.feed = mediaPair(project.feed);
       return localized;
     }
@@ -143,33 +138,5 @@
   translate(document.documentElement);
   document.addEventListener('DOMContentLoaded', function () {
     translate(document.documentElement);
-    var header = document.querySelector('.site-header');
-    if (!header) return;
-    var next = lang === 'ru' ? 'en' : 'ru';
-    var target = new URL(location.href);
-    if (next === 'en' && /^\/projects\/posts\//.test(target.pathname)) target.pathname = '/';
-    target.searchParams.set('lang', next);
-    var switcher = document.createElement('a');
-    switcher.className = 'site-language btn btn--fill-glass-ui btn--size-chrome';
-    switcher.textContent = next.toUpperCase();
-    switcher.setAttribute('data-language-literal', '');
-    switcher.setAttribute('aria-label', next === 'en' ? 'Switch to English' : 'Переключить на русский');
-    switcher.hreflang = next;
-    switcher.href = target.pathname + target.search + target.hash;
-    // Keep language links intact when all other internal links inherit the locale.
-    switcher.setAttribute('data-language-switch', '');
-    var resume = header.querySelector('.site-header__cta');
-    var identity = header.querySelector('.site-header__identity');
-    var logo = header.querySelector('.site-header__logo');
-    var mobile = window.matchMedia('(width < 1000px)');
-    function placeLanguageSwitcher() {
-      // The desktop logo floats at the screen centre; on mobile it is in
-      // the identity row, so the language control must precede it there.
-      if (mobile.matches && identity && logo) identity.insertBefore(switcher, logo);
-      else header.insertBefore(switcher, resume ? resume.nextSibling : header.querySelector('.site-socials'));
-    }
-    placeLanguageSwitcher();
-    if (mobile.addEventListener) mobile.addEventListener('change', placeLanguageSwitcher);
-    else mobile.addListener(placeLanguageSwitcher);
   });
 })();

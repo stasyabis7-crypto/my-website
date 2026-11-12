@@ -261,9 +261,6 @@ html:not(.chrome--pinned) .site-socials {
 .site-header__logo { transition-property: top, scale, opacity, color; }
 html.chrome--on-hero .site-header__logo { color: #fff; }
 
-/* Language control participates in the shared header row on every width. */
-.site-language { pointer-events: auto; flex-shrink: 0; }
-
 /* The signature can cross the portrait/white-page boundary. Its white layer
    is clipped to the actual media overlap, rather than recolouring the header. */
 html[data-logo-adaptive] .site-header__logo { color: var(--color-text); }
