@@ -175,11 +175,38 @@ const movie = run('index.html', '?lang=en', undefined, false, { [source]: { ru: 
 assert.equal(movie.window.siteLanguage.mediaPair({ image: source, video: '/clip.mp4' }).video, '/clip-en.mp4');
 assert.deepEqual(variantPaths('/projects/case/covers/cover.webp', 'en'), ['/projects/case/covers/cover-en.webp']);
 assert.deepEqual(variantPaths('/projects/case/media/movie.mp4', 'ru'), ['/projects/case/media/movie-ru.mp4']);
-vm.runInContext(fs.readFileSync(path.join(root, 'projects/articles/articles-en.js'), 'utf8'), vm.createContext(en));
-assert.equal(en.window.portfolioEnglishArticles.length, 7);
-assert.equal(new Set(en.window.portfolioEnglishArticles.map(a => a.href)).size, 7);
+vm.runInContext(fs.readFileSync(path.join(root, 'projects/articles/articles.js'), 'utf8'), vm.createContext(en));
+assert.equal(en.window.portfolioArticles.length, 17);
+assert.equal(en.window.portfolioArticles.filter(article => article.language === 'en').length, 7);
+assert.equal(en.window.portfolioArticles.filter(article => article.language === 'ru').length, 10);
+assert.equal(new Set(en.window.portfolioArticles.map(a => a.href)).size, 17);
 const expected = ['57f6efab408a', 'c1a7bd1cd186', 'b1f4b625d1e7', 'ec37f61fa428', '58666230c9a7', 'e71d9671744f', 'b9b21faa723b'];
-for (const id of expected) assert(en.window.portfolioEnglishArticles.some(a => a.href.endsWith(id)));
+for (const id of expected) assert(en.window.portfolioArticles.some(a => a.href.endsWith(id)));
+// Preserve the former Russian-only publications alongside preferred English editions.
+const russianIDs = ['1828292', '1237967', '1306587', '1169783', '1168304', '635298', '855954', '1212420', '1194004', '841766'];
+for (const id of russianIDs) assert(en.window.portfolioArticles.some(article => article.language === 'ru' && article.href.includes(id)));
+const articleList = { innerHTML: '' };
+vm.runInNewContext(fs.readFileSync(path.join(root, 'components/article-catalog/article-catalog.js'), 'utf8'), {
+  window: en.window, document: { querySelector() { return articleList; } }
+});
+const renderedArticles = adapt(parse5.parseFragment(articleList.innerHTML));
+const articleLinks = find(renderedArticles, node => node.tagName === 'A');
+const languageBadges = find(renderedArticles, node => node.nodeType === 1 && (node.className || '').includes('article-tile__language'));
+assert.equal(articleLinks.length, 17);
+assert.equal(languageBadges.length, 17);
+for (const [index, article] of en.window.portfolioArticles.entries()) {
+  assert.equal(articleLinks[index].getAttribute('href'), article.href);
+  assert.equal(articleLinks[index].getAttribute('hreflang'), article.language);
+  assert.equal(textNodes(languageBadges[index]).join(''), article.language.toUpperCase());
+  assert(!languageBadges[index].className.split(' ').includes('btn'));
+  const cover = fs.readFileSync(path.join(root, article.image), 'utf8');
+  assert(article.image.endsWith('-diagram.svg'));
+  assert(!article.video);
+  assert.deepEqual([...cover.matchAll(/stroke="([^"]+)"/g)].map(match => match[1]), ['#000000']);
+}
+const staticArticles = run('projects/articles/index.html');
+const staticArticleLinks = find(staticArticles.tree, node => node.tagName === 'A' && node.hasAttribute('hreflang'));
+assert.deepEqual(staticArticleLinks.map(node => node.getAttribute('href')), Array.from(en.window.portfolioArticles, article => article.href));
 // Audit every translated public page, including metadata and accessible names.
 for (const pathname of Object.keys(en.window.siteEnglish.pages)) {
   if (pathname === '/projects/posts/') continue;
@@ -215,4 +242,4 @@ for (const lang of ['ru', 'en']) {
 }
 const menu = fs.readFileSync(path.join(root, 'components/site-chrome/site-chrome.js'), 'utf8');
 assert(menu.includes("item.href !== '/projects/posts/'"));
-console.log('English-only site: legacy links, unavailable storage, dynamic content, all public page text and metadata, nine metrics, animated number formats, media fallbacks and seven English articles verified.');
+console.log('English-only site: legacy links, unavailable storage, dynamic content, all public page text and metadata, nine metrics, animated number formats, media fallbacks and 17 articles, preferred English editions and language badges verified.');

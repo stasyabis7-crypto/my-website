@@ -38,11 +38,11 @@ function inventory() {
   }
   visit('');
   const context = { window: {} };
-  for (const file of ['pages/home/data/projects.js', 'projects/articles/articles-en.js']) vm.runInNewContext(fs.readFileSync(path.join(root, file), 'utf8'), context);
+  for (const file of ['pages/home/data/projects.js', 'projects/articles/articles.js']) vm.runInNewContext(fs.readFileSync(path.join(root, file), 'utf8'), context);
   for (const project of context.window.portfolioProjects) {
     for (const data of [project, project.feed]) if (data) for (const key of ['image', 'video']) add(data[key], 'pages/home/data/projects.js');
   }
-  for (const article of context.window.portfolioEnglishArticles) for (const key of ['image', 'video']) add(article[key], 'projects/articles/articles-en.js');
+  for (const article of context.window.portfolioArticles) for (const key of ['image', 'video']) add(article[key], 'projects/articles/articles.js');
   return [...sources].sort(([a], [b]) => a.localeCompare(b)).map(([source, owners]) => {
     const planned = {}, active = {};
     for (const lang of ['ru', 'en']) {

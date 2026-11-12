@@ -12,81 +12,73 @@ window.siteLanguageMedia = {
     "ru": "/pages/home/assets/ozon/4-original.webp",
     "en": "/pages/home/assets/ozon/4-original.webp"
   },
-  "/projects/articles/covers/bystander-effect.webp": {
-    "ru": "/projects/articles/covers/bystander-effect.webp",
-    "en": "/projects/articles/covers/bystander-effect.webp"
+  "/projects/articles/covers/bystander-effect-diagram.svg": {
+    "ru": "/projects/articles/covers/bystander-effect-diagram.svg",
+    "en": "/projects/articles/covers/bystander-effect-diagram.svg"
   },
-  "/projects/articles/covers/date-selector-motion-poster.webp": {
-    "ru": "/projects/articles/covers/date-selector-motion-poster.webp",
-    "en": "/projects/articles/covers/date-selector-motion-poster.webp"
+  "/projects/articles/covers/date-selector-diagram.svg": {
+    "ru": "/projects/articles/covers/date-selector-diagram.svg",
+    "en": "/projects/articles/covers/date-selector-diagram.svg"
   },
-  "/projects/articles/covers/date-selector-motion.mp4": {
-    "ru": "/projects/articles/covers/date-selector-motion.mp4",
-    "en": "/projects/articles/covers/date-selector-motion.mp4"
+  "/projects/articles/covers/design-weekend-suzdal-2023-diagram.svg": {
+    "ru": "/projects/articles/covers/design-weekend-suzdal-2023-diagram.svg",
+    "en": "/projects/articles/covers/design-weekend-suzdal-2023-diagram.svg"
   },
-  "/projects/articles/covers/design-weekend-suzdal-2023.webp": {
-    "ru": "/projects/articles/covers/design-weekend-suzdal-2023.webp",
-    "en": "/projects/articles/covers/design-weekend-suzdal-2023.webp"
+  "/projects/articles/covers/designers-workflow-diagram.svg": {
+    "ru": "/projects/articles/covers/designers-workflow-diagram.svg",
+    "en": "/projects/articles/covers/designers-workflow-diagram.svg"
   },
-  "/projects/articles/covers/designers-workflow-placeholder.svg": {
-    "ru": "/projects/articles/covers/designers-workflow-placeholder.svg",
-    "en": "/projects/articles/covers/designers-workflow-placeholder.svg"
+  "/projects/articles/covers/designprosmotr-2023-diagram.svg": {
+    "ru": "/projects/articles/covers/designprosmotr-2023-diagram.svg",
+    "en": "/projects/articles/covers/designprosmotr-2023-diagram.svg"
   },
-  "/projects/articles/covers/designprosmotr-2023.webp": {
-    "ru": "/projects/articles/covers/designprosmotr-2023.webp",
-    "en": "/projects/articles/covers/designprosmotr-2023.webp"
+  "/projects/articles/covers/designprosmotr-2024-diagram.svg": {
+    "ru": "/projects/articles/covers/designprosmotr-2024-diagram.svg",
+    "en": "/projects/articles/covers/designprosmotr-2024-diagram.svg"
   },
-  "/projects/articles/covers/designprosmotr-2024.webp": {
-    "ru": "/projects/articles/covers/designprosmotr-2024.webp",
-    "en": "/projects/articles/covers/designprosmotr-2024.webp"
+  "/projects/articles/covers/dump-2024-diagram.svg": {
+    "ru": "/projects/articles/covers/dump-2024-diagram.svg",
+    "en": "/projects/articles/covers/dump-2024-diagram.svg"
   },
-  "/projects/articles/covers/dump-2024.webp": {
-    "ru": "/projects/articles/covers/dump-2024.webp",
-    "en": "/projects/articles/covers/dump-2024.webp"
+  "/projects/articles/covers/inclusive-design-diagram.svg": {
+    "ru": "/projects/articles/covers/inclusive-design-diagram.svg",
+    "en": "/projects/articles/covers/inclusive-design-diagram.svg"
   },
-  "/projects/articles/covers/inclusive-design.webp": {
-    "ru": "/projects/articles/covers/inclusive-design.webp",
-    "en": "/projects/articles/covers/inclusive-design.webp"
+  "/projects/articles/covers/insula-ancient-rome-diagram.svg": {
+    "ru": "/projects/articles/covers/insula-ancient-rome-diagram.svg",
+    "en": "/projects/articles/covers/insula-ancient-rome-diagram.svg"
   },
-  "/projects/articles/covers/insula-ancient-rome.webp": {
-    "ru": "/projects/articles/covers/insula-ancient-rome.webp",
-    "en": "/projects/articles/covers/insula-ancient-rome.webp"
+  "/projects/articles/covers/japan-trip-2024-diagram.svg": {
+    "ru": "/projects/articles/covers/japan-trip-2024-diagram.svg",
+    "en": "/projects/articles/covers/japan-trip-2024-diagram.svg"
   },
-  "/projects/articles/covers/japan-trip-2024.webp": {
-    "ru": "/projects/articles/covers/japan-trip-2024.webp",
-    "en": "/projects/articles/covers/japan-trip-2024.webp"
+  "/projects/articles/covers/lottie-plugin-diagram.svg": {
+    "ru": "/projects/articles/covers/lottie-plugin-diagram.svg",
+    "en": "/projects/articles/covers/lottie-plugin-diagram.svg"
   },
-  "/projects/articles/covers/lottie-plugin.gif": {
-    "ru": "/projects/articles/covers/lottie-plugin.gif",
-    "en": "/projects/articles/covers/lottie-plugin.gif"
+  "/projects/articles/covers/markthal-diagram.svg": {
+    "ru": "/projects/articles/covers/markthal-diagram.svg",
+    "en": "/projects/articles/covers/markthal-diagram.svg"
   },
-  "/projects/articles/covers/markthal.webp": {
-    "ru": "/projects/articles/covers/markthal.webp",
-    "en": "/projects/articles/covers/markthal.webp"
+  "/projects/articles/covers/product-designer-interview-diagram.svg": {
+    "ru": "/projects/articles/covers/product-designer-interview-diagram.svg",
+    "en": "/projects/articles/covers/product-designer-interview-diagram.svg"
   },
-  "/projects/articles/covers/product-designer-interview.webp": {
-    "ru": "/projects/articles/covers/product-designer-interview.webp",
-    "en": "/projects/articles/covers/product-designer-interview.webp"
+  "/projects/articles/covers/product-metrics-diagram.svg": {
+    "ru": "/projects/articles/covers/product-metrics-diagram.svg",
+    "en": "/projects/articles/covers/product-metrics-diagram.svg"
   },
-  "/projects/articles/covers/product-metrics.webp": {
-    "ru": "/projects/articles/covers/product-metrics.webp",
-    "en": "/projects/articles/covers/product-metrics.webp"
+  "/projects/articles/covers/skill-sets-diagram.svg": {
+    "ru": "/projects/articles/covers/skill-sets-diagram.svg",
+    "en": "/projects/articles/covers/skill-sets-diagram.svg"
   },
-  "/projects/articles/covers/skill-sets.webp": {
-    "ru": "/projects/articles/covers/skill-sets.webp",
-    "en": "/projects/articles/covers/skill-sets.webp"
+  "/projects/articles/covers/text-input-diagram.svg": {
+    "ru": "/projects/articles/covers/text-input-diagram.svg",
+    "en": "/projects/articles/covers/text-input-diagram.svg"
   },
-  "/projects/articles/covers/text-input-motion-poster.webp": {
-    "ru": "/projects/articles/covers/text-input-motion-poster.webp",
-    "en": "/projects/articles/covers/text-input-motion-poster.webp"
-  },
-  "/projects/articles/covers/text-input-motion.mp4": {
-    "ru": "/projects/articles/covers/text-input-motion.mp4",
-    "en": "/projects/articles/covers/text-input-motion.mp4"
-  },
-  "/projects/articles/covers/triz.webp": {
-    "ru": "/projects/articles/covers/triz.webp",
-    "en": "/projects/articles/covers/triz.webp"
+  "/projects/articles/covers/triz-diagram.svg": {
+    "ru": "/projects/articles/covers/triz-diagram.svg",
+    "en": "/projects/articles/covers/triz-diagram.svg"
   },
   "/projects/avito-charity/about-company/covers/cover.webp": {
     "ru": "/projects/avito-charity/about-company/covers/cover.webp",

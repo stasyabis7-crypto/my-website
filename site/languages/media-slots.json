@@ -45,276 +45,257 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/bystander-effect.webp",
+    "source": "/projects/articles/covers/bystander-effect-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/bystander-effect-ru.webp",
-      "en": "/projects/articles/covers/bystander-effect-en.webp"
+      "ru": "/projects/articles/covers/bystander-effect-diagram-ru.webp",
+      "en": "/projects/articles/covers/bystander-effect-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/bystander-effect.webp",
-      "en": "/projects/articles/covers/bystander-effect.webp"
+      "ru": "/projects/articles/covers/bystander-effect-diagram.svg",
+      "en": "/projects/articles/covers/bystander-effect-diagram.svg"
     },
     "pages": [
-      "projects/articles/articles-en.js",
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/date-selector-motion-poster.webp",
+    "source": "/projects/articles/covers/date-selector-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/date-selector-motion-poster-ru.webp",
-      "en": "/projects/articles/covers/date-selector-motion-poster-en.webp"
+      "ru": "/projects/articles/covers/date-selector-diagram-ru.webp",
+      "en": "/projects/articles/covers/date-selector-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/date-selector-motion-poster.webp",
-      "en": "/projects/articles/covers/date-selector-motion-poster.webp"
+      "ru": "/projects/articles/covers/date-selector-diagram.svg",
+      "en": "/projects/articles/covers/date-selector-diagram.svg"
     },
     "pages": [
-      "projects/articles/articles-en.js",
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/date-selector-motion.mp4",
+    "source": "/projects/articles/covers/design-weekend-suzdal-2023-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/date-selector-motion-ru.mp4",
-      "en": "/projects/articles/covers/date-selector-motion-en.mp4"
+      "ru": "/projects/articles/covers/design-weekend-suzdal-2023-diagram-ru.webp",
+      "en": "/projects/articles/covers/design-weekend-suzdal-2023-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/date-selector-motion.mp4",
-      "en": "/projects/articles/covers/date-selector-motion.mp4"
+      "ru": "/projects/articles/covers/design-weekend-suzdal-2023-diagram.svg",
+      "en": "/projects/articles/covers/design-weekend-suzdal-2023-diagram.svg"
     },
     "pages": [
-      "projects/articles/articles-en.js",
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/design-weekend-suzdal-2023.webp",
+    "source": "/projects/articles/covers/designers-workflow-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/design-weekend-suzdal-2023-ru.webp",
-      "en": "/projects/articles/covers/design-weekend-suzdal-2023-en.webp"
+      "ru": "/projects/articles/covers/designers-workflow-diagram-ru.webp",
+      "en": "/projects/articles/covers/designers-workflow-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/design-weekend-suzdal-2023.webp",
-      "en": "/projects/articles/covers/design-weekend-suzdal-2023.webp"
+      "ru": "/projects/articles/covers/designers-workflow-diagram.svg",
+      "en": "/projects/articles/covers/designers-workflow-diagram.svg"
     },
     "pages": [
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/designers-workflow-placeholder.svg",
+    "source": "/projects/articles/covers/designprosmotr-2023-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/designers-workflow-placeholder-ru.webp",
-      "en": "/projects/articles/covers/designers-workflow-placeholder-en.webp"
+      "ru": "/projects/articles/covers/designprosmotr-2023-diagram-ru.webp",
+      "en": "/projects/articles/covers/designprosmotr-2023-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/designers-workflow-placeholder.svg",
-      "en": "/projects/articles/covers/designers-workflow-placeholder.svg"
+      "ru": "/projects/articles/covers/designprosmotr-2023-diagram.svg",
+      "en": "/projects/articles/covers/designprosmotr-2023-diagram.svg"
     },
     "pages": [
-      "projects/articles/articles-en.js"
-    ]
-  },
-  {
-    "source": "/projects/articles/covers/designprosmotr-2023.webp",
-    "planned": {
-      "ru": "/projects/articles/covers/designprosmotr-2023-ru.webp",
-      "en": "/projects/articles/covers/designprosmotr-2023-en.webp"
-    },
-    "active": {
-      "ru": "/projects/articles/covers/designprosmotr-2023.webp",
-      "en": "/projects/articles/covers/designprosmotr-2023.webp"
-    },
-    "pages": [
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/designprosmotr-2024.webp",
+    "source": "/projects/articles/covers/designprosmotr-2024-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/designprosmotr-2024-ru.webp",
-      "en": "/projects/articles/covers/designprosmotr-2024-en.webp"
+      "ru": "/projects/articles/covers/designprosmotr-2024-diagram-ru.webp",
+      "en": "/projects/articles/covers/designprosmotr-2024-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/designprosmotr-2024.webp",
-      "en": "/projects/articles/covers/designprosmotr-2024.webp"
+      "ru": "/projects/articles/covers/designprosmotr-2024-diagram.svg",
+      "en": "/projects/articles/covers/designprosmotr-2024-diagram.svg"
     },
     "pages": [
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/dump-2024.webp",
+    "source": "/projects/articles/covers/dump-2024-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/dump-2024-ru.webp",
-      "en": "/projects/articles/covers/dump-2024-en.webp"
+      "ru": "/projects/articles/covers/dump-2024-diagram-ru.webp",
+      "en": "/projects/articles/covers/dump-2024-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/dump-2024.webp",
-      "en": "/projects/articles/covers/dump-2024.webp"
+      "ru": "/projects/articles/covers/dump-2024-diagram.svg",
+      "en": "/projects/articles/covers/dump-2024-diagram.svg"
     },
     "pages": [
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/inclusive-design.webp",
+    "source": "/projects/articles/covers/inclusive-design-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/inclusive-design-ru.webp",
-      "en": "/projects/articles/covers/inclusive-design-en.webp"
+      "ru": "/projects/articles/covers/inclusive-design-diagram-ru.webp",
+      "en": "/projects/articles/covers/inclusive-design-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/inclusive-design.webp",
-      "en": "/projects/articles/covers/inclusive-design.webp"
+      "ru": "/projects/articles/covers/inclusive-design-diagram.svg",
+      "en": "/projects/articles/covers/inclusive-design-diagram.svg"
     },
     "pages": [
-      "projects/articles/articles-en.js",
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/insula-ancient-rome.webp",
+    "source": "/projects/articles/covers/insula-ancient-rome-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/insula-ancient-rome-ru.webp",
-      "en": "/projects/articles/covers/insula-ancient-rome-en.webp"
+      "ru": "/projects/articles/covers/insula-ancient-rome-diagram-ru.webp",
+      "en": "/projects/articles/covers/insula-ancient-rome-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/insula-ancient-rome.webp",
-      "en": "/projects/articles/covers/insula-ancient-rome.webp"
+      "ru": "/projects/articles/covers/insula-ancient-rome-diagram.svg",
+      "en": "/projects/articles/covers/insula-ancient-rome-diagram.svg"
     },
     "pages": [
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/japan-trip-2024.webp",
+    "source": "/projects/articles/covers/japan-trip-2024-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/japan-trip-2024-ru.webp",
-      "en": "/projects/articles/covers/japan-trip-2024-en.webp"
+      "ru": "/projects/articles/covers/japan-trip-2024-diagram-ru.webp",
+      "en": "/projects/articles/covers/japan-trip-2024-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/japan-trip-2024.webp",
-      "en": "/projects/articles/covers/japan-trip-2024.webp"
+      "ru": "/projects/articles/covers/japan-trip-2024-diagram.svg",
+      "en": "/projects/articles/covers/japan-trip-2024-diagram.svg"
     },
     "pages": [
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/lottie-plugin.gif",
+    "source": "/projects/articles/covers/lottie-plugin-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/lottie-plugin-ru.webp",
-      "en": "/projects/articles/covers/lottie-plugin-en.webp"
+      "ru": "/projects/articles/covers/lottie-plugin-diagram-ru.webp",
+      "en": "/projects/articles/covers/lottie-plugin-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/lottie-plugin.gif",
-      "en": "/projects/articles/covers/lottie-plugin.gif"
+      "ru": "/projects/articles/covers/lottie-plugin-diagram.svg",
+      "en": "/projects/articles/covers/lottie-plugin-diagram.svg"
     },
     "pages": [
-      "projects/articles/articles-en.js",
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/markthal.webp",
+    "source": "/projects/articles/covers/markthal-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/markthal-ru.webp",
-      "en": "/projects/articles/covers/markthal-en.webp"
+      "ru": "/projects/articles/covers/markthal-diagram-ru.webp",
+      "en": "/projects/articles/covers/markthal-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/markthal.webp",
-      "en": "/projects/articles/covers/markthal.webp"
+      "ru": "/projects/articles/covers/markthal-diagram.svg",
+      "en": "/projects/articles/covers/markthal-diagram.svg"
     },
     "pages": [
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/product-designer-interview.webp",
+    "source": "/projects/articles/covers/product-designer-interview-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/product-designer-interview-ru.webp",
-      "en": "/projects/articles/covers/product-designer-interview-en.webp"
+      "ru": "/projects/articles/covers/product-designer-interview-diagram-ru.webp",
+      "en": "/projects/articles/covers/product-designer-interview-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/product-designer-interview.webp",
-      "en": "/projects/articles/covers/product-designer-interview.webp"
+      "ru": "/projects/articles/covers/product-designer-interview-diagram.svg",
+      "en": "/projects/articles/covers/product-designer-interview-diagram.svg"
     },
     "pages": [
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/product-metrics.webp",
+    "source": "/projects/articles/covers/product-metrics-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/product-metrics-ru.webp",
-      "en": "/projects/articles/covers/product-metrics-en.webp"
+      "ru": "/projects/articles/covers/product-metrics-diagram-ru.webp",
+      "en": "/projects/articles/covers/product-metrics-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/product-metrics.webp",
-      "en": "/projects/articles/covers/product-metrics.webp"
+      "ru": "/projects/articles/covers/product-metrics-diagram.svg",
+      "en": "/projects/articles/covers/product-metrics-diagram.svg"
     },
     "pages": [
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/skill-sets.webp",
+    "source": "/projects/articles/covers/skill-sets-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/skill-sets-ru.webp",
-      "en": "/projects/articles/covers/skill-sets-en.webp"
+      "ru": "/projects/articles/covers/skill-sets-diagram-ru.webp",
+      "en": "/projects/articles/covers/skill-sets-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/skill-sets.webp",
-      "en": "/projects/articles/covers/skill-sets.webp"
+      "ru": "/projects/articles/covers/skill-sets-diagram.svg",
+      "en": "/projects/articles/covers/skill-sets-diagram.svg"
     },
     "pages": [
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/text-input-motion-poster.webp",
+    "source": "/projects/articles/covers/text-input-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/text-input-motion-poster-ru.webp",
-      "en": "/projects/articles/covers/text-input-motion-poster-en.webp"
+      "ru": "/projects/articles/covers/text-input-diagram-ru.webp",
+      "en": "/projects/articles/covers/text-input-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/text-input-motion-poster.webp",
-      "en": "/projects/articles/covers/text-input-motion-poster.webp"
+      "ru": "/projects/articles/covers/text-input-diagram.svg",
+      "en": "/projects/articles/covers/text-input-diagram.svg"
     },
     "pages": [
-      "projects/articles/articles-en.js",
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
   {
-    "source": "/projects/articles/covers/text-input-motion.mp4",
+    "source": "/projects/articles/covers/triz-diagram.svg",
     "planned": {
-      "ru": "/projects/articles/covers/text-input-motion-ru.mp4",
-      "en": "/projects/articles/covers/text-input-motion-en.mp4"
+      "ru": "/projects/articles/covers/triz-diagram-ru.webp",
+      "en": "/projects/articles/covers/triz-diagram-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/text-input-motion.mp4",
-      "en": "/projects/articles/covers/text-input-motion.mp4"
+      "ru": "/projects/articles/covers/triz-diagram.svg",
+      "en": "/projects/articles/covers/triz-diagram.svg"
     },
     "pages": [
-      "projects/articles/articles-en.js",
-      "projects/articles/index.html"
-    ]
-  },
-  {
-    "source": "/projects/articles/covers/triz.webp",
-    "planned": {
-      "ru": "/projects/articles/covers/triz-ru.webp",
-      "en": "/projects/articles/covers/triz-en.webp"
-    },
-    "active": {
-      "ru": "/projects/articles/covers/triz.webp",
-      "en": "/projects/articles/covers/triz.webp"
-    },
-    "pages": [
-      "projects/articles/articles-en.js",
+      "projects/articles/articles.js",
       "projects/articles/index.html"
     ]
   },
