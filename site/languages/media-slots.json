@@ -792,6 +792,34 @@
     ]
   },
   {
+    "source": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-en.mp4",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-en-ru.mp4",
+      "en": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-en-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-en.mp4",
+      "en": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-en.mp4"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-poster.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-poster-ru.webp",
+      "en": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-poster.webp",
+      "en": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-poster.webp"
+    },
+    "pages": [
+      "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
     "source": "/projects/avito-charity/subscription/media/entry-points/entry-1.webp",
     "planned": {
       "ru": "/projects/avito-charity/subscription/media/entry-points/entry-1-ru.webp",
