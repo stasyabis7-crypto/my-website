@@ -44,6 +44,9 @@
   ─── .cg-item — пункт ряда: крупный номер и текст; в колонках — линия
       слева, на телефоне — строка с линией сверху. --stat — метрика:
       число, под ним подпись ────────────────────────────────────────────
+  ─── .cg-result — нумерованный результат: текст слева, сравнение цели и
+      факта справа; на телефоне — последовательно. .cg-bars — столбики
+      от нулевой базы, значения --bar-value / --bar-max задаются в HTML ───
   ─── .cg-stub — заглушка будущего кадра: серое поле в его пропорциях
       (--stub-ratio) с подписью размера ─────────────────────────────────
   ─── .cg-list — поля «подпись — значение» ──────────────────────────────
@@ -381,4 +384,37 @@
   .cg-list,
   .cg-list > * { display: block; }
   .cg-list > * + * { margin-top: 20px; }
+}
+
+/* Numbered results share the parent grid: copy left, chart right;
+   the existing mobile grid stacks them in document order. */
+.cg-result.cg {
+  grid-template-columns: subgrid;
+  padding-top: 32px;
+  border-top: 1px solid var(--color-border);
+}
+.cg-result__chart {
+  max-width: 640px;
+  margin: 0;
+}
+.cg-result__chart > .text-display-lg { margin-top: 16px; }
+.cg-result__chart > .text-body { margin-top: 8px; }
+.cg-bars { margin-top: 32px; }
+.cg-bars__row + .cg-bars__row { margin-top: 24px; }
+.cg-bars__label {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 10px;
+  font-variant-numeric: tabular-nums;
+}
+.cg-bars__bar {
+  box-sizing: border-box;
+  width: calc(100% * var(--bar-value) / var(--bar-max));
+  height: 10px;
+  background: var(--color-text);
+}
+.cg-bars__bar--target {
+  border: 1px solid var(--color-text);
+  background: transparent;
 }

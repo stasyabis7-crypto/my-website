@@ -99,8 +99,7 @@ for (const file of ['index.html', 'about/index.html', 'projects/ozon-crm/custome
 console.log('English-only entry points: defaults, old RU/EN links, stored preferences and mobile/desktop headers verified.');
 const metricCases = [
   ['projects/ozon-crm/customer-segments/index.html', ['15%', '≈1M', '13%']],
-  ['projects/avito-charity/recycle-map/index.html', ['306K', '1.5–3K', 'Up to 70']],
-  ['projects/avito-charity/subscription/index.html', ['≈55', '+64%', '≈1,300']]
+  ['projects/avito-charity/recycle-map/index.html', ['306K', '1.5–3K', 'Up to 70']]
 ];
 for (const [file, expectedValues] of metricCases) {
   const page = run(file);
@@ -115,6 +114,23 @@ for (const [file, expectedValues] of metricCases) {
   assert.equal(page.window.siteLanguage.t('≈1\u202fмлн'), '≈1M');
   assert.equal(page.window.siteLanguage.t('Продавцов используют CRM ежемесячно, в 1,5 раза выше цели'), 'Sellers use CRM monthly, 1.5\u00a0times the target');
 }
+
+// Subscription results compare measured outcomes with their targets.
+const subscriptionResults = run('projects/avito-charity/subscription/index.html');
+const resultRows = find(subscriptionResults.tree, node => node.nodeType === 1 && node.className.split(' ').includes('cg-result'));
+assert.equal(resultRows.length, 2);
+for (const [index, expected] of [[100, 130], [50, 55]].entries()) {
+  const row = resultRows[index];
+  const bars = find(row, node => node.nodeType === 1 && node.className.split(' ').includes('cg-bars__bar'));
+  assert.deepEqual(bars.map(node => Number(node.getAttribute('style').match(/--bar-value: (\d+)/)[1])), expected);
+  const chart = find(row, node => node.tagName === 'FIGURE')[0];
+  assert(chart.getAttribute('aria-label').includes(index === 0 ? '30%' : '10%'));
+  const scale = find(row, node => node.nodeType === 1 && node.className === 'cg-bars')[0];
+  assert.equal(Number(scale.getAttribute('style').match(/--bar-max: (\d+)/)[1]), expected[1]);
+}
+const emphasizedResults = find(subscriptionResults.tree, node => node.tagName === 'STRONG').map(node => textNodes(node).join(''));
+for (const value of ['30%', '50', '55', '10%', '64%']) assert(emphasizedResults.includes(value));
+assert(textNodes(resultRows[1]).join(' ').includes('second and third payments'));
 
 const en = run('index.html');
 assert.equal(en.html.lang, 'en');
@@ -242,4 +258,4 @@ for (const lang of ['ru', 'en']) {
 }
 const menu = fs.readFileSync(path.join(root, 'components/site-chrome/site-chrome.js'), 'utf8');
 assert(menu.includes("item.href !== '/projects/posts/'"));
-console.log('English-only site: legacy links, unavailable storage, dynamic content, all public page text and metadata, nine metrics, animated number formats, media fallbacks and 17 articles, preferred English editions and language badges verified.');
+console.log('English-only site: legacy links, unavailable storage, dynamic content, all public page text and metadata, six metrics, two result comparisons, animated number formats, media fallbacks and 17 articles, preferred English editions and language badges verified.');

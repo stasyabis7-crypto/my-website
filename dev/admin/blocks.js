@@ -75,6 +75,31 @@
         item('03', ' cg-t3', 'text-display-lg', '✎ Третий пункт'))
     },
     {
+      id: 'result-comparison', name: 'Результат с графиком', scope: 'page',
+      hint: 'Крупный номер, текст слева и график цели и факта справа; на телефоне — друг за другом.',
+      needs: 'Текст и значения цели и факта. В графике задайте --bar-value и общий --bar-max.',
+      scheme: [[0, 0, 6, 2, 'h'], [0, 3, 6, 5, 't'], [6, 3, 6, 5, 'm']],
+      html: section(intro('✎ Results', '') + `  <article class="cg-result cg" aria-label="Result 1">
+  <div class="cg-text cg-l"><p class="text-display-lg" aria-hidden="true">01</p><p class="text-body-lg">✎ Describe the result and highlight the <strong>key number</strong>.</p></div>
+  <figure class="cg-result__chart cg-r" aria-label="Example comparison: target 100%, actual 130%.">
+   <figcaption class="text-body">✎ Metric · % of target</figcaption>
+   <p class="text-display-lg">+30%</p>
+   <p class="text-body">above target</p>
+   <div class="cg-bars" style="--bar-max: 130">
+    <div class="cg-bars__row">
+     <p class="cg-bars__label text-body"><span>Target</span><span>100%</span></p>
+     <div class="cg-bars__track"><div class="cg-bars__bar cg-bars__bar--target" style="--bar-value: 100" aria-hidden="true"></div></div>
+    </div>
+    <div class="cg-bars__row">
+     <p class="cg-bars__label text-body"><span>Actual</span><span>130%</span></p>
+     <div class="cg-bars__track"><div class="cg-bars__bar" style="--bar-value: 130" aria-hidden="true"></div></div>
+    </div>
+   </div>
+  </figure>
+ </article>
+`)
+    },
+    {
       id: 'stats', name: 'Три метрики', scope: 'page',
       hint: 'Результаты: крупное число и подпись под ним.',
       needs: 'Только текст.',
