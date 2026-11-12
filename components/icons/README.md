@@ -14,7 +14,8 @@
 Новая общая иконка добавляется сюда с модификатором в `icons.css`.
 Иллюстрации, уникальные для содержания кейса, остаются в `projects/<кейс>/media/`.
 
-LinkedIn: официальный белый знак из [набора LinkedIn](https://brand.linkedin.com/downloads)
-(`in-logo.zip`, `InBug-White.png`), подготовленный в `social/linkedin.webp`
-общим `npm run images:prepare`. Маска использует тот же размер и `currentColor`,
-что и остальные социальные иконки.
+LinkedIn: `social/linkedin-round.svg` — круглая маска с уменьшенным знаком `in`,
+как у остальных социальных иконок. Вектор знака взят из
+[Bootstrap Icons](https://github.com/twbs/icons/blob/main/icons/linkedin.svg),
+лицензия MIT — `social/bootstrap-icons-license.txt`. Размер и цвет задаются общим
+компонентом. Официальный исходник `social/linkedin.webp` сохранён.

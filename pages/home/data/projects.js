@@ -96,8 +96,8 @@ window.portfolioProjects = [
     id: 'patient-app',
     soon: true,
     title: 'Medical app for everyone',
-    feed: { image: '/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800.webp', width: 1500, height: 1800 },
-    alt: 'Два экрана приложения для пациентов: накопленные баллы с графиком и анкета с выбором пола',
+    feed: { image: '/projects/swtec-medical/patient-app/covers/feed-cover-patient-points-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Patient app points screen with a bear avatar, level progress and a points chart',
     place: { c: 4, r: 3 }
   },
   {

@@ -120,8 +120,8 @@
 }
 
 .icon--social-linkedin {
-  -webkit-mask-image: url("./social/linkedin.webp");
-  mask-image: url("./social/linkedin.webp");
+  -webkit-mask-image: url("./social/linkedin-round.svg");
+  mask-image: url("./social/linkedin-round.svg");
 }
 
 .icon--social-dribbble {

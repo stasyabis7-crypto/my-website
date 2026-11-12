@@ -572,9 +572,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/swtec-medical/patient-app/covers/cover.webp",
     "en": "/projects/swtec-medical/patient-app/covers/cover.webp"
   },
-  "/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800.webp": {
-    "ru": "/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800-ru.webp",
-    "en": "/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800-en.webp"
+  "/projects/swtec-medical/patient-app/covers/feed-cover-patient-points-1500x1800.webp": {
+    "ru": "/projects/swtec-medical/patient-app/covers/feed-cover-patient-points-1500x1800.webp",
+    "en": "/projects/swtec-medical/patient-app/covers/feed-cover-patient-points-1500x1800.webp"
   },
   "/projects/swtec-medical/watches-patches/covers/cover.webp": {
     "ru": "/projects/swtec-medical/watches-patches/covers/cover.webp",

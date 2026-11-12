@@ -1184,7 +1184,7 @@ window.siteEnglish = {
     },
     "patient-app": {
       "title": "Medical app for everyone",
-      "alt": "Two screens of the patient app: earned points with a chart and a questionnaire with gender selection"
+      "alt": "Patient app points screen with a bear avatar, level progress and a points chart"
     },
     "minimum-price": {
       "title": "Set a discount on your products and manage prices on one page",
