@@ -236,9 +236,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/avito-charity/subscription/media/manage/manage-1-v2-1480x1600-ru.webp",
     "en": "/projects/avito-charity/subscription/media/manage/manage-1-v2-1480x1600-en.webp"
   },
-  "/projects/avito-charity/subscription/media/manage/manage-2-v2-1480x1600.webp": {
-    "ru": "/projects/avito-charity/subscription/media/manage/manage-2-v2-1480x1600-ru.webp",
-    "en": "/projects/avito-charity/subscription/media/manage/manage-2-v2-1480x1600-en.webp"
+  "/projects/avito-charity/subscription/media/manage/manage-subscription-kind-1480x1600.webp": {
+    "ru": "/projects/avito-charity/subscription/media/manage/manage-subscription-kind-1480x1600.webp",
+    "en": "/projects/avito-charity/subscription/media/manage/manage-subscription-kind-1480x1600.webp"
   },
   "/projects/avito-charity/subscription/media/results/bento-1.webp": {
     "ru": "/projects/avito-charity/subscription/media/results/bento-1-ru.webp",
