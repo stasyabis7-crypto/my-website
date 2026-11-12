@@ -153,7 +153,7 @@ assert.equal(run('projects/posts/index.html').redirect, '/');
 assert.equal(run('projects/posts/index.html', '?lang=ru').redirect, '/');
 const ru = run('index.html', '?lang=ru');
 assert(!textNodes(ru.tree).join(' ').includes('Резюме PDF'));
-assert(textNodes(ru.tree).join(' ').includes('Resume PDF'));
+assert(textNodes(ru.tree).join(' ').includes('CV PDF'));
 const enSubtitle = find(en.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').split(' ').includes('mood-subtitle'))[0];
 assert.equal(textNodes(enSubtitle).join(''), 'I believe that the design surrounding us undoubtedly reflects the quality of our lives');
 assert(!textNodes(en.tree).join(' ').includes('Резюме PDF'));

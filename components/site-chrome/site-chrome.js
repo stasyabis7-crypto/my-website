@@ -11,7 +11,7 @@
     var textWalker = document.createTreeWalker(resume, NodeFilter.SHOW_TEXT);
     var resumeText;
     while (textWalker.nextNode()) {
-      if (textWalker.currentNode.textContent.trim() === (document.documentElement.lang === 'en' ? 'Resume PDF' : 'Резюме PDF')) {
+      if (textWalker.currentNode.textContent.trim() === 'CV PDF') {
         resumeText = textWalker.currentNode;
         break;
       }
@@ -21,14 +21,14 @@
       function fitResumeLabel() {
         var style = getComputedStyle(resume);
         labelMeasure.font = style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily;
-        var labelWidth = labelMeasure.measureText(document.documentElement.lang === 'en' ? 'Resume PDF' : 'Резюме PDF').width;
-        labelWidth += (parseFloat(style.letterSpacing) || 0) * 9;
+        var labelWidth = labelMeasure.measureText('CV PDF').width;
+        labelWidth += (parseFloat(style.letterSpacing) || 0) * ('CV PDF'.length - 1);
         var icon = resume.querySelector('.icon');
         var required = labelWidth + parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
         if (icon) required += icon.getBoundingClientRect().width + (parseFloat(style.columnGap) || 0);
         var logo = document.querySelector('.site-header__logo');
         var constrained = innerWidth < 1000 && logo && logo.hidden;
-        var label = constrained && required > resume.clientWidth + 1 ? (document.documentElement.lang === 'en' ? 'Resume' : 'Резюме') : (document.documentElement.lang === 'en' ? 'Resume PDF' : 'Резюме PDF');
+        var label = constrained && required > resume.clientWidth + 1 ? 'CV' : 'CV PDF';
         if (resumeText.textContent !== label) resumeText.textContent = label;
       }
       new ResizeObserver(fitResumeLabel).observe(resume);
@@ -191,7 +191,7 @@
     var toggle = document.getElementById('site-socials-toggle');
 
     /* Мобилка/планшет (<1000px): переносим блок ВНУТРЬ .site-header (кнопка справа
-       от «Резюме PDF», раскладка — site-chrome.css). Десктоп: возвращаем
+       от «CV PDF», раскладка — site-chrome.css). Десктоп: возвращаем
        обратно в body сразу после хедера — там это position:fixed кнопка в
        правом верхнем углу, а внутри плашки с backdrop-filter fixed
        считался бы от самой плашки. */
@@ -378,7 +378,7 @@
   /* ---------- меню разделов ----------
      Десктоп (≥1200px, уже — наезжают на лого): пункты «Статьи»/«Посты»/«Playground» слева от «Связаться».
      Моб/планшет: кнопка-гамбургер рядом со «Связаться» открывает такую же
-     полноэкранную шторку, в ней пункты меню и «Резюме PDF» (в самом хедере
+     полноэкранную шторку, в ней пункты меню и «CV PDF» (в самом хедере
      резюме на этих ширинах скрыто, см. site-chrome.css). Открытый раздел
      помечен aria-current — зелёная точка из styles/buttons.css. */
   (function siteMenu() {
@@ -441,7 +441,7 @@
           cv.href = resume.href;
           cv.target = '_blank';
           cv.rel = 'noopener noreferrer';
-          cv.innerHTML = '<span class="icon icon--cv" aria-hidden="true"></span><span>Резюме PDF</span>';
+          cv.innerHTML = '<span class="icon icon--cv" aria-hidden="true"></span><span>CV PDF</span>';
           add(cv);
         }
       }
