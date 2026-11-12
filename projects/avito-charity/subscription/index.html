@@ -145,7 +145,7 @@ body {
   <aside class="work-toc work-toc--corner" aria-label="Навигация по проекту" hidden>
     <button class="btn btn--fill-toc-trigger btn--icon-only work-toc__toggle" type="button"
       aria-label="Оглавление проекта" aria-expanded="false" aria-controls="work-toc-panel">
-      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="concepts"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="settings"></span><span data-toc-marker="success"></span><span data-toc-marker="manage"></span><span data-toc-marker="summary-end"></span></span>
+      <span class="work-toc__bars" aria-hidden="true"><span data-toc-marker="summary"></span><span data-toc-marker="about"></span><span data-toc-marker="problems"></span><span data-toc-marker="before"></span><span data-toc-marker="concepts"></span><span data-toc-marker="research"></span><span data-toc-marker="entry-points"></span><span data-toc-marker="choose-fund"></span><span data-toc-marker="settings"></span><span data-toc-marker="success"></span><span data-toc-marker="manage"></span><span data-toc-marker="summary-end"></span></span>
       <span class="icon icon--menu work-toc__list-icon" aria-hidden="true"></span>
       <span class="icon icon--close work-toc__close-icon" aria-hidden="true"></span>
     </button>
@@ -156,6 +156,7 @@ body {
 <a class="btn btn--fill-toc" href="#problems"><span>Проблемы</span></a>
 <a class="btn btn--fill-toc" href="#before"><span>Новый сценарий</span></a>
 <a class="btn btn--fill-toc" href="#concepts"><span>Концепты</span></a>
+<a class="btn btn--fill-toc" href="#research"><span>Research</span></a>
 <a class="btn btn--fill-toc" href="#entry-points"><span>Точки входа</span></a>
 <a class="btn btn--fill-toc" href="#choose-fund"><span>Выбор фонда</span></a>
 <a class="btn btn--fill-toc" href="#settings"><span>Подключение подписки</span></a>
@@ -211,7 +212,16 @@ body {
 <section class="case-block cg" id="concepts" tabindex="-1">
  <div class="cg-intro"><h2 class="text-h1">Концепты</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle>My first hypothesis was that a shorter flow with less information about each charity would make it easier to sign up. I used our existing one-off flow as a reference and brought a shorter version into user interviews.</p></div></div>
  <figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural "><img src="media/concepts/2.webp" width="1600" height="2000" alt="Концепт настройки и благодарности" loading="lazy" /></div></figure>
- <p class="text-body-lg cg-r">The interviews challenged that hypothesis. People wanted to know what the charity did and see what it had achieved before committing to a monthly payment. After the UX-research I kept the setup compact but made the charity’s reports available before donors chose an amount.</p>
+</section>
+
+<section class="case-block cg" id="research" tabindex="-1">
+ <div class="cg-intro">
+  <h2 class="text-h1">Research</h2>
+  <div class="cg-intro__text"><p class="text-body-lg">The interviews challenged that hypothesis. People wanted to know what the charity did and see what it had achieved before committing to a monthly payment. After the UX-research I kept the setup compact but made the charity’s reports available before donors chose an amount.</p></div>
+ </div>
+ <div class="case-cover__media case-cover__media--natural cg-bleed">
+  <img src="/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp" width="2880" height="1800" alt="Kind Subscription in the Avito app" loading="lazy" />
+ </div>
 </section>
 
 <section class="case-block cg" id="entry-points" tabindex="-1">
@@ -227,7 +237,10 @@ body {
     <img src="media/entry-points/entry-2.webp?v=2" width="4272" height="2088" alt="Подписка на charity-лендинге" loading="lazy" />
   </div>
  </div>
- <p class="text-body-lg cg-r">После подачи объявления предлагаем помощь, когда основная задача уже завершена. В выдаче знакомим с подпиской через компактный баннер, а на charity-лендинге подробнее раскрываем условия.</p>
+ <div class="cg-text cg-r">
+  <p class="text-body-lg">После подачи объявления предлагаем помощь, когда основная задача уже завершена. В выдаче знакомим с подпиской через компактный баннер, а на charity-лендинге подробнее раскрываем условия.</p>
+  <p class="text-body-lg">We used AI models to invite people who had already donated a few times to offer the opportunity to automatize monthly donation subscription. Once they signed up, the amount they chose was donated automatically each month.</p>
+ </div>
 </section>
 
 <section class="case-block cg" id="choose-fund" tabindex="-1">
