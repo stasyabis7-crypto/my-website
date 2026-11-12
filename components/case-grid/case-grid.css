@@ -400,7 +400,6 @@
 }
 .cg-result__metric > * { display: block; }
 .cg-result__metric > .text-body { margin-top: 8px; }
-.cg-bars__caption.text-body { margin-bottom: 24px; }
 .cg-bars { margin-top: 32px; }
 .cg-bars__row + .cg-bars__row { margin-top: 24px; }
 .cg-bars__label {

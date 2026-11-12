@@ -57,7 +57,7 @@
 | Статические карточки разделов | `components/project-cards/project-cards.css/js`, HTML в `projects/` | Область ссылки на всю карточку и единая точка фокуса |
 | Первый экран раздела/кейса | `components/page-hero/page-hero.css/js`, `.project-hero` | Общая раскладка и поведение иллюстрации |
 | Блоки кейса | `components/case-blocks/case-blocks.css/js`, `.case-block` | Секции, медиа и карусель команды |
-| Результат с графиком | `components/case-grid/case-grid.css`, `.cg-result`, `.cg-bars`; заготовка `result-comparison` в `dev/admin/blocks.js` | Название метрики и текст слева, график справа; крупный заголовок и процент выровнены по первой базовой линии; на телефоне текст перед графиком. Столбики начинаются с нуля; `--bar-value` и общий `--bar-max` определяют пропорции. Типографика — роли ДС |
+| Результат с графиком | `components/case-grid/case-grid.css`, `.cg-result`, `.cg-bars`; заготовка `result-comparison` в `dev/admin/blocks.js` | Название метрики и текст слева, график справа; название и процент используют `.text-h2` ниже общего `.text-h1` Results и выровнены по первой базовой линии; на телефоне текст перед графиком. Столбики начинаются с нуля; `--bar-value` и общий `--bar-max` определяют пропорции. Типографика — роли ДС |
 | Карточки и слайдер кейса | `components/case-cards/case-cards.css/js`, `.case-card` | Появление и навигация слайдера |
 | Шапка, футер, контакты | `components/site-header/header.css`, `footer.css`, `site-chrome.css/js`, `layout-chrome.js` | Меню, закрытие по Escape/фону, фокус, навигация и hover |
 | Оглавление кейса | `components/case-toc/case-toc.css/js`, кнопки из ДС | Навигация по разделам и мобильная шторка |

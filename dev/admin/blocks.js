@@ -80,11 +80,10 @@
       needs: 'Текст и значения цели и факта. В графике задайте --bar-value и общий --bar-max.',
       scheme: [[0, 0, 6, 2, 'h'], [0, 3, 6, 5, 't'], [6, 3, 6, 5, 'm']],
       html: section(intro('✎ Results', '') + `  <article class="cg-result cg" aria-label="✎ Metric result">
-  <div class="cg-text cg-l"><h3 class="text-display">✎ Metric name</h3><p class="text-body-lg">✎ Describe the result and highlight the <strong>key number</strong>.</p></div>
+  <div class="cg-text cg-l"><h3 class="text-h2">✎ Metric name</h3><p class="text-body-lg">✎ Describe the result and highlight the <strong>key number</strong>.</p></div>
   <figure class="cg-result__chart cg-r" aria-label="Example comparison: target 100%, actual 130%.">
-   <figcaption class="cg-result__metric"><span class="text-display">+30%</span><span class="text-body">above target</span></figcaption>
+   <figcaption class="cg-result__metric"><span class="text-h2">+30%</span><span class="text-body">above target</span></figcaption>
    <div class="cg-bars" style="--bar-max: 130">
-    <p class="cg-bars__caption text-body">✎ Metric · % of target</p>
     <div class="cg-bars__row">
      <p class="cg-bars__label text-body"><span>Target</span><span>100%</span></p>
      <div class="cg-bars__track"><div class="cg-bars__bar cg-bars__bar--target" style="--bar-value: 100" aria-hidden="true"></div></div>
