@@ -1,7 +1,7 @@
 // English copy for the shared RU/EN service. Russian source text is the key.
 window.siteEnglish = {
   "phrases": {
-    "Старший продуктовый дизайнер с опытом 6 лет": "Senior Product Designer with 6 years of experience",
+    "Продуктовый дизайнер с опытом 6 лет": "Product Designer with 6 years of experience",
     "Старший продуктовый дизайнер Анастасия Вихарева": "Anastasia Vikhareva, Senior Product Designer",
     "Анастасия Вихарева": "Anastasia Vikhareva",
     "Смотреть работы": "View work",
@@ -464,7 +464,7 @@ window.siteEnglish = {
   },
   "pages": {
     "/": {
-      "Старший продуктовый дизайнер с опытом 6 лет": "Senior Product Designer with 6 years of experience",
+      "Продуктовый дизайнер с опытом 6 лет": "Product Designer with 6 years of experience",
       "Старший продуктовый дизайнер Анастасия Вихарева": "Anastasia Vikhareva, Senior Product Designer",
       "Анастасия Вихарева": "Anastasia Vikhareva",
       "Смотреть работы": "View work",
@@ -1160,54 +1160,54 @@ window.siteEnglish = {
   },
   "projects": {
     "customer-segments": {
-      "title": "CRM for Ozon sellers",
+      "title": "How to work with your audience as a seller",
       "description": "Customer segments and campaigns for sellers",
       "alt": "CRM section in the Ozon Seller account: repeat customers and segment recommendations"
     },
     "recycle-map": {
-      "title": "Recycling map",
+      "title": "Recycle things and save our planet",
       "description": "Finding a drop-off point, filters and favourites",
       "alt": "Avito recycling map on a laptop screen: drop-off points, categories and favourites"
     },
     "kind-subscription": {
-      "title": "Kind Subscription",
+      "title": "Help charities with monthly donation subscription",
       "description": "Monthly donation subscription to charities in the app",
       "alt": "Kind Subscription in the Avito app"
     },
     "about-company": {
-      "title": "Avito company landing page",
+      "title": "Wanna know more about Avito? Go to the website!",
       "alt": "A hand holding a phone with the Avito landing page: business areas — goods, cars, real estate, jobs"
     },
     "watches-patches": {
-      "title": "Medical app for smartwatches",
+      "title": "Keep track of your health right in the smartwatches",
       "alt": "Smartwatch showing vitals: heart rate 100 bpm, 10,757 steps, 2,345 kcal"
     },
     "patient-app": {
-      "title": "Medical app for patients",
+      "title": "Medical app for everyone",
       "alt": "Two screens of the patient app: earned points with a chart and a questionnaire with gender selection"
     },
     "minimum-price": {
-      "title": "Promotion boosting in pricing",
+      "title": "Set a discount on your products and manage prices on one page",
       "alt": "Promotion boosting in pricing: a card showing 22% with a green indicator"
     },
     "charity-profile": {
-      "title": "Charity in the user account",
+      "title": "Find out about charity products in your account",
       "alt": "A phone on green fabric showing the Avito #IHelp section: subscriptions, helping people, caring for nature"
     },
     "prices-table": {
-      "title": "Prices in the seller account",
+      "title": "Set prices to your products and manage your seller account",
       "alt": "Dark screen of the Ozon seller app: quantities, product prices, buyer price and search boosting"
     },
     "gamification": {
-      "title": "Gamification in the user account",
+      "title": "Gamification to make helping charities easier",
       "alt": "The “Doing good” block with tasks and points: donate to a charity, buy merch, support LizaAlert"
     },
     "doctor-dashboard": {
-      "title": "Dashboard for doctors",
+      "title": "Monitor your patient's health and collect data from different wearable devices",
       "alt": "Doctor dashboard: patient list with daily events and an hourly chart of a vital sign"
     },
     "employee-account": {
-      "title": "Employee account",
+      "title": "You work in a company and want to set up a vacation? Or check the office map? This is possible in one account",
       "alt": "Employee account: office floor plan and desk management"
     }
   }

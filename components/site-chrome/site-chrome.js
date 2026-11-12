@@ -218,6 +218,7 @@
     var ITEMS = [
       { label: 'Telegram', icon: 'telegram', href: 'https://t.me/stasyabis' },
       { label: EMAIL, icon: 'email', copy: EMAIL },
+      { label: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/in/stasyabis/' },
       { label: 'Dribbble', icon: 'dribbble', href: 'https://dribbble.com/Stasyabis' },
       { label: 'Figma community', icon: 'figma', href: 'https://www.figma.com/@stasyabis' },
       { label: 'Medium', icon: 'medium', href: 'https://medium.com/@stasyabis' },

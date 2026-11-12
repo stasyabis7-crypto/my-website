@@ -177,7 +177,7 @@ assert.equal(find(about.tree, node => node.nodeType === 1 && (node.getAttribute(
 assert.equal(find(about.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').includes('site-header__cta')).length, 0);
 assert.equal(find(about.tree, node => node.nodeType === 1 && node.hasAttribute('data-resume-link')).length, 1);
 const project = en.window.siteLanguage.project({ id: 'customer-segments', title: 'CRM для продавцов Ozon', feed: { image: '/original.webp' } });
-assert.equal(project.title, 'CRM for Ozon sellers');
+assert.equal(project.title, 'How to work with your audience as a seller');
 assert.equal(project.feed.image, '/original.webp');
 const slots = prepareLanguageAssets({ check: true });
 assert(slots.some(slot => slot.pages.includes('pages/home/data/projects.js')));

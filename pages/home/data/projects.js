@@ -37,7 +37,7 @@ window.portfolioProjects = [
   {
     id: 'customer-segments',
     feed: { image: '/projects/ozon-crm/customer-segments/covers/feed-cover-frame-2147239075-1800x2400.webp', width: 1800, height: 2400 },
-    title: 'CRM для продавцов Ozon',
+    title: 'How to work with your audience as a seller',
     description: 'Сегменты покупателей и рассылки для продавцов',
     href: '/projects/ozon-crm/customer-segments/',
     image: '/projects/ozon-crm/customer-segments/covers/cover-laptop-2880x1800.webp',
@@ -51,7 +51,7 @@ window.portfolioProjects = [
   {
     id: 'recycle-map',
     feed: { image: '/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp', width: 1500, height: 1800 },
-    title: 'Карта переработки вещей',
+    title: 'Recycle things and save our planet',
     description: 'Поиск пункта приёма, фильтры и избранное',
     href: '/projects/avito-charity/recycle-map/',
     image: '/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800.webp',
@@ -65,7 +65,7 @@ window.portfolioProjects = [
   {
     id: 'kind-subscription',
     feed: { image: '/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp', width: 1500, height: 1800 },
-    title: 'Добрая подписка',
+    title: 'Help charities with monthly donation subscription',
     description: 'Ежемесячная помощь фондам в приложении',
     href: '/projects/avito-charity/subscription/',
     image: '/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp',
@@ -79,7 +79,7 @@ window.portfolioProjects = [
   {
     id: 'about-company',
     soon: true,
-    title: 'Лендинг о компании Авито',
+    title: 'Wanna know more about Avito? Go to the website!',
     feed: { image: '/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Телефон в руке с лендингом Авито: пять бизнес-направлений — товары, авто, недвижимость, работа',
     place: { c: 1, r: 3 }
@@ -87,7 +87,7 @@ window.portfolioProjects = [
   {
     id: 'watches-patches',
     soon: true,
-    title: 'Медицинское приложение для часов',
+    title: 'Keep track of your health right in the smartwatches',
     feed: { image: '/projects/swtec-medical/watches-patches/covers/feed-cover-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Умные часы с экраном показателей: пульс 100 ударов в минуту, 10 757 шагов, 2 345 килокалорий',
     place: { c: 3, r: 3 }
@@ -95,7 +95,7 @@ window.portfolioProjects = [
   {
     id: 'patient-app',
     soon: true,
-    title: 'Медицинское приложение для пациентов',
+    title: 'Medical app for everyone',
     feed: { image: '/projects/swtec-medical/patient-app/covers/feed-cover-324719913-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Два экрана приложения для пациентов: накопленные баллы с графиком и анкета с выбором пола',
     place: { c: 4, r: 3 }
@@ -103,7 +103,7 @@ window.portfolioProjects = [
   {
     id: 'minimum-price',
     soon: true,
-    title: 'Бустинг акций в ценах',
+    title: 'Set a discount on your products and manage prices on one page',
     feed: { image: '/projects/ozon-prices/minimum-price/covers/feed-cover-frame-2147239076-1800x2400.webp', width: 1800, height: 2400 },
     alt: 'Бустинг акций в ценах: карточка с показателем 22% и зелёным индикатором',
     place: { c: 1, r: 4, big: true }
@@ -111,7 +111,7 @@ window.portfolioProjects = [
   {
     id: 'charity-profile',
     soon: true,
-    title: 'Благотворительность в ЛК',
+    title: 'Find out about charity products in your account',
     feed: { image: '/projects/avito-charity/charity-profile/covers/feed-cover-324719915-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Телефон на зелёной ткани с разделом «#яПомогаю» в Авито: подписки, поддержка людей, забота о природе',
     place: { c: 4, r: 4 }
@@ -119,7 +119,7 @@ window.portfolioProjects = [
   {
     id: 'prices-table',
     soon: true,
-    title: 'Цены в ЛК селлера',
+    title: 'Set prices to your products and manage your seller account',
     feed: { image: '/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Тёмный экран приложения продавца Ozon: кванты, цены товара, цена для покупателя и бустинг в поиске',
     place: { c: 1, r: 6 }
@@ -127,7 +127,7 @@ window.portfolioProjects = [
   {
     id: 'gamification',
     soon: true,
-    title: 'Геймификация в ЛК',
+    title: 'Gamification to make helping charities easier',
     feed: { image: '/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800.webp', width: 1500, height: 1800 },
     alt: 'Блок «Творим добро» со списком заданий и баллами: пожертвовать в фонд, купить мерч, поддержать «ЛизаАлерт»',
     place: { c: 2, r: 6 }
@@ -135,7 +135,7 @@ window.portfolioProjects = [
   {
     id: 'doctor-dashboard',
     soon: true,
-    title: 'Дашборд для врачей',
+    title: "Monitor your patient's health and collect data from different wearable devices",
     feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400.webp', width: 1800, height: 2400 },
     alt: 'Дашборд врача: список пациентов с событиями по дням и почасовой график показателя',
     place: { c: 3, r: 6, big: true }
@@ -143,7 +143,7 @@ window.portfolioProjects = [
   {
     id: 'employee-account',
     soon: true,
-    title: 'ЛК сотрудника',
+    title: 'You work in a company and want to set up a vacation? Or check the office map? This is possible in one account',
     feed: { image: '/projects/employee-account/covers/feed-cover-frame-2147239078-1800x2400.webp', width: 1800, height: 2400 },
     alt: 'Личный кабинет сотрудника: план офиса и управление рабочими местами',
     place: { c: 1, r: 8, big: true }

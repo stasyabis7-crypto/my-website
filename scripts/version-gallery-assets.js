@@ -57,6 +57,7 @@ const assets = [
   'styles/spacing.css',
   'styles/theme.css',
   'styles/button-hover.css',
+  'components/icons/social/linkedin.webp',
   'components/icons/icons.css',
   'components/site-header/header.css',
   'components/site-footer/footer.css',

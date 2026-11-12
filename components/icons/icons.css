@@ -119,6 +119,11 @@
   mask-image: url("./social/google.svg");
 }
 
+.icon--social-linkedin {
+  -webkit-mask-image: url("./social/linkedin.webp");
+  mask-image: url("./social/linkedin.webp");
+}
+
 .icon--social-dribbble {
   -webkit-mask-image: url("./social/dribbble.svg");
   mask-image: url("./social/dribbble.svg");
