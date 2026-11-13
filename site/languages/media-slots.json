@@ -1606,6 +1606,34 @@
     ]
   },
   {
+    "source": "/projects/ozon-crm/customer-segments/media/research/marketplace-reference-homie.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/research/marketplace-reference-homie-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/research/marketplace-reference-homie-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/research/marketplace-reference-homie.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/research/marketplace-reference-homie.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
+    "source": "/projects/ozon-crm/customer-segments/media/research/marketplace-reference-revenue.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/research/marketplace-reference-revenue-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/research/marketplace-reference-revenue-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/research/marketplace-reference-revenue.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/research/marketplace-reference-revenue.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
     "source": "/projects/ozon-crm/customer-segments/media/results/gallery-1-large-2848x2848.webp",
     "planned": {
       "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-1-large-2848x2848-ru.webp",
