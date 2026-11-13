@@ -15,6 +15,7 @@ const assets = [
   'projects/swtec-medical/patient-app/covers/feed-cover-patient-points-1500x1800.webp',
   'projects/ozon-crm/customer-segments/media/research/marketplace-reference-revenue.webp',
   'projects/ozon-crm/customer-segments/media/research/marketplace-reference-homie.webp',
+  'projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680.webp',
   'site/languages/english-copy.js',
   'site/languages/media.js',
   'site/language.js',

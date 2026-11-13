@@ -1788,6 +1788,20 @@
     ]
   },
   {
+    "source": "/projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680.webp",
+    "planned": {
+      "ru": "/projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680-ru.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680-en.webp"
+    },
+    "active": {
+      "ru": "/projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680.webp",
+      "en": "/projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680.webp"
+    },
+    "pages": [
+      "projects/ozon-crm/customer-segments/index.html"
+    ]
+  },
+  {
     "source": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680.webp",
     "planned": {
       "ru": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680-ru.webp",

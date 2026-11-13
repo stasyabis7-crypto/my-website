@@ -504,6 +504,10 @@ window.siteLanguageMedia = {
     "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-4-v2-3840x1680-ru.webp",
     "en": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-4-v2-3840x1680-en.webp"
   },
+  "/projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680.webp": {
+    "ru": "/projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680.webp",
+    "en": "/projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680.webp"
+  },
   "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680.webp": {
     "ru": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680-ru.webp",
     "en": "/projects/ozon-crm/customer-segments/media/summary/key-segment-v2-3840x1680-en.webp"

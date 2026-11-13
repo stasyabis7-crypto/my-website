@@ -56,3 +56,8 @@ lossless WebP, с сохранением разрешения, прозрачн�
 `media/research/marketplace-reference-homie.webp`, оба размером 4200 × 5040.
 Подготовка — штатный lossless-импорт `npm run images:prepare`.
 Оба файла включены в список версионирования CDN.
+
+В блоке «Понимание аудитории» перед существующей сводной добавлен кадр
+`en 26.png` — `media/summary/dashboard-before-3840x1680.webp`, 3840 × 1680.
+Кадры подписаны «Before» и «After». Новый файл подготовлен штатным
+lossless-импортом и включён в список версионирования CDN.
