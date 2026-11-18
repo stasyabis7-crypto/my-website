@@ -81,6 +81,8 @@
                       эталон: .mood-primary «Смотреть работы»
                       (иконка icon--down справа от текста)
 
+    .btn--icon-right-edge подпись слева, иконка у правого края кнопки
+
     .btn--icon-top   иконка над подписью, компактная пилюля-навигация
                       (общая фиксированная высота, как у остальных вариантов)
                       эталон: .site-header__cta «Резюме PDF» и пункты
@@ -301,8 +303,13 @@
   order: -1;
 }
 
-.btn--icon-right .icon {
+.btn--icon-right .icon,
+.btn--icon-right-edge .icon {
   order: 1;
+}
+
+.btn--icon-right-edge .icon {
+  margin-inline-start: auto;
 }
 
 .btn--icon-top {
@@ -336,7 +343,8 @@
   height: var(--button-height);
 }
 /* Подпись с иконкой справа: фиксированные внешние отступы. */
-.btn--icon-right {
+.btn--icon-right,
+.btn--icon-right-edge {
   padding-left: 16px;
   padding-right: 12px;
 }

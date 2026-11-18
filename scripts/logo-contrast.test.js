@@ -3,12 +3,12 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const source = fs.readFileSync(require('node:path').join(__dirname, '../components/site-brand/logo-contrast.js'), 'utf8');
 const callbacks = {}, frames = [], styles = {}, attrs = {};
-let regionBox = { left: 0, right: 100, top: 0, bottom: 500 }, covered = false;
+let regionBox = { left: 0, right: 100, top: 0, bottom: 500 }, covered = false, modalOpen = false;
 const photo = { closest: () => null }, foreground = { closest: () => null };
 const region = { getBoundingClientRect: () => regionBox, contains: node => node === photo };
 const mark = { getBoundingClientRect: () => ({ left: 50, right: 250, top: 20, bottom: 70 }), style: { setProperty: (key, value) => { styles[key] = value; } } };
 const context = {
-  document: { querySelector: selector => selector === '.site-header__logo-mark' ? mark : null, querySelectorAll: () => [region], documentElement: { setAttribute: (key, value) => { attrs[key] = value; } }, elementsFromPoint: () => [covered ? foreground : photo], fonts: { ready: { then() {} } } },
+  document: { querySelector: selector => selector === '.site-header__logo-mark' ? mark : null, querySelectorAll: () => [region], documentElement: { classList: { contains: name => modalOpen && name === 'contact-scroll-lock' }, setAttribute: (key, value) => { attrs[key] = value; } }, elementsFromPoint: () => modalOpen ? [] : [covered ? foreground : photo], fonts: { ready: { then() {} } } },
   addEventListener: (name, callback) => { callbacks[name] = callback; },
   requestAnimationFrame: callback => { frames.push(callback); }, ResizeObserver: class { observe() {} }
 };
@@ -19,6 +19,10 @@ callbacks.scroll(); callbacks.scroll();
 assert.equal(frames.length, 1, 'Repeated scroll events share one frame');
 frames.shift()();
 assert.equal(styles['--logo-light-clip'], 'inset(0px 0px 0px 0px)', 'Full photo overlap uses the complete white signature');
+modalOpen = true;
+callbacks.resize(); frames.shift()();
+assert.equal(styles['--logo-light-clip'], 'inset(0px 0px 0px 0px)', 'Opening a modal preserves the logo colour when the inert background disappears from hit testing');
+modalOpen = false;
 covered = true;
 callbacks.scroll(); frames.shift()();
 assert.equal(styles['--logo-light-clip'], 'inset(0 100% 0 0)', 'A light section covering the photo restores the regular signature');

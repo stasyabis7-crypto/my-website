@@ -64,14 +64,14 @@
      (CSS проигрывает contact-picker-out / contact-sheet-out на .contact-dialog__panel),
      после её конца прячем и чистим. Предохранитель на случай, если
      animationend не прилетит. */
-  function closeModal(el, done) {
+  function closeModal(el, done, animationName) {
     if (!el || el.hidden || el.classList.contains('is-closing')) return;
     if (reduceMotion.matches) { el.hidden = true; if (done) done(); return; }
     el.classList.add('is-closing');
     var panel = el.querySelector('.contact-dialog__panel') || el;
     var t;
     var finish = function (e) {
-      if (e && (e.target !== panel || e.animationName !== 'contact-surface-out')) return;
+      if (e && (e.target !== panel || e.animationName !== (animationName || 'contact-surface-out'))) return;
       panel.removeEventListener('animationend', finish);
       clearTimeout(t);
       el.hidden = true;
@@ -97,6 +97,7 @@
       inactive = [];
     }
     function setOrigin() {
+      if (opts.compact) return;
       var panel = sheet.querySelector('.contact-dialog__panel');
       var r = panel.getBoundingClientRect();
       var t = opts.trigger.getBoundingClientRect();
@@ -108,18 +109,19 @@
       panel.style.setProperty('--contact-origin', 'inset(' + top + 'px ' + right + 'px ' + bottom + 'px ' + left + 'px round 32px)');
     }
     window.addEventListener('resize', function () { if (sheet && !sheet.hidden) setOrigin(); });
-    function close() {
+    function close(afterClose) {
       closeModal(sheet, function () {
         restoreBackground();
         unlockScroll();
         opts.trigger.setAttribute('aria-expanded', 'false');
-        opts.trigger.focus();
-      });
+        (opts.returnFocus || opts.trigger).focus({ preventScroll: true });
+        if (typeof afterClose === 'function') afterClose();
+      }, opts.compact ? 'resume-surface-out' : undefined);
     }
     function ensure() {
       if (sheet) return;
       sheet = document.createElement('div');
-      sheet.className = 'contact-dialog contact-sheet site-sheet';
+      sheet.className = 'contact-dialog contact-sheet site-sheet' + (opts.compact ? ' resume-dialog' : '');
       sheet.id = opts.id;
       sheet.hidden = true;
       sheet.setAttribute('role', 'dialog');
@@ -133,6 +135,21 @@
         '<span>Закрыть</span><span class="icon icon--close" aria-hidden="true"></span></button></div></div></div>';
       sheet.querySelector('.contact-dialog__title').textContent = opts.title;
       sheet.querySelector('.contact-dialog__close').setAttribute('aria-label', opts.closeLabel);
+      if (opts.compact) {
+        var closeButton = sheet.querySelector('.contact-dialog__close');
+        closeButton.className = 'contact-dialog__close btn btn--fill-plain btn--icon-only';
+        closeButton.innerHTML = '<span class="icon icon--close" aria-hidden="true"></span>';
+        sheet.querySelector('.contact-dialog__head').appendChild(closeButton);
+        sheet.querySelector('.contact-dialog__footer').remove();
+        sheet.querySelector('.contact-dialog__title').className = 'contact-dialog__title text-h3';
+        var description = document.createElement('p');
+        description.className = 'resume-dialog__description text-body';
+        description.setAttribute('data-subtitle', '');
+        description.textContent = 'Choose document language';
+        description.id = opts.id + '-description';
+        sheet.setAttribute('aria-describedby', description.id);
+        sheet.querySelector('.contact-dialog__head').after(description);
+      }
       var rows = sheet.querySelector('[data-rows]');
       opts.build(function (el) {
         var item = document.createElement('div');
@@ -141,7 +158,7 @@
         item.appendChild(el);
         rows.appendChild(item);
       }, close);
-      sheet.querySelectorAll('[data-close]').forEach(function (x) { x.addEventListener('click', close); });
+      sheet.querySelectorAll('[data-close]').forEach(function (x) { x.addEventListener('click', function () { close(); }); });
       document.addEventListener('keydown', function (e) {
         if (sheet.hidden) return;
         if (e.key === 'Escape') { e.preventDefault(); close(); }
@@ -167,10 +184,67 @@
     }
     return {
       open: open,
-      close: function () { if (sheet && !sheet.hidden) close(); },
+      close: function (afterClose) { if (sheet && !sheet.hidden) close(afterClose); },
       ensure: ensure
     };
   }
+
+  /* One language picker for the header, About page and mobile menu. */
+  var resumePicker = (function () {
+    var triggers = document.querySelectorAll('.site-header__cta, [data-resume-link]');
+    if (!triggers.length) return;
+    var options = {
+      id: 'site-resume-dialog',
+      title: 'Resume',
+      closeLabel: 'Close resume language selection',
+      trigger: triggers[0],
+      compact: true,
+      build: function (add, close) {
+        [
+          { label: 'English', lang: 'en', id: '1Lmhy9PlbZQAygC_Ir1HPg22xBI6kVRN5' },
+          { label: 'Russian', lang: 'ru', id: '17iRYE0E_2xrNNLsrmFPtzYo2qP7KWtps' }
+        ].forEach(function (item) {
+          var link = document.createElement('a');
+          link.className = 'contact-row btn btn--fill-white btn--icon-right-edge';
+          link.href = 'https://drive.google.com/file/d/' + item.id + '/view?usp=drive_link';
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.hreflang = item.lang;
+          link.dataset.resumeDocument = item.lang;
+          link.innerHTML = '<span data-language-literal lang="en">' + item.label +
+            '</span><span class="icon icon--arrow-diagonal" aria-hidden="true"></span>';
+          link.addEventListener('click', function () { close(); });
+          add(link);
+        });
+      }
+    };
+    var picker = createSheet(options);
+    picker.ensure();
+    function bind(trigger, beforeOpen, returnFocus) {
+      trigger.setAttribute('aria-haspopup', 'dialog');
+      trigger.setAttribute('aria-controls', options.id);
+      trigger.setAttribute('aria-expanded', 'false');
+      if (trigger.tagName === 'A') {
+        trigger.setAttribute('role', 'button');
+        trigger.removeAttribute('target');
+        trigger.addEventListener('keydown', function (event) {
+          if (event.key === ' ') { event.preventDefault(); trigger.click(); }
+        });
+      }
+      trigger.addEventListener('click', function (event) {
+        event.preventDefault();
+        function open() {
+          options.trigger = trigger;
+          options.returnFocus = returnFocus || trigger;
+          picker.open();
+        }
+        if (beforeOpen) beforeOpen(open);
+        else open();
+      });
+    }
+    triggers.forEach(function (trigger) { bind(trigger); });
+    return { bind: bind };
+  })();
 
   /* ---------- chrome: pinned-on-scroll ---------- */
   function updatePinned() {
@@ -437,12 +511,11 @@
           add(row);
         });
         if (resume) {
-          var cv = document.createElement('a');
+          var cv = document.createElement('button');
+          cv.type = 'button';
           cv.className = 'contact-row btn btn--fill-pink btn--icon-left';
-          cv.href = resume.href;
-          cv.target = '_blank';
-          cv.rel = 'noopener noreferrer';
           cv.innerHTML = '<span class="icon icon--cv" aria-hidden="true"></span><span>CV PDF</span>';
+          resumePicker.bind(cv, function (open) { menuSheet.close(open); }, menuBtn);
           add(cv);
         }
       }

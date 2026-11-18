@@ -256,6 +256,62 @@ html:not(.chrome--pinned) .site-socials {
   .site-header, .site-socials { transition: none; }
 }
 
+/* Compact resume picker; phones use the same content in a bottom sheet. */
+.resume-dialog {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: 16px;
+  --resume-offset: 16px;
+}
+.resume-dialog .contact-dialog__panel {
+  position: relative;
+  inset: auto;
+  box-sizing: border-box;
+  width: min(400px, 100%);
+  max-height: calc(100dvh - 32px);
+  padding: 24px;
+  animation: resume-surface-in .4s cubic-bezier(.22,1,.36,1) both;
+}
+.resume-dialog .contact-dialog__inner { width: 100%; padding: 0; }
+.resume-dialog .contact-dialog__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 6px;
+  text-align: left;
+}
+.resume-dialog .contact-dialog__close {
+  flex-shrink: 0;
+  top: -12px;
+  right: -12px;
+}
+.resume-dialog__description { margin: 0 0 24px; }
+.resume-dialog :is(.contact-dialog__head, .contact-dialog__item) { animation: none !important; }
+.resume-dialog .contact-dialog__backdrop { animation-duration: .4s; }
+.resume-dialog.is-closing .contact-dialog__panel {
+  animation: resume-surface-out .3s cubic-bezier(.4,0,1,1) both;
+}
+.resume-dialog.is-closing .contact-dialog__backdrop { animation-duration: .3s; }
+@keyframes resume-surface-in {
+  from { opacity: 0; transform: translateY(var(--resume-offset)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes resume-surface-out {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(var(--resume-offset)); }
+}
+@media (max-width: 699px) {
+  .resume-dialog { align-items: end; padding: 0; --resume-offset: 100%; }
+  .resume-dialog .contact-dialog__panel {
+    width: 100%;
+    max-height: calc(100dvh - 16px);
+    border-radius: var(--radius-surface) var(--radius-surface) 0 0;
+    padding: 20px 20px max(24px, env(safe-area-inset-bottom, 0px));
+  }
+}
+
 /* Над видео-баннером Главной лого белое; за его пределами — обычное тёмное.
    Класс ставит components/hero-mood/hero-video.js. */
 .site-header__logo { transition-property: top, scale, opacity, color; }

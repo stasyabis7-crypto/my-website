@@ -43,5 +43,9 @@ assert(!groups.includes('с'), 'The preposition must not be a standalone inline-
 assert(revealGroups('Работа и в команде').includes('и\u00a0в\u00a0команде'));
 assert(revealGroups('Сделать бы лучше').includes('Сделать\u00a0бы'));
 assert(revealGroups('Designer with 6 years of experience').includes('of\u00a0experience'));
+const englishCopy = { window: {} };
+vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../site/languages/english-copy.js'), 'utf8'), englishCopy);
+const englishHeading = englishCopy.window.siteEnglish.pages['/'][heading] || englishCopy.window.siteEnglish.phrases[heading];
+assert(revealGroups(englishHeading).some(group => group.includes('6\u00a0years')), 'The public English heading keeps the number and years in the same reveal span at every width');
 assert(home.indexOf('site/typography-rules.js') < home.indexOf('components/hero-mood/hero-video.js'), 'Shared typography must load before the reveal splits the heading');
 console.log('Hero typography: actual heading, conjunction chains, particles and English groups stay together during reveal.');

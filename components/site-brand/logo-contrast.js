@@ -7,6 +7,9 @@
   var scheduled = false;
   function update() {
     scheduled = false;
+    // Modal backgrounds are inert and absent from hit testing. Keep the last
+    // visible signature colour until the page becomes interactive again.
+    if (document.documentElement.classList.contains('contact-scroll-lock')) return;
     var logo = mark.getBoundingClientRect();
     var clip = 'inset(0 100% 0 0)';
     for (var i = 0; i < regions.length; i++) {
