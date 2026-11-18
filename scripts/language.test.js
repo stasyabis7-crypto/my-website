@@ -97,44 +97,37 @@ for (const file of ['index.html', 'about/index.html', 'projects/ozon-crm/custome
   }
 }
 console.log('English-only entry points: defaults, old RU/EN links, stored preferences and mobile/desktop headers verified.');
+// Results use CV measurements, while preserving extra findings from each case.
 const metricCases = [
-  ['projects/ozon-crm/customer-segments/index.html', ['15%', '≈1M', '13%']],
-  ['projects/avito-charity/recycle-map/index.html', ['306K', '1.5–3K', 'Up to 70']]
+  { file: 'projects/avito-charity/subscription/index.html', id: 'summary-end', values: ['~55', '+64%'],
+    context: ['first three months', '+10%', 'daily target was 50', 'default donation amount', '30% above target', 'One-off donations declined', 'second and third payments'] },
+  { file: 'projects/avito-charity/recycle-map/index.html', id: 'results', values: ['1.5–3K', 'Up to 70'],
+    context: ['first eight weeks', '+40%', 'vs target on peak days', '306K point loads', 'without an A/B test', 'regular use'] },
+  { file: 'projects/ozon-crm/customer-segments/index.html', id: 'results', values: ['15%', '~1M'],
+    context: ['first three full months', '+50%', '+25%', 'vs target', '13%', '3 percentage points above target', 'CRM launch as a whole', 'first campaign', 'come back and buy again'] }
 ];
-for (const [file, expectedValues] of metricCases) {
+const hasClass = (node, name) => node.nodeType === 1 && node.className.split(' ').includes(name);
+for (const { file, id, values, context } of metricCases) {
   const page = run(file);
-  const cards = find(page.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').split(' ').includes('cg-item--stat'));
-  assert.equal(cards.length, 3, file);
+  const results = find(page.tree, node => node.nodeType === 1 && node.getAttribute('id') === id)[0];
+  const cards = find(results, node => hasClass(node, 'cg-outcome'));
+  assert.equal(cards.length, values.length, file);
   cards.forEach((card, index) => {
-    const texts = textNodes(card).map(text => text.trim()).filter(Boolean);
-    assert.equal(texts[0], expectedValues[index], file + ': translated metric value');
-    assert(!texts.some(text => /[А-Яа-яЁё]/.test(text)), file + ': metric labels must be English: ' + texts.join(' / '));
+    const surface = find(card, node => hasClass(node, 'cg-outcome__surface'))[0];
+    const value = find(surface, node => hasClass(node, 'cg-outcome__value'))[0];
+    const label = find(surface, node => hasClass(node, 'cg-outcome__label'))[0];
+    assert.equal(textNodes(value).join(''), values[index], file + ': CV result value');
+    assert.equal(card.getAttribute('aria-labelledby'), label.getAttribute('id'));
+    const caption = find(card, node => node.tagName === 'FIGCAPTION')[0];
+    assert(caption && !find(surface, node => node === caption).length, 'Explanations stay below the grey surface');
+    assert(textNodes(surface).join(' ').trim().split(/\s+/).length <= 10, 'Metric banners contain only a value and a short label');
+    assert(!/[А-Яа-яЁё]/.test(textNodes(card).join(' ')), file + ': English metrics');
+    const arrows = find(surface, node => hasClass(node, 'icon--arrow-upward'));
+    assert.equal(arrows.length, values[index].startsWith('+') ? 1 : 0, 'Only comparative growth gets an upward arrow');
   });
-  // Typography and later rendering may use a different kind of space.
-  assert.equal(page.window.siteLanguage.t('≈1\u202fмлн'), '≈1M');
-  assert.equal(page.window.siteLanguage.t('Продавцов используют CRM ежемесячно, в 1,5 раза выше цели'), 'Sellers use CRM monthly, 1.5\u00a0times the target');
+  const copy = textNodes(results).join(' ').replace(/\s+/g, ' ');
+  for (const phrase of context) assert(copy.includes(phrase), file + ': retain measurement context and additional findings: ' + phrase);
 }
-
-// Subscription results compare measured outcomes with their targets.
-const subscriptionResults = run('projects/avito-charity/subscription/index.html');
-const resultRows = find(subscriptionResults.tree, node => node.nodeType === 1 && node.className.split(' ').includes('cg-result'));
-assert.equal(resultRows.length, 2);
-for (const [index, expected] of [[100, 130], [50, 55]].entries()) {
-  const row = resultRows[index];
-  const heading = find(row, node => node.tagName === 'H3')[0];
-  assert.equal(textNodes(heading).join(''), index === 0 ? 'Report views' : 'Monthly donation subscriptions');
-  assert.equal(heading.className, 'text-h2');
-  assert.equal(row.getAttribute('aria-labelledby'), heading.getAttribute('id'));
-  const bars = find(row, node => node.nodeType === 1 && node.className.split(' ').includes('cg-bars__bar'));
-  assert.deepEqual(bars.map(node => Number(node.getAttribute('style').match(/--bar-value: (\d+)/)[1])), expected);
-  const chart = find(row, node => node.tagName === 'FIGURE')[0];
-  assert(chart.getAttribute('aria-label').includes(index === 0 ? '30%' : '10%'));
-  const scale = find(row, node => node.nodeType === 1 && node.className === 'cg-bars')[0];
-  assert.equal(Number(scale.getAttribute('style').match(/--bar-max: (\d+)/)[1]), expected[1]);
-}
-const emphasizedResults = find(subscriptionResults.tree, node => node.tagName === 'STRONG').map(node => textNodes(node).join(''));
-for (const value of ['30%', '50', '55', '10%', '64%']) assert(emphasizedResults.includes(value));
-assert(textNodes(resultRows[1]).join(' ').includes('second and third payments'));
 
 const en = run('index.html');
 assert.equal(en.html.lang, 'en');
@@ -168,10 +161,10 @@ assert(!textNodes(about.tree).some(value => /[А-Яа-яЁё]/.test(value)), 'Ab
 const enExperience = find(about.tree, node => node.nodeType === 1 && node.getAttribute('data-language-content') === 'en')[0];
 assert.equal(find(about.tree, node => node.nodeType === 1 && node.getAttribute('data-language-content') === 'ru').length, 0);
 assert(!enExperience.hasAttribute('hidden'));
-assert.equal(enExperience.getAttribute('data-resume-source'), '/cv-en.pdf');
-assert(textNodes(enExperience).join(' ').includes('Doubled one-time donations'));
+assert.equal(enExperience.getAttribute('data-resume-source'), 'https://drive.google.com/file/d/1Lmhy9PlbZQAygC_Ir1HPg22xBI6kVRN5/view?usp=drive_link');
+assert(textNodes(enExperience).join(' ').includes('1,000 completed donations per week vs 500'));
 const allENExperience = find(enExperience, node => node.nodeType === 3).map(node => node.nodeValue).join(' ');
-assert(allENExperience.includes('company’s workers'));
+assert(allENExperience.includes('mine workers'));
 assert(!allENExperience.includes('miners'));
 assert.equal(find(about.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').includes('site-header__avatar')).length, 0);
 assert.equal(find(about.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').includes('site-header__cta')).length, 0);
@@ -262,4 +255,4 @@ for (const lang of ['ru', 'en']) {
 }
 const menu = fs.readFileSync(path.join(root, 'components/site-chrome/site-chrome.js'), 'utf8');
 assert(menu.includes("item.href !== '/projects/posts/'"));
-console.log('English-only site: legacy links, unavailable storage, dynamic content, all public page text and metadata, six metrics, two result comparisons, animated number formats, media fallbacks and 17 articles, preferred English editions and language badges verified.');
+console.log('English-only site: legacy links, unavailable storage, dynamic content, all public page text and metadata, six compact metrics, preserved supplemental findings, animated number formats, media fallbacks and 17 articles, preferred English editions and language badges verified.');

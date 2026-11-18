@@ -19,8 +19,9 @@
   · кадр, который стоит в ряду один, идёт до краёв экрана; скриншот без
     своего фона — по центру серой сцены; пропорции медиа — из файла;
   · весь текст одного цвета; серыми бывают только подписи (.cg-list dt, .cg-label);
-  · без скруглений, плашек, иконок и цветных подложек; ряды пунктов
-    разделяет только тонкая линия.
+  · без скруглений и цветных подложек; ряды пунктов разделяет тонкая линия.
+    Исключение для результатов — нейтральная серая сцена .cg-outcome__surface
+    с числом и короткой подписью; пояснения всегда под ней.
 
   ─── .cg — секция-сетка ────────────────────────────────────────────────
   Ставится на .case-block. Прямые потомки по умолчанию занимают всю ширину.
@@ -47,6 +48,12 @@
   ─── .cg-result — результат с заголовком: текст слева, сравнение цели и
       факта справа; на телефоне — последовательно. .cg-bars — столбики
       от нулевой базы, значения --bar-value / --bar-max задаются в HTML ───
+  ─── .cg-outcome — число и короткая подпись на сером фоне; отдельная
+      подпись под сценой объясняет период, цель и базу сравнения.
+      .cg-outcome__comparison — короткое сравнение под сценой: дельта
+      .cg-outcome__delta и её база, отдельный контекст без повтора чисел.
+      .cg-l / .cg-r — две метрики рядом, на телефоне друг под другом.
+      .icon--arrow-upward — только для сравнительного роста, не для абсолютных чисел ──
   ─── .cg-stub — заглушка будущего кадра: серое поле в его пропорциях
       (--stub-ratio) с подписью размера ─────────────────────────────────
   ─── .cg-list — поля «подпись — значение» ──────────────────────────────
@@ -384,6 +391,51 @@
   .cg-list,
   .cg-list > * { display: block; }
   .cg-list > * + * { margin-top: 20px; }
+}
+
+/* Quiet result banners: numbers on the surface, all context below it. */
+.case--grid .cg > .cg-outcome { margin: 0; }
+.cg-outcome__surface {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  border-radius: 0;
+  background: var(--color-surface);
+}
+.cg-outcome__value {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: .2em;
+  white-space: nowrap;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.cg-outcome__value .icon,
+.cg-outcome__delta .icon {
+  --icon-size: 1em;
+  color: var(--color-positive);
+}
+.cg-outcome__comparison,
+.cg-outcome__delta {
+  display: inline-flex;
+  align-items: center;
+  gap: .2em;
+}
+.cg-outcome__comparison { display: flex; gap: 12px; margin-bottom: 12px; }
+/* The body font sits optically higher than the large serif numerals. */
+.cg-outcome__comparison > :last-child {
+  position: relative;
+  top: .12em;
+}
+.cg-outcome__delta { white-space: nowrap; }
+.cg-outcome__context { display: block; }
+.cg-outcome__surface > .cg-outcome__label { margin: 0; }
+.cg-outcome > figcaption { margin-top: 20px; }
+@media (min-width: 700px) {
+  .cg-outcome__surface { padding-inline: 32px; }
 }
 
 /* Result headings and metric values share a baseline: copy left, chart right;

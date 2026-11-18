@@ -27,8 +27,8 @@
 <link rel="stylesheet" href="../../../styles/scale.css?v=18" />
 <link rel="stylesheet" href="../../../styles/typography.css?v=25" />
 <link rel="stylesheet" href="../../../styles/spacing.css?v=1" />
-<link rel="stylesheet" href="../../../styles/theme.css?v=mood-4-s4" />
-<link rel="stylesheet" href="../../../components/icons/icons.css?v=8" />
+<link rel="stylesheet" href="../../../styles/theme.css?v=outcome-positive-5" />
+<link rel="stylesheet" href="../../../components/icons/icons.css?v=upward-9" />
 <link rel="stylesheet" href="../../../components/site-header/header.css?v=brand-2" />
 <link rel="stylesheet" href="../../../components/site-footer/footer.css?v=49-s9" />
 <link rel="stylesheet" href="../../../components/site-chrome/site-chrome.css?v=brand-3" />
@@ -42,7 +42,7 @@
 <link rel="stylesheet" href="../../../components/page-motion/page-motion.css?v=8" />
 <link rel="stylesheet" href="../../../components/case-blocks/case-blocks.css?v=74" />
 <link rel="stylesheet" href="../../../components/case-cards/case-cards.css?v=9" />
-<link rel="stylesheet" href="../../../components/case-grid/case-grid.css?v=1" />
+<link rel="stylesheet" href="../../../components/case-grid/case-grid.css?v=outcome-banners-6" />
 <link rel="stylesheet" href="../../../components/case-lightbox/case-lightbox.css?v=13" />
 <link rel="stylesheet" href="../../../components/hero-mood/hero-layout.css?v=speech-tail-4" />
 
@@ -349,28 +349,33 @@ body {
       </div>
 
       <section class="case-block cg" id="results" tabindex="-1">
-        <div class="cg-intro cg-intro--thirds cg-intro--base">
-          <h2 class="text-h1">Результаты</h2>
-          <div class="cg-intro__text">
-            <p class="text-body-lg">Раскатывали на всех сразу, без А/Б-теста, поэтому приписывать редизайну весь трафик карты я не могу. По данным:</p>
-          </div>
-        </div>
-
-        <div class="cg-item cg-item--stat cg-t1">
-          <p class="cg-item__num text-display">306K</p>
-          <p class="cg-item__text text-body">Загрузок точек в день</p>
-        </div>
-        <div class="cg-item cg-item--stat cg-t2">
-          <p class="cg-item__num text-display">1,5–3K</p>
-          <p class="cg-item__text text-body">Открытий карточки пункта в день</p>
-        </div>
-        <div class="cg-item cg-item--stat cg-t3">
-          <p class="cg-item__num text-display">До 70</p>
-          <p class="cg-item__text text-body">Сохранений точек в избранное в день</p>
-        </div>
-
-        <p class="text-body-lg cg-t23">Эти числа говорят, что картой пользуются регулярно, а не разово. Что это следствие именно редизайна — не говорят: для такого вывода нужен замер, которого у нас не было.</p>
-      </section>
+  <h2 class="text-h1">Results</h2>
+  <figure class="cg-outcome cg-l" aria-labelledby="recycling-detail-views">
+    <div class="cg-outcome__surface">
+      <p class="cg-outcome__value text-display"><span>1.5–3K</span></p>
+      <p class="cg-outcome__label text-body" id="recycling-detail-views">Point detail views / day</p>
+    </div>
+    <figcaption class="text-body">Daily range during the first eight weeks after rollout.</figcaption>
+  </figure>
+  <figure class="cg-outcome cg-r" aria-labelledby="recycling-point-saves">
+    <div class="cg-outcome__surface">
+      <p class="cg-outcome__value text-display"><span>Up to 70</span></p>
+      <p class="cg-outcome__label text-body" id="recycling-point-saves">Point saves / day</p>
+    </div>
+    <figcaption class="text-body">
+      <span class="cg-outcome__comparison"><span class="cg-outcome__delta text-h3"><span>+40%</span><span class="icon icon--arrow-upward" aria-hidden="true"></span></span><span>vs target on peak days</span></span>
+      <span class="cg-outcome__context">Measured during the same eight-week period.</span>
+    </figcaption>
+  </figure>
+  <div class="cg-text cg-l">
+    <h3 class="text-h3">Traffic and use</h3>
+    <p class="text-body">The map also recorded <strong>306K point loads a day</strong>. The usage figures show regular interaction with the map, rather than one-off visits.</p>
+  </div>
+  <div class="cg-text cg-r">
+    <h3 class="text-h3">What the data can tell us</h3>
+    <p class="text-body">We rolled it out to everyone at once, without an A/B test. I can’t attribute all of the map’s traffic or regular use to the redesign: that would need a separate measurement we didn’t have.</p>
+  </div>
+</section>
 
       <div class="case-block cg-gallery" aria-hidden="true">
         <div class="cg-gallery__tile" style="--g-col: 1; --g-row: 1"><img src="media/gallery/categories-1200x904.webp" width="900" height="678" alt="" loading="lazy" /></div>

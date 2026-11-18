@@ -26,8 +26,8 @@
 <link rel="stylesheet" href="../../../styles/scale.css?v=18" />
 <link rel="stylesheet" href="../../../styles/typography.css?v=25" />
 <link rel="stylesheet" href="../../../styles/spacing.css?v=1" />
-<link rel="stylesheet" href="../../../styles/theme.css?v=mood-4-s4" />
-<link rel="stylesheet" href="../../../components/icons/icons.css?v=8" />
+<link rel="stylesheet" href="../../../styles/theme.css?v=outcome-positive-5" />
+<link rel="stylesheet" href="../../../components/icons/icons.css?v=upward-9" />
 <link rel="stylesheet" href="../../../components/site-header/header.css?v=brand-2" />
 <link rel="stylesheet" href="../../../components/site-footer/footer.css?v=49-s9" />
 <link rel="stylesheet" href="../../../components/site-chrome/site-chrome.css?v=brand-3" />
@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="../../../components/page-motion/page-motion.css?v=8" />
 <link rel="stylesheet" href="../../../components/case-blocks/case-blocks.css?v=74" />
 <link rel="stylesheet" href="../../../components/case-cards/case-cards.css?v=9" />
-<link rel="stylesheet" href="../../../components/case-grid/case-grid.css?v=1" />
+<link rel="stylesheet" href="../../../components/case-grid/case-grid.css?v=outcome-banners-6" />
 <link rel="stylesheet" href="../../../components/case-lightbox/case-lightbox.css?v=13" />
 <link rel="stylesheet" href="../../../components/hero-mood/hero-layout.css?v=speech-tail-4" />
 
@@ -293,47 +293,33 @@ body {
 </div>
 
 <section class="case-block cg" id="summary-end" tabindex="-1">
- <h2 class="text-h1">Results</h2>
- <article class="cg-result cg" aria-labelledby="report-views-result">
-  <div class="cg-text cg-l">
-   <h3 class="text-h2" id="report-views-result">Report views</h3>
-   <p class="text-body-lg">After launch, I wanted to see whether people actually used the information they’d asked for in the interviews. Donors told us they wanted to see what a charity had achieved before choosing how much to give. I moved the reports earlier in the flow. After launch, report views came in <strong>30%</strong> above our target, which showed that donors were using the information about charities before setting up monthly donation subscriptions.</p>
-  </div>
-  <figure class="cg-result__chart cg-r" aria-label="Report views reached 130% of target: 30% above the target of 100%.">
-   <figcaption class="cg-result__metric"><span class="text-h2">+30%</span><span class="text-body">above target</span></figcaption>
-   <div class="cg-bars" style="--bar-max: 130">
-    <div class="cg-bars__row">
-     <p class="cg-bars__label text-body"><span>Target</span><span>100%</span></p>
-     <div class="cg-bars__track"><div class="cg-bars__bar cg-bars__bar--target" style="--bar-value: 100" aria-hidden="true"></div></div>
+  <h2 class="text-h1">Results</h2>
+  <figure class="cg-outcome cg-l" aria-labelledby="subscriptions-daily">
+    <div class="cg-outcome__surface">
+      <p class="cg-outcome__value text-display"><span>~55</span></p>
+      <p class="cg-outcome__label text-body" id="subscriptions-daily">New subscriptions / day</p>
     </div>
-    <div class="cg-bars__row">
-     <p class="cg-bars__label text-body"><span>Actual</span><span>130%</span></p>
-     <div class="cg-bars__track"><div class="cg-bars__bar" style="--bar-value: 130" aria-hidden="true"></div></div>
-    </div>
-   </div>
+    <figcaption class="text-body">
+      <span class="cg-outcome__comparison"><span class="cg-outcome__delta text-h3"><span>+10%</span><span class="icon icon--arrow-upward" aria-hidden="true"></span></span><span>vs target</span></span>
+      <span class="cg-outcome__context">Average over the first three months after launch. The daily target was 50.</span>
+    </figcaption>
   </figure>
- </article>
- <article class="cg-result cg" aria-labelledby="monthly-subscriptions-result">
-  <div class="cg-text cg-l">
-   <h3 class="text-h2" id="monthly-subscriptions-result">Monthly donation subscriptions</h3>
-   <p class="text-body-lg">We also looked at how the subscription changed donations overall. We aimed for <strong>50</strong> new monthly donation subscriptions a day and averaged <strong>55</strong> during the period we measured, <strong>10%</strong> above target. The average monthly donation was <strong>64%</strong> above the minimum amount.</p>
-   <p class="text-body-lg">What we found most interesting was that one-off donations declined, while the average payment across both types of donations increased. Charities were receiving more per payment on average.</p>
-   <p class="text-body-lg">To see whether that translated into more funding over time, I’d look at the total amount donated and how many subscribers made their second and third payments.</p>
-  </div>
-  <figure class="cg-result__chart cg-r" aria-label="New monthly donation subscriptions per day: target 50, actual 55, 10% above target.">
-   <figcaption class="cg-result__metric"><span class="text-h2">+10%</span><span class="text-body">above target</span></figcaption>
-   <div class="cg-bars" style="--bar-max: 55">
-    <div class="cg-bars__row">
-     <p class="cg-bars__label text-body"><span>Target</span><span>50 / day</span></p>
-     <div class="cg-bars__track"><div class="cg-bars__bar cg-bars__bar--target" style="--bar-value: 50" aria-hidden="true"></div></div>
+  <figure class="cg-outcome cg-r" aria-labelledby="subscription-payment">
+    <div class="cg-outcome__surface">
+      <p class="cg-outcome__value text-display"><span>+64%</span><span class="icon icon--arrow-upward" aria-hidden="true"></span></p>
+      <p class="cg-outcome__label text-body" id="subscription-payment">Average monthly donation</p>
     </div>
-    <div class="cg-bars__row">
-     <p class="cg-bars__label text-body"><span>Actual</span><span>55 / day</span></p>
-     <div class="cg-bars__track"><div class="cg-bars__bar" style="--bar-value: 55" aria-hidden="true"></div></div>
-    </div>
-   </div>
+    <figcaption class="text-body">Compared with the default donation amount over the same three-month period.</figcaption>
   </figure>
- </article>
+  <div class="cg-text cg-l">
+    <h3 class="text-h3">Reports before payment</h3>
+    <p class="text-body">Report views were <strong>30% above target</strong>. Donors had asked to see a charity’s impact in interviews, so I moved reports earlier in the flow, before choosing how much to give.</p>
+  </div>
+  <div class="cg-text cg-r">
+    <h3 class="text-h3">Donation mix</h3>
+    <p class="text-body">One-off donations declined, while the average payment across both donation types increased. Charities were receiving more per payment on average.</p>
+    <p class="text-body">To see whether this translated into more funding over time, I’d track the total amount donated and how many subscribers made their second and third payments.</p>
+  </div>
 </section>
 
 <div class="case-block cg-gallery">

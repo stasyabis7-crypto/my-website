@@ -75,6 +75,30 @@
         item('03', ' cg-t3', 'text-display-lg', '✎ Третий пункт'))
     },
     {
+      id: 'result-banners', name: 'Результаты на сером фоне', scope: 'page',
+      hint: 'Две метрики: число и короткая подпись на серой сцене. Период, база сравнения и пояснения — ниже, без повторения числа.',
+      needs: 'Два значения, короткие подписи и пояснения. Стрелка вверх — только для сравнительного роста.',
+      scheme: [[0, 0, 6, 2, 'h'], [0, 3, 6, 4, 's'], [6, 3, 6, 4, 's'], [0, 8, 6, 2, 't'], [6, 8, 6, 2, 't']],
+      html: section(intro('✎ Results', '') + `  <figure class="cg-outcome cg-l">
+    <div class="cg-outcome__surface">
+      <p class="cg-outcome__value text-display"><span>✎ 15%</span></p>
+      <p class="cg-outcome__label text-body">✎ Monthly adoption</p>
+    </div>
+    <figcaption class="text-body">
+      <span class="cg-outcome__comparison"><span class="cg-outcome__delta text-h3"><span>✎ +50%</span><span class="icon icon--arrow-upward" aria-hidden="true"></span></span><span>vs target</span></span>
+      <span class="cg-outcome__context">✎ Measurement period.</span>
+    </figcaption>
+  </figure>
+  <figure class="cg-outcome cg-r">
+    <div class="cg-outcome__surface">
+      <p class="cg-outcome__value text-display"><span>✎ +64%</span><span class="icon icon--arrow-upward" aria-hidden="true"></span></p>
+      <p class="cg-outcome__label text-body">✎ Average payment</p>
+    </div>
+    <figcaption class="text-body">✎ Explain the baseline for this increase.</figcaption>
+  </figure>
+`)
+    },
+    {
       id: 'result-comparison', name: 'Результат с графиком', scope: 'page',
       hint: 'Название метрики, текст слева и график цели и факта справа; на телефоне — друг за другом.',
       needs: 'Текст и значения цели и факта. В графике задайте --bar-value и общий --bar-max.',

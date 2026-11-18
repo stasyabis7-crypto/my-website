@@ -116,6 +116,7 @@ html.no-liquid-glass-distort .footer-menu-panel__bar {
   --color-surface-alt: #eceef2;
   --color-text: #14161a;
   --color-text-muted: #5f6673;
+  --color-positive: #16833b;
   --color-border: #dde0e6;
 
   /* "Ink" — цвет обводки/заливки монохромных контролов (кнопки,

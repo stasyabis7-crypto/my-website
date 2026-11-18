@@ -59,6 +59,12 @@
   mask-image: url("./arrows/arrow-up.svg");
 }
 
+/* Straight upward arrow with a stem, for comparative result metrics. */
+.icon--arrow-upward {
+  -webkit-mask-image: url("./arrows/arrow-upward.svg");
+  mask-image: url("./arrows/arrow-upward.svg");
+}
+
 .icon--down {
   -webkit-mask-image: url("./arrows/arrow-down.svg");
   mask-image: url("./arrows/arrow-down.svg");
