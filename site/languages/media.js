@@ -88,6 +88,10 @@ window.siteLanguageMedia = {
     "ru": "/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800-ru.webp",
     "en": "/projects/avito-charity/about-company/covers/feed-cover-324719912-1500x1800-en.webp"
   },
+  "/projects/avito-charity/anti-bullying/covers/feed-cover-anti-bullying-1500x1800.webp": {
+    "ru": "/projects/avito-charity/anti-bullying/covers/feed-cover-anti-bullying-1500x1800.webp",
+    "en": "/projects/avito-charity/anti-bullying/covers/feed-cover-anti-bullying-1500x1800.webp"
+  },
   "/projects/avito-charity/charity-profile/covers/cover.webp": {
     "ru": "/projects/avito-charity/charity-profile/covers/cover.webp",
     "en": "/projects/avito-charity/charity-profile/covers/cover.webp"
@@ -103,10 +107,6 @@ window.siteLanguageMedia = {
   "/projects/avito-charity/gamification/covers/cover.webp": {
     "ru": "/projects/avito-charity/gamification/covers/cover.webp",
     "en": "/projects/avito-charity/gamification/covers/cover.webp"
-  },
-  "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800.webp": {
-    "ru": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800-ru.webp",
-    "en": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800-en.webp"
   },
   "/projects/avito-charity/rebranding/covers/cover.webp": {
     "ru": "/projects/avito-charity/rebranding/covers/cover.webp",
@@ -287,6 +287,10 @@ window.siteLanguageMedia = {
   "/projects/avito-charity/subscription/media/success/before.webp": {
     "ru": "/projects/avito-charity/subscription/media/success/before-ru.webp",
     "en": "/projects/avito-charity/subscription/media/success/before-en.webp"
+  },
+  "/projects/avito-charity/wild-animal-help/covers/feed-cover-wild-animal-help-1500x1800.webp": {
+    "ru": "/projects/avito-charity/wild-animal-help/covers/feed-cover-wild-animal-help-1500x1800.webp",
+    "en": "/projects/avito-charity/wild-animal-help/covers/feed-cover-wild-animal-help-1500x1800.webp"
   },
   "/projects/concepts/ai-assistant/covers/cover.webp": {
     "ru": "/projects/concepts/ai-assistant/covers/cover.webp",
@@ -527,10 +531,6 @@ window.siteLanguageMedia = {
   "/projects/ozon-prices/prices-table/covers/cover.webp": {
     "ru": "/projects/ozon-prices/prices-table/covers/cover.webp",
     "en": "/projects/ozon-prices/prices-table/covers/cover.webp"
-  },
-  "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800.webp": {
-    "ru": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800-ru.webp",
-    "en": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800-en.webp"
   },
   "/projects/ozon-prices/promotion-boosting/covers/cover.webp": {
     "ru": "/projects/ozon-prices/promotion-boosting/covers/cover.webp",

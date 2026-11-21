@@ -328,6 +328,20 @@
     ]
   },
   {
+    "source": "/projects/avito-charity/anti-bullying/covers/feed-cover-anti-bullying-1500x1800.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/anti-bullying/covers/feed-cover-anti-bullying-1500x1800-ru.webp",
+      "en": "/projects/avito-charity/anti-bullying/covers/feed-cover-anti-bullying-1500x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/anti-bullying/covers/feed-cover-anti-bullying-1500x1800.webp",
+      "en": "/projects/avito-charity/anti-bullying/covers/feed-cover-anti-bullying-1500x1800.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
+    ]
+  },
+  {
     "source": "/projects/avito-charity/charity-profile/covers/cover.webp",
     "planned": {
       "ru": "/projects/avito-charity/charity-profile/covers/cover-ru.webp",
@@ -381,20 +395,6 @@
     },
     "pages": [
       "projects/avito-charity/gamification/index.html"
-    ]
-  },
-  {
-    "source": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800.webp",
-    "planned": {
-      "ru": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800-ru.webp",
-      "en": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800-en.webp"
-    },
-    "active": {
-      "ru": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800-ru.webp",
-      "en": "/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800-en.webp"
-    },
-    "pages": [
-      "pages/home/data/projects.js"
     ]
   },
   {
@@ -1027,6 +1027,20 @@
     },
     "pages": [
       "projects/avito-charity/subscription/index.html"
+    ]
+  },
+  {
+    "source": "/projects/avito-charity/wild-animal-help/covers/feed-cover-wild-animal-help-1500x1800.webp",
+    "planned": {
+      "ru": "/projects/avito-charity/wild-animal-help/covers/feed-cover-wild-animal-help-1500x1800-ru.webp",
+      "en": "/projects/avito-charity/wild-animal-help/covers/feed-cover-wild-animal-help-1500x1800-en.webp"
+    },
+    "active": {
+      "ru": "/projects/avito-charity/wild-animal-help/covers/feed-cover-wild-animal-help-1500x1800.webp",
+      "en": "/projects/avito-charity/wild-animal-help/covers/feed-cover-wild-animal-help-1500x1800.webp"
+    },
+    "pages": [
+      "pages/home/data/projects.js"
     ]
   },
   {
@@ -1869,20 +1883,6 @@
     },
     "pages": [
       "projects/ozon-prices/prices-table/index.html"
-    ]
-  },
-  {
-    "source": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800.webp",
-    "planned": {
-      "ru": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800-ru.webp",
-      "en": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800-en.webp"
-    },
-    "active": {
-      "ru": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800-ru.webp",
-      "en": "/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800-en.webp"
-    },
-    "pages": [
-      "pages/home/data/projects.js"
     ]
   },
   {

@@ -117,19 +117,19 @@ window.portfolioProjects = [
     place: { c: 4, r: 4 }
   },
   {
-    id: 'prices-table',
+    id: 'wild-animal-help',
     soon: true,
-    title: 'Set prices to your products and manage your seller account',
-    feed: { image: '/projects/ozon-prices/prices-table/covers/feed-cover-324719916-1500x1800.webp', width: 1500, height: 1800 },
-    alt: 'Тёмный экран приложения продавца Ozon: кванты, цены товара, цена для покупателя и бустинг в поиске',
+    title: 'If you encounter a wild animal, our volunteers will help you figure out what to do in this situation',
+    feed: { image: '/projects/avito-charity/wild-animal-help/covers/feed-cover-wild-animal-help-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Avito and Russian Biological Society wildlife help website on a phone, with a fawn and a form to describe what happened',
     place: { c: 1, r: 6 }
   },
   {
-    id: 'gamification',
+    id: 'anti-bullying',
     soon: true,
-    title: 'Gamification to make helping charities easier',
-    feed: { image: '/projects/avito-charity/gamification/covers/feed-cover-324719917-1500x1800.webp', width: 1500, height: 1800 },
-    alt: 'Блок «Творим добро» со списком заданий и баллами: пожертвовать в фонд, купить мерч, поддержать «ЛизаАлерт»',
+    title: 'Say no to bullying! How to support a loved one and help them cope with harassment',
+    feed: { image: '/projects/avito-charity/anti-bullying/covers/feed-cover-anti-bullying-1500x1800.webp', width: 1500, height: 1800 },
+    alt: 'Avito and Shalash anti-bullying website on a phone, with a blue background and illustrated cards offering games and advice',
     place: { c: 2, r: 6 }
   },
   {

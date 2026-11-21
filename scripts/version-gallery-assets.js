@@ -13,6 +13,8 @@ const assets = [
   'components/site-brand/logo-contrast.js',
   'about/media/about-portrait.webp',
   'projects/swtec-medical/patient-app/covers/feed-cover-patient-points-1500x1800.webp',
+  'projects/avito-charity/wild-animal-help/covers/feed-cover-wild-animal-help-1500x1800.webp',
+  'projects/avito-charity/anti-bullying/covers/feed-cover-anti-bullying-1500x1800.webp',
   'projects/ozon-crm/customer-segments/media/research/marketplace-reference-revenue.webp',
   'projects/ozon-crm/customer-segments/media/research/marketplace-reference-homie.webp',
   'projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680.webp',

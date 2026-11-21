@@ -1194,13 +1194,13 @@ window.siteEnglish = {
       "title": "Find out about charity products in your account",
       "alt": "A phone on green fabric showing the Avito #IHelp section: subscriptions, helping people, caring for nature"
     },
-    "prices-table": {
-      "title": "Set prices to your products and manage your seller account",
-      "alt": "Dark screen of the Ozon seller app: quantities, product prices, buyer price and search boosting"
+    "wild-animal-help": {
+      "title": "If you encounter a wild animal, our volunteers will help you figure out what to do in this situation",
+      "alt": "Avito and Russian Biological Society wildlife help website on a phone, with a fawn and a form to describe what happened"
     },
-    "gamification": {
-      "title": "Gamification to make helping charities easier",
-      "alt": "The “Doing good” block with tasks and points: donate to a charity, buy merch, support LizaAlert"
+    "anti-bullying": {
+      "title": "Say no to bullying! How to support a loved one and help them cope with harassment",
+      "alt": "Avito and Shalash anti-bullying website on a phone, with a blue background and illustrated cards offering games and advice"
     },
     "doctor-dashboard": {
       "title": "Monitor your patient's health and collect data from different wearable devices",
