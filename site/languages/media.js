@@ -488,9 +488,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/ozon-crm/customer-segments/media/results/gallery-2-square-2088x2088-ru.webp",
     "en": "/projects/ozon-crm/customer-segments/media/results/gallery-2-square-2088x2088-en.webp"
   },
-  "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v2-3840x1680.webp": {
-    "ru": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v2-3840x1680-ru.webp",
-    "en": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v2-3840x1680-en.webp"
+  "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v3-3840x1680.webp": {
+    "ru": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v3-3840x1680.webp",
+    "en": "/projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v3-3840x1680.webp"
   },
   "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-1-v2-3840x1680.webp": {
     "ru": "/projects/ozon-crm/customer-segments/media/steps/recommendation-slide-1-v2-3840x1680-ru.webp",

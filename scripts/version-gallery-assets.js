@@ -18,6 +18,7 @@ const assets = [
   'projects/ozon-crm/customer-segments/media/research/marketplace-reference-revenue.webp',
   'projects/ozon-crm/customer-segments/media/research/marketplace-reference-homie.webp',
   'projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680.webp',
+  'projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v3-3840x1680.webp',
   'site/languages/english-copy.js',
   'site/languages/media.js',
   'site/language.js',
