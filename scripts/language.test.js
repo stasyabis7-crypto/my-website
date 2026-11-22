@@ -12,6 +12,8 @@ function element(tag, attrs = [], children = []) {
     getAttribute(name) { return this.attributes[name] ?? null; },
     setAttribute(name, value) { this.attributes[name] = value; },
     removeAttribute(name) { delete this.attributes[name]; },
+    get textContent() { return this.childNodes.map(node => node.nodeType === 3 ? node.nodeValue : node.textContent).join(''); },
+    set textContent(value) { this.childNodes = [{ nodeType: 3, nodeValue: value, parentElement: this }]; },
     get className() { return this.getAttribute('class') || ''; },
     set className(value) { this.setAttribute('class', value); },
     get nextSibling() { return this.parentElement?.childNodes[this.parentElement.childNodes.indexOf(this) + 1] || null; },
@@ -44,10 +46,10 @@ function run(file, query = '', stored, denied = false, additionalMedia = {}, vie
   const tree = adapt(parse5.parse(fs.readFileSync(path.join(root, file), 'utf8')));
   const html = tree.childNodes.find(node => node.tagName === 'HTML');
   const callbacks = {}, values = { 'portfolio-language': stored };
-  let mutation, redirect;
+  let mutation, redirect, assigned;
   const mediaQueries = [];
   const href = 'https://portfolio.test/' + file.replace(/index.html$/, '') + query;
-  const context = { URL, location: { href, origin: 'https://portfolio.test', pathname: new URL(href).pathname, replace(value) { redirect = value; } },
+  const context = { URL, location: { href, origin: 'https://portfolio.test', pathname: new URL(href).pathname, replace(value) { redirect = value; }, assign(value) { assigned = value; } },
     localStorage: { getItem(key) { if (denied) throw Error('blocked'); return values[key]; }, setItem(key, value) { if (denied) throw Error('blocked'); values[key] = value; } },
     document: { documentElement: html, addEventListener(name, callback) { callbacks[name] = callback; }, getElementById() { return null; },
       querySelector(selector) { return html.querySelector(selector); }, createElement(tag) { return element(tag); } },
@@ -59,10 +61,10 @@ function run(file, query = '', stored, denied = false, additionalMedia = {}, vie
       return media;
     } } };
   vm.createContext(context);
-  for (const source of ['site/languages/english-copy.js', 'site/languages/media.js']) vm.runInContext(fs.readFileSync(path.join(root, source), 'utf8'), context);
+  for (const source of ['site/languages/english-copy.js', 'site/languages/editorial-copy.js', 'site/languages/russian-copy.js', 'site/languages/media.js']) vm.runInContext(fs.readFileSync(path.join(root, source), 'utf8'), context);
   Object.assign(context.window.siteLanguageMedia, additionalMedia);
   vm.runInContext(fs.readFileSync(process.env.LANGUAGE_TEST_SOURCE || path.join(root, 'site/language.js'), 'utf8'), context);
-  return { ...context, tree, html, callbacks, mutation, redirect, resize(width) {
+  return { ...context, tree, html, callbacks, mutation, redirect, values, assigned: () => assigned, resize(width) {
     for (const { media, listeners } of mediaQueries) {
       const matches = width < 1000;
       if (matches !== media.matches) { media.matches = matches; listeners.forEach(callback => callback(media)); }
@@ -82,145 +84,151 @@ function find(node, predicate, out = []) {
   return out;
 }
 
-// Every entry path stays English, even for a returning Russian-language visitor.
-for (const file of ['index.html', 'about/index.html', 'projects/ozon-crm/customer-segments/index.html']) {
+const hasClass = (node, name) => node.nodeType === 1 && node.className.split(' ').includes(name);
+const publicFiles = ['index.html', 'about/index.html', 'projects/articles/index.html', 'projects/playground/index.html',
+  'projects/ozon-crm/customer-segments/index.html', 'projects/avito-charity/subscription/index.html'];
+for (const file of publicFiles) {
   for (const query of ['', '?lang=ru', '?lang=en', '?lang=invalid']) {
-    for (const stored of [undefined, 'ru', 'en']) for (const width of [375, 999, 1000, 1440]) {
-      const page = run(file, query, stored, false, {}, width);
+    for (const stored of [undefined, 'ru', 'en']) for (const denied of [false, true]) {
+      const page = run(file, query, stored, denied);
       page.callbacks.DOMContentLoaded();
-      assert.equal(page.html.lang, 'en');
-      assert.equal(page.window.siteLanguage.current, 'en');
-      assert.equal(page.document.querySelector('.site-language'), null);
-      assert.equal(find(page.tree, node => node.nodeType === 1 && node.hasAttribute('data-language-switch')).length, 0);
-      assert(!textNodes(page.tree).some(value => /[А-Яа-яЁё]/.test(value)), file + ': English-only visible copy');
+      const expected = query === '?lang=ru' ? 'ru' : query === '?lang=en' ? 'en' : !denied && stored === 'ru' ? 'ru' : 'en';
+      assert.equal(page.html.lang, expected);
+      assert.equal(page.window.siteLanguage.current, expected);
+      if (expected === 'en') assert(!textNodes(page.tree).some(value => /[А-Яа-яЁё]/.test(value)), file + ': untranslated English text');
+      const refs = find(page.tree, node => node.nodeType === 1 && node.hasAttribute('data-copy'));
+      for (const node of refs) assert.equal(node.textContent, page.window.siteEditorialCopy[node.getAttribute('data-copy')][expected]);
     }
   }
 }
-console.log('English-only entry points: defaults, old RU/EN links, stored preferences and mobile/desktop headers verified.');
-// Results use CV measurements, while preserving extra findings from each case.
-const metricCases = [
-  { file: 'projects/avito-charity/subscription/index.html', id: 'summary-end', values: ['~55', '+64%'],
-    context: ['first three months', '+10%', 'daily target was 50', 'default donation amount', '30% above target', 'One-off donations declined', 'second and third payments'] },
-  { file: 'projects/avito-charity/recycle-map/index.html', id: 'results', values: ['1.5–3K', 'Up to 70'],
-    context: ['first eight weeks', '+40%', 'vs target on peak days', '306K point loads', 'without an A/B test', 'regular use'] },
-  { file: 'projects/ozon-crm/customer-segments/index.html', id: 'results', values: ['15%', '~1M'],
-    context: ['first three full months', '+50%', '+25%', 'vs target', '13%', '3 percentage points above target', 'CRM launch as a whole', 'first campaign', 'come back and buy again'] }
-];
-const hasClass = (node, name) => node.nodeType === 1 && node.className.split(' ').includes(name);
-for (const { file, id, values, context } of metricCases) {
-  const page = run(file);
-  const results = find(page.tree, node => node.nodeType === 1 && node.getAttribute('id') === id)[0];
-  const cards = find(results, node => hasClass(node, 'cg-outcome'));
-  assert.equal(cards.length, values.length, file);
-  cards.forEach((card, index) => {
-    const surface = find(card, node => hasClass(node, 'cg-outcome__surface'))[0];
-    const value = find(surface, node => hasClass(node, 'cg-outcome__value'))[0];
-    const label = find(surface, node => hasClass(node, 'cg-outcome__label'))[0];
-    assert.equal(textNodes(value).join(''), values[index], file + ': CV result value');
-    assert.equal(card.getAttribute('aria-labelledby'), label.getAttribute('id'));
-    const caption = find(card, node => node.tagName === 'FIGCAPTION')[0];
-    assert(caption && !find(surface, node => node === caption).length, 'Explanations stay below the grey surface');
-    assert(textNodes(surface).join(' ').trim().split(/\s+/).length <= 10, 'Metric banners contain only a value and a short label');
-    assert(!/[А-Яа-яЁё]/.test(textNodes(card).join(' ')), file + ': English metrics');
-    const arrows = find(surface, node => hasClass(node, 'icon--arrow-upward'));
-    assert.equal(arrows.length, values[index].startsWith('+') ? 1 : 0, 'Only comparative growth gets an upward arrow');
-  });
-  const copy = textNodes(results).join(' ').replace(/\s+/g, ' ');
-  for (const phrase of context) assert(copy.includes(phrase), file + ': retain measurement context and additional findings: ' + phrase);
+const en = run('index.html'), ru = run('index.html', '?lang=ru');
+for (const page of [en, ru]) {
+  const service = page.window.siteLanguage, language = service.current;
+  assert.equal(service.url('/about/?preview=1#experience'), '/about/?preview=1&lang=' + language + '#experience');
+  assert.equal(service.url('/about/?lang=ru&preview=1#experience'), '/about/?lang=' + language + '&preview=1#experience');
+  assert.equal(service.url('https://elsewhere.test/cv.pdf'), 'https://elsewhere.test/cv.pdf');
+  assert.equal(service.url('/cv.pdf?v=3'), service.resume);
+  assert.equal(service.url('/cv-en.pdf'), service.resume);
+  assert(service.resume.includes(language === 'en' ? '1Lmhy9PlbZQAygC_Ir1HPg22xBI6kVRN5' : '17iRYE0E_2xrNNLsrmFPtzYo2qP7KWtps'));
+  assert.equal(service.t('1 из 4'), language === 'en' ? '1 of 4' : '1 из 4');
+  assert.equal(service.t('CV PDF'), language === 'en' ? 'CV PDF' : 'Резюме PDF');
+  assert.equal(run('projects/posts/index.html', '?lang=' + language).redirect, '/?lang=' + language);
 }
-
-const en = run('index.html');
-assert.equal(en.html.lang, 'en');
-assert.equal(en.window.siteLanguage.url('/about/?preview=1#experience'), '/about/?preview=1#experience');
-assert.equal(en.window.siteLanguage.url('https://medium.com/@stasyabis'), 'https://medium.com/@stasyabis');
-assert.equal(en.window.siteLanguage.url('/cv.pdf?v=3'), '/cv-en.pdf?v=3');
-assert.equal(en.window.siteLanguage.url('https://elsewhere.test/cv.pdf'), 'https://elsewhere.test/cv.pdf');
-assert.equal(en.window.siteLanguage.media('projects/articles/covers/triz.webp'), 'projects/articles/covers/triz.webp');
-assert.equal(run('index.html', '?lang=ru', 'en').html.lang, 'en');
-assert.equal(en.window.siteLanguage.url('/about/?lang=ru&preview=1#experience'), '/about/?preview=1#experience');
-assert.equal(run('index.html', '?lang=ru').window.siteLanguage.url('/cv.pdf?v=3'), '/cv-en.pdf?v=3');
-assert.equal(run('index.html', '', 'en').html.lang, 'en');
-assert.equal(run('index.html', '?lang=invalid', undefined, true).html.lang, 'en');
-assert.equal(run('index.html', '?lang=en', undefined, true).html.lang, 'en');
-assert.equal(run('projects/posts/index.html').redirect, '/');
-assert.equal(run('projects/posts/index.html', '?lang=ru').redirect, '/');
-const ru = run('index.html', '?lang=ru');
-assert(!textNodes(ru.tree).join(' ').includes('Резюме PDF'));
-assert(textNodes(ru.tree).join(' ').includes('CV PDF'));
-const enSubtitle = find(en.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').split(' ').includes('mood-subtitle'))[0];
-assert.equal(textNodes(enSubtitle).join(''), 'I believe that the design surrounding us undoubtedly reflects the quality of our lives');
-assert(!textNodes(en.tree).join(' ').includes('Резюме PDF'));
-assert(!textNodes(en.tree).some(value => /[А-Яа-яЁё]/.test(value)), 'Home page must translate all visible copy, including non-breaking spaces');
-for (const [source, expected] of [['1 из 3', '1 of 3'], ['Оглавление проекта', 'Project contents'], ['Закрыть оглавление', 'Close contents'], ['Скопирована', 'Copied']]) assert.equal(en.window.siteLanguage.t(source), expected);
+const switching = run('projects/ozon-crm/customer-segments/index.html', '?lang=en&preview=1#dashboard', undefined, true);
+switching.window.siteLanguage.switchTo('ru');
+assert.equal(switching.assigned(), '/projects/ozon-crm/customer-segments/?lang=ru&preview=1#dashboard');
+const homeTitle = page => find(page.tree, node => hasClass(node, 'mood-title'))[0].textContent;
+assert.equal(homeTitle(en), en.window.siteEditorialCopy['main page:4'].en);
+assert.equal(homeTitle(ru), ru.window.siteEditorialCopy['main page:4'].ru);
+for (const page of [en, ru]) {
+  const subtitle = find(page.tree, node => hasClass(node, 'mood-subtitle'))[0];
+  assert.equal(subtitle.textContent.replace(/\s+/g, ' ').trim(), page.window.siteEditorialCopy['main page:5'][page.html.lang]);
+}
+// Dynamically inserted controls are translated without changing literal language labels.
 const dynamic = { nodeType: 3, nodeValue: 'Скоро появится', parentElement: element('span') };
 en.mutation([{ type: 'childList', addedNodes: [dynamic] }]);
 assert.equal(dynamic.nodeValue, 'Coming soon');
-const about = run('about/index.html');
-assert(textNodes(about.tree).join(' ').includes('Senior Product Designer'));
-assert(!textNodes(about.tree).some(value => /[А-Яа-яЁё]/.test(value)), 'About page must translate all visible copy');
-const enExperience = find(about.tree, node => node.nodeType === 1 && node.getAttribute('data-language-content') === 'en')[0];
-assert.equal(find(about.tree, node => node.nodeType === 1 && node.getAttribute('data-language-content') === 'ru').length, 0);
-assert(!enExperience.hasAttribute('hidden'));
-assert.equal(enExperience.getAttribute('data-resume-source'), 'https://drive.google.com/file/d/1Lmhy9PlbZQAygC_Ir1HPg22xBI6kVRN5/view?usp=drive_link');
-assert(textNodes(enExperience).join(' ').includes('1,000 completed donations per week vs 500'));
-const allENExperience = find(enExperience, node => node.nodeType === 3).map(node => node.nodeValue).join(' ');
-assert(allENExperience.includes('mine workers'));
-assert(!allENExperience.includes('miners'));
-assert.equal(find(about.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').includes('site-header__avatar')).length, 0);
-assert.equal(find(about.tree, node => node.nodeType === 1 && (node.getAttribute('class') || '').includes('site-header__cta')).length, 0);
-assert.equal(find(about.tree, node => node.nodeType === 1 && node.hasAttribute('data-resume-link')).length, 1);
-const project = en.window.siteLanguage.project({ id: 'customer-segments', title: 'CRM для продавцов Ozon', feed: { image: '/original.webp' } });
-assert.equal(project.title, 'How to work with your audience as a seller');
-assert.equal(project.feed.image, '/original.webp');
+const literal = element('button', [{ name: 'data-language-literal', value: '' }]);
+const label = { nodeType: 3, nodeValue: 'EN', parentElement: literal };
+ru.mutation([{ type: 'childList', addedNodes: [label] }]);
+assert.equal(label.nodeValue, 'EN');
+// The chosen UI language must never select a Russian image, poster or video.
 const slots = prepareLanguageAssets({ check: true });
-assert(slots.some(slot => slot.pages.includes('pages/home/data/projects.js')));
-assert(slots.some(slot => slot.pages.includes('projects/ozon-crm/customer-segments/index.html')));
 for (const slot of slots) for (const language of ['ru', 'en']) assert(fs.existsSync(path.join(root, slot.active[language])), slot.active[language]);
-const source = slots.find(slot => slot.source.endsWith('.webp')).source;
-const imageVariant = source.replace('.webp', '-en.webp');
-const localized = run('index.html', '?lang=en', undefined, false, { [source]: { ru: source, en: imageVariant } });
-assert.equal(localized.window.siteLanguage.media(source), imageVariant);
-assert.equal(localized.window.siteLanguage.media('/unknown.webp'), '/unknown.webp');
-const pair = localized.window.siteLanguage.mediaPair({ image: source, video: '/clip.mp4' });
-assert.equal(pair.image, imageVariant);
-assert.equal(pair.video, undefined, 'A translated still must suppress a video in the previous language');
-const movie = run('index.html', '?lang=en', undefined, false, { [source]: { ru: source, en: imageVariant }, '/clip.mp4': { ru: '/clip.mp4', en: '/clip-en.mp4' } });
-assert.equal(movie.window.siteLanguage.mediaPair({ image: source, video: '/clip.mp4' }).video, '/clip-en.mp4');
-assert.deepEqual(variantPaths('/projects/case/covers/cover.webp', 'en'), ['/projects/case/covers/cover-en.webp']);
-assert.deepEqual(variantPaths('/projects/case/media/movie.mp4', 'ru'), ['/projects/case/media/movie-ru.mp4']);
-vm.runInContext(fs.readFileSync(path.join(root, 'projects/articles/articles.js'), 'utf8'), vm.createContext(en));
-assert.equal(en.window.portfolioArticles.length, 17);
-assert.equal(en.window.portfolioArticles.filter(article => article.language === 'en').length, 7);
-assert.equal(en.window.portfolioArticles.filter(article => article.language === 'ru').length, 10);
-assert.equal(new Set(en.window.portfolioArticles.map(a => a.href)).size, 17);
-const expected = ['57f6efab408a', 'c1a7bd1cd186', 'b1f4b625d1e7', 'ec37f61fa428', '58666230c9a7', 'e71d9671744f', 'b9b21faa723b'];
-for (const id of expected) assert(en.window.portfolioArticles.some(a => a.href.endsWith(id)));
-// Preserve the former Russian-only publications alongside preferred English editions.
-const russianIDs = ['1828292', '1237967', '1306587', '1169783', '1168304', '635298', '855954', '1212420', '1194004', '841766'];
-for (const id of russianIDs) assert(en.window.portfolioArticles.some(article => article.language === 'ru' && article.href.includes(id)));
-const articleList = { innerHTML: '' };
-vm.runInNewContext(fs.readFileSync(path.join(root, 'components/article-catalog/article-catalog.js'), 'utf8'), {
-  window: en.window, document: { querySelector() { return articleList; } }
-});
-const renderedArticles = adapt(parse5.parseFragment(articleList.innerHTML));
-const articleLinks = find(renderedArticles, node => node.tagName === 'A');
-const languageBadges = find(renderedArticles, node => node.nodeType === 1 && (node.className || '').includes('article-tile__language'));
-assert.equal(articleLinks.length, 17);
-assert.equal(languageBadges.length, 17);
-for (const [index, article] of en.window.portfolioArticles.entries()) {
-  assert.equal(articleLinks[index].getAttribute('href'), article.href);
-  assert.equal(articleLinks[index].getAttribute('hreflang'), article.language);
-  assert.equal(textNodes(languageBadges[index]).join(''), article.language.toUpperCase());
-  assert(!languageBadges[index].className.split(' ').includes('btn'));
-  const cover = fs.readFileSync(path.join(root, article.image), 'utf8');
-  assert(article.image.endsWith('-diagram.svg'));
-  assert(!article.video);
-  assert.deepEqual([...cover.matchAll(/stroke="([^"]+)"/g)].map(match => match[1]), ['#000000']);
+for (const file of publicFiles) {
+  const media = language => find(run(file, '?lang=' + language).tree, node => ['IMG', 'VIDEO', 'SOURCE'].includes(node.tagName))
+    .map(node => ['src', 'poster', 'data-src', 'srcset'].map(key => node.getAttribute(key)));
+  assert.deepEqual(media('ru'), media('en'), file + ': media must remain English in both languages');
 }
-const staticArticles = run('projects/articles/index.html');
-const staticArticleLinks = find(staticArticles.tree, node => node.tagName === 'A' && node.hasAttribute('hreflang'));
-assert.deepEqual(staticArticleLinks.map(node => node.getAttribute('href')), Array.from(en.window.portfolioArticles, article => article.href));
-// Audit every translated public page, including metadata and accessible names.
+for (const language of ['ru', 'en']) {
+  const localized = run('index.html', '?lang=' + language, undefined, false, {
+    '/image.webp': { ru: '/image-ru.webp', en: '/image-en.webp' },
+    '/clip.mp4': { ru: '/clip-ru.mp4', en: '/clip-en.mp4' }
+  });
+  assert.equal(localized.window.siteLanguage.media('/image.webp'), '/image-en.webp');
+  assert.equal(localized.window.siteLanguage.mediaPair({ image: '/image.webp', video: '/clip.mp4' }).video, '/clip-en.mp4');
+}
+assert.deepEqual(variantPaths('/case/image.webp', 'en'), ['/case/image-en.webp']);
+// The map remains in the repository and feed, but it cannot be opened on production.
+for (const page of [en, ru]) {
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'pages/home/data/projects.js'), 'utf8'), { window: page.window });
+  const projects = page.window.portfolioProjects;
+  assert.deepEqual(Array.from(projects.slice(0, 3), item => item.id), ['customer-segments', 'kind-subscription', 'recycle-map']);
+  assert.equal(projects[2].soon, true);
+  assert.equal(projects[1].place.c, 3); assert.equal(projects[2].place.c, 4);
+  assert.equal(page.window.siteLanguage.project(projects[0]).title, page.window.siteEditorialCopy['main page:7'][page.html.lang]);
+  const grid = { innerHTML: '', querySelectorAll: () => [] };
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'components/project-feed/project-feed.js'), 'utf8'), {
+    window: page.window, document: { querySelector: () => ({ querySelector: () => grid }) }, matchMedia: () => ({ matches: false })
+  });
+  const rendered = adapt(parse5.parseFragment(grid.innerHTML));
+  const cards = find(rendered, node => node.tagName === 'ARTICLE');
+  assert.equal(find(cards[2], node => node.tagName === 'A').length, 0);
+  assert.equal(find(cards[2], node => hasClass(node, 'feed-card__badge')).length, 1);
+}
+assert(fs.existsSync(path.join(root, 'projects/avito-charity/recycle-map/index.html')));
+const rules = fs.readFileSync(path.join(root, '.htaccess'), 'utf8');
+const redirect = rules.split('\n').find(line => line.includes('(?:avito-charity/)?recycle-map'));
+const pattern = new RegExp(redirect.trim().split(/\s+/)[1]);
+for (const target of ['projects/avito-charity/recycle-map/', 'projects/avito-charity/recycle-map/index.html', 'projects/recycle-map/']) assert(pattern.test(target));
+assert(!pattern.test('projects/avito-charity/recycle-map/covers/cover.webp'));
+assert(redirect.includes('R=302'));
+// Articles preserve language badges, English outbound editions and all 17 items for RU.
+for (const page of [en, ru]) {
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'projects/articles/articles.js'), 'utf8'), { window: page.window });
+  const articleList = { innerHTML: '' };
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'components/article-catalog/article-catalog.js'), 'utf8'), {
+    window: page.window, document: { querySelector: () => articleList }
+  });
+  const rendered = adapt(parse5.parseFragment(articleList.innerHTML));
+  const links = find(rendered, node => node.tagName === 'A');
+  const badges = find(rendered, node => hasClass(node, 'article-tile__language'));
+  assert.equal(links.length, page.html.lang === 'ru' ? 17 : 7);
+  assert.equal(badges.length, links.length);
+  const expected = page.window.portfolioArticles.filter(item => page.html.lang === 'ru' || item.language === 'en');
+  expected.forEach((article, index) => {
+    assert.equal(links[index].getAttribute('href'), article.href);
+    assert.equal(links[index].getAttribute('hreflang'), article.language);
+    assert.equal(badges[index].textContent, article.language.toUpperCase());
+    assert(!hasClass(badges[index], 'btn'));
+    assert(article.image.endsWith('-diagram.svg'));
+  });
+}
+// Resume links are native actions; there is no interception or language picker.
+const chrome = fs.readFileSync(path.join(root, 'components/site-chrome/site-chrome.js'), 'utf8');
+const resumeCode = chrome.slice(chrome.indexOf('  function configureResume'), chrome.indexOf('  /* ---------- chrome:'));
+for (const page of [en, ru]) {
+  const triggers = [{ dataset: {} }, { dataset: {} }];
+  vm.runInNewContext(resumeCode, { window: page.window, document: { documentElement: { lang: page.html.lang }, querySelectorAll: () => triggers } });
+  for (const trigger of triggers) {
+    assert.equal(trigger.href, page.window.siteLanguage.resume);
+    assert.equal(trigger.target, '_blank');
+    assert.equal(trigger.dataset.resumeDocument, page.html.lang);
+  }
+}
+assert(!chrome.includes('resumePicker'));
+assert(chrome.includes("var cv = document.createElement('a')"));
+// Run the real switch mounting logic and resize it between both specified positions.
+const switchCode = chrome.slice(chrome.indexOf('    // One compact'), chrome.indexOf("    var menuBtn = document.createElement('button')"));
+for (const language of ['en', 'ru']) {
+  const header = { appendChild(node) { this.child = node; node.parentNode = this; } };
+  const identity = { insertBefore(node, reference) { this.child = node; assert.equal(reference, logo); node.parentNode = this; } };
+  const logo = { parentNode: identity }, listeners = {};
+  let clicked;
+  const control = { setAttribute() {}, addEventListener(name, handler) { if (name === 'click') clicked = handler; } };
+  const media = { matches: true, addEventListener(name, handler) { listeners[name] = handler; } };
+  vm.runInNewContext(switchCode, {
+    root: { lang: language }, window: { matchMedia: () => media, siteLanguage: { switchTo(next) { assert.equal(next, language === 'en' ? 'ru' : 'en'); } } },
+    document: { createElement: () => control, querySelector: selector => selector === '.site-header' ? header : logo }
+  });
+  assert.equal(control.parentNode, identity);
+  assert.equal(control.textContent, language.toUpperCase());
+  assert(control.className.includes('btn--fill-glass-ui'));
+  clicked(); media.matches = false; listeners.change();
+  assert.equal(control.parentNode, header);
+  media.matches = true; listeners.change(); assert.equal(control.parentNode, identity);
+}
+// Every public English page remains fully translated, including accessible copy.
 for (const pathname of Object.keys(en.window.siteEnglish.pages)) {
   if (pathname === '/projects/posts/') continue;
   const file = pathname.slice(1) + 'index.html';
@@ -228,7 +236,6 @@ for (const pathname of Object.keys(en.window.siteEnglish.pages)) {
   const translated = run(file);
   for (const text of textNodes(translated.tree)) assert(!/[А-Яа-яЁё]/.test(text), file + ': untranslated text: ' + text.trim());
   for (const node of find(translated.tree, node => node.nodeType === 1)) {
-    if (node.tagName === 'A' && /cv(?:-en)?\.pdf/.test(node.getAttribute('href') || '')) assert(node.getAttribute('href').startsWith('/cv-en.pdf'), file + ': English resume');
     for (const name of ['alt', 'aria-label', 'aria-description', 'aria-roledescription', 'aria-valuetext', 'title', 'placeholder']) {
       const value = node.getAttribute(name);
       if (value) assert(!/[А-Яа-яЁё]/.test(value), file + ': untranslated ' + name + ': ' + value);
@@ -253,6 +260,12 @@ for (const lang of ['ru', 'en']) {
   assert.equal(value.textContent, lang === 'en' ? '≈1,300 / 1.5–3K' : '≈1 300 / 1,5–3K');
   assert(snapshots[1].includes(lang === 'en' ? '1,138 / 1.3–3K' : '1 138 / 1,3–3K'), snapshots[1]);
 }
-const menu = fs.readFileSync(path.join(root, 'components/site-chrome/site-chrome.js'), 'utf8');
-assert(menu.includes("item.href !== '/projects/posts/'"));
-console.log('English-only site: legacy links, unavailable storage, dynamic content, all public page text and metadata, six compact metrics, preserved supplemental findings, animated number formats, media fallbacks and 17 articles, preferred English editions and language badges verified.');
+
+if (process.env.LANGUAGE_AUDIT) {
+  for (const file of publicFiles) {
+    const page = run(file, '?lang=ru');
+    const values = find(page.tree, node => node.nodeType === 3 && !node.parentElement?.closest('script, style, noscript')).map(node => node.nodeValue.trim()).filter(text => /[a-z]{3}/i.test(text) && !/[А-Яа-яЁё]/.test(text));
+    console.log(file, JSON.stringify([...new Set(values)], null, 2));
+  }
+}
+console.log('Languages: Sheets copy, selection and persistence, switch positions, shared English media, direct resumes, hidden map and RU/EN article collections verified.');

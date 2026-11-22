@@ -1,0 +1,690 @@
+{
+  "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1ZM9ecNLEQ0Q8GL8j_FzwKSi3lRyiIKDAZ2mjzrfkPKc/edit",
+  "sheets": [
+    {
+      "name": "main page",
+      "rows": [
+        [
+          "component",
+          "EN",
+          "RU"
+        ],
+        [
+          "пункты меню",
+          "Articles, Playground, Contact me",
+          "Статьи, Концепты, Связаться со мной"
+        ],
+        [
+          "кнопка резюме, открывать резюме в соответсвии с выбранным языком",
+          "CV PDF",
+          "Резюме PDF"
+        ],
+        [
+          "заголовок в hero баннере",
+          "Product Designer with 6 years of experience",
+          "Продуктовый дизайнер с опытом работы 6 лет"
+        ],
+        [
+          "подзаголовок в hero баннере",
+          "I believe that the quality of the design around us undoubtedly reflects the quality of our lives",
+          "Я верю в то, что качество дизайна, который нас окружает, безусловно, отражает качество нашей жизни"
+        ],
+        [
+          "Кнопка после подзаголовка в hero баннере",
+          "Explore work",
+          "Ознакомиться с работами"
+        ],
+        [
+          "1 проект CRM заголовок",
+          "CRM system that allows you to launch targeted ads for your products",
+          "CRM, позволяющая точечно запускать рекламу своих продутов"
+        ],
+        [
+          "2 проект карта переработки",
+          "How to find a recycling center near you and start practicing conscious consumption",
+          "Как найти пункт переаботки рядом с домом и перейти на путь осознанного потребления"
+        ],
+        [
+          "3 проект подписки на благотворительность",
+          "Help charities with monthly donation subscription",
+          "Ежемесячно помогайте вашему любимому фонду"
+        ],
+        [
+          "4 проект лендинг о компании",
+          "Landing page where you can find more about Avito company",
+          "Лендинг, на котором можно узнать больше о компании Авито"
+        ],
+        [
+          "5 проект трекер здоровья в часах",
+          "Monitor your health on your wearable",
+          "Следи за здоровьем на носимом устройстве"
+        ],
+        [
+          "6 проект мед прила для здоровья",
+          "Take your meds, monitor your blood pressure, and send the data to your doctor from the comfort of your home",
+          "Принимай лекарства, измеряй давление и передавай данные лечащему врачу, не выходя из дома"
+        ],
+        [
+          "7 проект цены в ЛК селлера",
+          "Monitor product prices, set up promotions during sales periods, and track revenue in the seller's personal account",
+          "Следи за ценами на товары, выставляй акции в периоды распродаж, следи за выручкой в личном кабинете продавца"
+        ],
+        [
+          "8 проект благотворительность в ЛК",
+          "All about charity on Avito in one page",
+          "Раздел, в котором можно посмотреть всё, что связано с благотворительностью в Авито"
+        ],
+        [
+          "9 проект дикие животные",
+          "If you encounter a wild animal, our volunteers will help you figure out what to do in this situation",
+          "Если вы встретили дикое животное, наши волонтёры помогут вам правильно поступить в данной ситуации"
+        ],
+        [
+          "10 проект антибуллинг ",
+          "Say no to bullying! How to support a loved one and help them cope with harassment",
+          "Скажем буллингу нет! Как поддержать близкого и помочь справиться с травлей"
+        ],
+        [
+          "11 проект дашборд для врачей",
+          "Monitor your patient's health and collect data from different wearable devices",
+          "Собирай информацию о здоровье своего пациента, названай препараты. Дашборд для лечащих врачей"
+        ],
+        [
+          "12 проект ЛК для HR",
+          "A self-service portal for HR and employees to easily manage documents and vacations",
+          "Личный кабинет для HR и сотрудников компании для комфортной работы с документами и отпусками"
+        ]
+      ]
+    },
+    {
+      "name": "1 project",
+      "rows": [
+        [
+          "component on https://stasyabis.com/projects/ozon-crm/customer-segments/ ",
+          "EN",
+          "RU"
+        ],
+        [
+          "заголовок страницы",
+          "CRM for Ozon sellers",
+          "CRM для продавцов Ozon"
+        ],
+        [
+          "блок после заголовка с проблемой и решением",
+          "Problem: sellers had customer data but no clear way to turn it into action",
+          "Проблема: У продавцов была клиентская база, но не было понимания, как с ней работать и кому какие предложения делать"
+        ],
+        [
+          null,
+          "Solution: I proposed a key segment on the overview and step-by-step campaign setup: who to send to, what to offer, how to show it",
+          "Решение: Я предложила сделать акцент на ключевом сегменте на сводной странице и добавить пошаговую настройку рассылок: кому, что и в каком виде предлагать"
+        ],
+        [
+          "роль, команда, таймлайн",
+          "Role\nAdvocated for reducing the page scope and proposed two solutions that shipped in the MVP",
+          "Роль Сократила функциональность страницы и предложила два решения, вошедших в MVP"
+        ],
+        [
+          null,
+          "Team\nProduct manager, backend, frontend, researcher",
+          "Команда Продакт менеджер, бэкенд, фронтенд разработчики, исследователь"
+        ],
+        [
+          null,
+          "Timeline\n6 months from brief to launch",
+          "Таймлайн 6 месяцев от брифа до прода"
+        ],
+        [
+          "заголовок 1",
+          "About the project",
+          "О проекте"
+        ],
+        [
+          "текст 1",
+          "Imagine you run a pet supplies shop on Ozon — an online marketplace where independent businesses sell products, similar to Amazon Marketplace. You can see who’s bought from you before and who’s shown interest in your products. You want to give some of those customers a reason to order again. You open the dashboard and have two questions. Who should you reach, and what should you offer them?",
+          "Представьте, что у вас свой магазин зоотоваров на Ozon. Вы видите, кто уже покупал у вас раньше и кто интересовался вашими товарами. Вы хотите дать части этой аудитории повод заказать снова. Вы открываете дашборд, и перед вами встают два главных вопроса: кому написать и что именно предложить?"
+        ],
+        [
+          "заголовок 2",
+          "Concepts",
+          "Концепты"
+        ],
+        [
+          "текст 2",
+          "We started by taking stock of the customer data: RFM segments, cart, favourites, views, average order value, demographics, regions and categories. For each one we decided what the seller needs here and what they already look at in other parts of the account.",
+          "Мы провели аудит клиентских данных: RFM-сегментов, корзин, избранного, просмотров, среднего чека, демографии, регионов и категорий. Для каждой метрики определили, что нужно продавцу именно здесь, а что он уже видит в других разделах кабинета."
+        ],
+        [
+          "текст 3",
+          "I also looked at global marketplaces, including Amazon, to see how other seller tools present data and organise campaign setup.",
+          "Я также проанализировала зарубежные маркетплейсы, включая Amazon, чтобы увидеть, как в других кабинетах продавцов подаются данные и устроена настройка кампаний."
+        ],
+        [
+          "заголовок 3",
+          "Problems",
+          "Проблемы"
+        ],
+        [
+          "текст 4",
+          "Sellers already had customer data. To understand where they got stuck between looking at the data and launching a campaign, I conducted 20 interviews with potential users and revealed 3 main problems that we had to solve",
+          "Данные о покупателях у продавцов уже были. Чтобы выяснить, что мешает перейти от аналитики к запуску кампании, я провела 20 интервью с потенциальными пользователями и выделила 3 ключевые проблемы\n"
+        ],
+        [
+          "проблема 1 заг",
+          "Big picture & segment details",
+          "Общая картина и детали по сегментам"
+        ],
+        [
+          "проблема 1 подзаг",
+          "Sellers need a bird’s-eye view of their entire customer base, plus deep-dive metrics to target each specific segment.",
+          "Продавцам нужно видеть состояние всей клиентской базы целиком, но при этом иметь под рукой детальные данные для работы с каждым отдельным сегментом."
+        ],
+        [
+          "проблема 2 заг",
+          "From data to action",
+          "От цифр к действиям"
+        ],
+        [
+          "проблема 2 подзаг",
+          "Analytics alone aren't enough—sellers need clear next steps on campaign goals and which offers work best for each group.",
+          "Одной аналитики недостаточно — рядом с метриками нужны подсказки: какую цель выбрать для группы и какой оффер ей предложить."
+        ],
+        [
+          "проблема 3 заг",
+          "Different seller stages",
+          "Разный уровень зрелости продавцов"
+        ],
+        [
+          "проблема 3 подзаг",
+          "Established shops have repeat buyers to retain, while newer sellers only have first-time buyers or shoppers who just browsed.",
+          "У крупных магазинов уже есть база постоянных покупателей, а новички работают только с первыми заказами или интересом к товарам."
+        ],
+        [
+          "заголовок 4",
+          "Understanding the audience",
+          "Понимание аудитории"
+        ],
+        [
+          "текст 5",
+          "In the interviews, sellers told me they needed a clearer starting point on the dashboard and fewer steps to launch a campaign. ",
+          "По итогам интервью продавцам не хватало понятной точки входа на дашборде и быстрого запуска кампаний."
+        ],
+        [
+          "текст 6",
+          "Based on that feedback, I reduced the number of charts on the overview and kept the information that helped sellers choose a customer group and decide what to do next. They could open a detailed view when they needed more data.",
+          "Поэтому я убрала лишние графики с обзорного экрана, оставив только данные для выбора сегмента и следующего шага. Глубокую аналитику вынесла в отдельный детальный просмотр."
+        ],
+        [
+          "текст 7",
+          "Once the overview was simpler, the next question was how to help sellers act on what they saw. I made the case for launching with ready-made customer groups, so sellers could get started with the data they already had. I proposed highlighting one group and putting a recommended action beside it, while keeping the other groups visible. ",
+          "Когда мы разгрузили обзорный экран, нужно было помочь продавцам действовать на основе этих данных. Я убедила команду запуститься с готовыми сегментами, чтобы селлеры могли начать работу сразу, используя уже имеющуюся базу. В интерфейсе я предложила сделать акцент на одном приоритетном сегменте и сразу показать рядом готовый сценарий, но при этом оставить доступными и остальные группы. "
+        ],
+        [
+          "текст 8",
+          "Pro: Clear starting point for sellers.",
+          "Плюс: Понятный первый шаг для запуска."
+        ],
+        [
+          "текст 9",
+          "Con: Less focus on secondary segments.",
+          "Минус: Второстепенные сегменты уходят на второй план."
+        ],
+        [
+          "текст 10",
+          "Why: Helps sellers overcome analysis paralysis and act faster.",
+          "Обоснование: Снимает ступор у продавцов, которым сложно самим выбрать аудиторию для старта."
+        ],
+        [
+          "заголовок 5",
+          "Recommendation setup",
+          "Рекомендация аудитории"
+        ],
+        [
+          "текст 11",
+          "In CRM you can start from a ready-made scenario for a goal: keep returning customers, motivate new ones to buy again or grow the audience. For a custom setup, you can start from scratch.",
+          "В CRM вам доступны готовые сценарии под ключевые цели: удержание постоянных клиентов, стимулирование повторных покупок или рост аудитории. Для нестандартных задач кампанию можно настроить с нуля."
+        ],
+        [
+          "текст 12",
+          "To organize different campaign mechanics into a clear flow, I split the setup into three steps:",
+          "Чтобы объединить разные механики в понятный процесс, я разделила настройку кампании на три шага:"
+        ],
+        [
+          "заголовок 6",
+          "Who to send to",
+          "Кому отправить"
+        ],
+        [
+          "текст 13",
+          "Select your target audience",
+          "Выбираем целевую аудиторию"
+        ],
+        [
+          "заголовок 7",
+          "What to offer",
+          "Что предложить"
+        ],
+        [
+          "текст 14",
+          "Pick a promo, bonuses, or featured products",
+          "Настраиваем акцию, бонусы или подборку товаров"
+        ],
+        [
+          "заголовок 8",
+          "How to show it",
+          "Как показывать"
+        ],
+        [
+          "текст 15",
+          "Choose the message format and landing page",
+          "Выбираем формат сообщения и посадочную страницу"
+        ],
+        [
+          "текст 16",
+          "Here is how it works for our pet supplies shop. You spot the returning customers segment and select it. To encourage repeat orders, you offer a discount. Finally, you customize the message and choose where it leads when shoppers tap on it.",
+          "Вот как это работает на примере нашего магазина зоотоваров. Вы видите сегмент постоянных покупателей и выбираете его. Чтобы мотивировать их на повторный заказ, вы предлагаете скидку. В конце настраиваете само сообщение и указываете, куда попадет покупатель при нажатии на него."
+        ],
+        [
+          "заголовок 9",
+          "Check the conditions before sending",
+          "Проверить условия кампании перед отправкой"
+        ],
+        [
+          "текст 17",
+          "Before launching the campaign, you check your message limits and see if you have an active subscription, since both affect the sending terms.",
+          "Перед запуском кампании вы проверяете доступные лимиты на отправку и статус подписки, так как они влияют на условия рассылки."
+        ],
+        [
+          "заголовок 10",
+          "Keep going after sending",
+          "Продолжаем работу после отправки"
+        ],
+        [
+          "текст 18",
+          "Afterwards, you open the campaign list to see how many customers received, opened or clicked it. If people open the message but few click, you have a reason to revisit the offer before running it again",
+          "После отправки вы открываете список кампаний и видите, сколько покупателей получили, открыли и кликнули по сообщению. Если открытий много, а переходов мало, это сигнал улучшить оффер перед следующим запуском."
+        ],
+        [
+          "заголовок 11",
+          "Reach out to individual customers",
+          "Персональная работа с каждым клиентом"
+        ],
+        [
+          "текст 19",
+          "The customer list complements mass communication. It brings together purchases, recent actions, interests and recommended products. Sellers can filter the audience and switch to one-to-one conversation when chat is available.",
+          "Список покупателей дополняет массовые рассылки: он объединяет историю покупок, недавние действия, интересы и подборки товаров. Продавец может отфильтровать базу и перейти в личный чат с клиентом, если он доступен."
+        ],
+        [
+          "заголовок 12",
+          "Results",
+          "Результаты"
+        ],
+        [
+          null,
+          "15%",
+          "15%"
+        ],
+        [
+          null,
+          "Monthly seller adoption",
+          "Ежемесячная доля активных продавцов"
+        ],
+        [
+          null,
+          "50% ↑ vs target",
+          "50% ↑ к плану"
+        ],
+        [
+          null,
+          "Measured over the first three full months after launch.",
+          "Замер за первые три полных месяца после запуска."
+        ],
+        [
+          null,
+          "~1M",
+          "~1 млн"
+        ],
+        [
+          null,
+          "Campaign recipients / day",
+          "Получателей рассылок в день"
+        ],
+        [
+          null,
+          "25% ↑ vs target",
+          "25% ↑ к плану"
+        ],
+        [
+          null,
+          "Measured over the same three-month period.",
+          "Замер за тот же трехмесячный период."
+        ],
+        [
+          null,
+          "From audience to campaign",
+          "От аудитории к кампании"
+        ],
+        [
+          null,
+          "We turned scattered data into an end-to-end CRM workflow: identify the right audience, pick an action, launch a campaign, and track performance. By introducing the key segment highlight and a three-step setup, I gave sellers a clear path from insight to action.",
+          "Мы превратили разрозненные данные в сквозной сценарий работы: выбрать подходящую аудиторию, определиться с действием, запустить рассылку и оценить результат. Выделив ключевой сегмент и разделив настройку на три шага, я дала продавцам понятный путь от аналитики к действию."
+        ],
+        [
+          null,
+          "Average message open rate reached 13% (3 percentage points above target).",
+          "Средняя открываемость сообщений достигла 13%, что на 3 процентных пункта выше плана."
+        ],
+        [
+          null,
+          "What I would measure next",
+          "Что бы я измерила дальше"
+        ],
+        [
+          null,
+          "Since these metrics reflect the overall CRM release, I’d run an A/B test to isolate the impact of my redesign—comparing setup completion rates and the share of sellers who successfully send their first campaign.",
+          "Поскольку эти метрики отражают запуск всей CRM целиком, я бы провела A/B-тест, чтобы выделить эффект именно от моих изменений: сравнила бы конверсию в завершение настройки и долю продавцов, которые успешно отправляют первую кампанию."
+        ],
+        [
+          null,
+          "Next, I’d track repeat purchase rates among campaign recipients to see if the messages actually drive customer retention.",
+          "Следующим шагом я бы отследила повторные покупки среди получателей рассылок, чтобы убедиться, что сообщения действительно удерживают клиентов."
+        ]
+      ]
+    },
+    {
+      "name": "2 project",
+      "rows": [
+        [
+          "component on https://stasyabis.com/projects/avito-charity/subscription/ ",
+          "EN",
+          "RU"
+        ],
+        [
+          "заголовок проекта",
+          "Kind Subscription",
+          "Добрая подписка"
+        ],
+        [
+          "проблема",
+          "Problem: in Avito you could only help charities once at a time — to keep supporting them you had to go through the whole flow again",
+          "Проблема: На Авито можно было помогать фондам только разово. Чтобы поддерживать благотворительность регулярно, пользователю приходилось каждый раз проходить весь путь оформления заново."
+        ],
+        [
+          "решение",
+          "Solution: We introduced recurring donations to make regular giving effortless for donors and provide charities with predictable funding.",
+          "Решение: Мы запустили регулярные пожертвования, чтобы сделать постоянную помощь удобной для пользователей, а фондам дать стабильную и предсказуемую поддержку."
+        ],
+        [
+          "роль",
+          "Role\nI led the design and user research from discovery to launch. I tested early concepts through user interviews and used those insights to refine the final shipped design.",
+          "Роль\nЯ отвечала за дизайн и пользовательские исследования на всех этапах: от поиска решений до запуска. Проводила интервью на ранних прототипах и дорабатывала финальный интерфейс на основе полученных инсайтов."
+        ],
+        [
+          "команда",
+          "Team\nProduct manager, project manager, backend, frontend, editor, researcher",
+          "Команда\nПродакт-менеджер, проджект-менеджер, бэкенд- и фронтенд-разработчики, редактор, исследователь."
+        ],
+        [
+          "взаимодействие",
+          "Collaboration\nAligned payment methods with the payments team, and entry points with the charity team and the listing-creation team",
+          "Кросс-командное взаимодействие\nСогласовала способы оплаты с командой платежей, а точки входа в сценарий — с командой благотворительности и командой создания объявлений."
+        ],
+        [
+          "заг 1",
+          "About the project",
+          "О проекте"
+        ],
+        [
+          "текст 1",
+          "Kind Subscription is a monthly donation subscription to a charity in Avito’s charity section. Users pick a foundation and an amount once, and subsequent payments run automatically.",
+          "«Добрая подписка» — это ежемесячные пожертвования в разделе благотворительности на Авито. Человек один раз выбирает фонд и сумму, а дальше списания происходят автоматически каждый месяц."
+        ],
+        [
+          "текст 2",
+          "Predictable funding helps charities plan their work ahead. For donors, it’s essential to see upfront who receives the money, when the next charge happens, and how to edit or cancel the subscription.",
+          "Регулярные поступления помогают фондам заранее планировать свою работу. Для пользователя же важно сразу понимать, куда уходят деньги, когда спишется следующий платеж и как изменить или отменить подписку."
+        ],
+        [
+          "заг 2",
+          "Goals",
+          "Задачи"
+        ],
+        [
+          "текст 3",
+          "We built the flow around three core goals:",
+          "Сценарий нужно было выстроить вокруг трех ключевых целей:"
+        ],
+        [
+          "текст 4",
+          "Enable recurring donations without forcing users to repeat the entire flow.",
+          "Дать людям возможность помогать регулярно, не проходя весь путь оформления заново."
+        ],
+        [
+          "текст 5",
+          "Showcase each charity’s impact before payment so donors know who they’re supporting.",
+          "Показать реальную работу фонда до этапа оплаты, чтобы человек понимал, кому доверяет свою помощь."
+        ],
+        [
+          "текст 6",
+          "Unify payment and thank-you screens, which previously looked inconsistent across different charity flows.",
+          "Унифицировать экраны оплаты и благодарности, которые раньше выглядели по-разному в разных благотворительных сценариях."
+        ],
+        [
+          "заг 3",
+          "From one-off help to a subscription",
+          "От разовой помощи к подписке"
+        ],
+        [
+          "текст 7",
+          "I combined charity selection, the donation amount, and a \"One-off / Monthly\" toggle onto a single screen. Previously, choosing a charity and picking an amount were split across two separate steps.",
+          "Я объединила выбор фонда, сумму пожертвования и переключатель «Разово / Ежемесячно» на одном экране. Раньше выбор организации и суммы были разделены на два разных шага."
+        ],
+        [
+          "заг 4",
+          "Concepts",
+          "Концепции"
+        ],
+        [
+          "текст 8",
+          "My initial hypothesis was that a shorter flow with less information about each charity would make signing up easier. Using our existing one-off flow as a baseline, I created a condensed version and brought it into user interviews.",
+          "Моя первая гипотеза заключалась в том, что более короткий сценарий с минимумом информации о фондах упростит оформление подписки. Взяв за основу текущий сценарий разовой помощи, я собрала его сокращенную версию и вынесла на пользовательские интервью."
+        ],
+        [
+          "заг 5",
+          "Research",
+          "Исследование"
+        ],
+        [
+          "текст 9",
+          "The interviews challenged that hypothesis. People wanted to understand what a charity does and see its real impact before committing to a monthly payment. Based on these insights, I kept the setup compact but surfaced each charity’s reports before donors chose an amount.",
+          "Интервью опровергли эту гипотезу. Людям было важно понять, чем именно занимается фонд, и увидеть реальные результаты его работы, прежде чем подписываться на регулярные списания. Опираясь на эти инсайты, я сохранила компактность настройки, но открыла доступ к отчетам фонда еще до выбора суммы."
+        ],
+        [
+          "заг 6",
+          "Entry points",
+          "Точки входа"
+        ],
+        [
+          "текст 10",
+          "The subscription appears in search results, on the charity landing page, and right after a user posts a listing. In each context, the prompt respects what the user originally came to do.",
+          "Предложение оформить подписку появляется в поисковой выдаче, на лендинге благотворительности и сразу после публикации объявления. В каждом сценарии оно аккуратно встроено в контекст и не мешает основной задаче пользователя."
+        ],
+        [
+          "текст 11",
+          "After listing creation, we offer to help only once the main task is done. In search results, a compact banner introduces the subscription, while the charity landing page explains the terms in detail.",
+          "После публикации объявления мы предлагаем помочь только тогда, когда основное действие уже завершено. В результатах поиска о подписке рассказывает компактный баннер, а на лендинге благотворительности подробно раскрываются все условия."
+        ],
+        [
+          "текст 12",
+          "We also used ML models to identify repeat one-off donors and invite them to automate their giving. Once they subscribed, their chosen amount was donated automatically every month.",
+          "Кроме того, мы использовали ML-модели, чтобы находить пользователей, которые уже несколько раз жертвовали разово, и предлагать им автоматизировать помощь. После оформления выбранная сумма списывалась автоматически каждый месяц."
+        ],
+        [
+          "текст 13",
+          "Imagine you’ve made a few one-off donations on Avito. You see an invitation to switch to monthly giving and open the charity’s report to see what it has accomplished recently. Then you pick 300 rubles a month and review the recurring payment terms before confirming.",
+          "Представьте, что вы уже сделали несколько разовых пожертвований на Авито. Вы видите предложение перейти на ежемесячную помощь и открываете отчет фонда, чтобы посмотреть, что ему удалось сделать за последнее время. Затем вы выбираете 300 рублей в месяц и проверяете условия регулярных списаний перед подтверждением."
+        ],
+        [
+          "заг 7",
+          "Choosing a charity",
+          "Выбор фонда"
+        ],
+        [
+          "текст 14",
+          "I moved charity selection to the very first screen: before picking an amount, you can learn about the organization, switch to another one, or open its \"Good deeds\" reports.",
+          "Я перенесла выбор фонда на самый первый экран: еще до ввода суммы можно изучить информацию об организации, переключиться на другую или открыть её отчеты в разделе «Добрые дела»."
+        ],
+        [
+          "текст 15",
+          "For one-off donations, we suggest charities from random categories so that less visible charities get support too, not just children and animals (2 most popular categories among users).",
+          "Для разовых пожертвований мы предлагаем фонды из случайных категорий, чтобы поддержку получали и менее заметные направления, а не только помощь детям и животным (2 самые популярные категории среди пользователей)."
+        ],
+        [
+          "заг 8",
+          "Subscribing",
+          "Оформление подписки"
+        ],
+        [
+          "текст 16",
+          "The setup screen brings together the charity, the amount, and the recurring payment schedule. You can pick 100, 300, or 500 ₽, or enter a custom amount. The terms for recurring charges are shown upfront before you subscribe.",
+          "Экран настройки объединяет выбор фонда, сумму и график списаний. Можно выбрать 100, 300 или 500 ₽ либо указать свою сумму. Условия регулярных платежей показаны сразу до оформления подписки."
+        ],
+        [
+          "подпись",
+          "Payment flow",
+          "Флоу оформления подписки"
+        ],
+        [
+          "подпись",
+          "How it works",
+          "Как это работает"
+        ],
+        [
+          "текст 17",
+          "I moved all the key details into a \"How it works\" section: zero fees, 100% of funds go directly to charities, a monthly \"Kindness badge,\" and easy ways to edit or cancel. This keeps the main screen clean and compact.",
+          "Все подробности я вынесла в блок «Как это работает»: отсутствие комиссии, прямой перевод средств в фонды, ежемесячный «Знак добра», а также понятные условия изменения и отмены подписки. Благодаря этому главный экран остается компактным."
+        ],
+        [
+          "заг 9",
+          "Thank-you after payment",
+          "Экран благодарности после оплаты"
+        ],
+        [
+          "текст 18",
+          "Once the payment goes through, the screen confirms that the monthly donation is active. I created a Lottie-heart animation to make that moment feel warm and personal.",
+          "После успешной оплаты экран подтверждает, что ежемесячное пожертвование подключено. Я создала Lottie-анимацию с сердечками, чтобы этот момент ощущался как теплая и личная благодарность."
+        ],
+        [
+          "подпись",
+          "Before",
+          "До"
+        ],
+        [
+          "подпись",
+          "After ",
+          "После"
+        ],
+        [
+          "текст 19",
+          "For subscriptions, the screen confirms the monthly donation and its terms. I added the lottie heart animation along with two next steps: sharing the campaign and adding a \"Kindness badge\" to your listing.",
+          "Для подписки экран подтверждает регулярную помощь и ее условия. Я добавила анимацию с сердечками и два целевых действия: поделиться сбором и добавить «Знак добра» в свое объявление."
+        ],
+        [
+          "текст 20",
+          "About 2,000 thank-you screen views per day across all charity flows, not just subscriptions.",
+          "Около 2 000 просмотров экрана благодарности в день во всех благотворительных сценариях, а не только в подписке."
+        ],
+        [
+          "заг 10",
+          "Managing the subscription",
+          "Управление подпиской"
+        ],
+        [
+          "текст 21",
+          "Later on, donors can open their profile to check the next billing date, adjust the amount, or cancel their subscription.",
+          "Спустя время пользователи могут зайти в свой профиль, чтобы посмотреть дату следующего списания, изменить сумму или отменить подписку."
+        ],
+        [
+          "подпись",
+          "Settings in the user account",
+          "Настройки в профиле пользователя"
+        ],
+        [
+          "подпись",
+          "Banner on charity landing pages",
+          "Баннер на лендингах благотворительности"
+        ],
+        [
+          "текст 22",
+          "In the MVP, switching to another charity requires cancelling the current subscription and starting a new one, due to a limitation in the YooKassa payment gateway. Seamless switching without cancelling is planned for the next release.",
+          "В MVP для смены фонда нужно отменить текущую подписку и оформить новую, так как это техническое ограничение платежной системы ЮKassa. Возможность переключаться между фондами без отмены запланирована в следующем релизе."
+        ],
+        [
+          "заг 11",
+          "Results",
+          "Результаты"
+        ],
+        [
+          null,
+          "~55",
+          "~55"
+        ],
+        [
+          null,
+          "New subscriptions / day",
+          "Новых подписок в день"
+        ],
+        [
+          null,
+          "10% vs target",
+          "10% vs target"
+        ],
+        [
+          null,
+          "Average over the first three months after launch (against a daily target of 50).",
+          "Средний показатель за первые три месяца после запуска (при целевом значении 50 в день)."
+        ],
+        [
+          null,
+          "64% ↑",
+          "64% ↑"
+        ],
+        [
+          null,
+          "Average monthly donation",
+          "Средний размер ежемесячного пожертвования"
+        ],
+        [
+          null,
+          "Compared with the default donation amount over the same three-month period.",
+          "По сравнению с суммой по умолчанию за тот же трехмесячный период."
+        ],
+        [
+          null,
+          "Reports before payment",
+          "Отчеты фондов до оплаты"
+        ],
+        [
+          null,
+          "Report views exceeded our target by 30%. In user interviews, donors asked to see a charity’s real impact upfront, so I moved reports earlier in the flow, before they choose an amount.",
+          "Просмотры отчетов превысили план на 30%. На интервью пользователи просили показывать реальные результаты работы фондов заранее, поэтому я перенесла отчеты на более ранний этап сценария, еще до выбора суммы."
+        ],
+        [
+          null,
+          "Donation mix",
+          "Баланс разовых и регулярных пожертвований"
+        ],
+        [
+          null,
+          "One-off donations declined, while the average payment across both donation types increased, meaning charities received more per transaction.",
+          "Количество разовых пожертвований снизилось, но средний чек по обоим типам платежей вырос: фонды стали получать больше средств с каждой транзакции."
+        ],
+        [
+          null,
+          "To see whether this translated into higher overall funding over time, I’d track total donations collected and the retention rate for second and third recurring payments.",
+          "Чтобы проверить, привело ли это к росту общих сборов на дистанции, я бы отследила совокупный объем пожертвований и долю подписчиков, дошедших до второго и третьего списания."
+        ]
+      ]
+    }
+  ]
+}

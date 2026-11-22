@@ -49,20 +49,6 @@ window.portfolioProjects = [
     place: { c: 1, r: 1, big: true }
   },
   {
-    id: 'recycle-map',
-    feed: { image: '/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp', width: 1500, height: 1800 },
-    title: 'Recycle things and save our planet',
-    description: 'Поиск пункта приёма, фильтры и избранное',
-    href: '/projects/avito-charity/recycle-map/',
-    image: '/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800.webp',
-    width: 2880,
-    height: 1800,
-    alt: 'Карта переработки Авито на экране ноутбука: пункты приёма, категории и избранное',
-    platforms: ['mobile', 'web'],
-    tags: ['avito', 'b2c', 'charity', 'maps'],
-    place: { c: 3, r: 1 }
-  },
-  {
     id: 'kind-subscription',
     feed: { image: '/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp', width: 1500, height: 1800 },
     title: 'Help charities with monthly donation subscription',
@@ -74,6 +60,21 @@ window.portfolioProjects = [
     alt: '«Добрая подписка» в приложении Авито',
     platforms: ['mobile', 'web'],
     tags: ['avito', 'b2c', 'charity', 'payments'],
+    place: { c: 3, r: 1 }
+  },
+  {
+    id: 'recycle-map',
+    soon: true,
+    feed: { image: '/projects/avito-charity/recycle-map/covers/feed-cover-324719910-1500x1800.webp', width: 1500, height: 1800 },
+    title: 'Recycle things and save our planet',
+    description: 'Поиск пункта приёма, фильтры и избранное',
+    href: '/projects/avito-charity/recycle-map/',
+    image: '/projects/avito-charity/recycle-map/covers/cover-laptop-2880x1800.webp',
+    width: 2880,
+    height: 1800,
+    alt: 'Карта переработки Авито на экране ноутбука: пункты приёма, категории и избранное',
+    platforms: ['mobile', 'web'],
+    tags: ['avito', 'b2c', 'charity', 'maps'],
     place: { c: 4, r: 1 }
   },
   {
@@ -135,7 +136,7 @@ window.portfolioProjects = [
   {
     id: 'doctor-dashboard',
     soon: true,
-    title: "Monitor your patient's health and collect data from different wearable devices",
+    title: 'Monitor your patient\'s health and collect data from different wearable devices',
     feed: { image: '/projects/swtec-medical/doctor-dashboard/covers/feed-cover-frame-2147239077-1800x2400.webp', width: 1800, height: 2400 },
     alt: 'Дашборд врача: список пациентов с событиями по дням и почасовой график показателя',
     place: { c: 3, r: 6, big: true }

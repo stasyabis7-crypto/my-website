@@ -26,6 +26,7 @@ html.contact-scroll-lock, html.contact-scroll-lock body { overflow: hidden; over
 .contact-trigger {
   pointer-events: auto;
 }
+.site-language { flex-shrink: 0; pointer-events: auto; }
 
 /* Меню разделов (site-chrome.js): на десктопе пункты слева от «Связаться»;
    ниже 1000px вместо них гамбургер, а «Резюме PDF» уходит в его шторку. */

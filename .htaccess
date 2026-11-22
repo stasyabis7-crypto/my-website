@@ -34,6 +34,8 @@ AddType video/mp4 .mp4
   # опубликованных («Скоро появится»): сами файлы отдаются, редиректятся
   # только страницы.
   RewriteRule ^projects/.+/covers/[^/]+\.(?:webp|png|jpe?g|avif|svg|mp4|webm)$ - [L]
+  # Карта временно скрыта, исходники кейса сохранены для повторной публикации.
+  RewriteRule ^projects/(?:avito-charity/)?recycle-map/?(?:index\.html)?$ /#works-gallery [R=302,NE,L]
   RewriteRule ^projects/(?:avito-charity|ozon-crm)/?(?:index\.html)?$ /#works-gallery [R=302,NE,L]
   RewriteRule ^projects/avito-charity/(?:about-company|charity-profile|donation-subscription|gamification|rebranding)(?:/.*)?$ /#works-gallery [R=302,NE,L]
   RewriteRule ^projects/ozon-crm/(?:campaign-creation|campaigns|customer-portrait|customers|seller-home)(?:/.*)?$ /#works-gallery [R=302,NE,L]

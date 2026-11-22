@@ -20,6 +20,8 @@ const assets = [
   'projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680.webp',
   'projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v3-3840x1680.webp',
   'site/languages/english-copy.js',
+  'site/languages/editorial-copy.js',
+  'site/languages/russian-copy.js',
   'site/languages/media.js',
   'site/language.js',
   ...fs.readdirSync(path.join(root, 'projects/articles/covers')).filter(name => name.endsWith('-diagram.svg')).sort().map(name => 'projects/articles/covers/' + name),

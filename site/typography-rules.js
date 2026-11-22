@@ -25,6 +25,8 @@
   var HANGING_WORDS = new RegExp('(?<![\\p{L}\\p{N}_-])(' + PREPOSITIONS.concat(CONJUNCTIONS, FORWARD_PARTICLES, ENGLISH_WORDS).join('|') + ')([ \\t\\r\\n\\u00a0\\u202f]+)(?=\\S)', 'giu');
   // Постпозитивные частицы относятся к предыдущему слову: «сделать бы», «так же».
   var BACKWARD_PARTICLES = /(?<=[\p{L}\p{N}»”")])([ \t\r\n\u00a0\u202f]+)(бы|б|же|ж|ли|ль)(?![\p{L}\p{N}_-])/giu;
+  // Experience counts move with their unit, including inside hero reveal spans.
+  var EXPERIENCE_YEARS = /(?<![\p{L}\p{N}_])(\d+(?:[.,]\d+)?)([ \t\r\n\u00a0\u202f]+)(?=(?:лет|года?|years?)(?![\p{L}\p{N}_]))/giu;
 
   function boundCharacters(text) {
     // Retain original offsets when mapping edits across inline tags. Collapsed
@@ -36,6 +38,7 @@
     }
     text.replace(HANGING_WORDS, function (_, word, spaces, offset) { glue(offset + word.length, spaces.length); return _; });
     text.replace(BACKWARD_PARTICLES, function (_, spaces, word, offset) { glue(offset, spaces.length); return _; });
+    text.replace(EXPERIENCE_YEARS, function (_, number, spaces, offset) { glue(offset + number.length, spaces.length); return _; });
     return characters;
   }
   function keepWordsTogether(text) { return boundCharacters(text).join(''); }

@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "copy:prepare": "node scripts/prepare-editorial-copy.js",
+    "copy:sync": "node scripts/sync-editorial-copy.js",
     "admin": "node scripts/admin/server.js",
     "admin:test": "node scripts/admin/admin.test.js",
     "auto-commit": "node scripts/auto-commit.js",
@@ -15,7 +17,7 @@
     "images:watch": "node scripts/prepare-images.js --watch",
     "check:images": "node scripts/prepare-images.js --check && node scripts/prepare-images.test.js",
     "check:typography": "node scripts/check-typography.js && node scripts/typography-dom.test.js && node scripts/hero-typography.test.js",
-    "check:languages": "node scripts/prepare-language-assets.js --check && node scripts/language.test.js"
+    "check:languages": "node scripts/prepare-editorial-copy.js --check && node scripts/editorial-copy.test.js && node scripts/prepare-language-assets.js --check && node scripts/language.test.js"
   },
   "dependencies": {
     "chokidar": "^3.5.3"

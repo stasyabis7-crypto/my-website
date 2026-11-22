@@ -1,4 +1,4 @@
-/* One collection with the preferred edition and its publication language. */
+/* Russian readers see all editions; English readers see English articles. */
 (function () {
   var list = document.querySelector('.articles-grid');
   if (!list) return;
@@ -7,7 +7,10 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
     });
   }
-  list.innerHTML = window.portfolioArticles.map(function (article) {
+  var articles = window.portfolioArticles.filter(function (article) {
+    return !window.siteLanguage || window.siteLanguage.current === 'ru' || article.language === 'en';
+  });
+  list.innerHTML = articles.map(function (article) {
     var language = article.language === 'en' ? 'English' : 'Russian';
     var media = '<img src="' + escape(article.image) + '" width="' + article.width + '" height="' + article.height + '" alt="" loading="lazy" decoding="async" />';
     return '<li class="article-tile"><div class="article-tile__media" data-action-hover>' + media +

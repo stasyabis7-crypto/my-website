@@ -6,12 +6,13 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   // Keep the resume label on one line, shortening it only when space runs out.
+  var resumeLabel = window.siteLanguage ? window.siteLanguage.t('CV PDF') : 'CV PDF';
   var resume = document.querySelector('.site-header__cta');
   if (resume) {
     var textWalker = document.createTreeWalker(resume, NodeFilter.SHOW_TEXT);
     var resumeText;
     while (textWalker.nextNode()) {
-      if (textWalker.currentNode.textContent.trim() === 'CV PDF') {
+      if (['CV PDF', resumeLabel].includes(textWalker.currentNode.textContent.trim())) {
         resumeText = textWalker.currentNode;
         break;
       }
@@ -21,14 +22,14 @@
       function fitResumeLabel() {
         var style = getComputedStyle(resume);
         labelMeasure.font = style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily;
-        var labelWidth = labelMeasure.measureText('CV PDF').width;
-        labelWidth += (parseFloat(style.letterSpacing) || 0) * ('CV PDF'.length - 1);
+        var labelWidth = labelMeasure.measureText(resumeLabel).width;
+        labelWidth += (parseFloat(style.letterSpacing) || 0) * (resumeLabel.length - 1);
         var icon = resume.querySelector('.icon');
         var required = labelWidth + parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
         if (icon) required += icon.getBoundingClientRect().width + (parseFloat(style.columnGap) || 0);
         var logo = document.querySelector('.site-header__logo');
         var constrained = innerWidth < 1000 && logo && logo.hidden;
-        var label = constrained && required > resume.clientWidth + 1 ? 'CV' : 'CV PDF';
+        var label = constrained && required > resume.clientWidth + 1 ? (root.lang === 'ru' ? 'Резюме' : 'CV') : resumeLabel;
         if (resumeText.textContent !== label) resumeText.textContent = label;
       }
       new ResizeObserver(fitResumeLabel).observe(resume);
@@ -189,62 +190,15 @@
     };
   }
 
-  /* One language picker for the header, About page and mobile menu. */
-  var resumePicker = (function () {
-    var triggers = document.querySelectorAll('.site-header__cta, [data-resume-link]');
-    if (!triggers.length) return;
-    var options = {
-      id: 'site-resume-dialog',
-      title: 'Resume',
-      closeLabel: 'Close resume language selection',
-      trigger: triggers[0],
-      compact: true,
-      build: function (add, close) {
-        [
-          { label: 'English', lang: 'en', id: '1Lmhy9PlbZQAygC_Ir1HPg22xBI6kVRN5' },
-          { label: 'Russian', lang: 'ru', id: '17iRYE0E_2xrNNLsrmFPtzYo2qP7KWtps' }
-        ].forEach(function (item) {
-          var link = document.createElement('a');
-          link.className = 'contact-row btn btn--fill-white btn--icon-right-edge';
-          link.href = 'https://drive.google.com/file/d/' + item.id + '/view?usp=drive_link';
-          link.target = '_blank';
-          link.rel = 'noopener noreferrer';
-          link.hreflang = item.lang;
-          link.dataset.resumeDocument = item.lang;
-          link.innerHTML = '<span data-language-literal lang="en">' + item.label +
-            '</span><span class="icon icon--arrow-diagonal" aria-hidden="true"></span>';
-          link.addEventListener('click', function () { close(); });
-          add(link);
-        });
-      }
-    };
-    var picker = createSheet(options);
-    picker.ensure();
-    function bind(trigger, beforeOpen, returnFocus) {
-      trigger.setAttribute('aria-haspopup', 'dialog');
-      trigger.setAttribute('aria-controls', options.id);
-      trigger.setAttribute('aria-expanded', 'false');
-      if (trigger.tagName === 'A') {
-        trigger.setAttribute('role', 'button');
-        trigger.removeAttribute('target');
-        trigger.addEventListener('keydown', function (event) {
-          if (event.key === ' ') { event.preventDefault(); trigger.click(); }
-        });
-      }
-      trigger.addEventListener('click', function (event) {
-        event.preventDefault();
-        function open() {
-          options.trigger = trigger;
-          options.returnFocus = returnFocus || trigger;
-          picker.open();
-        }
-        if (beforeOpen) beforeOpen(open);
-        else open();
-      });
-    }
-    triggers.forEach(function (trigger) { bind(trigger); });
-    return { bind: bind };
-  })();
+  /* Resume actions are ordinary links to the document in the selected language. */
+  function configureResume(link) {
+    link.href = window.siteLanguage ? window.siteLanguage.resume : '/cv-en.pdf';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.hreflang = document.documentElement.lang;
+    link.dataset.resumeDocument = document.documentElement.lang;
+  }
+  document.querySelectorAll('.site-header__cta, [data-resume-link]').forEach(configureResume);
 
   /* ---------- chrome: pinned-on-scroll ---------- */
   function updatePinned() {
@@ -463,10 +417,8 @@
 
     var SECTIONS = [
       { label: 'Статьи', href: '/projects/articles/', icon: 'articles' },
-      { label: 'Посты', href: '/projects/posts/', icon: 'posts' },
       { label: 'Playground', href: '/projects/playground/', icon: 'activities' }
     ];
-    if (document.documentElement.lang === 'en') SECTIONS = SECTIONS.filter(function (item) { return item.href !== '/projects/posts/'; });
     var path = location.pathname.replace(/index\.html$/, '');
     function link(it, className) {
       var a = document.createElement('a');
@@ -486,6 +438,26 @@
       nav.appendChild(link(it, 'btn btn--fill-nav btn--size-chrome'));
     });
     wrap.insertBefore(nav, toggle);
+
+    // One compact, always visible control also fits the mobile header.
+    var language = document.createElement('button');
+    language.type = 'button';
+    language.className = 'site-language btn btn--fill-glass-ui btn--size-chrome btn--scroll-shadow';
+    language.setAttribute('data-language-literal', '');
+    language.setAttribute('data-language-switch', '');
+    language.textContent = root.lang.toUpperCase();
+    language.setAttribute('aria-label', root.lang === 'en' ? 'Switch to Russian' : 'Переключить на английский');
+    language.setAttribute('title', root.lang === 'en' ? 'Switch to Russian' : 'Переключить на английский');
+    language.addEventListener('click', function () { window.siteLanguage.switchTo(root.lang === 'en' ? 'ru' : 'en'); });
+    var languageMobile = window.matchMedia('(width < 1000px)');
+    function placeLanguage() {
+      var header = document.querySelector('.site-header');
+      var logo = document.querySelector('.site-header__logo');
+      if (languageMobile.matches && logo) logo.parentNode.insertBefore(language, logo);
+      else if (header) header.appendChild(language);
+    }
+    placeLanguage();
+    languageMobile.addEventListener('change', placeLanguage);
 
     var menuBtn = document.createElement('button');
     menuBtn.type = 'button';
@@ -511,11 +483,11 @@
           add(row);
         });
         if (resume) {
-          var cv = document.createElement('button');
-          cv.type = 'button';
+          var cv = document.createElement('a');
+          configureResume(cv);
           cv.className = 'contact-row btn btn--fill-pink btn--icon-left';
           cv.innerHTML = '<span class="icon icon--cv" aria-hidden="true"></span><span>CV PDF</span>';
-          resumePicker.bind(cv, function (open) { menuSheet.close(open); }, menuBtn);
+          cv.addEventListener('click', function () { menuSheet.close(); });
           add(cv);
         }
       }

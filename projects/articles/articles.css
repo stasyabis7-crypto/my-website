@@ -16,6 +16,8 @@
   list-style: none;
 }
 .article-tile { min-width: 0; }
+/* Keep the static fallback consistent before the catalogue initializes. */
+html[lang="en"] .article-tile:has(a[hreflang="ru"]) { display: none; }
 .article-tile__media {
   container-type: size;
   position: relative;

@@ -15,7 +15,7 @@
 
 | Событие | Что означает |
 | --- | --- |
-| `resume_open` | Выбор документа резюме; `document_language` — `en` или `ru` |
+| `resume_open` | Прямое открытие резюме на выбранном языке; `document_language` — `en` или `ru` |
 | `telegram_open` | Переход в Telegram |
 | `works_cta_click` | Клик по CTA к работам |
 | `project_impression` | Не менее 50% карточки работы видно на экране |
