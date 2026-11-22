@@ -9,15 +9,48 @@
     var wheelDistance = 0;
     var wheelLastTime = 0;
     var wheelHandled = false;
+    var animations = [];
+
+    function clearTransition() {
+      animations.forEach(function (animation) { animation.cancel(); });
+      animations = [];
+      slides.forEach(function (slide) { slide.classList.remove('is-leaving'); });
+    }
 
     function show(next) {
-      index = (next + slides.length) % slides.length;
+      var target = (next + slides.length) % slides.length;
+      if (target === index) return;
+      var previous = slides[index];
+      var incoming = slides[target];
+      var direction = next > index ? 1 : -1;
+      // Finish the prior gesture before starting another, so rapid navigation
+      // never leaves an old frame visible or an animation transform attached.
+      clearTransition();
+      index = target;
       slides.forEach(function (slide, i) {
         slide.classList.toggle('is-current', i === index);
         slide.setAttribute('aria-hidden', String(i !== index));
       });
       counter.textContent = (index + 1) + ' из ' + slides.length;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !incoming.animate) return;
+      previous.classList.add('is-leaving');
+      var timing = { duration: 600, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'both' };
+      var transition = [
+        previous.animate([
+          { transform: 'translateX(0)' },
+          { transform: 'translateX(' + (-direction * 100) + '%)' }
+        ], timing),
+        incoming.animate([
+          { transform: 'translateX(' + (direction * 100) + '%)' },
+          { transform: 'translateX(0)' }
+        ], timing)
+      ];
+      animations = transition;
+      Promise.all(transition.map(function (animation) { return animation.finished; })).then(function () {
+        if (animations === transition) clearTransition();
+      }).catch(function () { /* A newer gesture cancelled this transition. */ });
     }
+    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', clearTransition);
     root.querySelector('.case-slideshow__prev').addEventListener('click', function () { show(index - 1); });
     root.querySelector('.case-slideshow__next').addEventListener('click', function () { show(index + 1); });
     root.addEventListener('keydown', function (event) {
