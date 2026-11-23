@@ -26,7 +26,7 @@ window.siteEditorialCopy = {
   },
   "main page:8": {
     "en": "How to find a recycling center near you and start practicing conscious consumption",
-    "ru": "Как найти пункт переаботки рядом с домом и перейти на путь осознанного потребления"
+    "ru": "Найдите пункт переработки рядом с домом и перейдите на путь осознанного потребления"
   },
   "main page:9": {
     "en": "Help charities with monthly donation subscription",
@@ -38,15 +38,15 @@ window.siteEditorialCopy = {
   },
   "main page:11": {
     "en": "Monitor your health on your wearable",
-    "ru": "Следи за здоровьем на носимом устройстве"
+    "ru": "Следите за здоровьем на носимом устройстве"
   },
   "main page:12": {
     "en": "Take your meds, monitor your blood pressure, and send the data to your doctor from the comfort of your home",
-    "ru": "Принимай лекарства, измеряй давление и передавай данные лечащему врачу, не выходя из дома"
+    "ru": "Принимайте лекарства, измеряйте давление и передавайте данные лечащему врачу, не выходя из дома"
   },
   "main page:13": {
     "en": "Monitor product prices, set up promotions during sales periods, and track revenue in the seller's personal account",
-    "ru": "Следи за ценами на товары, выставляй акции в периоды распродаж, следи за выручкой в личном кабинете продавца"
+    "ru": "Следите за ценами на товары, выставляйте акции в периоды распродаж, следите за выручкой в личном кабинете продавца"
   },
   "main page:14": {
     "en": "All about charity on Avito in one page",
@@ -62,7 +62,7 @@ window.siteEditorialCopy = {
   },
   "main page:17": {
     "en": "Monitor your patient's health and collect data from different wearable devices",
-    "ru": "Собирай информацию о здоровье своего пациента, названай препараты. Дашборд для лечащих врачей"
+    "ru": "Собирайте информацию о здоровье своего пациента, назначайте препараты. Дашборд для лечащих врачей"
   },
   "main page:18": {
     "en": "A self-service portal for HR and employees to easily manage documents and vacations",
