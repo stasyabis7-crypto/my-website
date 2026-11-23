@@ -42,7 +42,8 @@
       copy['безусловно, отражает качество нашей жизни'] = subtitle.slice(split).trim();
     }
   }
-  Object.keys(copy).forEach(function (key) { copy[key.replace(/[\u00a0\u202f]/g, ' ')] = copy[key]; });
+  function copyKey(value) { return value.replace(/[\u00a0\u202f]/g, ' ').replace(/\u2060/g, ''); }
+  Object.keys(copy).forEach(function (key) { copy[copyKey(key)] = copy[key]; });
   var assets = window.siteLanguageMedia || {};
   var resumes = {
     en: 'https://drive.google.com/file/d/1Lmhy9PlbZQAygC_Ir1HPg22xBI6kVRN5/view?usp=drive_link',
@@ -50,7 +51,7 @@
   };
   function t(value) {
     var trimmed = value.trim();
-    var key = trimmed.replace(/[\u00a0\u202f]/g, ' ');
+    var key = copyKey(trimmed);
     if (copy[key]) return value.replace(trimmed, copy[key]);
     var counter = key.match(/^(\d+)\s+(?:из|of)\s+(\d+)$/);
     if (counter) return counter[1] + (lang === 'en' ? ' of ' : ' из ') + counter[2];

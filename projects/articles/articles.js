@@ -1,4 +1,4 @@
-/* Complete article collection; English editions take precedence over Russian duplicates. */
+/* One card per article; editions select the publication in the reader's language. */
 window.portfolioArticles = [
   {
     "id": "skill-sets",
@@ -11,6 +11,7 @@ window.portfolioArticles = [
   },
   {
     "id": "inclusive-design",
+    "editions": { "ru": "https://vc.ru/design/1168392-interfeisy-i-inklyuzivnost" },
     "title": "Interfaces and inclusivity",
     "href": "https://medium.com/design-bootcamp/interfaces-and-inclusivity-e71d9671744f",
     "language": "en",
@@ -20,6 +21,7 @@ window.portfolioArticles = [
   },
   {
     "id": "date-selector",
+    "editions": { "ru": "https://vc.ru/design/1168339-date-selector-and-calendar" },
     "title": "Date selector & Calendar",
     "href": "https://medium.com/design-bootcamp/date-selector-calendar-57f6efab408a",
     "language": "en",
@@ -29,6 +31,7 @@ window.portfolioArticles = [
   },
   {
     "id": "text-input",
+    "editions": { "ru": "https://vc.ru/design/1168267-text-input-sostoyaniya" },
     "title": "Text input states",
     "href": "https://medium.com/design-bootcamp/text-input-states-ec37f61fa428",
     "language": "en",
@@ -38,6 +41,7 @@ window.portfolioArticles = [
   },
   {
     "id": "triz",
+    "editions": { "ru": "https://vc.ru/design/1168007-triz" },
     "title": "Theory of inventive problem solving",
     "href": "https://medium.com/design-bootcamp/theory-of-inventive-problem-solving-c1a7bd1cd186",
     "language": "en",
@@ -47,6 +51,7 @@ window.portfolioArticles = [
   },
   {
     "id": "designers-workflow",
+    "editions": { "ru": "https://vc.ru/design/1168282-rabochii-process-dizainera" },
     "title": "Designer’s workflow",
     "href": "https://medium.com/design-bootcamp/designers-workflow-58666230c9a7",
     "language": "en",
@@ -56,6 +61,7 @@ window.portfolioArticles = [
   },
   {
     "id": "lottie-plugin",
+    "editions": { "ru": "https://vc.ru/design/609586-kak-skachat-plagin-lottie-dlya-adobe-after-effects-na-windows-i-nachat-im-polzovatsya" },
     "title": "How to download Lottie plugin for Adobe After Effects on Windows and start using it",
     "href": "https://medium.com/@stasyabis/how-to-download-lottie-plugin-for-adobe-after-effects-on-windows-and-start-using-plugin-b9b21faa723b",
     "language": "en",

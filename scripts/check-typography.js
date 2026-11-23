@@ -1,5 +1,5 @@
 const assert = require('node:assert/strict');
-const { subtitlePeriod } = require('../site/typography-rules');
+const { subtitlePeriod, keepWordsTogether } = require('../site/typography-rules');
 const cases = [
   ['Одно предложение.', 'Одно предложение'],
   ['Первое предложение. Второе предложение.', 'Первое предложение. Второе предложение.'],
@@ -26,3 +26,27 @@ for (const [input, expected] of cases) {
   assert.equal(actual, expected, input);
 }
 console.log(`Типографика: ${cases.length} сценариев пунктуации подзаголовков пройдено.`);
+
+const bindings = [
+  ['Редизайн — результат', 'Редизайн\u00a0— результат'],
+  ['Design — results', 'Design\u00a0— results'],
+  ['Design – results', 'Design\u00a0– results'],
+  ['Редизайн\n    — результат', 'Редизайн\u00a0— результат'],
+  ['Редизайн\u202f— результат', 'Редизайн\u00a0— результат'],
+  ['enough—sellers', 'enough\u2060—\u2060sellers'],
+  ['редизайн—результат', 'редизайн\u2060—\u2060результат'],
+  ['2020–2026', '2020\u2060–\u20602026'],
+  ['10:00–20:00', '10:00\u2060–\u206020:00'],
+  ['— Привет', '—\u00a0Привет'],
+  ['— Hello', '—\u00a0Hello'],
+  ['Работа и в команде', 'Работа и\u00a0в\u00a0команде'],
+  ['Design for the people', 'Design for\u00a0the\u00a0people'],
+  ['Сделать бы лучше', 'Сделать\u00a0бы лучше'],
+  ['6 лет / 6 years', '6\u00a0лет / 6\u00a0years'],
+  ['дизайн-система / follow-up', 'дизайн-система / follow-up'],
+];
+for (const [input, expected] of bindings) {
+  assert.equal(keepWordsTogether(input), expected, input);
+  assert.equal(keepWordsTogether(expected), expected, 'Repeated processing: ' + input);
+}
+console.log(`Типографика: ${bindings.length} сценариев неразрывных связей RU/EN пройдено.`);

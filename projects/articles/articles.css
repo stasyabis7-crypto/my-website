@@ -46,6 +46,7 @@ html[lang="en"] .article-tile:has(a[hreflang="ru"]) { display: none; }
   backdrop-filter: blur(18px) saturate(180%) brightness(1.1);
   pointer-events: none;
 }
+html[lang="en"] .article-tile__language { display: none; }
 .article-tile__title.text-body {
   max-width: none;
   margin: 12px 0 0;

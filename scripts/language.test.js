@@ -102,6 +102,10 @@ for (const file of publicFiles) {
   }
 }
 const en = run('index.html'), ru = run('index.html', '?lang=ru');
+const { keepWordsTogether } = require('../site/typography-rules');
+const range = '1,5–3K';
+assert.equal(en.window.siteLanguage.t(keepWordsTogether(range)), '1.5–3K', 'Typography joiners must not prevent translation');
+assert.equal(ru.window.siteLanguage.t(keepWordsTogether('1.5–3K')), range, 'Typography joiners must not prevent reverse translation');
 for (const page of [en, ru]) {
   const service = page.window.siteLanguage, language = service.current;
   assert.equal(service.url('/about/?preview=1#experience'), '/about/?preview=1&lang=' + language + '#experience');
@@ -173,7 +177,7 @@ const pattern = new RegExp(redirect.trim().split(/\s+/)[1]);
 for (const target of ['projects/avito-charity/recycle-map/', 'projects/avito-charity/recycle-map/index.html', 'projects/recycle-map/']) assert(pattern.test(target));
 assert(!pattern.test('projects/avito-charity/recycle-map/covers/cover.webp'));
 assert(redirect.includes('R=302'));
-// Articles preserve language badges, English outbound editions and all 17 items for RU.
+// RU prefers Russian editions and shows language badges; EN has no badges.
 for (const page of [en, ru]) {
   vm.runInNewContext(fs.readFileSync(path.join(root, 'projects/articles/articles.js'), 'utf8'), { window: page.window });
   const articleList = { innerHTML: '' };
@@ -184,13 +188,20 @@ for (const page of [en, ru]) {
   const links = find(rendered, node => node.tagName === 'A');
   const badges = find(rendered, node => hasClass(node, 'article-tile__language'));
   assert.equal(links.length, page.html.lang === 'ru' ? 17 : 7);
-  assert.equal(badges.length, links.length);
+  assert.equal(badges.length, page.html.lang === 'ru' ? links.length : 0);
   const expected = page.window.portfolioArticles.filter(item => page.html.lang === 'ru' || item.language === 'en');
+  const bilingual = page.window.portfolioArticles.filter(item => item.editions?.ru);
+  assert.equal(bilingual.length, 6, 'All six confirmed Russian alternatives are retained');
+  assert.equal(new Set(page.window.portfolioArticles.map(item => item.id)).size, 17, 'One card per article');
   expected.forEach((article, index) => {
-    assert.equal(links[index].getAttribute('href'), article.href);
-    assert.equal(links[index].getAttribute('hreflang'), article.language);
-    assert.equal(badges[index].textContent, article.language.toUpperCase());
-    assert(!hasClass(badges[index], 'btn'));
+    const edition = article.editions?.[page.html.lang];
+    const language = edition ? page.html.lang : article.language;
+    assert.equal(links[index].getAttribute('href'), edition || article.href);
+    assert.equal(links[index].getAttribute('hreflang'), language);
+    if (page.html.lang === 'ru') {
+      assert.equal(badges[index].textContent, language.toUpperCase());
+      assert(!hasClass(badges[index], 'btn'));
+    }
     assert(article.image.endsWith('-diagram.svg'));
   });
 }

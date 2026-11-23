@@ -39,6 +39,20 @@
     text.replace(HANGING_WORDS, function (_, word, spaces, offset) { glue(offset + word.length, spaces.length); return _; });
     text.replace(BACKWARD_PARTICLES, function (_, spaces, word, offset) { glue(offset, spaces.length); return _; });
     text.replace(EXPERIENCE_YEARS, function (_, number, spaces, offset) { glue(offset + number.length, spaces.length); return _; });
+    text.replace(/[—–]/g, function (dash, offset) {
+      var left = offset, right = offset + 1;
+      while (left > 0 && /[ \t\r\n\u00a0\u202f]/.test(text[left - 1])) left--;
+      while (right < text.length && /[ \t\r\n\u00a0\u202f]/.test(text[right])) right++;
+      // A spaced dash stays with the preceding word. A dialogue dash at
+      // the start of a block stays with the following word instead.
+      if (left > 0 && left < offset) glue(left, offset - left);
+      else if (left === 0 && right > offset + 1 && right < text.length) glue(offset + 1, right - offset - 1);
+      // Closed English em dashes and numeric ranges have no visible spaces.
+      // WORD JOINER prevents the browser's implicit breaks on either side.
+      if (left === offset && offset > 0 && text[offset - 1] !== '\u2060') characters[offset] = '\u2060' + characters[offset];
+      if (right === offset + 1 && right < text.length && text[right] !== '\u2060') characters[offset] += '\u2060';
+      return dash;
+    });
     return characters;
   }
   function keepWordsTogether(text) { return boundCharacters(text).join(''); }

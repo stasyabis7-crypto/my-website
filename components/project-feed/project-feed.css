@@ -4,9 +4,9 @@
   Десктоп (≥1000px): 4 колонки. Две крупные обложки занимают 2×2, остальные
   1×1; часть ячеек намеренно пустует — это воздух раскладки. Место каждой
   плитки задаёт project-feed.js (--feed-col / --feed-row).
-  Строки одной высоты: вертикальная плитка + место под название, поэтому
-  пустая ячейка держит свою высоту, а крупная обложка заканчивается по низу
-  второй строки. Пропорции точные: крупная 3:4, обычная 5:6. Высота считается от ширины ленты (cqw), так что
+  Высота строки учитывает самое длинное название; пустые строки сохраняют
+  минимальную высоту плитки с подписью. Пропорции точные: крупная 3:4,
+  обычная 5:6. Высота считается от ширины ленты (cqw), так что
   плитки меняют размер пропорционально на любой ширине.
 
   700–999px: поток в две колонки, каждая пятая плитка — во всю ширину.
@@ -27,7 +27,7 @@
   --feed-tile-ratio: 5 / 6;
   /* Название — обычный текст сайта (он же размер пунктов меню в шапке). */
   --feed-caption-size: var(--font-size-text);
-  /* Место под название: отступ и две строки текста. */
+  /* Минимальное место под название; длинный текст увеличивает строку сетки. */
   --feed-caption-gap: 12px;
   --feed-caption-h: calc(var(--feed-caption-gap) + 2 * var(--feed-caption-size) * var(--line-height-text));
   container-type: inline-size;
@@ -51,7 +51,8 @@
   --feed-big-h: calc((2 * var(--feed-col-w) + var(--feed-gap)) / (var(--feed-big-ratio)));
   display: grid;
   grid-template-columns: repeat(var(--feed-cols), minmax(0, 1fr));
-  grid-auto-rows: calc(var(--feed-tile-h) + var(--feed-caption-h));
+  grid-auto-rows: minmax(calc(var(--feed-tile-h) + var(--feed-caption-h)), auto);
+  align-items: start;
   gap: var(--feed-row-gap) var(--feed-gap);
   margin: 0;
   padding: 0;
@@ -61,10 +62,9 @@
 .project-feed__item { min-width: 0; }
 .project-feed__item--big { grid-column: span 2; grid-row: span 2; }
 @media (min-width: 1000px) {
-  /* Крупная плитка занимает две строки и отступ между ними. Чтобы и она (3:4),
-     и обычные (5:6) сохраняли точные пропорции, подстраивается отступ между
-     строками — он растёт вместе с шириной окна. */
-  .project-feed__grid { row-gap: calc(var(--feed-big-h) - 2 * var(--feed-tile-h) - var(--feed-caption-h)); }
+  /* Базовый ритм крупных и обычных плиток. При длинных названиях сами строки
+     растут по содержимому, не растягивая и не обрезая обложки. */
+  .project-feed__grid { row-gap: max(var(--feed-row-gap), calc(var(--feed-big-h) - 2 * var(--feed-tile-h) - var(--feed-caption-h))); }
   .project-feed__item { grid-column: var(--feed-col); grid-row: var(--feed-row); }
   .project-feed__item--big { grid-column: var(--feed-col) / span 2; grid-row: var(--feed-row) / span 2; }
 }
@@ -84,23 +84,22 @@
 .feed-card {
   display: flex;
   flex-direction: column;
-  height: 100%;
   min-width: 0;
 }
-.feed-card__media { flex: 1 1 auto; min-height: 0; }
+.feed-card__media { flex: 0 0 auto; min-width: 0; }
 .feed-card__frame {
   position: relative;
-  height: 100%;
 }
 .feed-card__cover {
   display: block;
   overflow: hidden;
-  height: 100%;
+  aspect-ratio: var(--feed-tile-ratio);
   border-radius: 0;
   background: var(--skeleton-color);
 }
+.project-feed__item--big .feed-card__cover { aspect-ratio: var(--feed-big-ratio); }
 /* Заглушка: плитка той же высоты, что обложка, под ней пустое место названия. */
-.feed-card > .feed-card__cover { flex: 1 1 auto; height: auto; }
+.feed-card > .feed-card__cover { flex: 0 0 auto; }
 .feed-card > .feed-card__cover::after { content: none; }
 .project-feed__item--stub .feed-card { padding-bottom: var(--feed-caption-h); }
 
@@ -113,9 +112,6 @@
 }
 @media (max-width: 999px) {
   /* В потоке высоту задаёт сама плитка. */
-  .feed-card { height: auto; }
-  .feed-card__cover { aspect-ratio: var(--feed-tile-ratio); height: auto; }
-  .project-feed__item--big .feed-card__cover { aspect-ratio: var(--feed-big-ratio); }
   .project-feed__item--stub .feed-card { padding-bottom: 0; }
 }
 
@@ -154,17 +150,11 @@
    (её ховер из styles/buttons.css включается наведением на обложку). */
 .feed-card__cover:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
 
-/* Название — обычный текст сайта, не заголовок; на десктопе не больше двух строк. */
+/* Полное название: высота по тексту на любой ширине, без ограничения строк. */
 .feed-card__title.text-body {
   flex: 0 0 auto;
   max-width: none;
   margin-top: var(--feed-caption-gap);
   font-size: var(--feed-caption-size);
   font-weight: var(--font-weight-regular);
-}
-@media (min-width: 1000px) {
-  .feed-card__title.text-body {
-    height: calc(var(--feed-caption-h) - var(--feed-caption-gap));
-    overflow: hidden;
-  }
 }

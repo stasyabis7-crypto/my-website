@@ -55,12 +55,22 @@ const page = run(`<h1 id="heading">Старший продуктовый диз�
   <p id="english">Design for <a href="#">the people</a> and with care</p>
   <p id="break">Работа в<br>команде</p><p id="before">Работа в </p><p id="after">команде</p>
   <p id="multiline">Работа и\n    <strong>в команде</strong></p>
+  <p id="dash">Редизайн <strong>—</strong> результат</p>
+  <p id="dash-english">Design <em>— results</em></p>
+  <p id="closed-dash">enough<strong>—</strong>sellers</p>
+  <p id="range"><span>2020</span>–<span>2026</span></p>
+  <p id="dash-break">Редизайн<br>— результат</p>
   <p id="dynamic">Обновляем текст</p><code id="code">а и в с не бы</code>
   <p id="editable" contenteditable>а и в с не бы</p><p id="subtitle" data-subtitle>Описание.</p>`);
 assert(page.text(page.find('heading')).includes('с\u00a0опытом'));
 assert.equal(page.text(page.find('inline')), 'Работа и\u00a0в\u00a0команде, сделать\u00a0бы лучше');
 assert.equal(page.text(page.find('english')), 'Design for\u00a0the\u00a0people and\u00a0with\u00a0care');
 assert.equal(page.text(page.find('multiline')), 'Работа и\u00a0в\u00a0команде');
+assert.equal(page.text(page.find('dash')), 'Редизайн\u00a0— результат');
+assert.equal(page.text(page.find('dash-english')), 'Design\u00a0— results');
+assert.equal(page.text(page.find('closed-dash')), 'enough\u2060—\u2060sellers');
+assert.equal(page.text(page.find('range')), '2020\u2060–\u20602026');
+assert.equal(page.text(page.find('dash-break')), 'Редизайн—\u00a0результат', 'Do not bind across an explicit BR');
 assert.equal(page.text(page.find('break')), 'Работа вкоманде', 'Explicit BR remains a boundary');
 assert.equal(page.text(page.find('before')), 'Работа в ');
 assert.equal(page.text(page.find('code')), 'а и в с не бы');
@@ -77,6 +87,14 @@ assert.equal(page.text(page.find('inline')), 'Работа и\u00a0на\u00a0с�
 const stable = page.text(page.find('inline'));
 page.notify([{ type: 'characterData', target: page.find('inline').childNodes[0] }]);
 assert.equal(page.text(page.find('inline')), stable);
+for (const text of ['Результат — лучше', 'Results — clearer', 'enough—sellers']) {
+  dynamic.nodeValue = text;
+  page.notify([{ type: 'characterData', target: dynamic }]);
+  const fixed = dynamic.nodeValue;
+  assert.notEqual(fixed, text, 'Locale updates must receive dash bindings');
+  page.notify([{ type: 'characterData', target: dynamic }]);
+  assert.equal(dynamic.nodeValue, fixed, 'Dash processing must settle');
+}
 
 // Every public page includes the shared handler, so headings, captions and
 // dynamically rendered copy all receive the same rules.
