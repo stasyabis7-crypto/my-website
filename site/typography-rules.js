@@ -25,8 +25,10 @@
   var HANGING_WORDS = new RegExp('(?<![\\p{L}\\p{N}_-])(' + PREPOSITIONS.concat(CONJUNCTIONS, FORWARD_PARTICLES, ENGLISH_WORDS).join('|') + ')([ \\t\\r\\n\\u00a0\\u202f]+)(?=\\S)', 'giu');
   // Постпозитивные частицы относятся к предыдущему слову: «сделать бы», «так же».
   var BACKWARD_PARTICLES = /(?<=[\p{L}\p{N}»”")])([ \t\r\n\u00a0\u202f]+)(бы|б|же|ж|ли|ль)(?![\p{L}\p{N}_-])/giu;
-  // Experience counts move with their unit, including inside hero reveal spans.
-  var EXPERIENCE_YEARS = /(?<![\p{L}\p{N}_])(\d+(?:[.,]\d+)?)([ \t\r\n\u00a0\u202f]+)(?=(?:лет|года?|years?)(?![\p{L}\p{N}_]))/giu;
+  // Keep counts with their next word/unit and prevent breaks inside grouped
+  // numbers. The shared DOM traversal also handles links and bold spans.
+  var NUMBER_WORD = /(?<![\p{L}\p{N}_])(\d+(?:[.,]\d+)*)([ \t\r\n\u00a0\u202f]+)(?=[\p{L}%‰₽$€£])/gu;
+  var GROUPED_NUMBER = /(?<![\p{L}\p{N}_])\d{1,3}(?:[ \t\r\n\u00a0\u202f]+\d{3})+(?:[.,]\d+)?(?!\d)/gu;
 
   function boundCharacters(text) {
     // Retain original offsets when mapping edits across inline tags. Collapsed
@@ -38,7 +40,11 @@
     }
     text.replace(HANGING_WORDS, function (_, word, spaces, offset) { glue(offset + word.length, spaces.length); return _; });
     text.replace(BACKWARD_PARTICLES, function (_, spaces, word, offset) { glue(offset, spaces.length); return _; });
-    text.replace(EXPERIENCE_YEARS, function (_, number, spaces, offset) { glue(offset + number.length, spaces.length); return _; });
+    text.replace(NUMBER_WORD, function (_, number, spaces, offset) { glue(offset + number.length, spaces.length); return _; });
+    text.replace(GROUPED_NUMBER, function (number, offset) {
+      number.replace(/[ \t\r\n\u00a0\u202f]+/g, function (spaces, gap) { glue(offset + gap, spaces.length); return spaces; });
+      return number;
+    });
     text.replace(/[—–]/g, function (dash, offset) {
       var left = offset, right = offset + 1;
       while (left > 0 && /[ \t\r\n\u00a0\u202f]/.test(text[left - 1])) left--;

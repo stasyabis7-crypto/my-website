@@ -59,6 +59,8 @@ const page = run(`<h1 id="heading">Старший продуктовый диз�
   <p id="dash-english">Design <em>— results</em></p>
   <p id="closed-dash">enough<strong>—</strong>sellers</p>
   <p id="range"><span>2020</span>–<span>2026</span></p>
+  <p id="experience-ru"><strong>Результат:</strong> за первые <span>3</span> месяца — <strong>1</strong> 500 заданий и <a href="#">40 000</a> бонусов</p>
+  <p id="experience-en"><strong>Impact:</strong> <span>55</span> subscriptions in <a href="#">3</a> months — 30,000 sellers</p>
   <p id="dash-break">Редизайн<br>— результат</p>
   <p id="dynamic">Обновляем текст</p><code id="code">а и в с не бы</code>
   <p id="editable" contenteditable>а и в с не бы</p><p id="subtitle" data-subtitle>Описание.</p>`);
@@ -70,6 +72,8 @@ assert.equal(page.text(page.find('dash')), 'Редизайн\u00a0— резул
 assert.equal(page.text(page.find('dash-english')), 'Design\u00a0— results');
 assert.equal(page.text(page.find('closed-dash')), 'enough\u2060—\u2060sellers');
 assert.equal(page.text(page.find('range')), '2020\u2060–\u20602026');
+assert.equal(page.text(page.find('experience-ru')), 'Результат: за\u00a0первые 3\u00a0месяца\u00a0— 1\u00a0500\u00a0заданий и\u00a040\u00a0000\u00a0бонусов');
+assert.equal(page.text(page.find('experience-en')), 'Impact: 55\u00a0subscriptions in\u00a03\u00a0months\u00a0— 30,000\u00a0sellers');
 assert.equal(page.text(page.find('dash-break')), 'Редизайн—\u00a0результат', 'Do not bind across an explicit BR');
 assert.equal(page.text(page.find('break')), 'Работа вкоманде', 'Explicit BR remains a boundary');
 assert.equal(page.text(page.find('before')), 'Работа в ');
