@@ -46,8 +46,8 @@
   Object.keys(copy).forEach(function (key) { copy[copyKey(key)] = copy[key]; });
   var assets = window.siteLanguageMedia || {};
   var resumes = {
-    en: 'https://drive.google.com/file/d/1Lmhy9PlbZQAygC_Ir1HPg22xBI6kVRN5/view?usp=drive_link',
-    ru: 'https://drive.google.com/file/d/17iRYE0E_2xrNNLsrmFPtzYo2qP7KWtps/view?usp=drive_link'
+    en: '/cv-en.pdf',
+    ru: '/cv.pdf'
   };
   function t(value) {
     var translated = translateText(value);

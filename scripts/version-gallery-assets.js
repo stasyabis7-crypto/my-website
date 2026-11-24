@@ -12,6 +12,8 @@ const assets = [
   'components/site-brand/logo-en.svg',
   'components/site-brand/logo-contrast.js',
   'about/media/about-portrait.webp',
+  'cv.pdf',
+  'cv-en.pdf',
   'projects/swtec-medical/patient-app/covers/feed-cover-patient-points-1500x1800.webp',
   'projects/avito-charity/wild-animal-help/covers/feed-cover-wild-animal-help-1500x1800.webp',
   'projects/avito-charity/anti-bullying/covers/feed-cover-anti-bullying-1500x1800.webp',
@@ -102,7 +104,7 @@ function rewrite(source) {
   return source;
 }
 for (const asset of assets) {
-  const binary = asset.endsWith('.webp');
+  const binary = /\.(?:webp|pdf)$/.test(asset);
   const source = binary ? fs.readFileSync(path.join(root, asset)) :
     rewrite(fs.readFileSync(path.join(root, asset), 'utf8'));
   const ext = path.extname(asset);

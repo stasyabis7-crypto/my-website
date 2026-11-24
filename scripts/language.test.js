@@ -127,7 +127,8 @@ for (const page of [en, ru]) {
   assert.equal(service.url('https://elsewhere.test/cv.pdf'), 'https://elsewhere.test/cv.pdf');
   assert.equal(service.url('/cv.pdf?v=3'), service.resume);
   assert.equal(service.url('/cv-en.pdf'), service.resume);
-  assert(service.resume.includes(language === 'en' ? '1Lmhy9PlbZQAygC_Ir1HPg22xBI6kVRN5' : '17iRYE0E_2xrNNLsrmFPtzYo2qP7KWtps'));
+  assert.equal(service.resume, language === 'en' ? '/cv-en.pdf' : '/cv.pdf');
+  assert.equal(fs.readFileSync(path.join(root, service.resume)).subarray(0, 5).toString(), '%PDF-');
   assert.equal(service.t('1 из 4'), language === 'en' ? '1 of 4' : '1 из 4');
   assert.equal(service.t('CV PDF'), language === 'en' ? 'CV PDF' : 'Резюме PDF');
   assert.equal(run('projects/posts/index.html', '?lang=' + language).redirect, '/?lang=' + language);
@@ -191,7 +192,7 @@ const pattern = new RegExp(redirect.trim().split(/\s+/)[1]);
 for (const target of ['projects/avito-charity/recycle-map/', 'projects/avito-charity/recycle-map/index.html', 'projects/recycle-map/']) assert(pattern.test(target));
 assert(!pattern.test('projects/avito-charity/recycle-map/covers/cover.webp'));
 assert(redirect.includes('R=302'));
-// RU prefers Russian editions and shows language badges; EN has no badges.
+// RU prefers Russian editions; neither language shows redundant badges.
 for (const page of [en, ru]) {
   vm.runInNewContext(fs.readFileSync(path.join(root, 'projects/articles/articles.js'), 'utf8'), { window: page.window });
   const articleList = { innerHTML: '' };
@@ -202,7 +203,7 @@ for (const page of [en, ru]) {
   const links = find(rendered, node => node.tagName === 'A');
   const badges = find(rendered, node => hasClass(node, 'article-tile__language'));
   assert.equal(links.length, page.html.lang === 'ru' ? 17 : 7);
-  assert.equal(badges.length, page.html.lang === 'ru' ? links.length : 0);
+  assert.equal(badges.length, 0);
   const expected = page.window.portfolioArticles.filter(item => page.html.lang === 'ru' || item.language === 'en');
   const bilingual = page.window.portfolioArticles.filter(item => item.editions?.ru);
   assert.equal(bilingual.length, 6, 'All six confirmed Russian alternatives are retained');
@@ -212,10 +213,6 @@ for (const page of [en, ru]) {
     const language = edition ? page.html.lang : article.language;
     assert.equal(links[index].getAttribute('href'), edition || article.href);
     assert.equal(links[index].getAttribute('hreflang'), language);
-    if (page.html.lang === 'ru') {
-      assert.equal(badges[index].textContent, language.toUpperCase());
-      assert(!hasClass(badges[index], 'btn'));
-    }
     assert(article.image.endsWith('-diagram.svg'));
   });
 }
@@ -233,6 +230,23 @@ for (const page of [en, ru]) {
 }
 assert(!chrome.includes('resumePicker'));
 assert(chrome.includes("var cv = document.createElement('a')"));
+// Resume experience retains project emphasis and language-aware case links.
+for (const language of ['ru', 'en']) {
+  const page = run('about/index.html', '?lang=' + language);
+  page.callbacks.DOMContentLoaded();
+  const jobs = find(page.tree, node => hasClass(node, 'about-job'));
+  assert.equal(jobs.length, 7);
+  const subscription = find(jobs[0], node => node.tagName === 'A')[0];
+  const crm = find(jobs[1], node => node.tagName === 'A')[0];
+  assert.equal(subscription.getAttribute('href'), '/projects/avito-charity/subscription/?lang=' + language);
+  assert.equal(crm.getAttribute('href'), '/projects/ozon-crm/customer-segments/?lang=' + language);
+  assert.equal(subscription.parentElement.tagName, 'STRONG');
+  assert.equal(crm.parentElement.tagName, 'STRONG');
+  assert.equal(subscription.textContent, language === 'ru' ? 'Ежемесячные подписки на благотворительность' : 'Monthly donation subscription');
+  assert(jobs[0].textContent.includes(language === 'ru' ? 'Результат:' : 'Impact:'));
+  assert(jobs[6].textContent.includes(language === 'ru' ? 'НИПТ' : 'NIPT'));
+}
+assert(!fs.readFileSync(path.join(root, 'projects/articles/index.html'), 'utf8').includes('article-tile__language'));
 // Run the real switch mounting logic and resize it between both specified positions.
 const switchCode = chrome.slice(chrome.indexOf('    // One compact'), chrome.indexOf("    var menuBtn = document.createElement('button')"));
 for (const language of ['en', 'ru']) {
