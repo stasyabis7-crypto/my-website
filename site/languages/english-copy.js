@@ -969,6 +969,15 @@ window.siteEnglish = {
       "Наверх": "Back to top"
     },
     "/projects/playground/": {
+      "Типографический плакат: коллаж со спортивной обувью, лаймовыми деталями и чёрными линиями": "Typographic poster: sportswear collage with lime details and black lines",
+      "Типографический плакат: рок-портрет, искажённые кольца и чёрная графика": "Typographic poster: rock portrait, warped rings and black graphics",
+      "Чёрно-белый плакат с искажёнными портретами и цифрами 2, 3, 1, 1": "Black-and-white poster with distorted portraits and the digits 2, 3, 1, 1",
+      "Чёрно-белый плакат Moscow TMR 2AM с искажёнными портретами": "Black-and-white Moscow TMR 2AM poster with distorted portraits",
+      "Плакат с голубыми геометрическими фрагментами и маленьким красным сердцем": "Poster with blue geometric fragments and a small red heart",
+      "Лаймовый плакат Meladze Forever с розовой типографикой и портретом": "Lime Meladze Forever poster with pink typography and a portrait",
+      "Плакат с красными фактурами и белыми диагональными лучами": "Poster with red textures and white diagonal rays",
+      "Типографический плакат с рассыпающимися на точки цифрами 12, 12 и 29": "Typographic poster with the numbers 12, 12 and 29 dissolving into dots",
+      "Чёрно-белый плакат с группой музыкантов и растянутой фотографией": "Black-and-white poster with a band and a stretched photograph",
       "Концепты и эксперименты с интерфейсами": "Concepts and interface experiments",
       "Анимация дашборда Homa с показателями команды и календарём": "Animation of the Homa dashboard with team metrics and a calendar",
       "Онбординг обучающего приложения: переход к списку направлений, дизайн и программирование": "Learning app onboarding: moving to the list of tracks, design and programming",

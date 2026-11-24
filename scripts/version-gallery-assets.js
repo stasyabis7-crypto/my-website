@@ -12,6 +12,15 @@ const assets = [
   'components/site-brand/logo-en.svg',
   'components/site-brand/logo-contrast.js',
   'about/media/about-portrait.webp',
+  'projects/playground/media/typorobot-streetwear-collage.webp',
+  'projects/playground/media/typorobot-rock-collage.webp',
+  'projects/playground/media/typorobot-2111.webp',
+  'projects/playground/media/typorobot-moscow-tmr.webp',
+  'projects/playground/media/typorobot-blue-fragments.webp',
+  'projects/playground/media/typorobot-meladze-forever.webp',
+  'projects/playground/media/typorobot-red-rays.webp',
+  'projects/playground/media/typorobot-dotted-numbers.webp',
+  'projects/playground/media/typorobot-monochrome-band.jpg',
   'cv.pdf',
   'cv-en.pdf',
   'projects/swtec-medical/patient-app/covers/feed-cover-patient-points-1500x1800.webp',
@@ -104,7 +113,7 @@ function rewrite(source) {
   return source;
 }
 for (const asset of assets) {
-  const binary = /\.(?:webp|pdf)$/.test(asset);
+  const binary = /\.(?:webp|jpe?g|pdf)$/.test(asset);
   const source = binary ? fs.readFileSync(path.join(root, asset)) :
     rewrite(fs.readFileSync(path.join(root, asset), 'utf8'));
   const ext = path.extname(asset);

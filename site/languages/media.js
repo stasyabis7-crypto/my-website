@@ -556,6 +556,42 @@ window.siteLanguageMedia = {
     "ru": "/projects/playground/media/tooltip-motion.mp4",
     "en": "/projects/playground/media/tooltip-motion.mp4"
   },
+  "/projects/playground/media/typorobot-2111.webp": {
+    "ru": "/projects/playground/media/typorobot-2111.webp",
+    "en": "/projects/playground/media/typorobot-2111.webp"
+  },
+  "/projects/playground/media/typorobot-blue-fragments.webp": {
+    "ru": "/projects/playground/media/typorobot-blue-fragments.webp",
+    "en": "/projects/playground/media/typorobot-blue-fragments.webp"
+  },
+  "/projects/playground/media/typorobot-dotted-numbers.webp": {
+    "ru": "/projects/playground/media/typorobot-dotted-numbers.webp",
+    "en": "/projects/playground/media/typorobot-dotted-numbers.webp"
+  },
+  "/projects/playground/media/typorobot-meladze-forever.webp": {
+    "ru": "/projects/playground/media/typorobot-meladze-forever.webp",
+    "en": "/projects/playground/media/typorobot-meladze-forever.webp"
+  },
+  "/projects/playground/media/typorobot-monochrome-band.jpg": {
+    "ru": "/projects/playground/media/typorobot-monochrome-band.jpg",
+    "en": "/projects/playground/media/typorobot-monochrome-band.jpg"
+  },
+  "/projects/playground/media/typorobot-moscow-tmr.webp": {
+    "ru": "/projects/playground/media/typorobot-moscow-tmr.webp",
+    "en": "/projects/playground/media/typorobot-moscow-tmr.webp"
+  },
+  "/projects/playground/media/typorobot-red-rays.webp": {
+    "ru": "/projects/playground/media/typorobot-red-rays.webp",
+    "en": "/projects/playground/media/typorobot-red-rays.webp"
+  },
+  "/projects/playground/media/typorobot-rock-collage.webp": {
+    "ru": "/projects/playground/media/typorobot-rock-collage.webp",
+    "en": "/projects/playground/media/typorobot-rock-collage.webp"
+  },
+  "/projects/playground/media/typorobot-streetwear-collage.webp": {
+    "ru": "/projects/playground/media/typorobot-streetwear-collage.webp",
+    "en": "/projects/playground/media/typorobot-streetwear-collage.webp"
+  },
   "/projects/posts/blanket-post/covers/cover.webp": {
     "ru": "/projects/posts/blanket-post/covers/cover.webp",
     "en": "/projects/posts/blanket-post/covers/cover.webp"

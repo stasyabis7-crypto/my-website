@@ -29,6 +29,8 @@
 .playground-grid__item--native-video video { object-fit: contain; }
 .playground-grid__item--portrait { aspect-ratio: 4 / 5; }
 .playground-grid__item--portrait img { object-fit: contain; }
+.playground-grid__item--poster { aspect-ratio: var(--playground-media-ratio); }
+.playground-grid__item--poster img { object-fit: contain; }
 /* Чёрные углы записаны в самом ролике: маска скрывает только их,
    а прямоугольная подложка заполняет углы цветом фона видео. */
 .playground-catalog > .playground-grid__item--homa { background: #efeff4; border-radius: 0; }
@@ -48,22 +50,27 @@
 }
 
 @media (min-width: 1000px) {
-  /* Ряд 1: широкая слева, два квадрата справа. */
+  /* Плакаты распределены между интерфейсами и анимациями по всей сетке. */
   .playground-catalog > :nth-child(1) { grid-area: 1 / 1 / auto / span 2; }
   .playground-catalog > :nth-child(2) { grid-area: 1 / 3; }
   .playground-catalog > :nth-child(3) { grid-area: 1 / 4; }
-  /* Ряд 2: квадрат слева, пустая ячейка, широкая справа. */
   .playground-catalog > :nth-child(4) { grid-area: 2 / 1; }
-  .playground-catalog > :nth-child(5) { grid-area: 2 / 3 / auto / span 2; }
-  /* Ряд 3: крупный Time Warp слева, квадрат справа. */
-  .playground-catalog > :nth-child(6) { grid-area: 3 / 1 / auto / span 2; }
-  .playground-catalog > :nth-child(7) { grid-area: 3 / 4; }
-  /* Ряд 4: две широкие работы, каждая занимает две колонки. */
-  .playground-catalog > :nth-child(8) { grid-area: 4 / 1 / auto / span 2; }
-  .playground-catalog > :nth-child(9) { grid-area: 4 / 3 / auto / span 2; }
-  /* Ряд 5: две небольшие анимации через ячейку. */
-  .playground-catalog > :nth-child(10) { grid-area: 5 / 2; }
-  .playground-catalog > :nth-child(11) { grid-area: 5 / 4; }
+  .playground-catalog > :nth-child(5) { grid-area: 2 / 2; }
+  .playground-catalog > :nth-child(6) { grid-area: 2 / 4; }
+  .playground-catalog > :nth-child(7) { grid-area: 3 / 1 / auto / span 2; }
+  .playground-catalog > :nth-child(8) { grid-area: 3 / 3; }
+  .playground-catalog > :nth-child(9) { grid-area: 3 / 4; }
+  .playground-catalog > :nth-child(10) { grid-area: 4 / 1 / auto / span 2; }
+  .playground-catalog > :nth-child(11) { grid-area: 4 / 3; }
+  .playground-catalog > :nth-child(12) { grid-area: 4 / 4; }
+  .playground-catalog > :nth-child(13) { grid-area: 5 / 1; }
+  .playground-catalog > :nth-child(14) { grid-area: 5 / 3 / auto / span 2; }
+  .playground-catalog > :nth-child(15) { grid-area: 6 / 1 / auto / span 2; }
+  .playground-catalog > :nth-child(16) { grid-area: 6 / 4; }
+  .playground-catalog > :nth-child(17) { grid-area: 7 / 2; }
+  .playground-catalog > :nth-child(18) { grid-area: 7 / 4; }
+  .playground-catalog > :nth-child(19) { grid-area: 8 / 1; }
+  .playground-catalog > :nth-child(20) { grid-area: 8 / 3; }
 }
 @media (max-width: 999px) {
   .collection { --pg-gutter: 16px; --pg-gap: 10px; --pg-row-gap: 10px; }

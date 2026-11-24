@@ -1970,6 +1970,132 @@
     ]
   },
   {
+    "source": "/projects/playground/media/typorobot-2111.webp",
+    "planned": {
+      "ru": "/projects/playground/media/typorobot-2111-ru.webp",
+      "en": "/projects/playground/media/typorobot-2111-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/typorobot-2111.webp",
+      "en": "/projects/playground/media/typorobot-2111.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/typorobot-blue-fragments.webp",
+    "planned": {
+      "ru": "/projects/playground/media/typorobot-blue-fragments-ru.webp",
+      "en": "/projects/playground/media/typorobot-blue-fragments-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/typorobot-blue-fragments.webp",
+      "en": "/projects/playground/media/typorobot-blue-fragments.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/typorobot-dotted-numbers.webp",
+    "planned": {
+      "ru": "/projects/playground/media/typorobot-dotted-numbers-ru.webp",
+      "en": "/projects/playground/media/typorobot-dotted-numbers-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/typorobot-dotted-numbers.webp",
+      "en": "/projects/playground/media/typorobot-dotted-numbers.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/typorobot-meladze-forever.webp",
+    "planned": {
+      "ru": "/projects/playground/media/typorobot-meladze-forever-ru.webp",
+      "en": "/projects/playground/media/typorobot-meladze-forever-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/typorobot-meladze-forever.webp",
+      "en": "/projects/playground/media/typorobot-meladze-forever.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/typorobot-monochrome-band.jpg",
+    "planned": {
+      "ru": "/projects/playground/media/typorobot-monochrome-band-ru.webp",
+      "en": "/projects/playground/media/typorobot-monochrome-band-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/typorobot-monochrome-band.jpg",
+      "en": "/projects/playground/media/typorobot-monochrome-band.jpg"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/typorobot-moscow-tmr.webp",
+    "planned": {
+      "ru": "/projects/playground/media/typorobot-moscow-tmr-ru.webp",
+      "en": "/projects/playground/media/typorobot-moscow-tmr-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/typorobot-moscow-tmr.webp",
+      "en": "/projects/playground/media/typorobot-moscow-tmr.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/typorobot-red-rays.webp",
+    "planned": {
+      "ru": "/projects/playground/media/typorobot-red-rays-ru.webp",
+      "en": "/projects/playground/media/typorobot-red-rays-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/typorobot-red-rays.webp",
+      "en": "/projects/playground/media/typorobot-red-rays.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/typorobot-rock-collage.webp",
+    "planned": {
+      "ru": "/projects/playground/media/typorobot-rock-collage-ru.webp",
+      "en": "/projects/playground/media/typorobot-rock-collage-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/typorobot-rock-collage.webp",
+      "en": "/projects/playground/media/typorobot-rock-collage.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/typorobot-streetwear-collage.webp",
+    "planned": {
+      "ru": "/projects/playground/media/typorobot-streetwear-collage-ru.webp",
+      "en": "/projects/playground/media/typorobot-streetwear-collage-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/typorobot-streetwear-collage.webp",
+      "en": "/projects/playground/media/typorobot-streetwear-collage.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
     "source": "/projects/posts/blanket-post/covers/cover.webp",
     "planned": {
       "ru": "/projects/posts/blanket-post/covers/cover-ru.webp",
