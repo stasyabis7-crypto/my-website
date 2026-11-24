@@ -85,6 +85,20 @@ function find(node, predicate, out = []) {
 }
 
 const hasClass = (node, name) => node.nodeType === 1 && node.className.split(' ').includes(name);
+// The live slideshow counter is processed by both DOM observers. Translation
+// must preserve typography's spaces so their notifications settle before load.
+const typography = require('../site/typography-rules');
+for (const language of ['ru', 'en']) {
+  const page = run('projects/ozon-crm/customer-segments/index.html', '?lang=' + language);
+  const counter = find(page.tree, node => node.nodeType === 3 && /^1 (?:из|of) 4$/.test(node.nodeValue.trim()))[0];
+  assert(counter, 'Exercise the actual CRM slideshow counter');
+  counter.nodeValue = typography.keepWordsTogether(counter.nodeValue);
+  const formatted = counter.nodeValue;
+  page.mutation([{ type: 'characterData', target: counter }]);
+  assert.equal(counter.nodeValue, formatted, language + ': translation must not restart the typography observer');
+  page.mutation([{ type: 'characterData', target: counter }]);
+  assert.equal(counter.nodeValue, formatted, language + ': repeated observer notifications must settle');
+}
 const publicFiles = ['index.html', 'about/index.html', 'projects/articles/index.html', 'projects/playground/index.html',
   'projects/ozon-crm/customer-segments/index.html', 'projects/avito-charity/subscription/index.html'];
 for (const file of publicFiles) {

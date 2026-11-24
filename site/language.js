@@ -50,6 +50,12 @@
     ru: 'https://drive.google.com/file/d/17iRYE0E_2xrNNLsrmFPtzYo2qP7KWtps/view?usp=drive_link'
   };
   function t(value) {
+    var translated = translateText(value);
+    // Typography also observes text changes. Preserve its NBSP/WORD JOINER
+    // formatting when the text is already in the selected language.
+    return copyKey(translated) === copyKey(value) ? value : translated;
+  }
+  function translateText(value) {
     var trimmed = value.trim();
     var key = copyKey(trimmed);
     if (copy[key]) return value.replace(trimmed, copy[key]);
