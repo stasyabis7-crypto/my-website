@@ -27,7 +27,7 @@ const assets = [
   'projects/avito-charity/wild-animal-help/covers/feed-cover-wild-animal-help-1500x1800.webp',
   'projects/avito-charity/anti-bullying/covers/feed-cover-anti-bullying-1500x1800.webp',
   'projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800-en.webp',
-  'projects/avito-charity/subscription/covers/feed-cover-subscription-payment-1500x1800-en.mp4',
+  'projects/avito-charity/subscription/covers/feed-cover-subscription-payment-loop-1500x1800-en.mp4',
   'projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-mobile-1500x1800-en.mp4',
   'projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-mobile-poster.webp',
   'projects/ozon-crm/customer-segments/media/research/marketplace-reference-revenue.webp',

@@ -33,8 +33,9 @@
     var poster = '<img src="' + escape(source.image) + '" width="' + source.width + '" height="' + source.height +
       '" alt="' + escape(project.alt) + '" loading="lazy" decoding="async"' + focus + ' />';
     if (!source.video || reduced.matches) return poster;
-    return '<video data-src="' + escape(source.video) + '" poster="' + escape(source.image) + '" width="' + source.width +
-      '" height="' + source.height + '" muted loop playsinline preload="none" aria-label="' + escape(project.alt) + '"' + focus + '></video>';
+    return '<span class="feed-card__video">' + poster +
+      '<video data-src="' + escape(source.video) + '" poster="' + escape(source.image) + '" width="' + source.width +
+      '" height="' + source.height + '" muted loop playsinline preload="none" aria-label="' + escape(project.alt) + '"' + focus + '></video></span>';
   }
 
   // A screen ahead the file starts buffering; it plays only while actually on
@@ -53,6 +54,10 @@
       var started = video.play();
       if (started) started.catch(function () {});
     }
+    videos.forEach(function (video) {
+      video.addEventListener('playing', function () { video.classList.add('is-playing'); });
+      video.addEventListener('error', function () { video.classList.remove('is-playing'); });
+    });
     if (!('IntersectionObserver' in window)) {
       videos.forEach(play);
       return;

@@ -110,6 +110,19 @@
   height: 100%;
   object-fit: cover;
 }
+.feed-card__video {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.feed-card__video > video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+.feed-card__video > video.is-playing { opacity: 1; }
 @media (max-width: 999px) {
   /* В потоке высоту задаёт сама плитка. */
   .project-feed__item--stub .feed-card { padding-bottom: 0; }

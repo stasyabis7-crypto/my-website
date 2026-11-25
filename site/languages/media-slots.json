@@ -707,14 +707,14 @@
     ]
   },
   {
-    "source": "/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-1500x1800-en.mp4",
+    "source": "/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-loop-1500x1800-en.mp4",
     "planned": {
-      "ru": "/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-1500x1800-en-ru.mp4",
-      "en": "/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-1500x1800-en-en.mp4"
+      "ru": "/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-loop-1500x1800-en-ru.mp4",
+      "en": "/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-loop-1500x1800-en-en.mp4"
     },
     "active": {
-      "ru": "/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-1500x1800-en.mp4",
-      "en": "/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-1500x1800-en.mp4"
+      "ru": "/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-loop-1500x1800-en.mp4",
+      "en": "/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-loop-1500x1800-en.mp4"
     },
     "pages": [
       "pages/home/data/projects.js"
