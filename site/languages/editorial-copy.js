@@ -26,7 +26,7 @@ window.siteEditorialCopy = {
   },
   "main page:8": {
     "en": "How to find a recycling center near you and start practicing conscious consumption",
-    "ru": "Найдите пункт переработки рядом с домом и перейдите на путь осознанного потребления"
+    "ru": "Найдите пункт переработки рядом с домом и ступите на путь осознанного потребления"
   },
   "main page:9": {
     "en": "Help charities with monthly donation subscription",
