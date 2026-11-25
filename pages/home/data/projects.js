@@ -50,7 +50,7 @@ window.portfolioProjects = [
   },
   {
     id: 'kind-subscription',
-    feed: { image: '/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp', width: 1500, height: 1800 },
+    feed: { image: '/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800-en.webp', video: '/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-1500x1800-en.mp4', width: 1500, height: 1800 },
     title: 'Help charities with monthly donation subscription',
     description: 'Ежемесячная помощь фондам в приложении',
     href: '/projects/avito-charity/subscription/',

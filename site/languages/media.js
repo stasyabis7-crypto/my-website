@@ -192,9 +192,13 @@ window.siteLanguageMedia = {
     "ru": "/projects/avito-charity/recycle-map/media/navigation/before-v2-2880x1600-ru.webp",
     "en": "/projects/avito-charity/recycle-map/media/navigation/before-v2-2880x1600-en.webp"
   },
-  "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800.webp": {
-    "ru": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800-ru.webp",
+  "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800-en.webp": {
+    "ru": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800-en.webp",
     "en": "/projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800-en.webp"
+  },
+  "/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-1500x1800-en.mp4": {
+    "ru": "/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-1500x1800-en.mp4",
+    "en": "/projects/avito-charity/subscription/covers/feed-cover-subscription-payment-1500x1800-en.mp4"
   },
   "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp": {
     "ru": "/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800-ru.webp",
@@ -223,6 +227,14 @@ window.siteLanguageMedia = {
   "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-en.mp4": {
     "ru": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-en.mp4",
     "en": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-en.mp4"
+  },
+  "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-mobile-1500x1800-en.mp4": {
+    "ru": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-mobile-1500x1800-en.mp4",
+    "en": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-mobile-1500x1800-en.mp4"
+  },
+  "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-mobile-poster.webp": {
+    "ru": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-mobile-poster.webp",
+    "en": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-mobile-poster.webp"
   },
   "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-poster.webp": {
     "ru": "/projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-poster.webp",

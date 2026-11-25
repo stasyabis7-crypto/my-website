@@ -142,12 +142,12 @@
       });
     });
 
-    var sourcesLoaded = false;
     function loadSources() {
-      if (sourcesLoaded) return;
-      sourcesLoaded = true;
       items.forEach(function (src, i) {
         var url = src.currentSrc || src.src;
+        // Responsive previews can choose another file after a viewport change.
+        // Keep cached media unless its actual source has changed.
+        if (slides[i].src === url) return;
         slides[i].src = url;
         if (isVideo(src)) {
           slides[i].poster = src.poster;

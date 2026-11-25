@@ -248,7 +248,10 @@ body {
 <section class="case-block cg" id="donation-flow" tabindex="-1" aria-label="Monthly donation subscription walkthrough">
  <p class="text-body-lg cg-r" data-copy="2 project:26">Imagine you’ve made a few one-off donations on Avito. You see an invitation to switch to monthly giving and open the charity’s report to see what it has accomplished recently. Then you pick 300 rubles a month and review the recurring payment terms before confirming.</p>
  <div class="case-cover__media case-cover__media--natural cg-bleed">
-  <video src="media/donation-flow/kind-subscription-300-flow-en.mp4" poster="media/donation-flow/kind-subscription-300-flow-poster.webp" width="1920" height="1080" muted loop playsinline autoplay preload="metadata" aria-label="Monthly donation subscription: charity report, 300-ruble setup and profile management"></video>
+  <video data-responsive-video poster="media/donation-flow/kind-subscription-300-flow-poster.webp" width="1920" height="1080" muted loop playsinline autoplay preload="metadata" aria-label="Monthly donation subscription: charity report, 300-ruble setup and profile management">
+    <source media="(max-width: 699px)" src="media/donation-flow/kind-subscription-300-flow-mobile-1500x1800-en.mp4" type="video/mp4" data-poster="media/donation-flow/kind-subscription-300-flow-mobile-poster.webp" data-width="1500" data-height="1800" />
+    <source src="media/donation-flow/kind-subscription-300-flow-en.mp4" type="video/mp4" />
+  </video>
  </div>
 </section>
 
@@ -411,7 +414,8 @@ body {
   <script src="../../../components/case-toc/case-toc.js?v=10"></script>
   <script src="../../../components/content-reveal/content-reveal.js?v=1"></script>
   <script src="../../../components/page-motion/page-motion.js?v=10"></script>
-  <script src="../../../components/case-lightbox/case-lightbox.js?v=14"></script>
+  <script src="../../../components/responsive-video/responsive-video.js?v=1"></script>
+  <script src="../../../components/case-lightbox/case-lightbox.js?v=15"></script>
 <script src="/components/site-brand/logo-contrast.js?v=1"></script>
 </body>
 </html>

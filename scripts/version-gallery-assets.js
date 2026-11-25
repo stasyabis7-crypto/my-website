@@ -26,6 +26,10 @@ const assets = [
   'projects/swtec-medical/patient-app/covers/feed-cover-patient-points-1500x1800.webp',
   'projects/avito-charity/wild-animal-help/covers/feed-cover-wild-animal-help-1500x1800.webp',
   'projects/avito-charity/anti-bullying/covers/feed-cover-anti-bullying-1500x1800.webp',
+  'projects/avito-charity/subscription/covers/feed-cover-324719911-1500x1800-en.webp',
+  'projects/avito-charity/subscription/covers/feed-cover-subscription-payment-1500x1800-en.mp4',
+  'projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-mobile-1500x1800-en.mp4',
+  'projects/avito-charity/subscription/media/donation-flow/kind-subscription-300-flow-mobile-poster.webp',
   'projects/ozon-crm/customer-segments/media/research/marketplace-reference-revenue.webp',
   'projects/ozon-crm/customer-segments/media/research/marketplace-reference-homie.webp',
   'projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680.webp',
@@ -89,6 +93,7 @@ const assets = [
   'components/page-loader/page-loader.js',
   'components/case-blocks/case-blocks.css',
   'components/case-blocks/case-blocks.js',
+  'components/responsive-video/responsive-video.js',
   'components/case-cards/case-cards.css',
   'components/case-cards/case-cards.js',
   'components/case-grid/case-grid.css',
@@ -113,7 +118,7 @@ function rewrite(source) {
   return source;
 }
 for (const asset of assets) {
-  const binary = /\.(?:webp|jpe?g|pdf)$/.test(asset);
+  const binary = /\.(?:webp|jpe?g|pdf|mp4|webm)$/.test(asset);
   const source = binary ? fs.readFileSync(path.join(root, asset)) :
     rewrite(fs.readFileSync(path.join(root, asset), 'utf8'));
   const ext = path.extname(asset);
