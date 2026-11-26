@@ -1,0 +1,7 @@
+{
+  "desktop": { "ttfb": 1200, "fcp": 2500, "lcp": 4000, "ready": 5000, "loadBlocking": 500, "scrollBlocking": 300, "cls": 0.1, "transferBytes": 8388608 },
+  "mobile": { "ttfb": 1800, "fcp": 3500, "lcp": 5000, "ready": 8000, "loadBlocking": 1000, "scrollBlocking": 600, "cls": 0.1, "transferBytes": 8388608 },
+  "pages": {
+    "/projects/playground/": { "desktop": { "transferBytes": 16777216 }, "mobile": { "lcp": 6000 } }
+  }
+}

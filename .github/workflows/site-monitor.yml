@@ -1,0 +1,42 @@
+name: Monitor published site
+
+on:
+  schedule:
+    # Twice per hour, away from the busiest start of the hour (UTC).
+    - cron: '17,47 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    name: Check live desktop and mobile site
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SITE_URL: https://stasyabis.com
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Check availability, navigation, resources and performance
+        run: npm run test:browser
+      - name: Verify HTML revalidation
+        run: node scripts/check-html-cache.js
+      - name: Save failure details and timing measurements
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-monitor-report
+          path: .artifacts/browser/
+          include-hidden-files: true
+          retention-days: 14

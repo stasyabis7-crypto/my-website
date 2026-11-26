@@ -125,11 +125,11 @@ body {
   <header class="site-header">
     <div class="site-header__identity">
       <a href="/#works-gallery" class="site-header__back btn btn--fill-glass-ui btn--hover-accent btn--icon-only" aria-label="Назад ко всем проектам"><span class="icon icon--arrow-left" aria-hidden="true"></span></a>
-      <a href="/index.html" class="site-header__logo" aria-label="На главную — Работы">
+      <a href="/" class="site-header__logo" aria-label="На главную — Работы">
         <span class="site-header__logo-mark" aria-hidden="true"></span>
       </a>
     </div>
-    <a href="/cv.pdf?v=3" class="site-header__cta btn btn--fill-pink btn--icon-right btn--size-chrome" target="_blank" rel="noopener noreferrer">
+    <a href="/cv.pdf" class="site-header__cta btn btn--fill-pink btn--icon-right btn--size-chrome" target="_blank" rel="noopener noreferrer">
       <span class="icon icon--cv" aria-hidden="true"></span>
       CV PDF
     </a>
@@ -180,7 +180,7 @@ body {
  <p class="text-body-lg" data-subtitle><span class="cg-label" data-copy="2 project:3:label">Problem:</span> <span data-copy="2 project:3:body">in Avito you could only help charities once at a time — to keep supporting them you had to go through the whole flow again</span></p>
  <p class="text-body-lg" data-subtitle><span class="cg-label" data-copy="2 project:4:label">Solution:</span> <span data-copy="2 project:4:body">We introduced recurring donations to make regular giving effortless for donors and provide charities with predictable funding.</span></p>
  </div></div>
- <div class="case-cover__media case-cover__media--natural cg-bleed cg-q234 cg-row-2 subscription-screen-crop"><img src="/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp" width="2880" height="1800" alt="«Добрая подписка» в приложении Авито" /></div>
+ <div class="case-cover__media case-cover__media--natural cg-bleed cg-q234 cg-row-2 subscription-screen-crop"><img fetchpriority="high" src="/projects/avito-charity/subscription/covers/subscription-cover-v2-2880x1800.webp" width="2880" height="1800" alt="«Добрая подписка» в приложении Авито" /></div>
  <div class="cg-meta cg-q1 cg-row-2"><dl class="cg-list text-body">
  <div><dt data-copy="2 project:5:label">Role</dt><dd data-copy="2 project:5:body">I led the design and user research from discovery to launch. I tested early concepts through user interviews and used those insights to refine the final shipped design.</dd></div>
  <div><dt data-copy="2 project:6:label">Team</dt><dd data-copy="2 project:6:body">Product manager, project manager, backend, frontend, editor, researcher</dd></div>
@@ -248,9 +248,9 @@ body {
 <section class="case-block cg" id="donation-flow" tabindex="-1" aria-label="Monthly donation subscription walkthrough">
  <p class="text-body-lg cg-r" data-copy="2 project:26">Imagine you’ve made a few one-off donations on Avito. You see an invitation to switch to monthly giving and open the charity’s report to see what it has accomplished recently. Then you pick 300 rubles a month and review the recurring payment terms before confirming.</p>
  <div class="case-cover__media case-cover__media--natural cg-bleed">
-  <video data-responsive-video poster="media/donation-flow/kind-subscription-300-flow-poster.webp" width="1920" height="1080" muted loop playsinline autoplay preload="metadata" aria-label="Monthly donation subscription: charity report, 300-ruble setup and profile management">
-    <source media="(max-width: 699px)" src="media/donation-flow/kind-subscription-300-flow-mobile-1500x1800-en.mp4" type="video/mp4" data-poster="media/donation-flow/kind-subscription-300-flow-mobile-poster.webp" data-width="1500" data-height="1800" />
-    <source src="media/donation-flow/kind-subscription-300-flow-en.mp4" type="video/mp4" />
+  <video data-lazy-video data-responsive-video data-poster="media/donation-flow/kind-subscription-300-flow-poster.webp" width="1920" height="1080" muted loop playsinline preload="none" aria-label="Monthly donation subscription: charity report, 300-ruble setup and profile management">
+    <source media="(max-width: 699px)" data-src="media/donation-flow/kind-subscription-300-flow-mobile-1500x1800-en.mp4" type="video/mp4" data-poster="media/donation-flow/kind-subscription-300-flow-mobile-poster.webp" data-width="1500" data-height="1800" />
+    <source data-src="media/donation-flow/kind-subscription-300-flow-en.mp4" type="video/mp4" />
   </video>
  </div>
 </section>
@@ -262,12 +262,12 @@ body {
 
 <section class="case-block cg" id="settings" tabindex="-1">
  <div class="cg-intro"><h2 class="text-h1" data-copy="2 project:30">Subscribing</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle data-copy="2 project:31">The setup screen brings together the charity, the amount, and the recurring payment schedule. You can pick 100, 300, or 500 ₽, or enter a custom amount. The terms for recurring charges are shown upfront before you subscribe.</p></div></div>
- <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural"><video src="media/settings/subscription-payment-flow-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Выбор суммы и оплата подписки"></video></div><figcaption class="text-body" data-copy="2 project:32">Payment flow</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural"><video src="media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Подробные условия подписки"></video></div><figcaption class="text-body" data-copy="2 project:33">How it works</figcaption></figure><p class="text-body-lg cg-r" data-copy="2 project:34">I moved all the key details into a &quot;How it works&quot; section: zero fees, 100% of funds go directly to charities, a monthly &quot;Kindness badge,&quot; and easy ways to edit or cancel. This keeps the main screen clean and compact.</p>
+ <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural"><video data-lazy-video data-src="media/settings/subscription-payment-flow-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline preload="none" aria-label="Выбор суммы и оплата подписки"></video></div><figcaption class="text-body" data-copy="2 project:32">Payment flow</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural"><video data-lazy-video data-src="media/settings/subscription-info-sheet-v2-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline preload="none" aria-label="Подробные условия подписки"></video></div><figcaption class="text-body" data-copy="2 project:33">How it works</figcaption></figure><p class="text-body-lg cg-r" data-copy="2 project:34">I moved all the key details into a &quot;How it works&quot; section: zero fees, 100% of funds go directly to charities, a monthly &quot;Kindness badge,&quot; and easy ways to edit or cancel. This keeps the main screen clean and compact.</p>
 </section>
 
 <section class="case-block cg" id="success" tabindex="-1">
  <div class="cg-intro"><h2 class="text-h1" data-copy="2 project:35">Thank-you after payment</h2><div class="cg-intro__text"><p class="text-body-lg" data-subtitle data-copy="2 project:36">Once the payment goes through, the screen confirms that the monthly donation is active. I created a Lottie-heart animation to make that moment feel warm and personal.</p></div></div>
- <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural "><img src="media/success/before.webp" width="1600" height="2000" alt="Прежняя благодарность со статичным изображением" loading="lazy" /></div><figcaption class="text-body" data-copy="2 project:37">Before</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural"><video src="media/success/after-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline autoplay preload="metadata" aria-label="Новый экран благодарности с анимацией сердечек"></video></div><figcaption class="text-body" data-copy="2 project:38">After</figcaption></figure><div class="cg-text cg-r">
+ <figure class="cg-figure cg-l"><div class="case-cover__media case-cover__media--natural "><img src="media/success/before.webp" width="1600" height="2000" alt="Прежняя благодарность со статичным изображением" loading="lazy" /></div><figcaption class="text-body" data-copy="2 project:37">Before</figcaption></figure><figure class="cg-figure cg-r"><div class="case-cover__media case-cover__media--natural"><video data-lazy-video data-src="media/success/after-1600x2000-60fps.mp4" width="1600" height="2000" muted loop playsinline preload="none" aria-label="Новый экран благодарности с анимацией сердечек"></video></div><figcaption class="text-body" data-copy="2 project:38">After</figcaption></figure><div class="cg-text cg-r">
   <p class="text-body-lg" data-copy="2 project:39">For subscriptions, the screen confirms the monthly donation and its terms. I added the lottie heart animation along with two next steps: sharing the campaign and adding a &quot;Kindness badge&quot; to your listing.</p>
   <p class="text-body-lg" data-copy="2 project:40">About 2,000 thank-you screen views per day across all charity flows, not just subscriptions.</p>
 </div>
@@ -348,7 +348,7 @@ body {
   <footer class="site-footer">
     <nav class="site-footer__nav-wrap">
       <ul class="site-footer__nav">
-        <li><a href="../../../index.html" class="site-footer__link text-label is-current">
+        <li><a href="/" class="site-footer__link text-label is-current">
           <span class="icon icon--works" aria-hidden="true"></span>
           Работы
         </a></li>
@@ -389,7 +389,7 @@ body {
   <div class="footer-menu-panel" id="footer-menu-panel" hidden>
     <nav class="footer-menu-panel__bar">
       <ul class="footer-menu-panel__nav">
-        <li><a href="../../../index.html" class="footer-menu-panel__link text-label is-current">
+        <li><a href="/" class="footer-menu-panel__link text-label is-current">
           <span class="icon icon--works" aria-hidden="true"></span>
           Работы
         </a></li>
@@ -417,5 +417,6 @@ body {
   <script src="../../../components/responsive-video/responsive-video.js?v=1"></script>
   <script src="../../../components/case-lightbox/case-lightbox.js?v=15"></script>
 <script src="/components/site-brand/logo-contrast.js?v=1"></script>
+<script src="/components/responsive-video/lazy-video.js?v=1"></script>
 </body>
 </html>

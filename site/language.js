@@ -5,11 +5,32 @@
   var requested = url.searchParams.get('lang');
   var stored;
   try { stored = localStorage.getItem('portfolio-language'); } catch (error) { /* Storage may be disabled. */ }
-  var lang = /^(ru|en)$/.test(requested) ? requested : /^(ru|en)$/.test(stored) ? stored : 'en';
-  try { localStorage.setItem('portfolio-language', lang); } catch (error) { /* URL still carries the selection. */ }
+  function cookie(name) {
+    var match = (document.cookie || '').match(new RegExp('(?:^|;\\s*)' + name + '=([^;]*)'));
+    return match ? match[1] : '';
+  }
+  function remember(value) {
+    try { localStorage.setItem('portfolio-language', value); } catch (error) { /* Cookie is the fallback. */ }
+    try { document.cookie = 'portfolio-language=' + value + '; Path=/; Max-Age=31536000; SameSite=Lax' + (url.protocol === 'https:' ? '; Secure' : ''); } catch (error) { /* Private browsing may block both stores. */ }
+  }
+  var country = cookie('portfolio-country').toUpperCase();
+  // Russia and CIS countries, including associated member Turkmenistan.
+  var russianCountries = ['RU', 'BY', 'KZ', 'KG', 'UZ', 'TJ', 'TM', 'AM', 'AZ', 'MD'];
+  var browserRussian = typeof navigator !== 'undefined' && /^ru(?:-|$)/i.test(navigator.language || '');
+  var automatic = /^[A-Z]{2}$/.test(country) ? (russianCountries.includes(country) ? 'ru' : 'en') : (browserRussian ? 'ru' : 'en');
+  var saved = /^(ru|en)$/.test(stored) ? stored : cookie('portfolio-language') || (window.history && window.history.state && window.history.state.portfolioLanguage);
+  var lang = /^(ru|en)$/.test(requested) ? requested : /^(ru|en)$/.test(saved) ? saved : automatic;
+  // Only an explicit choice is persisted. Automatic detection can follow travel.
+  if (/^(ru|en)$/.test(requested)) remember(lang);
+  if (window.history && window.history.replaceState) {
+    var cleanPath = url.pathname.replace(/index\.html$/, '');
+    url.searchParams.delete('lang');
+    var state = /^(ru|en)$/.test(requested) ? Object.assign({}, window.history.state, { portfolioLanguage: lang }) : window.history.state;
+    window.history.replaceState(state, '', cleanPath + url.search + url.hash);
+  }
   document.documentElement.lang = lang;
   if (/^\/projects\/posts\//.test(url.pathname)) {
-    location.replace('/?lang=' + lang);
+    location.replace('/');
     return;
   }
   var english = window.siteEnglish || { phrases: {}, pages: {}, projects: {} };
@@ -87,8 +108,7 @@
     if (target.origin !== location.origin) return value;
     if (/^\/cv(?:-en)?\.pdf$/.test(target.pathname)) return resumes[lang];
     if (!/\/$|\.html$/.test(target.pathname)) return value;
-    target.searchParams.set('lang', lang);
-    return target.pathname + target.search + target.hash;
+    return target.pathname.replace(/index\.html$/, '') + target.hash;
   }
   function mediaURL(value) {
     var target = new URL(value, location.href);
@@ -172,10 +192,18 @@
     current: lang, t: t, url: localURL, media: mediaURL, mediaPair: mediaPair, resume: resumes[lang], editorial: editorialText,
     switchTo: function (next) {
       if (!/^(ru|en)$/.test(next) || next === lang) return;
-      try { localStorage.setItem('portfolio-language', next); } catch (error) { /* Keep the URL usable. */ }
       var target = new URL(location.href);
-      target.searchParams.set('lang', next);
-      location.assign(target.pathname + target.search + target.hash);
+      target.searchParams.delete('lang');
+      remember(next);
+      var persisted = cookie('portfolio-language') === next;
+      try { persisted = persisted || localStorage.getItem('portfolio-language') === next; } catch (error) { /* Cookie can still persist the choice. */ }
+      // History state survives a reload even when both stores are disabled.
+      if (!persisted) {
+        window.history.replaceState(Object.assign({}, window.history.state, { portfolioLanguage: next }), '', target.pathname.replace(/index\.html$/, '') + target.search + target.hash);
+        location.reload();
+        return;
+      }
+      location.assign(target.pathname.replace(/index\.html$/, '') + target.search + target.hash);
     },
     project: function (project) {
       var localized = Object.assign({}, project, lang === 'en' ? english.projects[project.id] || {} : {});

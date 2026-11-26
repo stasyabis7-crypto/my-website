@@ -42,18 +42,22 @@ function adapt(node) {
   for (const child of el.childNodes) child.parentElement = el;
   return el;
 }
-function run(file, query = '', stored, denied = false, additionalMedia = {}, viewportWidth = 1280) {
+function run(file, query = '', stored, denied = false, additionalMedia = {}, viewportWidth = 1280, preferences = {}) {
   const tree = adapt(parse5.parse(fs.readFileSync(path.join(root, file), 'utf8')));
   const html = tree.childNodes.find(node => node.tagName === 'HTML');
   const callbacks = {}, values = { 'portfolio-language': stored };
-  let mutation, redirect, assigned;
+  let mutation, redirect, assigned, cleaned;
+  const cookies = { 'portfolio-country': preferences.country || '', 'portfolio-language': preferences.cookieLanguage || '' };
   const mediaQueries = [];
   const href = 'https://portfolio.test/' + file.replace(/index.html$/, '') + query;
-  const context = { URL, location: { href, origin: 'https://portfolio.test', pathname: new URL(href).pathname, replace(value) { redirect = value; }, assign(value) { assigned = value; } },
+  const context = { URL, navigator: { language: preferences.browser || 'en-US' }, location: { href, origin: 'https://portfolio.test', pathname: new URL(href).pathname, replace(value) { redirect = value; }, assign(value) { assigned = value; }, reload() { assigned = 'reload'; } },
     localStorage: { getItem(key) { if (denied) throw Error('blocked'); return values[key]; }, setItem(key, value) { if (denied) throw Error('blocked'); values[key] = value; } },
-    document: { documentElement: html, addEventListener(name, callback) { callbacks[name] = callback; }, getElementById() { return null; },
+    document: { documentElement: html, get cookie() { return Object.entries(cookies).map(([key, value]) => key + '=' + value).join('; '); },
+      set cookie(value) { if (!preferences.cookiesDenied) { const [key, data] = value.split(';')[0].split('='); cookies[key] = data; } },
+      addEventListener(name, callback) { callbacks[name] = callback; }, getElementById() { return null; },
       querySelector(selector) { return html.querySelector(selector); }, createElement(tag) { return element(tag); } },
-    MutationObserver: function (callback) { mutation = callback; this.observe = () => {}; }, window: { matchMedia(query) {
+    MutationObserver: function (callback) { mutation = callback; this.observe = () => {}; }, window: {
+      history: { state: preferences.history || null, replaceState(state, _title, value) { this.state = state; cleaned = value; } }, matchMedia(query) {
       assert.equal(query, '(width < 1000px)');
       const listeners = [];
       const media = { matches: viewportWidth < 1000, addEventListener(name, callback) { assert.equal(name, 'change'); listeners.push(callback); } };
@@ -64,7 +68,7 @@ function run(file, query = '', stored, denied = false, additionalMedia = {}, vie
   for (const source of ['site/languages/english-copy.js', 'site/languages/editorial-copy.js', 'site/languages/russian-copy.js', 'site/languages/media.js']) vm.runInContext(fs.readFileSync(path.join(root, source), 'utf8'), context);
   Object.assign(context.window.siteLanguageMedia, additionalMedia);
   vm.runInContext(fs.readFileSync(process.env.LANGUAGE_TEST_SOURCE || path.join(root, 'site/language.js'), 'utf8'), context);
-  return { ...context, tree, html, callbacks, mutation, redirect, values, assigned: () => assigned, resize(width) {
+  return { ...context, tree, html, callbacks, mutation, redirect, values, cookies, cleaned, assigned: () => assigned, resize(width) {
     for (const { media, listeners } of mediaQueries) {
       const matches = width < 1000;
       if (matches !== media.matches) { media.matches = matches; listeners.forEach(callback => callback(media)); }
@@ -122,8 +126,8 @@ assert.equal(en.window.siteLanguage.t(keepWordsTogether(range)), '1.5–3K', 'Ty
 assert.equal(ru.window.siteLanguage.t(keepWordsTogether('1.5–3K')), range, 'Typography joiners must not prevent reverse translation');
 for (const page of [en, ru]) {
   const service = page.window.siteLanguage, language = service.current;
-  assert.equal(service.url('/about/?preview=1#experience'), '/about/?preview=1&lang=' + language + '#experience');
-  assert.equal(service.url('/about/?lang=ru&preview=1#experience'), '/about/?lang=' + language + '&preview=1#experience');
+  assert.equal(service.url('/about/?preview=1#experience'), '/about/#experience');
+  assert.equal(service.url('/about/index.html?lang=ru&preview=1#experience'), '/about/#experience');
   assert.equal(service.url('https://elsewhere.test/cv.pdf'), 'https://elsewhere.test/cv.pdf');
   assert.equal(service.url('/cv.pdf?v=3'), service.resume);
   assert.equal(service.url('/cv-en.pdf'), service.resume);
@@ -131,11 +135,26 @@ for (const page of [en, ru]) {
   assert.equal(fs.readFileSync(path.join(root, service.resume)).subarray(0, 5).toString(), '%PDF-');
   assert.equal(service.t('1 из 4'), language === 'en' ? '1 of 4' : '1 из 4');
   assert.equal(service.t('CV PDF'), language === 'en' ? 'CV PDF' : 'Резюме PDF');
-  assert.equal(run('projects/posts/index.html', '?lang=' + language).redirect, '/?lang=' + language);
+  assert.equal(run('projects/posts/index.html', '?lang=' + language).redirect, '/');
 }
 const switching = run('projects/ozon-crm/customer-segments/index.html', '?lang=en&preview=1#dashboard', undefined, true);
 switching.window.siteLanguage.switchTo('ru');
-assert.equal(switching.assigned(), '/projects/ozon-crm/customer-segments/?lang=ru&preview=1#dashboard');
+assert.equal(switching.assigned(), '/projects/ozon-crm/customer-segments/?preview=1#dashboard');
+assert.equal(switching.cookies['portfolio-language'], 'ru', 'Cookie preserves selection when localStorage is disabled');
+for (const country of ['RU', 'BY', 'KZ', 'KG', 'UZ', 'TJ', 'TM', 'AM', 'AZ', 'MD']) {
+  const automatic = run('index.html', '', undefined, false, {}, 1280, { country, browser: 'en-US' });
+  assert.equal(automatic.html.lang, 'ru', country + ': country takes priority over browser');
+  assert.equal(automatic.values['portfolio-language'], undefined, 'Automatic language must not become a permanent manual choice');
+}
+assert.equal(run('index.html', '', undefined, false, {}, 1280, { country: 'DE', browser: 'ru-RU' }).html.lang, 'en');
+assert.equal(run('index.html', '', undefined, false, {}, 1280, { browser: 'ru-RU' }).html.lang, 'ru');
+assert.equal(run('index.html', '', 'en', false, {}, 1280, { country: 'RU' }).html.lang, 'en');
+assert.equal(run('index.html', '', undefined, true, {}, 1280, { country: 'DE', cookieLanguage: 'ru' }).html.lang, 'ru');
+assert.equal(run('index.html', '?lang=en#works-gallery', 'ru').cleaned, '/#works-gallery');
+const noStorage = run('index.html', '', undefined, true, {}, 1280, { cookiesDenied: true });
+noStorage.window.siteLanguage.switchTo('ru');
+assert.equal(noStorage.assigned(), 'reload');
+assert.equal(run('index.html', '', undefined, true, {}, 1280, { cookiesDenied: true, history: noStorage.window.history.state }).html.lang, 'ru');
 const homeTitle = page => find(page.tree, node => hasClass(node, 'mood-title'))[0].textContent;
 assert.equal(homeTitle(en), en.window.siteEditorialCopy['main page:4'].en);
 assert.equal(homeTitle(ru), ru.window.siteEditorialCopy['main page:4'].ru);
@@ -238,8 +257,8 @@ for (const language of ['ru', 'en']) {
   assert.equal(jobs.length, 7);
   const subscription = find(jobs[0], node => node.tagName === 'A')[0];
   const crm = find(jobs[1], node => node.tagName === 'A')[0];
-  assert.equal(subscription.getAttribute('href'), '/projects/avito-charity/subscription/?lang=' + language);
-  assert.equal(crm.getAttribute('href'), '/projects/ozon-crm/customer-segments/?lang=' + language);
+  assert.equal(subscription.getAttribute('href'), '/projects/avito-charity/subscription/');
+  assert.equal(crm.getAttribute('href'), '/projects/ozon-crm/customer-segments/');
   assert.equal(subscription.parentElement.tagName, 'STRONG');
   assert.equal(crm.parentElement.tagName, 'STRONG');
   assert.equal(subscription.textContent, language === 'ru' ? 'Ежемесячные подписки на благотворительность' : 'Monthly donation subscription');

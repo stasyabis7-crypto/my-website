@@ -1,4 +1,5 @@
 node_modules/
+.artifacts/
 
 # Обсолетные исходники старого сада (19 цветов) — не нужны ни в репо, ни на проде
 assets/garden/flowers-src/

@@ -26,6 +26,9 @@ html.contact-scroll-lock, html.contact-scroll-lock body { overflow: hidden; over
 .contact-trigger {
   pointer-events: auto;
 }
+/* Reserve the final controls before showing the row; adding desktop navigation
+   must not visibly move the contact button across the screen on first load. */
+.site-socials:not(:has(.site-nav)) { visibility: hidden; }
 .site-language { flex-shrink: 0; pointer-events: auto; }
 
 /* Меню разделов (site-chrome.js): на десктопе пункты слева от «Связаться»;

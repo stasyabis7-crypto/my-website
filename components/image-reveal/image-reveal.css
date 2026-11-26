@@ -7,3 +7,17 @@ img[data-image-pending] {
   color: transparent;
   background-color: var(--skeleton-color, #F3F4F6);
 }
+
+/* Anchor to the existing frame without wrapping or resizing its image.
+   The low-specificity rule preserves positioned/cropped media containers. */
+:where([data-image-loading]) { position: relative; }
+.image-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  display: grid;
+  place-items: center;
+  background-color: var(--skeleton-color, #F3F4F6);
+  border-radius: inherit;
+  pointer-events: none;
+}

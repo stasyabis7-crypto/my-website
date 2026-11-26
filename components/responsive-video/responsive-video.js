@@ -4,7 +4,7 @@
   'use strict';
   document.querySelectorAll('video[data-responsive-video]').forEach(function (video) {
     var fallback = {
-      poster: video.getAttribute('poster'),
+      poster: video.getAttribute('poster') || video.getAttribute('data-poster'),
       width: video.getAttribute('width'),
       height: video.getAttribute('height')
     };
@@ -17,7 +17,7 @@
       if (!selected || selected === active) return;
       ['poster', 'width', 'height'].forEach(function (name) {
         var value = selected.node.getAttribute('data-' + name) || fallback[name];
-        if (value) video.setAttribute(name, value);
+        if (value) video.setAttribute(name === 'poster' && video.hasAttribute('data-lazy-video') ? 'data-poster' : name, value);
         else video.removeAttribute(name);
       });
       // Initial selection is native, so do not restart its pending request.

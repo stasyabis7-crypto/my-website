@@ -144,15 +144,24 @@
 
     function loadSources() {
       items.forEach(function (src, i) {
-        var url = src.currentSrc || src.src;
+        var url = src.currentSrc || src.getAttribute('src') || src.getAttribute('data-src');
+        if (!url && isVideo(src)) {
+          var selected = Array.from(src.querySelectorAll('source')).find(function (source) {
+            return !source.media || matchMedia(source.media).matches;
+          });
+          if (selected) url = selected.getAttribute('src') || selected.getAttribute('data-src');
+        }
+        if (!url) return;
+        url = new URL(url, document.baseURI).href;
         // Responsive previews can choose another file after a viewport change.
         // Keep cached media unless its actual source has changed.
         if (slides[i].src === url) return;
         slides[i].src = url;
         if (isVideo(src)) {
-          slides[i].poster = src.poster;
+          var poster = src.poster || src.getAttribute('data-poster');
+          slides[i].poster = poster ? new URL(poster, document.baseURI).href : '';
           slides[i].preload = 'metadata';
-          if (src.poster) thumbs[i].firstChild.poster = src.poster;
+          if (poster) thumbs[i].firstChild.poster = slides[i].poster;
           thumbs[i].firstChild.src = url + (url.indexOf('#') < 0 ? '#t=0.1' : '');
         } else {
           thumbs[i].firstChild.src = url;

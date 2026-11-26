@@ -65,7 +65,7 @@
 | Статические карточки разделов | `components/project-cards/project-cards.css/js`, HTML в `projects/` | Область ссылки на всю карточку и единая точка фокуса |
 | Первый экран раздела/кейса | `components/page-hero/page-hero.css/js`, `.project-hero` | Общая раскладка и поведение иллюстрации |
 | Блоки кейса | `components/case-blocks/case-blocks.css/js`, `.case-block` | Секции, медиа и карусель команды |
-| Адаптивное видео | [responsive-video](../components/responsive-video/README.md) | Выбор мобильного кадрирования через source media, синхронизация постера и размеров |
+| Адаптивное и отложенное видео | [responsive-video](../components/responsive-video/README.md) | Выбор кадрирования через source media, синхронизация постера и размеров; `lazy-video.js` загружает ролики кейсов и Playground около экрана и останавливает вне него |
 | Результат с графиком | `components/case-grid/case-grid.css`, `.cg-result`, `.cg-bars`; заготовка `result-comparison` в `dev/admin/blocks.js` | Название метрики и текст слева, график справа; название и процент используют `.text-h2` ниже общего `.text-h1` Results и выровнены по первой базовой линии; на телефоне текст перед графиком. Столбики начинаются с нуля; `--bar-value` и общий `--bar-max` определяют пропорции. Типографика — роли ДС |
 | Компактные результаты | `components/case-grid/case-grid.css`, `.cg-outcome`; заготовка `result-banners` в `dev/admin/blocks.js` | Два серых баннера рядом, на телефоне — последовательно. Внутри только число `.text-display` и короткая подпись `.text-body`. Период, цель и база сравнения — в `figcaption` под баннером. Прямая вертикальная стрелка ДС `.icon--arrow-upward` зелёного цвета после числа обозначает сравнительный рост, абсолютные значения без стрелки. Дополнительные метрики и выводы остаются отдельным текстом ниже |
 | Карточки и слайдер кейса | `components/case-cards/case-cards.css/js`, `.case-card` | Появление и навигация слайдера |
@@ -73,7 +73,7 @@
 | Оглавление кейса | `components/case-toc/case-toc.css/js`, кнопки из ДС | Навигация по разделам и мобильная шторка |
 | Нахлёст секций и курсор | `components/page-motion/page-motion.css/js` | `.case-block--surface` и `.project-slider--themed`; один механизм для всех устройств |
 | Долгая загрузка | `components/page-spinner/page-spinner.css/js` | Без анимации перехода между страницами: фон сайта, спиннер и меняющиеся фразы «Загружаем…», только если страница грузится дольше ~0,5 с |
-| Появление контента/изображений | `components/content-reveal/content-reveal.css/js`, `image-reveal.css/js` | Общие состояния загрузки и появления |
+| Появление контента/изображений | `components/content-reveal/content-reveal.css/js`, `components/image-reveal/image-reveal.css/js` | Серый фрейм с кольцом `page-spinner__ring` по центру без текста до загрузки/декодирования; очистка при ошибке, появление изображения без изменения размеров |
 | Начальная загрузка | `components/page-loader/page-loader.css/js` | Скелетоны и готовность оболочки |
 
 Данные ленты `pages/home/data/projects.js` и поведение статических

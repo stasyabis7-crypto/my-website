@@ -78,6 +78,15 @@
     // page's spinner when there was one), so content never flashes in first.
     show(true, continued ? handoff.index : 0);
     window.addEventListener('load', hide, { once: true });
+    // The document can be used before videos and offscreen media finish.
+    // Waiting for window.load kept the whole site covered on mobile networks.
+    function documentReady() {
+      var fonts = document.fonts && document.fonts.ready ? document.fonts.ready.catch(function () {}) : Promise.resolve();
+      var limit = new Promise(function (resolve) { setTimeout(resolve, 2000); });
+      Promise.race([fonts, limit]).then(function () { requestAnimationFrame(hide); });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', documentReady, { once: true });
+    else documentReady();
     // A stalled subresource must never trap the visitor behind the overlay.
     setTimeout(hide, 10000);
   }

@@ -107,6 +107,7 @@ const assets = [
   'components/case-blocks/case-blocks.css',
   'components/case-blocks/case-blocks.js',
   'components/responsive-video/responsive-video.js',
+  'components/responsive-video/lazy-video.js',
   'components/case-cards/case-cards.css',
   'components/case-cards/case-cards.js',
   'components/case-grid/case-grid.css',

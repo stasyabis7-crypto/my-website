@@ -4,13 +4,23 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-deploy-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   ftp-deploy:
-    if: github.ref == 'refs/heads/main'
-    name: FTP deploy
+    name: Check site and deploy
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,8 +34,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install WebP encoder
-        run: sudo apt-get update && sudo apt-get install -y webp
+      - name: Install WebP encoder and Apache for routing tests
+        run: sudo apt-get update && sudo apt-get install -y webp apache2
 
       - name: Convert uploaded PNG and update references
         run: npm run images:prepare
@@ -33,10 +43,30 @@ jobs:
       - name: Check components, design system and local links
         run: npm run check
 
+      - name: Check content administration
+        run: npm run admin:test
+
       - name: Version gallery assets for the hosting CDN
         run: node scripts/version-gallery-assets.js
 
+      - name: Install test browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Test desktop, mobile, routes and performance before publication
+        run: npm run test:browser
+
+      - name: Save browser reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-browser-report
+          path: .artifacts/browser/
+          include-hidden-files: true
+          retention-days: 14
+
       - name: Deploy to Hostinger hosting
+        id: publish
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: 82.198.228.23
@@ -54,6 +84,8 @@ jobs:
             docs/**
             **/scripts/**
             **/node_modules/**
+            **/.artifacts/**
+            playwright.config.js
             **/.claude/**
             **/config.php
             assets/garden/flowers-src/**
@@ -69,4 +101,20 @@ jobs:
             **/.gitkeep
 
       - name: Verify published HTML cache policy
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: node scripts/check-html-cache.js
+
+      - name: Verify published pages, GeoIP and performance
+        if: always() && steps.publish.outcome == 'success'
+        run: npm run test:browser
+        env:
+          SITE_URL: https://stasyabis.com
+
+      - name: Save published site report
+        if: always() && steps.publish.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: published-site-report
+          path: .artifacts/browser/
+          include-hidden-files: true
+          retention-days: 14

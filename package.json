@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "test:browser": "playwright test",
+    "test:smoke": "playwright test site.spec.js image-loading.spec.js",
+    "test:performance": "playwright test performance.spec.js",
     "copy:prepare": "node scripts/prepare-editorial-copy.js",
     "copy:sync": "node scripts/sync-editorial-copy.js",
     "admin": "node scripts/admin/server.js",
@@ -23,6 +26,7 @@
     "chokidar": "^3.5.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "parse5": "^7.1.2"
   }
 }

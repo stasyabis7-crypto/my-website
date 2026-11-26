@@ -2,11 +2,23 @@
 # Long-lived caching for content-addressed JS, CSS and images is unaffected.
 <IfModule mod_headers.c>
   <FilesMatch "\.html?$">
-    Header always set Cache-Control "no-cache, must-revalidate"
+    Header always set Cache-Control "private, no-cache, must-revalidate"
     Header always unset Expires
+    # The GeoIP value is supplied locally by the hosting server.
+    Header always add Set-Cookie "portfolio-country=%{GEOIP_COUNTRY_CODE}e; Path=/; Max-Age=86400; SameSite=Lax; Secure" env=GEOIP_COUNTRY_CODE
   </FilesMatch>
   # Also cover directory entry points, including the homepage at /.
-  Header always set Cache-Control "no-cache, must-revalidate" "expr=%{REQUEST_URI} =~ m#/$#"
+  Header always set Cache-Control "private, no-cache, must-revalidate" "expr=%{REQUEST_URI} =~ m#/$#"
+  # Country comes from the hosting GeoIP database, never a client-supplied header.
+  # Private HTML prevents a CDN sharing one visitor's country cookie with another.
+</IfModule>
+
+# Hostinger/LiteSpeed provides GeoIP locally, with no external lookup request.
+<IfModule LiteSpeed>
+  GeoIPEnable On
+</IfModule>
+<IfModule mod_geoip.c>
+  GeoIPEnable On
 </IfModule>
 
 # Хостинг не знает .webm и отдаёт видео как text/plain, да ещё сжатым
@@ -30,6 +42,12 @@ AddType video/mp4 .mp4
 # оставлены для старых ссылок; заготовки можно вернуть, убрав их из правил.
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # Redirect only browser requests, never Apache's internal DirectoryIndex lookup.
+  RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.html(?:[?\s]) [NC]
+  RewriteRule ^(.*/)?index\.html$ /$1 [R=301,NE,L]
+  # Previous standalone .html addresses resolve to their existing directory page.
+  RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+  RewriteRule ^(.+)\.html$ /$1/ [R=301,NE,L]
   # Обложки ленты Главной лежат в covers/ кейсов, в том числе ещё не
   # опубликованных («Скоро появится»): сами файлы отдаются, редиректятся
   # только страницы.
@@ -45,4 +63,5 @@ AddType video/mp4 .mp4
   RewriteRule ^projects/concepts/?(?:index\.html)?$ /projects/playground/ [R=302,L]
   # Бывшая страница «Активности» разделена на «Статьи» и «Посты».
   RewriteRule ^projects/activities/?(?:index\.html)?$ /projects/articles/ [R=301,L]
+  RewriteRule ^projects/posts/?(?:index\.html)?$ / [R=301,L]
 </IfModule>
