@@ -65,9 +65,9 @@ window.portfolioArticles = [
     "title": "How to download Lottie plugin for Adobe After Effects on Windows and start using it",
     "href": "https://medium.com/@stasyabis/how-to-download-lottie-plugin-for-adobe-after-effects-on-windows-and-start-using-plugin-b9b21faa723b",
     "language": "en",
-    "image": "/projects/articles/covers/lottie-plugin-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/lottie-plugin-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "product-metrics",
