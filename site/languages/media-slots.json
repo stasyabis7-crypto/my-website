@@ -150,14 +150,14 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/inclusive-design-cover.webp",
+    "source": "/projects/articles/covers/inclusive-design-cover-v2.webp",
     "planned": {
-      "ru": "/projects/articles/covers/inclusive-design-cover-ru.webp",
-      "en": "/projects/articles/covers/inclusive-design-cover-en.webp"
+      "ru": "/projects/articles/covers/inclusive-design-cover-v2-ru.webp",
+      "en": "/projects/articles/covers/inclusive-design-cover-v2-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/inclusive-design-cover.webp",
-      "en": "/projects/articles/covers/inclusive-design-cover.webp"
+      "ru": "/projects/articles/covers/inclusive-design-cover-v2.webp",
+      "en": "/projects/articles/covers/inclusive-design-cover-v2.webp"
     },
     "pages": [
       "projects/articles/articles.js",
@@ -255,14 +255,14 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/skill-sets-cover.webp",
+    "source": "/projects/articles/covers/skill-sets-cover-v2.webp",
     "planned": {
-      "ru": "/projects/articles/covers/skill-sets-cover-ru.webp",
-      "en": "/projects/articles/covers/skill-sets-cover-en.webp"
+      "ru": "/projects/articles/covers/skill-sets-cover-v2-ru.webp",
+      "en": "/projects/articles/covers/skill-sets-cover-v2-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/skill-sets-cover.webp",
-      "en": "/projects/articles/covers/skill-sets-cover.webp"
+      "ru": "/projects/articles/covers/skill-sets-cover-v2.webp",
+      "en": "/projects/articles/covers/skill-sets-cover-v2.webp"
     },
     "pages": [
       "projects/articles/articles.js",

@@ -5,7 +5,7 @@ window.portfolioArticles = [
     "title": "Designer skill sets. Which direction to grow in within a team",
     "href": "https://vc.ru/design/1828292-raznye-formy-skill-setov-dlya-razvitiya-dizainera",
     "language": "ru",
-    "image": "/projects/articles/covers/skill-sets-cover.webp",
+    "image": "/projects/articles/covers/skill-sets-cover-v2.webp",
     "width": 800,
     "height": 800
   },
@@ -15,7 +15,7 @@ window.portfolioArticles = [
     "title": "Interfaces and inclusivity",
     "href": "https://medium.com/design-bootcamp/interfaces-and-inclusivity-e71d9671744f",
     "language": "en",
-    "image": "/projects/articles/covers/inclusive-design-cover.webp",
+    "image": "/projects/articles/covers/inclusive-design-cover-v2.webp",
     "width": 800,
     "height": 800
   },

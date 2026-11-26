@@ -23,12 +23,12 @@
 окончания записи. Ссылки, добавленные после конвертации, тоже обновляются.
 
 Обложка статьи «Скилл сеты дизайнера» —
-`projects/articles/covers/skill-sets-cover.webp` (800 × 800 px), общий файл для
+`projects/articles/covers/skill-sets-cover-v2.webp` (800 × 800 px), общий файл для
 обоих языков из исходника `324719939.png`. Подключён в данных каталога и
 статическом HTML; при деплое получает имя с хешем для CDN.
 
 Обложка статьи «Интерфейсы и инклюзивность» —
-`projects/articles/covers/inclusive-design-cover.webp` (800 × 800 px), общий файл
+`projects/articles/covers/inclusive-design-cover-v2.webp` (800 × 800 px), общий файл
 для RU/EN из исходника `324719940.png`. Подключён в данных каталога и статическом
 HTML; при деплое получает имя с хешем для CDN.
 
