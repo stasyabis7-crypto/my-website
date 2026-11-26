@@ -36,9 +36,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/articles/covers/designprosmotr-2024-diagram.svg",
     "en": "/projects/articles/covers/designprosmotr-2024-diagram.svg"
   },
-  "/projects/articles/covers/dump-2024-diagram.svg": {
-    "ru": "/projects/articles/covers/dump-2024-diagram.svg",
-    "en": "/projects/articles/covers/dump-2024-diagram.svg"
+  "/projects/articles/covers/dump-2024-cover-1600.webp": {
+    "ru": "/projects/articles/covers/dump-2024-cover-1600.webp",
+    "en": "/projects/articles/covers/dump-2024-cover-1600.webp"
   },
   "/projects/articles/covers/inclusive-design-cover-1600.webp": {
     "ru": "/projects/articles/covers/inclusive-design-cover-1600.webp",

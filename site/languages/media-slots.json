@@ -135,14 +135,14 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/dump-2024-diagram.svg",
+    "source": "/projects/articles/covers/dump-2024-cover-1600.webp",
     "planned": {
-      "ru": "/projects/articles/covers/dump-2024-diagram-ru.webp",
-      "en": "/projects/articles/covers/dump-2024-diagram-en.webp"
+      "ru": "/projects/articles/covers/dump-2024-cover-1600-ru.webp",
+      "en": "/projects/articles/covers/dump-2024-cover-1600-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/dump-2024-diagram.svg",
-      "en": "/projects/articles/covers/dump-2024-diagram.svg"
+      "ru": "/projects/articles/covers/dump-2024-cover-1600.webp",
+      "en": "/projects/articles/covers/dump-2024-cover-1600.webp"
     },
     "pages": [
       "projects/articles/articles.js",

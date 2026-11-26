@@ -92,9 +92,9 @@ window.portfolioArticles = [
     "title": "DUMP 2024 conference. Yekaterinburg welcomed designers with open arms",
     "href": "https://vc.ru/design/1169783-konferenciya-dump-25-aprelya-2024-goda-ekaterinburg",
     "language": "ru",
-    "image": "/projects/articles/covers/dump-2024-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/dump-2024-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "designprosmotr-2023",
