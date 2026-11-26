@@ -155,8 +155,8 @@ window.portfolioArticles = [
     "title": "Trip to Japan 2024. An article that helped many people but also stirred up a lot of haters",
     "href": "https://habr.com/ru/articles/841766/",
     "language": "ru",
-    "image": "/projects/articles/covers/japan-trip-2024-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/japan-trip-2024-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   }
 ];

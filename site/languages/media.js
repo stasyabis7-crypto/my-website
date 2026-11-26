@@ -48,9 +48,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/articles/covers/insula-ancient-rome-cover-1600.webp",
     "en": "/projects/articles/covers/insula-ancient-rome-cover-1600.webp"
   },
-  "/projects/articles/covers/japan-trip-2024-diagram.svg": {
-    "ru": "/projects/articles/covers/japan-trip-2024-diagram.svg",
-    "en": "/projects/articles/covers/japan-trip-2024-diagram.svg"
+  "/projects/articles/covers/japan-trip-2024-cover-1600.webp": {
+    "ru": "/projects/articles/covers/japan-trip-2024-cover-1600.webp",
+    "en": "/projects/articles/covers/japan-trip-2024-cover-1600.webp"
   },
   "/projects/articles/covers/lottie-plugin-cover-1600.webp": {
     "ru": "/projects/articles/covers/lottie-plugin-cover-1600.webp",
