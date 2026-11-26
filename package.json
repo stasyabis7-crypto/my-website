@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test:browser": "playwright test",
-    "test:smoke": "playwright test site.spec.js image-loading.spec.js",
+    "test:smoke": "playwright test site.spec.js image-loading.spec.js video-poster.spec.js",
     "test:performance": "playwright test performance.spec.js",
     "copy:prepare": "node scripts/prepare-editorial-copy.js",
     "copy:sync": "node scripts/sync-editorial-copy.js",

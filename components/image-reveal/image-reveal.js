@@ -38,7 +38,9 @@
   }
 
   function watch(image) {
-    if (tracked.has(image)) return;
+    // Video/source src changes use different readiness events. Treating them
+    // as images leaves an overlay waiting forever for an image load event.
+    if (image.tagName !== 'IMG' || tracked.has(image)) return;
     // Cached images never disappear or replay an entrance animation.
     if (image.complete) return;
     tracked.add(image);
