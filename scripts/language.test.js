@@ -213,7 +213,7 @@ for (const page of [en, ru]) {
     const language = edition ? page.html.lang : article.language;
     assert.equal(links[index].getAttribute('href'), edition || article.href);
     assert.equal(links[index].getAttribute('hreflang'), language);
-    assert(article.image.endsWith('-diagram.svg'));
+    assert(fs.existsSync(path.join(root, article.image)), 'Article cover exists: ' + article.image);
   });
 }
 // Resume links are native actions; there is no interception or language picker.

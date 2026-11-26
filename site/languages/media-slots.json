@@ -255,14 +255,14 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/skill-sets-diagram.svg",
+    "source": "/projects/articles/covers/skill-sets-cover.webp",
     "planned": {
-      "ru": "/projects/articles/covers/skill-sets-diagram-ru.webp",
-      "en": "/projects/articles/covers/skill-sets-diagram-en.webp"
+      "ru": "/projects/articles/covers/skill-sets-cover-ru.webp",
+      "en": "/projects/articles/covers/skill-sets-cover-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/skill-sets-diagram.svg",
-      "en": "/projects/articles/covers/skill-sets-diagram.svg"
+      "ru": "/projects/articles/covers/skill-sets-cover.webp",
+      "en": "/projects/articles/covers/skill-sets-cover.webp"
     },
     "pages": [
       "projects/articles/articles.js",

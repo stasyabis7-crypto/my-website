@@ -5,9 +5,9 @@ window.portfolioArticles = [
     "title": "Designer skill sets. Which direction to grow in within a team",
     "href": "https://vc.ru/design/1828292-raznye-formy-skill-setov-dlya-razvitiya-dizainera",
     "language": "ru",
-    "image": "/projects/articles/covers/skill-sets-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/skill-sets-cover.webp",
+    "width": 800,
+    "height": 800
   },
   {
     "id": "inclusive-design",

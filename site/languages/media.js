@@ -68,9 +68,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/articles/covers/product-metrics-diagram.svg",
     "en": "/projects/articles/covers/product-metrics-diagram.svg"
   },
-  "/projects/articles/covers/skill-sets-diagram.svg": {
-    "ru": "/projects/articles/covers/skill-sets-diagram.svg",
-    "en": "/projects/articles/covers/skill-sets-diagram.svg"
+  "/projects/articles/covers/skill-sets-cover.webp": {
+    "ru": "/projects/articles/covers/skill-sets-cover.webp",
+    "en": "/projects/articles/covers/skill-sets-cover.webp"
   },
   "/projects/articles/covers/text-input-diagram.svg": {
     "ru": "/projects/articles/covers/text-input-diagram.svg",
