@@ -55,9 +55,9 @@ window.portfolioArticles = [
     "title": "Designer’s workflow",
     "href": "https://medium.com/design-bootcamp/designers-workflow-58666230c9a7",
     "language": "en",
-    "image": "/projects/articles/covers/designers-workflow-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/designers-workflow-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "lottie-plugin",
