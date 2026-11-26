@@ -4,8 +4,6 @@
   <FilesMatch "\.html?$">
     Header always set Cache-Control "private, no-cache, must-revalidate"
     Header always unset Expires
-    # The GeoIP value is supplied locally by the hosting server.
-    Header always add Set-Cookie "portfolio-country=%{GEOIP_COUNTRY_CODE}e; Path=/; Max-Age=86400; SameSite=Lax; Secure" env=GEOIP_COUNTRY_CODE
   </FilesMatch>
   # Also cover directory entry points, including the homepage at /.
   Header always set Cache-Control "private, no-cache, must-revalidate" "expr=%{REQUEST_URI} =~ m#/$#"
@@ -42,6 +40,11 @@ AddType video/mp4 .mp4
 # оставлены для старых ссылок; заготовки можно вернуть, убрав их из правил.
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # LiteSpeed exposes GeoIP during rewriting, before response-header processing.
+  # Limit the country cookie to page requests so assets remain CDN-cacheable.
+  RewriteCond %{REQUEST_URI} (?:/|\.html)$
+  RewriteCond %{ENV:GEOIP_COUNTRY_CODE} ^([A-Z]{2})$
+  RewriteRule ^ - [CO=portfolio-country:%1:stasyabis.com:1440:/:true:false]
   # Redirect only browser requests, never Apache's internal DirectoryIndex lookup.
   RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.html(?:[?\s]) [NC]
   RewriteRule ^(.*/)?index\.html$ /$1 [R=301,NE,L]

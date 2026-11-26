@@ -17,7 +17,7 @@ if (inventory.error || inventory.status !== 0) {
   throw Error('Apache is required: install the apache2 package on Linux or use system httpd on macOS.');
 }
 const loaded = inventory.stdout;
-const names = ['mpm_event', 'unixd', 'authz_core', 'authz_host', 'mime', 'dir', 'rewrite', 'headers', 'env', 'log_config'];
+const names = ['mpm_event', 'unixd', 'authz_core', 'authz_host', 'mime', 'dir', 'rewrite', 'headers', 'env', 'setenvif', 'log_config'];
 const load = names.filter(name => !loaded.includes('mod_' + name + '.c'))
   .map(name => `LoadModule ${name}_module "${modules}/mod_${name}.so"`).join('\n');
 const port = Number(process.env.TEST_PORT || 8123);
@@ -53,7 +53,7 @@ LogLevel warn
 TypesConfig "${mac ? '/etc/apache2/mime.types' : '/etc/mime.types'}"
 DocumentRoot "${documentRoot}"
 DirectoryIndex index.html
-SetEnv GEOIP_COUNTRY_CODE ${country}
+SetEnvIf Request_URI "." GEOIP_COUNTRY_CODE=${country}
 <Directory "${documentRoot}">
   Options FollowSymLinks
   AllowOverride All
