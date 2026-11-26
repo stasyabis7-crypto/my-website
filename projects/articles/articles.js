@@ -101,9 +101,9 @@ window.portfolioArticles = [
     "title": "DesignProsmotr 2023. A bright and engaging conference for designers",
     "href": "https://vc.ru/design/1168304-designprosmotr-2023-06-07-maya-moskva",
     "language": "ru",
-    "image": "/projects/articles/covers/designprosmotr-2023-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/designprosmotr-2023-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "design-weekend-suzdal-2023",

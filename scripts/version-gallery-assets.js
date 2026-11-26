@@ -44,6 +44,7 @@ const assets = [
   'projects/articles/covers/product-metrics-cover-1600.webp',
   'projects/articles/covers/product-designer-interview-cover-1600.webp',
   'projects/articles/covers/dump-2024-cover-1600.webp',
+  'projects/articles/covers/designprosmotr-2023-cover-1600.webp',
   'site/languages/english-copy.js',
   'site/languages/editorial-copy.js',
   'site/languages/russian-copy.js',
