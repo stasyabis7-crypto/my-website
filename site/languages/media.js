@@ -76,9 +76,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/articles/covers/text-input-cover-1600.webp",
     "en": "/projects/articles/covers/text-input-cover-1600.webp"
   },
-  "/projects/articles/covers/triz-diagram.svg": {
-    "ru": "/projects/articles/covers/triz-diagram.svg",
-    "en": "/projects/articles/covers/triz-diagram.svg"
+  "/projects/articles/covers/triz-cover-1600.webp": {
+    "ru": "/projects/articles/covers/triz-cover-1600.webp",
+    "en": "/projects/articles/covers/triz-cover-1600.webp"
   },
   "/projects/avito-charity/about-company/covers/cover.webp": {
     "ru": "/projects/avito-charity/about-company/covers/cover.webp",

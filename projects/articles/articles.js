@@ -45,9 +45,9 @@ window.portfolioArticles = [
     "title": "Theory of inventive problem solving",
     "href": "https://medium.com/design-bootcamp/theory-of-inventive-problem-solving-c1a7bd1cd186",
     "language": "en",
-    "image": "/projects/articles/covers/triz-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/triz-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "designers-workflow",
