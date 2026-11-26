@@ -60,14 +60,14 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/date-selector-diagram.svg",
+    "source": "/projects/articles/covers/date-selector-cover-1600.webp",
     "planned": {
-      "ru": "/projects/articles/covers/date-selector-diagram-ru.webp",
-      "en": "/projects/articles/covers/date-selector-diagram-en.webp"
+      "ru": "/projects/articles/covers/date-selector-cover-1600-ru.webp",
+      "en": "/projects/articles/covers/date-selector-cover-1600-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/date-selector-diagram.svg",
-      "en": "/projects/articles/covers/date-selector-diagram.svg"
+      "ru": "/projects/articles/covers/date-selector-cover-1600.webp",
+      "en": "/projects/articles/covers/date-selector-cover-1600.webp"
     },
     "pages": [
       "projects/articles/articles.js",
@@ -150,14 +150,14 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/inclusive-design-cover-v2.webp",
+    "source": "/projects/articles/covers/inclusive-design-cover-1600.webp",
     "planned": {
-      "ru": "/projects/articles/covers/inclusive-design-cover-v2-ru.webp",
-      "en": "/projects/articles/covers/inclusive-design-cover-v2-en.webp"
+      "ru": "/projects/articles/covers/inclusive-design-cover-1600-ru.webp",
+      "en": "/projects/articles/covers/inclusive-design-cover-1600-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/inclusive-design-cover-v2.webp",
-      "en": "/projects/articles/covers/inclusive-design-cover-v2.webp"
+      "ru": "/projects/articles/covers/inclusive-design-cover-1600.webp",
+      "en": "/projects/articles/covers/inclusive-design-cover-1600.webp"
     },
     "pages": [
       "projects/articles/articles.js",
@@ -255,14 +255,14 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/skill-sets-cover-v2.webp",
+    "source": "/projects/articles/covers/skill-sets-cover-1600.webp",
     "planned": {
-      "ru": "/projects/articles/covers/skill-sets-cover-v2-ru.webp",
-      "en": "/projects/articles/covers/skill-sets-cover-v2-en.webp"
+      "ru": "/projects/articles/covers/skill-sets-cover-1600-ru.webp",
+      "en": "/projects/articles/covers/skill-sets-cover-1600-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/skill-sets-cover-v2.webp",
-      "en": "/projects/articles/covers/skill-sets-cover-v2.webp"
+      "ru": "/projects/articles/covers/skill-sets-cover-1600.webp",
+      "en": "/projects/articles/covers/skill-sets-cover-1600.webp"
     },
     "pages": [
       "projects/articles/articles.js",

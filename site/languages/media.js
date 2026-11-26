@@ -16,9 +16,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/articles/covers/bystander-effect-diagram.svg",
     "en": "/projects/articles/covers/bystander-effect-diagram.svg"
   },
-  "/projects/articles/covers/date-selector-diagram.svg": {
-    "ru": "/projects/articles/covers/date-selector-diagram.svg",
-    "en": "/projects/articles/covers/date-selector-diagram.svg"
+  "/projects/articles/covers/date-selector-cover-1600.webp": {
+    "ru": "/projects/articles/covers/date-selector-cover-1600.webp",
+    "en": "/projects/articles/covers/date-selector-cover-1600.webp"
   },
   "/projects/articles/covers/design-weekend-suzdal-2023-diagram.svg": {
     "ru": "/projects/articles/covers/design-weekend-suzdal-2023-diagram.svg",
@@ -40,9 +40,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/articles/covers/dump-2024-diagram.svg",
     "en": "/projects/articles/covers/dump-2024-diagram.svg"
   },
-  "/projects/articles/covers/inclusive-design-cover-v2.webp": {
-    "ru": "/projects/articles/covers/inclusive-design-cover-v2.webp",
-    "en": "/projects/articles/covers/inclusive-design-cover-v2.webp"
+  "/projects/articles/covers/inclusive-design-cover-1600.webp": {
+    "ru": "/projects/articles/covers/inclusive-design-cover-1600.webp",
+    "en": "/projects/articles/covers/inclusive-design-cover-1600.webp"
   },
   "/projects/articles/covers/insula-ancient-rome-diagram.svg": {
     "ru": "/projects/articles/covers/insula-ancient-rome-diagram.svg",
@@ -68,9 +68,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/articles/covers/product-metrics-diagram.svg",
     "en": "/projects/articles/covers/product-metrics-diagram.svg"
   },
-  "/projects/articles/covers/skill-sets-cover-v2.webp": {
-    "ru": "/projects/articles/covers/skill-sets-cover-v2.webp",
-    "en": "/projects/articles/covers/skill-sets-cover-v2.webp"
+  "/projects/articles/covers/skill-sets-cover-1600.webp": {
+    "ru": "/projects/articles/covers/skill-sets-cover-1600.webp",
+    "en": "/projects/articles/covers/skill-sets-cover-1600.webp"
   },
   "/projects/articles/covers/text-input-diagram.svg": {
     "ru": "/projects/articles/covers/text-input-diagram.svg",

@@ -5,9 +5,9 @@ window.portfolioArticles = [
     "title": "Designer skill sets. Which direction to grow in within a team",
     "href": "https://vc.ru/design/1828292-raznye-formy-skill-setov-dlya-razvitiya-dizainera",
     "language": "ru",
-    "image": "/projects/articles/covers/skill-sets-cover-v2.webp",
-    "width": 800,
-    "height": 800
+    "image": "/projects/articles/covers/skill-sets-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "inclusive-design",
@@ -15,9 +15,9 @@ window.portfolioArticles = [
     "title": "Interfaces and inclusivity",
     "href": "https://medium.com/design-bootcamp/interfaces-and-inclusivity-e71d9671744f",
     "language": "en",
-    "image": "/projects/articles/covers/inclusive-design-cover-v2.webp",
-    "width": 800,
-    "height": 800
+    "image": "/projects/articles/covers/inclusive-design-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "date-selector",
@@ -25,9 +25,9 @@ window.portfolioArticles = [
     "title": "Date selector & Calendar",
     "href": "https://medium.com/design-bootcamp/date-selector-calendar-57f6efab408a",
     "language": "en",
-    "image": "/projects/articles/covers/date-selector-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/date-selector-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "text-input",
