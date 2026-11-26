@@ -128,9 +128,9 @@ window.portfolioArticles = [
     "title": "Insula of Ancient Rome. I didn’t know the word, so I looked it up",
     "href": "https://vc.ru/education/1212420-insula-mnogoetazhka-drevnego-rima",
     "language": "ru",
-    "image": "/projects/articles/covers/insula-ancient-rome-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/insula-ancient-rome-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "markthal",

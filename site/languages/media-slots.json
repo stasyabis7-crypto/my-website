@@ -165,14 +165,14 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/insula-ancient-rome-diagram.svg",
+    "source": "/projects/articles/covers/insula-ancient-rome-cover-1600.webp",
     "planned": {
-      "ru": "/projects/articles/covers/insula-ancient-rome-diagram-ru.webp",
-      "en": "/projects/articles/covers/insula-ancient-rome-diagram-en.webp"
+      "ru": "/projects/articles/covers/insula-ancient-rome-cover-1600-ru.webp",
+      "en": "/projects/articles/covers/insula-ancient-rome-cover-1600-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/insula-ancient-rome-diagram.svg",
-      "en": "/projects/articles/covers/insula-ancient-rome-diagram.svg"
+      "ru": "/projects/articles/covers/insula-ancient-rome-cover-1600.webp",
+      "en": "/projects/articles/covers/insula-ancient-rome-cover-1600.webp"
     },
     "pages": [
       "projects/articles/articles.js",
