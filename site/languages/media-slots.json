@@ -150,14 +150,14 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/inclusive-design-diagram.svg",
+    "source": "/projects/articles/covers/inclusive-design-cover.webp",
     "planned": {
-      "ru": "/projects/articles/covers/inclusive-design-diagram-ru.webp",
-      "en": "/projects/articles/covers/inclusive-design-diagram-en.webp"
+      "ru": "/projects/articles/covers/inclusive-design-cover-ru.webp",
+      "en": "/projects/articles/covers/inclusive-design-cover-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/inclusive-design-diagram.svg",
-      "en": "/projects/articles/covers/inclusive-design-diagram.svg"
+      "ru": "/projects/articles/covers/inclusive-design-cover.webp",
+      "en": "/projects/articles/covers/inclusive-design-cover.webp"
     },
     "pages": [
       "projects/articles/articles.js",

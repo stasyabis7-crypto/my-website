@@ -15,9 +15,9 @@ window.portfolioArticles = [
     "title": "Interfaces and inclusivity",
     "href": "https://medium.com/design-bootcamp/interfaces-and-inclusivity-e71d9671744f",
     "language": "en",
-    "image": "/projects/articles/covers/inclusive-design-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/inclusive-design-cover.webp",
+    "width": 800,
+    "height": 800
   },
   {
     "id": "date-selector",

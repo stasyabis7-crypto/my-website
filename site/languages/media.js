@@ -40,9 +40,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/articles/covers/dump-2024-diagram.svg",
     "en": "/projects/articles/covers/dump-2024-diagram.svg"
   },
-  "/projects/articles/covers/inclusive-design-diagram.svg": {
-    "ru": "/projects/articles/covers/inclusive-design-diagram.svg",
-    "en": "/projects/articles/covers/inclusive-design-diagram.svg"
+  "/projects/articles/covers/inclusive-design-cover.webp": {
+    "ru": "/projects/articles/covers/inclusive-design-cover.webp",
+    "en": "/projects/articles/covers/inclusive-design-cover.webp"
   },
   "/projects/articles/covers/insula-ancient-rome-diagram.svg": {
     "ru": "/projects/articles/covers/insula-ancient-rome-diagram.svg",

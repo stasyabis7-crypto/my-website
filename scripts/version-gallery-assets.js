@@ -35,6 +35,7 @@ const assets = [
   'projects/ozon-crm/customer-segments/media/summary/dashboard-before-3840x1680.webp',
   'projects/ozon-crm/customer-segments/media/setup/recommendation-settings-v3-3840x1680.webp',
   'projects/articles/covers/skill-sets-cover.webp',
+  'projects/articles/covers/inclusive-design-cover.webp',
   'site/languages/english-copy.js',
   'site/languages/editorial-copy.js',
   'site/languages/russian-copy.js',
