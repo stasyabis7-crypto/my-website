@@ -110,9 +110,9 @@ window.portfolioArticles = [
     "title": "Design Weekend Suzdal 2023. More branding than product design",
     "href": "https://vc.ru/design/635298-dizain-vyhodnye-suzdal-10-12-marta-2023-goda",
     "language": "ru",
-    "image": "/projects/articles/covers/design-weekend-suzdal-2023-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/design-weekend-suzdal-2023-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "designprosmotr-2024",

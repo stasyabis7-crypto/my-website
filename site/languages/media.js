@@ -20,9 +20,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/articles/covers/date-selector-cover-1600.webp",
     "en": "/projects/articles/covers/date-selector-cover-1600.webp"
   },
-  "/projects/articles/covers/design-weekend-suzdal-2023-diagram.svg": {
-    "ru": "/projects/articles/covers/design-weekend-suzdal-2023-diagram.svg",
-    "en": "/projects/articles/covers/design-weekend-suzdal-2023-diagram.svg"
+  "/projects/articles/covers/design-weekend-suzdal-2023-cover-1600.webp": {
+    "ru": "/projects/articles/covers/design-weekend-suzdal-2023-cover-1600.webp",
+    "en": "/projects/articles/covers/design-weekend-suzdal-2023-cover-1600.webp"
   },
   "/projects/articles/covers/designers-workflow-cover-1600.webp": {
     "ru": "/projects/articles/covers/designers-workflow-cover-1600.webp",
