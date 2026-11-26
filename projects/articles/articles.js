@@ -119,9 +119,9 @@ window.portfolioArticles = [
     "title": "DesignProsmotr 2024. My first DesignProsmotr conference",
     "href": "https://habr.com/ru/articles/855954/",
     "language": "ru",
-    "image": "/projects/articles/covers/designprosmotr-2024-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/designprosmotr-2024-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "insula-ancient-rome",
