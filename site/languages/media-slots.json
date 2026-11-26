@@ -210,14 +210,14 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/markthal-diagram.svg",
+    "source": "/projects/articles/covers/markthal-cover-1600.webp",
     "planned": {
-      "ru": "/projects/articles/covers/markthal-diagram-ru.webp",
-      "en": "/projects/articles/covers/markthal-diagram-en.webp"
+      "ru": "/projects/articles/covers/markthal-cover-1600-ru.webp",
+      "en": "/projects/articles/covers/markthal-cover-1600-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/markthal-diagram.svg",
-      "en": "/projects/articles/covers/markthal-diagram.svg"
+      "ru": "/projects/articles/covers/markthal-cover-1600.webp",
+      "en": "/projects/articles/covers/markthal-cover-1600.webp"
     },
     "pages": [
       "projects/articles/articles.js",

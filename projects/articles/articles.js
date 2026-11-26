@@ -137,9 +137,9 @@ window.portfolioArticles = [
     "title": "Markthal. A beautiful market that became a landmark",
     "href": "https://vc.ru/design/1194004-markthal-kak-dizain-novogo-zdaniya-preobrazil-gorod-v-niderlandah",
     "language": "ru",
-    "image": "/projects/articles/covers/markthal-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/markthal-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "bystander-effect",
