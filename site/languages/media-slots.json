@@ -45,14 +45,14 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/bystander-effect-diagram.svg",
+    "source": "/projects/articles/covers/bystander-effect-cover-1600.webp",
     "planned": {
-      "ru": "/projects/articles/covers/bystander-effect-diagram-ru.webp",
-      "en": "/projects/articles/covers/bystander-effect-diagram-en.webp"
+      "ru": "/projects/articles/covers/bystander-effect-cover-1600-ru.webp",
+      "en": "/projects/articles/covers/bystander-effect-cover-1600-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/bystander-effect-diagram.svg",
-      "en": "/projects/articles/covers/bystander-effect-diagram.svg"
+      "ru": "/projects/articles/covers/bystander-effect-cover-1600.webp",
+      "en": "/projects/articles/covers/bystander-effect-cover-1600.webp"
     },
     "pages": [
       "projects/articles/articles.js",

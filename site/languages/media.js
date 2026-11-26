@@ -12,9 +12,9 @@ window.siteLanguageMedia = {
     "ru": "/pages/home/assets/ozon/4-original.webp",
     "en": "/pages/home/assets/ozon/4-original.webp"
   },
-  "/projects/articles/covers/bystander-effect-diagram.svg": {
-    "ru": "/projects/articles/covers/bystander-effect-diagram.svg",
-    "en": "/projects/articles/covers/bystander-effect-diagram.svg"
+  "/projects/articles/covers/bystander-effect-cover-1600.webp": {
+    "ru": "/projects/articles/covers/bystander-effect-cover-1600.webp",
+    "en": "/projects/articles/covers/bystander-effect-cover-1600.webp"
   },
   "/projects/articles/covers/date-selector-cover-1600.webp": {
     "ru": "/projects/articles/covers/date-selector-cover-1600.webp",

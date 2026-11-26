@@ -146,9 +146,9 @@ window.portfolioArticles = [
     "title": "The bystander effect",
     "href": "https://medium.com/@stasyabis/the-bystander-effect-b1f4b625d1e7",
     "language": "en",
-    "image": "/projects/articles/covers/bystander-effect-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/bystander-effect-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "japan-trip-2024",
