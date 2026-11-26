@@ -41,6 +41,7 @@ const assets = [
   'projects/articles/covers/triz-cover-1600.webp',
   'projects/articles/covers/designers-workflow-cover-1600.webp',
   'projects/articles/covers/lottie-plugin-cover-1600.webp',
+  'projects/articles/covers/product-metrics-cover-1600.webp',
   'site/languages/english-copy.js',
   'site/languages/editorial-copy.js',
   'site/languages/russian-copy.js',

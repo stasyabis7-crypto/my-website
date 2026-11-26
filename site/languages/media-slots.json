@@ -240,14 +240,14 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/product-metrics-diagram.svg",
+    "source": "/projects/articles/covers/product-metrics-cover-1600.webp",
     "planned": {
-      "ru": "/projects/articles/covers/product-metrics-diagram-ru.webp",
-      "en": "/projects/articles/covers/product-metrics-diagram-en.webp"
+      "ru": "/projects/articles/covers/product-metrics-cover-1600-ru.webp",
+      "en": "/projects/articles/covers/product-metrics-cover-1600-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/product-metrics-diagram.svg",
-      "en": "/projects/articles/covers/product-metrics-diagram.svg"
+      "ru": "/projects/articles/covers/product-metrics-cover-1600.webp",
+      "en": "/projects/articles/covers/product-metrics-cover-1600.webp"
     },
     "pages": [
       "projects/articles/articles.js",

@@ -74,9 +74,9 @@ window.portfolioArticles = [
     "title": "Product metrics. Explaining the terms for junior designers",
     "href": "https://vc.ru/design/1237967-produktovye-metriki-instrukciya-dlya-dizainera",
     "language": "ru",
-    "image": "/projects/articles/covers/product-metrics-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/product-metrics-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "product-designer-interview",

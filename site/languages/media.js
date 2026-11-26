@@ -64,9 +64,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/articles/covers/product-designer-interview-diagram.svg",
     "en": "/projects/articles/covers/product-designer-interview-diagram.svg"
   },
-  "/projects/articles/covers/product-metrics-diagram.svg": {
-    "ru": "/projects/articles/covers/product-metrics-diagram.svg",
-    "en": "/projects/articles/covers/product-metrics-diagram.svg"
+  "/projects/articles/covers/product-metrics-cover-1600.webp": {
+    "ru": "/projects/articles/covers/product-metrics-cover-1600.webp",
+    "en": "/projects/articles/covers/product-metrics-cover-1600.webp"
   },
   "/projects/articles/covers/skill-sets-cover-1600.webp": {
     "ru": "/projects/articles/covers/skill-sets-cover-1600.webp",
