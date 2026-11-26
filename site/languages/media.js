@@ -60,9 +60,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/articles/covers/markthal-diagram.svg",
     "en": "/projects/articles/covers/markthal-diagram.svg"
   },
-  "/projects/articles/covers/product-designer-interview-diagram.svg": {
-    "ru": "/projects/articles/covers/product-designer-interview-diagram.svg",
-    "en": "/projects/articles/covers/product-designer-interview-diagram.svg"
+  "/projects/articles/covers/product-designer-interview-cover-1600.webp": {
+    "ru": "/projects/articles/covers/product-designer-interview-cover-1600.webp",
+    "en": "/projects/articles/covers/product-designer-interview-cover-1600.webp"
   },
   "/projects/articles/covers/product-metrics-cover-1600.webp": {
     "ru": "/projects/articles/covers/product-metrics-cover-1600.webp",

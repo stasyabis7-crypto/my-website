@@ -225,14 +225,14 @@
     ]
   },
   {
-    "source": "/projects/articles/covers/product-designer-interview-diagram.svg",
+    "source": "/projects/articles/covers/product-designer-interview-cover-1600.webp",
     "planned": {
-      "ru": "/projects/articles/covers/product-designer-interview-diagram-ru.webp",
-      "en": "/projects/articles/covers/product-designer-interview-diagram-en.webp"
+      "ru": "/projects/articles/covers/product-designer-interview-cover-1600-ru.webp",
+      "en": "/projects/articles/covers/product-designer-interview-cover-1600-en.webp"
     },
     "active": {
-      "ru": "/projects/articles/covers/product-designer-interview-diagram.svg",
-      "en": "/projects/articles/covers/product-designer-interview-diagram.svg"
+      "ru": "/projects/articles/covers/product-designer-interview-cover-1600.webp",
+      "en": "/projects/articles/covers/product-designer-interview-cover-1600.webp"
     },
     "pages": [
       "projects/articles/articles.js",

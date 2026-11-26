@@ -83,9 +83,9 @@ window.portfolioArticles = [
     "title": "Interview questions. How to prepare and what you may be asked",
     "href": "https://vc.ru/design/1306587-voprosy-na-sobesedovanii-dlya-produktovogo-dizainera-gotovimsya-k-intervyu",
     "language": "ru",
-    "image": "/projects/articles/covers/product-designer-interview-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/product-designer-interview-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "dump-2024",
