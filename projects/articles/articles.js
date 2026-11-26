@@ -35,9 +35,9 @@ window.portfolioArticles = [
     "title": "Text input states",
     "href": "https://medium.com/design-bootcamp/text-input-states-ec37f61fa428",
     "language": "en",
-    "image": "/projects/articles/covers/text-input-diagram.svg",
-    "width": 1000,
-    "height": 1000
+    "image": "/projects/articles/covers/text-input-cover-1600.webp",
+    "width": 1600,
+    "height": 1600
   },
   {
     "id": "triz",

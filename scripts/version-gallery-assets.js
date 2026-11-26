@@ -37,6 +37,7 @@ const assets = [
   'projects/articles/covers/skill-sets-cover-1600.webp',
   'projects/articles/covers/inclusive-design-cover-1600.webp',
   'projects/articles/covers/date-selector-cover-1600.webp',
+  'projects/articles/covers/text-input-cover-1600.webp',
   'site/languages/english-copy.js',
   'site/languages/editorial-copy.js',
   'site/languages/russian-copy.js',

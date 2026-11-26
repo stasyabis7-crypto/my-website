@@ -72,9 +72,9 @@ window.siteLanguageMedia = {
     "ru": "/projects/articles/covers/skill-sets-cover-1600.webp",
     "en": "/projects/articles/covers/skill-sets-cover-1600.webp"
   },
-  "/projects/articles/covers/text-input-diagram.svg": {
-    "ru": "/projects/articles/covers/text-input-diagram.svg",
-    "en": "/projects/articles/covers/text-input-diagram.svg"
+  "/projects/articles/covers/text-input-cover-1600.webp": {
+    "ru": "/projects/articles/covers/text-input-cover-1600.webp",
+    "en": "/projects/articles/covers/text-input-cover-1600.webp"
   },
   "/projects/articles/covers/triz-diagram.svg": {
     "ru": "/projects/articles/covers/triz-diagram.svg",
