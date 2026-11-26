@@ -39,6 +39,7 @@ if (process.env.TEST_VERSION_ASSETS === '1') {
   }
 }
 const config = path.join(directory, 'httpd.conf');
+const errorLog = path.join(directory, 'error.log');
 fs.writeFileSync(config, `
 ServerRoot "${directory}"
 PidFile "${directory}/httpd.pid"
@@ -47,7 +48,7 @@ ServerName localhost
 ${load}
 User "#${os.userInfo().uid}"
 Group "#${os.userInfo().gid}"
-ErrorLog /dev/stderr
+ErrorLog "${errorLog}"
 LogLevel warn
 TypesConfig "${mac ? '/etc/apache2/mime.types' : '/etc/mime.types'}"
 DocumentRoot "${documentRoot}"
@@ -61,5 +62,9 @@ SetEnv GEOIP_COUNTRY_CODE ${country}
 `);
 const child = spawn(binary, ['-f', config, '-DFOREGROUND'], { stdio: 'inherit' });
 child.on('error', error => { fs.rmSync(directory, { recursive: true, force: true }); console.error(error.message); process.exitCode = 1; });
-child.on('exit', code => { fs.rmSync(directory, { recursive: true, force: true }); process.exitCode = code || 0; });
+child.on('exit', code => {
+  if (code && fs.existsSync(errorLog)) console.error(fs.readFileSync(errorLog, 'utf8').slice(-4000));
+  fs.rmSync(directory, { recursive: true, force: true });
+  process.exitCode = code || 0;
+});
 for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, () => child.kill('SIGTERM'));
