@@ -9,6 +9,7 @@ window.siteEnglish = {
     "Работы": "Work",
     "Активности": "Activities",
     "Контакты": "Contacts",
+    "Мой канал в Telegram": "My Telegram channel",
     "Меню": "Menu",
     "Наверх": "Back to top",
     "Статьи": "Articles",

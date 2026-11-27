@@ -120,6 +120,11 @@
   mask-image: url("./social/telegram.svg");
 }
 
+.icon--social-telegram-channel {
+  background: url("./social/telegram-channel.webp") center / cover no-repeat;
+  border-radius: 50%;
+}
+
 .icon--social-email {
   -webkit-mask-image: url("./social/google.svg");
   mask-image: url("./social/google.svg");

@@ -245,6 +245,7 @@
     var EMAIL = 'stasyabis7@gmail.com';
     var ITEMS = [
       { label: 'Telegram', icon: 'telegram', href: 'https://t.me/stasyabis' },
+      { label: 'Мой канал в Telegram', icon: 'telegram-channel', href: 'https://t.me/workinprogressstasyabis' },
       { label: EMAIL, icon: 'email', copy: EMAIL },
       { label: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/in/stasyabis/' },
       { label: 'Dribbble', icon: 'dribbble', href: 'https://dribbble.com/Stasyabis' },

@@ -101,6 +101,7 @@ const assets = [
   'styles/theme.css',
   'styles/button-hover.css',
   'components/icons/social/linkedin-round.svg',
+  'components/icons/social/telegram-channel.webp',
   'components/icons/arrows/arrow-upward.svg',
   'components/icons/icons.css',
   'components/site-header/header.css',
