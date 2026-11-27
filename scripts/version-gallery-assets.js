@@ -21,6 +21,8 @@ const assets = [
   'projects/playground/media/typorobot-red-rays.webp',
   'projects/playground/media/typorobot-dotted-numbers.webp',
   'projects/playground/media/typorobot-monochrome-band.jpg',
+  ...['diamonds-4d5df9-1600', 'hexagons-e8fec0-1600', 'triangles-d998f4-1600', 'white-network-1600']
+    .flatMap(name => [`projects/playground/media/${name}.mp4`, `projects/playground/media/${name}-poster.webp`]),
   'cv.pdf',
   'cv-en.pdf',
   'projects/swtec-medical/patient-app/covers/feed-cover-patient-points-1500x1800.webp',

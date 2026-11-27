@@ -31,6 +31,20 @@
 .playground-grid__item--portrait img { object-fit: contain; }
 .playground-grid__item--poster { aspect-ratio: var(--playground-media-ratio); }
 .playground-grid__item--poster img { object-fit: contain; }
+/* Четыре квадратных ролика — одна плитка; внутренний зазор всегда 16px. */
+.playground-catalog > .playground-grid__item--motion-set {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  aspect-ratio: 1;
+  background: transparent;
+}
+.playground-grid__item--motion-set video {
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+}
 /* Чёрные углы записаны в самом ролике: маска скрывает только их,
    а прямоугольная подложка заполняет углы цветом фона видео. */
 .playground-catalog > .playground-grid__item--homa { background: #efeff4; border-radius: 0; }
@@ -63,14 +77,15 @@
   .playground-catalog > :nth-child(10) { grid-area: 4 / 1 / auto / span 2; }
   .playground-catalog > :nth-child(11) { grid-area: 4 / 3; }
   .playground-catalog > :nth-child(12) { grid-area: 4 / 4; }
-  .playground-catalog > :nth-child(13) { grid-area: 5 / 1; }
-  .playground-catalog > :nth-child(14) { grid-area: 5 / 3 / auto / span 2; }
-  .playground-catalog > :nth-child(15) { grid-area: 6 / 1 / auto / span 2; }
-  .playground-catalog > :nth-child(16) { grid-area: 6 / 4; }
-  .playground-catalog > :nth-child(17) { grid-area: 7 / 2; }
-  .playground-catalog > :nth-child(18) { grid-area: 7 / 4; }
-  .playground-catalog > :nth-child(19) { grid-area: 8 / 1; }
-  .playground-catalog > :nth-child(20) { grid-area: 8 / 3; }
+  .playground-catalog > :nth-child(13) { grid-area: 5 / 1 / auto / span 2; }
+  .playground-catalog > :nth-child(14) { grid-area: 6 / 3; }
+  .playground-catalog > :nth-child(15) { grid-area: 5 / 3 / auto / span 2; }
+  .playground-catalog > :nth-child(16) { grid-area: 6 / 1 / auto / span 2; }
+  .playground-catalog > :nth-child(17) { grid-area: 6 / 4; }
+  .playground-catalog > :nth-child(18) { grid-area: 7 / 2; }
+  .playground-catalog > :nth-child(19) { grid-area: 7 / 4; }
+  .playground-catalog > :nth-child(20) { grid-area: 8 / 1; }
+  .playground-catalog > :nth-child(21) { grid-area: 8 / 3; }
 }
 @media (max-width: 999px) {
   .collection { --pg-gutter: 16px; --pg-gap: 10px; --pg-row-gap: 10px; }

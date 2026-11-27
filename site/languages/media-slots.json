@@ -1956,6 +1956,62 @@
     ]
   },
   {
+    "source": "/projects/playground/media/diamonds-4d5df9-1600-poster.webp",
+    "planned": {
+      "ru": "/projects/playground/media/diamonds-4d5df9-1600-poster-ru.webp",
+      "en": "/projects/playground/media/diamonds-4d5df9-1600-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/diamonds-4d5df9-1600-poster.webp",
+      "en": "/projects/playground/media/diamonds-4d5df9-1600-poster.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/diamonds-4d5df9-1600.mp4",
+    "planned": {
+      "ru": "/projects/playground/media/diamonds-4d5df9-1600-ru.mp4",
+      "en": "/projects/playground/media/diamonds-4d5df9-1600-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/playground/media/diamonds-4d5df9-1600.mp4",
+      "en": "/projects/playground/media/diamonds-4d5df9-1600.mp4"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/hexagons-e8fec0-1600-poster.webp",
+    "planned": {
+      "ru": "/projects/playground/media/hexagons-e8fec0-1600-poster-ru.webp",
+      "en": "/projects/playground/media/hexagons-e8fec0-1600-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/hexagons-e8fec0-1600-poster.webp",
+      "en": "/projects/playground/media/hexagons-e8fec0-1600-poster.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/hexagons-e8fec0-1600.mp4",
+    "planned": {
+      "ru": "/projects/playground/media/hexagons-e8fec0-1600-ru.mp4",
+      "en": "/projects/playground/media/hexagons-e8fec0-1600-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/playground/media/hexagons-e8fec0-1600.mp4",
+      "en": "/projects/playground/media/hexagons-e8fec0-1600.mp4"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
     "source": "/projects/playground/media/share-icon-motion-poster.webp",
     "planned": {
       "ru": "/projects/playground/media/share-icon-motion-poster-ru.webp",
@@ -2006,6 +2062,34 @@
     "active": {
       "ru": "/projects/playground/media/tooltip-motion.mp4",
       "en": "/projects/playground/media/tooltip-motion.mp4"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/triangles-d998f4-1600-poster.webp",
+    "planned": {
+      "ru": "/projects/playground/media/triangles-d998f4-1600-poster-ru.webp",
+      "en": "/projects/playground/media/triangles-d998f4-1600-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/triangles-d998f4-1600-poster.webp",
+      "en": "/projects/playground/media/triangles-d998f4-1600-poster.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/triangles-d998f4-1600.mp4",
+    "planned": {
+      "ru": "/projects/playground/media/triangles-d998f4-1600-ru.mp4",
+      "en": "/projects/playground/media/triangles-d998f4-1600-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/playground/media/triangles-d998f4-1600.mp4",
+      "en": "/projects/playground/media/triangles-d998f4-1600.mp4"
     },
     "pages": [
       "projects/playground/index.html"
@@ -2132,6 +2216,34 @@
     "active": {
       "ru": "/projects/playground/media/typorobot-streetwear-collage.webp",
       "en": "/projects/playground/media/typorobot-streetwear-collage.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/white-network-1600-poster.webp",
+    "planned": {
+      "ru": "/projects/playground/media/white-network-1600-poster-ru.webp",
+      "en": "/projects/playground/media/white-network-1600-poster-en.webp"
+    },
+    "active": {
+      "ru": "/projects/playground/media/white-network-1600-poster.webp",
+      "en": "/projects/playground/media/white-network-1600-poster.webp"
+    },
+    "pages": [
+      "projects/playground/index.html"
+    ]
+  },
+  {
+    "source": "/projects/playground/media/white-network-1600.mp4",
+    "planned": {
+      "ru": "/projects/playground/media/white-network-1600-ru.mp4",
+      "en": "/projects/playground/media/white-network-1600-en.mp4"
+    },
+    "active": {
+      "ru": "/projects/playground/media/white-network-1600.mp4",
+      "en": "/projects/playground/media/white-network-1600.mp4"
     },
     "pages": [
       "projects/playground/index.html"

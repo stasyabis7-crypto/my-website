@@ -552,6 +552,22 @@ window.siteLanguageMedia = {
     "ru": "/projects/ozon-prices/vat/covers/cover.webp",
     "en": "/projects/ozon-prices/vat/covers/cover.webp"
   },
+  "/projects/playground/media/diamonds-4d5df9-1600-poster.webp": {
+    "ru": "/projects/playground/media/diamonds-4d5df9-1600-poster.webp",
+    "en": "/projects/playground/media/diamonds-4d5df9-1600-poster.webp"
+  },
+  "/projects/playground/media/diamonds-4d5df9-1600.mp4": {
+    "ru": "/projects/playground/media/diamonds-4d5df9-1600.mp4",
+    "en": "/projects/playground/media/diamonds-4d5df9-1600.mp4"
+  },
+  "/projects/playground/media/hexagons-e8fec0-1600-poster.webp": {
+    "ru": "/projects/playground/media/hexagons-e8fec0-1600-poster.webp",
+    "en": "/projects/playground/media/hexagons-e8fec0-1600-poster.webp"
+  },
+  "/projects/playground/media/hexagons-e8fec0-1600.mp4": {
+    "ru": "/projects/playground/media/hexagons-e8fec0-1600.mp4",
+    "en": "/projects/playground/media/hexagons-e8fec0-1600.mp4"
+  },
   "/projects/playground/media/share-icon-motion-poster.webp": {
     "ru": "/projects/playground/media/share-icon-motion-poster.webp",
     "en": "/projects/playground/media/share-icon-motion-poster.webp"
@@ -567,6 +583,14 @@ window.siteLanguageMedia = {
   "/projects/playground/media/tooltip-motion.mp4": {
     "ru": "/projects/playground/media/tooltip-motion.mp4",
     "en": "/projects/playground/media/tooltip-motion.mp4"
+  },
+  "/projects/playground/media/triangles-d998f4-1600-poster.webp": {
+    "ru": "/projects/playground/media/triangles-d998f4-1600-poster.webp",
+    "en": "/projects/playground/media/triangles-d998f4-1600-poster.webp"
+  },
+  "/projects/playground/media/triangles-d998f4-1600.mp4": {
+    "ru": "/projects/playground/media/triangles-d998f4-1600.mp4",
+    "en": "/projects/playground/media/triangles-d998f4-1600.mp4"
   },
   "/projects/playground/media/typorobot-2111.webp": {
     "ru": "/projects/playground/media/typorobot-2111.webp",
@@ -603,6 +627,14 @@ window.siteLanguageMedia = {
   "/projects/playground/media/typorobot-streetwear-collage.webp": {
     "ru": "/projects/playground/media/typorobot-streetwear-collage.webp",
     "en": "/projects/playground/media/typorobot-streetwear-collage.webp"
+  },
+  "/projects/playground/media/white-network-1600-poster.webp": {
+    "ru": "/projects/playground/media/white-network-1600-poster.webp",
+    "en": "/projects/playground/media/white-network-1600-poster.webp"
+  },
+  "/projects/playground/media/white-network-1600.mp4": {
+    "ru": "/projects/playground/media/white-network-1600.mp4",
+    "en": "/projects/playground/media/white-network-1600.mp4"
   },
   "/projects/posts/blanket-post/covers/cover.webp": {
     "ru": "/projects/posts/blanket-post/covers/cover.webp",
